@@ -31,12 +31,15 @@ import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routeheader.StandardDocumentContent;
+import edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A node which will generate an FYI request to a network ID specified in the document content.
- *
+ * 
+ * @deprecated Use {@link NetworkIdRoleAttribute} instead
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FYIByNetworkId extends RequestActivationNode {

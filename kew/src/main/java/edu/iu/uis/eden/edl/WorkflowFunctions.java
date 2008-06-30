@@ -17,10 +17,12 @@
 package edu.iu.uis.eden.edl;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
+import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.session.UserSession;
 
@@ -34,11 +36,27 @@ public class WorkflowFunctions {
 	
 	
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowFunctions.class);
+        
+        public static boolean isUserInitiator(String id) throws WorkflowException {
+            boolean initiator = false;
+            UserSession userSession = UserSession.getAuthenticatedUser();
+            if (userSession != null) {            
+        	try {
+        	    long documentId = Long.parseLong(id.trim());
+        	    WorkflowInfo workflowInfo = new WorkflowInfo();
+        	    if (userSession.getNetworkId().equals(workflowInfo.getRouteHeader(documentId).getInitiator().getNetworkId())) {
+        		initiator = true;
+        	    }
+        	} catch (Exception e) {
+        	    LOG.debug("Exception encountered trying to determine if user is the document initiator:" + e );
+        	}
+            }
+            return initiator;
+        }
 	
 	public static boolean isUserRouteLogAuthenticated(String id) {
 		boolean authenticated=false;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
-
 		UserSession userSession=UserSession.getAuthenticatedUser();
 		if(userSession!=null){
 			UserIdVO userId = new WorkflowIdVO(userSession.getWorkflowUser().getWorkflowId());
@@ -46,9 +64,9 @@ public class WorkflowFunctions {
 				Long routeHeaderId = new Long(id);
 				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, userId, true);
 			} catch (NumberFormatException e) {
-				LOG.error("Invalid format routeHeaderId (should be LONG): " + id);
+				LOG.debug("Invalid format routeHeaderId (should be LONG): " + id);
 			} catch (WorkflowException e) {
-				LOG.error("Error checking if user is route log authenticated: userId: "+userId + ";routeHeaderId: " + id);
+				LOG.debug("Error checking if user is route log authenticated: userId: "+userId + ";routeHeaderId: " + id);
 		    }
 		}
 		
@@ -75,9 +93,37 @@ public class WorkflowFunctions {
 		return isUserInGroup;
 	}
 
+	public static WorkflowUser getWorkflowUser() {
+		UserSession userSession=UserSession.getAuthenticatedUser();
+		//testing
+		LOG.debug("Given name safe: " + userSession.getWorkflowUser().getGivenNameSafe());
+		LOG.debug("Display name safe: " + userSession.getWorkflowUser().getDisplayNameSafe());
+		LOG.debug("Last name safe: " + userSession.getWorkflowUser().getLastNameSafe());
+		LOG.debug("Auth User ID: " + userSession.getWorkflowUser().getAuthenticationUserId().getId());
+		LOG.debug("EPLID: " + userSession.getWorkflowUser().getEmplId().getEmplId());
+		return userSession.getWorkflowUser();
+	}
+
+	public static String getUserId() {
+	        return getWorkflowUser().getEmplId().getId();
+	}
+
+	public static String getLastName() {
+	        return getWorkflowUser().getLastName();
+	}
+
+	public static String getGivenName() {
+	    return getWorkflowUser().getGivenName();
+	}
+
+	public static String getEmailAddress() {
+	    UserSession userSession=UserSession.getAuthenticatedUser();
+	    return userSession.getEmailAddress();
+	}
+
 	public static boolean isNodeInPreviousNodeList(String nodeName, String id) {
-		LOG.error("nodeName came in as: " + nodeName);
-		LOG.error("id came in as: " + id);
+		LOG.debug("nodeName came in as: " + nodeName);
+		LOG.debug("id came in as: " + id);
 		//get list of previous node names
 		String[] previousNodeNames;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
@@ -110,4 +156,25 @@ public class WorkflowFunctions {
 			return false;
 		}
 	}	
+	
+	public static boolean isAtNode(String documentId, String nodeName) throws Exception {
+	    WorkflowInfo workflowInfo = new WorkflowInfo();
+	    RouteNodeInstanceVO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    for (RouteNodeInstanceVO nodeInstance : activeNodeInstances) {
+	        if (nodeInstance.getName().equals(nodeName)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public static boolean hasActiveNode(String documentId) throws Exception {
+	    WorkflowInfo workflowInfo = new WorkflowInfo();
+	    RouteNodeInstanceVO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    if (activeNodeInstances.length > 0) {
+	            return true;
+	    }
+	    return false;
+	}
+
 }

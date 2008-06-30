@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.doctype;
 
+import edu.iu.uis.eden.clientapp.IDocHandler;
+
 /**
  * DocumentType policy enum type.
  * Encapsulates  policies of the document.
@@ -32,6 +34,14 @@ public final class DocumentTypePolicyEnum {
      * FIXME: needs docs
      */
     public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum("DISAPPROVE");
+    
+    /**
+     * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
+     * super user search. If set to false the client must implement a custom super user screen to be used when the doc
+     * handler URL has a post variable of the name defined by {@link IDocHandler#COMMAND_PARAMETER} and a value of
+     * {@link IDocHandler#SUPERUSER_COMMAND}. The default is 'true'.
+     */
+    public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum("USE_KEW_SUPERUSER_DOCHANDLER");
 
     /**
      * determines whether a document will go processed without any approval requests.  If
@@ -107,6 +117,8 @@ public final class DocumentTypePolicyEnum {
         	return SUPPORTS_QUICK_INITIATE;
         } else if (NOTIFY_ON_SAVE.name.equalsIgnoreCase(name)) {
         	return NOTIFY_ON_SAVE;
+        } else if (USE_KEW_SUPERUSER_DOCHANDLER.name.equalsIgnoreCase(name)) {
+            return USE_KEW_SUPERUSER_DOCHANDLER;
         } else {
             throw new IllegalArgumentException("Invalid Document type policy: '" + name + "'");
         }

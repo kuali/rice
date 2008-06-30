@@ -56,6 +56,12 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return document;
     }
     
+    private void init(Long documentId) throws WorkflowException {
+        incomingParamCheck(documentId, "documentId");
+        LOG.debug("Initializing Document from incoming Document ID [docId=" + documentId + "]");
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+    }
+    
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             LOG.error("null " + name + " passed in.");
@@ -267,13 +273,17 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserApprove(user, routeHeader, annotation, true);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserApprove(user, routeHeader, annotation, runPostProcessor);
         return BeanConverter.convertRouteHeader(routeHeader, user);
+    }
+    
+    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    	return superUserApprove(userId, routeHeaderVO, annotation, true);
     }
     
     public RouteHeaderVO superUserActionRequestApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, Long actionRequestId, String annotation) throws WorkflowException {
@@ -285,22 +295,30 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 
-    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(user, routeHeader, annotation, true);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(user, routeHeader, annotation, runPostProcessor);
         return BeanConverter.convertRouteHeader(routeHeader, user);    	
     }
     
-    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    	return superUserDisapprove(userId, routeHeaderVO, annotation, true);
+    }
+    
+    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(user, routeHeader, annotation, true);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(user, routeHeader, annotation, runPostProcessor);
         return BeanConverter.convertRouteHeader(routeHeader, user);
+    }
+    
+    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    	return superUserCancel(userId, routeHeaderVO, annotation, true);
     }
 
 	public DocumentContentVO saveDocumentContent(DocumentContentVO documentContent) throws RemoteException, WorkflowException {
@@ -318,6 +336,42 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     	}
     	return BeanConverter.convertDocumentContent(document.getDocContent(), documentId);
 	}
-    
+    	
+	public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	    init(documentId);
+	    incomingParamCheck(userId, "userId");
+	    LOG.debug("SU Node Approve Action [userId=" + userId + ", docId=" + documentId + ", nodeName=" + nodeName + ", annotation=" + annotation + "]");
+	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+	    KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(user, documentId, nodeName, annotation, runPostProcessor);	        
+	}
+	
+	public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation) throws RemoteException, WorkflowException {
+		superUserNodeApproveAction(userId, documentId, nodeName, annotation, true);
+	}
+
+	public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	    init(documentId);
+	    incomingParamCheck(userId, "userId");
+	    LOG.debug("SU Action Request Approve [userId=" + userId + ", docId=" + documentId + ", actionRequestId=" + actionRequestId + ", annotation=" + annotation + "]");
+	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+	    DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+	    document = KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(user, document, actionRequestId, annotation, runPostProcessor);
+	}
+	
+	public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation) throws RemoteException, WorkflowException {
+		superUserActionRequestApproveAction(userId, documentId, actionRequestId, annotation, true);
+	}
+
+	public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	    init(documentId);
+	    incomingParamCheck(userId, "userId");
+	    LOG.debug("SU Cancel [userId=" + userId + ", docId=" + documentId + ", destinationNodeName=" + destinationNodeName + ", annotation=" + annotation + "]");
+	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+	    KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(user, documentId, destinationNodeName, annotation, runPostProcessor);
+	}
+	
+	public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation) throws RemoteException, WorkflowException {
+		superUserReturnToPreviousNode(userId, documentId, destinationNodeName, annotation, true);
+	}
     
 }

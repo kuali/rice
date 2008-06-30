@@ -239,25 +239,6 @@ public class EDLXmlUtils {
         }
     }
 
-	public static final String[] VALIDATABLE_ACTIONS = new String[] {
-		WorkflowDocumentActions.ACTION_SAVE,
-		WorkflowDocumentActions.ACTION_ROUTE,
-		WorkflowDocumentActions.ACTION_APPROVE,
-    	WorkflowDocumentActions.ACTION_ACKNOWLEDGE,
-    	WorkflowDocumentActions.ACTION_COMPLETE,
-    	WorkflowDocumentActions.ACTION_FYI,
-    	WorkflowDocumentActions.ACTION_DISAPPROVE,
-    	WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS
-    };
-
-	public static boolean isValidatableAction(String action) {
-		for (int index = 0; index < VALIDATABLE_ACTIONS.length; index++) {
-			if (VALIDATABLE_ACTIONS[index].equals(action)) {
-				return true;
-			}
-		}
-		return false;
-	}
 }
 
 

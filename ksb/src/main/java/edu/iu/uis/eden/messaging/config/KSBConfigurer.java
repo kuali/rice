@@ -22,8 +22,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.xfire.transport.http.EasySSLProtocolSocketFactory;
 import org.kuali.bus.auth.AuthorizationService;
 import org.kuali.bus.ojb.OjbConfigurer;
 import org.kuali.bus.services.KSBServiceLocator;
@@ -43,6 +46,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.iu.uis.eden.cache.RiceCacheAdministrator;
 import edu.iu.uis.eden.messaging.AlternateEndpoint;
+import edu.iu.uis.eden.messaging.AlternateEndpointLocation;
 import edu.iu.uis.eden.messaging.ServiceDefinition;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
@@ -62,6 +66,8 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 	
+    private List<AlternateEndpointLocation> alternateEndpointLocations = new ArrayList<AlternateEndpointLocation>();
+
 	private List<AlternateEndpoint> alternateEndpoints = new ArrayList<AlternateEndpoint>();
 
 	private String serviceServletUrl;
@@ -127,6 +133,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 			}
 
 			public void start() throws Exception {
+		// first check if we want to allow self-signed certificates for SSL communication
+		if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
+		    Protocol.registerProtocol("https", new Protocol("https",
+			    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
+		}
 				for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
 					serviceDef.validate();
 				}
@@ -258,7 +269,8 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 	
 	protected void configureAlternateEndpoints(Config config) {
-	    config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
+		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
+		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 
 	public void stop() throws Exception {
@@ -431,6 +443,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	public void setAuthorizationService(AuthorizationService authorizationService) {
 	    this.authorizationService = authorizationService;
+    }
+
+    public List<AlternateEndpointLocation> getAlternateEndpointLocations() {
+	return this.alternateEndpointLocations;
+    }
+
+    public void setAlternateEndpointLocations(List<AlternateEndpointLocation> alternateEndpointLocations) {
+	this.alternateEndpointLocations = alternateEndpointLocations;
 	}
 
     public List<AlternateEndpoint> getAlternateEndpoints() {

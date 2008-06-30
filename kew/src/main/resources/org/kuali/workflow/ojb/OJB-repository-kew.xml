@@ -354,6 +354,7 @@
     <field-descriptor column="WRKGRP_ID" name="workgroupId" jdbc-type="BIGINT"/>
     <field-descriptor column="BLNKT_APPR_WRKGRP_ID" name="blanketApproveWorkgroupId" jdbc-type="BIGINT"/>
     <field-descriptor column="BLNKT_APPR_PLCY" name="blanketApprovePolicy" jdbc-type="VARCHAR"/>
+    <field-descriptor column="RPT_WRKGRP_ID" name="reportingWorkgroupId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_TYP_RTE_VER_NBR" name="routingVersion" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_TYP_NOTIFY_ADDR" name="notificationFromAddress" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_TYP_SECURITY_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>

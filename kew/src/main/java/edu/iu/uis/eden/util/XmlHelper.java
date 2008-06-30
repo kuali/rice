@@ -88,7 +88,6 @@ public class XmlHelper {
 		// don't verify for speed reasons
 		SAXBuilder builder = new SAXBuilder(false);
 		org.jdom.Document doc = null;
-
 		try {
 			doc = builder.build(xmlStream);
 		} /*
@@ -143,6 +142,13 @@ public class XmlHelper {
 		return doc;
 	}
 
+	public static org.w3c.dom.Document buildDocument(String xml) throws IOException, SAXException, ParserConfigurationException {
+	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	    dbf.setCoalescing(true);
+	    DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+	    return documentBuilder.parse(new InputSource(new BufferedReader(new StringReader(xml))));
+	}
+	
 	/**
 	 * readerToString: read entire content of a Reader into a String
 	 *

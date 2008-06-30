@@ -114,6 +114,8 @@ public class DocumentType implements WorkflowPersistable {
 	private Long blanketApproveWorkgroupId;
     @Column(name="BLNKT_APPR_PLCY")
 	private String blanketApprovePolicy;
+	@Column(name="RPT_WRKGRP_ID")
+	private Long reportingWorkgroupId;
     @Column(name="MESSAGE_ENTITY_NM")
 	private String messageEntity;
     @Version
@@ -177,6 +179,9 @@ public class DocumentType implements WorkflowPersistable {
         return getPolicyByName(EdenConstants.DEFAULT_APPROVE_POLICY, Boolean.TRUE);
     }
 
+    public DocumentTypePolicy getUseWorkflowSuperUserDocHandlerUrl() {
+        return getPolicyByName(EdenConstants.USE_KEW_SUPERUSER_DOCHANDLER, Boolean.TRUE);
+    }
 
     public DocumentTypePolicy getInitiatorMustRoutePolicy() {
         return getPolicyByName(EdenConstants.INITIATOR_MUST_ROUTE_POLICY, Boolean.TRUE);
@@ -212,6 +217,13 @@ public class DocumentType implements WorkflowPersistable {
 
     public DocumentTypePolicy getNotifyOnSavePolicy() {
     	return getPolicyByName(EdenConstants.NOTIFY_ON_SAVE_POLICY, Boolean.FALSE);
+    }
+
+    public String getUseWorkflowSuperUserDocHandlerUrlValue() {
+        if (getUseWorkflowSuperUserDocHandlerUrl() != null) {
+            return getUseWorkflowSuperUserDocHandlerUrl().getPolicyDisplayValue();
+        }
+        return null;
     }
 
     public String getDefaultApprovePolicyDisplayValue() {
@@ -618,6 +630,14 @@ public class DocumentType implements WorkflowPersistable {
     	return false;
     }
 
+    public Workgroup getReportingWorkgroup() {
+        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.reportingWorkgroupId));
+    }
+
+    public void setReportingWorkgroup(Workgroup reportingWorkgroup) {
+    	this.reportingWorkgroupId = reportingWorkgroup.getWorkflowGroupId().getGroupId();
+    }
+    
     public Workgroup getDefaultExceptionWorkgroup() {
         return defaultExceptionWorkgroup;
     }

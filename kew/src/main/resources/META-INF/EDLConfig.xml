@@ -1,9 +1,12 @@
 <edlConfig>
 	<preProcessors>
+		<preProcessor>edu.iu.uis.eden.edl.components.EstablishUserAction</preProcessor>
 		<preProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentActions</preProcessor>
 		<preProcessor>edu.iu.uis.eden.edl.components.VersioningPreprocessor</preProcessor>
+		<preProcessor>edu.iu.uis.eden.edl.components.PageHandler</preProcessor>
 	</preProcessors>
 	<postProcessors>
+		<postProcessor>edu.iu.uis.eden.edl.components.SelectControlEDLComponent</postProcessor>
 		<postProcessor>edu.iu.uis.eden.edl.components.ValidationComponent</postProcessor>
         <postProcessor>edu.iu.uis.eden.edl.components.GlobalAttributeComponent</postProcessor>
 		<postProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentActions</postProcessor>
@@ -25,7 +28,7 @@
 			<className>edu.iu.uis.eden.edl.components.UniversityIdWorkflowEDLConfigComponent</className>
 		</configProcessor>
 		<configProcessor>
-			<xpathExp>display/type = 'select' or display/type = 'text' or display/type = 'password' or display/type = 'radio' or display/type = 'checkbox' or display/type = 'textarea'</xpathExp>
+			<xpathExp>display/type = 'select' or display/type = 'select_refresh' or display/type = 'text' or display/type = 'password' or display/type = 'radio' or display/type = 'checkbox' or display/type = 'textarea' or display/type = 'hidden'</xpathExp>
 			<className>edu.iu.uis.eden.edl.components.SimpleWorkflowEDLConfigComponent</className>
 		</configProcessor>
 		<configProcessor>

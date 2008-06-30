@@ -39,8 +39,8 @@ public class MessageQueueForm extends ActionForm {
     public static final int DEFAULT_MAX_ROWS = 1000;
     public static final int DEFAULT_PAGE_SIZE = 100;
 
-    private int maxRows;
-    private int pageSize;
+    private int maxRows = DEFAULT_MAX_ROWS;
+    private int pageSize = DEFAULT_PAGE_SIZE;
     private Long messageId;
     private String methodToCall = "";
     private Collection<PersistedMessage> messageQueueRows;

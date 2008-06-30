@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.edl.components;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,6 +27,7 @@ import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
+import edu.iu.uis.eden.edl.UserAction;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.XmlHelper;
@@ -42,21 +44,8 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentActions.class);
 
-	public static final String USER_ACTION_REQUEST_KEY = "userAction";
-    public static final String ACTION_CREATE = "initiate";
-    public static final String RETRIEVE = "retrieve";
-    public static final String ACTION_ROUTE = "route";
-    public static final String ACTION_APPROVE = "approve";
-    public static final String ACTION_DISAPPROVE = "disapprove";
-    public static final String ACTION_CANCEL = "cancel";
-    public static final String ACTION_BLANKETAPPROVE = "blanketApprove";
-    public static final String ACTION_FYI = "fyi";
-    public static final String ACTION_ACKNOWLEDGE = "acknowledge";
-    public static final String ACTION_SAVE = "save";
-    public static final String ACTION_COMPLETE = "complete";
-    public static final String ACTION_DELETE = "delete";
-    public static final String ACTION_RETURN_TO_PREVIOUS = "returnToPrevious";
-
+	public static final String ACTION_TAKEN = "actionTaken";
+	
 	boolean isPreProcessor;
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
@@ -76,13 +65,10 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 
 	private void doPreProcessWork(EDLContext edlContext) throws Exception {
 		RequestParser requestParser = edlContext.getRequestParser();
-		String userAction = requestParser.getParameterValue(USER_ACTION_REQUEST_KEY);
-		if (userAction == null) {
-			userAction = requestParser.getParameterValue("command");//'WorkflowQuicklinks'
-		}
 
+		UserAction userAction = edlContext.getUserAction();
 		WorkflowDocument document = null;
-		if (ACTION_CREATE.equals(userAction)) {
+		if (UserAction.ACTION_CREATE.equals(userAction.getAction())) {
 			document = new WorkflowDocument(new NetworkIdVO(edlContext.getUserSession().getNetworkId()), edlContext.getEdocLiteAssociation().getEdlName());
 			document.setTitle("Routing Document Type '" + document.getDocumentType() + "'");
 			document.getRouteHeaderId();
@@ -117,49 +103,58 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		Element dataElement = (Element) dom.getElementsByTagName(EDLXmlUtils.DATA_E).item(0);
 		String docContent = XmlHelper.writeNode(dataElement);//use the transformer on edlcontext
 		document.setApplicationContent(docContent);
-		takeAction(document, requestParser);
+		takeAction(document, dom, edlContext);
 	}
 
-	public static void takeAction(WorkflowDocument document, RequestParser requestParser) throws WorkflowException {
-
+	public static void takeAction(WorkflowDocument document, Document dom, EDLContext edlContext) throws WorkflowException {
+	    	RequestParser requestParser = edlContext.getRequestParser();
+	    	UserAction userAction = edlContext.getUserAction();
 		String annotation = requestParser.getParameterValue("annotation");
-		String action = requestParser.getParameterValue(USER_ACTION_REQUEST_KEY);
-		String nodeName = requestParser.getParameterValue("previousNode");
+		String action = userAction.getAction();
+		String previousNodeName = requestParser.getParameterValue("previousNode");
 
-		if (!EDLXmlUtils.isValidatableAction(action)) {
+		if (!userAction.isValidatableAction()) {
 			// if the action's not validatable, clear the attribute definitions because we don't want to end up executing validateClientRoutingData()
 			// TODO the problem here is that the XML is still updated on a cancel so we end up without any attribute content in the document content
 			document.clearAttributeDefinitions();
 		}
 
-        if (ACTION_ROUTE.equals(action)) {
+	boolean actionTaken = true;	
+
+	if (UserAction.ACTION_ROUTE.equals(action)) {
         	document.routeDocument(annotation);
-        } else if (ACTION_APPROVE.equals(action)) {
+        } else if (UserAction.ACTION_APPROVE.equals(action)) {
         	document.approve(annotation);
-        } else if (ACTION_DISAPPROVE.equals(action)) {
+        } else if (UserAction.ACTION_DISAPPROVE.equals(action)) {
         	document.disapprove(annotation);
-        } else if (ACTION_CANCEL.equals(action)) {
+        } else if (UserAction.ACTION_CANCEL.equals(action)) {
         	document.cancel(annotation);
-        } else if (ACTION_BLANKETAPPROVE.equals(action)) {
+        } else if (UserAction.ACTION_BLANKETAPPROVE.equals(action)) {
         	document.blanketApprove(annotation);
-        } else if (ACTION_FYI.equals(action)) {
+        } else if (UserAction.ACTION_FYI.equals(action)) {
         	document.fyi();
-        } else if (ACTION_ACKNOWLEDGE.equals(action)) {
+        } else if (UserAction.ACTION_ACKNOWLEDGE.equals(action)) {
         	document.acknowledge(annotation);
-        } else if (ACTION_SAVE.equals(action)) {
+        } else if (UserAction.ACTION_SAVE.equals(action)) {
             if (document.getStatusDisplayValue().equals("INITIATED")) {
 		document.saveDocument(annotation);
             } else {
         	document.saveRoutingData();
             }
-        } else if (ACTION_COMPLETE.equals(action)) {
+        } else if (UserAction.ACTION_COMPLETE.equals(action)) {
         	document.complete(annotation);
-        } else if (ACTION_DELETE.equals(action)) {
+        } else if (UserAction.ACTION_DELETE.equals(action)) {
         	document.delete();
-        } else if (ACTION_RETURN_TO_PREVIOUS.equals(action)) {
-            document.returnToPreviousNode(annotation, nodeName);
+        } else if (UserAction.ACTION_RETURN_TO_PREVIOUS.equals(action)) {
+            document.returnToPreviousNode(annotation, previousNodeName);
+        } else {
+            actionTaken = false;
+        }
+        
+        if (actionTaken) {
+            Element actionTakenElement = EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), ACTION_TAKEN, true);
+            actionTakenElement.appendChild(dom.createTextNode(action));
         }
     }
-
-
+	
 }

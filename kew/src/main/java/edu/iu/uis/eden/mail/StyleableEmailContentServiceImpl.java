@@ -73,6 +73,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected final String DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC = "defaultEmailStyle.xsl";
 
     protected StyleService styleService;
+    protected EmailStyleHelper styleHelper = new EmailStyleHelper();
     protected String globalEmailStyleSheet = EdenConstants.EMAIL_STYLESHEET_NAME;
     
     
@@ -265,31 +266,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected EmailContent generateEmailContent(String styleName, Document doc) {
         Templates style = getStyle(styleName);
-
-        DOMResult result = new DOMResult();
-
-        LOG.debug("Input document: " + XmlHelper.jotNode(doc.getDocumentElement(), true));
-        try {
-            style.newTransformer().transform(new DOMSource(doc), result);
-        } catch (TransformerException te) {
-            String message = "Error transforming immediate reminder DOM";
-            LOG.error(message, te);
-            throw new WorkflowRuntimeException(message, te);
-        }
-
-        Node node = result.getNode();
-        
-        LOG.debug("Email document: " + XmlHelper.jotNode(doc));
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        try {
-            String subject = (String) xpath.evaluate("/email/subject", node, XPathConstants.STRING);
-            String body = (String) xpath.evaluate("/email/body", node, XPathConstants.STRING);
-            // simple heuristic to determine whether content is HTML
-            return new EmailContent(subject, body, body.matches("(?msi).*<(\\w+:)?html.*"));
-        } catch (XPathExpressionException xpee) {
-            throw new WorkflowRuntimeException("Error evaluating generated email content", xpee);
-        }
+        return styleHelper.generateEmailContent(style, doc);
     }
 
     protected EmailContent generateReminderForActionItems(WorkflowUser user, Collection<ActionItem> actionItems, String name, String style) {

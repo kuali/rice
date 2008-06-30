@@ -46,8 +46,6 @@ public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
     }
 
     public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws EdenUserNotFoundException {
-        // sounds like the role label should be specified as the first parameter here,
-        // but I'll follow AccountAttribute's lead and specify the role key
         List members = new ArrayList(1);
         members.add(routeContext.getDocument().getInitiatorUser().getWorkflowUserId());
         return new ResolvedQualifiedRole(INITIATOR_ROLE_LABEL, members);

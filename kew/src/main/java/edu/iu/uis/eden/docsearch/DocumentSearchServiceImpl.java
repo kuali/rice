@@ -199,13 +199,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
 
         // validate any numbers
-        if (!validateNumber(criteria.getDocRouteNodeId())) {
-            errors.add(new WorkflowServiceErrorImpl("Non-numeric route level", "docsearch.DocumentSearchService.routeLevel"));
-        } else {
-            if (criteria.getDocRouteNodeId() != null && !"".equals(criteria.getDocRouteNodeId().trim())) {
-                criteria.setDocRouteNodeId(criteria.getDocRouteNodeId().trim());
-            }
-        }
         if (!validateNumber(criteria.getDocVersion())) {
             errors.add(new WorkflowServiceErrorImpl("Non-numeric document version", "docsearch.DocumentSearchService.docVersion"));
         } else {

@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.edl;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -133,6 +134,25 @@ public class RequestParser {
 			return paramVals[0];
 		}
 		return null;
+	}
+	
+	public List<String> getParameterNames() {
+	    List<String> names = new ArrayList<String>();
+	    boolean isMultipart = ServletFileUpload.isMultipartContent(this.getRequest());
+	    if (isMultipart) {
+		parseRequest(this.getRequest());
+		Map paramMap = ((Map)request.getAttribute(PARSED_MULTI_REQUEST_KEY));
+		for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();) {
+		    String parameterName = (String)iterator.next();
+		    names.add(parameterName);
+		}
+	    } else { 
+		Enumeration<String> nameEnum = getRequest().getParameterNames();
+		while (nameEnum.hasMoreElements()) {
+		    names.add(nameEnum.nextElement());
+		}
+	    }
+	    return names;
 	}
 
 	public void setRequest(HttpServletRequest request) {

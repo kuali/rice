@@ -21,6 +21,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Implementation of the {@link ActionListImmediateEmailReminderService}.
@@ -33,6 +34,11 @@ public class ActionListImmediateProcessorImpl implements ActionListImmediateEmai
     
 	public void sendReminder(ActionItem actionItem, boolean doNotSendApproveNotificationEmails) {
 		if (actionItem != null) {
+		    if (actionItem.getRouteHeader() == null && actionItem.getRouteHeaderId() != null) {
+			// materialize the document
+			DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+			actionItem.setRouteHeader(document);
+		    }
             if (! actionItem.getActionRequestCd().equals(EdenConstants.ACTION_REQUEST_APPROVE_REQ) || 
             			! doNotSendApproveNotificationEmails) {
                 try {

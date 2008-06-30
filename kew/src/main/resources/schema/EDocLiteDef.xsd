@@ -72,7 +72,7 @@
 
         <element name="attributes" type="ed:AttributeType" minOccurs="0"/>
 
-        <element name="javascript" type="c:VeryLongStringType" minOccurs="0"/>
+        <element name="javascript" type="string" minOccurs="0"/>
 
         <element name="fieldDef" type="ed:FieldType" minOccurs="0" maxOccurs="unbounded">
         	<annotation>
@@ -163,6 +163,14 @@
             		</documentation>
             	</annotation>
             </element>
+            
+            <element name="valuesGroup" type="ed:ValuesGroupType" minOccurs="0" maxOccurs="unbounded">
+            	<annotation>
+            		<documentation>
+            			Represents a group of values identified by a key.
+            		</documentation>
+            	</annotation>
+            </element>
           </sequence>
         </complexType>
       </element>
@@ -190,8 +198,10 @@
       <enumeration value="radio"/>
       <enumeration value="checkbox"/>
       <enumeration value="select"/>
+      <enumeration value="select_refresh"/>
       <enumeration value="networkId"/>
       <enumeration value="universityId"/>
+      <enumeration value="hidden"/>
     </restriction>
   </simpleType>
 
@@ -222,6 +232,45 @@
         	<annotation>
         		<documentation>
         		 Title of the values type
+        		</documentation>
+        	</annotation>
+        </attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <complexType name="ValuesGroupType">
+  	<sequence>
+  	  <element name="dependsOn" type="ed:DependsOnType" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>
+            Indicates that the display of this Values Group depends on the value in another field.
+          </documentation>
+        </annotation>
+      </element> 
+      <element name="values" type="ed:ValuesType" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>
+            Values of the values group.
+          </documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="DependsOnType">
+    <sequence>
+      <element name="field" type="ed:DependsOnFieldType" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  
+  <complexType name="DependsOnFieldType">
+    <simpleContent>
+      <extension base="c:ShortStringType">
+        <attribute name="name" type="string" use="required">
+        	<annotation>
+        		<documentation>
+        		 Name of the field
         		</documentation>
         	</annotation>
         </attribute>

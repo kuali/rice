@@ -47,7 +47,7 @@ public class EDLControllerChain {
 	
 	public void renderEDL(RequestParser requestParser, HttpServletResponse response) throws Exception {
 		EDLController edlController = (EDLController) edlControllers.pop();
-		edlController.setEdlContext(getEDLContext(edlController, requestParser, edlController.getStyle().newTransformer()));
+		edlController.setEdlContext(getInitialEDLContext(edlController, requestParser, edlController.getStyle().newTransformer()));
 		
 		Document dom = edlController.notifyComponents();
 		if (edlControllers.isEmpty()) {
@@ -82,7 +82,7 @@ public class EDLControllerChain {
         transformer.transform(new DOMSource(dom), new StreamResult(response.getOutputStream()));
 	}
 	
-	private EDLContext getEDLContext(EDLController edlController, RequestParser requestParser, Transformer transformer) {
+	private EDLContext getInitialEDLContext(EDLController edlController, RequestParser requestParser, Transformer transformer) {
 		EDLContext edlContext = new EDLContext();
 		edlContext.setEdlControllerChain(this);
 		edlContext.setEdocLiteAssociation(edlController.getEdocLiteAssociation());

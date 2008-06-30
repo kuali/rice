@@ -118,4 +118,6 @@ public interface WorkflowUtility extends Remote {
      * @since 0.9.1
      */
     public String getDocumentStatus(Long documentId) throws RemoteException, WorkflowException;
+    public RouteNodeInstanceVO[] getCurrentNodeInstances(Long documentId) throws RemoteException, WorkflowException;
+    
 }

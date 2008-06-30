@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.doctype.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -238,7 +239,14 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	crit.addEqualTo("routeHeaderId", documentId);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
     	query.setAttributes(new String[] { "documentTypeId" });
-    	return (Long)this.getPersistenceBrokerTemplate().getObjectByQuery(query);
+    	
+    	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+    	while (iter.hasNext()) {
+    	    Object[] row = (Object[]) iter.next();
+    	    BigDecimal id = (BigDecimal)row[0];
+    	    return new Long(id.longValue());
+    	}
+    	return null;
     }
 
 }

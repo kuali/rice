@@ -32,7 +32,7 @@ import org.kuali.core.web.ui.ResultRow;
  * 
  */
 public interface Lookupable extends Serializable {
-
+    
     /**
      * Initializes the lookup with a businss object class
      * 
@@ -51,6 +51,18 @@ public interface Lookupable extends Serializable {
      */
     public Class getBusinessObjectClass();
 
+    /**
+     * Initializes the lookup with the given Map of parameters.
+     * 
+     * @param parameters
+     */
+    public void setParameters(Map parameters);
+    
+    /**
+     * @return Returns the parameters passed to this lookup
+     */
+    public Map getParameters();
+    
     /**
      * @return the html to be displayed as a menu bar
      */

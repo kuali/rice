@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SearchDocType_RouteNodeTest</name>
+			<parent>SearchDocType</parent>
+			<description>SearchDocType_RouteNodeTest</description>
+			<label>SearchDocType_RouteNodeTest</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+</data>

@@ -161,7 +161,7 @@ public class KualiRequestProcessor extends RequestProcessor {
          // part of the Form and make them available in ValueFinder classes and other places where they are needed.
          GlobalVariables.setKualiForm((KualiForm)form);  
      }     
-
+	
 	// if not PojoForm, call struts populate
 	if (!(form instanceof PojoForm)) {
 	    super.processPopulate(request, response, form, mapping);
@@ -170,8 +170,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 	}
 
 	String multipart = mapping.getMultipartClass();
-	if (multipart != null)
+	if (multipart != null) {
 	    request.setAttribute(Globals.MULTIPART_KEY, multipart);
+	}
 
 	form.setServlet(this.servlet);
 	form.reset(mapping, request);

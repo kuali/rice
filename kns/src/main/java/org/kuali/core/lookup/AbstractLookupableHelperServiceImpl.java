@@ -70,6 +70,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractLookupableHelperServiceImpl.class);
     
     private Class businessObjectClass;
+    private Map parameters;
     private BusinessObjectDictionaryService businessObjectDictionaryService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private DataDictionaryService dataDictionaryService;
@@ -183,6 +184,20 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         setRows();
     }
     
+    /**
+     * @see org.kuali.core.lookup.LookupableHelperService#getParameters()
+     */
+    public Map getParameters() {
+        return parameters;
+    }
+
+    /**
+     * @see org.kuali.core.lookup.LookupableHelperService#setParameters(java.util.Map)
+     */
+    public void setParameters(Map parameters) {
+        this.parameters = parameters;
+    }
+
     /**
      * Gets the dataDictionaryService attribute. 
      * @return Returns the dataDictionaryService.

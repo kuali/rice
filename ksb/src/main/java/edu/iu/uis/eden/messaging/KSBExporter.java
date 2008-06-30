@@ -26,11 +26,14 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class KSBExporter implements InitializingBean {
 	
+	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KSBExporter.class);
+	
 	private ServiceDefinition serviceDefinition;
 	private boolean forceRefresh = false;
 
 	public void afterPropertiesSet() throws Exception {
 		this.getServiceDefinition().validate();
+		LOG.info("Attempting to expose service with localServiceName '" + this.getServiceDefinition().getLocalServiceName() + "' and QName '" + this.getServiceDefinition().getServiceName() + "'");
 		KSBServiceLocator.getServiceDeployer().registerService(this.getServiceDefinition(), this.isForceRefresh());
 	}
 

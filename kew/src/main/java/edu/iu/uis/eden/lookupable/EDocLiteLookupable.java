@@ -27,7 +27,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.edl.EDocLiteAssociation;
 import edu.iu.uis.eden.edl.EDocLiteService;
-import edu.iu.uis.eden.edl.components.WorkflowDocumentActions;
+import edu.iu.uis.eden.edl.UserAction;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.export.Exportable;
@@ -99,7 +99,7 @@ public class EDocLiteLookupable implements WorkflowLookupable, Exportable {
 		List results = KEWServiceLocator.getEDocLiteService().search(edocLite);
 		for (Iterator iter = results.iterator(); iter.hasNext();) {
 			EDocLiteAssociation result = (EDocLiteAssociation) iter.next();
-			String actionsUrl = "<a href=\"EDocLite?userAction=" + WorkflowDocumentActions.ACTION_CREATE + "&edlName=" + result.getEdlName() + "\">Create Document</a>";
+			String actionsUrl = "<a href=\"EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + result.getEdlName() + "\">Create Document</a>";
 			result.setActionsUrl(actionsUrl);
 		}
 		return results;

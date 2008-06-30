@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -38,6 +39,7 @@ import edu.iu.uis.eden.engine.node.BranchPrototype;
 import edu.iu.uis.eden.engine.node.NodeType;
 import edu.iu.uis.eden.engine.node.Process;
 import edu.iu.uis.eden.engine.node.RouteNode;
+import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -99,6 +101,10 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
+        }
+        Workgroup reportingWorkgroup = documentType.getReportingWorkgroup();
+        if (reportingWorkgroup != null) {
+            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getGroupNameId().getNameId());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
             renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroupName());
@@ -280,12 +286,20 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     }
 
     private Element renderNodeElement(Element parent, RouteNode node, NodeType nodeType) {
-        Element nodeElement = renderer.renderElement(parent, nodeType.getName());
+	String nodeName = nodeType.getName();
+	// if it's a request activation node, be sure to export it as a simple node
+	if (nodeType.equals(NodeType.REQUEST_ACTIVATION)) {
+	    nodeName = NodeType.SIMPLE.getName();
+	}
+        Element nodeElement = renderer.renderElement(parent, nodeName);
         renderer.renderAttribute(nodeElement, NAME, node.getRouteNodeName());
         return nodeElement;
     }
 
-    private void exportRouteNode(Element parent, RouteNode node, boolean hasDefaultExceptionWorkgroup) {
+    /**
+     * Exists for backward compatability for nodes which don't have a content fragment.
+     */
+    private void exportRouteNodeOld(Element parent, RouteNode node, boolean hasDefaultExceptionWorkgroup) {
         NodeType nodeType = getNodeTypeForNode(node);
         Element nodeElement = renderer.renderElement(parent, nodeType.getName());
         renderer.renderAttribute(nodeElement, NAME, node.getRouteNodeName());
@@ -305,6 +319,23 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         }
     }
 
+    private void exportRouteNode(Element parent, RouteNode node, boolean hasDefaultExceptionWorkgroup) {
+	String contentFragment = node.getContentFragment();
+	if (StringUtils.isBlank(contentFragment)) {
+	    exportRouteNodeOld(parent, node, hasDefaultExceptionWorkgroup);
+	} else {
+	    try {
+		Document document = XmlHelper.buildJDocument(new StringReader(contentFragment));
+		Element rootElement = document.detachRootElement();
+		XmlHelper.propogateNamespace(rootElement, parent.getNamespace());
+		parent.addContent(rootElement);
+	    } catch (InvalidXmlException e) {
+		throw new WorkflowRuntimeException("Failed to load the content fragment.", e);
+	    }
+	}
+    }
+
+    
     private NodeType getNodeTypeForNode(RouteNode node) {
         NodeType nodeType = null;
         String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();

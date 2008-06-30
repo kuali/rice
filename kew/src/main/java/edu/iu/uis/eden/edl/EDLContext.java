@@ -34,6 +34,7 @@ public class EDLContext {
 	private Transformer transformer;
 	private RequestParser requestParser;
 	private boolean inError;
+	private UserAction userAction;
 	
 	public UserSession getUserSession() {
 		return userSession;
@@ -71,6 +72,11 @@ public class EDLContext {
 	public void setRequestParser(RequestParser requestParser) {
 		this.requestParser = requestParser;
 	}
-	
+	public UserAction getUserAction() {
+	    return this.userAction;
+	}
+	public void setUserAction(UserAction userAction) {
+	    this.userAction = userAction;
+	}	
 	
 }

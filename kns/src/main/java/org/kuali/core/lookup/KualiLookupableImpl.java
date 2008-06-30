@@ -48,7 +48,6 @@ public class KualiLookupableImpl implements Lookupable {
     public KualiLookupableImpl() {
     }
 
-
     /**
      * Sets the business object class for the lookup instance, then rows can be set for search render.
      * 
@@ -64,7 +63,23 @@ public class KualiLookupableImpl implements Lookupable {
         // next line initializes the helper to return correct values for getRow();
         getLookupableHelperService().setBusinessObjectClass(boClass);
     }
+    
+    /**
+     * Initializes the lookup with the given Map of parameters.
+     * 
+     * @param parameters
+     */
+    public void setParameters(Map parameters) {
+        getLookupableHelperService().setParameters(parameters);
+    }
 
+    /**
+     * @return Returns the parameters passed to this lookup
+     */
+    public Map getParameters() {
+        return getLookupableHelperService().getParameters();
+    }
+    
     /**
      * Constructs the list of columns for the search results. All properties for the column objects come from the DataDictionary.
      */

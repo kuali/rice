@@ -475,6 +475,43 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
+    
+    /**
+     * Returns the current node instances on the document.  If the document has active nodes, those will
+     * be returned.  Otherwise, all terminal nodes will be returned.
+     * @param routeHeaderId id of the document whose current node instances should be returned
+     * @return all current node instances of the document
+     * @throws WorkflowException if there is an error obtaining the current node instances on the document
+     * @see WorkflowUtility#getCurrentNodeInstances(Long)
+     */
+    public RouteNodeInstanceVO[] getCurrentNodeInstances(Long routeHeaderId) throws WorkflowException {
+        try {
+            return getWorkflowUtility().getCurrentNodeInstances(routeHeaderId);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    /**
+     * Returns names of all current nodes the document is currently at.  If the document has active nodes, those
+     * will be returned.  Otherwise, the document's terminal nodes will be returned.
+     *
+     * @return names of all current nodes the document is currently at.
+     * @throws WorkflowException if there is an error obtaining the current nodes on the document
+     * @see WorkflowUtility#getCurrentNodeInstances(Long)
+     */
+    public String[] getCurrentNodeNames(Long documentId) throws WorkflowException {
+        try {
+            RouteNodeInstanceVO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
+            String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
+            for (int index = 0; index < currentNodeInstances.length; index++) {
+                nodeNames[index] = currentNodeInstances[index].getName();
+            }
+            return nodeNames;
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
 
     /**
      * Re-resolves the specified role on the document, and refreshes any pending action requests.

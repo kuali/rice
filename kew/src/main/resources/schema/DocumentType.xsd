@@ -115,6 +115,14 @@
       		</documentation>
       	</annotation>
       </element>
+      
+      <element name="reportingWorkgroupName" type="c:ShortStringType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		  The workflow workgroup who's members are allowed to report against documents of this document type.
+      		</documentation>
+      	</annotation>
+      </element>
 
       <element name="defaultExceptionWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
@@ -343,6 +351,8 @@
       <enumeration value="supports_quick_initiate"/>
       <enumeration value="NOTIFY_ON_SAVE"/>
       <enumeration value="notify_on_save"/>
+      <enumeration value="USE_KEW_SUPERUSER_DOCHANDLER"/>
+      <enumeration value="use_kew_superuser_dochandler"/>
     </restriction>
   </simpleType>
 

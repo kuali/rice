@@ -180,6 +180,17 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     }
     
+    @Test public void testReportingWorkgroupName() throws Exception {
+    	testDoc("ReportingWorkgroupName", null);
+    	
+    	DocumentType documentType1 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName1");
+    	assertNotNull("Should have a reporting workgroup.", documentType1.getReportingWorkgroup());
+    	assertEquals("Should be WorkflowAdmin reporting workgroup", "WorkflowAdmin", documentType1.getReportingWorkgroup().getGroupNameId().getNameId());
+    		
+    	DocumentType documentType2 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName2");
+    	assertNull("Should not have a reporting workgroup.", documentType2.getReportingWorkgroup());
+    }
+    
     @Test public void testCurrentDocumentNotMaxVersionNumber() throws Exception {
         String fileNameToIngest = "VersionNumberCheck";
         String documentTypeName = "VersionCheckDocument";

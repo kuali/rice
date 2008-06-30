@@ -39,10 +39,7 @@ public class ValidationComponent extends SimpleWorkflowEDLConfigComponent implem
 	private EDLContext edlContext;
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
-		String action = edlContext.getRequestParser().getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
-
-
-		if (EDLXmlUtils.isValidatableAction(action)) {
+		if (edlContext.getUserAction().isValidatableAction()) {
 			try {
 				Document edlDef = KEWServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
 				List<EDLValidation> validations = parseValidations(edlDef);

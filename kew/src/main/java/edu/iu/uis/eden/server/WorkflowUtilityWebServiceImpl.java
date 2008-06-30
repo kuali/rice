@@ -399,6 +399,12 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	loadDocument(documentId);
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
     }
+    
+    public RouteNodeInstanceVO[] getCurrentNodeInstances(Long documentId) throws WorkflowException {
+	LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
+	loadDocument(documentId);
+	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId));
+    }
 
     private RouteNodeInstanceVO[] convertRouteNodeInstances(List nodeInstances) throws WorkflowException {
         RouteNodeInstanceVO[] nodeInstanceVOs = new RouteNodeInstanceVO[nodeInstances.size()];
@@ -776,7 +782,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     private DocumentRouteHeaderValue loadDocument(Long documentId) {
-    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
         return KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
     }
 

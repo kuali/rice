@@ -117,9 +117,13 @@ public class RuleResponsibility implements WorkflowPersistable {
         return null;
     }
 
+    public String getRoleAttributeName() {
+	return getRole().substring(0, getRole().indexOf("!"));
+    }
+    
     public RoleAttribute resolveRoleAttribute() throws WorkflowException {
         if (isUsingRole()) {
-            String attributeName = getRole().substring(0, getRole().indexOf("!"));
+            String attributeName = getRoleAttributeName();
             return (RoleAttribute) GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(attributeName));
         }
         return null;

@@ -28,10 +28,12 @@ import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
+import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
+import edu.iu.uis.eden.edl.UserAction;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.Utilities;
@@ -73,7 +75,8 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showContants).toString()));
 
 			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
-
+			WorkflowInfo info = new WorkflowInfo();
+			
 			boolean documentEditable = false;
 			if (document != null) {
 				List validActions = determineValidActions(document);
@@ -88,12 +91,16 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", EdenConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
 				String[] nodeNames = document.getPreviousNodeNames();
 				if (nodeNames.length > 0) {
-		            Element previousNodes = EDLXmlUtils.getOrCreateChildElement(documentState, "previousNodes", true);
-		            // don't include LAST node (where the document is currently...don't want to return to current location)
-		            for (int i = 0; i < nodeNames.length; i++) {
-		                EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames[i]);
-		            }
-		        }
+				    Element previousNodes = EDLXmlUtils.getOrCreateChildElement(documentState, "previousNodes", true);
+				    // don't include LAST node (where the document is currently...don't want to return to current location)
+				    for (int i = 0; i < nodeNames.length; i++) {
+					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames[i]);
+				    }
+				}
+				String[] currentNodeNames = info.getCurrentNodeNames(document.getRouteHeaderId());
+				for (String currentNodeName : currentNodeNames) {
+				    EDLXmlUtils.createTextElementOnParent(documentState, "currentNodeName", currentNodeName);
+				}
 
 			}
 
@@ -118,61 +125,60 @@ public class WorkflowDocumentState implements EDLModelComponent {
 	public static List determineValidActions(WorkflowDocument wfdoc) throws WorkflowException {
 		if (wfdoc == null) {
 			List l = new ArrayList();
-			l.add(WorkflowDocumentActions.ACTION_CREATE);
+			l.add(UserAction.ACTION_CREATE);
 			return l;
 		}
 		List list = new ArrayList();
 		if (wfdoc.isAcknowledgeRequested()) {
-			list.add(WorkflowDocumentActions.ACTION_ACKNOWLEDGE);
+			list.add(UserAction.ACTION_ACKNOWLEDGE);
 		}
 		if (wfdoc.isApprovalRequested()) {
-			list.add(WorkflowDocumentActions.ACTION_APPROVE);
+			list.add(UserAction.ACTION_APPROVE);
 			if (wfdoc.isBlanketApproveCapable()) {
-				list.add(WorkflowDocumentActions.ACTION_BLANKETAPPROVE);
+				list.add(UserAction.ACTION_BLANKETAPPROVE);
 			}
-			list.add(WorkflowDocumentActions.ACTION_DISAPPROVE);
+			list.add(UserAction.ACTION_DISAPPROVE);
 	 	 	//should invoke WorkflowDocument.saveRoutingData(...).
-			list.add(WorkflowDocumentActions.ACTION_SAVE);
+			list.add(UserAction.ACTION_SAVE);
 			if (wfdoc.getPreviousNodeNames().length > 0) {
-				list.add(WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS);
+				list.add(UserAction.ACTION_RETURN_TO_PREVIOUS);
 			}
 		}
 		if (wfdoc.isCompletionRequested()) {
-			list.add(WorkflowDocumentActions.ACTION_COMPLETE);
+			list.add(UserAction.ACTION_COMPLETE);
 			if (wfdoc.isBlanketApproveCapable()) {// duplicating this because
 													// it determines display
 													// order. this is a
 													// limitation of the style
 													// sheet but most easily
 													// corrected here for now...
-				list.add(WorkflowDocumentActions.ACTION_BLANKETAPPROVE);
+				list.add(UserAction.ACTION_BLANKETAPPROVE);
 			}
-			list.add(WorkflowDocumentActions.ACTION_CANCEL);
+			list.add(UserAction.ACTION_CANCEL);
 		}
 		if (wfdoc.isFYIRequested()) {
-			list.add(WorkflowDocumentActions.ACTION_FYI);
+			list.add(UserAction.ACTION_FYI);
 		}
 		if (wfdoc.isRouteCapable()) {
-			list.add(WorkflowDocumentActions.ACTION_ROUTE);
+			list.add(UserAction.ACTION_ROUTE);
 			if (wfdoc.isBlanketApproveCapable()) {// duplicating this because
 													// it determines display
 													// order. this is a
 													// limitation of the style
 													// sheet but most easily
 													// corrected here for now...
-				list.add(WorkflowDocumentActions.ACTION_BLANKETAPPROVE);
+				list.add(UserAction.ACTION_BLANKETAPPROVE);
 			}
-			list.add(WorkflowDocumentActions.ACTION_SAVE);
-			list.add(WorkflowDocumentActions.ACTION_CANCEL);
+			list.add(UserAction.ACTION_SAVE);
+			list.add(UserAction.ACTION_CANCEL);
 		}
 		return list;
 	}
 
-	private static final String[] EDITABLE_ACTIONS = new String[] { WorkflowDocumentActions.ACTION_CREATE, WorkflowDocumentActions.ACTION_ROUTE, WorkflowDocumentActions.ACTION_APPROVE, WorkflowDocumentActions.ACTION_DISAPPROVE,
-			WorkflowDocumentActions.ACTION_COMPLETE };
+	
 
 	public static boolean isEditable(List actions) {
-		return listContainsItems(actions, EDITABLE_ACTIONS);
+		return listContainsItems(actions, UserAction.EDITABLE_ACTIONS);
 	}
 
     public static void addActions(Document dom, Element documentState, List actions) {
@@ -197,15 +203,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
     }
 
 
-    public static final String[] ANNOTATABLE_ACTIONS = new String[] {
-    	WorkflowDocumentActions.ACTION_APPROVE,
-    	WorkflowDocumentActions.ACTION_ACKNOWLEDGE,
-    	WorkflowDocumentActions.ACTION_COMPLETE,
-    	WorkflowDocumentActions.ACTION_FYI,
-    	WorkflowDocumentActions.ACTION_DISAPPROVE,
-    	WorkflowDocumentActions.ACTION_CANCEL,
-    	WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS
-    };
+    
 
     public static boolean listContainsItems(List list, Object[] items) {
         for (int i = 0; i < items.length; i++) {
@@ -224,7 +222,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
      * @return whether to show the annotation text box
      */
     public static boolean isAnnotatable(List actions) {
-        return listContainsItems(actions, ANNOTATABLE_ACTIONS);
+        return listContainsItems(actions, UserAction.ANNOTATABLE_ACTIONS);
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
@@ -234,17 +235,37 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 	
 	protected void installAlternateEndpoint(ServiceInfo serviceInfo) {
-	    List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>)Core.getCurrentContextConfig().getObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
-	    if (alternateEndpoints != null) {
-	        for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
-	            if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {
-	                LOG.info("Found an alternate url for endpoint: " + serviceInfo.getEndpointUrl() + " -> instead using: " + alternateEndpoint.getActualEndpoint());
-	                serviceInfo.setEndpointAlternateUrl(alternateEndpoint.getActualEndpoint());
-	                break;
-	            }
-	        }
+	List<AlternateEndpointLocation> alternateEndpointLocations = (List<AlternateEndpointLocation>) Core
+		.getCurrentContextConfig().getObject(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS);
+	if (alternateEndpointLocations != null) {
+	    for (AlternateEndpointLocation alternateEndpointLocation : alternateEndpointLocations) {
+		if (Pattern.matches(".*" + alternateEndpointLocation.getEndpointHostReplacementPattern() + ".*", serviceInfo
+			.getEndpointUrl())) {
+		    Pattern myPattern = Pattern.compile(alternateEndpointLocation.getEndpointHostReplacementPattern());
+		    Matcher myMatcher = myPattern.matcher(serviceInfo.getEndpointUrl());
+		    String alternateEndpoint = myMatcher.replaceFirst(alternateEndpointLocation
+			    .getEndpointHostReplacementValue());
+		    LOG.info("Found an alternate url host value ("
+			    + alternateEndpointLocation.getEndpointHostReplacementValue() + ") for endpoint: "
+			    + serviceInfo.getEndpointUrl() + " -> instead using: " + alternateEndpoint);
+		    serviceInfo.setEndpointAlternateUrl(alternateEndpoint);
+		    break;
+		}
 	    }
 	}
+	List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>) Core.getCurrentContextConfig().getObject(
+		KSBConstants.KSB_ALTERNATE_ENDPOINTS);
+	if (alternateEndpoints != null) {
+	    for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
+		if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {
+		    LOG.info("Found an alternate url for endpoint: " + serviceInfo.getEndpointUrl() + " -> instead using: "
+			    + alternateEndpoint.getActualEndpoint());
+		    serviceInfo.setEndpointAlternateUrl(alternateEndpoint.getActualEndpoint());
+		    break;
+		}
+	    }
+	}
+    }
 
 
 	public boolean isStarted() {

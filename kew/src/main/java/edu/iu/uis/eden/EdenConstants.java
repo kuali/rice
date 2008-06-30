@@ -217,6 +217,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String INITIATOR_MUST_SAVE_POLICY = DocumentTypePolicyEnum.INITIATOR_MUST_SAVE.getName();
     public static final String INITIATOR_MUST_CANCEL_POLICY = DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL.getName();
     public static final String INITIATOR_MUST_BLANKET_APPROVE_POLICY = DocumentTypePolicyEnum.INITIATOR_MUST_BLANKET_APPROVE.getName();
+    public static final String USE_KEW_SUPERUSER_DOCHANDLER = DocumentTypePolicyEnum.USE_KEW_SUPERUSER_DOCHANDLER.getName();
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";

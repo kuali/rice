@@ -39,9 +39,9 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent implements EDLModelComponent  {
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
-	    String action = edlContext.getRequestParser().getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
+	    //String action = edlContext.getRequestParser().getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
 	    // we don't want to clear the attribute content if they are just opening up the document to view it!
-	    if (!StringUtils.isEmpty(action)) {
+	    if (!edlContext.getUserAction().isLoadAction()) {
 		RequestParser requestParser = edlContext.getRequestParser();
 		try {
 			WorkflowDocument document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
@@ -72,7 +72,7 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 					}
 				}
 				// validate if they are taking an action on the document (i.e. it's annotatable)
-				if (EDLXmlUtils.isValidatableAction(action)) {
+				if (edlContext.getUserAction().isValidatableAction()) {
 					WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
 					if (errors.length > 0) {
 						edlContext.setInError(true);

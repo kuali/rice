@@ -294,7 +294,8 @@ public class RuleXmlParser implements XmlConstants {
         Iterator it = rules.iterator();
         while (it.hasNext()) {
             RuleBaseValues r = (RuleBaseValues) it.next();
-            if (Utilities.equals(docTypeName, r.getDocTypeName()) &&
+            if (Utilities.equals(rule.getActiveInd(), r.getActiveInd()) &&
+        	Utilities.equals(docTypeName, r.getDocTypeName()) &&
                     Utilities.equals(ruleTemplateName, r.getRuleTemplateName()) &&
                     Utilities.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
                     Utilities.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&

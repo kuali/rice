@@ -50,6 +50,7 @@ public class KSBConstants extends JSTLConstants {
 
     public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
 
+    public static final String KSB_ALLOW_SELF_SIGNED_SSL = "rice.ksb.config.allowSelfSignedSSL";
     public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";
     public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "ksbMessage.nonTransactional.datasource";
     public static final String KSB_REGISTRY_DATASOURCE = "ksbRegistry.datasource";
@@ -58,6 +59,7 @@ public class KSBConstants extends JSTLConstants {
     public static final String KSB_REGISTRY_DATASOURCE_JNDI = "ksbRegistry.datasource.jndi.location";
     public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
     public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
+    public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";

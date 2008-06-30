@@ -73,6 +73,7 @@ public interface XmlConstants {
     public static final String SUPER_USER_WORKGROUP_NAME = "superUserWorkgroupName";
     public static final String BLANKET_APPROVE_WORKGROUP_NAME = "blanketApproveWorkgroupName";
     public static final String BLANKET_APPROVE_POLICY = "blanketApprovePolicy";
+    public static final String REPORTING_WORKGROUP_NAME = "reportingWorkgroupName";
     public static final String DEFAULT_EXCEPTION_WORKGROUP_NAME = "defaultExceptionWorkgroupName";
     public static final String DOC_HANDLER = "docHandler";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";

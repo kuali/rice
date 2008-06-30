@@ -86,5 +86,50 @@ public interface WorkflowDocumentActions extends Remote {
      * Revokes AdHoc request(s) according to the given AppSpecificRevokeVO which is passed in.
      */
     public RouteHeaderVO revokeAdHocRequests(UserIdVO userId, RouteHeaderVO routeHeader, AdHocRevokeVO revoke, String annotation) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.1.3
+     */
+    public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation) throws RemoteException, WorkflowException;
 
+    /**
+     * @since 0.9.1.3
+     */
+    public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation) throws RemoteException, WorkflowException;
+
+    /**
+     * @since 0.9.1.3
+     */
+    public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.3
+     */
+    public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.3
+     */
+    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeader, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.3
+     */
+    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeader, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+
+    /**
+     * @since 0.9.3
+     */
+    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeader, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.3
+     */
+    public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+    
+    /**
+     * @since 0.9.3
+     */
+    public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException;
+    
 }

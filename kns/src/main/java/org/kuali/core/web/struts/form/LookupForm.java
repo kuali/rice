@@ -63,6 +63,19 @@ public class LookupForm extends KualiForm {
      */
     private boolean hasReturnableRow;
     
+    
+    // used for internal purposes in populate
+    private Map requestParameters;
+    
+    /**
+     * Stores the incoming request parameters so that they can be passed to the Lookupable implementation.
+     */
+    @Override
+    public void postprocessRequestParameters(Map requestParameters) {
+        this.requestParameters = requestParameters;
+        super.postprocessRequestParameters(requestParameters);
+    }
+
     /**
      * Picks out business object name from the request to get retrieve a lookupable and set properties.
      */
@@ -97,6 +110,13 @@ public class LookupForm extends KualiForm {
                 throw new RuntimeException("Lookup impl not found for lookup impl name " + getLookupableImplServiceName());
             }
 
+			// set parameters on lookupable
+            localLookupable.setParameters(requestParameters);
+            requestParameters = null;
+            
+            if (request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
+                setLookupableImplServiceName(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
+            }
 
             if (request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
                 setLookupableImplServiceName(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));

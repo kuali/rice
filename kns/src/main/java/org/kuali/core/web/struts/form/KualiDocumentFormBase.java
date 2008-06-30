@@ -37,6 +37,7 @@ import org.kuali.core.document.Document;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
+import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.format.NoOpStringFormatter;
 import org.kuali.core.web.format.TimestampAMPMFormatter;
@@ -466,6 +467,21 @@ public abstract class KualiDocumentFormBase extends KualiForm {
             return getWorkflowDocument().getInitiatorNetworkId().equalsIgnoreCase(GlobalVariables.getUserSession().getNetworkId());
         }
         return false;
+    }
+
+    public UniversalUser getInitiator() throws UserNotFoundException {
+	String networkId = getWorkflowDocument().getInitiatorNetworkId();
+	if (!StringUtils.isBlank(networkId)) {
+	    try {
+		UniversalUser user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(getWorkflowDocument().getInitiatorNetworkId());
+		if (user != null) {
+		    return user;
+		}
+	    } catch (UserNotFoundException e) {}
+	}
+	// the following is for backward compatibility with the way that page.tag used to work where it was checking against the workflow uuId
+	String uuId = getWorkflowDocument().getRouteHeader().getInitiator().getUuId();
+	return KNSServiceLocator.getUniversalUserService().getUniversalUser(uuId);
     }
 
     /**

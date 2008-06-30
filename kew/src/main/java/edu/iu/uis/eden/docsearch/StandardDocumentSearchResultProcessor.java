@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Column;
@@ -245,13 +246,18 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	private List<Field> getFields(DocSearchCriteriaVO criteria) {
 	    return getFields(criteria, null);
 	}
+	
+    private DocumentType getDocumentType(String documentTypeName) {
+	DocumentType documentType = null;
+	if (StringUtils.isNotBlank(documentTypeName)) {
+	    documentType = ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+	}
+	return documentType;
+    }
 
     private List<Field> getFields(DocSearchCriteriaVO criteria, List<String> searchAttributeFieldNames) {
 		List<Field> returnFields = new ArrayList<Field>();
-		DocumentType documentType = null;
-		if (StringUtils.isNotBlank(criteria.getDocTypeFullName())) {
-			documentType = ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(criteria.getDocTypeFullName());
-		}
+		DocumentType documentType = getDocumentType(criteria.getDocTypeFullName());
 		if (documentType != null) {
             List<Field> allFields = new ArrayList<Field>();
             for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
@@ -302,7 +308,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		SearchableAttributeValue attributeValue = null;
 
 		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(columnKeyName)) {
-			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docSearchVO.getRouteHeaderId().toString(), docSearchVO.isUsingSuperUserSearch());
+			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docSearchVO.getRouteHeaderId().toString(), docSearchVO.isUsingSuperUserSearch(), docSearchVO.getDocTypeName());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(columnKeyName)) {
 			fieldValue = this.getRouteLogFieldDisplayValue(docSearchVO.getRouteHeaderId().toString());
@@ -359,8 +365,8 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		return "<a href=\"RouteLog.do?routeHeaderId=" + routeHeaderId + "\"" + linkPopup + "><img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/></a>";
 	}
 
-	protected String getRouteHeaderIdFieldDisplayValue(String routeHeaderId,boolean isSuperUserSearch) {
-		return this.getValueEncodedWithDocHandlerUrl(routeHeaderId, routeHeaderId, isSuperUserSearch);
+	protected String getRouteHeaderIdFieldDisplayValue(String routeHeaderId,boolean isSuperUserSearch, String documentTypeName) {
+		return this.getValueEncodedWithDocHandlerUrl(routeHeaderId, routeHeaderId, isSuperUserSearch, documentTypeName);
 	}
 
 	protected String getInitiatorFieldDisplayValue(String fieldLinkTextValue, String initiatorWorkflowId) {
@@ -378,8 +384,8 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	 *        see {@link edu.iu.uis.eden.docsearch.DocSearchVO#isUsingSuperUserSearch()}
 	 * @return the fully encoded html for a link using the text from the input parameter 'value'
 	 */
-	protected String getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch) {
-		return getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
+	protected String getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch, String documentTypeName) {
+		return getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch,documentTypeName) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
 	}
 
 	private Map<String,Object> getSortValuesMap(DocSearchVO docSearchVO) {
@@ -494,15 +500,19 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		return (EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(applicationConstant));
 	}
 
-	private String getDocHandlerUrlPrefix(String routeHeaderId,boolean superUserSearch) {
+	private String getDocHandlerUrlPrefix(String routeHeaderId,boolean superUserSearch,String documentTypeName) {
 		String linkPopup = "";
 		if (this.isDocumentHandlerPopup()) {
 			linkPopup = " target=\"_blank\"";
 		}
 		if (superUserSearch) {
-			return "<a href=\"SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId=" + routeHeaderId + "\"" + linkPopup + " >";
+		    String url = "<a href=\"SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId=" + routeHeaderId + "\"" + linkPopup + " >";
+		    if (!getDocumentType(documentTypeName).getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
+			url = "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.SUPERUSER_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
+		    }
+		    return url;
 		} else {
-			return "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?command=displayDocSearchView&docId=" + routeHeaderId + "\"" + linkPopup + ">";
+			return "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
 		}
 	}
 

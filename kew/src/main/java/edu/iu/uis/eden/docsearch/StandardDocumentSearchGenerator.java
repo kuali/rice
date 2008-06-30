@@ -718,9 +718,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             whereSQL.append(docTypeFullNameSql);
         }
 
-        if (!"".equals(getDocRouteNodeSql(criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length())))) {
-            whereSQL.append(getDocRouteNodeSql(criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length())));
+        String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
+        if (!"".equals(docRouteNodeSql)) {
+            whereSQL.append(docRouteNodeSql);
             fromSQL.append(", EN_RTE_NODE_INSTN_T ");
+            fromSQL.append(", EN_RTE_NODE_T ");
         }
 
         filterOutNonQueryAttributes();
@@ -968,7 +970,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else if ("after".equalsIgnoreCase(docRouteLevelLogic.trim())) {
                 operator = " > ";
             }
-            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 and EN_RTE_NODE_INSTN_T.RTE_NODE_ID " + operator + "'" + docRouteLevel.trim() + "' ";
+//            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 and EN_RTE_NODE_INSTN_T.RTE_NODE_ID " + operator + "'" + docRouteLevel.trim() + "' ";
+            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 and EN_RTE_NODE_T.RTE_NODE_NM " + operator + "'" + docRouteLevel.trim() + "' ";
         }
         return returnSql;
     }

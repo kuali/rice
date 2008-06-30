@@ -48,10 +48,10 @@ public class KEWHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 		if (isRegisterTraceInterceptor()) {
 			proxyFactory.addAdvice(new RemoteInvocationTraceInterceptor(getExporterName()));
 		}
-		
-		Object service = BAMServerProxy.wrap(getService(), this.serviceInfo);
+		Object service = ContextClassLoaderProxy.wrap(getService(),getService().getClass().getClassLoader());
+		service = BAMServerProxy.wrap(service, this.serviceInfo);
 		proxyFactory.setTarget(service);
-		return proxyFactory.getProxy();
+		return proxyFactory.getProxy(service.getClass().getClassLoader());
 	}
 
 	@Override

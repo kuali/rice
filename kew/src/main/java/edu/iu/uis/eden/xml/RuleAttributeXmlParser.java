@@ -62,6 +62,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
 	private static final String ROUTING_CONFIG = "routingConfig";
 	private static final String SEARCHING_CONFIG = "searchingConfig";
 	private static final String SEARCH_RESULT_CONFIG = "searchResultConfig";
+	private static final String CONFIG = "configuration";
 	
 	public List parseRuleAttributes(InputStream input) throws IOException, InvalidXmlException {
 		try {
@@ -122,7 +123,8 @@ public class RuleAttributeXmlParser implements XmlConstants {
 			} else if(TYPE.equals(childNode.getNodeName())){
 				type = childNode.getFirstChild().getNodeValue();
 			} else if(ROUTING_CONFIG.equals(childNode.getNodeName()) || SEARCHING_CONFIG.equals(childNode.getNodeName()) || 
-					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName())){
+					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) ||
+					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
 			} else if (MESSAGE_ENTITY.equals(childNode.getNodeName())) {
 				messageEntity = childNode.getFirstChild().getNodeValue();

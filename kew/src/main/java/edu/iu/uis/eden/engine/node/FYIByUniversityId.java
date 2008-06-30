@@ -30,12 +30,15 @@ import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routeheader.StandardDocumentContent;
+import edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute;
 import edu.iu.uis.eden.user.EmplId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A node which will generate an FYI request to a university ID specified in the document content.
+ *
+ * @deprecated Use {@link UniversityIdRoleAttribute} instead
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

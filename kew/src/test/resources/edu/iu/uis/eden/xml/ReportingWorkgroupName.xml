@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>ReportingWorkgroupName1</name>
+      <label>ReportingWorkgroupName1</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApprovePolicy>ANY</blanketApprovePolicy>
+      <reportingWorkgroupName>WorkflowAdmin</reportingWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>ReportingWorkgroupName2</name>
+      <label>ReportingWorkgroupName2</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApprovePolicy>ANY</blanketApprovePolicy>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>

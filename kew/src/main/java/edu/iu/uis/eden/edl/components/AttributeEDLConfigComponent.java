@@ -43,9 +43,8 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 
 	public List getMatchingParams(Element originalConfigElement, RequestParser requestParser, EDLContext edlContext) {
 		List matchingParams = super.getMatchingParams(originalConfigElement, requestParser, edlContext);
-		String action = requestParser.getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
 		// we don't want to clear the attribute content if they are just opening up the document to view it!
-		if (!StringUtils.isEmpty(action)) {
+		if (!edlContext.getUserAction().isLoadAction()) {
 		    String attributeName = originalConfigElement.getAttribute("attributeName");
 		    String attributePropertyName = originalConfigElement.getAttribute("name");
 
@@ -68,7 +67,7 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 
 		    try {
 			// validate if they are taking an action on the document (i.e. it's annotatable)
-			if (EDLXmlUtils.isValidatableAction(action)) {
+			if (edlContext.getUserAction().isValidatableAction()) {
 			    WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
 			    if (errors.length > 0) {
 				getEdlContext().setInError(true);

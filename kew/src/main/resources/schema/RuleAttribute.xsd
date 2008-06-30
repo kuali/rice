@@ -111,7 +111,7 @@
       			<element name="fieldDef" minOccurs="1" maxOccurs="unbounded">
       					<annotation>
       						<documentation>
-      						 Define a single field in th rule configuration.
+      						 Define a single field in the rule configuration.
       						</documentation>
       					</annotation>
       				<complexType>
@@ -325,6 +325,21 @@
 	      	<attribute name="overrideSearchableAttributes" type="boolean" default="true" />
       	</complexType>
       </element>
+      
+      <element name="configuration" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		  Provides for an arbitrary configuration holder inside of an attribute.  There is no defined schema for this
+      		  section and it's contents are interpreted by the attribute implementation when applicable.
+      		</documentation>
+      	</annotation>
+      	<complexType>
+      	  <sequence>
+            <any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+	      </sequence>
+    	</complexType>
+      </element>
+      
     </all>
   </complexType>
 

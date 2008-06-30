@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">	
+		<documentType>
+			<name>NetworkIdRoleAttributeTest</name>
+			<description>NetworkIdRoleAttributeTest</description>
+			<label>NetworkIdRoleAttributeTest</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="NetworkId" />
+					<requests name="NetworkId" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<activationType>P</activationType>
+				</start>
+				<requests name="NetworkId">
+					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<activationType>P</activationType>
+					<ruleTemplate>NetworkIdRoleTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>NetworkIdRoleAttribute</name>
+			<className>edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute</className>
+			<label>NetworkIdRoleAttribute</label>
+			<description>NetworkIdRoleAttribute</description>
+			<type>RuleXmlAttribute</type>
+			<configuration>
+				<xmlElementLabel>thisIdRocks</xmlElementLabel>
+				<roleNameLabel>mylabel</roleNameLabel>
+			</configuration>
+		</ruleAttribute>
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>NetworkIdRoleTemplate</name>
+			<description>Workflow Document Template</description>
+			<attributes>
+				<attribute>
+					<name>NetworkIdRoleAttribute</name>
+					<required>true</required>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+	</ruleTemplates>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+	  	<rule>
+			<documentType>NetworkIdRoleAttributeTest</documentType>
+			<ruleTemplate>NetworkIdRoleTemplate</ruleTemplate>
+			<description>network id routing test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<role>edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute!networkId</role>
+					<approvePolicy>F</approvePolicy>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

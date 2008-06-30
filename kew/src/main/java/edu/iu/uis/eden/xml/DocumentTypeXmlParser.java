@@ -321,6 +321,30 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else if (!StringUtils.isBlank(blanketApprovePolicy)){
         	documentType.setBlanketApprovePolicy(blanketApprovePolicy);
         }
+        
+        try {
+            if (((Boolean) xpath.evaluate("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
+                String wg;
+                try {
+                    wg = (String) xpath.evaluate("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
+                } catch (XPathExpressionException xpee) {
+                    LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
+                    throw xpee;
+                }
+                // allow core config parameter replacement in documenttype workgroups
+                wg = Utilities.substituteConfigParameters(wg);
+                Workgroup reportingWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(wg), true);
+                if (reportingWorkgroup == null) {
+                    throw new InvalidWorkgroupException("Reporting workgroup could not be found: " + wg);
+                }
+                documentType.setReportingWorkgroup(reportingWorkgroup);
+            }
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
+            throw xpee;
+        }
+        
+        
         try {
             if (((Boolean) xpath.evaluate("./routingVersion", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 String version;

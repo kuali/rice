@@ -230,6 +230,10 @@
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
+				<policy>
+					<name>USE_KEW_SUPERUSER_DOCHANDLER</name>
+					<value>false</value>
+				</policy>
 			</policies>
 			<attributes>
 				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
@@ -267,8 +271,8 @@
 		</documentType>
 		<documentType>
 			<name>SearchDocType2</name>
-			<description>SearchDocType3</description>
-			<label>SearchDocType3</label>
+			<description>SearchDocType2</description>
+			<label>SearchDocType2</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -315,8 +319,8 @@
 		</documentType>
 		<documentType>
 			<name>SearchDocType_DefaultCustomProcessor</name>
-			<description>SearchDocType2</description>
-			<label>SearchDocType2</label>
+			<description>SearchDocType_DefaultCustomProcessor</description>
+			<label>SearchDocType_DefaultCustomProcessor</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -516,8 +520,8 @@
 		</documentType>
 		<documentType>
 			<name>SearchDocType_StandardCustomProcessor</name>
-			<description>SearchDocType_AllCustomProcessor</description>
-			<label>SearchDocType_AllCustomProcessor</label>
+			<description>SearchDocType_StandardCustomProcessor</description>
+			<label>SearchDocType_StandardCustomProcessor</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -564,8 +568,8 @@
 		</documentType>
 		<documentType>
 			<name>SearchDocType_SearchAttCustomProcessor</name>
-			<description>SearchDocType_AllCustomProcessor</description>
-			<label>SearchDocType_AllCustomProcessor</label>
+			<description>SearchDocType_SearchAttCustomProcessor</description>
+			<label>SearchDocType_SearchAttCustomProcessor</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -612,8 +616,8 @@
 		</documentType>
 		<documentType>
 			<name>SearchDocType_NormalCustomProcessor</name>
-			<description>SearchDocType_AllCustomProcessor</description>
-			<label>SearchDocType_AllCustomProcessor</label>
+			<description>SearchDocType_NormalCustomProcessor</description>
+			<label>SearchDocType_NormalCustomProcessor</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>

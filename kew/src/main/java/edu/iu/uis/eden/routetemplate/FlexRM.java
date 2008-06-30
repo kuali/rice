@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,6 @@ import org.apache.log4j.Logger;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -39,8 +39,8 @@ import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
-import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.RoleRecipient;
@@ -274,6 +274,7 @@ public class FlexRM {
 
 	String roleName = resp.getResolvedRoleName();
 	RoleAttribute roleAttribute = resp.resolveRoleAttribute();
+	setRuleAttribute(roleAttribute, rule, resp.getRoleAttributeName());
 	List<String> qualifiedRoleNames = new ArrayList<String>();
 	if (parentRequest != null && parentRequest.getQualifiedRoleName() != null) {
 	    qualifiedRoleNames.add(parentRequest.getQualifiedRoleName());
@@ -306,6 +307,37 @@ public class FlexRM {
 	    }
 	}
     }
+    
+    /**
+	 * Determines if the attribute has a setRuleAttribute method and then sets the value appropriately if it does.
+	 */
+	private void setRuleAttribute(RoleAttribute roleAttribute, RuleBaseValues rule, String roleAttributeName) {
+	    // look for a setRuleAttribute method on the RoleAttribute
+	    Method setRuleAttributeMethod = null;
+	    try {
+		setRuleAttributeMethod = roleAttribute.getClass().getMethod("setRuleAttribute", RuleAttribute.class);
+	    } catch (NoSuchMethodException e) {}
+	    if (setRuleAttributeMethod == null) {
+		return;
+	    }
+	    // find the RuleAttribute by looking through the RuleTemplate
+	    RuleTemplate ruleTemplate = rule.getRuleTemplate();
+	    if (ruleTemplate != null) {
+		for (Iterator iterator = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator.hasNext();) {
+		    RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator.next();
+		    RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+		    if (ruleAttribute.getClassName().equals(roleAttributeName)) {
+			// this is our RuleAttribute!
+			try {
+			    setRuleAttributeMethod.invoke(roleAttribute, ruleAttribute);
+			    break;
+			} catch (Exception e) {
+			    throw new WorkflowRuntimeException("Failed to set RuleAttribute on our RoleAttribute!", e);
+			}
+		    }
+		} 
+	    }
+	}
 
     /**
      * Generates action requests for a non-role responsibility, either a user or workgroup

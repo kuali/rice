@@ -57,7 +57,7 @@
 		<condition property="maven.test.name.prop" value="test" else="property.name.that.means.nothing">
 			<isset property="maven.test.name"/>
 		</condition>
-		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location} -D${maven.test.name.prop}=${maven.test.name}"/>
+		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location} -D${maven.test.name.prop}=${maven.test.name} -DfailIfNoTests=false"/>
 		<mkdir dir="${junit.report.dir}"/>
 		<junitreport todir="${junit.report.dir}">
 			<fileset dir="${basedir}">
@@ -249,6 +249,7 @@
 		<attribute name="failonerror" default="true"/>
 		<sequential>
 			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="@{failonerror}">
+				<jvmarg line="-Xmx512m -XX:MaxPermSize=128m"/>
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home.directory}" />

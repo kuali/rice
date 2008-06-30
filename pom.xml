@@ -153,6 +153,15 @@
 			</build>
 		</profile>
 	</profiles>
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
+	</build>
 	<modules>
 		<module>core</module>
 		<module>shared</module>
@@ -586,7 +595,7 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/rice/docs/0.9.3-SNAPSHOT/site</url>
+			<url>dav:https://www.kuali.org:8443/rice/docs/0.9.3-SNAPSHOT/site</url>
 		</site>
 	</distributionManagement>
 </project>

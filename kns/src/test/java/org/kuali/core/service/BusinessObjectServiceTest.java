@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
+import org.kuali.rice.kns.test.document.bo.Account;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
 import edu.sampleu.travel.bo.TravelAccount;
@@ -45,24 +46,24 @@ public class BusinessObjectServiceTest extends TestBase {
     public void testSave() throws Exception {
         BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
         
-        FiscalOfficer fo = new FiscalOfficer();
+        AccountManager am = new AccountManager();
         fo.setUserName("bhutchin");
-        List<TravelAccount> accounts = new ArrayList<TravelAccount>();
-        TravelAccount account1 = new TravelAccount();
+        List<Account> accounts = new ArrayList<Account>();
+        Account account1 = new Account();
         account1.setNumber("1");
         account1.setName("account 1");
-        account1.setFiscalOfficer(fo);
+        account1.setAccountManager(am);
         accounts.add(account1);
 
-        TravelAccount account2 = new TravelAccount();
+        Account account2 = new Account();
         account2.setNumber("2");
         account2.setName("account 2");
-        account2.setFiscalOfficer(fo);
+        account2.setAccountManager(am);
 
         accounts.add(account2);
-        fo.setAccounts(accounts);
+        am.setAccounts(accounts);
 
-        businessObjectService.save(fo);
+        businessObjectService.save(am);
     }
 
 }

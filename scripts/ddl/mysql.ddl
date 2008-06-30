@@ -3,6 +3,16 @@ CREATE TABLE FP_DOC_TYPE_ATTR_ID_SEQ (
   PRIMARY KEY (a)
 ) AUTO_INCREMENT=1000, ENGINE=MyISAM
 ;
+CREATE TABLE LOCK_ID_SEQ (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
+CREATE TABLE FP_DOC_TYPE_ATTR_ID_SEQ (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
 CREATE TABLE seq_kim_attribute_types_id (
   a INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (a)
@@ -510,6 +520,45 @@ create table TRV_ACCT_FO (acct_fo_id bigint not null, OBJ_ID varchar(255), VER_N
 create table TRV_ACCT_TYPE (acct_type varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, acct_type_name varchar(255), primary key (acct_type)) ;
 create table TRV_DOC_2 (FDOC_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, dest varchar(255), org varchar(255), request_trav varchar(255), traveler varchar(255), primary key (FDOC_NBR)) ;
 create table USER_CHANNEL_SUBSCRIPTIONS (ID bigint not null, USER_ID varchar(255) not null, CHANNEL_ID bigint, primary key (ID)) ;
+
+CREATE TABLE KNS_PESSIMISTIC_LOCK_T (
+        LOCK_ID                        bigint NOT NULL, 
+        OBJ_ID                         VARCHAR(36) NOT NULL,
+        VER_NBR                        bigint NOT NULL,
+        LOCK_DESCRIPTOR                VARCHAR(4000),
+        FDOC_NBR                       VARCHAR(14) NOT NULL,             
+        LOCK_GENERATED_TS              datetime NOT NULL,
+        PERSON_UNVL_ID                 VARCHAR(10) NOT NULL,
+        PRIMARY KEY (LOCK_ID)
+)
+;
+CREATE TABLE FP_MAINT_DOC_ATTACHMENT_T (
+        FDOC_NBR                       VARCHAR(14) NOT NULL,
+        ATTACHMENT                     BLOB NOT NULL,
+        FILE_NAME                      VARCHAR(150),
+        CONTENT_TYPE                   VARCHAR(50),
+        OBJ_ID                         VARCHAR(36) NOT NULL,
+        VER_NBR                        bigint NOT NULL, 
+        PRIMARY KEY (FDOC_NBR)
+)
+;
+CREATE TABLE FP_DOC_TYPE_ATTR_T (
+        ID                             bigint NOT NULL,
+        OBJ_ID                         VARCHAR(36) NOT NULL,
+        VER_NBR                        bigint DEFAULT 1 NOT NULL,
+        ACTIVE_IND                     VARCHAR(1) NOT NULL,
+        DOC_TYP_ATTR_CD                VARCHAR(100) NOT NULL,
+        DOC_TYP_ATTR_VAL               VARCHAR(400),
+        DOC_TYP_ATTR_LBL               VARCHAR(400),
+        FDOC_TYP_CD                    VARCHAR(4) NOT NULL,
+        PRIMARY KEY (ID)
+)
+;
+
+
+-- Bootstrap Data
+
+
 
 INSERT INTO FP_DOC_GROUP_T (FDOC_GRP_CD, OBJ_ID, VER_NBR, FDOC_GRP_NM, FDOC_CLASS_CD) VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1, 'Kuali Rice', null)
 ;
@@ -1185,6 +1234,36 @@ INSERT INTO KIM_ROLES_GROUPS_T (ROLE_ID, GROUP_ID) VALUES (191, 302);
 
 
 commit
+;
+
+
+
+---- FP_DOC_HEADER_T ADJUSTMENTS ----
+alter table FP_DOC_HEADER_T drop column FDOC_STATUS_CD
+;
+alter table FP_DOC_HEADER_T drop column FDOC_TOTAL_AMT
+;
+alter table FP_DOC_HEADER_T drop column FDOC_IN_ERR_NBR
+;
+alter table FP_DOC_HEADER_T drop column TEMP_DOC_FNL_DT
+;
+---- FP_DOC_TYPE_T ADJUSTMENTS ----
+alter table FP_DOC_TYPE_T drop column FDOC_GRP_CD
+;
+alter table FP_DOC_TYPE_T drop column FIN_ELIM_ELGBL_CD
+;
+alter table FP_DOC_TYPE_T drop column FDOC_RTNG_RULE_CD
+;
+alter table FP_DOC_TYPE_T drop column FDOC_AUTOAPRV_DAYS
+;
+alter table FP_DOC_TYPE_T drop column FDOC_BALANCED_CD
+;
+alter table FP_DOC_TYPE_T drop column TRN_SCRBBR_OFST_GEN_IND
+;
+---- KNS TABLE REMOVALS ----
+drop table FP_DOC_GROUP_T
+;
+drop table FP_DOC_STATUS_T
 ;
 
 

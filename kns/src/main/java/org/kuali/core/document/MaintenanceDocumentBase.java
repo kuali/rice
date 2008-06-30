@@ -88,9 +88,13 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     @Transient
     protected boolean displayTopicFieldInNotes = false;
 
+    @Transient
     private transient FormFile fileAttachment;
+    @Transient
     private String attachmentPropertyName;
-    
+
+    // TODO JPA Annotate the DocumentAttachment class and hook it up to this
+    @Transient
     private DocumentAttachment attachment;
     
     public FormFile getFileAttachment() {

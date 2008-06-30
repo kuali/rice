@@ -84,6 +84,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected DocumentHeader documentHeader;
     @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
+    // TODO Nate and David get together and fix this with a ManyToOne reference on the other side of this OneToMany
+    @Transient
     private List<PessimisticLock> pessimisticLocks;
 
     @Transient

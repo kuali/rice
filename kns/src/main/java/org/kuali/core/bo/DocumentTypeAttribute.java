@@ -19,10 +19,12 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * This class is the object used to set attributes on the {@link DocumentType} object
@@ -30,6 +32,8 @@ import javax.persistence.ManyToOne;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="FP_DOC_TYPE_ATTR_T")
 public class DocumentTypeAttribute extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 3620282816261362785L;
     

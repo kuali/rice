@@ -19,12 +19,11 @@
     <class>org.kuali.core.document.MaintenanceDocumentBase</class>
     <class>org.kuali.core.document.MaintenanceLock</class>
     <class>org.kuali.core.bo.DocumentHeader</class>
-    <class>org.kuali.core.bo.DocumentStatus</class>
     <class>org.kuali.core.bo.Note</class>
     <class>org.kuali.core.bo.NoteType</class>
     <class>org.kuali.core.bo.Attachment</class>
     <class>org.kuali.core.bo.DocumentType</class>
-    <class>org.kuali.core.bo.DocumentGroup</class>
+    <class>org.kuali.core.bo.DocumentTypeAttribute</class>
     <class>org.kuali.core.bo.ParameterNamespace</class>
     <class>org.kuali.core.bo.ParameterType</class>
     <class>org.kuali.core.bo.ParameterDetailType</class>

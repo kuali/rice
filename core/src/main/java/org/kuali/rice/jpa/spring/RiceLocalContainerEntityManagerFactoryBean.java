@@ -94,7 +94,11 @@ public class RiceLocalContainerEntityManagerFactoryBean extends LocalContainerEn
 		jpaProperties.put("hibernate.show_sql", determineConfigProperty(config, prefix, "JpaProperties.hibernate.show_sql", "false"));
         jpaProperties.put("hibernate.format_sql", determineConfigProperty(config, prefix, "JpaProperties.hibernate.format_sql", "false"));
         jpaProperties.put("hibernate.use_sql_comments", determineConfigProperty(config, prefix, "JpaProperties.hibernate.use_sql_comments", "false"));
-        jpaProperties.put("hibernate.transaction.manager_lookup_class", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.manager_lookup_class", "org.kuali.rice.jta.AtomikosTransactionManagerLookup"));
+        // Default now JTOM rather than Atomikos. Atomikos can be used by setting (KULRICE-1909)
+        //   JpaProperties.hibernate.transaction.manager_lookup_class=org.kuali.rice.jta.AtomikosTransactionManagerLookup
+        // in a configuration file for a JPA persistence unit.
+        jpaProperties.put("hibernate.transaction.manager_lookup_class", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.manager_lookup_class", "org.hibernate.transaction.JOTMTransactionManagerLookup"));
+        //jpaProperties.put("hibernate.transaction.manager_lookup_class", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.manager_lookup_class", "org.kuali.rice.jta.AtomikosTransactionManagerLookup"));
         jpaProperties.put("hibernate.current_session_context_class", determineConfigProperty(config, prefix, "JpaProperties.hibernate.current_session_context_class", "org.hibernate.context.JTASessionContext"));
         jpaProperties.put("hibernate.connection.release_mode", determineConfigProperty(config, prefix, "JpaProperties.hibernate.connection.release_mode", "auto"));
         jpaProperties.put("hibernate.transaction.flush_before_completion", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.flush_before_completion", "true"));

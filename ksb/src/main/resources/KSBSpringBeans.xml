@@ -134,12 +134,10 @@
 
 	<bean id="bamService" class="edu.iu.uis.eden.messaging.bam.BAMServiceImpl">
 		<property name="dao">
-		  <bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDaoJpaImpl" />
-		  <!-- 
+		  <!-- <bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDaoJpaImpl" /> -->
 			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
-			-->
 		</property>
 		<property name="configDao">
 			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMConfigDAOImpl" />

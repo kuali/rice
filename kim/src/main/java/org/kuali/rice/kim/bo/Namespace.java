@@ -30,8 +30,6 @@ import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
-import org.kuali.rice.kim.service.NamespaceAttributeService;
-import org.kuali.rice.kim.service.impl.NamespaceAttributeServiceImpl;
 
 @javax.persistence.Entity
 @Table(name="KIM_NAMESPACES_T")
@@ -53,8 +51,7 @@ public class Namespace extends PersistableBusinessObjectBase {
     //       targetEntity=org.kuali.rice.kim.bo.Permission.class, mappedBy="namespace")
 	@Transient
 	private ArrayList<Permission> namespacePermissions;
-	@Transient
-	private NamespaceAttributeService namespaceAttributeService;
+	
 
     public Namespace() {
         this.namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
@@ -112,23 +109,6 @@ public class Namespace extends PersistableBusinessObjectBase {
     public void setNamespacePermissions(ArrayList<Permission> namespacePermissions) {
         this.namespacePermissions = namespacePermissions;
     }
-    
-    /**
-     * @return the namespaceAttributeService
-     */
-    public NamespaceAttributeService getNamespaceAttributeService() {
-        if (namespaceAttributeService == null) {
-            this.namespaceAttributeService = new NamespaceAttributeServiceImpl(this.getName());
-        }
-        return namespaceAttributeService;
-    }
-
-    /**
-     * @param namespaceAttributeService the namespaceAttributeService to set
-     */
-    public void setNamespaceAttributeService(NamespaceAttributeService namespaceAttributeService) {
-        this.namespaceAttributeService = namespaceAttributeService;
-    }
 
     /**
      * This method creates a NamespaceDTO from a Namespace
@@ -158,7 +138,5 @@ public class Namespace extends PersistableBusinessObjectBase {
         dto.setNamespacePermissions(namespacePermissions);
         return dto;
     }
-
-
 }
 

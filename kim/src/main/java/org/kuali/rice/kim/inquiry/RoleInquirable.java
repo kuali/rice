@@ -25,13 +25,13 @@ import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.RoleAttribute;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * This is a description of what this class does - vrk4 don't forget to fill this in. 

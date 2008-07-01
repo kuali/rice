@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
 
 /**
  * This class represents the Principal data structure

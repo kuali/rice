@@ -31,6 +31,8 @@ import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleAttributeDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * Roles represent an aggregation of permissions.  Authorization is given to either a principal or group by attributing a role

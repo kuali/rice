@@ -27,14 +27,11 @@ import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
 import org.kuali.rice.kim.bo.EntityType;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.RoleAttribute;
-import org.kuali.rice.kim.bo.RoleQualificationForPrincipal;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
@@ -42,6 +39,9 @@ import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.QualifiedRoleService;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
+import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
 
 /**
  * This is the default KIM QualifiedRoleService implementation that is provided

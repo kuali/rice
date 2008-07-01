@@ -30,11 +30,11 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.RoleQualificationForGroup;
 import org.kuali.rice.kim.dto.GroupTypeDTO;
 import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
 import org.kuali.rice.kim.lookup.valuefinder.NextAttributeTypeIdFinder;
 import org.kuali.rice.kim.lookup.valuefinder.NextGroupTypeDefaultAttributeIdFinder;
+import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 import org.kuali.rice.util.RiceConstants;
 
 /**

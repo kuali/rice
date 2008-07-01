@@ -235,7 +235,7 @@
             <list>
               <bean parent="InquiryCollectionDefinition">
                 <property name="attributeName" value="groupQualifiedRoles" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRole" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.GroupQualifiedRole" />
                 <property name="numberOfColumns" value="1" />
                 <property name="summaryTitle" value="Assigned Group" />
                 <property name="inquiryFields" >
@@ -291,7 +291,7 @@
             <list>
               <bean parent="InquiryCollectionDefinition">
                 <property name="attributeName" value="principalQualifiedRoles" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRole" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.PrincipalQualifiedRole" />
                 <property name="numberOfColumns" value="1" />
                 <property name="summaryTitle" value="Assigned Principal" />
                 <property name="inquiryFields" >

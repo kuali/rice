@@ -18,9 +18,9 @@ package org.kuali.rice.kim.dao;
 import java.util.Collection;
 
 import org.kuali.rice.kim.bo.EntityAttribute;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill

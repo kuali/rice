@@ -22,9 +22,9 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kim.bo.EntityAttribute;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * Implements DAO queries for KIM objects for better performance

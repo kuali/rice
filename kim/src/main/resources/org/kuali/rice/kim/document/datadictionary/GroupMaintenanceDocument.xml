@@ -194,7 +194,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
-          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.RoleQualificationForGroup" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Role" />

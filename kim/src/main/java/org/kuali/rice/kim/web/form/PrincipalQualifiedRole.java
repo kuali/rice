@@ -13,63 +13,65 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo;
+package org.kuali.rice.kim.web.form;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 
 /**
- * Primarily a helper business object that provides a list of qualified role attributes for 
+ * Primarily a helper business object that provides a list of qualified role attributes for
  * a specific principal and role.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleQualificationForGroup extends Role {
+public class PrincipalQualifiedRole extends Principal {
     private static final long serialVersionUID = 6701917498866245651L;
-    
-    private Long groupId;
-    
-    private ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
 
-    public RoleQualificationForGroup() {
+    private Long roleId;
+
+    private ArrayList<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes;
+
+    public PrincipalQualifiedRole() {
         super();
-        this.qualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
+        this.qualifiedRoleAttributes = new TypedArrayList(PrincipalQualifiedRoleAttribute.class);
     }
 
     /**
-     * @return the groupId
+     * @return the roleId
      */
-    public Long getGroupId() {
-        return this.groupId;
+    public Long getRoleId() {
+        return this.roleId;
     }
 
     /**
-     * @param groupId the groupId to set
+     * @param roleId the roleId to set
      */
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    /**
+	/**
      * @return the qualifiedRoleAttributes
      */
-    public ArrayList<GroupQualifiedRoleAttribute> getQualifiedRoleAttributes() {
+    public ArrayList<PrincipalQualifiedRoleAttribute> getQualifiedRoleAttributes() {
         return this.qualifiedRoleAttributes;
     }
 
     /**
      * @param qualifiedRoleAttributes the qualifiedRoleAttributes to set
      */
-    public void setQualifiedRoleAttributes(ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes) {
+    public void setQualifiedRoleAttributes(ArrayList<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes) {
         this.qualifiedRoleAttributes = qualifiedRoleAttributes;
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override

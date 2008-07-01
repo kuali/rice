@@ -24,10 +24,8 @@ import java.util.Map;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityDTO;
@@ -39,6 +37,8 @@ import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * This is the default KIM RoleService implementation that is provided by Rice.

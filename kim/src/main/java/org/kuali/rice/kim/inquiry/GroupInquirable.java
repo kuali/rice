@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.GroupType;
 import org.kuali.rice.kim.bo.GroupTypeDefaultAttribute;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.RoleQualificationForGroup;
+import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 
 /**
  * This class essentially intercepts the request and handles transforming data coming in from the persistence 

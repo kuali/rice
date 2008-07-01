@@ -23,7 +23,7 @@ import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.RoleQualificationForPrincipal;
+import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Principal maintenance screen.  

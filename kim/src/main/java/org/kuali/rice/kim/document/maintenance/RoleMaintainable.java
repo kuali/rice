@@ -21,12 +21,12 @@ import java.util.Map;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.web.form.GroupQualifiedRole;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Role maintenance screen.  

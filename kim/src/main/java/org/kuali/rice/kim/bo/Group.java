@@ -30,6 +30,7 @@ import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
+import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 
 @javax.persistence.Entity
 @Table(name="KIM_GROUPS_T")

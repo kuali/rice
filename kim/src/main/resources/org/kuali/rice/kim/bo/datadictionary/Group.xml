@@ -248,7 +248,7 @@
             <list>
               <bean parent="InquiryCollectionDefinition">
                 <property name="attributeName" value="roleQualificationsForGroup" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.RoleQualificationForGroup" />
                 
                 <property name="numberOfColumns" value="1" />
                 <property name="summaryTitle" value="Assigned Role" />

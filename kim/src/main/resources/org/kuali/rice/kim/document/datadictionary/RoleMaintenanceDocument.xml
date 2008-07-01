@@ -113,7 +113,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
-          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRole" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.PrincipalQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Principal" />
@@ -194,7 +194,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
-          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRole" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.GroupQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Group" />

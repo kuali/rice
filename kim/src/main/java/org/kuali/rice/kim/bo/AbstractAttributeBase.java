@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
 
 /**
@@ -30,7 +31,7 @@ import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @MappedSuperclass
-public abstract class AbstractAttributeBase extends KIMPersistableBusinessObjectBase implements Serializable {
+public abstract class AbstractAttributeBase extends PersistableBusinessObjectBase implements Serializable {
 
 	@Id
 	@Column(name="ID")

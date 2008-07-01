@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
@@ -40,7 +41,7 @@ import org.kuali.rice.kim.dto.RoleDTO;
  */
 @javax.persistence.Entity
 @Table(name="KIM_ROLES_T")
-public class Role extends KIMPersistableBusinessObjectBase {
+public class Role extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -8535955276605020423L;
 	@Id
 	@Column(name="ID")

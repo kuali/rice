@@ -77,7 +77,7 @@ public class Group extends PersistableBusinessObjectBase {
 	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
 	@Transient
-	private ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
+	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
 
     //these are essentially form objects only used for rendering
 	@Transient
@@ -96,7 +96,7 @@ public class Group extends PersistableBusinessObjectBase {
 		parentGroups = new TypedArrayList(Group.class);
 		roles = new TypedArrayList(Role.class);
 		groupAttributes = new TypedArrayList(GroupAttribute.class);
-		qualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
+		groupQualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
         groupTypeAttributes = new TypedArrayList(GroupAttribute.class);
         nonGroupTypeAttributes = new TypedArrayList(GroupAttribute.class);
         roleQualificationsForGroup = new TypedArrayList(RoleQualificationForGroup.class);
@@ -273,19 +273,19 @@ public class Group extends PersistableBusinessObjectBase {
 	}
 
 	/**
-	 * @param qualifiedRoleAttributes
+	 * @param groupQualifiedRoleAttributes
 	 *            the qualifiedRoleAttributes to set
 	 */
-	public void setQualifiedRoleAttributes(
-			ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes) {
-		this.qualifiedRoleAttributes = qualifiedRoleAttributes;
+	public void setGroupQualifiedRoleAttributes(
+			ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes) {
+		this.groupQualifiedRoleAttributes = groupQualifiedRoleAttributes;
 	}
 
 	/**
 	 * @return the qualifiedRoleAttributes
 	 */
-	public ArrayList<GroupQualifiedRoleAttribute> getQualifiedRoleAttributes() {
-		return qualifiedRoleAttributes;
+	public ArrayList<GroupQualifiedRoleAttribute> getGroupQualifiedRoleAttributes() {
+		return groupQualifiedRoleAttributes;
 	}
 	
 	/**

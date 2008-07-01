@@ -70,7 +70,7 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 
 		for (Group g : role.getGroups()) {
 			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, g
-					.getQualifiedRoleAttributes())) {
+					.getGroupQualifiedRoleAttributes())) {
 				groups.add(g.getName());
 			}
 		}
@@ -95,7 +95,7 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 
 		for (Group g : role.getGroups()) {
 			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, g
-					.getQualifiedRoleAttributes())) {
+					.getGroupQualifiedRoleAttributes())) {
 				groups.add(Group.toDTO(g));
 			}
 		}
@@ -110,20 +110,21 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	 */
 	public List<Long> getPersonIds(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		Collection<PrincipalQualifiedRole> principals = kimServicesDao
-				.findAllPersonsWithQualifiedRole(roleName);
-
-		final ArrayList<Long> persons = new ArrayList<Long>();
-		for (PrincipalQualifiedRole p : principals) {
-			// TODO getPrincipal() is an ugly hack to get around
-			// PrincipalQualifiedRole not being filled in
-			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-				persons.add(p.getPrincipalId());
-			}
-
-		}
-		return persons;
+//		Collection<PrincipalQualifiedRole> principals = kimServicesDao
+//				.findAllPersonsWithQualifiedRole(roleName);
+//
+//		final ArrayList<Long> persons = new ArrayList<Long>();
+//		for (PrincipalQualifiedRole p : principals) {
+//			// TODO getPrincipal() is an ugly hack to get around
+//			// PrincipalQualifiedRole not being filled in
+//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
+//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
+//				persons.add(p.getPrincipalId());
+//			}
+//
+//		}
+//		return persons;
+		return new ArrayList();
 	}
 
 	/**
@@ -134,21 +135,21 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	 */
 	public List<PersonDTO> getPersons(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		final Collection<PrincipalQualifiedRole> principals = kimServicesDao
-				.findAllPersonsWithQualifiedRole(roleName);
-
-		final ArrayList<PersonDTO> persons = new ArrayList<PersonDTO>();
-		for (PrincipalQualifiedRole p : principals) {
-			// TODO getPrincipal() is an ugly hack to get around
-			// PrincipalQualifiedRole not being filled in
-			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-				persons.add(Principal.toPersonDTO(p.getPrincipal()));
-			}
-
-		}
-		return persons;
-
+//		final Collection<PrincipalQualifiedRole> principals = kimServicesDao
+//				.findAllPersonsWithQualifiedRole(roleName);
+//
+//		final ArrayList<PersonDTO> persons = new ArrayList<PersonDTO>();
+//		for (PrincipalQualifiedRole p : principals) {
+//			// TODO getPrincipal() is an ugly hack to get around
+//			// PrincipalQualifiedRole not being filled in
+//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
+//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
+//				persons.add(Principal.toPersonDTO(p.getPrincipal()));
+//			}
+//
+//		}
+//		return persons;
+		return new ArrayList();
 	}
 
 	/**
@@ -159,19 +160,20 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	 */
 	public List<String> getPrincipalNames(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
-				.findAllPrincipalsWithQualifiedRole(roleName);
-
-		final ArrayList<String> principals = new ArrayList<String>();
-		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
-			// TODO getPrincipal() is an ugly hack to get around
-			// PrincipalQualifiedRole not being filled in
-			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-				principals.add(p.getPrincipal().getName());
-			}
-		}
-		return principals;
+//		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
+//				.findAllPrincipalsWithQualifiedRole(roleName);
+//
+//		final ArrayList<String> principals = new ArrayList<String>();
+//		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
+//			// TODO getPrincipal() is an ugly hack to get around
+//			// PrincipalQualifiedRole not being filled in
+//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
+//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
+//				principals.add(p.getPrincipal().getName());
+//			}
+//		}
+//		return principals;
+		return new ArrayList();
 	}
 
 	/**
@@ -182,21 +184,21 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	 */
 	public List<PrincipalDTO> getPrincipals(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		final ArrayList<PrincipalDTO> principals = new ArrayList<PrincipalDTO>();
-		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
-				.findAllPrincipalsWithQualifiedRole(roleName);
-
-		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
-			// TODO getPrincipal() is an ugly hack to get around
-			// PrincipalQualifiedRole not being filled in
-			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-				principals.add(Principal.toDTO(p.getPrincipal()));
-			}
-
-		}
-		return principals;
-
+//		final ArrayList<PrincipalDTO> principals = new ArrayList<PrincipalDTO>();
+//		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
+//				.findAllPrincipalsWithQualifiedRole(roleName);
+//
+//		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
+//			// TODO getPrincipal() is an ugly hack to get around
+//			// PrincipalQualifiedRole not being filled in
+//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
+//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
+//				principals.add(Principal.toDTO(p.getPrincipal()));
+//			}
+//
+//		}
+//		return principals;
+		return new ArrayList();
 	}
 
 	/**

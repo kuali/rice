@@ -1,4 +1,4 @@
--- Mon Jun 30 13:54:41 EDT 2008
+-- Mon Jun 30 19:59:13 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice bootstrap sql from rice_db_bootstrap.sql
 -- As well as sample data contributed by modules and the rice_sample_create.sql
@@ -35,7 +35,7 @@ CREATE TABLE FP_DOC_TYPE_ATTR_T (
         DOC_TYP_ATTR_CD                VARCHAR2(100) CONSTRAINT FP_DOC_TYPE_ATTR_TN2 NOT NULL,
         DOC_TYP_ATTR_VAL               VARCHAR2(400),
         DOC_TYP_ATTR_LBL               VARCHAR2(400),
-        FDOC_TYP_CD                    VARCHAR2(4) CONSTRAINT FP_DOC_TYPE_ATTR_TN5 NOT NULL,
+        FDOC_TYP_CD                    VARCHAR2(4) CONSTRAINT FP_DOC_TYPE_ATTR_TN6 NOT NULL,
      CONSTRAINT FP_DOC_TYPE_ATTR_TP1 PRIMARY KEY (
         ID) ,
      CONSTRAINT FP_DOC_TYPE_ATTR_TC0 UNIQUE (OBJ_ID) 

@@ -121,7 +121,7 @@
   <bean id="Principal-inquiryDefinition" parent="Principal-inquiryDefinition-parentBean" />
 
   <bean id="Principal-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-   <property name="inquirableClass" value="org.kuali.rice.kim.document.inquiry.PrincipalInquirable" />
+   <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.PrincipalInquirable" />
   
     <property name="inquirySections" >
       <list>

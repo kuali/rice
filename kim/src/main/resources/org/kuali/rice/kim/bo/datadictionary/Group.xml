@@ -131,6 +131,7 @@
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.GroupType"
             p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:script="try { groupTypeChanged(this) } catch(Exception) {}" 
             p:includeKeyInLabel="false"
             p:keyAttribute="id"
             p:labelAttribute="name" />
@@ -157,6 +158,8 @@
   <bean id="Group-inquiryDefinition" parent="Group-inquiryDefinition-parentBean" />
 
   <bean id="Group-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+  <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.GroupInquirable" />
+  
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -238,14 +241,17 @@
           </property>
           <property name="title" value="Member Principals" />
         </bean>
+        
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
               <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="roles" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
+                <property name="attributeName" value="roleQualificationsForGroup" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
+                
                 <property name="numberOfColumns" value="1" />
+                <property name="summaryTitle" value="Assigned Role" />
                 <property name="inquiryFields" >
                   <list>
                     <bean parent="FieldDefinition"
@@ -254,25 +260,60 @@
                           p:attributeName="name" />
                   </list>
                 </property>
+                <property name="inquiryCollections" >
+                  <list>
+                    <bean parent="InquiryCollectionDefinition">
+                      <property name="attributeName" value="qualifiedRoleAttributes" />
+                      <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+                      <property name="numberOfColumns" value="2" />
+                      <property name="summaryTitle" value="Qualification" />
+                      <property name="inquiryFields" >
+                        <list>
+                          <bean parent="FieldDefinition"
+                                p:attributeName="attributeName" />
+                          <bean parent="FieldDefinition"
+                                p:attributeName="attributeValue" />
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
               </bean>
             </list>
           </property>
-          <property name="title" value="Group Roles" />
+          <property name="title" value="Assigned Roles" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
               <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="groupAttributes" />
+                <property name="attributeName" value="groupTypeAttributes" />
                 <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
-                <property name="numberOfColumns" value="1" />
+                <property name="numberOfColumns" value="2" />
                 <property name="inquiryFields" >
                   <list>
                     <bean parent="FieldDefinition"
-                          p:attributeName="id" />
+                          p:attributeName="attributeName" />
                     <bean parent="FieldDefinition"
-                          p:attributeName="attributeTypeId" />
+                          p:attributeName="value" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Group Type Attributes" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="nonGroupTypeAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
+                <property name="numberOfColumns" value="2" />
+                <property name="inquiryFields" >
+                  <list>
                     <bean parent="FieldDefinition"
                           p:attributeName="attributeName" />
                     <bean parent="FieldDefinition"

@@ -155,7 +155,7 @@
   <bean id="Role-inquiryDefinition" parent="Role-inquiryDefinition-parentBean" />
 
   <bean id="Role-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-   <property name="inquirableClass" value="org.kuali.rice.kim.document.inquiry.RoleInquirable" />
+   <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.RoleInquirable" />
     <property name="inquirySections" >
       <list>
       

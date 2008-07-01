@@ -30,6 +30,11 @@
     <property name="documentTypeName" value="KIMGroupMaintenanceDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KGMD" />
+    <property name="webScriptFiles" >
+      <list>
+        <value>../kim/scripts/group.js</value>
+      </list>
+    </property>
     <property name="authorizations" >
       <list>
         <bean parent="AuthorizationDefinition">
@@ -191,6 +196,7 @@
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Role" />
           <property name="summaryFields" >
             <list>
@@ -215,6 +221,7 @@
             <list>
               <bean parent="MaintainableCollectionDefinition">
                 <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+                <property name="alwaysAllowCollectionDeletion" value="true" />
                 <property name="summaryTitle" value="Qualification" />
                 <property name="summaryFields" >
                   <list>
@@ -269,6 +276,7 @@
         <bean parent="MaintainableCollectionDefinition">
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="false" />
           <property name="summaryTitle" value="Group Type Attributes" />
           <property name="maintainableFields" >
             <list>
@@ -303,6 +311,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Group Attributes" />
           <property name="maintainableFields" >
             <list>

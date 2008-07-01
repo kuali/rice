@@ -50,8 +50,7 @@
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="8" />
+      <bean parent="HiddenControlDefinition" />
     </property>
     <property name="name" value="groupId" />
     <property name="label" value="Group" />

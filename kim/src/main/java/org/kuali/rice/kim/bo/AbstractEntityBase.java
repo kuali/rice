@@ -22,6 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.kuali.core.bo.PersistableBusinessObjectBase;
+
 /**
  * This is a base helper class that encapsulates common fields needed by several "Entity" classes.
  *
@@ -29,7 +31,7 @@ import javax.persistence.Transient;
  *
  */
 @MappedSuperclass
-public abstract class AbstractEntityBase extends KIMPersistableBusinessObjectBase implements Serializable {
+public abstract class AbstractEntityBase extends PersistableBusinessObjectBase implements Serializable {
 
 	@Id
 	@Column(name="ID")

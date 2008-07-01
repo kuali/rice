@@ -174,6 +174,7 @@
       </list>
     </property>
     <property name="title" value="Permission Lookup" />
+    <property name="menubar" value="&lt;a href=&quot;../kim/index.jsp&quot;&gt;KIM Home&lt;/a&gt;   &lt;a href=&quot;../index.html&quot;&gt;Main&lt;/a&gt;" />
   </bean>
   
   

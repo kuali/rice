@@ -80,6 +80,7 @@
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Permission" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Permissions for Role" />
           <property name="maintainableFields" >
             <list>
@@ -114,6 +115,7 @@
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRole" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Principal" />
           <property name="summaryFields" >
             <list>
@@ -138,6 +140,7 @@
             <list>
               <bean parent="MaintainableCollectionDefinition">
                 <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" />
+                <property name="alwaysAllowCollectionDeletion" value="true" />
                 <property name="summaryTitle" value="Qualification" />
                 <property name="summaryFields" >
                   <list>
@@ -193,6 +196,7 @@
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRole" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Group" />
           <property name="summaryFields" >
             <list>
@@ -217,6 +221,7 @@
             <list>
               <bean parent="MaintainableCollectionDefinition">
                 <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+                <property name="alwaysAllowCollectionDeletion" value="true" />
                 <property name="summaryTitle" value="Qualification" />
                 <property name="summaryFields" >
                   <list>
@@ -270,6 +275,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Role Attributes" />
           <property name="maintainableFields" >
             <list>

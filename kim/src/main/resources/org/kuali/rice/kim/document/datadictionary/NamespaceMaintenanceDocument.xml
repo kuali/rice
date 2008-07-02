@@ -96,10 +96,10 @@
                     p:required="true"
                     p:name="description" />
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
+                    p:required="false"
                     p:name="required" />
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
+                    p:required="false"
                     p:name="active" />
             </list>
           </property>

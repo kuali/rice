@@ -73,14 +73,27 @@ def processClasspathFile(cpFile) {
                 //println "Discarding project reference: " + trimmed
                 return
             } else {
-            
-                [ /path="/, /output="/ ].each() {
-                    m = trimmed =~ it
-                    if (m) {
-                        trimmed = m.replaceFirst(it + module + "/")
-                    }
-                }
-                
+            	outputExpr = /output="/
+            	javaPathExpr = /path="src\/main\/java"/
+            	resPathExpr = /path="src\/main\/resources"/
+            	pathExpr = /path="/
+            	
+            	hasOutput = trimmed =~ outputExpr
+            	hasSrcJava = trimmed =~ javaPathExpr
+            	hasSrcRes = trimmed =~ resPathExpr
+            	if (hasOutput) {
+            		trimmed = hasOutput.replaceFirst(outputExpr + module + "/")
+            	} else if (hasSrcJava) {
+            		trimmed = hasSrcJava.replaceFirst(javaPathExpr + " output=\"" + module + "/target/classes\"")
+            	}  else if (hasSrcRes) {
+            		trimmed = hasSrcRes.replaceFirst(resPathExpr + " output=\"" + module + "/target/classes\"")
+            	}
+            	
+            	hasPath = trimmed =~ pathExpr
+            	if (hasPath) {
+            		trimmed = hasPath.replaceFirst(pathExpr + module + "/")
+            	}
+            	
                 // omit the includes and excludes that get propagated from the parent POM
                 // they are only there to support CI
                 [ /including=".*"/, /excluding=".*"/ ].each() {

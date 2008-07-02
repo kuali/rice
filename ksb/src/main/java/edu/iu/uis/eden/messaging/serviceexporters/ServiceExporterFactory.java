@@ -18,7 +18,6 @@ package edu.iu.uis.eden.messaging.serviceexporters;
 
 
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
-import edu.iu.uis.eden.messaging.JmsServiceDefinition;
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
@@ -34,8 +33,6 @@ public class ServiceExporterFactory {
 			return new HttpInvokerServiceExporter(serviceInfo);
 		} else if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
 			return new SOAPServiceExporter(serviceInfo);
-		} else if (serviceInfo.getServiceDefinition() instanceof JmsServiceDefinition) {
-			return new JmsExporter(serviceInfo);
 		}
 		
 		throw new RuntimeException("ServiceDefinition type not supported " + serviceInfo.getServiceDefinition());

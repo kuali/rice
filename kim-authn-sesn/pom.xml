@@ -22,6 +22,41 @@
       <groupId>org.jasig.cas</groupId>
       <artifactId>cas-server-core</artifactId>
       <version>3.2-RC5-SNAPSHOT</version>
+      <exclusions>
+      	<!-- Exclude dependencies so that Spring 2.5.1 is not pulled in -->
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-binding</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context-support</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-orm</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-tx</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.opensaml</groupId>
+          <artifactId>opensaml</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.santuario</groupId>
+          <artifactId>xmlsec</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.xml</groupId>
+          <artifactId>xmldsig</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.inspektr</groupId>
+          <artifactId>inspektr-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
     

@@ -20,7 +20,6 @@ import org.kuali.rice.security.credentials.CredentialsSource;
 import org.kuali.rice.security.credentials.CredentialsSourceFactory;
 
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
-import edu.iu.uis.eden.messaging.JmsServiceDefinition;
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;
@@ -61,8 +60,6 @@ public class ServiceConnectorFactory {
 	    serviceConnector = new HttpInvokerConnector(serviceInfo);
 	} else if (serviceDefinition instanceof SOAPServiceDefinition) {
 	    serviceConnector = new SOAPConnector(serviceInfo);
-	} else if (serviceDefinition instanceof JmsServiceDefinition) {
-	    serviceConnector = new JmsConnector(serviceInfo);
 	}
 
 	if (serviceConnector == null) {

@@ -644,7 +644,7 @@ public class SectionBridge {
                                     }
 
                                     Field subContainerField = FieldUtils.constructContainerField(KNSConstants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
-                                    if (lineSubBusinessObject instanceof PersistableBusinessObject && ((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord()) {
+                                    if (lineSubBusinessObject instanceof PersistableBusinessObject && (((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() || subCollectionDefinition.isAlwaysAllowCollectionDeletion())) {
                                         subContainerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionName, (new Integer(j)).toString())));
                                     }
 

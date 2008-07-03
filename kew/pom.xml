@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.4-SNAPSHOT</version>
   </parent>
   <artifactId>rice-kew</artifactId>
 
@@ -14,22 +14,22 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-core</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-ksb</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kcb-api</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kcb</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
     <!-- This includes the tests classes and resources that KCB exports
@@ -39,7 +39,7 @@
     <dependency>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice-kcb</artifactId>
-        <version>0.9.3-SNAPSHOT</version>
+        <version>0.9.4-SNAPSHOT</version>
         <classifier>tests</classifier>
         <scope>test</scope>
     </dependency>
@@ -47,12 +47,12 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-shared</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-testharness</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
 
     <dependency>

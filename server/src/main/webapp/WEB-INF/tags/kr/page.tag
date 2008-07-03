@@ -219,7 +219,7 @@
 						${KualiForm.document.documentHeader.workflowDocument.initiatorNetworkId}
 					</c:when>
 					<c:otherwise>
-						<kul:inquiry boClassName="org.kuali.core.bo.user.UniversalUser" keyValues="${PropertyConstants.KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER}=${KualiForm.initiator.personUniversalIdentifier}" render="true">${KualiForm.document.documentHeader.workflowDocument.initiatorNetworkId}</kul:inquiry>
+						<kul:inquiry boClassName="org.kuali.core.bo.user.UniversalUser" keyValues="${PropertyConstants.PERSON_UNIVERSAL_IDENTIFIER}=${KualiForm.initiator.personUniversalIdentifier}" render="true">${KualiForm.document.documentHeader.workflowDocument.initiatorNetworkId}</kul:inquiry>
 					</c:otherwise>
 				</c:choose>
 			</td>

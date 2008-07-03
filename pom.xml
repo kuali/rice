@@ -6,7 +6,7 @@
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-	<version>0.9.3-SNAPSHOT</version>
+	<version>0.9.4-SNAPSHOT</version>
 	<description>
 		The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications
 		to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive
@@ -32,6 +32,7 @@
 		<casclient.version>2.1.1</casclient.version>
 		<oro.version>2.0.8</oro.version>
 		<commons-io.version>1.4</commons-io.version>
+		<cglib.version>2.1_3</cglib.version>
 	</properties>
 	<profiles>
 		<profile>
@@ -302,6 +303,12 @@
 				<groupId>oro</groupId>
 				<artifactId>oro</artifactId>
 				<version>${oro.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>${cglib.version}</version>
 			</dependency>
     		
 		</dependencies>
@@ -707,7 +714,7 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>dav:https://www.kuali.org:8443/rice/docs/0.9.3-SNAPSHOT/site</url>
+			<url>dav:https://www.kuali.org:8443/rice/docs/0.9.4-SNAPSHOT/site</url>
 		</site>
 	</distributionManagement>
 </project>

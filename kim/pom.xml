@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice</artifactId>
-        <version>0.9.3-SNAPSHOT</version>
+        <version>0.9.4-SNAPSHOT</version>
     </parent>
     <artifactId>rice-kim</artifactId>
 
@@ -14,12 +14,12 @@
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-kns</artifactId>
-			<version>0.9.3-SNAPSHOT</version>
+			<version>0.9.4-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-kim-api</artifactId>
-            <version>0.9.3-SNAPSHOT</version>
+            <version>0.9.4-SNAPSHOT</version>
         </dependency>
 	</dependencies>
 </project>

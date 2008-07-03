@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.4-SNAPSHOT</version>
   </parent>
   <artifactId>rice-kns</artifactId>
 
@@ -14,30 +14,30 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-ksb</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kew</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-ken</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <!--
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kim</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
       -->
 	<dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kim-api</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -45,14 +45,14 @@
 	<dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kom</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-kom-api</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
+      <version>0.9.4-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
       -->

@@ -243,6 +243,10 @@
 		</replaceregexp>
 	</target>
 	
+	<target name="maven-version" depends="init" description="Executes and mvn -v to print out maven version to command line">
+		<maven goals="" options="-v"/>
+	</target>
+	
 	<macrodef name="maven">
 		<attribute name="goals" />
 		<attribute name="options" default="" />
@@ -261,5 +265,5 @@
 			</java>
 		</sequential>
 	</macrodef>
-
+	
 </project>

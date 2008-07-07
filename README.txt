@@ -1,5 +1,4 @@
 -- Libraries --
-
 Note that this project DOES NOT contain a "/lib" directory.  This is 
 because this project is built and structured using Apache Maven2.  
 Apache Maven2 allows for all libraries to be housed remotely in a Maven2 

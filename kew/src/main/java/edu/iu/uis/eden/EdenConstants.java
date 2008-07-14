@@ -59,7 +59,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String APP_CONST_USE_ONESTART_URL = "Config.Application.UseOneStartPortalUrl";
     public static final String APP_CONST_EDL_USE_XSLTC = "EDL.UseXSLTC";
     public static final String APP_CONST_EDL_DEBUG_TRANSFORM = "EDL.DebugTransform";
-    public static final String APP_CONST_EMAIL_FIRST_SEND_IP_KEY = "Config.Mailer.IPAddress";
+    
     public static final String APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS = "Config.Maximum.Nodes.Before.Runaway";
 
     public static final String BAM_CONST = "BAM";

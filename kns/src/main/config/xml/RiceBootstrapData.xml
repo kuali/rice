@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
-        <!-- ApplicationConstants elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ApplicationConstants elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ApplicationConstant>
             <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
@@ -150,11 +150,7 @@
         <ApplicationConstant>
             <ConstantName>Config.Application.DelegateLimit</ConstantName>
             <ConstantValue>20</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.IPAddress</ConstantName>
-            <ConstantValue>127.0.0.1</ConstantValue>
-        </ApplicationConstant>
+        </ApplicationConstant>        
         <ApplicationConstant>
             <ConstantName>Config.Mailer.FromAddress</ConstantName>
             <ConstantValue>kew@localhost</ConstantValue>
@@ -236,18 +232,7 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 
-        <user>
-            <workflowId>KULUSER</workflowId>
-            <emplId>KULUSER</emplId>
-            <authenticationId>KULUSER</authenticationId>
-            <uuId>KULUSER</uuId>
-            <emailAddress>KULUSER@indiana.edu</emailAddress>
-            <displayName>KULUSER</displayName>
-            <givenName>KULUSER</givenName>
-            <lastName>KULUSER</lastName>
-        </user>
-    
-        <!-- users elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- users elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin user -->
         <user>
@@ -263,7 +248,7 @@
     
 
 
-        <!-- users elements from C:\venkat\kuali\rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- users elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
 
         <user>
             <workflowId>idm1</workflowId>
@@ -358,7 +343,7 @@
 	
 
 
-        <!-- users elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- users elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- The NotSys user is needed for the message sending forms that come with the system -->
         <user>
@@ -387,7 +372,7 @@
 
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 
-        <!-- workgroups elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- workgroups elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin workgroup -->
         <workgroup allowOverwrite="true">
@@ -402,7 +387,7 @@
     
 
 
-        <!-- workgroups elements from C:\venkat\kuali\rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- workgroups elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
 
         <workgroup allowOverwrite="true">
             <workgroupName>Kuali Identity Managers</workgroupName>
@@ -438,7 +423,7 @@
 	
 
 
-        <!-- workgroups elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- workgroups elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
        <workgroup allowOverwrite="true">
             <workgroupName>NotificationAdmin</workgroupName>
@@ -468,7 +453,7 @@
 
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 
-        <!-- ruleAttributes elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleAttributes elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
@@ -494,7 +479,7 @@
     
 
 
-        <!-- ruleAttributes elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleAttributes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
@@ -642,7 +627,7 @@
 
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 
-        <!-- ruleTemplates elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleTemplates elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>WorkflowDocumentDelegationTemplate</name>
@@ -684,7 +669,7 @@
     
 
 
-        <!-- ruleTemplates elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleTemplates elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>ReviewersRouting</name>
@@ -705,7 +690,7 @@
 
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 
-        <!-- documentTypes elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- documentTypes elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <documentType>
             <name>EDENSERVICE-DOCS</name>
@@ -872,7 +857,7 @@
     
 
 
-        <!-- documentTypes elements from C:\venkat\kuali\rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- documentTypes elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
 
    <documentType>
       <name>KIMPrincipalMaintenanceDocument</name>
@@ -1130,7 +1115,7 @@
   
 
 
-        <!-- documentTypes elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- documentTypes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- Notification Document Type -->
         <documentType>
@@ -1242,7 +1227,7 @@
     
 
 
-        <!-- documentTypes elements from C:\venkat\kuali\rice-0.9.3/kom/src/main/config/xml/KOMBootstrap.xml -->
+        <!-- documentTypes elements from ..\/kom/src/main/config/xml/KOMBootstrap.xml -->
 
    <documentType>
       <name>KualiOrganizationMaintenanceDocument</name>
@@ -1325,7 +1310,7 @@
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 
-        <!-- rules elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- rules elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <rule>
             <documentType>EDENSERVICE-DOCS</documentType>
@@ -1361,7 +1346,7 @@
     
 
 
-        <!-- rules elements from C:\venkat\kuali\rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- rules elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
 
 	<rule>
        <name>KIMNamespaceKualiIdentityManagersGroupApproval</name>
@@ -1466,7 +1451,7 @@
 
 
 
-        <!-- rules elements from C:\venkat\kuali\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- rules elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <rule>
           <documentType>SendNotificationRequest</documentType>

@@ -150,11 +150,7 @@
         <ApplicationConstant>
             <ConstantName>Config.Application.DelegateLimit</ConstantName>
             <ConstantValue>20</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.IPAddress</ConstantName>
-            <ConstantValue>127.0.0.1</ConstantValue>
-        </ApplicationConstant>
+        </ApplicationConstant>        
         <ApplicationConstant>
             <ConstantName>Config.Mailer.FromAddress</ConstantName>
             <ConstantValue>kew@localhost</ConstantValue>

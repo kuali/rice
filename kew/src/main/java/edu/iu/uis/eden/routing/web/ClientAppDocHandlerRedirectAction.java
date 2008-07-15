@@ -54,11 +54,11 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(UserSession.getAuthenticatedUser(), routeHeader, new SecuritySession(UserSession.getAuthenticatedUser()))) {
             	return mapping.findForward("NotAuthorized");
             }
-
+/*
             if (routeHeader.isLocked()) {
                 return mapping.findForward("documentLocked");
             }
-
+*/
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
             if (docHandler.indexOf("?") == -1) {
                 docHandler += "?";

@@ -1,7 +1,6 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- *
- *
+ * 
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -137,8 +136,9 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 	private java.lang.String docTitle;
     @Column(name="DOC_APPL_DOC_ID")
 	private java.lang.String appDocId;
-    @Column(name="DOC_OVRD_IND")
+ /*   @Column(name="DOC_OVRD_IND")
 	private java.lang.String overrideInd;
+ */
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(EdenConstants.DOCUMENT_VERSION_NODAL);
     @Version
@@ -155,9 +155,9 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     @Id
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
-    @Column(name="DOC_LOCK_CD")
+  /*  @Column(name="DOC_LOCK_CD")
 	private String lockCode;
-
+*/
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
@@ -429,7 +429,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public void setJrfVerNbr(java.lang.Integer jrfVerNbr) {
         this.jrfVerNbr = jrfVerNbr;
     }
-
+/*
     public java.lang.String getOverrideInd() {
         return overrideInd;
     }
@@ -437,7 +437,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public void setOverrideInd(java.lang.String overrideInd) {
         this.overrideInd = overrideInd;
     }
-
+*/
     public java.lang.Long getRouteHeaderId() {
         return routeHeaderId;
     }
@@ -575,7 +575,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             setFinalizedDate(new Timestamp(System.currentTimeMillis()));
         }
     }
-
+/*
     public boolean isLocked() {
         return getLockCode() != EdenConstants.DOC_UNLOCKED;
     }
@@ -591,7 +591,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public void setLockCode(String lockReason) {
         this.lockCode = lockReason;
     }
-
+*/
     /**
      * Mark the document as being processed.
      *
@@ -697,7 +697,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         }
         setDocTitle(routeHeaderVO.getDocTitle());
         setAppDocId(routeHeaderVO.getAppDocId());
-        setOverrideInd(routeHeaderVO.getOverrideInd());
+ //       setOverrideInd(routeHeaderVO.getOverrideInd());
         setStatusModDate(new Timestamp(System.currentTimeMillis()));
 
         /* set the variables from the routeHeaderVO */

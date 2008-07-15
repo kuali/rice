@@ -140,7 +140,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Acknowledging document : " + annotation);

@@ -68,14 +68,14 @@
   	    <td width="33%" align=right class="thnormal">Application Doc ID:</td>
   	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.routeHeader.appDocId}" />&nbsp;</td>
   	  </tr>
-  	  <tr>
+  	  <!--tr>
   	    <td width="33%" align=right class="thnormal">Override Indicator:</td>
   	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.routeHeader.overrideInd}" />&nbsp;</td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Lock Code:</td>
   	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.routeHeader.lockCode}" />&nbsp;</td>
-  	  </tr>
+  	  </tr-->
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Doc Content:</td>
   	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.routeHeader.docContent}" />&nbsp;</td>

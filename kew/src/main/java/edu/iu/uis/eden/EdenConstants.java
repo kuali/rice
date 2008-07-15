@@ -295,10 +295,10 @@ public class EdenConstants extends JSTLConstants {
     /** UPAA key for the FiscalUPAA map from EdenUtility * */
     public static final String UPAA = "MANAGER_UNVL_ID";
 
-    /** Document Lock codes **/
-    public static final String DOC_LOCKED_RESPONSIBILITY_CHANGE = "R";
-    public static final String DOC_UNLOCKED = null;
-
+    /** Document Lock codes 
+  public static final String DOC_LOCKED_RESPONSIBILITY_CHANGE = "R";
+  public static final String DOC_UNLOCKED = null;
+**/
     /** Fiscal Manager key for the FiscalUPAA map from EdenUtility * */
     public static final String FISCAL_MANAGER = "ORG_FSCL_APRVR_UID";
     public static final Date CURRENT_DATE = new Date(-7);

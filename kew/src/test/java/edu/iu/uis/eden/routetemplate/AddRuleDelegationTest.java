@@ -296,14 +296,14 @@ public class AddRuleDelegationTest extends KEWTestCase {
 
         //createFlexDoc(request, ruleForm, ruleForm.getMyRules().getRules());
 
-        if (ruleForm.getFlexDoc() == null) {
+        if (ruleForm.getWorkflowDocument() == null) {
 //          rule2Form.setFlexDoc(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
             String ruleDocTypeName = KEWServiceLocator.getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
             WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
             // adhoc it to rkirkend so it will stop before going final
             workflowDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdVO("rkirkend"), "", true);
-            ruleForm.setFlexDoc(workflowDocument);
-            ruleForm.setDocId(ruleForm.getFlexDoc().getRouteHeaderId());
+            ruleForm.setWorkflowDocument(workflowDocument);
+            ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();
         }
 

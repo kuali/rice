@@ -163,14 +163,14 @@
         input="/WEB-INF/jsp/routelog/RouteLog.jsp"
         type="edu.iu.uis.eden.routelog.web.RouteLogAction">
         <forward name="viewRouteLog" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />
-        <forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" />
+        <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
         <forward name="requiredStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
       </action>
 
       <action path="/DocHandler" name="DocHandlerForm" scope="request" parameter="methodToCall"
         type="edu.iu.uis.eden.routing.web.ClientAppDocHandlerRedirectAction" >
-        <forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" />
+        <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
         <forward name="requiredStateError" path="/WEB-INF/jsp/DocumentLocked.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/DocumentLocked.jsp"/>
       </action>

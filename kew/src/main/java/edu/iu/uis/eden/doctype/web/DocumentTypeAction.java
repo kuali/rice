@@ -108,14 +108,14 @@ public class DocumentTypeAction extends WorkflowAction {
 
 		// this code sucks and needs reworked RK
 		if (documentTypeForm.getDocId() != null) { // I'm for the dochandler
-			documentTypeForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), documentTypeForm.getDocId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), documentTypeForm.getDocId()));
 			documentTypeForm.establishVisibleActionRequestCds();
 		} else if (documentTypeForm.getDocTypeId() != null) { // I'm for the
 																// report
 			// do nothing I'm doing work in report method
 		} else { // I'm for editing and creating new
-			documentTypeForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), DOCUMENT_TYPE));
-			documentTypeForm.setDocId(documentTypeForm.getFlexDoc().getRouteHeaderId());
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), DOCUMENT_TYPE));
+			documentTypeForm.setDocId(documentTypeForm.getWorkflowDocument().getRouteHeaderId());
 			documentTypeForm.establishVisibleActionRequestCds();
 		}
 		// seems like work could all be done on the generic docId to clear up
@@ -133,7 +133,7 @@ public class DocumentTypeAction extends WorkflowAction {
 		DocumentType docType = getDocumentTypeService().findById(new Long(request.getParameter("docTypeId")));
 
 		if (docType.getRouteHeaderId() != null && docType.getRouteHeaderId().longValue() != 0) {
-			documentTypeForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docType.getRouteHeaderId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docType.getRouteHeaderId()));
 		}
 		documentTypeForm.establishVisibleActionRequestCds();
 

@@ -209,7 +209,7 @@ public class SuperUserAction extends WorkflowAction {
 
         superUserForm.setDocId(superUserForm.getRouteHeaderId());
         if (superUserForm.getDocId() != null) {
-            superUserForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
+            superUserForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
             superUserForm.establishVisibleActionRequestCds();
         }
 

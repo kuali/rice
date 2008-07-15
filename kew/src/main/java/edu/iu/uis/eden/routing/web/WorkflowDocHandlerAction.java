@@ -48,7 +48,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward blanketApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering blanketApprove() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().blanketApprove(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().blanketApprove(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.blanketApproved", request);
         LOG.info("forwarding to actionTaken from blanketApprove()");
         return mapping.findForward("actionTaken");
@@ -57,7 +57,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering approve() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().approve(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().approve(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.approved", request);
         LOG.info("forwarding to actionTaken from approve()");
         return mapping.findForward("actionTaken");
@@ -66,7 +66,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward complete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering complete() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().complete(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().complete(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.completed", request);
         LOG.info("forwarding to actionTaken from complete()");
         return mapping.findForward("actionTaken");
@@ -75,7 +75,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering disapprove() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().disapprove(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().disapprove(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.disapproved", request);
         LOG.info("forwarding to actionTaken from disapprove()");
         return mapping.findForward("actionTaken");
@@ -84,7 +84,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     /*public ActionForward returnToPreviousRouteLevel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering returnToPreviousRouteLevel method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().returnToPreviousRouteLevel(docHandlerForm.getAnnotation(), docHandlerForm.getDestRouteLevel());
+        docHandlerForm.getWorkflowDocument().returnToPreviousRouteLevel(docHandlerForm.getAnnotation(), docHandlerForm.getDestRouteLevel());
         saveDocumentActionMessage("general.routing.returnedToPreviousRouteLevel", request, docHandlerForm.getDestRouteLevel().toString());
         LOG.info("forwarding to actionTaken from returnToPreviousRouteLevel()");
         return mapping.findForward("actionTaken");
@@ -93,7 +93,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering cancel() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().cancel(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().cancel(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.canceled", request);
         LOG.info("forwarding to actionTaken from cancel()");
         return mapping.findForward("actionTaken");
@@ -102,7 +102,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward fyi(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering fyi() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().fyi();
+        docHandlerForm.getWorkflowDocument().fyi();
         saveDocumentActionMessage("general.routing.fyied", request);
         LOG.info("forwarding to actionTaken from fyi()");
         return mapping.findForward("actionTaken");
@@ -111,7 +111,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionForward acknowledge(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering acknowledge() method ...");
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.getFlexDoc().acknowledge(docHandlerForm.getAnnotation());
+        docHandlerForm.getWorkflowDocument().acknowledge(docHandlerForm.getAnnotation());
         saveDocumentActionMessage("general.routing.acknowledged", request);
         LOG.info("forwarding to actionTaken from acknowledge()");
         return mapping.findForward("actionTaken");
@@ -135,8 +135,8 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
         try {
-            WorkflowDocument flexDoc = new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docHandlerForm.getDocId());
-            docHandlerForm.setFlexDoc(flexDoc);
+            WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docHandlerForm.getDocId());
+            docHandlerForm.setWorkflowDocument(workflowDocument);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

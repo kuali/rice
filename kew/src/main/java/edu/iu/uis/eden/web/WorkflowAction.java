@@ -170,11 +170,11 @@ public abstract class WorkflowAction extends DispatchAction {
 		validateAppSpecificRoute(recipient);
 
 		try {
-			String routeNodeName = getAdHocRouteNodeName(routingForm.getFlexDoc().getRouteHeaderId());
+			String routeNodeName = getAdHocRouteNodeName(routingForm.getWorkflowDocument().getRouteHeaderId());
 			if (EdenConstants.PERSON.equals(recipient.getType())) {
-				routingForm.getFlexDoc().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdVO(recipient.getId()), "", true);
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdVO(recipient.getId()), "", true);
 			} else {
-				routingForm.getFlexDoc().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdVO(recipient.getId()), "", true);
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdVO(recipient.getId()), "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();
@@ -248,7 +248,7 @@ public abstract class WorkflowAction extends DispatchAction {
 		WorkflowRoutingForm routingForm = (WorkflowRoutingForm) form;
 		int removedIndex = new Integer(routingForm.getRemovedAppSpecificRecipient()).intValue();
 		AppSpecificRouteRecipient recipient = (AppSpecificRouteRecipient) routingForm.getAppSpecificRouteList().get(removedIndex);
-		WorkflowDocument document = routingForm.getFlexDoc();
+		WorkflowDocument document = routingForm.getWorkflowDocument();
 		List revocations = new ArrayList();
 		String[] nodeNames = document.getNodeNames();
 		for (int index = 0; index < nodeNames.length; index++) {

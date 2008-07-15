@@ -82,13 +82,13 @@ public class RemoveReplaceAction extends WorkflowAction {
 	form.setActionRequestCodes(CodeTranslator.arLabels);
 	boolean isCreating = false;
 	if (form.getDocId() != null) {
-            form.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), form.getDocId()));
+            form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), form.getDocId()));
         } else {
             // we're creating a new one if this action is being invoked without a method to call or with "start"
             isCreating = StringUtils.isEmpty(form.getMethodToCall()) || form.getMethodToCall().equals("start");
             if (isCreating) {
-        	form.setFlexDoc(createDocument());
-        	form.setDocId(form.getFlexDoc().getRouteHeaderId());
+        	form.setWorkflowDocument(createDocument());
+        	form.setDocId(form.getWorkflowDocument().getRouteHeaderId());
         	form.establishVisibleActionRequestCds();
             }
         }
@@ -471,7 +471,7 @@ public class RemoveReplaceAction extends WorkflowAction {
     public ActionForward cancel(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering cancel() method ...");
         RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
-        form.getFlexDoc().cancel("");
+        form.getWorkflowDocument().cancel("");
         saveDocumentActionMessage("general.routing.canceled", request);
         LOG.info("forwarding to actionTaken from cancel()");
         return mapping.findForward("actionTaken");

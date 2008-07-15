@@ -89,9 +89,9 @@ public class WorkgroupAction extends WorkflowAction {
         if (workgroupForm.getWorkgroup().getActiveInd() == null) {
         	workgroupForm.getWorkgroup().setActiveInd(Boolean.TRUE);
         }
-        if (workgroupForm.getFlexDoc() == null) {
-            workgroupForm.setFlexDoc(getWorkgroupRoutingService().createWorkgroupDocument(getUserSession(request), workgroupForm.getWorkgroupType()));
-            workgroupForm.setDocId(workgroupForm.getFlexDoc().getRouteHeaderId());
+        if (workgroupForm.getWorkflowDocument() == null) {
+            workgroupForm.setWorkflowDocument(getWorkgroupRoutingService().createWorkgroupDocument(getUserSession(request), workgroupForm.getWorkgroupType()));
+            workgroupForm.setDocId(workgroupForm.getWorkflowDocument().getRouteHeaderId());
             workgroupForm.establishVisibleActionRequestCds();
         }
         return mapping.findForward("basic");
@@ -276,10 +276,10 @@ public class WorkgroupAction extends WorkflowAction {
         if (IDocHandler.INITIATE_COMMAND.equalsIgnoreCase(workgroupForm.getCommand())) {
             return start(mapping, form, request, response);
         } else {
-            if (workgroupForm.getFlexDoc().stateIsInitiated() && workgroupForm.getFlexDoc().getRouteHeader().getInitiator().getWorkflowId().equals(getUserSession(request).getWorkflowUser().getWorkflowId())) {
+            if (workgroupForm.getWorkflowDocument().stateIsInitiated() && workgroupForm.getWorkflowDocument().getRouteHeader().getInitiator().getWorkflowId().equals(getUserSession(request).getWorkflowUser().getWorkflowId())) {
                 return start(mapping, form, request, response);
             }
-            //workgroupForm.getWorkgroup().setRouteHeaderId(workgroupForm.getFlexDoc().getRouteHeaderId());
+            //workgroupForm.getWorkgroup().setRouteHeaderId(workgroupForm.getWorkflowDocument().getRouteHeaderId());
             Workgroup workgroup = getWorkgroupRoutingService().findByDocumentId(workgroupForm.getDocId());
             Routable routableWorkgroup = validateWorkgroupIsRoutable(workgroup);
             if (workgroup != null) {
@@ -330,14 +330,14 @@ public class WorkgroupAction extends WorkflowAction {
         loadWorkgroupType(workgroupForm);
 
         if (workgroupForm.getDocId() != null) {
-            workgroupForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), workgroupForm.getDocId()));
+            workgroupForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), workgroupForm.getDocId()));
         }
 
         boolean typeChanged = workgroupForm.getCurrentWorkgroupType() != null && !ObjectUtils.equals(workgroupForm.getCurrentWorkgroupType(), workgroupForm.getWorkgroup().getWorkgroupType());
-        if (!workgroupForm.isReadOnly() && typeChanged && workgroupForm.getFlexDoc() != null) {
-        	workgroupForm.getFlexDoc().cancel("Workgroup Type was changed from " + renderWorkgroupTypeName(workgroupForm.getCurrentWorkgroupType()) + " to " + renderWorkgroupTypeName(workgroupForm.getWorkgroup().getWorkgroupType()));
-            workgroupForm.setFlexDoc(getWorkgroupRoutingService().createWorkgroupDocument(getUserSession(request), workgroupForm.getWorkgroupType()));
-            workgroupForm.setDocId(workgroupForm.getFlexDoc().getRouteHeaderId());
+        if (!workgroupForm.isReadOnly() && typeChanged && workgroupForm.getWorkflowDocument() != null) {
+        	workgroupForm.getWorkflowDocument().cancel("Workgroup Type was changed from " + renderWorkgroupTypeName(workgroupForm.getCurrentWorkgroupType()) + " to " + renderWorkgroupTypeName(workgroupForm.getWorkgroup().getWorkgroupType()));
+            workgroupForm.setWorkflowDocument(getWorkgroupRoutingService().createWorkgroupDocument(getUserSession(request), workgroupForm.getWorkgroupType()));
+            workgroupForm.setDocId(workgroupForm.getWorkflowDocument().getRouteHeaderId());
             workgroupForm.establishVisibleActionRequestCds();
         }
         workgroupForm.setCurrentWorkgroupType(workgroupForm.getWorkgroup().getWorkgroupType());
@@ -363,8 +363,8 @@ public class WorkgroupAction extends WorkflowAction {
             }
         }
         // determine if blanket approve is cool
-        if (workgroupForm.getFlexDoc() != null) {
-        	workgroupForm.setShowBlanketApproveButton(workgroupForm.getFlexDoc().isBlanketApproveCapable());
+        if (workgroupForm.getWorkflowDocument() != null) {
+        	workgroupForm.setShowBlanketApproveButton(workgroupForm.getWorkflowDocument().isBlanketApproveCapable());
         }
 
         initializeExtensions(workgroupForm);
@@ -381,8 +381,8 @@ public class WorkgroupAction extends WorkflowAction {
 	public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
     	WorkgroupForm workgroupForm = (WorkgroupForm)form;
     	// we only want to be able to change the workgroup type if the doc is initated (the workgroup type specifies the doc type)
-    	if (workgroupForm.getFlexDoc() != null) {
-    		workgroupForm.setWorkgroupTypeEditable(workgroupForm.getFlexDoc().stateIsInitiated());
+    	if (workgroupForm.getWorkflowDocument() != null) {
+    		workgroupForm.setWorkgroupTypeEditable(workgroupForm.getWorkflowDocument().stateIsInitiated());
     	}
         return null;
 	}

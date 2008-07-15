@@ -65,7 +65,7 @@ public class DelegateRule2Action extends WorkflowAction {
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form rule2Form = (Rule2Form) form;
         rule2Form.getRuleCreationValues().setCreating(true);
-        //createFlexDoc(request, rule2Form);
+        //createWorkflowDocument(request, rule2Form);
         return mapping.findForward("basic");
     }
 
@@ -133,8 +133,8 @@ public class DelegateRule2Action extends WorkflowAction {
             WebRuleBaseValues rule = (WebRuleBaseValues) ruleIt.next();
             rule.establishRequiredState();
         }
-        if(ruleForm.getDocId() != null && ruleForm.getFlexDoc() == null){
-            ruleForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
+        if(ruleForm.getDocId() != null && ruleForm.getWorkflowDocument() == null){
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
         }
         ruleForm.establishVisibleActionRequestCds();
         return null;
@@ -181,7 +181,7 @@ public class DelegateRule2Action extends WorkflowAction {
         }
         ruleForm.getMyRules().addRule(webRule);
         ruleForm.getRuleCreationValues().setCreating(false);
-        createFlexDoc(request, ruleForm, ruleForm.getMyRules().getRules());
+        createWorkflowDocument(request, ruleForm, ruleForm.getMyRules().getRules());
         
         ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getRuleResponsibilityId());
         
@@ -235,8 +235,8 @@ public class DelegateRule2Action extends WorkflowAction {
             ruleForm.setEditingDelegate(true);
             ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
             String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-            ruleForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
-            ruleForm.setDocId(ruleForm.getFlexDoc().getRouteHeaderId());
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();
         }
         //establishRequiredState(request, ruleForm);
@@ -301,7 +301,7 @@ public class DelegateRule2Action extends WorkflowAction {
 
         ruleForm.getRuleDelegation().setDelegationRuleBaseValues(rule);
         ruleForm.getMyRules().addRule(rule);
-        createFlexDoc(request, ruleForm, ruleForm.getMyRules().getRules());
+        createWorkflowDocument(request, ruleForm, ruleForm.getMyRules().getRules());
         ruleForm.getShowHide().append().append();
         ruleForm.setEditingDelegate(true);
         rule.establishRequiredState();
@@ -528,13 +528,13 @@ public class DelegateRule2Action extends WorkflowAction {
         return mapping.findForward("basic");
     }
 
-    private void createFlexDoc(HttpServletRequest request, Rule2Form rule2Form, List rules) throws WorkflowException {
-        if (rule2Form.getFlexDoc() == null) {
+    private void createWorkflowDocument(HttpServletRequest request, Rule2Form rule2Form, List rules) throws WorkflowException {
+        if (rule2Form.getWorkflowDocument() == null) {
             
-//            rule2Form.setFlexDoc(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
+//            rule2Form.setWorkflowDocument(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
         	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
-            rule2Form.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
-            rule2Form.setDocId(rule2Form.getFlexDoc().getRouteHeaderId());
+            rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            rule2Form.setDocId(rule2Form.getWorkflowDocument().getRouteHeaderId());
             rule2Form.establishVisibleActionRequestCds();
         }
     }

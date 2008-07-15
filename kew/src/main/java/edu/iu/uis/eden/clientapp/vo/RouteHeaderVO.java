@@ -50,7 +50,7 @@ public class RouteHeaderVO implements Serializable {
     //private String docContent;
     private String docTitle;
     private String appDocId;
-    private String overrideInd;
+//    private String overrideInd;
     private UserVO initiator;
     private UserVO routedByUser;
     private Integer docRouteLevel;
@@ -202,7 +202,7 @@ public class RouteHeaderVO implements Serializable {
     public void setRoutedByUser(UserVO routedByUser) {
         this.routedByUser = routedByUser;
     }
-
+/*
     public String getOverrideInd() {
         return overrideInd;
     }
@@ -210,7 +210,7 @@ public class RouteHeaderVO implements Serializable {
     public void setOverrideInd(String overrideInd) {
         this.overrideInd = overrideInd;
     }
-
+*/
     public Long getRouteHeaderId() {
         return routeHeaderId;
     }

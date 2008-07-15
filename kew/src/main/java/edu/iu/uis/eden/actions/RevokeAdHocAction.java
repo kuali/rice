@@ -79,7 +79,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
     	MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         String errorMessage = validateActionRules();

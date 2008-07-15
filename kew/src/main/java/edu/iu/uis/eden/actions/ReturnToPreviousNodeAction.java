@@ -212,7 +212,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+ //       checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 

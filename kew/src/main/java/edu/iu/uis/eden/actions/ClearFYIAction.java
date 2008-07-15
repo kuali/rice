@@ -126,7 +126,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+    //    checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Clear FYI for document : " + annotation);

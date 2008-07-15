@@ -81,7 +81,7 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
 	MDC.put("docId", getRouteHeader().getRouteHeaderId());
-	checkLocking();
+//	checkLocking();
 	LOG.debug("Checking to see if the action is legal");
 	/* Code below for variable 'checkIfActionIsValid' is used to identify when the 
 	 * DocumentRouteHeaderValue 'legal actions' should be checked for the current

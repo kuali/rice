@@ -101,7 +101,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+    //    checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 

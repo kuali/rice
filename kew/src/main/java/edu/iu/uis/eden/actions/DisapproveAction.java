@@ -125,7 +125,7 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+   //     checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Disapproving document : " + annotation);

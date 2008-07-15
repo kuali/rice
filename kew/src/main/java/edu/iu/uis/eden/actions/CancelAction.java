@@ -109,7 +109,7 @@ public class CancelAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Canceling document : " + annotation);

@@ -87,7 +87,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      */
     public void recordAction() throws edu.iu.uis.eden.exception.InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+  //      checkLocking();
         updateSearchableAttributesIfPossible();
 //        if (routeHeader.getDocumentType().getInitiatorMustRoutePolicy().getPolicyValue().booleanValue()) {
 //            super.recordAction();

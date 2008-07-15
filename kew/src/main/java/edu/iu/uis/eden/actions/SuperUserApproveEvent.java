@@ -66,7 +66,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         // it causes an optimistic lock
 		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));
 
-		checkLocking();
+	//	checkLocking();
 
 		DocumentType docType = getRouteHeader().getDocumentType();
 

@@ -132,7 +132,7 @@ public class CompleteAction extends ActionTakenEvent {
      */
     public void recordAction() throws edu.iu.uis.eden.exception.InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+   //     checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);
 

@@ -137,7 +137,7 @@ public class ApproveAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+   //     checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Approving document : " + annotation);
 

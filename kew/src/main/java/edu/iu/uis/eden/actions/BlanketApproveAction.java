@@ -134,7 +134,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-        checkLocking();
+   //     checkLocking();
         updateSearchableAttributesIfPossible();
 
         List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);

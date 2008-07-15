@@ -42,7 +42,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 public class WorkflowRoutingForm extends ActionForm {
 
 	private static final long serialVersionUID = -3537002710069757806L;
-	private WorkflowDocument flexDoc;
+	private WorkflowDocument workflowDocument;
     private Long docId;
     private String docTypeName;
     private String initiateURL;
@@ -143,16 +143,16 @@ public class WorkflowRoutingForm extends ActionForm {
         this.docId = docId;
     }
     /**
-     * @return Returns the flexDoc.
+     * @return Returns the workflowDocument.
      */
-    public WorkflowDocument getFlexDoc() {
-        return flexDoc;
+    public WorkflowDocument getWorkflowDocument() {
+        return workflowDocument;
     }
     /**
-     * @param flexDoc The flexDoc to set.
+     * @param workflowDocument The workflowDocument to set.
      */
-    public void setFlexDoc(WorkflowDocument flexDoc) {
-        this.flexDoc = flexDoc;
+    public void setWorkflowDocument(WorkflowDocument workflowDocument) {
+        this.workflowDocument = workflowDocument;
     }
     /**
      * @return Returns the previousRouteLevels.
@@ -254,21 +254,21 @@ public class WorkflowRoutingForm extends ActionForm {
 
     public void establishVisibleActionRequestCds(){
     	try {
-	        if(getFlexDoc() != null){
-		    	Long docId = flexDoc.getRouteHeaderId();
+	        if(getWorkflowDocument() != null){
+		    	Long docId = workflowDocument.getRouteHeaderId();
 		    	Workgroup suWorkgroup = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId).getDocumentType().getSuperUserWorkgroup();
-		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(flexDoc.getUserId());
+		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(workflowDocument.getUserId());
 		    	boolean isSuperUser = (suWorkgroup == null ? false : suWorkgroup.hasMember(docUser));
 		    	if (isSuperUser){
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
-		    	}else if(flexDoc.isFYIRequested()){
+		    	}else if(workflowDocument.isFYIRequested()){
 	                appSpecificRouteActionRequestCds.clear();
 	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-	            } else if (flexDoc.isAcknowledgeRequested()){
+	            } else if (workflowDocument.isAcknowledgeRequested()){
 	                appSpecificRouteActionRequestCds.clear();
 	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
 	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-	            } else if(flexDoc.isApprovalRequested() || flexDoc.isCompletionRequested() || flexDoc.stateIsInitiated()){
+	            } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.stateIsInitiated()){
 	                appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 	            }
 	        }

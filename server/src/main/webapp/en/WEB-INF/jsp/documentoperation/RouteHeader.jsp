@@ -87,14 +87,14 @@
 	  	    <td width="33%" align=right class="thnormal">Application Doc ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.appDocId"/></td>
 	  	  </tr> 	  
-	  	  <tr>
+	  	  <!--tr>
 	  	    <td width="33%" align=right class="thnormal">Override Indicator:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.overrideInd"/></td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Lock Code:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.lockCode"/></td>
-	  	  </tr>
+	  	  </tr-->
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Doc Content:</td>
 	  	    <td width="66%" class="datacell"><html-el:textarea cols="120" rows="5" property="routeHeader.docContent"/></td>

@@ -335,7 +335,7 @@ public class BeanConverter {
         routeHeaderVO.setDocVersion(routeHeader.getDocVersion());
         routeHeaderVO.setInitiator(convertUser(routeHeader.getInitiatorUser()));
         routeHeaderVO.setRoutedByUser(convertUser(routeHeader.getRoutedByUser()));
-        routeHeaderVO.setOverrideInd(routeHeader.getOverrideInd());
+   //     routeHeaderVO.setOverrideInd(routeHeader.getOverrideInd());
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
@@ -390,7 +390,7 @@ public class BeanConverter {
         if (routeHeaderVO.getRoutedByUser() != null) {
             routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByUser().getWorkflowId());
         }
-        routeHeader.setOverrideInd(routeHeaderVO.getOverrideInd());
+     //   routeHeader.setOverrideInd(routeHeaderVO.getOverrideInd());
         routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
         routeHeader.setStatusModDate(Utilities.convertCalendar(routeHeaderVO.getDateLastModified()));
 

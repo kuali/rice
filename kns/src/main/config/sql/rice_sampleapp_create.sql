@@ -1,4 +1,4 @@
--- Tue Jul 15 13:03:18 IST 2008
+-- Wed Jul 16 11:58:26 IST 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice bootstrap sql from rice_db_bootstrap.sql
 -- As well as sample data contributed by modules and the rice_sample_create.sql
@@ -516,8 +516,6 @@ CREATE TABLE EN_DOC_HDR_T (
 	DOC_APPL_DOC_ID			VARCHAR2(20) NULL,
 	DOC_VER_NBR			    NUMBER(8) NOT NULL,
 	DOC_INITR_PRSN_EN_ID    VARCHAR2(30) NOT NULL,
---	DOC_OVRD_IND			NUMBER(1) DEFAULT 0,
---	DOC_LOCK_CD				CHAR(1) NULL,
 	DB_LOCK_VER_NBR			NUMBER(8) DEFAULT 0,
 	DOC_RTE_USR_PRSN_EN_ID  VARCHAR2(30) NULL,
     DTYPE                   VARCHAR2(50),

@@ -453,7 +453,7 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     }
 
     /**
-     * @return FlexDoc for this form's document
+     * @return WorkflowDocument for this form's document
      */
     public KualiWorkflowDocument getWorkflowDocument() {
         return getDocument().getDocumentHeader().getWorkflowDocument();

@@ -21,7 +21,7 @@
 	      <img alt="Route Log for Document" src="images/my_route_log.gif"/></a></c:if>
 	    </td>
 	  </c:if>
-	  <td class="datacell"><c:out value="${DocumentTypeForm.flexDoc.routeHeaderId}" />&nbsp;<c:if test="${DocumentTypeForm.flexDoc.routeHeaderId != null && DocumentTypeForm.flexDoc.routeHeaderId != 0}"><a href="<c:url value="RouteLog.do" ><c:param name="routeHeaderId" value="${DocumentTypeForm.flexDoc.routeHeaderId}"/></c:url>">
+	  <td class="datacell"><c:out value="${DocumentTypeForm.workflowDocument.routeHeaderId}" />&nbsp;<c:if test="${DocumentTypeForm.workflowDocument.routeHeaderId != null && DocumentTypeForm.workflowDocument.routeHeaderId != 0}"><a href="<c:url value="RouteLog.do" ><c:param name="routeHeaderId" value="${DocumentTypeForm.workflowDocument.routeHeaderId}"/></c:url>">
 	    <img alt="Route Log for Document" src="images/my_route_log.gif"/></a></c:if>
 	  </td>
 	</tr>

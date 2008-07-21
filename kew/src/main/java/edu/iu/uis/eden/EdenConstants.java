@@ -731,7 +731,6 @@ public class EdenConstants extends JSTLConstants {
     public static final String ATTRIBUTE_CONTENT_ELEMENT = "attributeContent";
     public static final String SEARCHABLE_CONTENT_ELEMENT = "searchableContent";
     public static final String APPLICATION_CONTENT_ELEMENT = "applicationContent";
-    public static final String FLEXDOC_ELEMENT = "workflowDocument";
     public static final String DEFAULT_DOCUMENT_CONTENT = "<"+DOCUMENT_CONTENT_ELEMENT+"/>";
     public static final String DEFAULT_DOCUMENT_CONTENT2 = "<"+DOCUMENT_CONTENT_ELEMENT+"></"+DOCUMENT_CONTENT_ELEMENT+">";
 

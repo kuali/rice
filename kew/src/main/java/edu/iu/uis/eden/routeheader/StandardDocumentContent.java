@@ -49,6 +49,8 @@ import edu.iu.uis.eden.util.Utilities;
 public class StandardDocumentContent implements DocumentContent, Serializable {
 
 	private static final long serialVersionUID = -3189330007364191220L;
+	
+	private static final String LEGACY_FLEXDOC_ELEMENT = "flexdoc";
 
 	private String docContent;
 
@@ -100,7 +102,7 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 		if (!document.getDocumentElement().getNodeName().equals(EdenConstants.DOCUMENT_CONTENT_ELEMENT)) {
 			// if the root element is the flexdoc element (pre Workflow 2.0)
 			// then designate that as attribute content
-			if (document.getDocumentElement().getNodeName().equals(EdenConstants.FLEXDOC_ELEMENT)) {
+			if (document.getDocumentElement().getNodeName().equals(LEGACY_FLEXDOC_ELEMENT)) {
 				attributeContent = document.getDocumentElement();
 			} else {
 				applicationContent = document.getDocumentElement();

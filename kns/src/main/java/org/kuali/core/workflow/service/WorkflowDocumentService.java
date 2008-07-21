@@ -37,11 +37,11 @@ public interface WorkflowDocumentService {
 
 
     /**
-     * Given a documentTypeId and workflowUser, returns a new FlexDoc from the workflow server.
+     * Given a documentTypeId and workflowUser, returns a new workflowDocument from the workflow server.
      * 
      * @param documentTypeId
      * @param workflowUser
-     * @return newly-created FlexDoc instance
+     * @return newly-created workflowDocument instance
      * @throws IllegalArgumentException if the given documentTypeId is blank
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      * @throws ResourceUnavailableException
@@ -51,7 +51,7 @@ public interface WorkflowDocumentService {
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, UniversalUser workflowUser) throws WorkflowException;
 
     /**
-     * Given a documentHeaderId and workflowUser, retrieves the FlexDoc associated with that documentHeaderId from the workflow
+     * Given a documentHeaderId and workflowUser, retrieves the workflowDocument associated with that documentHeaderId from the workflow
      * server.
      * 
      * @param documentHeaderId
@@ -69,7 +69,7 @@ public interface WorkflowDocumentService {
      * document corresponding to this action taken.  If the KualiWorkflowDocument.saveDocument() method is not valid to be called the system 
      * will instead call the method {@link WorkflowDocumentService#saveRoutingData(KualiWorkflowDocument)}
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @throws WorkflowException
      */
@@ -84,11 +84,11 @@ public interface WorkflowDocumentService {
     public void saveRoutingData(KualiWorkflowDocument workflowDocument) throws WorkflowException;
 
     /**
-     * route this flexDoc optionally providing an annotation for this action taken which will show up in the route log for this
+     * route this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for this
      * document corresponding to this action taken, and additionally optionally providing a list of ad hoc recipients for the
      * document
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws EdenException
@@ -96,11 +96,11 @@ public interface WorkflowDocumentService {
     public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
     /**
-     * approve this flexdoc optionally providing an annotation for this action taken which will show up in the route log for this
+     * approve this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for this
      * document corresponding to this action taken, and additionally optionally providing a list of ad hoc recipients for the
      * document
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws EdenException
@@ -108,10 +108,10 @@ public interface WorkflowDocumentService {
     public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
     /**
-     * super user approve this flexdoc optionally providing an annotation for this action taken which will show up in the route log
+     * super user approve this workflowDocument optionally providing an annotation for this action taken which will show up in the route log
      * for this document corresponding to this action taken
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws EdenException
@@ -119,7 +119,7 @@ public interface WorkflowDocumentService {
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
-     * super user cancel this flexdoc optionally providing an annotation for this action taken which will show up in the route log
+     * super user cancel this workflowDocument optionally providing an annotation for this action taken which will show up in the route log
      * for this document corresponding to this action taken
      * 
      * @param workflowDocument
@@ -129,7 +129,7 @@ public interface WorkflowDocumentService {
     public void superUserCancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
-     * super user disapprove this flexdoc optionally providing an annotation for this action taken which will show up in the route log
+     * super user disapprove this workflowDocument optionally providing an annotation for this action taken which will show up in the route log
      * for this document corresponding to this action taken
      * 
      * @param workflowDocument
@@ -139,32 +139,32 @@ public interface WorkflowDocumentService {
     public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
-     * disapprove this flexDoc optionally providing an annotation for this action taken which will show up in the route log for this
+     * disapprove this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for this
      * document corresponding to this action taken
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @throws EdenException
      */
     public void disapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
-     * cancel this flexDoc optionally providing an annotation for this action taken which will show up in the route log for this
+     * cancel this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for this
      * document corresponding to this action taken
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @throws EdenException
      */
     public void cancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
-     * acknowledge this flexDoc optionally providing an annotation for this action taken which will show up in the route log for
+     * acknowledge this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for
      * this document corresponding to this action taken, additionally optionally providing a list of ad hoc recipients for this
      * document which should be restricted to actions requested of acknowledge or fyi as all other action request types will be
      * discarded
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws EdenException
@@ -177,7 +177,7 @@ public interface WorkflowDocumentService {
      * this document which should be restricted to actions requested of acknowledge or fyi as all other action request types will be
      * discarded.
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws EdenException
@@ -188,7 +188,7 @@ public interface WorkflowDocumentService {
      * clear the fyi request for this document, optinoally providing a list of ad hoc recipients for this document which should be
      * restricted to actions requested of fyi as all other action request types will be discarded
      * 
-     * @param flexDoc
+     * @param workflowDocument
      * @param adHocRecipients
      * @throws EdenException
      */

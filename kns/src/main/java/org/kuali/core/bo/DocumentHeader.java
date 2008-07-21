@@ -81,11 +81,11 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 
     /**
      * 
-     * @return flexdoc
+     * @return workflowDocument
      */
     public KualiWorkflowDocument getWorkflowDocument() {
         if (workflowDocument == null) {
-            throw new RuntimeException("transient FlexDoc is null - this should never happen");
+            throw new RuntimeException("transient workflowDocument is null - this should never happen");
         }
 
         return workflowDocument;

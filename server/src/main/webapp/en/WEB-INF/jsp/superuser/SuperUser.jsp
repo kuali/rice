@@ -66,7 +66,7 @@
       <html-el:form method="post" action="/SuperUser.do">
       <html-el:hidden property="methodToCall" />
       <html-el:hidden property="routeHeaderId" value="${SuperUserForm.routeHeader.routeHeaderId}" />
-	  <html-el:hidden property="docId" value="${SuperUserForm.flexDoc.routeHeaderId}" />
+	  <html-el:hidden property="docId" value="${SuperUserForm.workflowDocument.routeHeaderId}" />
 	  <html-el:hidden property="lookupableImplServiceName" />
   	  <html-el:hidden property="lookupType" />
 

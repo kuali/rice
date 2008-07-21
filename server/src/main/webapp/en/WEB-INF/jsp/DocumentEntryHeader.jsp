@@ -15,26 +15,26 @@
           <td align=left nowrap class="th1">
             <div align=right>Document Type Name:</div>
           </td>
-          <td nowrap class="datacell1"><c:out value="${ActionForm.flexDoc.documentType}" /></td>
+          <td nowrap class="datacell1"><c:out value="${ActionForm.workflowDocument.documentType}" /></td>
         </tr>
         <tr>
           <td align=left nowrap class="thnormal">
             <div align=right>Create Date:</div>
           </td>
-          <td nowrap class="datacell1"><fmt:formatDate value="${ActionForm.flexDoc.dateCreated}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+          <td nowrap class="datacell1"><fmt:formatDate value="${ActionForm.workflowDocument.dateCreated}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
         </tr>
         <tr>
           <td align=left nowrap class="thnormal">
             <div align=right>Document ID:</div>
           </td>
-          <td nowrap class="datacell1"><nobr><a href="RouteLog.do?docId=<c:out value="${ActionForm.flexDoc.routeHeaderId}"/>"><c:out value="${ActionForm.flexDoc.routeHeaderId}"/></a></nobr></td>
+          <td nowrap class="datacell1"><nobr><a href="RouteLog.do?docId=<c:out value="${ActionForm.workflowDocument.routeHeaderId}"/>"><c:out value="${ActionForm.workflowDocument.routeHeaderId}"/></a></nobr></td>
         </tr>
         <tr>
           <td align=left nowrap class="th2">
             <div align=right>Document Status:</div>
           </td>
           <td width=50 nowrap class="datacell2">
-            <c:out value="${ActionForm.flexDoc.statusDisplayValue}"/>
+            <c:out value="${ActionForm.workflowDocument.statusDisplayValue}"/>
           </td>
         </tr>
       </table>

@@ -568,29 +568,29 @@ public class RuleServiceImpl implements RuleService {
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("RuleBaseValues validation errors", errors);
         }
-        WorkflowDocument flexDoc = null;
+        WorkflowDocument workflowDocument = null;
         if (routeHeaderId == null) {
-            flexDoc = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(myRules.getRules()));
+            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(myRules.getRules()));
         } else {
-            flexDoc = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
         }
 
         for (Iterator iter = myRules.getRules().iterator(); iter.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iter.next();
-            rule.setRouteHeaderId(flexDoc.getRouteHeaderId());
+            rule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
 
-            flexDoc.addAttributeDefinition(new RuleRoutingDefinition(rule.getDocTypeName()));
+            workflowDocument.addAttributeDefinition(new RuleRoutingDefinition(rule.getDocTypeName()));
             getRuleDAO().retrieveAllReferences(rule);
             save2(rule);
         }
 
-        flexDoc.setTitle(generateTitle(myRules));
+        workflowDocument.setTitle(generateTitle(myRules));
         if (blanketApprove) {
-            flexDoc.blanketApprove(annotation);
+            workflowDocument.blanketApprove(annotation);
         } else {
-            flexDoc.routeDocument(annotation);
+            workflowDocument.routeDocument(annotation);
         }
-        return flexDoc.getRouteHeaderId();
+        return workflowDocument.getRouteHeaderId();
     }
 
     public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception {
@@ -632,29 +632,29 @@ public class RuleServiceImpl implements RuleService {
             //save2(parentRule, null, true);
         }
 
-        WorkflowDocument flexDoc = null;
+        WorkflowDocument workflowDocument = null;
         if (routeHeaderId != null) {
-            flexDoc = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            flexDoc = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(rules));
+            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(rules));
         }
-        flexDoc.setTitle(generateTitle(parentRule, delegateRule));
-        delegateRule.setRouteHeaderId(flexDoc.getRouteHeaderId());
-        flexDoc.addAttributeDefinition(new RuleRoutingDefinition(parentRule.getDocTypeName()));
+        workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
+        delegateRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
+        workflowDocument.addAttributeDefinition(new RuleRoutingDefinition(parentRule.getDocTypeName()));
         getRuleDAO().save(delegateRule);
         if (isRoutingParent) {
-            parentRule.setRouteHeaderId(flexDoc.getRouteHeaderId());
+            parentRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
             getRuleDAO().save(parentRule);
         }
         if (blanketApprove) {
-            flexDoc.blanketApprove(annotation);
+            workflowDocument.blanketApprove(annotation);
         } else {
-            flexDoc.routeDocument(annotation);
+            workflowDocument.routeDocument(annotation);
         }
-        return flexDoc.getRouteHeaderId();
+        return workflowDocument.getRouteHeaderId();
     }
 
     /**

@@ -460,12 +460,12 @@ public class DocumentOperationAction extends WorkflowAction {
 		}
 
 
-		WorkflowDocument flexDoc = new WorkflowDocument(new NetworkIdVO(getUserSession(request).getWorkflowUser().getAuthenticationUserId().getAuthenticationId()), new Long(docForm.getRouteHeaderId()));
+		WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(getUserSession(request).getWorkflowUser().getAuthenticationUserId().getAuthenticationId()), new Long(docForm.getRouteHeaderId()));
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;
 		}
-		flexDoc.logDocumentAction(annotation);
+		workflowDocument.logDocumentAction(annotation);
 
 		ActionMessages messages = new ActionMessages();
 		String forward = null;

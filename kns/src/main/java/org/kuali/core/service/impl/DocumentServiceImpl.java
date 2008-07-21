@@ -636,15 +636,15 @@ public class DocumentServiceImpl implements DocumentService {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         
-        // make sure we push the document title into the FlexDoc
+        // make sure we push the document title into the workflowDocument
         populateDocumentTitle(document);
 
-        // make sure we push the application document id into the FlexDoc
+        // make sure we push the application document id into the workflowDocument
         populateApplicationDocumentId(document);
     }
 
     /**
-     * This method will grab the generated document title from the document and add it to the FlexDoc so that it gets pushed into
+     * This method will grab the generated document title from the document and add it to the workflowDocument so that it gets pushed into
      * workflow when routed.
      * 
      * @param document
@@ -658,7 +658,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * This method will grab the organization document number from the document and add it to the FlexDoc so that it gets pushed
+     * This method will grab the organization document number from the document and add it to the workflowDocument so that it gets pushed
      * into workflow when routed.
      * 
      * @param document

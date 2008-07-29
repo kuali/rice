@@ -70,6 +70,9 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.preferencesservice.pagesize.wholenum";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
     public static final String USE_OUT_BOX = "USE_OUT_BOX";
+    private static final String COLUMN_LAST_APPROVED_DATE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
+    public static final String COLUMN_CURRENT_NODE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
+    
 
     public Preferences getPreferences(WorkflowUser user) {
         LOG.debug("start preferences fetch user " + user);
@@ -100,6 +103,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user, preferences).getOptionVal());
+        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         
         if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
             preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    
@@ -124,7 +129,7 @@ public class PreferencesServiceImpl implements PreferencesService {
             option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
             option.setOptionId(optionKey);
             option.setOptionVal(defaultValue);
-            preferences.setRequiresSave(true);
+            preferences.setRequiresSave(true);            
         }
         LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         return option;
@@ -160,6 +165,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionSrv.save(user, EMAIL_NOTIFY_PRIMARY_KEY, preferences.getNotifyPrimaryDelegation());
         optionSrv.save(user, EMAIL_NOTIFY_SECONDARY_KEY, preferences.getNotifySecondaryDelegation());
         optionSrv.save(user, DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
+        optionSrv.save(user, COLUMN_LAST_APPROVED_DATE_KEY, preferences.getShowDateApproved());
+        optionSrv.save(user, COLUMN_CURRENT_NODE_KEY, preferences.getShowCurrentNode());
         if (Core.getCurrentContextConfig().getOutBoxOn()) {
             optionSrv.save(user, USE_OUT_BOX, preferences.getUseOutbox());
         }

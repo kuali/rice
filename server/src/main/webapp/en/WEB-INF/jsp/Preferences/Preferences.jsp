@@ -131,7 +131,18 @@
           		No <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
-
+		<tr>
+          <td class="thnormal">Date Approved</td>
+          <td class="datacell">Yes <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_YES_VAL }"/>
+          		No <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_NO_VAL }"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="thnormal">Current Route Node(s)</td>
+			<td class="datacell">Yes <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_YES_VAL }"/>
+          		No <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_NO_VAL }"/>
+          </td>
+        </tr>
         <tr>
           <td class="thnormal">WorkGroup Request</td>
 			<td class="datacell">Yes <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_YES_VAL }"/>

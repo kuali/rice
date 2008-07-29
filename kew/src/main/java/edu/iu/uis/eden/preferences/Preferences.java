@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.preferences;
 
 import java.io.Serializable;
-
 import edu.iu.uis.eden.EdenConstants;
 
 /**
@@ -61,7 +60,9 @@ public class Preferences implements Serializable {
     private String colorCanceled;
     private String delegatorFilter;
     private String useOutbox;
-    
+    private String showDateApproved;
+    private String showCurrentNode;
+ 
     /**
      * @return Returns the colorApproved.
      */
@@ -374,4 +375,28 @@ public class Preferences implements Serializable {
     public void setRequiresSave(boolean requiresSave) {
         this.requiresSave = requiresSave;
     }
+	/**
+	 * @return the showDateApproved
+	 */
+	public String getShowDateApproved() {
+		return this.showDateApproved;
+	}
+	/**
+	 * @param showDateApproved the showDateApproved to set
+	 */
+	public void setShowDateApproved(String showDateApproved) {
+		this.showDateApproved = showDateApproved;
+	}
+	/**
+	 * @return the showCurrentNode
+	 */
+	public String getShowCurrentNode() {
+		return this.showCurrentNode;
+	}
+	/**
+	 * @param currentNodes the currentNodes to set
+	 */
+	public void setShowCurrentNode(String currentNode) {
+		this.showCurrentNode = currentNode;
+	}
 }

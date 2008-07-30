@@ -57,4 +57,6 @@ public interface ActionTakenService {
     public void validateActionTaken(ActionTakenValue actionTaken);
 
     public boolean hasUserTakenAction(WorkflowUser user, Long documentId);
+    
+    public String getLastApprovedDate(Long routeHeaderId);
 }

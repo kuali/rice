@@ -212,7 +212,9 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
-
+        actionItem.setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(actionRequest.getRouteHeaderId()));
+        actionItem.setCurrentNodes(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(actionRequest.getRouteHeaderId()));
+        
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
             actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
@@ -307,7 +309,7 @@ public class ActionListServiceImpl implements ActionListService {
     public WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
     }
-
+    
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {
         this.actionItemDAO = actionItemDAO;
     }

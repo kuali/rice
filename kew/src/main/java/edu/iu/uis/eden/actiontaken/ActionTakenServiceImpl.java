@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.actiontaken;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,6 +33,8 @@ import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
+import edu.iu.uis.eden.web.KeyValue;
+import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
@@ -183,4 +186,20 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     private UserService getUserService() {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
+    
+    public String getLastApprovedDate(Long routeHeaderId)
+    {
+    	String dateLastApproved=null;
+    	List actionsTaken=(List)getActionsTaken(routeHeaderId);
+    	for (Iterator iter = actionsTaken.iterator(); iter.hasNext();) {
+    		ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
+			if (actionTaken.getActionTaken()=="A")
+			{
+				dateLastApproved=actionTaken.getActionDateString();
+			}
+		}
+    	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);	
+    	return dateLastApproved;
+    }
+        
 }

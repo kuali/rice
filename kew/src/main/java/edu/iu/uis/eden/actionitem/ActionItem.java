@@ -18,6 +18,7 @@ package edu.iu.uis.eden.actionitem;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -114,7 +115,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
     private String dtype = "ActionItem";
-
+    @Transient
+    private String lastApprovedDate; 
+    @Transient
+    private List currentNodes; 
     private Workgroup getWorkgroup(Long workgroupId) {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
@@ -381,6 +385,36 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
                                         .append("delegationType", delegationType)
                                         .append("actionItemIndex", actionItemIndex)
                                         .append("customActions", customActions)
+                                        .append("lastApprovedDate", lastApprovedDate)
+                                        .append("currentNodes", currentNodes)
                                         .toString();
     }
+
+	/**
+	 * @return the lastApprovedDate
+	 */
+	public String getLastApprovedDate() {
+		return this.lastApprovedDate;
+	}
+
+	/**
+	 * @param lastApprovedDate the lastApprovedDate to set
+	 */
+	public void setLastApprovedDate(String lastApprovedDate) {
+		this.lastApprovedDate = lastApprovedDate;
+	}
+
+	/**
+	 * @return the currentNodes
+	 */
+	public List getCurrentNodes() {
+		return this.currentNodes;
+	}
+
+	/**
+	 * @param currentNodes the currentNodes to set
+	 */
+	public void setCurrentNodes(List currentNodes) {
+		this.currentNodes = currentNodes;
+	}
 }

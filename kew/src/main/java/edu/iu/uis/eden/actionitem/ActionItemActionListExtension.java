@@ -21,10 +21,12 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
@@ -80,7 +82,7 @@ public class ActionItemActionListExtension extends ActionItem {
         return delegatorName;
     }
     
-    public void initialize() throws WorkflowException {
+    public void initialize(Preferences preferences) throws WorkflowException {
     	if (isInitialized) {
     		return;
     	}
@@ -98,6 +100,9 @@ public class ActionItemActionListExtension extends ActionItem {
             if (delegatorWorkgroup != null) {
                 delegatorName = delegatorWorkgroup.getGroupNameId().getNameId();
             }
+        }
+        if (EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
+        	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getRouteHeaderId()));
         }
         isInitialized = true;
     }

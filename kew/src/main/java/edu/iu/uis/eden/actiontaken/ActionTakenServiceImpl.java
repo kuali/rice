@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.actiontaken;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -187,16 +188,16 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
     
-    public String getLastApprovedDate(Long routeHeaderId)
+    public Timestamp getLastApprovedDate(Long routeHeaderId)
     {
-    	String dateLastApproved=null;
-    	List actionsTaken=(List)getActionsTaken(routeHeaderId);
+    	Timestamp dateLastApproved = null;
+    	List actionsTaken=(List)getActionTakenDAO().findByDocIdAndAction(routeHeaderId, EdenConstants.ACTION_TAKEN_APPROVED_CD);
     	for (Iterator iter = actionsTaken.iterator(); iter.hasNext();) {
     		ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-			if (actionTaken.getActionTaken()=="A")
-			{
-				dateLastApproved=actionTaken.getActionDateString();
-			}
+    		// search for the most recent approval action
+    		if (dateLastApproved == null || dateLastApproved.compareTo(actionTaken.getActionDate()) <= -1) {
+    			dateLastApproved = actionTaken.getActionDate();
+    		}
 		}
     	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);	
     	return dateLastApproved;

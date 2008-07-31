@@ -116,9 +116,8 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
     private String dtype = "ActionItem";
     @Transient
-    private String lastApprovedDate; 
-    @Transient
-    private List currentNodes; 
+    private Timestamp lastApprovedDate; 
+
     private Workgroup getWorkgroup(Long workgroupId) {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
@@ -386,35 +385,21 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
                                         .append("actionItemIndex", actionItemIndex)
                                         .append("customActions", customActions)
                                         .append("lastApprovedDate", lastApprovedDate)
-                                        .append("currentNodes", currentNodes)
                                         .toString();
     }
 
 	/**
 	 * @return the lastApprovedDate
 	 */
-	public String getLastApprovedDate() {
+	public Timestamp getLastApprovedDate() {
 		return this.lastApprovedDate;
 	}
 
 	/**
 	 * @param lastApprovedDate the lastApprovedDate to set
 	 */
-	public void setLastApprovedDate(String lastApprovedDate) {
+	public void setLastApprovedDate(Timestamp lastApprovedDate) {
 		this.lastApprovedDate = lastApprovedDate;
 	}
 
-	/**
-	 * @return the currentNodes
-	 */
-	public List getCurrentNodes() {
-		return this.currentNodes;
-	}
-
-	/**
-	 * @param currentNodes the currentNodes to set
-	 */
-	public void setCurrentNodes(List currentNodes) {
-		this.currentNodes = currentNodes;
-	}
 }

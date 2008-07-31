@@ -320,7 +320,7 @@ public class ActionListAction extends WorkflowAction {
     			continue;
     		}
     		try {
-    			actionItem.initialize();
+    			actionItem.initialize(preferences);
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
     			routeHeaderExtension.setActionListInitiatorUser(routeHeaderExtension.getInitiatorUser());
     			actionItem.setActionItemIndex(new Integer(index));

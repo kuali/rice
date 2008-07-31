@@ -103,8 +103,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user, preferences).getOptionVal());
-        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         
         if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
             preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    

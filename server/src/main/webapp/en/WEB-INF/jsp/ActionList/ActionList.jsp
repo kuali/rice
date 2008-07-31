@@ -279,8 +279,8 @@
   	</display-el:column>
   </c:if>
   <c:if test="${preferences.showDateApproved == Constants.PREFERENCES_YES_VAL}">
-  	<display-el:column sortable="true" title="${dateApprovedLabel}" sortProperty="routeHeader.createDate" class="display-column">
-  		<fmt:formatDate value="${result.routeHeader.approvedDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
+  	<display-el:column sortable="true" title="${dateApprovedLabel}" sortProperty="lastApprovedDate" class="display-column">
+  		<fmt:formatDate value="${result.lastApprovedDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
   	</display-el:column>
   </c:if>
 
@@ -303,21 +303,9 @@
   </c:if>
   
   <c:if test="${preferences.showCurrentNode == Constants.PREFERENCES_YES_VAL}">
-  	<display-el:column sortable="true" title="${currentRouteNodesLabel}" sortProperty="workgroup.groupNameId.nameId" class="display-column">
-  		<c:choose>
-  			<c:when test="${result.workgroupId != null && result.workgroupId != 0}">
-  			  <a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                      <c:param name="workgroupId" value="${result.workgroup.workflowGroupId.groupId}"/>
-                      <c:param name="methodToCall" value="report"/>
-                      <c:param name="showEdit" value="no"/>
-                    </c:url>" target="_blank"><c:out value="${result.workgroup.groupNameId.nameId}"/>
-              </a>
-  			</c:when>
-  			<c:otherwise>
-  				&nbsp;
-  			</c:otherwise>
-  		</c:choose>
-	</display-el:column>
+    <display-el:column sortable="true" title="${currentRouteNodesLabel}" sortProperty="routeHeader.currentRouteLevelName" class="display-column">
+    	<c:out value="${result.routeHeader.currentRouteLevelName}"/>&nbsp;
+    </display-el:column>
   </c:if>
 
   <c:if test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListUser == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">

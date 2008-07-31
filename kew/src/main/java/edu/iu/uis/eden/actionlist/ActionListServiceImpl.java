@@ -212,8 +212,6 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
-        actionItem.setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(actionRequest.getRouteHeaderId()));
-        actionItem.setCurrentNodes(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(actionRequest.getRouteHeaderId()));
         
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {

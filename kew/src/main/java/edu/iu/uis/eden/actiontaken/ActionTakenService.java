@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.actiontaken;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -58,5 +59,5 @@ public interface ActionTakenService {
 
     public boolean hasUserTakenAction(WorkflowUser user, Long documentId);
     
-    public String getLastApprovedDate(Long routeHeaderId);
+    public Timestamp getLastApprovedDate(Long routeHeaderId);
 }

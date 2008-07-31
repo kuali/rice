@@ -31,6 +31,7 @@ public class KeyValueVO implements Serializable {
 
     private String key;
     private String value;
+    private String userDisplayValue;
 
     public KeyValueVO() {
         super();
@@ -40,6 +41,11 @@ public class KeyValueVO implements Serializable {
         super();
         this.key = key;
         this.value = value;
+    }
+
+    public KeyValueVO(String key, String value, String userDisplayValue) {
+    	this(key,value);
+        this.userDisplayValue = userDisplayValue;
     }
 
     public String getKey() {
@@ -57,5 +63,13 @@ public class KeyValueVO implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
+
+	public String getUserDisplayValue() {
+		return this.userDisplayValue;
+	}
+
+	public void setUserDisplayValue(String userDisplayValue) {
+		this.userDisplayValue = userDisplayValue;
+	}
 
 }

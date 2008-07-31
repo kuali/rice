@@ -23,10 +23,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
@@ -55,7 +57,9 @@ import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
+import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.util.Utilities;
+import edu.iu.uis.eden.web.session.UserSession;
 
 public class WorkflowUtilityTest extends KEWTestCase {
     
@@ -1197,34 +1201,52 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_BasicCriteria() throws Exception {
+        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
         String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
         String docTitle = "Routing Style";
         setupPerformDocumentSearchTests(documentTypeName, docTitle);
+        String userNetworkId = "delyea";
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        int size = docTitle.length();
+        workflowDocument.setTitle("Get Outta Dodge");
+        workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocTitle(docTitle);
-        DocumentSearchResultVO result = utility.performDocumentSearch(criteria);
+        DocumentSearchResultVO result = utility.performDocumentSearch(new NetworkIdVO("user2"),criteria);
         List<DocumentSearchResultRowVO> searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaVO();
         criteria.setInitiator("rkirkend");
-        result = utility.performDocumentSearch(criteria);
+        result = utility.performDocumentSearch(new NetworkIdVO("user2"),criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaVO();
         criteria.setInitiator("user1");
-        result = utility.performDocumentSearch(criteria);
+        result = utility.performDocumentSearch(new NetworkIdVO("user2"),criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        result = utility.performDocumentSearch(criteria);
+        result = utility.performDocumentSearch(new NetworkIdVO("user2"),criteria);
         searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        assertEquals("Search results should have two documents.", 3, searchResults.size());
+        // now verify that the search returned the proper document id
+        boolean foundValidDocId = false;
+        for (DocumentSearchResultRowVO documentSearchResultRowVO : searchResults) {
+			for (KeyValueVO keyValueVO : documentSearchResultRowVO.getFieldValues()) {
+				if ( (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(keyValueVO.getKey())) &&
+					 (StringUtils.equals(workflowDocument.getRouteHeaderId().toString(), keyValueVO.getUserDisplayValue())) ) {
+					foundValidDocId = true;
+					break;
+				}
+			}
+		}
+        assertTrue("Should have found document search result with specified document id",foundValidDocId);
     }
 
     @Test public void testPerformDocumentSearch_RouteNodeSearch() throws Exception {

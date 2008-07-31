@@ -16,6 +16,9 @@
  */
 package edu.iu.uis.eden.web;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.core.util.ObjectUtils;
+
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 
 
@@ -30,6 +33,7 @@ public class KeyValueSort extends KeyValue {
 
 	private static final long serialVersionUID = 3575440091286391804L;
 
+	private String userDisplayValue;
 	private Object sortValue;
     private Class sortClass;
     private SearchableAttributeValue searchableAttributeValue;
@@ -48,8 +52,13 @@ public class KeyValueSort extends KeyValue {
         this.searchableAttributeValue = searchableAttributeValue;
     }
 
+    public KeyValueSort(String key, String value, String userDisplayValue, Object sortValue, SearchableAttributeValue searchableAttributeValue) {
+    	this(key,value,sortValue,searchableAttributeValue);
+        this.userDisplayValue = userDisplayValue;
+    }
+
     public KeyValueSort(KeyValueSort kvs) {
-        this(kvs.getkey(),kvs.getValue(),kvs.getSortValue(),kvs.getSearchableAttributeValue());
+        this(kvs.getkey(),kvs.getValue(),kvs.getUserDisplayValue(),kvs.getSortValue(),kvs.getSearchableAttributeValue());
     }
 
 	public Object getSortValue() {
@@ -67,6 +76,13 @@ public class KeyValueSort extends KeyValue {
 
     public SearchableAttributeValue getSearchableAttributeValue() {
         return searchableAttributeValue;
+    }
+    
+    public String getUserDisplayValue() {
+    	if (StringUtils.isNotBlank(userDisplayValue)) {
+    		return userDisplayValue;
+    	}
+    	return getValue();
     }
 
 }

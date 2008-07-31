@@ -299,10 +299,15 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return docSearchResult;
 	}
+	
+	protected class DisplayValues {
+		public String htmlValue;
+		public String userDisplayValue;
+	}
 
 	public KeyValueSort generateSearchResult(DocSearchVO docSearchVO, Column column, Map<String,Object> sortValuesByColumnKey) {
 		KeyValueSort returnValue = null;
-		String fieldValue = null;
+		DisplayValues fieldValue = null;
 		Object sortFieldValue = null;
 		String columnKeyName = column.getKey();
 		SearchableAttributeValue attributeValue = null;
@@ -314,19 +319,23 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			fieldValue = this.getRouteLogFieldDisplayValue(docSearchVO.getRouteHeaderId().toString());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED.equals(columnKeyName)) {
-			fieldValue = DocSearchUtils.getDisplayValueWithDateTime(docSearchVO.getDateCreated());
+			fieldValue = new DisplayValues();
+			fieldValue.htmlValue = DocSearchUtils.getDisplayValueWithDateTime(docSearchVO.getDateCreated());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(columnKeyName)) {
-			fieldValue = docSearchVO.getDocTypeLabel();
+			fieldValue = new DisplayValues();
+			fieldValue.htmlValue = docSearchVO.getDocTypeLabel();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(columnKeyName)) {
-			fieldValue = docSearchVO.getDocumentTitle();
+			fieldValue = new DisplayValues();
+			fieldValue.htmlValue = docSearchVO.getDocumentTitle();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(columnKeyName)) {
 			fieldValue = this.getInitiatorFieldDisplayValue(docSearchVO.getInitiatorTransposedName(), docSearchVO.getInitiatorWorkflowId());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(columnKeyName)) {
-			fieldValue = docSearchVO.getDocRouteStatusCodeDesc();
+			fieldValue = new DisplayValues();
+			fieldValue.htmlValue = docSearchVO.getDocRouteStatusCodeDesc();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else {
 			// check searchable attributes
@@ -337,17 +346,19 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 					sortFieldValue = (sortValue != null) ? sortValue : searchAttribute.getSortValue();
 					attributeValue = searchAttribute.getSearchableAttributeValue();
 					if ( (column.getDisplayParameters() != null) && (!column.getDisplayParameters().isEmpty()) ) {
-					    fieldValue = searchAttribute.getSearchableAttributeValue().getSearchableAttributeDisplayValue(column.getDisplayParameters());
+					    fieldValue = new DisplayValues();
+						fieldValue.htmlValue = searchAttribute.getSearchableAttributeValue().getSearchableAttributeDisplayValue(column.getDisplayParameters());
 					}
 					else {
-					    fieldValue = searchAttribute.getValue();
+					    fieldValue = new DisplayValues();
+						fieldValue.htmlValue = searchAttribute.getValue();
 					}
 					break;
 				}
 			}
 		}
 		if (fieldValue != null) {
-		    returnValue = new KeyValueSort(columnKeyName,fieldValue,(sortFieldValue != null) ? sortFieldValue : fieldValue, attributeValue);
+		    returnValue = new KeyValueSort(columnKeyName,fieldValue.htmlValue,fieldValue.userDisplayValue,(sortFieldValue != null) ? sortFieldValue : fieldValue, attributeValue);
 		}
 		return returnValue;
 	}
@@ -357,21 +368,28 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	 * Search Result columns
 	 */
 
-	protected String getRouteLogFieldDisplayValue(String routeHeaderId) {
+	protected DisplayValues getRouteLogFieldDisplayValue(String routeHeaderId) {
+		DisplayValues dv = new DisplayValues();
 		String linkPopup = "";
 		if (this.isRouteLogPopup()) {
 			linkPopup = " target=\"_new\"";
 		}
-		return "<a href=\"RouteLog.do?routeHeaderId=" + routeHeaderId + "\"" + linkPopup + "><img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/></a>";
+		String imageSource = "<img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/>";
+		dv.htmlValue = "<a href=\"RouteLog.do?routeHeaderId=" + routeHeaderId + "\"" + linkPopup + ">" + imageSource + "</a>";
+		dv.userDisplayValue = imageSource;
+		return dv;
 	}
 
-	protected String getRouteHeaderIdFieldDisplayValue(String routeHeaderId,boolean isSuperUserSearch, String documentTypeName) {
+	protected DisplayValues getRouteHeaderIdFieldDisplayValue(String routeHeaderId,boolean isSuperUserSearch, String documentTypeName) {
 		return this.getValueEncodedWithDocHandlerUrl(routeHeaderId, routeHeaderId, isSuperUserSearch, documentTypeName);
 	}
 
-	protected String getInitiatorFieldDisplayValue(String fieldLinkTextValue, String initiatorWorkflowId) {
+	protected DisplayValues getInitiatorFieldDisplayValue(String fieldLinkTextValue, String initiatorWorkflowId) {
 		UrlResolver urlResolver = new UrlResolver();
-		return "<a href=\"" + urlResolver.getUserReportUrl() +  "?showEdit=no&methodToCall=report&workflowId=" + initiatorWorkflowId + "\" target=\"_blank\">" + fieldLinkTextValue + "</a>";
+		DisplayValues dv = new DisplayValues();
+		dv.htmlValue = "<a href=\"" + urlResolver.getUserReportUrl() +  "?showEdit=no&methodToCall=report&workflowId=" + initiatorWorkflowId + "\" target=\"_blank\">" + fieldLinkTextValue + "</a>";
+		dv.userDisplayValue = fieldLinkTextValue;
+		return dv;
 	}
 
 	/**
@@ -384,8 +402,11 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	 *        see {@link edu.iu.uis.eden.docsearch.DocSearchVO#isUsingSuperUserSearch()}
 	 * @return the fully encoded html for a link using the text from the input parameter 'value'
 	 */
-	protected String getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch, String documentTypeName) {
-		return getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch,documentTypeName) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
+	protected DisplayValues getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch, String documentTypeName) {
+		DisplayValues dv = new DisplayValues();
+		dv.htmlValue = getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch,documentTypeName) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
+		dv.userDisplayValue = value;
+		return dv; 
 	}
 
 	private Map<String,Object> getSortValuesMap(DocSearchVO docSearchVO) {

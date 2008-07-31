@@ -1640,7 +1640,7 @@ public class BeanConverter {
         DocumentSearchResultRowVO rowVO = new DocumentSearchResultRowVO();
         List<KeyValueVO> fieldValues = new ArrayList<KeyValueVO>();
         for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
-            fieldValues.add(new KeyValueVO(keyValueSort.getKey(),keyValueSort.getValue()));
+            fieldValues.add(new KeyValueVO(keyValueSort.getKey(),keyValueSort.getValue(),keyValueSort.getUserDisplayValue()));
         }
         rowVO.setFieldValues(fieldValues);
         return rowVO;

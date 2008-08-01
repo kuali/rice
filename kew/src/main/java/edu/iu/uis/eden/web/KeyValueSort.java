@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.web;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.util.ObjectUtils;
 
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 

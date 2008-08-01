@@ -1,8 +1,0 @@
-classpath:/org/kuali/core/bo/datadictionary
-classpath:/org/kuali/core/document/datadictionary
-file:/java/projects/rice-0.9.3-merge/kim/src/main/resources/org/kuali/rice/kim/bo/datadictionary
-file:/java/projects/rice-0.9.3-merge/kim/src/main/resources/org/kuali/rice/kim/document/datadictionary
-file:/java/projects/rice-0.9.3-merge/kom/src/main/resources/org/kuali/rice/kom/bo/datadictionary
-file:/java/projects/rice-0.9.3-merge/kom/src/main/resources/org/kuali/rice/kom/document/datadictionary
-file:/java/projects/rice-0.9.3-merge/server/src/test/resources/edu/sampleu/travel/datadictionary
-file:/java/projects/rice-0.9.3-merge/kns/src/test/resources/org/kuali/rice/kns/test/document

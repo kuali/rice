@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.lookup.valuefinder;
 
 import org.kuali.core.lookup.valueFinder.ValueFinder;
-import org.kuali.rice.util.RiceConstants;
+import org.kuali.rice.kim.util.KIMConstants;
 
 /**
  * This class is responsible for retrieving the default group type.
@@ -30,6 +30,6 @@ public class GroupTypeDefaultValueFinder implements ValueFinder {
 	 * @see org.kuali.core.lookup.valueFinder.ValueFinder#getValue()
 	 */
 	public String getValue() {
-		return RiceConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE.toString();
+		return KIMConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE.toString();
 	}
 }

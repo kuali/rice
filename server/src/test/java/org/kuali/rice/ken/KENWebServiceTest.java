@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,8 +28,10 @@ import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.core.GlobalNotificationServiceLocator;
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
@@ -36,7 +39,10 @@ import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.kuali.rice.testharness.HtmlUnitUtil;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 import edu.iu.uis.eden.messaging.KEWXMLService;
@@ -52,7 +58,10 @@ import edu.iu.uis.eden.messaging.KEWXMLService;
   @UnitTestData(filename="file:ken/src/test/resources/org/kuali/ken/test/DefaultTestData.sql", delimiter=";") 
 })
 public class KENWebServiceTest extends ServerTestBase {
-    private static final String notificationMessageAsXml;
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KENWebServiceTest.class);
+
+	private static final String notificationMessageAsXml;
+	private TransactionalLifecycle transactionalLifecycle;
     
     static {
         InputStream notificationXML = KENWebServiceTest.class.getResourceAsStream("webservice_notification.xml");
@@ -65,12 +74,26 @@ public class KENWebServiceTest extends ServerTestBase {
     }
 
     @Override
+	public void setUp() throws Exception {
+		super.setUp();
+		transactionalLifecycle = new TransactionalLifecycle();
+		transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
+		transactionalLifecycle.start();
+	}
+
+	@Override
+	public void tearDown() throws Exception {
+	    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
+	        transactionalLifecycle.stop();
+	    }
+		super.tearDown();
+	}
+
+	@Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> list = super.getPerTestLifecycles();
         list.add(0, new KEWXmlDataLoaderLifecycle("file:ken/src/test/resources/org/kuali/ken/test/DefaultTestData.xml"));
         list.add(0, new KEWXmlDataLoaderLifecycle("file:ken/src/main/config/xml/KENBootstrap.xml"));
-        list.add(0, new KEWXmlDataLoaderLifecycle("file:kew/src/main/config/xml/KEWBootstrap.xml"));
-        list.add(0, new ClearDatabaseLifecycle());
         return list;
     }
 

@@ -67,6 +67,7 @@ public abstract class WebTestBase extends ServerTestBase {
     private static final Logger LOG = Logger.getLogger(WebTestBase.class);
 
     protected static String HELP_PAGE_TITLE = "Kuali :: Kuali Help";
+    protected static String USER_NETWORK_ID = "admin";
 
     protected WebClient webClient = null;
     protected DocumentService documentService = null;
@@ -81,11 +82,11 @@ public abstract class WebTestBase extends ServerTestBase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        GlobalVariables.setUserSession(new UserSession("quickstart"));
+        GlobalVariables.setUserSession(new UserSession(USER_NETWORK_ID));
         documentService = KNSServiceLocator.getDocumentService();
         webClient = new WebClient();
 
-        setPortalPage(buildPageFromUrl(HtmlUnitUtil.BASE_URL, "Rice Sample Client"));
+        setPortalPage(buildPageFromUrl(HtmlUnitUtil.BASE_URL, HTML_PAGE_TITLE_TEXT));
 
     }
 
@@ -814,7 +815,7 @@ public abstract class WebTestBase extends ServerTestBase {
     private HtmlPage checkForLoginPage(HtmlPage page) throws IOException {
         if (page.getTitleText().equals("Login")) {
             HtmlForm form = (HtmlForm) page.getForms().get(0);
-            setFieldValue(page, "__login_user", "quickstart");
+            setFieldValue(page, "__login_user", USER_NETWORK_ID);
             HtmlSubmitInput loginBtn = (HtmlSubmitInput) form.getInputByValue("Login");
             page = (HtmlPage) loginBtn.click();
             if (page.getTitleText().equals("Login")) {

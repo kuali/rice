@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.core.datadictionary.AuthorizationDefinition;
 import org.kuali.core.datadictionary.DocumentEntry;
+import org.kuali.core.util.ObjectUtils;
 
 /**
  * DocumentEntryMapper
@@ -44,7 +45,9 @@ public abstract class DocumentEntryMapper {
         }
 
         entryMap.set("documentTypeName", entry.getDocumentTypeName());
-        entryMap.set("documentTypeCode", entry.getDocumentTypeCode());
+        if (ObjectUtils.isNotNull(entry.getDocumentTypeCode())) {
+        	entryMap.set("documentTypeCode", entry.getDocumentTypeCode());
+        }
 
         entryMap.set("label", entry.getLabel());
         entryMap.set("shortLabel", entry.getShortLabel());

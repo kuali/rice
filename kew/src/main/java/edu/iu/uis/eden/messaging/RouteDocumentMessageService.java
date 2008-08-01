@@ -19,6 +19,7 @@ package edu.iu.uis.eden.messaging;
 import org.apache.log4j.Logger;
 
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.engine.WorkflowEngine;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
@@ -32,11 +33,37 @@ public class RouteDocumentMessageService implements KEWXMLService {
 	
 	public void invoke(String xml) {
 		try {
-			Long routeHeaderId = new Long(xml);
-			KEWServiceLocator.getWorkflowEngine().process(routeHeaderId, null);
+			RouteMessageXmlElement newElement = RouteMessageXmlElement.construct(xml);
+			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngine();
+			engine.setRunPostProcessorLogic(newElement.runPostProcessor);
+			engine.process(newElement.routeHeaderId, null);
 		} catch (Exception e) {
 			LOG.error(e);
 			throw new WorkflowRuntimeException(e);
+		}
+	}
+	
+	public static class RouteMessageXmlElement {
+		public static Long routeHeaderId;
+		public static boolean runPostProcessor = true;
+		public RouteMessageXmlElement(Long routeHeaderId) {
+			this.routeHeaderId = routeHeaderId;
+		}
+		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor) {
+			this(routeHeaderId);
+			this.runPostProcessor = runPostProcessor;
+		}
+		private static final String SPLIT = "::~~::";
+		public static RouteMessageXmlElement construct(String content) {
+			if (content.indexOf(SPLIT) != -1) {
+				String[] values = content.split(SPLIT);
+				return new RouteMessageXmlElement(Long.valueOf(values[0]),Boolean.valueOf(values[1]));
+			} else {
+				return new RouteMessageXmlElement(Long.valueOf(content));
+			}
+		}
+		public String translate() {
+			return routeHeaderId + SPLIT + String.valueOf(runPostProcessor);
 		}
 	}
 

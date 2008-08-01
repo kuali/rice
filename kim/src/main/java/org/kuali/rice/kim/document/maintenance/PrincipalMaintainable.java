@@ -35,7 +35,7 @@ import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
  */
 public class PrincipalMaintainable extends KualiMaintainableImpl {
     /**
-     * This overridden method ...
+     * This overridden method handles populating the role qualification helper objects for proper UI rendering.
      * 
      * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
      */
@@ -44,13 +44,32 @@ public class PrincipalMaintainable extends KualiMaintainableImpl {
         Principal oldPrincipalBO = (Principal)document.getOldMaintainableObject().getBusinessObject();
         populateRoleQualifications(oldPrincipalBO);
         
-        Principal newPrincipalBO = (Principal)document.getOldMaintainableObject().getBusinessObject();
+        Principal newPrincipalBO = (Principal)document.getNewMaintainableObject().getBusinessObject();
         populateRoleQualifications(newPrincipalBO);
         
         super.processAfterEdit(document, parameters);
     }
     
     /**
+	 * This overridden method handles populating the role qualification helper objects for proper UI rendering.
+	 * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterCopy(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		Principal oldPrincipalBO = (Principal)document.getOldMaintainableObject().getBusinessObject();
+        populateRoleQualifications(oldPrincipalBO);
+        
+        Principal newPrincipalBO = (Principal)document.getOldMaintainableObject().getBusinessObject();
+        populateRoleQualifications(newPrincipalBO);
+        
+		super.processAfterCopy(document, parameters);
+	}
+
+
+
+	/**
      * This overridden method deals with translating the data from the maint. doc UI into the appropriate
      * persistable business objects that map down to the ORM level.
      * 

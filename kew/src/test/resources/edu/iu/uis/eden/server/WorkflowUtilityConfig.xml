@@ -56,6 +56,48 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
+			<name>DocumentWithSpecialRouteNodes</name>
+			<description>DocumentWithSpecialRouteNodes</description>
+			<label>DocumentWithSpecialRouteNodes</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="Level5" nextNode="Level1" />
+					<requests name="Level1" nextNode="Level3" />
+					<requests name="Level3" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Level5">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Level1">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="Level3">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+					<finalApproval>true</finalApproval>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
 			<name>SeqDocType</name>
 			<description>SeqDocType</description>
 			<label>SeqDocType</label>
@@ -338,6 +380,45 @@
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DocumentWithSpecialRouteNodes</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>bmcgough</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DocumentWithSpecialRouteNodes</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 2</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>2</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DocumentWithSpecialRouteNodes</documentType>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<description>WorkflowDocument2Template Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>pmckown</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

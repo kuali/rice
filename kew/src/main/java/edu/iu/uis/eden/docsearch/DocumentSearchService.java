@@ -49,7 +49,7 @@ public interface DocumentSearchService {
      *         represented by a list of {@link DocumentSearchResult} objects
      * @throws EdenUserNotFoundException
      */
-    public DocumentSearchResultComponents getListBoundByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
     public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws EdenUserNotFoundException;
     public void clearNamedSearches(WorkflowUser user);
     public List getNamedSearches(WorkflowUser user);

@@ -95,7 +95,15 @@
 
         <table width="100%" class="tab" cellpadding="0" cellspacing="0" summary="" border="1" <c:if test="${hidden}">style="display:none;"</c:if>>
           <tr>
-            <td class="tabtable1-left" colspan="${tabTitleSpan}">
+              <c:choose>
+	          <c:when test="${tabTitleSpan > 1}">
+				<td class="tabtable1-left-colspan" colspan="${tabTitleSpan}">
+			  </c:when>
+			  <c:otherwise>
+			  	<td class="tabtable1-left">
+			  </c:otherwise>
+			  </c:choose>
+ 
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
               <a name="${tabKey}" ></a> <h2><c:out value="${tabTitle}" /></h2>

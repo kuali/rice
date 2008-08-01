@@ -5,6 +5,11 @@ CREATE TABLE OJB_NEXTVAL_SEQ
     PRIMARY KEY(SEQ_NAME)
 )
 ;
+CREATE TABLE service_def_seq (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
 CREATE TABLE FP_DOC_TYPE_ATTR_ID_SEQ (
   a INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (a)
@@ -176,6 +181,16 @@ CREATE TABLE nte_id_seq (
 ) AUTO_INCREMENT=1000, ENGINE=MyISAM
 ;
 CREATE TABLE seq_out_box_itm (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
+CREATE TABLE seq_edl_field_dmp (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
+CREATE TABLE seq_en_edoclt (
   a INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (a)
 ) AUTO_INCREMENT=1000, ENGINE=MyISAM
@@ -360,7 +375,8 @@ create table EN_DOC_NTE_T (DOC_NTE_ID bigint not null, DB_LOCK_VER_NBR integer, 
 create table EN_DOC_TYP_ATTRIB_T (DOC_TYP_ATTRIB_ID bigint not null, DOC_TYP_ID bigint, ORD_INDX integer, RULE_ATTRIB_ID bigint, primary key (DOC_TYP_ATTRIB_ID)) ;
 create table EN_DOC_TYP_PLCY_RELN_T (DOC_TYP_ID bigint not null, DOC_PLCY_NM varchar(255) not null, DB_LOCK_VER_NBR integer, DOC_PLCY_VAL char(1), primary key (DOC_TYP_ID, DOC_PLCY_NM)) ;
 create table EN_DOC_TYP_PROC_T (DOC_TYP_PROC_ID bigint not null, INIT_IND char(1), DB_LOCK_VER_NBR integer, PROC_NM varchar(255), INIT_RTE_NODE_ID bigint, DOC_TYP_ID bigint, primary key (DOC_TYP_PROC_ID)) ;
-create table EN_DOC_TYP_T (DOC_TYP_ID bigint not null, DOC_TYP_ACTV_IND char(1), BLNKT_APPR_PLCY varchar(255), BLNKT_APPR_WRKGRP_ID bigint, DOC_TYP_CUR_IND char(1), DOC_TYP_EMAIL_XSL varchar(255), DOC_TYP_DESC varchar(255), DOC_TYP_HDLR_URL_ADDR varchar(255), DOC_TYP_PARNT_ID bigint, DOC_TYP_SECURITY_XML mediumtext, DOC_TYP_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), DOC_TYP_NM varchar(255), DOC_TYP_NOTIFY_ADDR varchar(255), DOC_TYP_POST_PRCSR_NM varchar(255), DOC_TYP_PREV_VER bigint, DOC_HDR_ID bigint, DOC_TYP_RTE_VER_NBR varchar(255), DOC_TYP_VER_NBR integer, WRKGRP_ID bigint, RPT_WRKGRP_ID bigint, primary key (DOC_TYP_ID)) ;create table EN_EDL_DMP_T (DOC_HDR_ID bigint not null, DOC_CRTE_DT datetime, DOC_CRNT_NODE_NM varchar(255), DOC_TTL varchar(255), DOC_INITR_ID varchar(255), DOC_MDFN_DT datetime, DOC_RTE_STAT_CD varchar(255), DOC_TYP_NM varchar(255), DB_LOCK_VER_NBR integer, primary key (DOC_HDR_ID)) ;
+create table EN_DOC_TYP_T (DOC_TYP_ID bigint not null, DOC_TYP_ACTV_IND char(1), BLNKT_APPR_PLCY varchar(255), BLNKT_APPR_WRKGRP_ID bigint, DOC_TYP_CUR_IND char(1), DOC_TYP_EMAIL_XSL varchar(255), DOC_TYP_DESC varchar(255), DOC_TYP_HDLR_URL_ADDR varchar(255), DOC_TYP_PARNT_ID bigint, DOC_TYP_SECURITY_XML mediumtext, DOC_TYP_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), DOC_TYP_NM varchar(255), DOC_TYP_NOTIFY_ADDR varchar(255), DOC_TYP_POST_PRCSR_NM varchar(255), DOC_TYP_PREV_VER bigint, DOC_HDR_ID bigint, DOC_TYP_RTE_VER_NBR varchar(255), DOC_TYP_VER_NBR integer, WRKGRP_ID bigint, RPT_WRKGRP_ID bigint, primary key (DOC_TYP_ID)) ;
+create table EN_EDL_DMP_T (DOC_HDR_ID bigint not null, DOC_CRTE_DT datetime, DOC_CRNT_NODE_NM varchar(255), DOC_TTL varchar(255), DOC_INITR_ID varchar(255), DOC_MDFN_DT datetime, DOC_RTE_STAT_CD varchar(255), DOC_TYP_NM varchar(255), DB_LOCK_VER_NBR integer, primary key (DOC_HDR_ID)) ;
 create table EN_EDL_FIELD_DMP_T (EDL_FIELD_DMP_ID bigint not null, DOC_HDR_ID bigint, FLD_NM varchar(255), FLD_VAL varchar(255), DB_LOCK_VER_NBR integer, primary key (EDL_FIELD_DMP_ID)) ;
 create table EN_EDOCLT_ASSOC_T (edoclt_assoc_id bigint not null, edoclt_assoc_actv_ind char(1), edoclt_assoc_def_nm varchar(255), edoclt_assoc_doctype_nm varchar(255), db_lock_ver_nbr integer, edoclt_assoc_style_nm varchar(255), primary key (edoclt_assoc_id)) ;
 create table EN_EDOCLT_DEF_T (edoclt_def_id bigint not null, edoclt_def_actv_ind char(1), db_lock_ver_nbr integer, edoclt_def_nm varchar(255), edoclt_def_xml mediumtext, primary key (edoclt_def_id)) ;
@@ -532,9 +548,9 @@ CREATE TABLE FP_MAINT_DOC_ATTACHMENT_T (
 
 -- Bootstrap Data
 
-INSERT INTO SH_PARM_T(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) VALUES('KR-NS', 'Document', 'SESSION_TIMEOUT_WARNING_MESSAGE_TIME', sys_guid(), 1, 'CONFG', '5', 'The number of minutes before a session expires that user should be warned when a document uses pessimistic locking.', 'A', 'KUALI_FMSOPS') 
+INSERT INTO SH_PARM_T(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) VALUES('KR-NS', 'Document', 'SESSION_TIMEOUT_WARNING_MESSAGE_TIME', uuid(), 1, 'CONFG', '5', 'The number of minutes before a session expires that user should be warned when a document uses pessimistic locking.', 'A', 'KUALI_FMSOPS') 
 ;
-INSERT INTO SH_PARM_T(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) VALUES('KR-NS', 'Document', 'PESSIMISTIC_LOCK_ADMIN_GROUP', sys_guid(), 1, 'AUTH', 'KUALI_ROLE_SUPERVISOR', 'Workgroup which can perform admin deletion and lookup functions for Pessimistic Locks.', 'A', 'KUALI_FMSOPS') 
+INSERT INTO SH_PARM_T(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) VALUES('KR-NS', 'Document', 'PESSIMISTIC_LOCK_ADMIN_GROUP', uuid(), 1, 'AUTH', 'KUALI_ROLE_SUPERVISOR', 'Workgroup which can perform admin deletion and lookup functions for Pessimistic Locks.', 'A', 'KUALI_FMSOPS') 
 ;
 INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_NM, FDOC_TYP_ACTIVE_CD) VALUES ('PTYP', '1A6FEB2501C7607EE043814FD111607E', 1, 'Parameter Type','Y')
 ;

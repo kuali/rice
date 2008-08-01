@@ -36,7 +36,8 @@ public class KualiLookupableTest extends TestBase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        lookupableImpl = (KualiLookupableImpl) KNSServiceLocator.getKualiLookupable();
+        lookupableImpl = new KualiLookupableImpl();
+        lookupableImpl.setLookupableHelperService((LookupableHelperService)KNSServiceLocator.getService("lookupableHelperService"));
         lookupableImpl.setBusinessObjectClass(Account.class);
     }
 

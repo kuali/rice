@@ -22,16 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.kim.bo.AbstractAttributeBase;
 import org.kuali.rice.kim.bo.Entity;
-import org.kuali.rice.kim.bo.EntityAttribute;
-import org.kuali.rice.kim.bo.EntityType;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.RoleAttribute;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
@@ -39,9 +33,6 @@ import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.QualifiedRoleService;
-import org.kuali.rice.kim.web.form.GroupQualifiedRole;
-import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
-import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
 
 /**
  * This is the default KIM QualifiedRoleService implementation that is provided
@@ -53,7 +44,6 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	private KIMServicesDao kimServicesDao;
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getGroupNames(java.lang.String,
 	 *      java.util.Map)
@@ -78,7 +68,6 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getGroups(java.lang.String,
 	 *      java.util.Map)
@@ -86,45 +75,34 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	public List<GroupDTO> getGroups(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
 		final ArrayList<GroupDTO> groups = new ArrayList<GroupDTO>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return groups;
+		}
 
-		final HashMap<String, Object> criteria = new HashMap<String, Object>();
-		criteria.put("NAME", roleName);
-		final Role role = ((Collection<Role>) KNSServiceLocator
-				.getBusinessObjectService().findMatching(Role.class, criteria))
-				.iterator().next();
-
-		for (Group g : role.getGroups()) {
-			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, g
-					.getGroupQualifiedRoleAttributes())) {
-				groups.add(Group.toDTO(g));
-			}
+		final Collection<Group> possibles = kimServicesDao.findQualifiedGroupsWithRole(roleName, qualifiedRoleAttributes);
+		for (Group p : possibles) {
+			groups.add(Group.toDTO(p));
 		}
 		return groups;
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getPersonIds(java.lang.String,
 	 *      java.util.Map)
 	 */
 	public List<Long> getPersonIds(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-//		Collection<PrincipalQualifiedRole> principals = kimServicesDao
-//				.findAllPersonsWithQualifiedRole(roleName);
-//
-//		final ArrayList<Long> persons = new ArrayList<Long>();
-//		for (PrincipalQualifiedRole p : principals) {
-//			// TODO getPrincipal() is an ugly hack to get around
-//			// PrincipalQualifiedRole not being filled in
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-//				persons.add(p.getPrincipalId());
-//			}
-//
-//		}
-//		return persons;
-		return new ArrayList();
+		final ArrayList<Long> persons = new ArrayList<Long>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return persons;
+		}
+
+		final Collection<Principal> principals = kimServicesDao.findQualifiedPrincipalsWithRole(roleName, qualifiedRoleAttributes);
+		for (Principal p : principals) {
+			persons.add(p.getId());
+		}
+		return persons;
 	}
 
 	/**
@@ -135,74 +113,58 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	 */
 	public List<PersonDTO> getPersons(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-//		final Collection<PrincipalQualifiedRole> principals = kimServicesDao
-//				.findAllPersonsWithQualifiedRole(roleName);
-//
-//		final ArrayList<PersonDTO> persons = new ArrayList<PersonDTO>();
-//		for (PrincipalQualifiedRole p : principals) {
-//			// TODO getPrincipal() is an ugly hack to get around
-//			// PrincipalQualifiedRole not being filled in
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-//				persons.add(Principal.toPersonDTO(p.getPrincipal()));
-//			}
-//
-//		}
-//		return persons;
-		return new ArrayList();
+		final ArrayList<PersonDTO> persons = new ArrayList<PersonDTO>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return persons;
+		}
+
+		final Collection<Principal> principals = kimServicesDao.findQualifiedPrincipalsWithRole(roleName, qualifiedRoleAttributes);
+		for (Principal p : principals) {
+			persons.add(Principal.toPersonDTO(p));
+		}
+		return persons;
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getPrincipalNames(java.lang.String,
 	 *      java.util.Map)
 	 */
 	public List<String> getPrincipalNames(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-//		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
-//				.findAllPrincipalsWithQualifiedRole(roleName);
-//
-//		final ArrayList<String> principals = new ArrayList<String>();
-//		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
-//			// TODO getPrincipal() is an ugly hack to get around
-//			// PrincipalQualifiedRole not being filled in
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-//				principals.add(p.getPrincipal().getName());
-//			}
-//		}
-//		return principals;
-		return new ArrayList();
+		final ArrayList<String> principals = new ArrayList<String>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return principals;
+		}
+
+		final Collection<Principal> possibles = kimServicesDao.findQualifiedPrincipalsWithRole(roleName, qualifiedRoleAttributes);
+		for (Principal p : possibles) {
+			principals.add(p.getName());
+		}
+		return principals;
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getPrincipals(java.lang.String,
 	 *      java.util.Map)
 	 */
 	public List<PrincipalDTO> getPrincipals(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-//		final ArrayList<PrincipalDTO> principals = new ArrayList<PrincipalDTO>();
-//		final Collection<PrincipalQualifiedRole> qualifiedPrincipals = kimServicesDao
-//				.findAllPrincipalsWithQualifiedRole(roleName);
-//
-//		for (PrincipalQualifiedRole p : qualifiedPrincipals) {
-//			// TODO getPrincipal() is an ugly hack to get around
-//			// PrincipalQualifiedRole not being filled in
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-//					.getPrincipal().getPrincipalQualifiedRoleAttributes())) {
-//				principals.add(Principal.toDTO(p.getPrincipal()));
-//			}
-//
-//		}
-//		return principals;
-		return new ArrayList();
+
+		final ArrayList<PrincipalDTO> principals = new ArrayList<PrincipalDTO>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return principals;
+		}
+
+		final Collection<Principal> possibles = kimServicesDao.findQualifiedPrincipalsWithRole(roleName, qualifiedRoleAttributes);
+		for (Principal p : possibles) {
+			principals.add(Principal.toDTO(p));
+		}
+		return principals;
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getRoleNames(java.util.Map)
 	 */
@@ -221,7 +183,6 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getRoles(java.util.Map)
 	 */
@@ -239,27 +200,45 @@ public class QualifiedRoleServiceImpl implements QualifiedRoleService {
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getEntityIds(java.lang.String,
 	 *      java.util.Map)
 	 */
 	public List<Long> getEntityIds(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		// TODO
-		return null;
+		final ArrayList<Long> ids = new ArrayList<Long>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return ids;
+		}
+
+		final Collection<Entity> entitys  = kimServicesDao.findQualifiedEntitysWithRole(roleName, qualifiedRoleAttributes);
+		ids.ensureCapacity(entitys.size());
+		for (Entity e : entitys) {
+			ids.add(e.getId());
+		}
+
+		return ids;
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kim.service.QualifiedRoleService#getEntitys(java.lang.String,
 	 *      java.util.Map)
 	 */
 	public List<EntityDTO> getEntitys(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-		// TODO
-		return null;
+		final ArrayList<EntityDTO> entityDtos = new ArrayList<EntityDTO>(0);
+		if (qualifiedRoleAttributes == null || qualifiedRoleAttributes.size() == 0) {
+			return entityDtos;
+		}
+
+		final Collection<Entity> entitys  = kimServicesDao.findQualifiedEntitysWithRole(roleName, qualifiedRoleAttributes);
+		entityDtos.ensureCapacity(entitys.size());
+		for (Entity e : entitys) {
+			entityDtos.add(Entity.toDTO(e));
+		}
+
+		return entityDtos;
 	}
 
 	/**

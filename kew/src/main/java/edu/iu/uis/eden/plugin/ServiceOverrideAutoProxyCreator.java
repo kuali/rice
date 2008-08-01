@@ -23,11 +23,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.ClassUtils;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * A {@link BeanPostProcessor} which is used to allow for service overrides from the

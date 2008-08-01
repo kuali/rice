@@ -17,13 +17,14 @@ package org.kuali.rice.kim.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.GroupQualifiedRoleAttributeDTO;
 import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.PersonDTO;
@@ -40,11 +41,13 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleServiceTest extends KIMTestCase {
-	private static final String EXPECTED_GROUP_NAME = "ParentGroup1";
-	private static final Long EXPECTED_GROUP_ROLE_ID = new Long(302);
-	private static final String EXPECTED_QUALIFIED_ROLE_ATTRIBUTE_VALUE = "Some role";
-	private static final String EXPECTED_QUALIFIED_ROLE_ATTRIBUTE_NAME = "QualifiedRole";
-	private static final String EXPECTED_PRINCIPAL_NAME = "jdoe";
+	private static final String EXPECTED_GROUP_NAME = "Group1";
+	private static final Long EXPECTED_GROUP_ROLE_ID = new Long(300);
+	private static final String EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE = "Some role2";
+	private static final String EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME = "QualifiedRole2";
+	private static final String EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE2_VALUE = "Some role";
+	private static final String EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE2_NAME = "QualifiedRole";
+	private static final String EXPECTED_PRINCIPAL_NAME = "jschmoe";
 	private static final String EXPECTED_PERMISSION = "canSave";
 	private RoleService roleService;
 	private RoleService roleSoapService;
@@ -58,10 +61,26 @@ public class RoleServiceTest extends KIMTestCase {
 
 	private static final Long EXPECTED_ENTITY_ID_FOR_ROLE = new Long(140);
 	private static final Long EXPECTED_PERSON_ID_FOR_ROLE = new Long(160);
-	private static final Long EXPECTED_QUALIFIED_PRINCIPAL_ID = new Long(221);
+	private static final Long EXPECTED_QUALIFIED_PRINCIPAL_ID = new Long(160);
+	private static final String EXPECTED_QUALIFIED_PRINCIPAL_NAME = "jschmoe";
+	private static final Long EXPECTED_QUALIFIED_GROUP_ID = new Long(300);
+	private static final String EXPECTED_QUALIFIED_GROUP_NAME = "Group1";
+	private static final String EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE = "Finance";
+	private static final String EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME = "Department";
+	private static final String EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE2_VALUE = "Arts and Science";
+	private static final String EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE2_NAME = "College";
 	private static final String EXPECTED_ROLE_NAME = "Dean";
 
-	private static final Map<String, String> EXPECTED_QUALIFIED_ROLE_ATTRIBUTES = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES2 = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES3 = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES4 = new HashMap<String, String>();
+
+
+	private static final HashMap<String, String> EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES2 = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES3 = new HashMap<String, String>();
+	private static final HashMap<String, String> EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES4 = new HashMap<String, String>();
 
 	public void setUp() throws Exception {
 		super.setUp();
@@ -69,10 +88,30 @@ public class RoleServiceTest extends KIMTestCase {
 				.getService(JAVA_SERVICE);
 		roleSoapService = (RoleService) GlobalResourceLoader
 				.getService(SOAP_SERVICE);
-		EXPECTED_QUALIFIED_ROLE_ATTRIBUTES.put(
-				EXPECTED_QUALIFIED_ROLE_ATTRIBUTE_NAME,
-				EXPECTED_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
-	}
+
+		EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES.put(
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME,
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES2.put(
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME,
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES2.put(
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE2_NAME,
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE2_VALUE);
+		EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES3.put(
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME + "x",
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES4.put(
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME,
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE + "x");
+
+		EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES.put(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES2.put(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES2.put(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE2_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE2_VALUE);
+		EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES3.put(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME + "x", EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE);
+		EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES4.put(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE + "x");
+
+		}
 
 	@Test
 	public void getAllRoleNames_Java() {
@@ -199,12 +238,42 @@ public class RoleServiceTest extends KIMTestCase {
 		List<GroupQualifiedRoleDTO> gqr = roleService
 				.getGroupQualifiedRoles(EXPECTED_ROLE_NAME);
 		assertNotNull("Found no group qualified roles", gqr);
-		assertEquals("Wrong number of group qualified roles found", 3, gqr
+		assertEquals("Wrong number of group qualified roles found", 2, gqr
 				.size());
-		assertEquals("Wrong role found", EXPECTED_ROLE_ID, gqr.get(0)
+
+		GroupQualifiedRoleDTO group = gqr.get(0);
+		assertEquals("Wrong role found", EXPECTED_ROLE_ID, group
 				.getRoleId());
-		assertEquals("Wrong group found", EXPECTED_GROUP_ID, gqr.get(0)
+		assertEquals("Wrong group found", EXPECTED_GROUP_ID, group
 				.getGroupId());
+
+		final HashMap<String, GroupQualifiedRoleAttributeDTO> attrs = group.getQualifiedRoleAttributeDtos();
+
+		assertNotNull("No qualified roles attributes found", attrs);
+
+		assertEquals("Wrong number of qualified role attributes found", 2,
+				attrs.size());
+
+		GroupQualifiedRoleAttributeDTO attr = attrs
+				.get(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME);
+		assertNotNull("Did not find qualified attribute", attr);
+
+		assertEquals("Wrong qualified attribute name found",
+				EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME, attr.getAttributeName());
+		assertEquals("Wrong qualifed attribute value found",
+				EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE, attr
+						.getAttributeValue());
+		assertEquals("Wrong role ID from qualified attribute",
+				EXPECTED_ROLE_ID, attr.getRoleId());
+		assertEquals("Wrong role name from qualified attribute",
+				EXPECTED_ROLE_NAME, attr.getRoleDto().getName());
+		assertEquals("Wrong principal ID from qualified attribute",
+				EXPECTED_QUALIFIED_GROUP_ID, attr.getGroupId());
+
+		gqr = roleService.getGroupQualifiedRoles(EXPECTED_ROLE_NAME + "x");
+		assertEquals("Should not have found any qualified attributes for role",
+				0, gqr.size());
+
 	}
 
 	@Test
@@ -224,18 +293,64 @@ public class RoleServiceTest extends KIMTestCase {
 	private static void getGroupQualifiedRolesByAttribute(
 			final RoleService roleService) {
 		List<GroupQualifiedRoleDTO> gqr = roleService.getGroupQualifiedRoles(
-				EXPECTED_ROLE_NAME, EXPECTED_QUALIFIED_ROLE_ATTRIBUTES);
+				EXPECTED_ROLE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES);
 		assertNotNull("Found no attribute qualified roles", gqr);
-		assertEquals("Wrong number of roles", 1, gqr.size());
-		GroupQualifiedRoleDTO role = gqr.get(0);
+		assertEquals("Wrong number of group qualified roles", 1, gqr.size());
+		checkQualifiedGroupRole(gqr);
+
+		gqr = roleService.getGroupQualifiedRoles(
+				EXPECTED_ROLE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES2);
+		assertNotNull("Found no attribute qualified roles", gqr);
+		assertEquals("Wrong number of group qualified roles", 1, gqr.size());
+		checkQualifiedGroupRole(gqr);
+
+		gqr = roleService.getGroupQualifiedRoles(
+				EXPECTED_ROLE_NAME + "x", EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES);
+		assertNotNull("Should not have found groups", gqr);
+		assertEquals("Should not have found groups", 0, gqr.size());
+
+		gqr = roleService.getGroupQualifiedRoles(
+				EXPECTED_ROLE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES3);
+		assertNotNull("Should not have found groups", gqr);
+		assertEquals("Should not have found groups", 0, gqr.size());
+
+		gqr = roleService.getGroupQualifiedRoles(
+				EXPECTED_ROLE_NAME, EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTES4);
+		assertNotNull("Should not have found groups", gqr);
+		assertEquals("Should not have found groups", 0, gqr.size());
+	}
+
+	/**
+	 * This method ...
+	 *
+	 * @param gqr
+	 */
+	private static void checkQualifiedGroupRole(List<GroupQualifiedRoleDTO> gqr) {
+		final GroupQualifiedRoleDTO role = gqr.get(0);
+		assertNotNull("No qualifed role attributes found", role);
+
 		assertEquals("Wrong qualified group role found", EXPECTED_GROUP_ID,
 				role.getGroupId());
 		assertEquals("Wrong qualified role found", EXPECTED_ROLE_ID, role
 				.getRoleId());
-		assertNotNull("No group dto", role.getGroupDto());
-		assertNotNull("No role dto", role.getRoleDto());
 
-		assertTrue("Incomplete test case", false);
+		final GroupDTO groupDto = role.getGroupDto();
+		assertNotNull("No group dto", groupDto);
+		assertEquals("Wrong qualified group ID", EXPECTED_GROUP_ID, groupDto.getId());
+		assertEquals("Wrong qualified group name", EXPECTED_QUALIFIED_GROUP_NAME, groupDto.getName());
+
+		final RoleDTO roleDto = role.getRoleDto();
+		assertNotNull("No role dto", roleDto);
+		assertEquals("Wrong role ID", EXPECTED_ROLE_ID, roleDto.getId());
+		assertEquals("Wrong role name", EXPECTED_ROLE_NAME, roleDto.getName());
+
+		final HashMap<String, GroupQualifiedRoleAttributeDTO> attrs = role.getQualifiedRoleAttributeDtos();
+		assertNotNull("No qualified role attributes found", attrs);
+
+		final GroupQualifiedRoleAttributeDTO attr = attrs.get(EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME);
+		assertNotNull("No qualified role attribute found", attr);
+		assertEquals("Wrong qualified attribute name", EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_NAME, attr.getAttributeName());
+		assertEquals("Wrong qualified attribute value", EXPECTED_GROUP_QUALIFIED_ROLE_ATTRIBUTE_VALUE, attr.getAttributeValue());
 	}
 
 	@Test
@@ -260,6 +375,11 @@ public class RoleServiceTest extends KIMTestCase {
 		final GroupDTO g = groups.get(0);
 		assertEquals("Wrong ID", EXPECTED_GROUP_ROLE_ID, g.getId());
 		assertEquals("Wrong group name", EXPECTED_GROUP_NAME, g.getName());
+
+		groups = roleService
+		.getGroupsWithRole(EXPECTED_ROLE_NAME + "x");
+		assertNotNull("Found no groups with roles", groups);
+		assertEquals("Found groups for bad role", 0, groups.size());
 	}
 
 	@Test
@@ -307,6 +427,11 @@ public class RoleServiceTest extends KIMTestCase {
 		assertEquals("Wrong number of permissions found", 2, permissions.size());
 		assertEquals("Wrong permission name", EXPECTED_PERMISSION, permissions
 				.get(0).getName());
+
+		permissions = roleService
+		.getPermissionsForRole(EXPECTED_ROLE_NAME + "x");
+		assertNotNull("Found no permissions", permissions);
+		assertEquals("Found permissions for bad role", 0, permissions.size());
 	}
 
 	@Test
@@ -353,6 +478,11 @@ public class RoleServiceTest extends KIMTestCase {
 		assertEquals("Did not find one person", 2, persons.size());
 		assertEquals("Wrong person found", EXPECTED_PERSON_ID_FOR_ROLE, persons
 				.get(0).getId());
+
+		persons = roleService
+		.getPersonsWithRole(EXPECTED_ROLE_NAME + "x");
+		assertNotNull("Found no persons with bad role", persons);
+		assertEquals("Found person for bad role", 0, persons.size());
 	}
 
 	@Test
@@ -376,7 +506,7 @@ public class RoleServiceTest extends KIMTestCase {
 		assertEquals("Wrong number of principal names found", 2, principals
 				.size());
 		assertEquals("Wrong principal name", EXPECTED_PRINCIPAL_NAME,
-				principals.get(1));
+				principals.get(0));
 	}
 
 	@Test
@@ -400,7 +530,13 @@ public class RoleServiceTest extends KIMTestCase {
 		assertEquals("Wrong number of principals with role found", 2,
 				principals.size());
 		assertEquals("Wrong principal name", EXPECTED_PRINCIPAL_NAME,
-				principals.get(1).getName());
+				principals.get(0).getName());
+
+		principals = roleService
+		.getPrincipalsWithRole(EXPECTED_ROLE_NAME + "x");
+		assertNotNull("Found no principals with bad role", principals);
+		assertEquals("Wrong number of principals with bad role found", 0,
+				principals.size());
 	}
 
 	@Test
@@ -439,7 +575,18 @@ public class RoleServiceTest extends KIMTestCase {
 		assertEquals("Wrong number of qualified role attributes found", 2,
 				attrs.size());
 
-		assertTrue("Incomplete test case", false);
+		PrincipalQualifiedRoleAttributeDTO attr = attrs.get(EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME);
+		assertNotNull("Did not find qualified attribute", attr);
+		assertEquals("Wrong qualified attribute name found", EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_NAME, attr.getAttributeName());
+		assertEquals("Wrong qualifed attribute value found", EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTE_VALUE, attr.getAttributeValue());
+		assertEquals("Wrong role ID from qualified attribute", EXPECTED_ROLE_ID, attr.getRoleId());
+		assertEquals("Wrong role name from qualified attribute", EXPECTED_ROLE_NAME, attr.getRoleDto().getName());
+		assertEquals("Wrong principal ID from qualified attribute", EXPECTED_QUALIFIED_PRINCIPAL_ID, attr.getPrincipalId());
+		assertEquals("Wrong principal name from qualifeid attribute", EXPECTED_QUALIFIED_PRINCIPAL_NAME, attr.getPrincipalDto().getName());
+
+		principalQualified = roleService.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME + "x");
+		assertEquals("Should not have found any qualified attributes for role", 0, principalQualified.size());
+
 	}
 
 	@Test
@@ -460,18 +607,57 @@ public class RoleServiceTest extends KIMTestCase {
 			final RoleService roleService) {
 		List<PrincipalQualifiedRoleDTO> principalQualified = roleService
 				.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME,
-						EXPECTED_QUALIFIED_ROLE_ATTRIBUTES);
+						EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES);
 		assertNotNull("Found no principal qualified roles by attribute",
 				principalQualified);
-		assertEquals("Wrong number of attributes found", 2, principalQualified
+		assertEquals("Wrong number of principals found", 2, principalQualified
 				.size());
+		checkPrincipalQualifiedRolesByAttribute(principalQualified);
+
+		principalQualified = roleService
+		.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME,
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES2);
+		assertNotNull("Found no principal qualified roles by attribute",
+				principalQualified);
+		assertEquals("Wrong number of principals found", 1, principalQualified
+				.size());
+		checkPrincipalQualifiedRolesByAttribute(principalQualified);
+
+
+		principalQualified = roleService
+		.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME + "x",
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES);
+		assertNotNull("Did not return list", principalQualified);
+		assertEquals("Found principals for bad role name", 0, principalQualified.size());
+
+		principalQualified = roleService
+		.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME + "x",
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES3);
+		assertNotNull("Did not return list", principalQualified);
+		assertEquals("Found principals for invalid qualifed attribute name", 0, principalQualified.size());
+
+		principalQualified = roleService
+		.getPrincipalQualifiedRoles(EXPECTED_ROLE_NAME + "x",
+				EXPECTED_PRINCIPAL_QUALIFIED_ROLE_ATTRIBUTES4);
+		assertNotNull("Did not return list", principalQualified);
+		assertEquals("Found principals for invalid qualifed attribute value", 0, principalQualified.size());
+
+	}
+
+	/**
+	 * This method test a Qualified Principal object for correctness
+	 *
+	 * @param principalQualified
+	 */
+	private static void checkPrincipalQualifiedRolesByAttribute(
+			List<PrincipalQualifiedRoleDTO> principalQualified) {
 
 		final PrincipalQualifiedRoleDTO principal = principalQualified.get(0);
 		assertNotNull("No principal dto", principal);
-		assertEquals("Wrong principal found", EXPECTED_PERSON_ID_FOR_ROLE,
+		assertEquals("Wrong principal found", EXPECTED_QUALIFIED_PRINCIPAL_ID,
 				principal.getPrincipalId());
 		assertNotNull("No principalDTO", principal.getPrincipalDto());
-		assertEquals("Wrong principal found", EXPECTED_PERSON_ID_FOR_ROLE,
+		assertEquals("Wrong principalDTO ID found", EXPECTED_QUALIFIED_PRINCIPAL_ID,
 				principal.getPrincipalDto().getId());
 		assertEquals("Wrong role", EXPECTED_ROLE_ID, principal.getRoleId());
 		assertEquals("Wrong role", EXPECTED_ROLE_ID, principal.getRoleDto()
@@ -497,9 +683,13 @@ public class RoleServiceTest extends KIMTestCase {
 		List<Long> entitys = roleService
 				.getEntityIdsWithRole(EXPECTED_ROLE_NAME);
 		assertNotNull("Found no entityIds with role", entitys);
-		assertEquals("Found more than one entity for role", 2, entitys.size());
 		assertEquals("Wrong entityId", EXPECTED_ENTITY_ID_FOR_ROLE, entitys
 				.get(0));
+
+		entitys = roleService
+		.getEntityIdsWithRole(EXPECTED_ROLE_NAME + "x");
+		assertNotNull("Found no entityIds with role", entitys);
+		assertEquals("Found entity for bad role", 0, entitys.size());
 	}
 
 	@Test

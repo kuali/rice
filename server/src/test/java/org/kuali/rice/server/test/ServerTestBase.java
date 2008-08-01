@@ -35,6 +35,8 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
  *
  */
 public class ServerTestBase extends RiceTestCase {
+	
+	protected static final String HTML_PAGE_TITLE_TEXT = "Kuali Rice";
 
     private String contextName = "/knstest";
     private String relativeWebappRoot = "/../server/src/main/webapp";

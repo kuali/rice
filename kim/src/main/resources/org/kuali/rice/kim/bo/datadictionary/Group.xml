@@ -65,6 +65,7 @@
         <ref bean="Group-newCollectionRecord" />
         <ref bean="Group-versionNumber" />
         <ref bean="Group-objectId" />
+        <ref bean="Group-groupTypeName" />
       </list>
     </property>
   </bean>
@@ -121,6 +122,11 @@
     </property>
     <property name="name" value="description" />
     <property name="label" value="Description" />
+  </bean>
+  <bean id="Group-groupTypeName" parent="Group-groupTypeName-parentBean" />
+
+  <bean id="Group-groupTypeName-parentBean" abstract="true" parent="GroupType-name">
+    <property name="name" value="groupType.name" />
   </bean>
   <bean id="Group-groupTypeId" parent="Group-groupTypeId-parentBean" />
 

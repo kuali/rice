@@ -12,6 +12,7 @@
  */
 package org.kuali.rice.kim.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.rice.KNSServiceLocator;
@@ -42,6 +43,7 @@ public abstract class KIMDaoTestBase extends KIMTestCase {
      * This method is responsible for testing the basic persistence of a business object.
      */
 	@Test
+	@Ignore
 	public void testBasicPersistence() throws Exception {
 		setupReferences();
 		assertTrue(insert());

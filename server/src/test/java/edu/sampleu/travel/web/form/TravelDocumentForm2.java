@@ -19,13 +19,24 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
+import org.kuali.core.web.ui.HeaderField;
+import org.kuali.core.workflow.service.KualiWorkflowDocument;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;
 
 public class TravelDocumentForm2 extends KualiDocumentFormBase {
 
-    private TravelAccount travelAccount = new TravelAccount();
+    @Override
+	protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+		getDocInfo().clear();
+		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
+		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
+		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
+		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
+	}
+
+	private TravelAccount travelAccount = new TravelAccount();
 
     public TravelDocumentForm2() {
         super();

@@ -14,8 +14,8 @@
     <property name="maintainableSections" >
       <list>
         <ref bean="KIMEntityMaintenanceDocument-EditEntity" />
-        <ref bean="KIMEntityMaintenanceDocument-EntityPrincipal" />
-<!--    <ref bean="KIMEntityMaintenanceDocument-EntityAttributes" />  --> 
+        <ref bean="KIMEntityMaintenanceDocument-EntityPrincipals" />
+	    <ref bean="KIMEntityMaintenanceDocument-EntityAttributeForms" /> 
       </list>
     </property>
     <property name="lockingKeys" >
@@ -46,8 +46,6 @@
   </bean>
 
 <!-- Maintenance Section Definitions -->
-
-
   <bean id="KIMEntityMaintenanceDocument-EditEntity" parent="KIMEntityMaintenanceDocument-EditEntity-parentBean" />
 
   <bean id="KIMEntityMaintenanceDocument-EditEntity-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -60,7 +58,8 @@
               p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextEntityIdFinder" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
-              p:name="entityTypeId" />
+              p:name="entityTypeId" 
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.EntityTypeDefaultValueFinder" />
         <bean parent="MaintainableFieldDefinition"
               p:name="versionNumber" />
       </list>
@@ -68,9 +67,9 @@
     <property name="id" value="Edit Entity" />
     <property name="title" value="Edit Entity" />
   </bean>
-  <bean id="KIMEntityMaintenanceDocument-EntityPrincipal" parent="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" />
+  <bean id="KIMEntityMaintenanceDocument-EntityPrincipals" parent="KIMEntityMaintenanceDocument-EntityPrincipals-parentBean" />
 
-  <bean id="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="KIMEntityMaintenanceDocument-EntityPrincipals-parentBean" abstract="true" parent="MaintainableSectionDefinition">
   	<property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
@@ -78,7 +77,13 @@
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Associated Principals" />
+          <property name="summaryTitle" value="Principal" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="name" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -97,48 +102,55 @@
         </bean>
       </list>
     </property>
-    <property name="id" value="Entity Principal" />
-    <property name="title" value="Entity Principal" />
+    <property name="id" value="Associated Principals" />
+    <property name="title" value="Associated Principals" />
   </bean>
-  <bean id="KIMEntityMaintenanceDocument-EntityAttributes" parent="KIMEntityMaintenanceDocument-EntityAttributes-parentBean" />
+  <bean id="KIMEntityMaintenanceDocument-EntityAttributeForms" parent="KIMEntityMaintenanceDocument-EntityAttributeForms-parentBean" />
 
-  <bean id="KIMEntityMaintenanceDocument-EntityAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="KIMEntityMaintenanceDocument-EntityAttributeForms-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.EntityAttribute" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.EntityAttributeForm" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
+          <property name="summaryTitle" value="Attribute" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="attributeName" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:template="id"
-                    p:name="id"
+                    p:required="true" 
+                    p:template="id" 
+                    p:name="id" 
                     p:readOnly="true" 
                     p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextEntityAttributeIdFinder" />
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:template="attributeTypeId"
+                    p:required="true" 
+                    p:template="attributeTypeId" 
                     p:name="attributeTypeId" />
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:template="namespaceId"
-                    p:name="namespaceId" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:template="attributeName"
+                    p:required="true" 
+                    p:template="attributeName" 
                     p:name="attributeName" />
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:template="value"
                     p:name="value" />
+               <bean parent="MaintainableFieldDefinition"
+                    p:required="false" 
+                    p:template="versionNumber" 
+                    p:name="versionNumber" />
             </list>
           </property>
-          <property name="name" value="entityAttributes" />
+          <property name="name" value="entityAttributeForms" />
         </bean>
       </list>
     </property>
-    <property name="id" value="Entity Attributes" />
-    <property name="title" value="Entity Attributes" />
+    <property name="id" value="Custom Entity Attributes" />
+    <property name="title" value="Custom Entity Attributes" />
   </bean>
 </beans>

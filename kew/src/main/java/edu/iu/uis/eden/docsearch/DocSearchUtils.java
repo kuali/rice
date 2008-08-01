@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -42,7 +43,6 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.user.UserUtils;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.session.UserSession;
 

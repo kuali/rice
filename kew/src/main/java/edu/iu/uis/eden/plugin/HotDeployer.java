@@ -24,9 +24,9 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.plugin.PluginUtils.PluginZipFileFilter;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * Checks for plugins added to or removed from the configured plugin directories.

@@ -17,15 +17,15 @@
 // Created on Dec 14, 2005
 package edu.iu.uis.eden.applicationconstants;
 
+import java.util.Collection;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAO;
-import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.test.KEWTransactionalTest;
-
-import java.util.Collection;
 
 
 /**
@@ -34,6 +34,7 @@ import java.util.Collection;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @KEWTransactionalTest
+@Ignore("KULRICE-2090")
 public class ApplicationConstantsJPAOJBTest extends KEWTestCase {
 	
 	private static String CONSTANT_NAME;

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -22,6 +23,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kim.dto.GroupQualifiedRoleAttributeDTO;
+import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleAttributeDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
 
 /**
  * Business object that represents a single qualified role attribute record associated with a group.
@@ -91,6 +95,20 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
 		dto.setGroupId(att.getGroupId());
 		dto.setId(att.getId());
 		dto.setRoleId(att.getRoleId());
+		dto.setRoleDto(Role.toDTO(att.getRole()));
 		return dto;
 	}
+
+    public static GroupQualifiedRoleDTO toDTO(final Group p, final Role r) {
+    	GroupQualifiedRoleDTO dto = new GroupQualifiedRoleDTO();
+
+    	dto.setGroupId(p.getId());
+    	dto.setGroupDto(Group.toDTO(p));
+    	dto.setRoleId(r.getId());
+    	dto.setRoleDto(Role.toDTO(r));
+    	dto.setQualifiedRoleAttributes(new HashMap<String, GroupQualifiedRoleAttributeDTO>());
+
+    	return dto;
+    }
+
 }

@@ -33,6 +33,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -119,6 +120,9 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     private Timestamp lastApprovedDate; 
 
     private Workgroup getWorkgroup(Long workgroupId) {
+    	if (workgroupId == null) {
+    		return null;
+    	}
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
     
@@ -131,6 +135,9 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
 
     private WorkflowUser getUser(String workflowId) throws EdenUserNotFoundException {
+    	if (StringUtils.isBlank(workflowId)) {
+    		return null;
+    	}
         return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
     }
     

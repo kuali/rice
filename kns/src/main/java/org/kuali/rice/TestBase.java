@@ -30,7 +30,6 @@ public class TestBase extends KNSTestCase {
          * createproject.groovy script requires them here for replacement
          */
         setRelativeWebappRoot("/../kns/src/test/webapp");
-        //setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
         super.setUp();
         transactionalLifecycle = new TransactionalLifecycle();
         transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
@@ -40,7 +39,7 @@ public class TestBase extends KNSTestCase {
 	@After
     public void tearDown() throws Exception {
         try {
-            if (transactionalLifecycle != null) {
+		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
                 transactionalLifecycle.stop();
             }
         } finally {

@@ -15,19 +15,13 @@
  */
 package org.kuali.rice.server.lookup;
 
-import java.net.URL;
-
 import org.junit.Test;
 import org.kuali.rice.server.test.WebTestBase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.rice.testharness.HtmlUnitUtil;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 @PerTestUnitTestData(

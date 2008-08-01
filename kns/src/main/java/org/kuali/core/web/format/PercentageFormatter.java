@@ -23,6 +23,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 
 import org.kuali.RiceKeyConstants;
+import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiPercent;
 
 /**
@@ -82,6 +83,9 @@ public class PercentageFormatter extends Formatter {
 
         String stringValue = "";
         try {
+        	if (value instanceof KualiDecimal) {
+        		value = ((KualiDecimal)value).bigDecimalValue();
+        	}
             BigDecimal bigDecValue = (BigDecimal) value;
             bigDecValue = bigDecValue.setScale(PERCENTAGE_SCALE, BigDecimal.ROUND_HALF_UP);
             stringValue = NumberFormat.getInstance().format(bigDecValue.doubleValue());

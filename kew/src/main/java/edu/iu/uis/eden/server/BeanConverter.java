@@ -1570,6 +1570,7 @@ public class BeanConverter {
         criteria.setToDateFinalized(criteriaVO.getToDateFinalized());
         criteria.setToDateLastModified(criteriaVO.getToDateLastModified());
         criteria.setThreshold(criteriaVO.getThreshold());
+        criteria.setSaveSearchForUser(criteriaVO.isSaveSearchForUser());
         
         // generate the route node criteria
         if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(criteriaVO.getDocTypeFullName())) ) {
@@ -1577,17 +1578,18 @@ public class BeanConverter {
         } else if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isNotBlank(criteriaVO.getDocTypeFullName())) ) {
             criteria.setDocRouteNodeLogic(criteriaVO.getDocRouteNodeLogic());
             List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getDocumentTypeByName(criteria.getDocTypeFullName()), true);
-            String routeNodeCriteriaToUse = null;
+            boolean foundRouteNode = false;
             for (Iterator iterator = routeNodes.iterator(); iterator.hasNext();) {
                 RouteNode routeNode = (RouteNode) iterator.next();
                 if (criteriaVO.getDocRouteNodeName().equals(routeNode.getRouteNodeName())) {
-                    routeNodeCriteriaToUse = routeNode.getRouteNodeId().toString();
+                    foundRouteNode = true;
+                    break;
                 }
             }
-            if (routeNodeCriteriaToUse == null) {
+            if (!foundRouteNode) {
                 throw new WorkflowException("Could not find route node name '" + criteriaVO.getDocRouteNodeName() + "' for document type name '" + criteriaVO.getDocTypeFullName() + "'");
             }
-            criteria.setDocRouteNodeId(routeNodeCriteriaToUse);
+            criteria.setDocRouteNodeId(criteriaVO.getDocRouteNodeName());
         }
         
         // build a map of the search attributes passed in from the client creating lists where keys are duplicated

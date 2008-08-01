@@ -16,11 +16,16 @@
 package org.kuali.rice.kim.dao;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
@@ -98,33 +103,216 @@ public interface KIMServicesDao {
 
 	/**
 	 *
-	 * This method returns the Person Principals with Qualified Roles
+	 * This method finds a principal with the supplied permission name and namespace name
 	 *
-	 * @param roleName
+	 * @param principalName
+	 * @param permissionName
+	 * @param namespaceName
 	 * @return
 	 */
-	public Collection<PrincipalQualifiedRole> findAllPersonsWithQualifiedRole(
-			final String roleName);
+	public Principal findPrincipalWithPermission(String principalName, String permissionName, String namespaceName);
 
 	/**
 	 *
-	 * This method returns the Principals with Qualified Roles
+	 * This method finds a person with a specific role
 	 *
+	 * @param personId
 	 * @param roleName
 	 * @return
 	 */
-	public Collection<PrincipalQualifiedRole> findAllPrincipalsWithQualifiedRole(
-			final String roleName);
+	public Principal findPersonWithRole(Long personId, String roleName);
 
 	/**
 	 *
-	 * This method the Groups with Qualified Roles
+	 * This method finds a the principal with the given name and role name
 	 *
+	 * @param principalName
 	 * @param roleName
 	 * @return
 	 */
-	public Collection<GroupQualifiedRole> findAllGroupsWithQualifiedRole(
-			final String roleName);
+	public Principal findPrincipalWithRole(String principalName, String roleName);
+
+	/**
+	 *
+	 * This method finds the entity with the given role name
+	 *
+	 * @param entityId
+	 * @param roleName
+	 * @return
+	 */
+	public Entity findEntityWithRole(Long entityId, String roleName);
+
+	/**
+	 *
+	 * This method group with role
+	 *
+	 * @param groupName
+	 * @param roleName
+	 * @return
+	 */
+	public Group findGroupWithRole(String groupName, String roleName);
+
+	/**
+	 *
+	 * This method finds a person with permission and namespace
+	 *
+	 * @param personId
+	 * @param permissionName
+	 * @param namespaceName
+	 * @return
+	 */
+	public Principal findPersonWithPermission(Long personId, String permissionName,	String namespaceName);
+
+	/**
+	 *
+	 * This method finds a entity with role and namespace
+	 *
+	 * @param entityId
+	 * @param permissionName
+	 * @param namespaceName
+	 * @return
+	 */
+	public Entity findEntityWithPermission(Long entityId, String permissionName, String namespaceName);
+
+	/**
+	 *
+	 * This method finds Groups Qualified by a Role, possibly constrained by attributes
+	 *
+	 * @param roleName
+	 * @param attributes (optional)
+	 * @return
+	 */
+	public Collection<GroupQualifiedRoleAttribute> findGroupQualifiedRole(String roleName, Map<String, String> attributes);
+
+	/**
+	 *
+	 * This method finds Principals Qualified by a Role, possibly constrained by attributes
+	 *
+	 * @param roleName
+	 * @param attributes (optional)
+	 * @return
+	 */
+	public Collection<PrincipalQualifiedRoleAttribute> findPrincipalQualifiedRole(String roleName, Map<String, String> attributes);
+
+	/**
+	 *
+	 * This method finds all Principals with the qualified attributes and Role
+	 *
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Collection<Principal> findQualifiedPrincipalsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 *
+	 * This method finds all Persons with the qualified attributes and Role
+	 *
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Collection<Principal> findQualifiedPersonsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 * 
+	 * This method finds a Person with the id, qualified attributes, and Role
+	 * 
+	 * @param personId
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Principal findQualifiedPersonWithRole(Long personId, String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 * 
+	 * This method finds a Person with the id, qualified attributes, and Role
+	 * 
+	 * @param principalName
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Principal findQualifiedPrincipalWithRole(String principalName, String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 * 
+	 * This method finds a Person with the qualified attributes, Role, and namespace
+	 * 
+	 * @param personId
+	 * @param permissionName
+	 * @param qualifiedRoleAttributes
+	 * @param namespaceName
+	 * @return
+	 */
+	public Principal findQualifiedPersonWithPermission(Long personId, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName);
+
+	/**
+	 * 
+	 * This method finds a Principal with the qualified attributes, Role, and namespace
+	 * 
+	 * @param principalName
+	 * @param permissionName
+	 * @param qualifiedRoleAttributes
+	 * @param namespaceName
+	 * @return
+	 */
+	public Principal findQualifiedPrincipalWithPermission(String principalName, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName);
+
+	/**
+	 *
+	 * This method finds all Entitys with the qualified attributes and Role
+	 *
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Collection<Entity> findQualifiedEntitysWithRole(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	
+	/**
+	 * 
+	 * This method finds a specific entity with given role and qualified attributes
+	 * 
+	 * @param entityId
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Entity findQualifiedEntityWithRole(Long entityId, String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 * 
+	 * This method finds a specific entity with given role, qualified attributes, and namespace
+	 * 
+	 * @param entityId
+	 * @param permissionName
+	 * @param qualifiedRoleAttributes
+	 * @param namespaceName
+	 * @return
+	 */
+	public Entity findQualifiedEntityWithPermissionRole(Long entityId, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName);
+	
+	/**
+	 * This method finds all Groups with the qualified attributes and Role
+	 *
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Collection<Group> findQualifiedGroupsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+	/**
+	 * 
+	 * This method finds a named group with given role and qualifed attributes
+	 * 
+	 * @param groupName
+	 * @param roleName
+	 * @param qualifiedRoleAttributes
+	 * @return
+	 */
+	public Group findQualifiedGroupsWithRole(String groupName, String roleName, Map<String, String> qualifiedRoleAttributes);
 
 	// public Collection<Principal> findAllPersonsWithRole(final String
 	// roleName);

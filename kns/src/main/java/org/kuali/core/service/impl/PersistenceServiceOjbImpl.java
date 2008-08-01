@@ -48,11 +48,9 @@ import org.kuali.core.service.KualiModuleService;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.iu.uis.eden.util.ClassLoaderUtils;
-
 
 /**
  * This class is the service implementation for the Persistence structure.

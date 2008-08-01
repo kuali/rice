@@ -28,14 +28,17 @@ import org.apache.commons.lang.StringUtils;
  * might be expected to change the value actually just return a new instance
  * with the new value.
  */
-public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal>
-		extends BigDecimal {
+public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal> extends Number implements Comparable {
+	
 	public static final int ROUND_BEHAVIOR = BigDecimal.ROUND_HALF_UP;
 
     public static final KualiDecimal ZERO = new KualiDecimal(new BigDecimal(0));
     
 	protected BigDecimal value;
 
+	public AbstractKualiDecimal() {
+	}
+	
 	/**
 	 * This is the base constructor, used by constructors that take other types
 	 * 
@@ -45,22 +48,17 @@ public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal>
 	 *             if the given String is null
 	 */
 	public AbstractKualiDecimal(String value, int scale) {
-		super(value);
-	    this.setScale(scale, ROUND_BEHAVIOR);
+		if (value == null) {
+			throw new IllegalArgumentException("invalid (null) String in T constructor");
+		}
 		this.value = new BigDecimal(value).setScale(scale, ROUND_BEHAVIOR);
 	}
 
 	public AbstractKualiDecimal(int value, int scale) {
-		super(value);
-        this.setScale(scale, ROUND_BEHAVIOR);
-        // This is kept for compatibility to previous usages
 	    this.value = new BigDecimal(value).setScale(scale, ROUND_BEHAVIOR);
 	}
 
 	public AbstractKualiDecimal(double value, int scale) {
-		super(value);
-        this.setScale(scale, ROUND_BEHAVIOR);
-        // This is kept for compatibility to previous usages
 		this.value = new BigDecimal(value).setScale(scale, ROUND_BEHAVIOR);
 	}
 
@@ -178,6 +176,21 @@ public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal>
 		return this.value;
 	}
 
+	// Comparable methods
+	/**
+	 * Compares this AbstractKualiDecimal with the specified Object. If the
+	 * Object is a AbstractKualiDecimal, this method behaves like
+	 * java.lang.Comparable#compareTo(java.lang.Object).
+	 * 
+	 * Otherwise, it throws a <tt>ClassCastException</tt> (as KualiDecimals
+	 * are comparable only to other KualiDecimals).
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo(Object o) {
+		return compareTo((AbstractKualiDecimal) o);
+	}
+	
 	/**
 	 * Returns the result of comparing the values of this AbstractKualiDecimal
 	 * and the given AbstractKualiDecimal.
@@ -251,7 +264,6 @@ public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal>
 	/**
 	 * @return a T with the same scale and the absolute value
 	 */
-	@Override
 	public T abs() {
 		T absolute = null;
 

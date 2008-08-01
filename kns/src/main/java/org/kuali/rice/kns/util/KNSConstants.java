@@ -44,6 +44,14 @@ public class KNSConstants extends JSTLConstants {
         public static final String DOCUMENT_DETAIL_TYPE = "Document";
         public static final String DOCUMENT_TYPE_DETAIL_TYPE = "DocumentType";
     }
+    
+    public static class DocumentFormHeaderFieldIds {
+    	public static final String DOCUMENT_NUMBER = "documentNumber";
+    	public static final String DOCUMENT_WORKFLOW_STATUS = "documentStatus";
+    	public static final String DOCUMENT_INITIATOR = "documentInitiator";
+    	public static final String DOCUMENT_CREATE_DATE = "documentCreateDate";
+    	public static final String DOCUMENT_TEMPLATE_NUMBER = "documentTemplateNumber";
+    }
 
     public static final String MAX_UPLOAD_SIZE_PARM_NM = "MAX_FILE_SIZE_DEFAULT_UPLOAD";
 
@@ -357,7 +365,7 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String DOCUMENT_ERRORS_LESS_DOCUMENT = DOCUMENT_EXPLANATION_ERRORS + "," + DOCUMENT_REVERSAL_ERRORS + "," + DOCUMENT_SELECTED_ERRORS + "," + DOCUMENT_HEADER_ERRORS;
     public static final String DOCUMENT_ERRORS = DOCUMENT_DOCUMENT_ERRORS + "," + DOCUMENT_EXPLANATION_ERRORS + "," + DOCUMENT_REVERSAL_ERRORS + "," + DOCUMENT_SELECTED_ERRORS + "," + DOCUMENT_HEADER_ERRORS;
     // below field used in tag files
-    public static final String DOCUMENT_NOTES_ERRORS = "newNote*";
+    public static final String DOCUMENT_NOTES_ERRORS = NEW_DOCUMENT_NOTE_PROPERTY_NAME + "*";
 
     public enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");

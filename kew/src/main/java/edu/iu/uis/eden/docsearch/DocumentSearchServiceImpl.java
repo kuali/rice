@@ -87,11 +87,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return getList(user, criteria, false);
     }
     
-    public DocumentSearchResultComponents getListBoundByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
         return getList(user, criteria, true);
     }
 	
-	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaThreshold) throws EdenUserNotFoundException {
+	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaRestrictions) throws EdenUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {
@@ -113,7 +113,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         DocumentSearchResultComponents searchResult = null;
         try {
             List docListResults = null;
-            if (useCriteriaThreshold) {
+            if (useCriteriaRestrictions) {
                 docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, user);
             } else {
                 docListResults = docSearchDao.getList(docSearchGenerator,criteria, user);
@@ -124,12 +124,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			LOG.error("getList() " + errorMsg,e);
             throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
 		}
-        try {
-            saveSearch(user, criteria);
-        } catch (RuntimeException e) {
-            // TODO - should the exception be logged even though it's handled
-            // swallerin it, cuz we look to be read only
-		}
+		if (!useCriteriaRestrictions || !criteria.isSaveSearchForUser()) {
+            try {
+                saveSearch(user, criteria);
+            } catch (RuntimeException e) {
+            	LOG.warn("Unable to save search due to RuntimeException with message: " + e.getMessage());
+            	LOG.warn("RuntimeException will be ignored and may cause transaction problems");
+                // swallerin it, cuz we look to be read only
+    		}
+	    }
         return searchResult;
 	}
 	
@@ -409,6 +412,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
 	private void saveSearch(WorkflowUser user, DocSearchCriteriaVO criteria) {
+		if (user == null) {
+			String message = "User given to save search was null.";
+			LOG.warn(message);
+			throw new IllegalArgumentException(message);
+		}
 		StringBuffer savedSearchString = new StringBuffer();
 		savedSearchString.append(criteria.getAppDocId() == null || "".equals(criteria.getAppDocId()) ? "" : ",,appDocId=" + criteria.getAppDocId());
 		savedSearchString.append(criteria.getApprover() == null || "".equals(criteria.getApprover()) ? "" : ",,approver=" + criteria.getApprover());

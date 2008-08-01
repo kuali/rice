@@ -136,7 +136,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	
 	@After
     public void tearDown() throws Exception {
-		if (transactionalLifecycle != null) {
+	    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
 			transactionalLifecycle.stop();
 		}
         super.tearDown();
@@ -166,6 +166,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 		// opposite of what is passed to the clear database lifecycle that runs on every test execution
 		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test", "/../server/src/main/webapp/en");
+		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		lifeCycles.add(server);
 		lifeCycles.add(new InitializeGRL());

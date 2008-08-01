@@ -54,6 +54,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         try {
             server = new JettyServer(testServerPort.intValue(), CONTEXT_NAME, EDocLiteTestServlet.class);
             server.setTestMode(true);
+            server.setFailOnContextFailure(true);
             server.start();
 
             EDocLitePostProcessor postProcessor = new EDocLitePostProcessor();

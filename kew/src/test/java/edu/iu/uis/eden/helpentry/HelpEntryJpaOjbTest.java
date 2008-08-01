@@ -19,14 +19,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.help.dao.HelpDAO;
 import edu.iu.uis.eden.help.HelpEntry;
-import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
-import edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAO;
+import edu.iu.uis.eden.help.dao.HelpDAO;
 import edu.iu.uis.eden.test.KEWTransactionalTest;
 
 
@@ -37,6 +36,7 @@ import edu.iu.uis.eden.test.KEWTransactionalTest;
  *
  */
 @KEWTransactionalTest
+@Ignore("KULRICE-2090")
 public class HelpEntryJpaOjbTest extends KEWTestCase {
 	
 	private static String HELPKEY = "testhepentry1";

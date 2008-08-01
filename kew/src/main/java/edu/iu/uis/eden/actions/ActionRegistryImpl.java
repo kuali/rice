@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.definition.DataDefinition;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -34,7 +35,6 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * A simple implementation of an ActionRegistry which includes all of the default Workflow Actions.

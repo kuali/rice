@@ -48,7 +48,7 @@ public class SendNotificationServiceKewXmlImpl implements KEWXMLService {
     public void invoke(String xml) {
     	try {
     	   NotificationResponse response = notificationService.sendNotification(xml);
-    	   LOG.info(response);
+    	   LOG.info(response.getMessage());
     	} catch (Exception e) {
     	    throw new WorkflowRuntimeException(e);
     	}

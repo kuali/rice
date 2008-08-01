@@ -23,12 +23,20 @@ import java.io.Serializable;
 public class HeaderField implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    public static final HeaderField EMPTY_FIELD = new HeaderField();
+    
+    private String id;  // to be used as a unique identifier if needed
     private String ddAttributeEntryName;
     private String displayValue;
     private String nonLookupValue;
     private boolean lookupAware;
     
     public HeaderField() {
+    }
+    
+    public HeaderField(String id, String ddAttributeEntryName, String displayValue, String nonLookupValue) {
+    	this(ddAttributeEntryName, displayValue, nonLookupValue);
+    	this.id = id;
     }
     
     public HeaderField(String ddAttributeEntryName, String displayValue, String nonLookupValue) {
@@ -44,7 +52,15 @@ public class HeaderField implements Serializable {
         this.lookupAware = false;
     }
     
-    public String getDdAttributeEntryName() {
+    public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDdAttributeEntryName() {
         return this.ddAttributeEntryName;
     }
     

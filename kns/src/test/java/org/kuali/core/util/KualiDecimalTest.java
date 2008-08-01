@@ -58,7 +58,7 @@ public class KualiDecimalTest extends BaseRiceTestCase {
             String s = null;
             new KualiDecimal(s);
         }
-        catch (NullPointerException e) {
+        catch (IllegalArgumentException e) {
             failedAsExpected = true;
         }
 

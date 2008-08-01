@@ -28,6 +28,7 @@ import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.security.credentials.CredentialsSource;
 import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.util.Assert;
 
 import edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler;
@@ -57,8 +58,11 @@ public abstract class ServiceDefinition implements Serializable {
 	private CredentialsType credentialsType;
 	private String messageEntity;
 	
+	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
+	private transient ClassLoader serviceClassLoader;
+	
 	public ServiceDefinition() {
-	    // nothing to do
+		serviceClassLoader = ClassLoaderUtils.getDefaultClassLoader();
 	}
 	
 	public ServiceDefinition(final Boolean busSecurity) {
@@ -135,6 +139,14 @@ public abstract class ServiceDefinition implements Serializable {
 	    return this.credentialsType;
 	}
 
+	public ClassLoader getServiceClassLoader() {
+	    return this.serviceClassLoader;
+	}
+
+	public void setServiceClassLoader(ClassLoader serviceClassLoader) {
+	    this.serviceClassLoader = serviceClassLoader;
+	}
+	
 	public void validate() {
 		
 		if (this.serviceName == null && this.localServiceName == null) {

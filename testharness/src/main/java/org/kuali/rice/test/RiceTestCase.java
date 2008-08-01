@@ -58,6 +58,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private static final String DEFAULT_LOG4J_CONFIG = "classpath:rice-testharness-default-log4j.properties";
     protected static final String DEFAULT_TEST_HARNESS_SPRING_BEANS = "classpath:TestHarnessSpringBeans.xml";
     protected static boolean SUITE_LIFE_CYCLES_RAN = false;
+    protected static boolean SUITE_LIFE_CYCLES_FAILED = false;
+    protected static String failedSuiteTestName;
 
     protected List<Lifecycle> perTestLifeCycles = new LinkedList<Lifecycle>();
 
@@ -109,13 +111,19 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         this.perTestLifeCycles = getPerTestLifecycles();
         this.suiteLifeCycles = getSuiteLifecycles();
 
+        if (SUITE_LIFE_CYCLES_FAILED) {
+        	fail("Suite Lifecycles startup failed on test " + failedSuiteTestName + "!!!  Please see logs for details.");
+        }
         if (!SUITE_LIFE_CYCLES_RAN) {
 	        try {
     	        startLifecycles(this.suiteLifeCycles);
         	    SUITE_LIFE_CYCLES_RAN = true;
         	} catch (Throwable e) {
                 SUITE_LIFE_CYCLES_RAN = false;
+                SUITE_LIFE_CYCLES_FAILED = true;
+                failedSuiteTestName = getFullTestName();
                 tearDown();
+                stopLifecycles(this.suiteLifeCycles);
                 throw new RuntimeException(e);
             }
         }
@@ -173,19 +181,23 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     protected void logBeforeRun() {
         LOG.info("##############################################################");
-        LOG.info("# Starting test " + getClass().getSimpleName() + "." + getName() + "...");
+        LOG.info("# Starting test " + getFullTestName() + "...");
         LOG.info("# " + dumpMemory());
         LOG.info("##############################################################");
     }
 
     protected void logAfterRun() {
         LOG.info("##############################################################");
-        LOG.info("# ...finished test " + getClass().getSimpleName() + "." + getName());
+        LOG.info("# ...finished test " + getFullTestName());
         LOG.info("# " + dumpMemory());
         for (final String report : this.reports) {
             LOG.info("# " + report);
         }
         LOG.info("##############################################################\n\n\n");
+    }
+    
+    protected String getFullTestName() {
+    	return getClass().getSimpleName() + "." + getName();
     }
 
 	protected void configureLogging() throws IOException {
@@ -221,7 +233,11 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         while (iter.hasPrevious()) {
             final Lifecycle lifeCycle = iter.previous();
             try {
-                lifeCycle.stop();
+            	if (lifeCycle == null) {
+            		LOG.warn("Attempted to stop a null lifecycle");
+            	} else {
+            		lifeCycle.stop();
+            	}
             } catch (Exception e) {
                 LOG.warn("Failed to shutdown one of the lifecycles!", e);
             }

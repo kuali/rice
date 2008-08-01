@@ -150,6 +150,9 @@ function registerHandlers() {
     // register event handler
     for (var i in field_names) {
         var fieldName = field_names[i];
+        if (typeof fieldName == 'function') {
+ 	 		continue;
+ 	 	} 
         //alert("registering handler for: " + fieldName);
         var element = document.getElementById('edoclite')[fieldName];
         if (element.length > 1) {

@@ -23,6 +23,7 @@
 <%@ attribute name="htmlFormAction" required="false" %>
 <%@ attribute name="renderMultipart" required="false" %>
 <%@ attribute name="showTabButtons" required="false" %>
+<%@ attribute name="extraTopButtons" required="false" type="java.util.List" %>
 <%@ attribute name="headerDispatch" required="false" %>
 <%@ attribute name="headerTabActive" required="false" %>
 <%@ attribute name="feedbackKey" required="false" %>
@@ -31,7 +32,15 @@
 <%@ variable name-given="documentEntry" scope="NESTED" %>
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 
+<c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
+	<script type="text/javascript">
+	<!-- 
+	setTimeout("alert('Your session will expire in ${SESSION_TIMEOUT_WARNING_MINUTES} minutes.')",'${SESSION_TIMEOUT_WARNING_MILLISECONDS}');
+	// -->
+	</script>
+</c:if>
+
 <kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}"
-  headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" headerDispatch="${headerDispatch}" headerTabActive="${headerTabActive}" feedbackKey="${feedbackKey}" auditCount="${auditCount}">
+  headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" extraTopButtons="${extraTopButtons}" headerDispatch="${headerDispatch}" headerTabActive="${headerTabActive}" feedbackKey="${feedbackKey}" auditCount="${auditCount}">
     <jsp:doBody/>
 </kul:page>

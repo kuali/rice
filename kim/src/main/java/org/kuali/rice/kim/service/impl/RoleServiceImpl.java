@@ -24,12 +24,15 @@ import java.util.Map;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.GroupQualifiedRoleAttributeDTO;
 import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.PersonDTO;
@@ -123,7 +126,7 @@ public class RoleServiceImpl implements RoleService {
 	 * @see org.kuali.rice.kim.service.RoleService#getGroupNamesWithRole(java.lang.String)
 	 */
 	public List<String> getGroupNamesWithRole(String roleName) {
-		final ArrayList<String> groups = new ArrayList<String>();
+		final ArrayList<String> groups = new ArrayList<String>(0);
 
 		final Role role = findRoleByName(roleName);
 		if (role == null) {
@@ -144,20 +147,20 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName,
 			Map<String, String> qualifiedRoleAttributes) {
-//		Collection<GroupQualifiedRole> groupsWithRole = kimServicesDao
-//				.findAllGroupsWithQualifiedRole(roleName);
-//
-//		final ArrayList<GroupQualifiedRoleDTO> groups = new ArrayList<GroupQualifiedRoleDTO>(
-//				groupsWithRole.size());
-//
-//		for (GroupQualifiedRole attr : groupsWithRole) {
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes,
-//					attr.getQualifiedRoleAttributes())) {
-//				groups.add(GroupQualifiedRole.toDTO(attr));
-//			}
-//		}
-//		return groups;
-		return new ArrayList();
+
+		final ArrayList<GroupQualifiedRoleDTO> groups = new ArrayList<GroupQualifiedRoleDTO>(0);
+		if (qualifiedRoleAttributes.size() == 0) {
+			return groups;
+		}
+
+		final List<GroupQualifiedRoleDTO> possible = findGroupQualifiedRoles(roleName, qualifiedRoleAttributes);
+
+		for (GroupQualifiedRoleDTO dto : possible) {
+			if (ImplUtils.hasAllQualifiedAttributeDtos(qualifiedRoleAttributes, dto.getQualifiedRoleAttributeDtos())) {
+				groups.add(dto);
+			}
+		}
+		return groups;
 	}
 
 	/**
@@ -165,17 +168,39 @@ public class RoleServiceImpl implements RoleService {
 	 * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String)
 	 */
 	public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName) {
-//		Collection<GroupQualifiedRole> groupsWithRole = kimServicesDao
-//				.findAllGroupsWithQualifiedRole(roleName);
-//
-//		final ArrayList<GroupQualifiedRoleDTO> groups = new ArrayList<GroupQualifiedRoleDTO>(
-//				groupsWithRole.size());
-//
-//		for (GroupQualifiedRole attr : groupsWithRole) {
-//			groups.add(GroupQualifiedRole.toDTO(attr));
-//		}
-//		return groups;
-		return new ArrayList();
+		return findGroupQualifiedRoles(roleName, null);
+	}
+
+	/**
+	 * This method returns Groups with qualified roles attributes
+	 *
+	 * @param roleName
+	 * @param criteria
+	 * @return
+	 */
+	private List<GroupQualifiedRoleDTO> findGroupQualifiedRoles(final String roleName,
+			final Map<String, String> criteria) {
+		final ArrayList<GroupQualifiedRoleDTO> gqr = new ArrayList<GroupQualifiedRoleDTO>(0);
+		final Collection<GroupQualifiedRoleAttribute> attributes = kimServicesDao.findGroupQualifiedRole(roleName, criteria);
+
+		for (GroupQualifiedRoleAttribute attr : attributes) {
+
+			GroupQualifiedRoleDTO group = null;
+			for (GroupQualifiedRoleDTO g : gqr) {
+				if (g.getGroupId().equals(attr.getGroupId())) {
+					group = g;
+					break;
+				}
+			}
+			if (group == null) {
+				group = GroupQualifiedRoleAttribute.toDTO(attr.getGroup(), attr.getRole());
+				gqr.add(group);
+			}
+
+			group.getQualifiedRoleAttributeDtos().put(attr.getAttributeName(), GroupQualifiedRoleAttribute.toDTO(attr));
+		}
+
+		return gqr;
 	}
 
 	/**
@@ -319,20 +344,7 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(
 			String roleName) {
-//		final ArrayList<PrincipalQualifiedRoleDTO> principals = new ArrayList<PrincipalQualifiedRoleDTO>(
-//				0);
-//		final Role role = findRoleByName(roleName);
-//		if (role == null) {
-//			return principals;
-//		}
-//
-//		principals.ensureCapacity(role.getPrincipals().size());
-//		for (PrincipalQualifiedRole pqr : role.getPrincipalQualifiedRoles()) {
-//			principals.add(PrincipalQualifiedRole.toDTO(pqr));
-//		}
-//
-//		return principals;
-		return new ArrayList();
+		return findPrincipalQualifiedRoles(roleName, null);
 	}
 
 	/**
@@ -342,22 +354,52 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(
 			String roleName, Map<String, String> qualifiedRoleAttributes) {
-//		final ArrayList<PrincipalQualifiedRoleDTO> pqrs = new ArrayList<PrincipalQualifiedRoleDTO>(
-//				0);
-//
-//		final Role role = findRoleByName(roleName);
-//		if (role == null) {
-//			return pqrs;
-//		}
-//
-//		for (PrincipalQualifiedRole p : role.getPrincipalQualifiedRoles()) {
-//			if (ImplUtils.hasAllQualifiedAttributes(qualifiedRoleAttributes, p
-//					.getPrincipalQualifiedRoleAttributes())) {
-//				pqrs.add(PrincipalQualifiedRole.toDTO(p));
-//			}
-//		}
-//		return pqrs;
-		return new ArrayList();
+
+		final ArrayList<PrincipalQualifiedRoleDTO> principals = new ArrayList<PrincipalQualifiedRoleDTO>(0);
+		if (qualifiedRoleAttributes.size() == 0) {
+			return principals;
+		}
+
+		final List<PrincipalQualifiedRoleDTO> possible = findPrincipalQualifiedRoles(roleName, qualifiedRoleAttributes);
+
+		for (PrincipalQualifiedRoleDTO dto : possible) {
+			if (ImplUtils.hasAllQualifiedAttributeDtos(qualifiedRoleAttributes, dto.getQualifiedRoleAttributeDtos())) {
+				principals.add(dto);
+			}
+		}
+		return principals;
+	}
+
+	/**
+	 * This method returns Groups with qualified roles attributes
+	 *
+	 * @param roleName
+	 * @param criteria
+	 * @return
+	 */
+	private List<PrincipalQualifiedRoleDTO> findPrincipalQualifiedRoles(String roleName,
+			final Map<String, String> criteria) {
+		final ArrayList<PrincipalQualifiedRoleDTO> pqr = new ArrayList<PrincipalQualifiedRoleDTO>(0);
+		final Collection<PrincipalQualifiedRoleAttribute> attributes = kimServicesDao.findPrincipalQualifiedRole(roleName, criteria);
+
+		for (PrincipalQualifiedRoleAttribute attr : attributes) {
+
+			PrincipalQualifiedRoleDTO principal = null;
+			for (PrincipalQualifiedRoleDTO p : pqr) {
+				if (p.getPrincipalId().equals(attr.getPrincipalId())) {
+					principal = p;
+					break;
+				}
+			}
+			if (principal == null) {
+				principal = PrincipalQualifiedRoleAttribute.toDTO(attr.getPrincipal(), attr.getRole());
+				pqr.add(principal);
+			}
+
+			principal.getQualifiedRoleAttributeDtos().put(attr.getAttributeName(), PrincipalQualifiedRoleAttribute.toDTO(attr));
+		}
+
+		return pqr;
 	}
 
 	/**
@@ -402,7 +444,7 @@ public class RoleServiceImpl implements RoleService {
 
 	/**
 	 *
-	 * This method ...
+	 * This method returns a role by name
 	 *
 	 * @param roleName
 	 * @return
@@ -410,8 +452,14 @@ public class RoleServiceImpl implements RoleService {
 	private static Role findRoleByName(final String roleName) {
 		final HashMap<String, String> name = new HashMap<String, String>();
 		name.put("NAME", roleName);
-		return ((Collection<Role>) KNSServiceLocator.getBusinessObjectService()
-				.findMatching(Role.class, name)).iterator().next();
+
+		Collection<Role> roles = (Collection<Role>) KNSServiceLocator.getBusinessObjectService()
+				.findMatching(Role.class, name);
+		if (!roles.iterator().hasNext()) {
+			return null;
+		}
+
+		return roles.iterator().next();
 	}
 
 	/**

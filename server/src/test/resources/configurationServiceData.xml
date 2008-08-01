@@ -18,6 +18,7 @@
 
 <configuration>
     <properties fileName="KR-ApplicationResources.properties" />
+    <properties fileName="KIM-ApplicationResources.properties" />
     <properties fileName="SampleApplicationResources.properties" allowOverrides="true" />
 </configuration>
 

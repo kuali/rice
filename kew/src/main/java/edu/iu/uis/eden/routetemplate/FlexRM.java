@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -45,7 +46,6 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.RoleRecipient;
 import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 import edu.iu.uis.eden.util.PerformanceLogger;
 import edu.iu.uis.eden.util.ResponsibleParty;
 import edu.iu.uis.eden.util.Utilities;

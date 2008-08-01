@@ -68,6 +68,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return documentTypeName;
     }
 
+    /**
+     * This method will throw an {@link UnknownDocumentTypeException} if the document has no document
+     * type code.
+     * 
+     * @see org.kuali.core.service.DocumentTypeService#getDocumentTypeCodeByClass(java.lang.Class)
+     */
     public String getDocumentTypeCodeByClass(Class documentClass) {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
@@ -104,7 +110,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * @see org.kuali.core.service.DocumentTypeService#getClassByName(java.lang.String)
      */
     public DocumentType getDocumentTypeByName(String documentTypeName) {
-        return getDocumentTypeByCode(getDocumentTypeCode(documentTypeName));
+    	String typeCode = getPotentialDocumentTypeCode(documentTypeName);
+        if (typeCode == null) {
+            throw new UnknownDocumentTypeException("unable to get documentTypeCode for unknown documentTypeName '" + documentTypeName + "'");
+        }
+        if (StringUtils.isBlank(typeCode)) {
+            throw new UnknownDocumentTypeException("blank documentTypeCode for documentTypeName '" + documentTypeName + "'");
+        }
+        return getDocumentTypeByCode(typeCode);
     }
 
     public DocumentType getPotentialDocumentTypeByCode(String documentTypeCode) {
@@ -114,21 +127,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentType getPotentialDocumentTypeByName(String documentTypeName) {
-        return getPotentialDocumentTypeByCode(getDocumentTypeCode(documentTypeName));
+        return getPotentialDocumentTypeByCode(getPotentialDocumentTypeCode(documentTypeName));
     }
     
-    private String getDocumentTypeCode(String documentTypeName) {
+    private String getPotentialDocumentTypeCode(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
-        String typeCode = dataDictionaryService.getDocumentTypeCodeByTypeName(documentTypeName);
-        if (typeCode == null) {
-            throw new UnknownDocumentTypeException("unable to get documentTypeCode for unknown documentTypeName '" + documentTypeName + "'");
-        }
-        if (StringUtils.isBlank(typeCode)) {
-            throw new UnknownDocumentTypeException("blank documentTypeCode for documentTypeName '" + documentTypeName + "'");
-        }
-        return typeCode;
+        return dataDictionaryService.getDocumentTypeCodeByTypeName(documentTypeName);
     }
 
     /**

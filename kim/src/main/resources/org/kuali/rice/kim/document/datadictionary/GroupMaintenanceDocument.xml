@@ -137,8 +137,6 @@
                     p:template="name"
                     p:name="name"
                     p:readOnly="true" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="newCollectionRecord" />
             </list>
           </property>
           <property name="name" value="memberGroups" />
@@ -176,8 +174,6 @@
                     p:template="name"
                     p:name="name"
                     p:readOnly="true" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="newCollectionRecord" />
             </list>
           </property>
           <property name="name" value="memberPrincipals" />
@@ -329,8 +325,6 @@
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:name="value" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="newCollectionRecord" />
             </list>
           </property>
           <property name="name" value="nonGroupTypeAttributes" />

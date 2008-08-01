@@ -158,8 +158,6 @@
    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.RoleInquirable" />
     <property name="inquirySections" >
       <list>
-      
-      
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
@@ -174,35 +172,6 @@
           </property>
           <property name="title" value="Role" />
         </bean>
-        
-        <bean parent="InquirySectionDefinition">
-          <property name="numberOfColumns" value="1" />
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="roleAttributes" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
-                <property name="numberOfColumns" value="1" />
-                <property name="inquiryFields" >
-                  <list>
-                    <bean parent="FieldDefinition"
-                          p:attributeName="id" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="attributeTypeId" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="attributeName" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="value" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="roleId" />
-                  </list>
-                </property>
-              </bean>
-            </list>
-          </property>
-          <property name="title" value="Role Attributes" />
-        </bean>
-        
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
@@ -224,68 +193,9 @@
               </bean>
             </list>
           </property>
-          <property name="title" value="Role Permissions" />
+          <property name="title" value="Permissions for Role" />
         </bean>
-
-
-
-        <bean parent="InquirySectionDefinition">
-          <property name="numberOfColumns" value="1" />
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="groupQualifiedRoles" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.GroupQualifiedRole" />
-                <property name="numberOfColumns" value="1" />
-                <property name="summaryTitle" value="Assigned Group" />
-                <property name="inquiryFields" >
-                  <list>
-                    <bean parent="FieldDefinition"
-                          p:attributeName="id" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="name" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="description" />
-                  </list>
-                </property>
-
-
-
-                <property name="inquiryCollections" >
-                  <list>
-                    <bean parent="InquiryCollectionDefinition">
-                      <property name="attributeName" value="qualifiedRoleAttributes" />
-                      <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
-                      <property name="numberOfColumns" value="1" />
-                      <property name="summaryTitle" value="Qualification" />
-                      <property name="inquiryFields" >
-                        <list>
-                          <bean parent="FieldDefinition"
-                                p:attributeName="attributeName" />
-                          <bean parent="FieldDefinition"
-                                p:attributeName="attributeValue" />
-                        </list>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-
-
-              </bean>
-            </list>
-          </property>
-          <property name="title" value="Assigned Groups" />
-        </bean>
-        
-
-
-
-
-
-
-
-
-        <bean parent="InquirySectionDefinition">
+		<bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
@@ -293,7 +203,7 @@
                 <property name="attributeName" value="principalQualifiedRoles" />
                 <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.PrincipalQualifiedRole" />
                 <property name="numberOfColumns" value="1" />
-                <property name="summaryTitle" value="Assigned Principal" />
+                <property name="summaryTitle" value="Principal" />
                 <property name="inquiryFields" >
                   <list>
                     <bean parent="FieldDefinition"
@@ -302,8 +212,6 @@
                           p:attributeName="name" />
                   </list>
                 </property>
-                
-                
                 <property name="inquiryCollections" >
                   <list>
                     <bean parent="InquiryCollectionDefinition">
@@ -322,23 +230,87 @@
                     </bean>
                   </list>
                 </property>
-                
-                
-                
               </bean>
             </list>
           </property>
           <property name="title" value="Assigned Principals" />
         </bean>
-
-        
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="groupQualifiedRoles" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.GroupQualifiedRole" />
+                <property name="numberOfColumns" value="1" />
+                <property name="summaryTitle" value="Group" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="description" />
+                  </list>
+                </property>
+                <property name="inquiryCollections" >
+                  <list>
+                    <bean parent="InquiryCollectionDefinition">
+                      <property name="attributeName" value="qualifiedRoleAttributes" />
+                      <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+                      <property name="numberOfColumns" value="1" />
+                      <property name="summaryTitle" value="Qualification" />
+                      <property name="inquiryFields" >
+                        <list>
+                          <bean parent="FieldDefinition"
+                                p:attributeName="attributeName" />
+                          <bean parent="FieldDefinition"
+                                p:attributeName="attributeValue" />
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Assigned Groups" />
+        </bean>
+		<bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="roleAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
+                <property name="summaryTitle" value="Attribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeTypeId" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="value" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="roleId" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Role Attributes" />
+        </bean>        
       </list>
     </property> <!-- name=inquirySections -->
     <property name="title" value="Role Inquiry" />
   </bean>
 
-<!-- Business Object Lookup Definition -->
-
+  <!-- Business Object Lookup Definition -->
 
   <bean id="Role-lookupDefinition" parent="Role-lookupDefinition-parentBean" />
 

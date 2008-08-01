@@ -220,7 +220,7 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.UseXSLTC</ConstantName>
-            <ConstantValue>true</ConstantValue>
+            <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.DebugTransform</ConstantName>

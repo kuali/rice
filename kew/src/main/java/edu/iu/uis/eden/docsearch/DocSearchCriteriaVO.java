@@ -92,6 +92,7 @@ public class DocSearchCriteriaVO implements Serializable {
     
     // below used when doing a document search from API
     private boolean overridingUserSession = false;
+    private boolean saveSearchForUser = false;
 
     public DocSearchCriteriaVO() {
         super();
@@ -535,5 +536,13 @@ public class DocSearchCriteriaVO implements Serializable {
     public void setOverridingUserSession(boolean overridingUserSession) {
         this.overridingUserSession = overridingUserSession;
     }
+
+	public boolean isSaveSearchForUser() {
+		return this.saveSearchForUser;
+	}
+
+	public void setSaveSearchForUser(boolean saveSearchForUser) {
+		this.saveSearchForUser = saveSearchForUser;
+	}
 
 }

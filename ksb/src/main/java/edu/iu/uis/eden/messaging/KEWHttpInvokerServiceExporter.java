@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.remoting.support.RemoteInvocationTraceInterceptor;
@@ -48,10 +49,14 @@ public class KEWHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 		if (isRegisterTraceInterceptor()) {
 			proxyFactory.addAdvice(new RemoteInvocationTraceInterceptor(getExporterName()));
 		}
-		Object service = ContextClassLoaderProxy.wrap(getService(),getService().getClass().getClassLoader());
+		ClassLoader classLoader = serviceInfo.getServiceClassLoader();
+		if (classLoader == null) {
+		    classLoader = ClassLoaderUtils.getDefaultClassLoader();
+		}
+		Object service = ContextClassLoaderProxy.wrap(getService(), classLoader);
 		service = BAMServerProxy.wrap(service, this.serviceInfo);
 		proxyFactory.setTarget(service);
-		return proxyFactory.getProxy(service.getClass().getClassLoader());
+		return proxyFactory.getProxy(classLoader);
 	}
 
 	@Override

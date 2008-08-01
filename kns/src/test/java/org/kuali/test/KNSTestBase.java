@@ -66,9 +66,6 @@ import org.kuali.rice.test.data.UnitTestFile;
  * 
  * 
  */
-@PerTestUnitTestData(
-	    @UnitTestData(
-	        sqlFiles = {@UnitTestFile(filename = "classpath:DefaultTestData.sql", delimiter = ";")}))
 public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstants {
 
 	private TransactionalLifecycle transactionalLifecycle;
@@ -89,7 +86,7 @@ public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstant
 	public void tearDown() throws Exception {
 		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
 		if (needsSpring) {
-		    if (transactionalLifecycle != null) {
+		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
 		        transactionalLifecycle.stop();
 		    }
 		}

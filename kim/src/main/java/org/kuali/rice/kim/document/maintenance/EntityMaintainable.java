@@ -17,148 +17,300 @@ package org.kuali.rice.kim.document.maintenance;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import org.kuali.core.datadictionary.MaintainableFieldDefinition;
-import org.kuali.core.datadictionary.MaintainableSectionDefinition;
-import org.kuali.core.datadictionary.MaintainableSubSectionHeaderDefinition;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.core.maintenance.Maintainable;
+import org.kuali.core.util.FieldUtils;
+import org.kuali.core.web.ui.Field;
+import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
-import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
-import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
-import org.kuali.rice.kim.service.EntityService;
-import org.kuali.rice.kim.service.NamespaceService;
+import org.kuali.rice.kim.lookup.valuefinder.NextEntityAttributeIdFinder;
+import org.kuali.rice.kim.util.KIMConstants;
+import org.kuali.rice.kim.web.form.EntityAttributeForm;
+import org.kuali.rice.util.RiceConstants;
 
 
-
+/**
+ * This class handles building out the appropriate sections for the defined namespace default attributes. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 public class EntityMaintainable extends KualiMaintainableImpl {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EntityMaintainable.class);
-
-    private static EntityService entityService;
-    private static NamespaceService namespaceService;
- // private static EntityAttributeService entityAttributeService;
     
+    private NextEntityAttributeIdFinder nextEntityAttribFinder;
+    
+    /**
+     * This constructs a EntityMaintainable and instantiates a new entity finder.
+     *
+     */
+    public EntityMaintainable() {
+    	super();
+    	this.nextEntityAttribFinder = new NextEntityAttributeIdFinder();
+    }
+    
+    /**
+     * This overridden method handles aggregating all the sections including one section per namespace.
+     * 
+     * @see org.kuali.core.maintenance.KualiMaintainableImpl#getSections(org.kuali.core.maintenance.Maintainable)
+     */
     @Override
     public List getSections(Maintainable oldMaintainable) {
-        List sections = new ArrayList();
-        sections.addAll(getCoreSections(oldMaintainable));
-        sections.addAll(getNamespaceSections(oldMaintainable));
+    	ArrayList<Section> sections = new ArrayList<Section>();
+    	ArrayList<Section> coreSections = (ArrayList<Section>) getCoreSections(oldMaintainable);
+        
+        for(Section section : coreSections) {
+        	// want custom entity attributes to be after the namespace specific ones 
+        	if(section.getSectionTitle().equals("Custom Entity Attributes")) {
+        		sections.addAll(getNamespaceSections(oldMaintainable));
+        	}
+        	
+        	sections.add(section);
+        }
         return sections;
     }
 
+    
+    
+    /**
+	 * This overridden method handles populating the sections correctly with the different entity attributes.
+	 * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterCopy(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		Maintainable oldMaintainable = document.getOldMaintainableObject();
+		Entity oldEntity = (Entity) oldMaintainable.getBusinessObject();
+		populateEntityAttributeFormObjects(oldEntity);
+		
+		Maintainable newMaintainable = document.getNewMaintainableObject();
+		Entity newEntity = (Entity) newMaintainable.getBusinessObject();
+		populateEntityAttributeFormObjects(newEntity);
+		
+		super.processAfterCopy(document, parameters);
+	}
 
-    private List getNamespaceSections(Maintainable oldMaintainable) {
-        initStatics();
-        List<Section> sections = new ArrayList<Section>();
-        Entity entity = (Entity)getBusinessObject();
+
+
+	/**
+	 * This overridden method handles populating the sections correctly with the different entity attributes.
+	 * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterEdit(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		Maintainable oldMaintainable = document.getOldMaintainableObject();
+		Entity oldEntity = (Entity) oldMaintainable.getBusinessObject();
+		populateEntityAttributeFormObjects(oldEntity);
+		
+		Maintainable newMaintainable = document.getNewMaintainableObject();
+		Entity newEntity = (Entity) newMaintainable.getBusinessObject();
+		populateEntityAttributeFormObjects(newEntity);
+		
+		super.processAfterEdit(document, parameters);
+	}
+	
+	
+	/**
+	 * This method handles pushing the persisted entity attributes retrieved from the DB down into the appropriate sections.
+	 * 
+	 * @param entity
+	 */
+	private void populateEntityAttributeFormObjects(Entity entity) {
+		for(EntityAttribute attribute : entity.getEntityAttributes()) {
+			if(StringUtils.contains(attribute.getAttributeName(), KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN)) {
+				entity.getNamespaceEntityAttributes().put(attribute.getAttributeName(), attribute.getValue());
+			} else {
+	    		EntityAttributeForm eaf = new EntityAttributeForm();
+	    		eaf.setId(attribute.getId());
+	    		eaf.setEntityId(entity.getId());
+	    		eaf.setAttributeName(attribute.getAttributeName());
+	    		eaf.setAttributeTypeId(attribute.getAttributeTypeId());
+	    		eaf.setNamespaceId(KIMConstants.NAMESPACE.KIM_NAMESPACE);  //all custom entity attributes get associated with the OOTB KIM bootstrap namespace
+	    		eaf.setValue(attribute.getValue());
+	    		eaf.setVersionNumber(attribute.getVersionNumber());
+	    		
+	    		entity.getEntityAttributeForms().add(eaf);
+			}
+		}
+	}
+
+	/**
+     * This method handles creating sections per namespace if the namespace has default attributes set for it. 
+     * 
+     * @param oldMaintainable
+     * @return ArrayList<Section>
+     */
+    private ArrayList<Section> getNamespaceSections(Maintainable oldMaintainable) {
+        ArrayList<Section> sections = new ArrayList<Section>();
         
-        List<NamespaceDTO> namespaces = namespaceService.getAllNamespaces();
-      //  DataDictionaryDefinitionBase.isParsingFile = false; // prevents from attempting to retrieve file name and line number (which throws an exception)
+        ArrayList<NamespaceDTO> namespaces = (ArrayList<NamespaceDTO>) KIMServiceLocator.getNamespaceService().getAllNamespaces();
+        
+        Entity newEntity = (Entity) getBusinessObject();
             
-      // iterate over Namespaces - create a section for each        
+        // iterate over Namespaces - create a section for each one that has default attributes     
         for ( NamespaceDTO namespace : namespaces ) {
-            MaintainableSectionDefinition sectionDef = new MaintainableSectionDefinition();
-            MaintainableSectionDefinition entitySubsectionDef = new MaintainableSectionDefinition();
-            sectionDef.setTitle( namespace.getName() + " Attributes " );
-                   
-        /** NamespaceDefaultAttribute namespaceAttribute = null;
-            if ( entity != null ) {
-              namespaceAttribute = entity.getNamespaceAttribute( namespace.getName() );
-            } **/
-            
-            Collection<NamespaceDefaultAttributeDTO> namespaceAttributes = namespace.getNamespaceAttributes().values();
-            Iterator<NamespaceDefaultAttributeDTO> i = namespaceAttributes.iterator();
-            
-         //   List<String>  namespaceAttributePropertyNames = namespace.getNamespaceAttributeService().getPropertyList();
-            
-        //property names should come from the spring bean file 
-            List<String>  namespaceAttributePropertyNames = new ArrayList<String>();  // for testing
-            namespaceAttributePropertyNames.add("attributeName");
-            namespaceAttributePropertyNames.add("active");
-            namespaceAttributePropertyNames.add("required");
-                 
-            if ( namespaceAttributes.size() == 0 ) {
-                continue;
+        	if(!namespace.getNamespaceAttributes().isEmpty()) { 
+        		Section section = new Section();
+	            section.setSectionId(namespace.getId().toString());
+	            section.setSectionTitle(namespace.getName() + " Attributes");
+	            
+	            Iterator<Entry<String, NamespaceDefaultAttributeDTO>> attributes = namespace.getNamespaceAttributes().entrySet().iterator();
+	        	
+	            ArrayList<Field> fields = new ArrayList<Field>();
+	            
+	        	// for each group type default attribute we need to go through and populate the form list
+	        	while(attributes.hasNext()) {
+	        		Entry<String, NamespaceDefaultAttributeDTO> e = attributes.next();
+	        		NamespaceDefaultAttributeDTO attribute = e.getValue();
+	        		
+	        		if(attribute.getActive()) {
+	        			String propertyName = KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN + namespace.getId().toString() + "-" + attribute.getId().toString();
+	        			Field field = new Field(attribute.getAttributeName(), "", Field.TEXT, true, propertyName, "", attribute.getRequired(), false, null, null, 50, 100);
+	        			
+	        			//check to see if this is a post and there are form entered values to populate with
+	        			if(!newEntity.getNamespaceEntityAttributes().isEmpty()) {
+	        				String value = newEntity.getNamespaceEntityAttributes().get(propertyName);
+	        				if(value != null) {
+	        					field.setPropertyValue(value);
+	        				}
+	        			}
+	        			
+	        			field.setCellAlign("left");
+	        			fields.add(field);
+	        		}
+	        	}
+	        		
+	        	ArrayList<Row> rows = (ArrayList<Row>) FieldUtils.wrapFields(fields);
+	        	
+	        	section.setRows(rows);
+	        	
+	        	sections.add(section);
             }
-        // this bo should come from its service object   
-            EntityAttribute entityaAtribute = new EntityAttribute();  // just for testing
-        //property names should come from the spring bean file    
-            List<String>  entityAttributePropertyNames = new ArrayList<String>(); // just for testing
-            entityAttributePropertyNames.add("attributeTypeId");
-            entityAttributePropertyNames.add("attributeName");
-            entityAttributePropertyNames.add("value");
-                                   
-            for(String namespaceAttributePropertyName : namespaceAttributePropertyNames){
-                MaintainableFieldDefinition fieldDef = new MaintainableFieldDefinition();
-                fieldDef.setName(namespaceAttributePropertyName); 
-                sectionDef.getMaintainableItems().add(fieldDef);
-            }
-            
-            MaintainableSubSectionHeaderDefinition subSecDef = new MaintainableSubSectionHeaderDefinition();
-            subSecDef.setName("Entity Attribute");
-            entitySubsectionDef.getMaintainableItems().add(subSecDef);
-            
-            for(String entityAttributePropertyName : entityAttributePropertyNames){
-                MaintainableFieldDefinition fieldDef = new MaintainableFieldDefinition();
-                fieldDef.setName(entityAttributePropertyName); 
-                entitySubsectionDef.getMaintainableItems().add(fieldDef);
-            }
-                  
-          //  for (NamespaceDefaultAttribute NamespaceAttribute : namespaceAttributes) {
-            while (i.hasNext()){
-                            
-            try {
-                Section section = SectionBridge.toSection(sectionDef,entitySubsectionDef, NamespaceDefaultAttribute.toBO(i.next()),entityaAtribute, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), namespaceAttributePropertyNames,entityAttributePropertyNames);
-                //Section section = SectionBridge.toSection(sectionDef, NamespaceAttribute, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), namespaceAttributePropertyNames);
-               
-                LOG.info("Updated Error key for section : " + section.getSectionTitle() + " is " + section.getErrorKey());
-
-                sections.add( section );
-            } catch ( IllegalAccessException ex ) {
-                // ????
-                LOG.error( "Error creating Section for module " + namespace.getId(), ex );
-                throw new RuntimeException( "Error creating Section object for form.", ex );
-            } catch ( InstantiationException ex ) {
-                // ????
-                LOG.error( "Error creating Section for module " + namespace.getId(), ex );
-                throw new RuntimeException( "Error creating Section object for form.", ex );
-            }   }
         }
         
         return sections;
     }
 
+	/**
+	 * This overridden method takes the input in the dynamically rendered attribute sections, adds it to a temporary HashMap that hangs off of the 
+	 * BO, so that it can be maintained post to post.
+	 * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterPost(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterPost(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		Entity oldEntity = (Entity) document.getOldMaintainableObject().getBusinessObject();
+		Entity newEntity = (Entity) document.getNewMaintainableObject().getBusinessObject();
+		
+		Iterator<Entry<String, String[]>> attributes = parameters.entrySet().iterator();
+        HashMap<String, String> newNamespaceEntityAttributes = new HashMap<String, String>(parameters.size());
+        HashMap<String, String> oldNamespaceEntityAttributes = new HashMap<String, String>(parameters.size());
+		
+    	// for each group type default attribute we need to go through and populate the form list
+    	while(attributes.hasNext()) {
+    		Entry<String, String[]> e = attributes.next();
+    		String key = e.getKey();
+    		
+    		if(StringUtils.contains(key, KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN)) {
+    			String value = e.getValue()[0];
+    			if(StringUtils.contains(key, "newMaintainableObject")) {
+    				String newKey = KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN + (StringUtils.substringAfter(key, KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN));  //strip off the unnecessary text 
+    				newNamespaceEntityAttributes.put(newKey, value);
+    			} else { //oldMaintainableObject
+    				String oldKey = KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN + (StringUtils.substringAfter(key, KIMConstants.NAMESPACE_DEFAULT_ATTRIBUTE_PREFIX_TOKEN));  //strip off the unnecessary text
+    				oldNamespaceEntityAttributes.put(oldKey, value);
+    			}
+    		}
+    	}
+    	
+    	newEntity.setNamespaceEntityAttributes(newNamespaceEntityAttributes);
+    	oldEntity.setNamespaceEntityAttributes(oldNamespaceEntityAttributes);
+    	
+		super.processAfterPost(document, parameters);
+	}
+	
+	/**
+     * This overridden method handles aggregating all of the entity attributes from the different sections down into a single list to persist.
+     * 
+     * @see org.kuali.core.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     */
     @Override
-    public void saveBusinessObject() {    
-    }
-    
-    private void initStatics() {
-        if ( namespaceService == null ) { // they're all set at the same time, so only need one check
-            entityService = KIMServiceLocator.getEntityService();
-            namespaceService = KIMServiceLocator.getNamespaceService();
-        }
-    }
+    public void saveBusinessObject() {
+    	Entity entity = (Entity)getBusinessObject();
+    	
+    	// this data structure will be used later on for obtaining the Id of the appropriate attribute to prevent conflicts of unique 
+    	// keys during save
+    	HashMap<String, Long> priorEntityAttributesIds = new HashMap<String, Long>(entity.getEntityAttributes().size());
+    	for(EntityAttribute priorAttrib : entity.getEntityAttributes()) {
+    		priorEntityAttributesIds.put(priorAttrib.getAttributeName(), priorAttrib.getId());
+    	}
+    	
+    	// now clear out to eliminate any conflicts 
+    	entity.getEntityAttributes().clear();	
+    	
+    	// deal with persisting the custom attributes section
+    	ArrayList<EntityAttributeForm> entityAttributeForms = entity.getEntityAttributeForms();
+    	for(EntityAttributeForm eaf : entityAttributeForms) {
+    		EntityAttribute customAttribute = new EntityAttribute();
+    		customAttribute.setId(eaf.getId());
+    		customAttribute.setEntityId(entity.getId());
+    		customAttribute.setAttributeName(eaf.getAttributeName());
+    		if(eaf.getAttributeTypeId() == null) {
+    			customAttribute.setAttributeTypeId(KIMConstants.ATTRIBUTE_TYPE.TEXT); // for now, this should just be TEXT
+    		} else {
+    			customAttribute.setAttributeTypeId(eaf.getAttributeTypeId());
+    		}
+    		customAttribute.setNamespaceId(KIMConstants.NAMESPACE.KIM_NAMESPACE);  //all custom entity attributes get associated with the OOTB KIM bootstrap namespace
+    		customAttribute.setValue(eaf.getValue());
+    		customAttribute.setVersionNumber(eaf.getVersionNumber());
+    		
+    		entity.getEntityAttributes().add(customAttribute);
+    	}
+    	
+    	// deal with persisting the namespace entity attributes sections
+    	Iterator<Entry<String, String>> namespaceEntityAttributes = entity.getNamespaceEntityAttributes().entrySet().iterator();
+        ArrayList<Field> fields = new ArrayList<Field>();
 
-    /**
-     * @see org.kuali.core.maintenance.Maintainable#populateBusinessObject(java.util.Map)
-     */
-    public Map populateBusinessObject(Map fieldValues) {
-           return null;
-    }
-    
-    /**
-     * @see org.kuali.core.maintenance.Maintainable#processAfterCopy()
-     */
-    @Override
-    public void processAfterCopy( MaintenanceDocument document, Map<String,String[]> parameters ) {
+        while(namespaceEntityAttributes.hasNext()) {
+    		Entry<String, String> e = namespaceEntityAttributes.next();
+    		String value = e.getValue();
+    		
+    		EntityAttribute namespaceEntityAttribute = new EntityAttribute();
+    		Long priorId = priorEntityAttributesIds.get(e.getKey());
+    		if(priorId == null) {
+    			priorId = nextEntityAttribFinder.getLongValue();
+    		}
+    		namespaceEntityAttribute.setId(priorId);
+    		namespaceEntityAttribute.setEntityId(entity.getId());
+    		namespaceEntityAttribute.setAttributeName(e.getKey());
+    		namespaceEntityAttribute.setAttributeTypeId(KIMConstants.ATTRIBUTE_TYPE.TEXT); // for now, this should just be TEXT
+    		// need to extract the namespace id from the key
+    		String namespaceId = StringUtils.substringBetween(e.getKey(), "-");
+    		namespaceEntityAttribute.setNamespaceId(new Long(namespaceId));
+    		namespaceEntityAttribute.setValue(e.getValue());
+    		
+    		entity.getEntityAttributes().add(namespaceEntityAttribute);
+        }
+    	
+    	super.saveBusinessObject();
     }
 }

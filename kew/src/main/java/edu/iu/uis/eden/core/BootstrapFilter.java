@@ -41,8 +41,7 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
-
-import edu.iu.uis.eden.util.ClassLoaderUtils;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 /**
  * A filter which at runtime reads a series of filter configurations, constructs

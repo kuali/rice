@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -30,7 +31,6 @@ import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -46,9 +46,9 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
     @Test public void testCustomDocumentSearchGeneratorUse() throws Exception {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
-    	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof StandardDocumentSearchGenerator));
+    	assertEquals("The document search Generator class is incorrect.",StandardDocumentSearchGenerator.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
     	docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType_DefaultCustomProcessor");
-    	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof CustomDocumentSearchGenerator));
+    	assertEquals("The document search Generator class is incorrect.",CustomDocumentSearchGenerator.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
     }
     
 	private DocumentType getValidDocumentType(String documentTypeFullName) {

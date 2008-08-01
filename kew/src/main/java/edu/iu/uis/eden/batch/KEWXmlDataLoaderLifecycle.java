@@ -15,6 +15,7 @@
  */
 package edu.iu.uis.eden.batch;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
@@ -56,6 +57,11 @@ public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
             return;
         }
 
+        LOG.info("################################");
+        LOG.info("#");
+        LOG.info("#  Begin Loading file '" + filename + "'");
+        LOG.info("#");
+        LOG.info("################################");
         loadData();
         super.start();
     }

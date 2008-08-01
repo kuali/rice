@@ -37,6 +37,7 @@ import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.doctype.SecuritySession;
+import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
@@ -718,7 +719,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             whereSQL.append(docTypeFullNameSql);
         }
 
-        String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
+        String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
             whereSQL.append(docRouteNodeSql);
             fromSQL.append(", EN_RTE_NODE_INSTN_T ");
@@ -959,19 +960,46 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
     }
 
-    protected String getDocRouteNodeSql(String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
+    protected String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
         // -1 is the default 'blank' choice from the route node drop down a number is used because the ojb RouteNode object is used to
         // render the node choices on the form.
     	String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
-            String operator = " = ";
-            if ("before".equalsIgnoreCase(docRouteLevelLogic.trim())) {
-                operator = " < ";
-            } else if ("after".equalsIgnoreCase(docRouteLevelLogic.trim())) {
-                operator = " > ";
-            }
-//            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 and EN_RTE_NODE_INSTN_T.RTE_NODE_ID " + operator + "'" + docRouteLevel.trim() + "' ";
-            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 and EN_RTE_NODE_T.RTE_NODE_NM " + operator + "'" + docRouteLevel.trim() + "' ";
+        	StringBuffer routeNodeCriteria = new StringBuffer("and EN_RTE_NODE_T.RTE_NODE_NM ");
+        	if (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
+        		routeNodeCriteria.append("= '" + docRouteLevel + "' ");
+        	} else {
+        		routeNodeCriteria.append("in (");
+        		// below buffer used to facilitate the addition of the string ", " to separate out route node names
+        		StringBuffer routeNodeInCriteria = new StringBuffer();
+        		boolean foundSpecifiedNode = false;
+        		List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
+    			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
+                    RouteNode routeNode = (RouteNode) iter.next();
+                    if (docRouteLevel.equals(routeNode.getRouteNodeName())) {
+                    	// current node is specified node so we ignore it outside of the boolean below
+                    	foundSpecifiedNode = true;
+                    	continue;
+                    }
+                    // below logic should be to add the current node to the criteria if we haven't found the specified node
+					// and the logic qualifier is 'route nodes before specified'... or we have found the specified node and
+					// the logic qualifier is 'route nodes after specified'
+                    if ( (!foundSpecifiedNode && (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) || 
+                         (foundSpecifiedNode && (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER.equalsIgnoreCase(docRouteLevelLogic.trim()))) ) {
+                    	if (routeNodeInCriteria.length() > 0) {
+                    		routeNodeInCriteria.append(", ");
+                    	}
+                    	routeNodeInCriteria.append("'" + routeNode.getRouteNodeName() + "'");
+                    }
+    			}
+    			if (routeNodeInCriteria.length() > 0) {
+            		routeNodeCriteria.append(routeNodeInCriteria);
+    			} else {
+    				routeNodeCriteria.append("''");
+    			}
+        		routeNodeCriteria.append(") ");
+        	}
+            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
         }
         return returnSql;
     }

@@ -371,6 +371,21 @@ a.fineprint:hover
 	width: 30%;
 }
 
+#workarea td.tabtable1-left-colspan 
+{ 
+background-image: url("../images/tab-back.gif"); 
+background-position: right; 
+font-weight: bold; 
+color: #666666; 
+height: 29px; 
+white-space: nowrap; 
+text-align: left; 
+border: none; 
+margin: 0px; 
+padding: 0px; 
+width: 50%; 
+} 
+
 #workarea td.infoline
 {
 	border-left-color: #999999;
@@ -409,7 +424,7 @@ a.fineprint:hover
 	margin: 0px;
 	padding: 0px;
 	border: none;
-	width: 110px;
+	width: 20%;
 	color: #666666;
 }
 

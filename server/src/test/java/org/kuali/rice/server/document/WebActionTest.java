@@ -53,7 +53,7 @@ public class WebActionTest extends WebTestBase {
 
         HtmlPage finalPagePage = clickOn(questionPage, "methodToCall.processAnswer.button1");
 
-        assertEquals("Rice Sample Client", finalPagePage.getTitleText());
+        assertEquals(HTML_PAGE_TITLE_TEXT, finalPagePage.getTitleText());
     }
 
     /**

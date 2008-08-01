@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kim.dto.PersonAttributeDTO;
 import org.kuali.rice.kim.dto.PersonDTO;

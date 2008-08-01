@@ -16,9 +16,16 @@
 package org.kuali.rice.kim.dao;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
+import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 import org.kuali.rice.util.OrmUtils;
@@ -61,18 +68,86 @@ public class KIMServicesDaoProxy implements KIMServicesDao {
 		return getDao(EntityAttribute.class).getAttributesForNamespace(namespaceName, entityId);
 	}
 
-	public Collection<PrincipalQualifiedRole> findAllPersonsWithQualifiedRole(final String roleName) {
-		return getDao(PrincipalQualifiedRole.class).findAllPersonsWithQualifiedRole(roleName);
+	public Principal findPrincipalWithPermission(String permissionName, String namespaceName, String principalName) {
+		return getDao(Permission.class).findPrincipalWithPermission(permissionName, namespaceName, principalName);
 	}
 
-	public Collection<PrincipalQualifiedRole> findAllPrincipalsWithQualifiedRole(final String roleName) {
-		return getDao(PrincipalQualifiedRole.class).findAllPrincipalsWithQualifiedRole(roleName);
+	public Principal findPersonWithRole(Long personId, String roleName) {
+		return getDao(Principal.class).findPersonWithRole(personId, roleName);
 	}
 
-	public Collection<GroupQualifiedRole> findAllGroupsWithQualifiedRole(final String roleName) {
-		return getDao(GroupQualifiedRole.class).findAllGroupsWithQualifiedRole(roleName);
+	public Principal findPrincipalWithRole(String principalName, String roleName) {
+		return getDao(Principal.class).findPrincipalWithRole(principalName, roleName);
 	}
 
+	public Entity findEntityWithRole(Long entityId, String roleName) {
+		return getDao(Entity.class).findEntityWithRole(entityId, roleName);
+	}
+
+	public Group findGroupWithRole(String groupName, String roleName) {
+		return getDao(Group.class).findGroupWithRole(groupName, roleName);
+	}
+
+	public Principal findPersonWithPermission(Long personId, String permissionName,	String namespaceName) {
+		return getDao(Principal.class).findPersonWithPermission(personId, permissionName, namespaceName);
+	}
+
+	public Entity findEntityWithPermission(Long entityId, String permissionName, String namespaceName) {
+		return getDao(Entity.class).findEntityWithPermission(entityId, permissionName, namespaceName);
+	}
+
+	public Collection<GroupQualifiedRoleAttribute> findGroupQualifiedRole(String roleName, Map<String, String> attributes) {
+		return getDao(GroupQualifiedRoleAttribute.class).findGroupQualifiedRole(roleName, attributes);
+	}
+
+	public Collection<PrincipalQualifiedRoleAttribute> findPrincipalQualifiedRole(String roleName, Map<String, String> attributes) {
+		return getDao(PrincipalQualifiedRoleAttribute.class).findPrincipalQualifiedRole(roleName, attributes);
+	}
+
+
+	public Collection<Principal> findQualifiedPrincipalsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Principal.class).findQualifiedPrincipalsWithRole(roleName, qualifiedRoleAttributes);
+	}
+
+	public Collection<Principal> findQualifiedPersonsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Principal.class).findQualifiedPersonsWithRole(roleName, qualifiedRoleAttributes);
+	}
+
+	public Principal findQualifiedPersonWithRole(Long personId, String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Principal.class).findQualifiedPersonWithRole(personId, roleName, qualifiedRoleAttributes);
+	}
+
+	public Principal findQualifiedPrincipalWithRole(String principalName, String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Principal.class).findQualifiedPrincipalWithRole(principalName, roleName, qualifiedRoleAttributes);
+	}
+
+	public Principal findQualifiedPrincipalWithPermission(String principalName, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName) {
+		return getDao(Principal.class).findQualifiedPrincipalWithPermission(principalName, permissionName, qualifiedRoleAttributes, namespaceName);
+	}
+
+	public Principal findQualifiedPersonWithPermission(Long personId, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName) {
+		return getDao(Principal.class).findQualifiedPersonWithPermission(personId, permissionName, qualifiedRoleAttributes, namespaceName);
+	}
+
+	public Collection<Entity> findQualifiedEntitysWithRole(String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Entity.class).findQualifiedEntitysWithRole(roleName, qualifiedRoleAttributes);
+	}
+
+	public Entity findQualifiedEntityWithRole(Long entityId, String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Entity.class).findQualifiedEntityWithRole(entityId, roleName, qualifiedRoleAttributes);
+	}
+
+	public Entity findQualifiedEntityWithPermissionRole(Long entityId, String permissionName, Map<String, String> qualifiedRoleAttributes, String namespaceName) {
+		return getDao(Entity.class).findQualifiedEntityWithPermissionRole(entityId, permissionName, qualifiedRoleAttributes, namespaceName);
+	}
+
+	public Collection<Group> findQualifiedGroupsWithRole(String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Group.class).findQualifiedGroupsWithRole(roleName, qualifiedRoleAttributes);
+	}
+
+	public Group findQualifiedGroupsWithRole(String groupName, String roleName, Map<String, String> qualifiedRoleAttributes) {
+		return getDao(Group.class).findQualifiedGroupsWithRole(groupName, roleName, qualifiedRoleAttributes);
+	}
 
 
 	/**

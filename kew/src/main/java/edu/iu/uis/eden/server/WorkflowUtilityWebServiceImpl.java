@@ -870,7 +870,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             criteria.setOverridingUserSession(true);
             user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         }
-        DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListBoundByCriteria(user, criteria);
+        DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListRestrictedByCriteria(user, criteria);
         DocumentSearchResultVO resultVO = BeanConverter.convertDocumentSearchResultComponents(components);
         resultVO.setOverThreshold(criteria.isOverThreshold());
         resultVO.setSecurityFilteredRows(Integer.valueOf(criteria.getSecurityFilteredRows()));

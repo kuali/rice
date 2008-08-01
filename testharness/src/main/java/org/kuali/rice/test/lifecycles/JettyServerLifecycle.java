@@ -83,6 +83,7 @@ public class JettyServerLifecycle implements Lifecycle {
 	
 	public JettyServerLifecycle(int port, String contextName, String relativeWebappRoot) {
 		jettyServer = new JettyServer(port, contextName, relativeWebappRoot);
+		jettyServer.setFailOnContextFailure(true);
 		jettyServer.setTestMode(testMode);
 	}	
 	

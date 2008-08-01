@@ -116,5 +116,8 @@
   <bean id="RoleAttribute-objectId" parent="RoleAttribute-objectId-parentBean" />
 
   <bean id="RoleAttribute-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  	<property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
   </bean>
 </beans>

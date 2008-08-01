@@ -16,6 +16,7 @@
 package org.kuali.rice.web.jetty;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -26,6 +27,10 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 public class JettyServer implements Lifecycle {
+	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(JettyServer.class);
+	
     /**
      * The name of an attribute we set in the ServletContext to indicate to the webapp
      * that it is running within unit tests, in case it needs to alter its configuration
@@ -39,6 +44,7 @@ public class JettyServer implements Lifecycle {
 	private Class servletClass;
 	private Server server;
 	private Context context;
+	private boolean failOnContextFailure;
 
 	/**
 	 * Whether we are in test mode
@@ -91,6 +97,14 @@ public class JettyServer implements Lifecycle {
 	public void start() throws Exception {
 		server = createServer();
 		server.start();
+		if (isFailOnContextFailure() && contextStartupFailed()) {
+			try {
+				server.stop();
+			} catch (Exception e) {
+				LOG.warn("Failed to stop server after web application startup failure.");
+			}
+			throw new Exception("Failed to startup web application context!  Check logs for specific error.");
+		}
 	}
 
 	public void stop() throws Exception {
@@ -103,22 +117,18 @@ public class JettyServer implements Lifecycle {
 
 	protected Server createServer() {
 		Server server = new Server(getPort());
-		try {
-			setBaseDirSystemProperty();
-			if (StringUtils.isNotBlank(this.relativeWebappRoot)) {
-			    WebAppContext webAppContext = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
-			    webAppContext.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
-			    webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
-			    context = webAppContext;
-	            server.addHandler(context);
-			} else {
-			    Context root = new Context(server,"/",Context.SESSIONS);
-			    root.addServlet(new ServletHolder(servletClass), getContextName());
-			    root.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
-			    context = root;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		setBaseDirSystemProperty();
+		if (useWebAppContext()) {
+			WebAppContext webAppContext = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
+			webAppContext.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
+			webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
+			context = webAppContext;
+			server.addHandler(context);
+		} else {
+			Context root = new Context(server,"/",Context.SESSIONS);
+			root.addServlet(new ServletHolder(servletClass), getContextName());
+			root.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
+			context = root;
 		}
 		return server;
 	}
@@ -127,6 +137,29 @@ public class JettyServer implements Lifecycle {
 		if (System.getProperty("basedir") == null) {
 			System.setProperty("basedir", System.getProperty("user.dir"));
 		}
+	}
+	
+	private boolean useWebAppContext() {
+		return StringUtils.isNotBlank(this.relativeWebappRoot);
+	}
+	
+	/**
+	 * A hack for Jetty so that we can detect if context startup failed.  Jetty has no programatic
+	 * way available to detect if context startup failed.  Instead we have to use reflection to
+	 * check the value of a private variable.  See http://jira.codehaus.org/browse/JETTY-319
+	 * for more details on the issue.
+	 */
+	protected boolean contextStartupFailed() throws Exception {
+        /*
+		 * We can only tell if the context startup failed if the server is using a WebAppContext object since the
+		 * org.mortbay.jetty.servlet.Context object does not have a field named '_unavailable'
+		 */
+		if (useWebAppContext()) {
+			Field unavailableField = context.getClass().getDeclaredField("_unavailable");
+			unavailableField.setAccessible(true);
+			return unavailableField.getBoolean(context);
+		}
+		return false;
 	}
 	
 	public String getRelativeWebappRoot() {
@@ -157,6 +190,15 @@ public class JettyServer implements Lifecycle {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	
+	public boolean isFailOnContextFailure() {
+		return this.failOnContextFailure;
+	}
+
+	public void setFailOnContextFailure(boolean failOnContextFailure) {
+		this.failOnContextFailure = failOnContextFailure;
 	}
 
 	public String toString() {

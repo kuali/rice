@@ -91,9 +91,20 @@ public class RequestActivationNode implements SimpleNode {
         MDC.put("docID", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
         List generatedActionItems = new ArrayList();
-        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        List requests = new ArrayList();
         if (context.isSimulation()) {
+        	for (ActionRequestValue ar : context.getDocument().getActionRequests()) {
+        		// logic check below duplicates behavior of the ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(routeHeaderId, routeNodeInstanceId) method
+				if (ar.getCurrentIndicator()
+						&& (EdenConstants.ACTION_REQUEST_INITIALIZED.equals(ar.getStatus()) || EdenConstants.ACTION_REQUEST_ACTIVATED.equals(ar.getStatus()))
+						&& ar.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())
+						&& ar.getParentActionRequest() == null) {
+					requests.add(ar);
+				}
+			}
             requests.addAll(context.getEngineState().getGeneratedRequests());
+        } else {
+            requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
         }
         Collections.sort(requests, new Utilities().new PrioritySorter());
         LOG.debug("Pending Root Requests " + requests.size());
@@ -101,7 +112,7 @@ public class RequestActivationNode implements SimpleNode {
         boolean isParallel = EdenConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
         boolean activatedApproveRequest = false;
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
-            if (activatedApproveRequest && !isParallel) {
+            if (activatedApproveRequest && !isParallel && (!context.isSimulation() || !context.getActivationContext().isActivateRequests() )) {
                 break;
             }
             ActionRequestValue request = (ActionRequestValue) iter.next();

@@ -31,5 +31,7 @@ public interface WorkflowEngine {
     public void process(Long documentId, Long nodeInstanceId) throws Exception;
     
     public void initializeDocument(DocumentRouteHeaderValue document);
+    
+    public void setRunPostProcessorLogic(boolean runPostProcessorLogic);
     	
 }

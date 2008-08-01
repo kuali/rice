@@ -606,10 +606,10 @@ public class XmlHelper {
                 fieldE.appendChild(doc.createTextNode(value));
                 wrapper.appendChild(fieldE);
             } catch (RuntimeException e) {
-                LOG.error("Error accessing method '" + methods[i].getName() + " of instance of " + c);
+                LOG.error("Error accessing method '" + methods[i].getName() + "' of instance of " + c);
                 throw e;
             } catch (Exception e) {
-                LOG.error("Error accessing method '" + methods[i].getName() + " of instance of " + c);
+                LOG.error("Error accessing method '" + methods[i].getName() + "' of instance of " + c);
             }
         }
         return wrapper;

@@ -105,7 +105,9 @@ public class AuthorizationStore {
         if (authorizedActions == null) {
             authorizedActions = new HashMap();
         }
-        Set authorizedGroups = authorizedGroups(authorizedActions, targetType);
+        //Set authorizedGroups = authorizedGroups(authorizedActions, targetType);
+        // Lookup for authorized groups should be by action at this point 
+        Set authorizedGroups = authorizedGroups(authorizedActions, action); 
         if (authorizedGroups == null) {
             authorizedGroups = new HashSet();
         }

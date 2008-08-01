@@ -66,7 +66,8 @@ public class DictionaryValidationServiceTest extends TestBase {
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         int recursiveZeroErrorMapSize = errorMap.size();
 
-        assertEquals("We should only get four errors here", 4, recursiveZeroErrorMapSize);
+        // errors should be 'account type code' and 'request type' both being required
+        assertEquals("Number of errors found is incorrect", 2, recursiveZeroErrorMapSize);
     }
 
     /**

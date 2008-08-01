@@ -33,6 +33,7 @@ import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
+import edu.iu.uis.eden.messaging.RouteDocumentMessageService;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -218,7 +219,10 @@ public abstract class ActionTakenEvent {
 		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
 		KEWXMLService documentRoutingService = (KEWXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
-			documentRoutingService.invoke(String.valueOf(getRouteHeaderId()));
+//			String content = String.valueOf(getRouteHeaderId());
+			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic());
+			String content = element.translate();
+			documentRoutingService.invoke(content);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}

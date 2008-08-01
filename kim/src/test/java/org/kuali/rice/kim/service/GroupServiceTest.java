@@ -20,8 +20,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.TestBase;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
@@ -46,7 +46,7 @@ import org.kuali.rice.test.data.UnitTestSql;
 @PerTestUnitTestData(
         @UnitTestData(
             sqlStatements = {
-            		@UnitTestSql("DELETE  FROM KIM_NAMESPACE_DFLT_ATTRIBS_T WHERE ID=1 "),
+/*            		@UnitTestSql("DELETE  FROM KIM_NAMESPACE_DFLT_ATTRIBS_T WHERE ID=1 "),
             		@UnitTestSql("DELETE  FROM KIM_ROLES_GROUPS_T WHERE ROLE_ID=1 "),
             		@UnitTestSql("DELETE  FROM KIM_ROLES_GROUPS_T WHERE ROLE_ID=2 "),                
 
@@ -86,7 +86,7 @@ import org.kuali.rice.test.data.UnitTestSql;
             		@UnitTestSql("DELETE  FROM KIM_ENTITY_TYPES_T WHERE ID=2"),
             		@UnitTestSql("DELETE  FROM KIM_ENTITY_TYPES_T WHERE ID=3"),
             		@UnitTestSql("DELETE  FROM KIM_ENTITY_TYPES_T WHERE ID=4 "),
-
+*/
             		@UnitTestSql("INSERT   INTO  KIM_GROUP_TYPES_T (ID, NAME, DESCRIPTION,WORKFLOW_DOCUMENT_TYPE) VALUES(1, 'TEST_GROUP_TYPE','TEST_GROUP_TYPE', 'WF DOC') "),
             		            		                
             		@UnitTestSql("INSERT   INTO  KIM_GROUPS_T (ID, NAME, DESCRIPTION,GROUP_TYPE_ID) VALUES(1, 'KIM Test Group1', 'Test case',1) "),
@@ -96,12 +96,12 @@ import org.kuali.rice.test.data.UnitTestSql;
             		            		                
             		@UnitTestSql("INSERT   INTO  KIM_GROUPS_GROUPS_T (PARENT_GROUP_ID, MEMBER_GROUP_ID) VALUES(1, 2) "),
             		            		                
-            		            		                
+/*            		            		                
             		@UnitTestSql("INSERT   INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (1, 'Person', 'This entity type represents a person.')"),
             		@UnitTestSql("INSERT   INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (2, 'System', 'This entity type represents another system.')"),
             		@UnitTestSql("INSERT   INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (3, 'Service', 'This entity type represents a service.')"),
             		@UnitTestSql("INSERT   INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (4, 'Process', 'This entity type represents a process.')"),
-
+*/
             		            		                
             		@UnitTestSql("INSERT   INTO  KIM_ATTRIBUTE_TYPES_T (ID,NAME,DESCRIPTION) VALUES(1, 'TEST_ATTRIBUTE','TEST') "),            		                
             		@UnitTestSql("INSERT   INTO  KIM_GROUP_ATTRIBUTES_T (ID,GROUP_ID,ATTRIBUTE_NAME,ATTRIBUTE_TYPE_ID,ATTRIBUTE_VALUES) VALUES(1, 2,'GROUP_CONTACT_PERSON',1,'JOHN DOE') "),
@@ -129,18 +129,20 @@ import org.kuali.rice.test.data.UnitTestSql;
             }
         )
 )
+//@Ignore
 public class GroupServiceTest extends KIMTestCase {
+	
     private static final String TEST_GROUP1 = "KIM Test Group1";
     private static final String TEST_GROUP2 = "KIM Test Group2";
     private static final String TEST_GROUP3 = "KIM Test Group3";
 
-    @Test
+	@Test
     public void testGetAllGroupNames_SyncJava() throws Exception {
         QName serviceName = new QName("KIM", "groupService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
 
         List<String> groupNames = groupService.getAllGroupNames();
-        assertTrue(groupNames.size() == 3);
+        assertEquals(3, groupNames.size());
         for(String name:groupNames){
         	assertTrue(name.equals(TEST_GROUP1)||name.equals(TEST_GROUP2)||name.equals(TEST_GROUP3));
         }
@@ -153,18 +155,18 @@ public class GroupServiceTest extends KIMTestCase {
         QName serviceName = new QName("KIM", "groupSoapService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
         List<String> groupNames = groupService.getAllGroupNames();
-        assertTrue(groupNames.size() == 3);
+        assertEquals(3, groupNames.size());
         for(String name:groupNames){
         	assertTrue(name.equals(TEST_GROUP1)||name.equals(TEST_GROUP2)||name.equals(TEST_GROUP3));
         }
    }
     
-    @Test    
+    @Test
     public void testGetAllGroups_SyncJava() throws Exception {
         QName serviceName = new QName("KIM", "groupService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
         List<GroupDTO> groupDtos = groupService.getAllGroups();
-        assertTrue(groupDtos.size() == 3);
+        assertEquals(3, groupDtos.size());
         for(GroupDTO groupDto:groupDtos){
         	assertTrue(groupDto.getName().equals(TEST_GROUP1)||groupDto.getName().equals(TEST_GROUP2)||groupDto.getName().equals(TEST_GROUP3));
         }
@@ -175,7 +177,7 @@ public class GroupServiceTest extends KIMTestCase {
         QName serviceName = new QName("KIM", "groupSoapService");
         GroupService groupSoapService = (GroupService) GlobalResourceLoader.getService(serviceName);
         List<GroupDTO> groupDtos = groupSoapService.getAllGroups();
-        assertTrue(groupDtos.size() == 3);
+        assertEquals(3, groupDtos.size());
         for(GroupDTO groupDto:groupDtos){
         	assertTrue(groupDto.getName().equals(TEST_GROUP1)||groupDto.getName().equals(TEST_GROUP2)||groupDto.getName().equals(TEST_GROUP3));
         }

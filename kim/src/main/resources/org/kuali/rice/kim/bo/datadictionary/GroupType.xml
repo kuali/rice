@@ -60,7 +60,7 @@
 
   <bean id="GroupType-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Name" />
+    <property name="shortLabel" value="Type Name" />
     <property name="maxLength" value="500" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -71,7 +71,7 @@
             p:size="100" />
     </property>
     <property name="name" value="name" />
-    <property name="label" value="Name" />
+    <property name="label" value="Type Name" />
   </bean>
   <bean id="GroupType-description" parent="GroupType-description-parentBean" />
 

@@ -62,6 +62,7 @@ public class DocumentSearchCriteriaVO implements Serializable {
     private boolean superUserSearch = false;
     private Integer threshold = null;
     private Integer fetchLimit = null;
+    private boolean saveSearchForUser = false;
 
     public void findDocsBeforeSpecifiedRouteNode() {
         setDocRouteNodeLogic(EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE);
@@ -266,5 +267,13 @@ public class DocumentSearchCriteriaVO implements Serializable {
     public void setThreshold(Integer threshold) {
         this.threshold = threshold;
     }
+
+	public boolean isSaveSearchForUser() {
+		return this.saveSearchForUser;
+	}
+
+	public void setSaveSearchForUser(boolean saveSearchForUser) {
+		this.saveSearchForUser = saveSearchForUser;
+	}
 
 }

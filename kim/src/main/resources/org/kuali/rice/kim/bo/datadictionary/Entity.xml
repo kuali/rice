@@ -19,17 +19,17 @@
     <property name="collections" >
       <list>
         <bean parent="CollectionDefinition"
-              p:shortLabel="Entity Attributes"
-              p:summary="Entity Attributes"
-              p:name="entityAttributes"
+              p:shortLabel="Custom Entity Attributes"
+              p:summary="Custom Entity Attributes"
+              p:name="entityAttributeForms"
               p:label="Entity Attributes"
               p:description="Entity Attributes of this Entity" />
         <bean parent="CollectionDefinition"
-              p:shortLabel="principals"
-              p:summary="principals"
+              p:shortLabel="Associated Principals"
+              p:summary="Associated Principals"
               p:name="principals"
-              p:label="principals"
-              p:description="principals of this Entity" />
+              p:label="Associated Principals"
+              p:description="Associated Principals for this Entity" />
       </list>
     </property>
     <property name="attributes" >
@@ -38,6 +38,7 @@
         <ref bean="Entity-entityTypeId" />
         <ref bean="Entity-versionNumber" />
         <ref bean="Entity-objectId" />
+        <ref bean="Entity-entityTypeName" />
       </list>
     </property>
   </bean>
@@ -59,6 +60,11 @@
     </property>
     <property name="name" value="id" />
     <property name="label" value="Id" />
+  </bean>
+  <bean id="Entity-entityTypeName" parent="Entity-entityTypeName-parentBean" />
+
+  <bean id="Entity-entityTypeName-parentBean" abstract="true" parent="EntityType-name">
+    <property name="name" value="entityType.name" />
   </bean>
   <bean id="Entity-entityTypeId" parent="Entity-entityTypeId-parentBean" />
 
@@ -91,6 +97,7 @@
   <bean id="Entity-inquiryDefinition" parent="Entity-inquiryDefinition-parentBean" />
 
   <bean id="Entity-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+  	<property name="inquirableClass" value="org.kuali.rice.kim.inquiry.EntityInquirable" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -100,31 +107,10 @@
               <bean parent="FieldDefinition"
                     p:attributeName="id" />
               <bean parent="FieldDefinition"
-                    p:attributeName="entityType.name" />
+                    p:attributeName="entityType.name" />      
             </list>
           </property>
-          <property name="title" value="" />
-        </bean>
-        <bean parent="InquirySectionDefinition">
-          <property name="numberOfColumns" value="1" />
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="entityAttributes" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.EntityAttribute" />
-                <property name="numberOfColumns" value="1" />
-                <property name="inquiryFields" >
-                  <list>
-                    <bean parent="FieldDefinition"
-                          p:attributeName="id" />
-                    <bean parent="FieldDefinition"
-                          p:attributeName="name" />
-                  </list>
-                </property>
-              </bean>
-            </list>
-          </property>
-          <property name="title" value="Entity Attributes" />
+          <property name="title" value="Entity Info" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
@@ -146,6 +132,27 @@
             </list>
           </property>
           <property name="title" value="Entity Principals" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="entityAttributeForms" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.EntityAttributeForm" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="value" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Custom Entity Attributes" />
         </bean>
       </list>
     </property>
@@ -178,7 +185,7 @@
         <bean parent="FieldDefinition"
               p:attributeName="id" />
         <bean parent="FieldDefinition"
-              p:attributeName="entityTypeId" />
+              p:attributeName="entityType.name" />
       </list>
     </property>
     <property name="title" value="Entity Lookup" />

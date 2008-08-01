@@ -15,6 +15,10 @@
  */
 package edu.iu.uis.eden.actions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import edu.iu.uis.eden.ActionTakenEvent;
 import edu.iu.uis.eden.AfterProcessEvent;
 import edu.iu.uis.eden.BeforeProcessEvent;
@@ -95,16 +99,20 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport afterProcess(AfterProcessEvent afterProcessEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), afterProcessEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), afterProcessEvent.getRouteHeaderId()), Arrays.asList(new String[]{"WorkflowDocument2"}))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
     
     private boolean isDocumentPostProcessable(WorkflowDocument doc) throws WorkflowException {
+    	return isDocumentPostProcessable(doc, new ArrayList<String>());
+    }
+    
+    private boolean isDocumentPostProcessable(WorkflowDocument doc, List<String> validNodeNames) throws WorkflowException {
         String[] nodeNames = doc.getNodeNames();
         if (nodeNames != null && nodeNames.length > 0) {
-            return ((doc.getNodeNames()[0].equals("AdHoc")) || (doc.getNodeNames()[0].equals("WorkflowDocument")));
+        	return validNodeNames.contains(doc.getNodeNames()[0]) || (doc.getNodeNames()[0].equals("AdHoc")) || (doc.getNodeNames()[0].equals("WorkflowDocument"));
         }
         return false;
     }

@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="output" path="target/classes"/>
-    <classpathentry kind="src" path="core/src/main/java" output="core/target/classes"/>
-    <classpathentry kind="src" path="core/src/main/resources" output="core/target/classes" />
-    <classpathentry kind="src" path="core/src/test/java" output="core/target/test-classes"/>
-    <classpathentry kind="src" path="core/src/test/resources" output="core/target/test-classes" />
-    <classpathentry kind="src" path="kcb-api/src/main/java" output="kcb-api/target/classes"/>
-    <classpathentry kind="src" path="kcb/src/main/java" output="kcb/target/classes"/>
-    <classpathentry kind="src" path="kcb/src/main/resources" output="kcb/target/classes" />
-    <classpathentry kind="src" path="kcb/src/test/java" output="kcb/target/test-classes"/>
-    <classpathentry kind="src" path="kcb/src/test/resources" output="kcb/target/test-classes" />
-    <classpathentry kind="src" path="ken-api/src/main/java" output="ken-api/target/classes"/>
-    <classpathentry kind="src" path="ken/src/main/java" output="ken/target/classes"/>
-    <classpathentry kind="src" path="ken/src/main/resources" output="ken/target/classes" />
-    <classpathentry kind="src" path="ken/src/test/java" output="ken/target/test-classes"/>
-    <classpathentry kind="src" path="ken/src/test/resources" output="ken/target/test-classes" />
-    <classpathentry kind="src" path="kew/src/main/java" output="kew/target/classes"/>
-    <classpathentry kind="src" path="kew/src/main/resources" output="kew/target/classes" />
-    <classpathentry kind="src" path="kew/src/test/java" output="kew/target/test-classes"/>
-    <classpathentry kind="src" path="kew/src/test/resources" output="kew/target/test-classes" />
-    <classpathentry kind="src" path="kim-api/src/main/java" output="kim-api/target/classes"/>
-    <classpathentry kind="src" path="kim-authn-client/src/main/java" output="kim-authn-client/target/classes"/>
-    <classpathentry kind="src" path="kim-authn-client/src/main/resources" output="kim-authn-client/target/classes" />
-    <classpathentry kind="src" path="kim-authn-client/src/test/java" output="kim-authn-client/target/test-classes"/>
-    <classpathentry kind="src" path="kim-authn-sesn/src/main/java" output="kim-authn-sesn/target/classes"/>
-    <classpathentry kind="src" path="kim-authn-sesn/src/test/java" output="kim-authn-sesn/target/test-classes"/>
-    <classpathentry kind="src" path="kim/src/main/java" output="kim/target/classes"/>
-    <classpathentry kind="src" path="kim/src/main/resources" output="kim/target/classes" />
-    <classpathentry kind="src" path="kim/src/test/java" output="kim/target/test-classes"/>
-    <classpathentry kind="src" path="kim/src/test/resources" output="kim/target/test-classes" />
-    <classpathentry kind="src" path="kns/src/main/java" output="kns/target/classes"/>
-    <classpathentry kind="src" path="kns/src/main/resources" output="kns/target/classes" />
-    <classpathentry kind="src" path="kns/src/test/java" output="kns/target/test-classes"/>
-    <classpathentry kind="src" path="kns/src/test/resources" output="kns/target/test-classes" />
-    <classpathentry kind="src" path="kom-api/src/main/java" output="kom-api/target/classes"/>
-    <classpathentry kind="src" path="kom/src/main/java" output="kom/target/classes"/>
-    <classpathentry kind="src" path="kom/src/main/resources" output="kom/target/classes" />
-    <classpathentry kind="src" path="kom/src/test/java" output="kom/target/test-classes"/>
-    <classpathentry kind="src" path="kom/src/test/resources" output="kom/target/test-classes" />
-    <classpathentry kind="src" path="ksb/src/main/java" output="ksb/target/classes"/>
-    <classpathentry kind="src" path="ksb/src/main/resources" output="ksb/target/classes" />
-    <classpathentry kind="src" path="ksb/src/test/java" output="ksb/target/test-classes"/>
-    <classpathentry kind="src" path="ksb/src/test/resources" output="ksb/target/test-classes" />
-    <classpathentry kind="src" path="server/src/main/java" output="server/target/classes"/>
-    <classpathentry kind="src" path="server/src/main/resources" output="server/target/classes" />
-    <classpathentry kind="src" path="server/src/test/java" output="server/target/test-classes"/>
-    <classpathentry kind="src" path="server/src/test/resources" output="server/target/test-classes" />
-    <classpathentry kind="src" path="shared/src/main/java" output="shared/target/classes"/>
-    <classpathentry kind="src" path="shared/src/main/resources" output="shared/target/classes" />
-    <classpathentry kind="src" path="shared/src/test/java" output="shared/target/test-classes"/>
-    <classpathentry kind="src" path="shared/src/test/resources" output="shared/target/test-classes" />
-    <classpathentry kind="src" path="testharness/src/main/java" output="testharness/target/classes"/>
-    <classpathentry kind="src" path="testharness/src/main/resources" output="testharness/target/classes" />
-    <classpathentry kind="src" path="testharness/src/test/java" output="testharness/target/test-classes"/>
-    <classpathentry kind="src" path="testharness/src/test/resources" output="testharness/target/test-classes" />
+	<classpathentry kind="src" output="core/target/classes" path="core/src/main/java"/>
+	<classpathentry kind="src" path="server/src/main/config/WEB-INF/classes"/>
+	<classpathentry kind="src" output="core/target/classes" path="core/src/main/resources"/>
+	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/java"/>
+	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/resources"/>
+	<classpathentry kind="src" output="kcb-api/target/classes" path="kcb-api/src/main/java"/>
+	<classpathentry kind="src" output="kcb/target/classes" path="kcb/src/main/java"/>
+	<classpathentry kind="src" output="kcb/target/classes" path="kcb/src/main/resources"/>
+	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/java"/>
+	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/resources"/>
+	<classpathentry kind="src" output="ken-api/target/classes" path="ken-api/src/main/java"/>
+	<classpathentry kind="src" output="ken/target/classes" path="ken/src/main/java"/>
+	<classpathentry kind="src" output="ken/target/classes" path="ken/src/main/resources"/>
+	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/java"/>
+	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/resources"/>
+	<classpathentry kind="src" output="kew/target/classes" path="kew/src/main/java"/>
+	<classpathentry kind="src" output="kew/target/classes" path="kew/src/main/resources"/>
+	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/java"/>
+	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/resources"/>
+	<classpathentry kind="src" output="kim-api/target/classes" path="kim-api/src/main/java"/>
+	<classpathentry kind="src" output="kim-authn-client/target/classes" path="kim-authn-client/src/main/java"/>
+	<classpathentry kind="src" output="kim-authn-client/target/classes" path="kim-authn-client/src/main/resources"/>
+	<classpathentry kind="src" output="kim-authn-client/target/test-classes" path="kim-authn-client/src/test/java"/>
+	<classpathentry kind="src" output="kim-authn-sesn/target/classes" path="kim-authn-sesn/src/main/java"/>
+	<classpathentry kind="src" output="kim-authn-sesn/target/test-classes" path="kim-authn-sesn/src/test/java"/>
+	<classpathentry kind="src" output="kim/target/classes" path="kim/src/main/java"/>
+	<classpathentry kind="src" output="kim/target/classes" path="kim/src/main/resources"/>
+	<classpathentry kind="src" output="kim/target/test-classes" path="kim/src/test/java"/>
+	<classpathentry kind="src" output="kim/target/test-classes" path="kim/src/test/resources"/>
+	<classpathentry kind="src" output="kns/target/classes" path="kns/src/main/java"/>
+	<classpathentry kind="src" output="kns/target/classes" path="kns/src/main/resources"/>
+	<classpathentry kind="src" output="kns/target/test-classes" path="kns/src/test/java"/>
+	<classpathentry kind="src" output="kns/target/test-classes" path="kns/src/test/resources"/>
+	<classpathentry kind="src" output="kom-api/target/classes" path="kom-api/src/main/java"/>
+	<classpathentry kind="src" output="kom/target/classes" path="kom/src/main/java"/>
+	<classpathentry kind="src" output="kom/target/classes" path="kom/src/main/resources"/>
+	<classpathentry kind="src" output="kom/target/test-classes" path="kom/src/test/java"/>
+	<classpathentry kind="src" output="kom/target/test-classes" path="kom/src/test/resources"/>
+	<classpathentry kind="src" output="ksb/target/classes" path="ksb/src/main/java"/>
+	<classpathentry kind="src" output="ksb/target/classes" path="ksb/src/main/resources"/>
+	<classpathentry kind="src" output="ksb/target/test-classes" path="ksb/src/test/java"/>
+	<classpathentry kind="src" output="ksb/target/test-classes" path="ksb/src/test/resources"/>
+	<classpathentry kind="src" output="server/target/classes" path="server/src/main/java"/>
+	<classpathentry kind="src" output="server/target/classes" path="server/src/main/resources"/>
+	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/java"/>
+	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/resources"/>
+	<classpathentry kind="src" output="shared/target/classes" path="shared/src/main/java"/>
+	<classpathentry kind="src" output="shared/target/classes" path="shared/src/main/resources"/>
+	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/java"/>
+	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/resources"/>
+	<classpathentry kind="src" output="testharness/target/classes" path="testharness/src/main/java"/>
+	<classpathentry kind="src" output="testharness/target/classes" path="testharness/src/main/resources"/>
+	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/java"/>
+	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/resources"/>
+	<classpathentry kind="src" output="tools/target/classes" path="tools/src/main/java"/>
+	<classpathentry kind="src" output="tools/target/classes" path="tools/src/main/resources"/>
+	<classpathentry kind="src" output="tools/target/test-classes" path="tools/src/test/java"/>
+	<classpathentry kind="src" path="tools/src/test/resources"/>
     <classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar" sourcepath="M2_REPO/ant/ant/1.6.5/ant-1.6.5-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar" sourcepath="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>
@@ -187,5 +191,6 @@
     <classpathentry kind="var" path="M2_REPO/xmlbeans/xbean/2.2.0/xbean-2.2.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/xom/xom/1.1/xom-1.1.jar" sourcepath="M2_REPO/xom/xom/1.1/xom-1.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O.jar"/>
-
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
+

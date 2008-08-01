@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kim.bo.AbstractAttributeBase;
 import org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute;
+import org.kuali.rice.kim.dto.AbstractQualifiedRoleAttributeDTO;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill this in.
@@ -71,6 +72,24 @@ public class ImplUtils {
 	 *
 	 * This method ...
 	 *
+	 * @param qualifiedAttributes
+	 * @param attributes
+	 * @return
+	 */
+	public static boolean hasAllQualifiedAttributeDtos(final Map<String, String> qualifiedAttributes, final Map<String, ? extends AbstractQualifiedRoleAttributeDTO> attributes) {
+		for (String key : qualifiedAttributes.keySet()) {
+			if (!hasQualifiedAttributeDto(attributes, key, qualifiedAttributes.get(key))) {
+				return false;
+			}
+		}
+		return true;
+
+	}
+
+	/**
+	 *
+	 * This method ...
+	 *
 	 * @param attributes
 	 * @param name
 	 * @param value
@@ -110,4 +129,29 @@ public class ImplUtils {
 		}
 		return false;
 	}
+
+	/**
+	 *
+	 * This method ...
+	 *
+	 * @param attributes
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static boolean hasQualifiedAttributeDto(
+			final Map<String, ? extends AbstractQualifiedRoleAttributeDTO> attributes,
+			final String name, final String value) {
+
+		for (String key : attributes.keySet()) {
+			AbstractQualifiedRoleAttributeDTO ra = attributes.get(key);
+
+			if (name.equals(ra.getAttributeName())
+					&& value.equals(ra.getAttributeValue())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -64,7 +65,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getAllPrincipalNames unit test
 	 *
 	 */
 	private static void getAllPrincipalNames(
@@ -87,7 +88,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getAllPrincipals unit test
 	 *
 	 */
 	private static void getAllPrincipals(final PrincipalService principalService) {
@@ -111,7 +112,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getPrincipal unit test
 	 *
 	 */
 	private static void getPrincipal(final PrincipalService principalService) {
@@ -133,7 +134,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getPrincipalsForEntity unit test
 	 *
 	 */
 	private static void getPrincipalNamesForEntity(
@@ -157,7 +158,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getPrincipalsForEntity unit test
 	 *
 	 */
 	private static void getPrincipalsForEntity(
@@ -182,7 +183,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getPrincipalsForPerson unit test
 	 *
 	 */
 	private static void getPrincipalNamesForPerson(
@@ -206,7 +207,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the getPrincipalsForPerson unit test
 	 *
 	 */
 	private static void getPrincipalsForPerson(
@@ -230,7 +231,7 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This method ...
+	 * This method implements the isMemberOfGroup unit test
 	 *
 	 */
 	private static void isMemberOfGroup(final PrincipalService principalService) {

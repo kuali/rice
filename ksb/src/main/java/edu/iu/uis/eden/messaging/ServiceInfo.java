@@ -76,6 +76,9 @@ public class ServiceInfo implements Serializable {
 	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
+	@Transient
+	private transient ClassLoader serviceClassLoader;
+	
 	public ServiceInfo() {
 	    // default constructor with nothing to do
 	}
@@ -87,6 +90,7 @@ public class ServiceInfo implements Serializable {
 		this.setServerIp(RiceUtilities.getIpNumber());
 		this.setEndpointUrl(serviceDefinition.getServiceEndPoint().toString());
 		this.setServiceName(this.getQname().toString());
+		this.setServiceClassLoader(serviceDefinition.getServiceClassLoader());
 	}
 
 	public Long getMessageEntryId() {
@@ -100,6 +104,7 @@ public class ServiceInfo implements Serializable {
 	public ServiceDefinition getServiceDefinition() {
 		if (this.serviceDefinition == null && this.serializedMessageEntity != null) {
 		    this.serviceDefinition = (ServiceDefinition)KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedMessageEntity);
+		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
 	}
@@ -145,7 +150,15 @@ public class ServiceInfo implements Serializable {
     public void setEndpointAlternateUrl(String endpointAlternateUrl) {
         this.endpointAlternateUrl = endpointAlternateUrl;
     }
+    
+    public ClassLoader getServiceClassLoader() {
+        return this.serviceClassLoader;
+    }
 
+    public void setServiceClassLoader(ClassLoader serviceClassLoader) {
+        this.serviceClassLoader = serviceClassLoader;
+    }
+    
     public Integer getLockVerNbr() {
 		return this.lockVerNbr;
 	}

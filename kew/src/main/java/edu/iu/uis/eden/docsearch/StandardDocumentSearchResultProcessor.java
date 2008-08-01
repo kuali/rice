@@ -216,9 +216,6 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
         }
     }
 
-//    protected void addSearchableAttributeColumnUsingField(Field field) {
-//    }
-//
 	public void addAllCustomColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			this.addCustomColumn(columns,customColumn);

@@ -114,7 +114,8 @@
                 <idref local="principalService" />
 				<idref local="entityService" />
 				<idref local="namespaceAttributeService" />
-				<idref local="groupTypeService" />
+                <idref local="groupTypeService" />
+                <idref local="kimAuthorizationService" />
 			</list>
 		</property>
 	</bean>
@@ -139,6 +140,10 @@
     </bean>
 
 	<bean id="namespaceAttributeService" class="org.kuali.rice.kim.service.impl.NamespaceAttributeServiceImpl" />
+
+    <bean id="kimAuthorizationService" class="org.kuali.rice.kim.service.impl.AuthorizationServiceImpl" >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
 
     <bean id="kimSoapService" class="edu.iu.uis.eden.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
@@ -178,7 +183,7 @@
         </bean>
       </property>
     </bean>
-    
+
     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
@@ -216,6 +221,7 @@
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/Entity.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityAttribute.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityAttributeForm.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/Permission.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupType.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupTypeDefaultAttribute.xml</value>
@@ -339,6 +345,24 @@
         <bean parent="kimService">
           <property name="service" ref="roleService" />
           <property name="localServiceName" value="roleService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="kimAuthorizationService" />
+          <property name="localServiceName" value="kimAuthorizationSoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="kimAuthorizationService" />
+          <property name="localServiceName" value="kimAuthorizationService" />
         </bean>
       </property>
     </bean>

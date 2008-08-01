@@ -16,9 +16,11 @@
 package org.kuali.core.web.struts.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,9 +41,12 @@ import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.ObjectUtils;
+import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.format.NoOpStringFormatter;
 import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.core.web.ui.HeaderField;
+import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -164,13 +169,13 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         populateHeaderFields(workflowDocument);
     }
     
-    private String getInquiryUrl(String businessObjectClassName, String id, String linkBody) {
+    private String getUniversalUserInquiryUrlLink(String id, String linkBody) {
         StringBuffer urlBuffer = new StringBuffer();
         
         if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
             UniversalUser user = new UniversalUser();
             user.setPersonUniversalIdentifier(id);
-            String inquiryUrlSection = KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER, false);
+            String inquiryUrlSection = KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, false);
             urlBuffer.append("<a href='");
             urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
             urlBuffer.append("/kr/");
@@ -184,13 +189,65 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         return urlBuffer.toString();
     }
     
-    protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
-        //Document Number
-        HeaderField docNumber = new HeaderField("DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null);
-        HeaderField docStatus = new HeaderField("DataDictionary.DocumentHeader.attributes.financialDocumentStatusCode", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null);
-        String inquiryUrl = getInquiryUrl("org.kuali.core.bo.user.UniversalUser", workflowDocument != null? workflowDocument.getRouteHeader().getInitiator().getUuId() : null, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
+    protected String getDocumentHandlerUrl(String documentId) {
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.PARAMETER_DOC_ID, documentId);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
+        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
+    }
+    
+    protected String buildHtmlLink(String url, String linkBody) {
+        StringBuffer urlBuffer = new StringBuffer();
+        
+        if(StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(linkBody) ) {
+            urlBuffer.append("<a href='").append(url).append("'>").append(linkBody).append("</a>");
+        }
+        
+        return urlBuffer.toString();
+    }
+    
+    /**
+	 * This method is used to populate the list of header field objects (see {@link KualiForm#getDocInfo()}) displayed on
+	 * the Kuali document form display pages.
+	 * 
+	 * @param workflowDocument - the workflow document of the document being displayed (null is allowed)
+	 */
+	protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+		getDocInfo().clear();
+		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
+	}
 
-        HeaderField docInitiator = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
+	/**
+	 * This method returns a list of {@link HeaderField} objects that are used by default on Kuali document display pages. To
+	 * use this list and override an individual {@link HeaderField} object the id constants from
+	 * {@link KNSConstants.DocumentFormHeaderFieldIds} can be used to identify items from the list.
+	 * 
+	 * @param workflowDocument - the workflow document of the document being displayed (null is allowed)
+	 * @return a list of the standard fields displayed by default for all Kuali documents
+	 */
+    protected List<HeaderField> getStandardHeaderFields(KualiWorkflowDocument workflowDocument) {
+    	List<HeaderField> headerFields = new ArrayList<HeaderField>();
+    	// check for a document template number as that will dictate column numbering
+    	HeaderField docTemplateNumber = null;
+        if ((ObjectUtils.isNotNull(getDocument())) && (ObjectUtils.isNotNull(getDocument().getDocumentHeader())) && (StringUtils.isNotBlank(getDocument().getDocumentHeader().getDocumentTemplateNumber()))) {
+			String templateDocumentNumber = getDocument().getDocumentHeader().getDocumentTemplateNumber();
+			docTemplateNumber = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_TEMPLATE_NUMBER, "DataDictionary.DocumentHeader.attributes.documentTemplateNumber", 
+					templateDocumentNumber,	buildHtmlLink(getDocumentHandlerUrl(templateDocumentNumber), templateDocumentNumber));
+		}
+        //Document Number    	
+        HeaderField docNumber = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER, "DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null, null);
+        HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
+        String personUniversalIdentifier = null;
+    	if (workflowDocument != null) {
+            try {
+            		personUniversalIdentifier = getInitiator().getPersonUniversalIdentifier();
+    		} catch (UserNotFoundException e) {
+    			LOG.warn("UserNotFoundException thrown and swallowed while attempting to build inquiry link for document header fields");
+    		}
+    	}
+        String inquiryUrl = getUniversalUserInquiryUrlLink(personUniversalIdentifier, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
+
+        HeaderField docInitiator = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
         workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null, workflowDocument != null? inquiryUrl : null);
         
         String createDateStr = null;
@@ -198,13 +255,24 @@ public abstract class KualiDocumentFormBase extends KualiForm {
             createDateStr = KNSServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
         }
         
-        HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);
+        HeaderField docCreateDate = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_CREATE_DATE, "DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr, null);
 
-        getDocInfo().clear();
-        getDocInfo().add(docNumber);
-        getDocInfo().add(docStatus);
-        getDocInfo().add(docInitiator);
-        getDocInfo().add(docCreateDate);
+        if (ObjectUtils.isNotNull(docTemplateNumber)) {
+        	setNumColumns(3);
+        }
+        
+        headerFields.add(docNumber);
+        headerFields.add(docStatus);
+        if (ObjectUtils.isNotNull(docTemplateNumber)) {
+        	headerFields.add(docTemplateNumber);
+        }
+        headerFields.add(docInitiator);
+        headerFields.add(docCreateDate);
+        if (ObjectUtils.isNotNull(docTemplateNumber)) {
+        	// adding an empty field so implementors do not have to worry about additional fields being put on the wrong row
+        	headerFields.add(HeaderField.EMPTY_FIELD);
+        }
+    	return headerFields;
     }
     
     /**

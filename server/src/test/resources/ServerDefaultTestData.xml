@@ -345,6 +345,14 @@
 				<authenticationId>employee</authenticationId>
 			</members>
 		</workgroup>
+		<workgroup>
+			<id>5</id>
+			<workgroupName>KUALI_ROLE_SUPERVISOR</workgroupName>
+			<description>KUALI_ROLE_SUPERVISOR</description>
+			<members>
+				<authenticationId>supervisr</authenticationId>
+			</members>
+		</workgroup>
 	</workgroups>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>

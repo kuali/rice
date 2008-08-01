@@ -23,10 +23,10 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * Tests the ZipFilePluginLoader. The zip file which is checked in has the following format:

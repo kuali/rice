@@ -20,14 +20,16 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.test.BaseRiceTestCase;
+import org.kuali.rice.util.ClassLoaderUtils;
+import org.springframework.core.io.DefaultResourceLoader;
 
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class XmlGenTest extends Assert {
+public class XmlGenTest extends BaseRiceTestCase {
 
 	@Test
 	public void testIndexing() throws Exception {
@@ -37,8 +39,12 @@ public class XmlGenTest extends Assert {
 			FileUtils.deleteDirectory(outputFile);
 		}
 
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+		File file = resourceLoader.getResource("classpath:/org/kuali/workflow/tools/xml/xmlgen-test-1.xml").getFile();
+		assertTrue("xmlgen-test-1.xml file should exist!", file.exists());
+		
 		XmlGen xmlGen = new XmlGen();
-		xmlGen.setInputDirectoryPath("tools/test/input");
+		xmlGen.setInputDirectoryPath(file.getParentFile().getAbsolutePath());
 		xmlGen.setOutputDirectoryPath(outputPath);
 		xmlGen.setXmlGenHelper(new TestXmlGenHelper());
 		xmlGen.run();

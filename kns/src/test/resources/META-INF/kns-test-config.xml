@@ -14,4 +14,6 @@
 	<param name="transaction.timeout">3600</param>
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
+	
+	<param name="kns.test.port">9916</param>
 </config>

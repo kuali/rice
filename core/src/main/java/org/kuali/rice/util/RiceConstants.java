@@ -57,8 +57,4 @@ public class RiceConstants extends JSTLConstants {
     public static DateFormat getDefaultDateAndTimeFormat() {
         return new SimpleDateFormat(DEFAULT_DATE_FORMAT_PATTERN);
     }
-    
-    public static final class GROUP_TYPE {
-    	public static final Long DEFAULT_GROUP_TYPE = new Long(1);  //this needs to stay in sync with the Group Type bootstrap SQL in KIMBootstrap.sql
-    }
 }

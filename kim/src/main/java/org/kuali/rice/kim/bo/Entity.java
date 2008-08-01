@@ -23,9 +23,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.core.web.ui.Field;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.web.form.EntityAttributeForm;
 
 /**
  * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity
@@ -46,11 +48,18 @@ public class Entity extends AbstractEntityBase {
     //       targetEntity=org.kuali.rice.kim.bo.Principal.class, mappedBy="entity")
 	@Transient
 	private ArrayList<Principal> principals;
-
+	
+	//for web UI rendering only
+	@Transient
+	private ArrayList<EntityAttributeForm> entityAttributeForms;
+	@Transient
+	private HashMap<String, String> namespaceEntityAttributes;  // used for temporary storage from post to post
 
 	public Entity() {
 	    this.entityAttributes = new TypedArrayList(EntityAttribute.class);
 	    this.principals = new TypedArrayList(Principal.class);
+	    this.entityAttributeForms = new TypedArrayList(EntityAttributeForm.class);
+	    this.namespaceEntityAttributes = new HashMap<String, String>();
 	}
 
     /**
@@ -66,8 +75,38 @@ public class Entity extends AbstractEntityBase {
     public void setEntityAttributes(ArrayList<EntityAttribute> entityAttributes) {
         this.entityAttributes = entityAttributes;
     }
+    
+    /**
+	 * @return the formEntityAttributes
+	 */
+	public ArrayList<EntityAttributeForm> getEntityAttributeForms() {
+		return this.entityAttributeForms;
+	}
 
-    protected LinkedHashMap<String, Object> toStringMapper() {
+	/**
+	 * @param entityAttributeForms the formEntityAttributes to set
+	 */
+	public void setEntityAttributeForms(
+			ArrayList<EntityAttributeForm> entityAttributeForms) {
+		this.entityAttributeForms = entityAttributeForms;
+	}
+	
+	/**
+	 * @return the namespaceEntityAttributes
+	 */
+	public HashMap<String, String> getNamespaceEntityAttributes() {
+		return this.namespaceEntityAttributes;
+	}
+
+	/**
+	 * @param namespaceEntityAttributes the namespaceEntityAttributes to set
+	 */
+	public void setNamespaceEntityAttributes(
+			HashMap<String, String> namespaceEntityAttributes) {
+		this.namespaceEntityAttributes = namespaceEntityAttributes;
+	}
+
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("entityType", getEntityType());

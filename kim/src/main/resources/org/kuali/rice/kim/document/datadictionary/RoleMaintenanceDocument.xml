@@ -26,6 +26,7 @@
     <property name="shortLabel" value="Role" />
     <property name="summary" value="Role Maintenance Document" />
     <property name="documentTypeName" value="KIMRoleMaintenanceDocument" />
+    <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.RoleMaintenanceDocumentRule" />
     <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KRMD" />
     <property name="authorizations" >
@@ -81,7 +82,13 @@
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Permissions for Role" />
+          <property name="summaryTitle" value="Permission" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="name" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -116,7 +123,7 @@
           <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.PrincipalQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Assigned Principal" />
+          <property name="summaryTitle" value="Principal" />
           <property name="summaryFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -197,7 +204,7 @@
           <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.GroupQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Assigned Group" />
+          <property name="summaryTitle" value="Group" />
           <property name="summaryFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -276,7 +283,13 @@
         <bean parent="MaintainableCollectionDefinition">
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Role Attributes" />
+          <property name="summaryTitle" value="Attribute" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="attributeName" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -294,6 +307,12 @@
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:name="value" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="versionNumber"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="objectId"
+                    p:readOnly="true" />
             </list>
           </property>
           <property name="name" value="roleAttributes" />

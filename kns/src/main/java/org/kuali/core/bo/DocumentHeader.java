@@ -24,8 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -60,23 +58,6 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      */
     public DocumentHeader() {
         super();
-    }
-
-    /**
-     * @return null if {@link #getDocumentTemplateNumber()} returns a non-blank value
-     */
-    public KeyLabelPair getAdditionalDocId1() {
-        if (StringUtils.isNotBlank(getDocumentTemplateNumber())) {
-            return new KeyLabelPair("DataDictionary.DocumentHeader.attributes.documentTemplateNumber", getDocumentTemplateNumber());
-        }
-        return null;
-    }
-
-    /**
-     * @return null
-     */
-    public KeyLabelPair getAdditionalDocId2() {
-        return null;
     }
 
     /**

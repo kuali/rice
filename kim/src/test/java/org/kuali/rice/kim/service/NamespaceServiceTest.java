@@ -18,10 +18,6 @@ import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.rice.test.data.PerSuiteUnitTestData;
 
 /**
  * Basic test to verify we can access the NamespaceService through the GRL.
@@ -30,97 +26,102 @@ import org.kuali.rice.test.data.PerSuiteUnitTestData;
  */
 
 public class NamespaceServiceTest extends KIMTestCase {
-    private static final String KIM_TEST_NAMESPACE_NAME = "KIM Test Namespace";
-    private static final String KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME = "KIM Test Namespace Default Attribute";
-    private static final String KIM_TEST_PERMISSION_NAME = "KIM Test Permission";
+    private static final int EXPECTED_NUMBER_OF_NAMESPACES = 4;
+	private static final String KIM_TEST_NAMESPACE_NAME = "KIM";
+    private static final String KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME = "FirstName";
+    private static final String KIM_TEST_PERMISSION_NAME = "canSave";
     private static final String URI = "KIM";
     private static final QName SOAP_SERVICE = new QName(URI, "namespaceSoapService");
     private static final QName JAVA_SERVICE = new QName(URI, "namespaceService");
 
+    NamespaceService namespaceService;
+    NamespaceService namespaceSoapService ;
+
+    public void setUp() throws Exception {
+        super.setUp();
+        namespaceService = (NamespaceService) GlobalResourceLoader.getService(JAVA_SERVICE);
+        namespaceSoapService = (NamespaceService) GlobalResourceLoader.getService(SOAP_SERVICE);
+    }
+
     @Test
     public void testGetAllNamespaceNames_SyncJava() throws Exception {
-        testGetAllNamespaceNames(JAVA_SERVICE);
+        testGetAllNamespaceNames(namespaceService);
     }
 
     @Test
     public void testGetAllNamespaceNames_SyncSOAP() throws Exception {
-        testGetAllNamespaceNames(SOAP_SERVICE);
+        testGetAllNamespaceNames(namespaceSoapService);
     }
 
-    private static void testGetAllNamespaceNames(QName serviceName) {
-        final NamespaceService namespaceService = (NamespaceService) GlobalResourceLoader.getService(serviceName);
-
+    private static void testGetAllNamespaceNames(final NamespaceService namespaceService) {
         final List<String> names = namespaceService.getAllNamespaceNames();
-        assertTrue(names.size() == 1);
-        assertEquals(names.get(0), KIM_TEST_NAMESPACE_NAME);
+        assertEquals("Wrong number of namespaces found", EXPECTED_NUMBER_OF_NAMESPACES, names.size());
+        assertEquals("Wrong first namespace name found", KIM_TEST_NAMESPACE_NAME, names.get(0));
     }
 
     @Test
     public void testGetAllNamespaces_SyncJava() {
-        testGetAllNamespaces(JAVA_SERVICE);
+        testGetAllNamespaces(namespaceService);
     }
 
     @Test
     public void testGetAllNamespaces_SyncSOAP() {
-        testGetAllNamespaces(SOAP_SERVICE);
+        testGetAllNamespaces(namespaceSoapService);
     }
 
-    private static void testGetAllNamespaces(QName serviceName) {
-        final NamespaceService namespaceService = (NamespaceService) GlobalResourceLoader.getService(serviceName);
+    private static void testGetAllNamespaces(final NamespaceService namespaceService) {
         final List<NamespaceDTO> namespaces = namespaceService.getAllNamespaces();
-        assertTrue(namespaces.size() == 1);
+        assertEquals("Wrong number of namespaces found", EXPECTED_NUMBER_OF_NAMESPACES, namespaces.size());
 
         final NamespaceDTO namespace = namespaces.get(0);
-        assertEquals(namespace.getName(), KIM_TEST_NAMESPACE_NAME);
+        assertEquals("Wrong first namespace name found", KIM_TEST_NAMESPACE_NAME, namespaces.get(0).getName());
 
         final HashMap<String, NamespaceDefaultAttributeDTO> namespaceDefaultAttributes = namespace.getNamespaceAttributes();
-        assertTrue(namespaceDefaultAttributes.size() == 1);
+        assertEquals("Wrong number of default attributes", 1, namespaceDefaultAttributes.size());
 
         final NamespaceDefaultAttributeDTO namespaceDefaultAttribute = namespaceDefaultAttributes.get(KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME);
         assertNotNull(namespaceDefaultAttribute);
-        assertEquals(namespaceDefaultAttribute.getAttributeName(), KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME);
+        assertEquals(KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME, namespaceDefaultAttribute.getAttributeName());
 
         final HashMap<String, PermissionDTO> namespacePermissions = namespace.getNamespacePermissions();
-        assertTrue(namespacePermissions.size() == 1);
+        assertEquals("Wrong number of namespace permissions" , 1, namespacePermissions.size());
 
         final PermissionDTO permission = namespacePermissions.get(KIM_TEST_PERMISSION_NAME);
         assertNotNull(permission);
-        assertEquals(permission.getName(), KIM_TEST_PERMISSION_NAME);
+        assertEquals("Wrong permission name", KIM_TEST_PERMISSION_NAME, permission.getName());
     }
 
     @Test
     public void testGetPermissionNames_SyncJava() {
-        testGetPermissionNames(JAVA_SERVICE);
+        testGetPermissionNames(namespaceService);
     }
 
     @Test
     public void testGetPermissionNames_SyncSOAP() {
-        testGetPermissionNames(SOAP_SERVICE);
+        testGetPermissionNames(namespaceSoapService);
     }
 
-    private static void testGetPermissionNames(QName serviceName) {
-        final NamespaceService namespaceService = (NamespaceService) GlobalResourceLoader.getService(serviceName);
+    private static void testGetPermissionNames(final NamespaceService namespaceService) {
         final List<String> names = namespaceService.getPermissionNames(KIM_TEST_NAMESPACE_NAME);
-        assertTrue(names.size() == 1);
-        assertEquals(names.get(0), KIM_TEST_PERMISSION_NAME);
+        assertEquals("Wrong number of permission names", 1, names.size());
+        assertEquals("Wrong permission name", KIM_TEST_PERMISSION_NAME, names.get(0));
     }
 
     @Test
     public void testGetPermissions_SyncJava() {
-        testGetPermissions(JAVA_SERVICE);
+        testGetPermissions(namespaceService);
     }
 
     @Test
     public void testGetPermissions_SyncSOAP() {
-        testGetPermissions(SOAP_SERVICE);
+        testGetPermissions(namespaceSoapService);
     }
 
-    private static void testGetPermissions(QName serviceName) {
-        final NamespaceService namespaceService = (NamespaceService) GlobalResourceLoader.getService(serviceName);
+    private static void testGetPermissions(final NamespaceService namespaceService) {
         final List<PermissionDTO> permissions = namespaceService.getPermissions(KIM_TEST_NAMESPACE_NAME);
-        assertTrue(permissions.size() == 1);
+        assertEquals("Wrong number of permissions", 1, permissions.size());
 
         final PermissionDTO permission = permissions.get(0);
-        assertEquals(permission.getName(), KIM_TEST_PERMISSION_NAME);
+        assertEquals("Wrong permission name", KIM_TEST_PERMISSION_NAME, permission.getName());
     }
 }

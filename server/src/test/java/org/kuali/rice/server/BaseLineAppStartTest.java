@@ -30,7 +30,7 @@ public class BaseLineAppStartTest extends ServerTestBase {
         final WebClient webClient = new WebClient();
         final URL url = new URL(HtmlUnitUtil.BASE_URL);
         final HtmlPage page = (HtmlPage)webClient.getPage(url);
-        assertEquals("Rice Sample Client", page.getTitleText() );
+        assertEquals(HTML_PAGE_TITLE_TEXT, page.getTitleText() );
     }
     
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -22,6 +23,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kim.dto.PrincipalQualifiedRoleAttributeDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
+import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 
 /**
  * Business object that represents a single qualified role attribute record associated with a principal.
@@ -85,17 +88,37 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
         return propMap;
     }
 
-    public static PrincipalQualifiedRoleAttributeDTO toDTO(final PrincipalQualifiedRoleAttribute attr) {
-    	PrincipalQualifiedRoleAttributeDTO dto = new PrincipalQualifiedRoleAttributeDTO();
-    	dto.setAttributeName(attr.getAttributeName());
-    	dto.setAttributeValue(attr.getAttributeValue());
-    	dto.setId(attr.getId());
+    /**
+     *
+     * This method creates a DTO from a BO
+     *
+     * @param PrincipalQualifiedRoleAttribute qualifiedRoleAttribute
+     * @return PrincipalQualifiedRoleAttributeDTO
+     */
+    public static PrincipalQualifiedRoleAttributeDTO toDTO(final PrincipalQualifiedRoleAttribute qualifiedRoleAttribute) {
+    	final PrincipalQualifiedRoleAttributeDTO dto = new PrincipalQualifiedRoleAttributeDTO();
 
-    	dto.setRoleId(attr.getRoleId());
-    	dto.setRoleDto(Role.toDTO(attr.getRole()));
+    	dto.setAttributeName(qualifiedRoleAttribute.getAttributeName());
+    	dto.setAttributeValue(qualifiedRoleAttribute.getAttributeValue());
+    	dto.setId(qualifiedRoleAttribute.getId());
 
-    	dto.setPrincipalId(attr.getPrincipalId());
-    	dto.setPrincipalDto(Principal.toDTO(attr.getPrincipal()));
+    	dto.setRoleId(qualifiedRoleAttribute.getRoleId());
+    	dto.setRoleDto(Role.toDTO(qualifiedRoleAttribute.getRole()));
+
+    	dto.setPrincipalId(qualifiedRoleAttribute.getPrincipalId());
+    	dto.setPrincipalDto(Principal.toDTO(qualifiedRoleAttribute.getPrincipal()));
+
+    	return dto;
+    }
+
+    public static PrincipalQualifiedRoleDTO toDTO(final Principal p, final Role r) {
+    	PrincipalQualifiedRoleDTO dto = new PrincipalQualifiedRoleDTO();
+
+    	dto.setPrincipalId(p.getId());
+    	dto.setPrincipalDto(Principal.toDTO(p));
+    	dto.setRoleId(r.getId());
+    	dto.setRoleDto(Role.toDTO(r));
+    	dto.setQualifiedRoleAttributeDtos(new HashMap<String, PrincipalQualifiedRoleAttributeDTO>());
 
     	return dto;
     }

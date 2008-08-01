@@ -16,11 +16,11 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * {@link Rule} implementation 

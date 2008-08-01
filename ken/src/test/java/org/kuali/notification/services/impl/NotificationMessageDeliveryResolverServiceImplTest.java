@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
@@ -112,14 +113,16 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
      * If you change the test data this test should be updated to reflect the expected results.
      */
     @Test
-    public void testResolveNotificationMessageDeliveries() {
+    public void testResolveNotificationMessageDeliveries() throws Exception {
         NotificationMessageDeliveryResolverService nSvc = getResolverService();
 
         long start = System.currentTimeMillis();
         ProcessingResult result = nSvc.resolveNotificationMessageDeliveries();
+        
+        Thread.sleep(20000);
 
         for (Object message: result.getSuccesses()) {
-            LOG.info(message);
+            LOG.info("Message before: " + message);
         }
 
         assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
@@ -128,7 +131,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
 
         MessageService ms = (MessageService) GlobalKCBServiceLocator.getInstance().getMessageService();
         for (Message m: ms.getAllMessages()) {
-            System.err.println(m);
+            LOG.info("Message after: " + m);
         }
         assertEquals(result.getSuccesses().size(), ms.getAllMessages().size());
         

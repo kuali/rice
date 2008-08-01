@@ -351,6 +351,7 @@
 			<description>KUALI_ROLE_SUPERVISOR</description>
 			<members>
 				<authenticationId>admin</authenticationId>
+				<authenticationId>supervisr</authenticationId>
 			</members>
 		</workgroup>
 	</workgroups>

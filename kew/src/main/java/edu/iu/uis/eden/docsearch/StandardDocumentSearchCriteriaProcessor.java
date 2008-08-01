@@ -131,7 +131,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	container.setFieldKey(DocumentSearchCriteriaProcessor.CRITERIA_KEY_DOCUMENT_ROUTE_NODE);
     	dropDown = new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_DOCUMENT_ROUTE_NODE + "_VALUES","criteria.docRouteNodeId",StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY,null,null,"DocSearchDocumentRouteLevel",false,null,null,false);
     	dropDown.setOptionsCollectionProperty("routeNodes");
-    	dropDown.setCollectionKeyProperty("routeNodeId");
+    	dropDown.setCollectionKeyProperty("routeNodeName");
     	dropDown.setCollectionLabelProperty("routeNodeName");
     	dropDown.setEmptyCollectionMessage("Select a document type.");
     	container.addField(dropDown);

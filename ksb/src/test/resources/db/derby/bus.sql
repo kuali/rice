@@ -62,8 +62,8 @@ NOT NULL,
 
 ;
 
-create table EN_UNITTEST_T (
-    COL VARCHAR2(1) NULL
+CREATE TABLE EN_UNITTEST_T (
+        COL             VARCHAR(1)
 )
  ;
  

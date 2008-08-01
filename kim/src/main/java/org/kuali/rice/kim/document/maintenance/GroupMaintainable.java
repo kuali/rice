@@ -34,8 +34,8 @@ import org.kuali.rice.kim.dto.GroupTypeDTO;
 import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
 import org.kuali.rice.kim.lookup.valuefinder.NextAttributeTypeIdFinder;
 import org.kuali.rice.kim.lookup.valuefinder.NextGroupTypeDefaultAttributeIdFinder;
+import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Group maintenance screen.  
@@ -68,11 +68,11 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	public void processAfterNew(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
  		Group oldGroupBO = (Group)document.getOldMaintainableObject().getBusinessObject();
-		oldGroupBO.setGroupTypeId(RiceConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
+		oldGroupBO.setGroupTypeId(KIMConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
         populateAttributeFormObjects(oldGroupBO);
 
         Group newGroupBO = (Group)document.getNewMaintainableObject().getBusinessObject();
-        newGroupBO.setGroupTypeId(RiceConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
+        newGroupBO.setGroupTypeId(KIMConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
         populateAttributeFormObjects(newGroupBO);
         
 		super.processAfterNew(document, parameters);
@@ -108,12 +108,12 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	public void processAfterCopy(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
 		Group oldGroupBO = (Group)document.getOldMaintainableObject().getBusinessObject();
-		oldGroupBO.setGroupTypeId(RiceConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
+		oldGroupBO.setGroupTypeId(KIMConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
         populateAttributeFormObjects(oldGroupBO);
         populateRoleQualifications(oldGroupBO);
 
         Group newGroupBO = (Group)document.getNewMaintainableObject().getBusinessObject();
-        newGroupBO.setGroupTypeId(RiceConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
+        newGroupBO.setGroupTypeId(KIMConstants.GROUP_TYPE.DEFAULT_GROUP_TYPE);
         populateAttributeFormObjects(newGroupBO);
         populateRoleQualifications(oldGroupBO);
         
@@ -245,7 +245,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	    				
 	    				//mark that we found a match
 	    				foundMatch = true;
-	    				break;
+	    				continue;
 	    			}
 	    		}
 	    		

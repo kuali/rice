@@ -185,7 +185,7 @@ public class FutureRequestsTest extends KEWTestCase {
         reportCriteriaVO.setTargetUsers(new NetworkIdVO[]{user1});
         String actionToTakeNode = "Node1";
         reportCriteriaVO.setActionsToTake(new ReportActionToTakeVO[]{new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
-        assertTrue("User " + user1 + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertTrue("User " + user1 + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
@@ -215,13 +215,13 @@ public class FutureRequestsTest extends KEWTestCase {
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdVO[]{user1});
-        assertFalse("User " + user1 + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertFalse("User " + user1 + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         // user2 should have approval requested
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdVO[]{user2});
-        assertTrue("User " + user2 + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertTrue("User " + user2 + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
     }
 }

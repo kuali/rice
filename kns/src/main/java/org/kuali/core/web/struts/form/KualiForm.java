@@ -30,7 +30,6 @@ import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.core.web.ui.ExtraButton;
 import org.kuali.core.web.ui.HeaderField;
-import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -52,8 +51,6 @@ public class KualiForm extends PojoFormBase {
     private HeaderNavigation[] headerNavigationTabs;
     protected List<ExtraButton> extraButtons = new TypedArrayList( ExtraButton.class ) ;
 
-    private KeyLabelPair additionalDocInfo1;
-    private KeyLabelPair additionalDocInfo2;
     private boolean fieldLevelHelpEnabled;
     
     private List<HeaderField> docInfo;
@@ -253,48 +250,6 @@ public class KualiForm extends PojoFormBase {
      */
     public void setNavigationCss(String navigationCss) {
         this.navigationCss = navigationCss;
-    }
-
-    /**
-     * Gets the additionalDocInfo1 attribute.
-     *
-     * @return Returns the additionalDocInfo1.
-     */
-    public KeyLabelPair getAdditionalDocInfo1() {
-        return additionalDocInfo1;
-    }
-
-    /**
-     * Sets the additionalDocInfo1 attribute value.
-     *
-     * @param additionalDocInfo1 The additionalDocInfo1 to set.
-     */
-    public void setAdditionalDocInfo1(KeyLabelPair additionalDocInfo1) {
-        this.additionalDocInfo1 = additionalDocInfo1;
-        if(this.getDocInfo().size() >= 4) {
-            this.getDocInfo().add(4, new HeaderField(getAdditionalDocInfo1().getKey().toString(), getAdditionalDocInfo1().getLabel()));
-        }
-    }
-
-    /**
-     * Gets the additionalDocInfo2 attribute.
-     *
-     * @return Returns the additionalDocInfo2.
-     */
-    public KeyLabelPair getAdditionalDocInfo2() {
-        return additionalDocInfo2;
-    }
-
-    /**
-     * Sets the additionalDocInfo2 attribute value.
-     *
-     * @param additionalDocInfo2 The additionalDocInfo2 to set.
-     */
-    public void setAdditionalDocInfo2(KeyLabelPair additionalDocInfo2) {
-        this.additionalDocInfo2 = additionalDocInfo2;
-        if(this.getDocInfo().size() >= 4) {
-            this.getDocInfo().add(new HeaderField(getAdditionalDocInfo2().getKey().toString(), getAdditionalDocInfo2().getLabel()));
-        } 
     }
 
     public String getAnchor() {

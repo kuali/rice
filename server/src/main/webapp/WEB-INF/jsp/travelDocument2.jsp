@@ -17,6 +17,8 @@
 
 <c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" />
 <c:set var="accountAttributes" value="${DataDictionary.TravelAccount.attributes}" />
+<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+
 <kul:documentPage
 	showDocumentInfo="true"
 	htmlFormAction="travelDocument2"
@@ -39,30 +41,30 @@
             		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable">
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.traveler" attributeEntry="${travelAttributes.traveler}" align="left" />
-				 		<td><kul:htmlControlAttribute property="document.traveler" attributeEntry="${travelAttributes.traveler}" readOnly="false" /></td>
+				 		<td><kul:htmlControlAttribute property="document.traveler" attributeEntry="${travelAttributes.traveler}" readOnly="${readOnly}" /></td>
 				 		</tr>
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.origin" attributeEntry="${travelAttributes.origin}" align="left" />
-				 		<td><kul:htmlControlAttribute property="document.origin" attributeEntry="${travelAttributes.origin}" readOnly="false" /></td>
+				 		<td><kul:htmlControlAttribute property="document.origin" attributeEntry="${travelAttributes.origin}" readOnly="${readOnly}" /></td>
 				 		</tr>
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.destination" attributeEntry="${travelAttributes.destination}" align="left" />
-				 		<td><kul:htmlControlAttribute property="document.destination" attributeEntry="${travelAttributes.destination}" readOnly="false" /></td>
+				 		<td><kul:htmlControlAttribute property="document.destination" attributeEntry="${travelAttributes.destination}" readOnly="${readOnly}" /></td>
 				 		</tr>
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.requestType" attributeEntry="${travelAttributes.requestType}" align="left" />
-				 		<td><kul:htmlControlAttribute property="document.requestType" attributeEntry="${travelAttributes.requestType}" readOnly="false" /></td>
+				 		<td><kul:htmlControlAttribute property="document.requestType" attributeEntry="${travelAttributes.requestType}" readOnly="${readOnly}" /></td>
 				 		</tr>
 						<tr>
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.accountType" attributeEntry="${travelAttributes.accountType}" align="left" />
-				 		<td><kul:htmlControlAttribute property="document.accountType" attributeEntry="${travelAttributes.accountType}" readOnly="false" /></td>
+				 		<td><kul:htmlControlAttribute property="document.accountType" attributeEntry="${travelAttributes.accountType}" readOnly="${readOnly}" /></td>
 				 		</tr>
 						<th align="left">
 				 		&nbsp;&nbsp;* Travel Account
 				 		</th>
 				 		<td>
-				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="false" />
+				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="${readOnly}" />
                         <kul:lookup boClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:travelAccount.number" />
                         <kul:directInquiry boClassName="edu.sampleu.travel.bo.TravelAccount" inquiryParameters="travelAccount.number:number" />
 						<html:image property="methodToCall.insertAccount" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Insert an Item" title="Insert an Item" styleClass="tinybutton"/>

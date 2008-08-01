@@ -19,6 +19,7 @@ import java.io.File;
 import java.sql.DriverManager;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
@@ -76,9 +77,9 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 		if (this.getSqlFile() == null) {
 			return false;
 		}
-		String dbDriverName = Core.getCurrentContextConfig().getProperty("datasource.driver.name");
+		String dbDriverName = Core.getCurrentContextConfig().getProperty(Config.DATASOURCE_DRIVER_NAME);
 		if (dbDriverName == null) {
-			throw new ConfigurationException("No property 'datasource.driver.name' found");
+			throw new ConfigurationException("No property '" + Config.DATASOURCE_DRIVER_NAME + "' found");
 		}
 		return dbDriverName.toLowerCase().indexOf("derby") > -1;
 	}

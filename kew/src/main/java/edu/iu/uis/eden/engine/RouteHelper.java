@@ -18,6 +18,7 @@ package edu.iu.uis.eden.engine;
 
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.engine.node.BasicJoinEngine;
 import edu.iu.uis.eden.engine.node.DynamicNode;
@@ -30,7 +31,6 @@ import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.SimpleNode;
 import edu.iu.uis.eden.engine.node.SplitNode;
 import edu.iu.uis.eden.engine.node.SubProcessNode;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * A helper class which provides some useful utilities for examining and generating nodes.

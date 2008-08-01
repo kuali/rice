@@ -1,0 +1,63 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="EntityAttributeForm" parent="EntityAttributeForm-parentBean" />
+
+  <bean id="EntityAttributeForm-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.web.form.EntityAttributeForm" />
+    <property name="titleAttribute" value="attributeName" />
+    <property name="objectLabel" value="Attribute" />
+    <property name="attributes" >
+      <list>
+        <ref bean="EntityAttributeForm-id" />
+        <ref bean="EntityAttributeForm-entityId" />
+        <ref bean="EntityAttributeForm-attributeTypeId" />
+        <ref bean="EntityAttributeForm-attributeName" />
+        <ref bean="EntityAttributeForm-namespaceId" />
+        <ref bean="EntityAttributeForm-value" />
+        <ref bean="EntityAttributeForm-versionNumber" />
+        <ref bean="EntityAttributeForm-objectId" />
+      </list>
+    </property>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+  <bean id="EntityAttributeForm-id" parent="EntityAttributeForm-id-parentBean" />
+  <bean id="EntityAttributeForm-id-parentBean" abstract="true" parent="EntityAttribute-id">
+  </bean>
+
+  <bean id="EntityAttributeForm-entityId" parent="EntityAttributeForm-entityId-parentBean" />
+  <bean id="EntityAttributeForm-entityId-parentBean" abstract="true" parent="EntityAttribute-entityId">
+  </bean>
+
+  <bean id="EntityAttributeForm-attributeTypeId" parent="EntityAttributeForm-attributeTypeId-parentBean" />
+  <bean id="EntityAttributeForm-attributeTypeId-parentBean" abstract="true" parent="EntityAttribute-attributeTypeId">
+  </bean>
+
+  <bean id="EntityAttributeForm-attributeName" parent="EntityAttributeForm-attributeName-parentBean" />
+  <bean id="EntityAttributeForm-attributeName-parentBean" abstract="true" parent="EntityAttribute-attributeName">
+  </bean>
+
+  <bean id="EntityAttributeForm-namespaceId" parent="EntityAttributeForm-namespaceId-parentBean" />
+  <bean id="EntityAttributeForm-namespaceId-parentBean" abstract="true" parent="EntityAttribute-namespaceId">
+  	<property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+
+  <bean id="EntityAttributeForm-value" parent="EntityAttributeForm-value-parentBean" />
+  <bean id="EntityAttributeForm-value-parentBean" abstract="true" parent="EntityAttribute-value">
+  </bean>
+
+  <bean id="EntityAttributeForm-versionNumber" parent="EntityAttributeForm-versionNumber-parentBean" />
+  <bean id="EntityAttributeForm-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+
+  <bean id="EntityAttributeForm-objectId" parent="EntityAttributeForm-objectId-parentBean" />
+  <bean id="EntityAttributeForm-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
+</beans>

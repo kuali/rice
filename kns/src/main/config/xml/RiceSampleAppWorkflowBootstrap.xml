@@ -223,7 +223,7 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.UseXSLTC</ConstantName>
-            <ConstantValue>true</ConstantValue>
+            <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.DebugTransform</ConstantName>
@@ -422,7 +422,7 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.UseXSLTC</ConstantName>
-            <ConstantValue>true</ConstantValue>
+            <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>EDL.DebugTransform</ConstantName>
@@ -1341,7 +1341,7 @@
             <name>Ack2Template</name>
             <description>Acknowledgement 2 Template</description>
         </ruleTemplate>
-        <ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
 			<name>RemoveReplaceWorkgroupTemplate</name>
 			<description>Remove/Replace Workgroup Routing</description>
 			<attributes>
@@ -1351,7 +1351,7 @@
 				</attribute>
 			</attributes>
 		</ruleTemplate>
-        <ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
             <name>RemoveReplaceRuleTemplate</name>
             <description>Remove/Replace Rule Routing</description>
                 <attributes>

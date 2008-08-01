@@ -88,7 +88,7 @@
 						<version>2.4.2</version>
 						<configuration>
 							<useFile>false</useFile>
-							<testFailureIgnore>true</testFailureIgnore>
+							<failIfNoTests>false</failIfNoTests>
 							<includes>
 								<include>**/*Test.java</include>
                             </includes>
@@ -189,6 +189,7 @@
 		<module>kom-api</module>
 		<module>kom</module>
         <module>server</module>
+        <module>tools</module>
 	</modules>
 	<repositories>
 		<repository>
@@ -706,6 +707,12 @@
             -->
 		</plugins>
 	</reporting>
+	<scm>
+    	<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-0-9-3-br</connection>
+    	<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-0-9-3-br</developerConnection>
+    	<tag>HEAD</tag>
+    	<url>https://test.kuali.org/fisheye/browse/rice</url>
+  	</scm>
 	<distributionManagement>
 		<repository>
 			<id>ssh-repository</id>

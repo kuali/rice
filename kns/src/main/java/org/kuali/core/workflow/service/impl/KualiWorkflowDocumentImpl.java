@@ -43,8 +43,9 @@ import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.server.WorkflowDocumentActions;
+import java.io.Serializable;
 
-public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
+public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
     private WorkflowDocument workflowDocument;
 

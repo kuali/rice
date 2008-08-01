@@ -112,7 +112,7 @@
 		</reference-descriptor>
 -->
 		<reference-descriptor name="attachment" class-ref="org.kuali.core.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
-			auto-delete="object">
+			auto-delete="object" proxy="true">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
 	</class-descriptor>
@@ -381,4 +381,13 @@
 	    <field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
 	    <field-descriptor name="personName" column="PRSN_NM" jdbc-type="VARCHAR"/>
   </class-descriptor>
+  
+  <class-descriptor class="org.kuali.core.bo.SessionDocument" table="KR_KNS_SESN_DOC_T">
+	    <field-descriptor name="sessionId" column="SESSION_ID" jdbc-type="VARCHAR" primarykey="true" />
+	    <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primaryKey="true" />
+	    <field-descriptor name="serializedDocumentForm" column="SERIALIZED_DOC_FRM" jdbc-type="BLOB" />
+	    <field-descriptor name="lastUpdatedDate" column="LST_UPDATE_DT" jdbc-type="TIMESTAMP" index="true" />
+  </class-descriptor>
+  
+  
 </descriptor-repository>

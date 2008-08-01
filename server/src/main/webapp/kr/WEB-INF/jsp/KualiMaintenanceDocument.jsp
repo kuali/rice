@@ -29,10 +29,13 @@
 <c:set var="headerMenuBar" value="" />
 <c:set var="headerTitle" value="" />
 <c:set var="displayTopicFieldInNotes" value="${KualiForm.document.displayTopicFieldInNotes}" />
+<c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
+<c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
+<c:set var="sessionDocument" value="${documentEntry.sessionDocument}" />
 
 
 <kul:page showDocumentInfo="${showDocumentInfo}" docTitle="${docTitle}"
-	htmlFormAction="${htmlFormAction}" transactionalDocument="false"
+	htmlFormAction="${htmlFormAction}" transactionalDocument="false" maintenanceDocument="true" sessionDocument="${sessionDocument}"
 	renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}"
 	defaultMethodToCall="${defaultMethodToCall}" additionalScriptFiles="${additionalScriptFiles}"
 	lookup="${lookup}" headerMenuBar="${headerMenuBar}" headerTitle="${headerTitle}" auditCount="0">
@@ -45,16 +48,23 @@
 						<%-- this line must stay above the set of hidden fields --%>
 						<c:set var="FieldSections" value="${KualiForm.sections}" />
 						<html:hidden property="document.documentNumber" />
-						<html:hidden property="document.objectId" />
-						<html:hidden property="document.versionNumber" />
-						<html:hidden property="docTypeName" />
-						<html:hidden property="readOnly" />
-						<html:hidden property="businessObjectClassName" />
-						<html:hidden property="maintenanceAction" />
-						<html:hidden property="document.newMaintainableObject.maintenanceAction" />
-						<html:hidden property="document.oldMaintainableObject.maintenanceAction" />
-						<html:hidden property="document.newMaintainableObject.businessObject.objectId" />
-						<html:hidden property="document.fieldsClearedOnCopy" />
+						<c:choose>
+							<c:when test="${KualiForm.document.sessionDocument || sessionDocument}">
+							</c:when>
+							<c:otherwise>
+								<html:hidden property="document.versionNumber" />
+								<html:hidden property="docTypeName" />
+								<html:hidden property="document.objectId" />
+								<html:hidden property="readOnly" />
+								<html:hidden property="businessObjectClassName" />
+								<html:hidden property="document.fieldsClearedOnCopy" />
+								<html:hidden property="document.newMaintainableObject.businessObject.objectId" />
+								<html:hidden property="maintenanceAction" />
+								<html:hidden property="document.newMaintainableObject.maintenanceAction" />
+								<html:hidden property="document.oldMaintainableObject.maintenanceAction" />
+							</c:otherwise>
+						</c:choose>
+						
 						<c:forEach items="${additionalScriptFiles}" varStatus="status" >
 							<html:hidden property="additionalScriptFile[${status.index}]" />
 						</c:forEach>
@@ -65,7 +75,7 @@
 							<html:hidden property="document.newMaintainableObject.inactiveRecordDisplay(${fn:replace(inactiveDisplay.key,'.','_')})" />
 							<html:hidden property="document.oldMaintainableObject.inactiveRecordDisplay(${fn:replace(inactiveDisplay.key,'.','_')})" />
 						</c:forEach>
-
+						
 						<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 
 	<script type="text/javascript"><!--
@@ -83,7 +93,7 @@
 	  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="true" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" extraButtonSource="${section.extraButtonSource}" hidden="${section.hidden}" > 
 	    <div class="tab-container" align="center" <c:if test="${section.hidden}">style="display:none;"</c:if> >
 	      <table width="100%" cellpadding="0" cellspacing="0" class="datatable">
-		     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" />
+		     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" sessionDocument="${sessionDocument}" />
 		  </table>   
         </div>
 	  </kul:tab>
@@ -108,3 +118,4 @@
 	</table>
 
 </kul:page>
+

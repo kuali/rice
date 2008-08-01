@@ -340,10 +340,18 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String TARGET = "Target";
 //    public static final String TO = "To";
     public static final String USER_SESSION_KEY = "UserSession";
+    public static final String KUALI_SESSION_ID = "kualiSessionId";
+    public static final String EXITING_DOCUMENT = "exitingDocument";
+    public static final String DOCUMENT_DOCUMENT_NUMBER = "document.documentNumber";
+    public static final String DOC_NUM = "docNum";
+    
 //    public static final String VERSION_NUMBER = "versionNumber";
 
     public static final String SEARCH_LIST_KEY_PREFIX = "searchResults";
     public static final String SEARCH_LIST_REQUEST_KEY = "searchResultKey";
+
+    public static final String METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS = "displayAllInactivationBlockers";
+    public static final String DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION = "inactivationBlockers.do";
 
 //    public static final String CORRECTION_FORM_KEY = "correctionFormKey";
 //    public static final int CORRECTION_RECENT_GROUPS_DAY = 10;

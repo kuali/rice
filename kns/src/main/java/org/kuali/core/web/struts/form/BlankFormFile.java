@@ -18,6 +18,7 @@ package org.kuali.core.web.struts.form;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.apache.struts.upload.FormFile;
 
@@ -26,7 +27,7 @@ import org.apache.struts.upload.FormFile;
  * 
  * 
  */
-public class BlankFormFile implements FormFile {
+public class BlankFormFile implements FormFile, Serializable {
     public void destroy() {
     }
 

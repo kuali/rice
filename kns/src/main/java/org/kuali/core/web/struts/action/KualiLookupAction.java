@@ -183,6 +183,7 @@ public class KualiLookupAction extends KualiAction {
         }
         fieldValues.put("docFormKey", lookupForm.getFormKey());
         fieldValues.put("backLocation", lookupForm.getBackLocation());
+        fieldValues.put("docNum", lookupForm.getDocNum());
 
         if (kualiLookupable.checkForAdditionalFields(fieldValues)) {
             for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
@@ -211,7 +212,7 @@ public class KualiLookupAction extends KualiAction {
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
 
-        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey();
+        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey()+"&docNum="+lookupForm.getDocNum();
         return new ActionForward(backUrl, true);
     }
 

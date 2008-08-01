@@ -17,6 +17,7 @@ package org.kuali.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.core.authorization.KualiModuleAuthorizer;
 import org.kuali.core.datadictionary.spring.DataDictionaryLocationConfigurer;
@@ -56,6 +57,8 @@ public class KualiModule implements InitializingBean {
 	private List<String> jobNames;
 
 	private List<String> triggerNames;
+	
+	private Map<Class, String> externalizableBusinessObjectImplementations;
 	
 	private boolean initializeDataDictionary;
 
@@ -190,5 +193,20 @@ public class KualiModule implements InitializingBean {
 
 	public void setInitializeDataDictionary(boolean initializeDataDictionary) {
 		this.initializeDataDictionary = initializeDataDictionary;
+	}
+
+	/**
+	 * @return the externalizableBusinessObjectImplementations
+	 */
+	public Map<Class, String> getExternalizableBusinessObjectImplementations() {
+		return this.externalizableBusinessObjectImplementations;
+	}
+
+	/**
+	 * @param externalizableBusinessObjectImplementations the externalizableBusinessObjectImplementations to set
+	 */
+	public void setExternalizableBusinessObjectImplementations(
+			Map<Class, String> externalizableBusinessObjectImplementations) {
+		this.externalizableBusinessObjectImplementations = externalizableBusinessObjectImplementations;
 	}
 }

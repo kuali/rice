@@ -74,6 +74,7 @@ public class QuestionPromptAction extends KualiAction {
         parameters.put(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, questionPromptForm.getCaller());
         parameters.put(KNSConstants.REFRESH_CALLER, KNSConstants.QUESTION_REFRESH);
         parameters.put(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME, questionPromptForm.getQuestionIndex());
+        parameters.put(KNSConstants.DOC_NUM, questionPromptForm.getDocNum());
 
         if (StringUtils.isNotBlank(questionPromptForm.getQuestionAnchor())) {
             parameters.put(KNSConstants.ANCHOR, questionPromptForm.getQuestionAnchor());

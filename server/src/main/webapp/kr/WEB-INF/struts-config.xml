@@ -14,6 +14,7 @@
         <form-bean name="MultipleValueLookupForm" type="org.kuali.core.web.struts.form.MultipleValueLookupForm" />
         <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.core.web.struts.form.KualiExceptionIncidentForm" />
+        <form-bean name="DisplayInactivationBlockersForm" type="org.kuali.core.web.struts.form.DisplayInactivationBlockersForm" />
     </form-beans>
 
     <global-exceptions>
@@ -77,6 +78,10 @@
 	    <action path="/directInquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiInquiryAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiDirectInquiry.jsp" />
 	    </action>
+	    <action path="/inactivationBlockers" name="DisplayInactivationBlockersForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.DisplayInactivationBlockersAction">
+	        <forward name="basic" path="/WEB-INF/jsp/DisplayInactivationBlockers.jsp" />
+	    </action>
+	    
         <action path="/kualiExceptionIncidentReport"
                 name="KualiExceptionIncidentForm"
                 attribute="KualiForm"

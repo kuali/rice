@@ -19,10 +19,14 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.datadictionary.DataDictionary;
+import org.kuali.core.datadictionary.InactivationBlockingDefinition;
+import org.kuali.core.datadictionary.InactivationBlockingMetadata;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.document.Document;
@@ -427,5 +431,12 @@ public interface DataDictionaryService {
     public Class<? extends PreRulesCheck> getPreRulesCheckClass(String docTypeName);
 
     public Map getDataDictionaryMap();
-    
+
+    /**
+     * Returns all of the inactivation blocks registered for a particular business object
+     * 
+     * @param inactivationBlockedBusinessObjectClass
+     * @return a set of all registered inactivation blocks for a particular business object
+     */
+    public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass);
 }

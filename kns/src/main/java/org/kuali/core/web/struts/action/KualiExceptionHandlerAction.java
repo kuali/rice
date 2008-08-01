@@ -77,9 +77,11 @@ public class KualiExceptionHandlerAction extends KualiAction {
      * <p>Note: If not specified, no action is taken and no exception thrown.
      * <p>Value of this is KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE
      */
-    public static final String EXCEPTION_INCIDENT_REPORT_SERVICE=String.format(
-            "%s.EXCEPTION_INCIDENT_REPORT_SERVICE",
-            KualiExceptionHandlerAction.class.getSimpleName());
+    public static final String EXCEPTION_INCIDENT_REPORT_SERVICE="knsExceptionIncidentService";
+    
+//    String.format(
+//            "%s.EXCEPTION_INCIDENT_REPORT_SERVICE",
+//            KualiExceptionHandlerAction.class.getSimpleName());
     
     /**
      * This overridden method dispatches action to be taken based on "methodToCall"
@@ -171,8 +173,7 @@ public class KualiExceptionHandlerAction extends KualiAction {
                 if (!formObject.isCancel()) {
                     // Locate the post exception handler service. The service id is
                     // defined in the application properties
-                    String serviceName=KNSServiceLocator.getKualiConfigurationService().
-                            getPropertyString(EXCEPTION_INCIDENT_REPORT_SERVICE);
+                    String serviceName=EXCEPTION_INCIDENT_REPORT_SERVICE;
                     if (serviceName != null) {
                         // Only process the post exception handling when the service
                         // is specified
@@ -254,8 +255,7 @@ public class KualiExceptionHandlerAction extends KualiAction {
             if (returnForward == null) {
                 // Locate the exception handler service. The service id is
                 // defined in the application properties
-                String serviceName=KNSServiceLocator.getKualiConfigurationService().
-                        getPropertyString(EXCEPTION_INCIDENT_REPORT_SERVICE);
+                String serviceName=EXCEPTION_INCIDENT_REPORT_SERVICE;
                 if (serviceName != null) {
                     // Only process the exception handling when the service
                     // is specified

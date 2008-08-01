@@ -256,16 +256,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         KNSServiceLocator.getPersistenceService().refreshAllNonUpdatingReferences(this);
     }
 
-    /**
-     * Refreshes the reference objects and non-key fields using the primitive values; only if the object is "empty" - i.e. objectId
-     * is null or empty string.
-     */
-    public void refreshIfEmpty() {
-        if (StringUtils.isEmpty(this.getObjectId())) {
-            this.refresh();
-        }
-    }
-
     public void refreshReferenceObject(String referenceObjectName) {
         KNSServiceLocator.getPersistenceService().retrieveReferenceObject(this, referenceObjectName);
     }

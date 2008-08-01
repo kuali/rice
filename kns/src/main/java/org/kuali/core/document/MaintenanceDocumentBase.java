@@ -89,13 +89,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected boolean displayTopicFieldInNotes = false;
 
     @Transient
-    private transient FormFile fileAttachment;
+    protected transient FormFile fileAttachment;
     @Transient
-    private String attachmentPropertyName;
+    protected String attachmentPropertyName;
 
     // TODO JPA Annotate the DocumentAttachment class and hook it up to this
     @Transient
-    private DocumentAttachment attachment;
+    protected DocumentAttachment attachment;
     
     public FormFile getFileAttachment() {
         return this.fileAttachment;
@@ -880,6 +880,16 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         KNSServiceLocator.getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
         super.beforeUpdate(persistenceBroker);
+    }
+    
+    /**
+     * 
+     * This method to check whether the document class implements SessionDocument
+     * 
+     * @return
+     */
+    public boolean isSessionDocument() {
+        return SessionDocument.class.isAssignableFrom(this.getClass());
     }
 
 }

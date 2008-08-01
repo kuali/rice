@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -39,10 +38,8 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
-import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.apache.struts.util.ModuleUtils;
 import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
@@ -271,7 +268,7 @@ public class WebUtils {
         return key;
     }
 
-    public static Map getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
+    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
         Map params = new HashMap();
 
         // Get the ActionServletWrapper from the form bean
@@ -301,37 +298,14 @@ public class WebUtils {
                 if (servletWrapper == null) {
                     request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
                 }
-                // retrieve form values and put into properties
-                Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);
-                Enumeration names = Collections.enumeration(multipartParameters.keySet());
-                while (names.hasMoreElements()) {
-                    String name = (String) names.nextElement();
-                    String stripped = name;
-                    Object parameterValue = null;
-                    if (isMultipart) {
-                        parameterValue = multipartParameters.get(name);
-                    }
-                    else {
-                        parameterValue = request.getParameterValues(name);
-                    }
-
-                    // Populate parameters, except "standard" struts attributes
-                    // such as 'org.apache.struts.action.CANCEL'
-                    if (!(stripped.startsWith("org.apache.struts."))) {
-                        params.put(name, parameterValue);
-                    }
-                }
             }
         }
         catch (ServletException e) {
-            throw new ValidationException("unable to handle multipart request " + e.getMessage());
+            throw new ValidationException("unable to handle multipart request " + e.getMessage(),e);
         }
-        return params;
     }
 
     private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
-        Timer t0 = new Timer("WebUtils.getMultipartHandler");
-
         KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
         if (form instanceof PojoFormBase) {
             multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
@@ -339,51 +313,10 @@ public class WebUtils {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );
         }
-        t0.log();
         return multipartHandler;
     }
 
-    /**
-     * <p>
-     * Create a <code>Map</code> containing all of the parameters supplied for a multipart request, keyed by parameter name. In
-     * addition to text and file elements from the multipart body, query string parameters are included as well.
-     * </p>
-     *
-     * @param request The (wrapped) HTTP request whose parameters are to be added to the map.
-     * @param multipartHandler The multipart handler used to parse the request.
-     *
-     * @return the map containing all parameters for this multipart request.
-     */
-    private static Map getAllParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {
-        Timer t0 = new Timer("PojoFormBase.getAllParametersForMultipartRequest");
-
-        Map parameters = new HashMap();
-        Hashtable elements = multipartHandler.getAllElements();
-        Enumeration e = elements.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            parameters.put(key, elements.get(key));
-        }
-
-        if (request instanceof MultipartRequestWrapper) {
-            request = ((MultipartRequestWrapper) request).getRequest();
-            e = request.getParameterNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                parameters.put(key, request.getParameterValues(key));
-            }
-        }
-        else {
-            LOG.debug("Gathering multipart parameters for unwrapped request");
-        }
-
-        t0.log();
-        return parameters;
-    }
-
     private static Map getFileParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {
-        Timer t0 = new Timer("PojoFormBase.getFileParametersForMultipartRequest");
-
         Map parameters = new HashMap();
         Hashtable elements = multipartHandler.getFileElements();
         Enumeration e = elements.keys();
@@ -403,8 +336,6 @@ public class WebUtils {
         else {
             LOG.debug("Gathering multipart parameters for unwrapped request");
         }
-
-        t0.log();
         return parameters;
     }
 

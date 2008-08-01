@@ -405,10 +405,8 @@
         <property name="emailContentGenerator" ref="enEmailContentService"/>
     </bean>
 
-	<bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/>
-<!-- 
+<!--	<bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/> -->
     <bean id="enNotificationService" class="edu.iu.uis.eden.notification.DefaultNotificationService"  lazy-init="true"/>
--->
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.config.BeanHolder">

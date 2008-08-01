@@ -41,6 +41,19 @@
 <%@ attribute name="styleClass" required="false"
 			  description="When a field has a css class applied to it, make sure that
 			  we carry it through."%>
+<%@ attribute name="accessibilityHint" required="false"
+        description="Use this to attach further information to the title attribute of a field
+        if present"%>
+<%@ attribute name="forceRequired" required="false" %>
+
+<%-- Define variable that will hold the Title of the html control --%>
+<c:set var="accessibleTitle" value="${attributeEntry.label}"/>
+<c:if test="${(attributeEntry.required == true || forceRequired) && readOnly != true}">
+<c:set var="accessibleTitle" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle}"/>
+  </c:if>
+  <c:if test="${!(empty accessibilityHint)}">
+<c:set var="accessibleTitle" value="${accessibleTitle} ${accessibilityHint}"/>
+</c:if>
 
 <kul:checkErrors keyMatch="${property}" auditMatch="${property}"/>
 <c:choose>
@@ -116,7 +129,7 @@
   <c:choose>
     <%-- text --%>
     <c:when test="${attributeEntry.control.text == true}">
-           <html:text property="${property}" style="${textStyle}" tabindex="${tabindex}"
+           <html:text property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}"
                            size="${attributeEntry.control.size}" maxlength="${attributeEntry.maxLength}"
                            onblur="${onblur}" onchange="${onchange}" styleId="${property}" disabled="${disableField}"
                            styleClass="${styleClass}"/>
@@ -139,7 +152,7 @@
 
     <%-- textarea --%>
     <c:when test="${attributeEntry.control.textarea == true}"> 
-            <html:textarea property="${property}" style="${textStyle}" tabindex="${tabindex}" 
+            <html:textarea property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}" 
                            rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}" 
                            styleId="${property}" disabled="${disableField}" styleClass="${styleClass}" 
                            onkeyup="textLimit(${attributeEntry.maxLength});" /> 
@@ -158,7 +171,7 @@
             <c:set var="finderClass" value="${fn:replace(attributeEntry.control.valuesFinder,'.','|')}"/>
             <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 
-            <html:select property="${property}" tabindex="${tabindex}" style="${textStyle}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}">
+            <html:select styleId="${property}" property="${property}" title="${accessibleTitle}" tabindex="${tabindex}" style="${textStyle}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}">
               <c:choose>
               	<c:when test="${not empty businessObjectClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
@@ -186,7 +199,7 @@
    	    </c:choose>
 
        	<logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
-            <html:radio property="${property}" style="${textStyle}" tabindex="${tabindex}"
+            <html:radio property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}"
             	value="key" idName="KeyValue" disabled="${disableField}" onchange="${onchange}"
             	styleClass="${styleClass}"/>${KeyValue.label}
         </logic:iterate>
@@ -194,7 +207,7 @@
 
     <%-- checkbox --%>
     <c:when test="${attributeEntry.control.checkbox == true}">
-            <html:checkbox property="${property}" style="${textStyle}" tabindex="${tabindex}" disabled="${disableField}" onblur="${onblur}"
+            <html:checkbox property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}" disabled="${disableField}" onblur="${onblur}"
             	onchange="${onchange}" onclick="${onclick}" styleId="${property}"
             	styleClass="${styleClass}"/>
     </c:when>
@@ -206,7 +219,7 @@
 
     <%-- currency --%>
     <c:when test="${attributeEntry.control.currency == true}">
-          <html:text property="${property}" style="${textStyle}" tabindex="${tabindex}"
+          <html:text property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}"
                            size="${attributeEntry.control.size}" maxlength="${attributeEntry.control.formattedMaxLength}"
                            onblur="${onblur}" onchange="${onchange}" styleId="${property}" disabled="${disableField}"
                            styleClass="${styleClass}" />

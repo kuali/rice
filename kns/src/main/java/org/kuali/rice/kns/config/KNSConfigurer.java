@@ -97,8 +97,10 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
     public void onEvent(RiceConfigEvent event) throws Exception {
         if (event instanceof AfterStartEvent) {
             LOG.info("Processing any remaining Data Dictionary configuration.");
-            KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(false);
-        }
+    		if (!isSuppressAutoModuleConfiguration()) {
+    			KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+    		}
+    	}
     }
 	
 	public List<String> getDatabaseRepositoryFilePaths() {

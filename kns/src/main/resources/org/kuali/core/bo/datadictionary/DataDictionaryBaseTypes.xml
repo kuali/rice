@@ -212,6 +212,9 @@
         class="org.kuali.core.datadictionary.validation.charlevel.RegexValidationPattern"
         abstract="true"
     />
-
+    <bean id="InactivationBlockingDefinition"
+        class="org.kuali.core.datadictionary.InactivationBlockingDefinition"
+        abstract="true"
+    />
 </beans>
 

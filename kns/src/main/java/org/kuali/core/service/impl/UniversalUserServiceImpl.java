@@ -328,18 +328,10 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         try {
             return (propertyName.indexOf(".") > 0) && !(StringUtils.contains(propertyName, "add.")) && UniversalUser.class.equals(PropertyUtils.getPropertyType(businessObjectClass.newInstance(), propertyName.substring(0, propertyName.lastIndexOf("."))));
         }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e);
+        catch (Exception e) {
+        	LOG.warn(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e );
         }
-        catch (InvocationTargetException e) {
-            throw new RuntimeException(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e);
-        }
-        catch (NoSuchMethodException e) {
-            throw new RuntimeException(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e);
-        }
-        catch (InstantiationException e) {
-            throw new RuntimeException(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e);
-        }
+        return false;
     }
 
     public void setUniversalUserDao(UniversalUserDao userDao) {

@@ -136,9 +136,6 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 	private java.lang.String docTitle;
     @Column(name="DOC_APPL_DOC_ID")
 	private java.lang.String appDocId;
- /*   @Column(name="DOC_OVRD_IND")
-	private java.lang.String overrideInd;
- */
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(EdenConstants.DOCUMENT_VERSION_NODAL);
     @Version
@@ -155,9 +152,6 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     @Id
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
-  /*  @Column(name="DOC_LOCK_CD")
-	private String lockCode;
-*/
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
@@ -429,15 +423,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public void setJrfVerNbr(java.lang.Integer jrfVerNbr) {
         this.jrfVerNbr = jrfVerNbr;
     }
-/*
-    public java.lang.String getOverrideInd() {
-        return overrideInd;
-    }
 
-    public void setOverrideInd(java.lang.String overrideInd) {
-        this.overrideInd = overrideInd;
-    }
-*/
     public java.lang.Long getRouteHeaderId() {
         return routeHeaderId;
     }
@@ -575,23 +561,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             setFinalizedDate(new Timestamp(System.currentTimeMillis()));
         }
     }
-/*
-    public boolean isLocked() {
-        return getLockCode() != EdenConstants.DOC_UNLOCKED;
-    }
 
-    public void unlock() {
-        setLockCode(EdenConstants.DOC_UNLOCKED);
-    }
-
-    public String getLockCode() {
-        return lockCode;
-    }
-
-    public void setLockCode(String lockReason) {
-        this.lockCode = lockReason;
-    }
-*/
     /**
      * Mark the document as being processed.
      *
@@ -697,7 +667,6 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         }
         setDocTitle(routeHeaderVO.getDocTitle());
         setAppDocId(routeHeaderVO.getAppDocId());
- //       setOverrideInd(routeHeaderVO.getOverrideInd());
         setStatusModDate(new Timestamp(System.currentTimeMillis()));
 
         /* set the variables from the routeHeaderVO */

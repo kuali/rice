@@ -73,13 +73,11 @@
 <%-- NEED TO ADD THIS TOPIC FIELD TO DATABASE REMOVE THIS COMMENT ONCE FIELD IS THERE--%>
 
                     <c:if test="${displayTopicFieldInNotes eq true}">
-					  <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.noteTopicText}" forceRequired="true" scope="col" align="left" />
+					  <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.noteTopicText}" forceRequired="true" labelFor="newNote.noteTopicText" scope="col" align="left" />
 					</c:if>
-
-
-                    <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.noteText}" scope="col" align="left"/>
+                     <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.noteText}" labelFor="newNote.noteText" scope="col" align="left"/>
                     <c:if test="${allowsNoteAttachments eq true}">
-                      <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.attachment}" scope="col" align="left"/>
+                      <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.attachment}" labelFor="attachmentFile" scope="col" align="left"/>
                     </c:if>
                     <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                       <kul:htmlAttributeHeaderCell literalLabel="Attachment Type" scope="col" align="left"/>
@@ -96,13 +94,13 @@
                     <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <c:if test="${displayTopicFieldInNotes eq true}">
-					  <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteTopicText}" property="newNote.noteTopicText" /></td>
+					  <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteTopicText}" property="newNote.noteTopicText" forceRequired="true" /></td>
 					</c:if>
-                    <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteText}" property="newNote.noteText" /></td>
+                    <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteText}" property="newNote.noteText" forceRequired="${notesAttributes.noteText.required}" /></td>
                     <c:if test="${allowsNoteAttachments eq true}">
                       <td class="infoline">
                         <div align="center"><br />
-                        <html:file property="attachmentFile" size="30" value="" /><br /><br />
+                        <html:file property="attachmentFile" size="30" styleId="attachmentFile" value="" /><br /><br />
                         <html:image property="methodToCall.cancelBOAttachment" src="${ConfigProperties.kr.externalizable.images.url}tinygrey-cancel.gif" title="Cancel Attachment" alt="Cancel Attachment" styleClass="tinybutton"/>
                         </div>
                       </td>
@@ -160,7 +158,7 @@
                                     <html:hidden property="${propPrefix}boNote[${status.index}].attachment.attachmentTypeCode"/>
 
                                     <c:if test="${allowsNoteAttachments eq true}">
-                                      <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                      <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                       <html:hidden write="true" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName" />
                                       &nbsp;
                                       &nbsp;

@@ -25,6 +25,8 @@
               description="the recursion depth number" %>
 <%@ attribute name="rowsHidden" required="false"
               description="boolean that indicates whether the rows should be hidden or all fields are hidden" %>
+<%@ attribute name="sessionDocument" required="false"
+              description="boolean that indicates whether the sessionDocument declared in DD" %>
 
 <c:if test="${empty depth}">
 	<c:set var="depth" value="0" />
@@ -166,17 +168,30 @@
 			<c:choose>
 
 				<c:when test="${isFieldSecure and field.fieldType ne field.FILE}">
-
 					<input type="hidden" name="${field.propertyName}" 
 						value='<c:out value="${field.encryptedValue}"/>' />
 
 				</c:when>
 
 				<c:when test="${isFieldReadOnly && not isFieldAContainer and field.fieldType ne field.FILE}">
-
-					<input type="hidden" name="${field.propertyName}" 
-						value='<c:out value="${fieldValue}"/>' />
-
+					<c:choose>
+						<c:when test= "${isInquiry || isLookup}">
+					  		<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
+				  		</c:when>
+				  		<c:otherwise>
+				  			<c:choose>
+								<c:when test="${KualiForm.document.sessionDocument || sessionDocument}" >
+									<c:if test="${not fn:contains(field.propertyName, constants.MAINTENANCE_OLD_MAINTAINABLE)}">
+										<input type="hidden" name="${field.propertyName}" 
+										value='<c:out value="${fieldValue}"/>' />
+									</c:if>
+								</c:when>
+								<c:otherwise>
+								<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
+								</c:otherwise>	
+							</c:choose>
+				  		</c:otherwise>	
+				  	</c:choose>
 				</c:when>
 
 			</c:choose>

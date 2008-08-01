@@ -447,7 +447,10 @@ public class LookupUtils {
             if ( propMap.containsKey(attributeName) ) {
                 referenceClasses = propMap.get( attributeName );
             } else {
-                referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            	//KFSMI-709: Make Inquiry Framework use BusinessObjectMetadataService instead of just PersistenceStructureService
+            	referenceClasses = businessObjectMetaDataService.getReferencesForForeignKey(businessObject, attributeName);
+            	if(referenceClasses==null || referenceClasses.isEmpty())
+            		referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
                 propMap.put(attributeName, referenceClasses);
             }
         } catch ( ClassNotPersistableException ex ) {

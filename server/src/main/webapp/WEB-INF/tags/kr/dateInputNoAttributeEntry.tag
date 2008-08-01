@@ -19,6 +19,17 @@
 <%@ attribute name="size" required="true" %>
 <%@ attribute name="maxLength" required="true" %>
 
+<%@ attribute name="accessibilityHint" required="false"
+        description="Use this to attach further information to the title attribute of a field
+        if present"%>
+
+<%-- Define variable that will hold the Title of the html control --%>
+<c:set var="accessibleTitle" value="${attributeEntry.label}"/>
+<c:if test="${!(empty accessibilityHint)}">
+<c:set var="accessibleTitle" value="${accessibleTitle} ${accessibilityHint}"/>
+</c:if>
+
+
 
 <kul:checkErrors keyMatch="${property}"/>
 <c:if test="${hasErrors==true}">

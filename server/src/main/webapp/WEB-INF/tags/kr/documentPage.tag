@@ -40,7 +40,7 @@
 	</script>
 </c:if>
 
-<kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}"
+<kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}" sessionDocument="${documentEntry.sessionDocument}"
   headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" extraTopButtons="${extraTopButtons}" headerDispatch="${headerDispatch}" headerTabActive="${headerTabActive}" feedbackKey="${feedbackKey}" auditCount="${auditCount}">
     <jsp:doBody/>
 </kul:page>

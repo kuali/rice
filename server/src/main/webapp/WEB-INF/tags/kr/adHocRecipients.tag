@@ -51,8 +51,17 @@
                 <tr>
                     <td class="infoline" ><div align=center>
                         <html:hidden property="newAdHocRoutePerson.type"/>
-                        <html:select property="newAdHocRoutePerson.actionRequested">
-  		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                        <%-- Define variable that will hold the Title of the html control --%>
+                        <c:set var="accessibleTitle" value="${DataDictionary.AdHocRoutePerson.attributes.actionRequested.label}"/>
+                                                <c:set var="accessibleTitle2" value="${DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested.label}"/>
+                        <c:if test="${(DataDictionary.AdHocRoutePerson.attributes.actionRequested.required == true) && readOnly != true}">
+<c:set var="accessibleTitle" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle}"/>
+  </c:if>
+                          <c:if test="${(DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested.required == true) && readOnly != true}">
+<c:set var="accessibleTitle2" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle2}"/>
+  </c:if>
+                                                <html:select title="${accessibleTitle}" property="newAdHocRoutePerson.actionRequested">
+                          		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
 	    		            <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
 	  			        </html:select></div>
                     </td>
@@ -77,7 +86,7 @@
 	                    <td class="datacell center" ><div align=center>
 	                        <html:hidden property="adHocRoutePerson[${ctr}].type"/>
 	                        <html:hidden property="adHocRoutePerson[${ctr}].versionNumber"/> 
-	                        <html:select property="adHocRoutePerson[${ctr}].actionRequested">
+	                        <html:select title="${accessibleTitle}" property="adHocRoutePerson[${ctr}].actionRequested">
 	  		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
 		    		            <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
 		  			        </html:select></div>
@@ -127,7 +136,7 @@
                 <tr>
                     <td class="infoline" ><div align=center>
                         <html:hidden property="newAdHocRouteWorkgroup.type"/>
-                        <html:select property="newAdHocRouteWorkgroup.actionRequested">
+                        <html:select title="${accessibleTitle2}" property="newAdHocRouteWorkgroup.actionRequested">
   		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
     		                <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
   			            </html:select></div>
@@ -145,7 +154,7 @@
                         <td class="datacell center" ><div align=center>
                             <html:hidden property="adHocRouteWorkgroup[${ctr}].type"/>
                             <html:hidden property="adHocRouteWorkgroup[${ctr}].versionNumber"/>
-                            <html:select property="adHocRouteWorkgroup[${ctr}].actionRequested">
+                            <html:select title="${accessibleTitle2}" property="adHocRouteWorkgroup[${ctr}].actionRequested">
   		                        <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
     		                    <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
   			                </html:select></div>

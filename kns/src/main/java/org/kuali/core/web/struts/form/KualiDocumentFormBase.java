@@ -43,24 +43,22 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.util.spring.AutoPopulatingList;
 import org.kuali.core.web.format.NoOpStringFormatter;
 import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.core.web.ui.HeaderField;
-import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.springframework.util.AutoPopulatingList;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.exception.WorkflowException;
-
 /**
  * TODO we should not be referencing eden constants from this class and wedding ourselves to that workflow application This class is
  * the base action form for all documents.
  */
-public abstract class KualiDocumentFormBase extends KualiForm {
+public abstract class KualiDocumentFormBase extends KualiForm implements Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentFormBase.class);
 
     private Document document;
@@ -88,20 +86,24 @@ public abstract class KualiDocumentFormBase extends KualiForm {
 
     private boolean returnToActionList;
 
-    // for session enhancement ?
+    // for session enhancement
     private String formKey;
+    private String docNum;
     
-    /** Special list class which doesn't blow up when setting an index which doesn't exist. */
-    private static class AutoExpandingList extends AutoPopulatingList implements Serializable {
-        AutoExpandingList( Class listClass ) {
-            super( listClass );
-        }
-        
-        public Object set( int index, Object value ) {
-            get( index );
-            return super.set( index, value );
-        }
-    }
+	/**
+	 * @return the docNum
+	 */
+	public String getDocNum() {
+		return this.docNum;
+	}
+
+	/**
+	 * @param docNum
+	 *            the docNum to set
+	 */
+	public void setDocNum(String docNum) {
+		this.docNum = docNum;
+	}
     
     /**
      * no args constructor that just initializes things for us
@@ -110,7 +112,8 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         super();
         newNote = new Note();
         this.editingMode = new HashMap();
-        this.additionalScriptFiles = new AutoExpandingList( String.class );
+        //this.additionalScriptFiles = new AutoPopulatingList(String.class);
+        this.additionalScriptFiles = new AutoPopulatingList(String.class);
 
         // set the initial record for persons up
         newAdHocRoutePerson = new AdHocRoutePerson();

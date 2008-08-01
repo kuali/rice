@@ -70,7 +70,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
     protected boolean allowsCopy = false;
-    protected WorkflowProperties workflowProperties;   
+    protected WorkflowProperties workflowProperties;
+    
+    protected boolean sessionDocument = false;
 
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getJstlKey()
@@ -491,5 +493,13 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         }
         this.authorizations = authorizations;
     }
+
+	public boolean getSessionDocument() {
+		return this.sessionDocument;
+	}
+
+	public void setSessionDocument(boolean sessionDocument) {
+		this.sessionDocument = sessionDocument;
+	}
     
 }

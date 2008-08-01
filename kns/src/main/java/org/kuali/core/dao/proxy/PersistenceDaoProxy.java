@@ -41,8 +41,11 @@ public class PersistenceDaoProxy implements PersistenceDao {
      * @see org.kuali.core.dao.PersistenceDao#clearCache()
      */
     public void clearCache() {
-    	persistenceDaoJpa.clearCache();
-    	persistenceDaoOjb.clearCache();
+    	if (OrmUtils.isJpaEnabled()) {
+    		persistenceDaoJpa.clearCache();
+    	} else {
+    		persistenceDaoOjb.clearCache();
+    	}
     }
 
     /**

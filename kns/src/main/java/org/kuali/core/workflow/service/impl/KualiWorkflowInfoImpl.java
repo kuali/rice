@@ -15,6 +15,7 @@
  */
 package org.kuali.core.workflow.service.impl;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -276,6 +277,14 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(criteriaVO);
+        } catch (Exception e) {
+            throw new WorkflowException(e);
+        }
+    }
+
+    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+        try {
+            return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
         } catch (Exception e) {
             throw new WorkflowException(e);
         }

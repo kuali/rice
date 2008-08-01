@@ -41,6 +41,7 @@ import org.kuali.core.lookup.Lookupable;
 import org.kuali.core.service.SequenceAccessorService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.MultipleValueLookupForm;
 import org.kuali.core.web.ui.Column;
 import org.kuali.core.web.ui.ResultRow;
@@ -183,6 +184,8 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         parameters.put(KNSConstants.REFRESH_CALLER, KNSConstants.MULTIPLE_VALUE);
         parameters.put(KNSConstants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
         parameters.put(KNSConstants.LOOKED_UP_COLLECTION_NAME, multipleValueLookupForm.getLookedUpCollectionName());
+        parameters.put(KNSConstants.DOC_NUM, multipleValueLookupForm.getDocNum());
+
         String backUrl = UrlFactory.parameterizeUrl(multipleValueLookupForm.getBackLocation(), parameters);
         return new ActionForward(backUrl, true);
     }
@@ -250,7 +253,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.RETURN_METHOD_TO_CALL);
         parameters.put(KNSConstants.REFRESH_CALLER, KNSConstants.MULTIPLE_VALUE);
         parameters.put(KNSConstants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
-        
+        parameters.put(KNSConstants.DOC_NUM, multipleValueLookupForm.getDocNum());
         String backUrl = UrlFactory.parameterizeUrl(multipleValueLookupForm.getBackLocation(), parameters);
         return new ActionForward(backUrl, true);
     }

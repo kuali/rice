@@ -15,6 +15,7 @@
  */
 package org.kuali.core.document.authorization;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ import org.kuali.core.web.ui.Field;
  * 
  * 
  */
-public class MaintenanceDocumentAuthorizations {
+public class MaintenanceDocumentAuthorizations  implements  Serializable {
 
     private static final Logger LOG = Logger.getLogger(MaintenanceDocumentAuthorizations.class);
 

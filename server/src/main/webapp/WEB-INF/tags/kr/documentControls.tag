@@ -24,29 +24,38 @@
 <%@ attribute name="extraButtons" required="false" type="java.util.List" %>
 <%@ attribute name="viewOnly" required="false" %>
 
+<c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
+<c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
+<c:set var="sessionDocument" value="${documentEntry.sessionDocument}" />
+
         <c:set var="saveButtonValue" value="save" />
         <c:if test="${not empty saveButtonOverride}"><c:set var="saveButtonValue" value="${saveButtonOverride}" /></c:if>
 
-        <html:hidden property="documentActionFlags.canAnnotate" />
-        <html:hidden property="documentActionFlags.canReload" />
-        <html:hidden property="documentActionFlags.canSave" />
-        <html:hidden property="documentActionFlags.canRoute" />
-        <html:hidden property="documentActionFlags.canCancel" />
-        <html:hidden property="documentActionFlags.canClose" />
-        <html:hidden property="documentActionFlags.canBlanketApprove" />
-        <html:hidden property="documentActionFlags.canApprove" />
-        <html:hidden property="documentActionFlags.canDisapprove" />
-        <html:hidden property="documentActionFlags.canFYI" />
-        <html:hidden property="documentActionFlags.canAcknowledge" />
-        <html:hidden property="documentActionFlags.canAdHocRoute" />
-        <html:hidden property="documentActionFlags.canSupervise" />
-        <html:hidden property="documentActionFlags.canCopy" />
-        <html:hidden property="documentActionFlags.canPerformRouteReport" />
-
-        <c:if test="${transactionalDocument}">
-            <html:hidden property="documentActionFlags.canErrorCorrect" />
-        </c:if>
-
+		<c:choose>
+			<c:when test="${KualiForm.document.sessionDocument || sessionDocument}">
+			</c:when>
+			<c:otherwise>
+				<html:hidden property="documentActionFlags.canAnnotate" />
+        		<html:hidden property="documentActionFlags.canReload" />
+        		<html:hidden property="documentActionFlags.canSave" />
+        		<html:hidden property="documentActionFlags.canRoute" />
+        		<html:hidden property="documentActionFlags.canCancel" />
+        		<html:hidden property="documentActionFlags.canClose" />
+        		<html:hidden property="documentActionFlags.canBlanketApprove" />
+        		<html:hidden property="documentActionFlags.canApprove" />
+        		<html:hidden property="documentActionFlags.canDisapprove" />
+        		<html:hidden property="documentActionFlags.canFYI" />
+        		<html:hidden property="documentActionFlags.canAcknowledge" />
+        		<html:hidden property="documentActionFlags.canAdHocRoute" />
+        		<html:hidden property="documentActionFlags.canSupervise" />
+        		<html:hidden property="documentActionFlags.canCopy" />
+        		<html:hidden property="documentActionFlags.canPerformRouteReport" />
+        		<c:if test="${transactionalDocument}">
+            		<html:hidden property="documentActionFlags.canErrorCorrect" />
+        		</c:if>
+        	</c:otherwise>
+        </c:choose>
+		
         <%--c:if test="${KualiForm.documentActionFlags.canAnnotate and not suppressRoutingControls and not KualiForm.suppressAllButtons}">
             <div class="annotate">
               <table width="100%" cellpadding="0" cellspacing="0" class="annotate-top" summary="">
@@ -81,7 +90,7 @@
 	        	</c:if>
 	        	<c:if test="${!empty extraButtons}">
 		        	<c:forEach items="${extraButtons}" var="extraButton">
-		        		<html:image src="${extraButton.extraButtonSource}" styleClass="globalbuttons" property="${extraButton.extraButtonProperty}" alt="${extraButton.extraButtonAltText}"/>
+		        		<html:image src="${extraButton.extraButtonSource}" styleClass="globalbuttons" property="${extraButton.extraButtonProperty}" title="${extraButton.extraButtonAltText}" alt="${extraButton.extraButtonAltText}"/>
 		        	</c:forEach>
 	        	</c:if>
 	            <c:if test="${KualiForm.documentActionFlags.canPerformRouteReport and not suppressRoutingControls}">
@@ -117,7 +126,7 @@
 	            <c:if test="${KualiForm.documentActionFlags.canClose}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>
 	            </c:if>            
-	            <c:if test="${KualiForm.documentActionFlags.canCancel and not suppressRoutingControls}">
+	            <c:if test="${KualiForm.documentActionFlags.canCancel}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
 	            </c:if>
 	                <c:if test="${KualiForm.documentActionFlags.canCopy}">

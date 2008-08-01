@@ -157,18 +157,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
-            UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-            if (document instanceof SessionDocument) {
-                    String formKey = formBase.getFormKey();
-                if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) {
-                // generate doc form key here if it does not exist
-                        formKey = GlobalVariables.getUserSession().addObject(form);
-                        formBase.setFormKey(formKey);
-                //}  else {
-                   // GlobalVariables.getUserSession().addObject(formBase.getFormKey(),form);                    
-                }
-            }
-                // below used by KualiHttpSessionListener to handle lock expiration
+            // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
             // set returnToActionList flag, if needed
             if ("displayActionListView".equals(formBase.getCommand())) {
@@ -177,7 +166,9 @@ public class KualiDocumentActionBase extends KualiAction {
             // This is a hack for KULRICE-1602 since the document entry is modified by a
             // global configuration that overrides the document templates without some sort
             // of rules or control
+            //DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
             DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+            
             DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
             String attachementEnabled=
@@ -187,7 +178,12 @@ public class KualiDocumentActionBase extends KualiAction {
             if (attachementEnabled != null) {
                 entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachementEnabled));
             }
-			// pessimistic locking
+			//the request attribute will be used in KualiRequestProcess#processActionPerform
+            if(exitingDocument()){
+            	request.setAttribute(KNSConstants.EXITING_DOCUMENT, new Boolean(true));
+            }
+            
+            // pessimistic locking
                 String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
                 if ( (StringUtils.isNotBlank(methodCalledViaDispatch)) && (exitingDocument()) ) {
                     GlobalVariables.getUserSession().removeObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY);
@@ -1210,7 +1206,10 @@ public class KualiDocumentActionBase extends KualiAction {
         Attachment attachment = note.getAttachment();
         
         if (attachment != null) {
-        	attachment.refresh();
+            //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences() 
+        	//All references for the business object Attachment are auto-update="none", 
+        	//so refreshNonUpdateableReferences() should work the same as refresh() 
+        	attachment.refreshNonUpdateableReferences();
             KNSServiceLocator.getAttachmentService().deleteAttachmentContents(attachment);
         }
         // delete the note if the document is already saved

@@ -62,12 +62,6 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
     public abstract void refreshNonUpdateableReferences();
 
     /**
-     * Refreshes the reference objects and non-key fields using the primitive values; only if the object is "empty" - i.e. objectId
-     * is null or empty string.
-     */
-    public abstract void refreshIfEmpty();
-
-    /**
      * This method is used to refresh a reference object that hangs off of a document. For example, if the attribute's keys were
      * updated for a reference object, but the reference object wasn't, this method would go out and retrieve the reference object.
      * 

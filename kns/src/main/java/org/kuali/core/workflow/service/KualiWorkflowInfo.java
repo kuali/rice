@@ -129,4 +129,6 @@ public interface KualiWorkflowInfo {
      * @throws WorkflowException
      */
     public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException;
+    
+    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException;    
 }

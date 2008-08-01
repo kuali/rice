@@ -15,18 +15,25 @@
  */
 package org.kuali.core.maintenance.rules;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.FieldAuthorization;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.GlobalBusinessObject;
+import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.datadictionary.InactivationBlockingDefinition;
+import org.kuali.core.datadictionary.InactivationBlockingMetadata;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
@@ -44,6 +51,7 @@ import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
 import org.kuali.core.service.DocumentAuthorizationService;
 import org.kuali.core.service.DocumentService;
+import org.kuali.core.service.InactivationBlockingDetectionService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceService;
@@ -55,6 +63,8 @@ import org.kuali.core.util.ForeignKeyFieldsPopulationState;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.core.util.UrlFactory;
+import org.kuali.core.web.format.Formatter;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.KNSServiceLocator;
@@ -197,11 +207,143 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // subclass
         success &= processCustomRouteDocumentBusinessRules(maintenanceDocument);
 
+        success &= processInactivationBlockChecking(maintenanceDocument);
+
         // return the original set of items to the errorPath, to ensure no impact
         // on other upstream or downstream items that rely on the errorPath
         resumeErrorPath();
 
         return success;
+    }
+
+    /**
+     * Determines whether a document is inactivating the record being maintained
+     * 
+     * @param maintenanceDocument
+     * @return true iff the document is inactivating the business object; false otherwise
+     */
+    protected boolean isDocumentInactivatingBusinessObject(MaintenanceDocument maintenanceDocument) {
+        if (maintenanceDocument.isEdit()) {
+            // we can only be inactivating a business object if we're editing it
+            if (Inactivateable.class.isAssignableFrom(boClass)) {
+                Inactivateable oldInactivateableBO = (Inactivateable) oldBo;
+                Inactivateable newInactivateableBO = (Inactivateable) newBo;
+
+                return oldInactivateableBO.isActive() && !newInactivateableBO.isActive();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines whether this document has been inactivation blocked
+     * 
+     * @param maintenanceDocument
+     * @return true iff there is NOTHING that blocks this record
+     */
+    protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument) {
+        if (isDocumentInactivatingBusinessObject(maintenanceDocument)) {
+            Set<InactivationBlockingMetadata> inactivationBlockingMetadatas = ddService.getAllInactivationBlockingDefinitions(boClass);
+
+            if (inactivationBlockingMetadatas != null) {
+                for (InactivationBlockingMetadata inactivationBlockingMetadata : inactivationBlockingMetadatas) {
+                    // for the purposes of maint doc validation, we only need to look for the first blocking record
+
+                    // we found a blocking record, so we return false
+                    if (!processInactivationBlockChecking(maintenanceDocument, inactivationBlockingMetadata)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Given a InactivationBlockingMetadata, which represents a relationship that may block inactivation of a BO, it determines whether there
+     * is a record that violates the blocking definition
+     * 
+     * @param maintenanceDocument
+     * @param inactivationBlockingMetadata
+     * @return true iff, based on the InactivationBlockingMetadata, the maintenance document should be allowed to route
+     */
+    protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument, InactivationBlockingMetadata inactivationBlockingMetadata) {
+
+        String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
+        if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
+            inactivationBlockingDetectionServiceBeanName = KNSServiceLocator.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+        }
+        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocator.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+
+        boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord(newBo, inactivationBlockingMetadata);
+
+        if (foundBlockingRecord) {
+            putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
+        }
+
+        return !foundBlockingRecord;
+    }
+
+    /**
+     * If there is a violation of an InactivationBlockingMetadata, it prints out an appropriate error into the error map
+     * 
+     * @param document
+     * @param inactivationBlockingMetadata
+     */
+    protected void putInactivationBlockingErrorOnPage(MaintenanceDocument document, InactivationBlockingMetadata inactivationBlockingMetadata) {
+        if (!persistenceStructureService.hasPrimaryKeyFieldValues(newBo)) {
+            throw new RuntimeException("Maintenance document did not have all primary key values filled in.");
+        }
+        Map fieldValues = persistenceService.getPrimaryKeyFieldValues(newBo);
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inactivationBlockingMetadata.getBlockedBusinessObjectClass().getName());        
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
+        
+        List keys = new ArrayList();
+        if (getPersistenceStructureService().isPersistable(newBo.getClass())) {
+            keys = getPersistenceStructureService().listPrimaryKeyFieldNames(newBo.getClass());
+        }
+
+        // build key value url parameters used to retrieve the business object
+        String keyName = null;
+        for (Iterator iter = keys.iterator(); iter.hasNext();) {
+            keyName = (String) iter.next();
+
+            Object keyValue = null;
+            if (keyName != null) {
+                keyValue = ObjectUtils.getPropertyValue(newBo, keyName);
+            }
+
+            if (keyValue == null) {
+                keyValue = "";
+            } else if (keyValue instanceof java.sql.Date) { //format the date for passing in url
+                if (Formatter.findFormatter(keyValue.getClass()) != null) {
+                    Formatter formatter = Formatter.getFormatter(keyValue.getClass());
+                    keyValue = (String) formatter.format(keyValue);
+                }
+            } else {
+                keyValue = keyValue.toString();
+            }
+
+            // Encrypt value if it is a secure field
+            String displayWorkgroup = ddService.getAttributeDisplayWorkgroup(newBo.getClass(), keyName);
+            if (StringUtils.isNotBlank(displayWorkgroup)) {
+                try {
+                    keyValue = KNSServiceLocator.getEncryptionService().encrypt(keyValue);
+                }
+                catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+            }
+
+            parameters.put(keyName, keyValue);
+        }
+        
+        String blockingUrl = UrlFactory.parameterizeUrl(KNSConstants.DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION, parameters);
+
+        // post an error about the locked document
+        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
     }
 
     /**

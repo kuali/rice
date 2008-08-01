@@ -38,7 +38,7 @@
         <bean parent="AuthorizationDefinition">
           <property name="authorizedGroups" >
             <set>
-              <value>KUALI_ROLE_MAINTENANCE</value>
+              <value>kualiUniversalGroup</value>
             </set>
           </property>
           <property name="action" value="initiate" />

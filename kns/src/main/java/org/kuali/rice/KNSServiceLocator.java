@@ -40,6 +40,8 @@ import org.kuali.core.service.DocumentHeaderService;
 import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.DocumentTypeService;
+import org.kuali.core.service.InactivationBlockingDetectionService;
+import org.kuali.core.service.InactivationBlockingDisplayService;
 import org.kuali.core.service.KeyValuesService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiGroupService;
@@ -56,6 +58,7 @@ import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.service.PessimisticLockService;
 import org.kuali.core.service.PostProcessorService;
 import org.kuali.core.service.SequenceAccessorService;
+import org.kuali.core.service.SessionDocumentService;
 import org.kuali.core.service.TransactionalDocumentDictionaryService;
 import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.service.WebAuthenticationService;
@@ -449,4 +452,21 @@ public class KNSServiceLocator<T extends Object> {
         return (PersistenceService) getService(PERSISTENCE_SERVICE_OJB);
     }
     
+    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
+
+    public static SessionDocumentService getSessionDocumentService() {
+	return (SessionDocumentService) getService(SESSION_DOCUMENT_SERVICE);
+    }
+
+    public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
+    
+    public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
+        return (InactivationBlockingDetectionService) getService(serviceName);
+    }
+    
+    public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
+    
+    public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
+    	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
+    }
 }

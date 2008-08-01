@@ -25,19 +25,26 @@
 <%@ attribute name="showTabButtons" required="false" %>
 <%@ attribute name="extraTopButtons" required="false" type="java.util.List" %>
 <%@ attribute name="headerDispatch" required="false" %>
-<%@ attribute name="lookup" required="false" description="indicates whether the lookup page specific page should be shown" %>
+<%@ attribute name="lookup" required="false"
+	description="indicates whether the lookup page specific page should be shown"%>
 
 <%-- for non-lookup pages --%>
 <%@ attribute name="headerTabActive" required="false" %>
-<%@ attribute name="feedbackKey" required="false" description="application resources key that contains feedback contact address only used when lookup attribute is false"%>
+<%@ attribute name="feedbackKey" required="false"
+	description="application resources key that contains feedback contact address only used when lookup attribute is false"%>
 <%@ attribute name="defaultMethodToCall" required="false" %>
 <%@ attribute name="errorKey" required="false" %>
 <%@ attribute name="auditCount" required="false" %>
-<%@ attribute name="additionalScriptFiles" required="false" type="java.util.List" %>
+<%@ attribute name="additionalScriptFiles" required="false"
+	type="java.util.List"%>
 <%@ attribute name="documentWebScope" required="false" %>
+<%@ attribute name="maintenanceDocument" required="false"%>
+<%@ attribute name="sessionDocument" required="false"%>
+
 
 <%-- Is the screen an inquiry? --%>
-<c:set var="_isInquiry" value="${requestScope[Constants.PARAM_MAINTENANCE_VIEW_MODE] eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
+<c:set var="_isInquiry"
+	value="${requestScope[Constants.PARAM_MAINTENANCE_VIEW_MODE] eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html:html>
@@ -49,20 +56,25 @@
 <head>
 	<script>var jsContextPath = "${pageContext.request.contextPath}";</script>
 	<title><bean:message key="app.title" /> :: ${headerTitle}</title>
-<c:forEach items="${fn:split(ConfigProperties.css.files, ',')}" var="cssFile">
+	<c:forEach items="${fn:split(ConfigProperties.css.files, ',')}"
+		var="cssFile">
 <c:if test="${fn:length(fn:trim(cssFile)) > 0}">
-	<link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css" />
+			<link href="${pageContext.request.contextPath}/${cssFile}"
+				rel="stylesheet" type="text/css" />
 </c:if>
 </c:forEach>
-<c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}" var="javascriptFile">
+	<c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}"
+		var="javascriptFile">
 <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/${javascriptFile}"></script>
+			<script language="JavaScript" type="text/javascript"
+				src="${pageContext.request.contextPath}/${javascriptFile}"></script>
 </c:if>
 </c:forEach>
 	<c:choose>
 		<c:when test="${lookup}" >
 			  <c:if test="${not empty KualiForm.headerNavigationTabs}">
-				<link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet" type="text/css" />
+				<link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet"
+					type="text/css" />
 			  </c:if>
 
 			  <!-- Set the focus to first text box on form -->
@@ -104,7 +116,8 @@
 		</c:when>
 		<c:otherwise>
 			<c:forEach items="${additionalScriptFiles}" var="scriptFile" >
-				<script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+				<script language="JavaScript" type="text/javascript"
+					src="${scriptFile}"></script>
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
@@ -114,22 +127,32 @@
 		<body onload="placeFocus();">
 		<kul:backdoor />
 
-		<c:if test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
-			<div class="lookupcreatenew" title="Create a new record">${headerMenuBar}</div>
+			<c:if
+				test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
+				<div class="lookupcreatenew" title="Create a new record">
+					${headerMenuBar}
+				</div>
 		</c:if>
 
 		<c:if test="${showDocumentInfo}">
-			<h1>${docTitle}<kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/></h1>
+				<h1>
+					${docTitle}
+					<kul:help documentTypeName="${KualiForm.docTypeName}"
+						altText="document help" />
+				</h1>
 		</c:if>
     </c:when>
 	<c:otherwise>
 		<c:if test="${not empty KualiForm.anchor}">
 			<c:if test="${ConfigProperties.test.mode ne 'true'}">
-				<c:set var="anchorScript" value="jumpToAnchor('${KualiForm.anchor}');" />
+				<c:set var="anchorScript"
+					value="jumpToAnchor('${KualiForm.anchor}');" />
 			</c:if>
 		</c:if>
-		<body onload="${anchorScript}" onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
-		<kul:backdoor />${headerMenuBar}
+		<body onload="${anchorScript}"
+			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
+			<kul:backdoor />
+			${headerMenuBar}
 	</c:otherwise>
 </c:choose>
 
@@ -138,14 +161,22 @@
 	<c:set var="encoding" value="multipart/form-data"/>
 </c:if>
 
-<html:form styleId="kualiForm" action="/${htmlFormAction}.do" method="post" enctype="${encoding}" onsubmit="return hasFormAlreadyBeenSubmitted();">
+<html:form styleId="kualiForm" action="/${htmlFormAction}.do"
+	method="post" enctype="${encoding}"
+	onsubmit="return hasFormAlreadyBeenSubmitted();">
 <c:choose>
 	<c:when test="${lookup}" >
 	</c:when>
 	<c:otherwise>
 		<a name="topOfForm"></a>
 		<div class="headerarea" id="headerarea">
-			<h1>${docTitle}&nbsp;<c:if test="${showDocumentInfo}"><kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/></c:if></h1>
+				<h1>
+					${docTitle}&nbsp;
+					<c:if test="${showDocumentInfo}">
+						<kul:help documentTypeName="${KualiForm.docTypeName}"
+							altText="document help" />
+					</c:if>
+				</h1>
 			<c:if test="${!empty defaultMethodToCall}">
 				<kul:enterKey methodToCall="${defaultMethodToCall}" />
 			</c:if>
@@ -153,8 +184,10 @@
 </c:choose>
 
 <!-- DOCUMENT INFO HEADER BOX -->
-<c:set var="docHeaderAttributes" value="${DataDictionary.DocumentHeader.attributes}" />
-<c:set var="dummyAttributes" value="${DataDictionary.AttributeReferenceDummy.attributes}" />
+	<c:set var="docHeaderAttributes"
+		value="${DataDictionary.DocumentHeader.attributes}" />
+	<c:set var="dummyAttributes"
+		value="${DataDictionary.AttributeReferenceDummy.attributes}" />
 <c:if test="${showDocumentInfo}">
 <%--
     <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId1.label}">
@@ -162,13 +195,17 @@
         <c:set var="secondDocId" value="${KualiForm.document.documentHeader.additionalDocId1.label}" />
         <c:set var="addColumn" value="true" />
     </c:if>
-    <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId2.label}">
-        <c:set var="thirdDocAttributeName" value="${KualiForm.document.documentHeader.additionalDocId2.key}" />
-        <c:set var="thirdDocId" value="${KualiForm.document.documentHeader.additionalDocId2.label}" />
+		<c:if
+			test="${!empty KualiForm.document.documentHeader.additionalDocId2.label}">
+			<c:set var="thirdDocAttributeName"
+				value="${KualiForm.document.documentHeader.additionalDocId2.key}" />
+			<c:set var="thirdDocId"
+				value="${KualiForm.document.documentHeader.additionalDocId2.label}" />
         <c:set var="addColumn" value="true" />
     </c:if>
     <c:set var="headerClass" value="headerinfo"/>
-    <c:if test="${not empty KualiForm.additionalDocInfo1 or not empty KualiForm.additionalDocInfo2}">
+		<c:if
+			test="${not empty KualiForm.additionalDocInfo1 or not empty KualiForm.additionalDocInfo2}">
 		<c:choose>
 			<c:when test="${lookup}" >
 				<c:set var="headerClass" value="headerinfo-3row"/>
@@ -191,7 +228,8 @@
   <div class="headerbox">
 	<c:choose>
 		<c:when test="${lookup}" >
-			<table summary="document header: general information" cellpadding="0" cellspacing="0">
+					<table summary="document header: general information"
+						cellpadding="0" cellspacing="0">
 		</c:when>
 		<c:otherwise>
 			<table class="headerinfo" summary="document header: general information" cellpadding="0" cellspacing="0">
@@ -282,10 +320,27 @@
 		  <div class="horz-links-bkgrnd" id="horz-links">
 			<c:choose>
 			  <c:when test="${empty headerDispatch}">
-					<c:forEach var="headerTab" items="${KualiForm.headerNavigationTabs}" varStatus="status"><html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="true" styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" /></c:forEach>
+													<c:forEach var="headerTab"
+														items="${KualiForm.headerNavigationTabs}"
+														varStatus="status">
+														<html:submit value="${headerTab.headerTabDisplayName}"
+															property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"
+															alt="${headerTab.headerTabDisplayName}" disabled="true"
+                              title="${headerTab.headerTabDisplayName}"
+															styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" />
+													</c:forEach>
 			  </c:when>
 			  <c:otherwise>
-					<c:forEach var="headerTab" items="${KualiForm.headerNavigationTabs}" varStatus="status"><html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="${headerTab.disabled}" styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" /></c:forEach>
+													<c:forEach var="headerTab"
+														items="${KualiForm.headerNavigationTabs}"
+														varStatus="status">
+														<html:submit value="${headerTab.headerTabDisplayName}"
+															property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"
+															alt="${headerTab.headerTabDisplayName}"
+															disabled="${headerTab.disabled}"
+                              title="${headerTab.headerTabDisplayName}"
+															styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" />
+													</c:forEach>
 			  </c:otherwise>
 			</c:choose>
 		  </div>
@@ -297,7 +352,8 @@
 				  <kul:errors keyMatch="${errorKey}" errorTitle=" "/>
 			 </c:if>
 			 <c:if test="${empty errorKey}">
-				 <kul:errors keyMatch="${Constants.GLOBAL_ERRORS}" errorTitle=" "/>
+												<kul:errors keyMatch="${Constants.GLOBAL_ERRORS}"
+													errorTitle=" " />
 			 </c:if>
 			 <kul:messages/>
 			 <kul:lockMessages/>
@@ -318,7 +374,11 @@
 		</div>
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>
-				<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/></td>
+											<td width="1%">
+												<img
+													src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
+													alt="" width="20" height="20" />
+											</td>
 				<td>
 
 	</c:otherwise>
@@ -331,26 +391,35 @@
 	</c:when>
 	<c:otherwise>
 					<div class="left-errmsg">
-						<kul:errors displayRemaining="true" errorTitle="Other errors:"/>
+															<kul:errors displayRemaining="true"
+																errorTitle="Other errors:" />
 					</div>
 					<kul:footer feedbackKey="${feedbackKey}" />
 
 					<!-- So that JS expandAllTab / collapseAllTab know the tabStates size. Subtract 1 because currentTabIndex = size + 1. -->
-					<html:hidden property="tabStatesSize" value="${KualiForm.currentTabIndex - 1}" />
+														<html:hidden property="tabStatesSize"
+															value="${KualiForm.currentTabIndex - 1}" />
 
 
 					<!-- state maintenance for returning the user to the action list if they started there -->
-					<logic:present name="KualiForm" property="returnToActionList">
-						<html:hidden name="KualiForm" property="returnToActionList" />
+														<logic:present name="KualiForm"
+															property="returnToActionList">
+															<html:hidden name="KualiForm"
+																property="returnToActionList" />
 					</logic:present>
 	</c:otherwise>
 </c:choose>
-<c:if test="${transactionalDocument}" >
+												<c:if test="${transactionalDocument || maintenanceDocument}">
 	<c:choose>
-		<c:when test="${KualiForm.document.sessionDocument}" >
+														<c:when
+															test="${KualiForm.document.sessionDocument || sessionDocument}">
 			<html:hidden property="documentWebScope" value="session"/>	
-			<html:hidden property="formKey" value="${KualiForm.formKey}"/>	
-			<html:hidden property="docFormKey" value="${KualiForm.formKey}"/>	
+															<html:hidden property="formKey"
+																value="${KualiForm.formKey}" />
+															<html:hidden property="docFormKey"
+																value="${KualiForm.formKey}" />
+															<html:hidden property="docNum"
+																value="${KualiForm.document.documentNumber}" />
 		</c:when>
 		<c:otherwise>
 			<html:hidden property="documentWebScope" value="request"/>	

@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -68,6 +70,10 @@ public class DataDictionary {
 	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
 	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
 	private Map<String, DataDictionaryEntry> entriesByJstlKey;
+	
+	// keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation 
+	private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
+	
 	private List<String> configFileLocations = new ArrayList<String>();
 
     public DataDictionary() {}
@@ -161,6 +167,9 @@ public class DataDictionary {
             LOG.info( "Starting DD Validation" );
             validateDD();
             LOG.info( "Ending DD Validation" );
+            LOG.info( "Started DD Inactivation Blocking Index Building" );
+            buildDDInactivationBlockingIndices();
+            LOG.info( "Completed DD Inactivation Blocking Index Building" );
         }
         
     }
@@ -628,5 +637,35 @@ public class DataDictionary {
 
         return p;
     }
-	
+
+    private void buildDDInactivationBlockingIndices() {
+        inactivationBlockersForClass = new HashMap<Class, Set<InactivationBlockingMetadata>>();
+        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
+        for ( BusinessObjectEntry entry : boBeans.values() ) {
+            List<InactivationBlockingDefinition> inactivationBlockingDefinitions = entry.getInactivationBlockingDefinitions();
+            if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
+                for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
+                    registerInactivationBlockingDefinition(inactivationBlockingDefinition);
+                }
+            }
+        }
+    }
+    
+    
+    private void registerInactivationBlockingDefinition(InactivationBlockingDefinition inactivationBlockingDefinition) {
+        Set<InactivationBlockingMetadata> inactivationBlockingDefinitions = inactivationBlockersForClass.get(inactivationBlockingDefinition.getBlockedBusinessObjectClass());
+        if (inactivationBlockingDefinitions == null) {
+            inactivationBlockingDefinitions = new HashSet<InactivationBlockingMetadata>();
+            inactivationBlockersForClass.put(inactivationBlockingDefinition.getBlockedBusinessObjectClass(), inactivationBlockingDefinitions);
+        }
+        boolean duplicateAdd = ! inactivationBlockingDefinitions.add(inactivationBlockingDefinition);
+        if (duplicateAdd) {
+            throw new DataDictionaryException("Detected duplicate InactivationBlockingDefinition for class " + inactivationBlockingDefinition.getBlockingReferenceBusinessObjectClass().getClass().getName());
+        }
+    }
+    
+    public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(Class blockedClass) {
+        return inactivationBlockersForClass.get(blockedClass);
+    }
+
 }

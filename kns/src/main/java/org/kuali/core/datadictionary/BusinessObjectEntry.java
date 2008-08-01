@@ -16,6 +16,8 @@
 
 package org.kuali.core.datadictionary;
 
+import java.util.List;
+
 import org.kuali.core.bo.BusinessObject;
 
 /**
@@ -60,6 +62,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     protected String objectLabel;
     protected String objectDescription;
 
+    protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
 
     public BusinessObjectEntry() {}
 
@@ -208,6 +211,11 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
             lookupDefinition.completeValidation(businessObjectClass, null);
         }
 
+        if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
+            for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
+                inactivationBlockingDefinition.completeValidation(businessObjectClass, null);
+            }
+        }
     }
 
     /**
@@ -291,5 +299,11 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         return "BusinessObjectEntry for " + getBusinessObjectClass();
     }
 
+    public List<InactivationBlockingDefinition> getInactivationBlockingDefinitions() {
+        return this.inactivationBlockingDefinitions;
+    }
 
+    public void setInactivationBlockingDefinitions(List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
+        this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
+    }
 }

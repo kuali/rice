@@ -45,8 +45,23 @@ public class QuestionPromptForm extends KualiForm {
     private String showReasonField;
     private String questionAnchor;
     private String methodToCallPath;
+    private String docNum;
 
     /**
+	 * @return the docNum
+	 */
+	public String getDocNum() {
+		return this.docNum;
+	}
+
+	/**
+	 * @param docNum the docNum to set
+	 */
+	public void setDocNum(String docNum) {
+		this.docNum = docNum;
+	}
+
+	/**
      * @return boolean
      */
     public String getShowReasonField() {

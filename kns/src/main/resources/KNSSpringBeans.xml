@@ -707,6 +707,14 @@
 		</property>
 	</bean>
 
+		<bean id="sessionDocumentService" class="org.kuali.core.service.impl.SessionDocumentServiceImpl">
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
+		<property name="sessionDocumentDao">
+			<ref bean="sessionDocumentDao" />
+		</property>
+	</bean>
 	<!-- Since these beans are not a singletons, Spring does not inject their static
 		members until the first one is created. This bean causes one to be created.
 	-->
@@ -859,6 +867,38 @@
 		<property name="persistenceStructureService" ref="persistenceStructureService" />
 	</bean>
 	
+	<bean id="sessionDocumentDao" class="org.kuali.core.dao.proxy.SessionDocumentDaoProxy">
+    	<property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa" />
+    	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
+  	</bean>
+  
+    <bean id="sessionDocumentDaoJpa" class="org.kuali.core.dao.jpa.SessionDocumentDaoJpa" />
+	
+	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.SessionDocumentDaoOjb" />
+	
+	<bean id="inactivationBlockingDetectionService" class="org.kuali.core.service.impl.InactivationBlockingDetectionServiceImpl">
+		<property name="businessObjectMetaDataService">
+			<ref bean="businessObjectMetaDataService"/>
+		</property>
+		<property name="persistenceStructureService">
+			<ref bean="persistenceStructureService" />
+		</property>
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
+	</bean>
+	
+	<bean id="inactivationBlockingDisplayService" class="org.kuali.core.service.impl.InactivationBlockingDisplayServiceImpl">
+		<property name="persistenceService">
+			<ref bean="persistenceService"/>
+		</property>
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService"/>
+		</property>
+		<property name="persistenceStructureService">
+			<ref bean="persistenceStructureService" />
+		</property>
+	</bean>
 	
   <!-- START JPA CONFIGURATION -->
 
@@ -891,7 +931,8 @@
         <idref local="maintenanceDocumentDao"/>
         <idref local="moduleUserPropertyDao"/>
         <idref local="noteDao"/>
-        <idref local="persistedLookupMetadataDao"/>        
+        <idref local="persistedLookupMetadataDao"/>
+        <idref local="sessionDocumentDao"/>        
         <idref local="postProcessorService"/>
       </list>
     </property>

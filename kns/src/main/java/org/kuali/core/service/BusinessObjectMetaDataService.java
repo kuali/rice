@@ -17,6 +17,7 @@ package org.kuali.core.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
@@ -128,5 +129,16 @@ public interface BusinessObjectMetaDataService {
     public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly );
     
     public List<BusinessObjectRelationship> getBusinessObjectRelationships( BusinessObject bo );
+
+    /**
+     * This method accepts a business object and one of its foreign key attribute names.
+     * It returns a map that has a foreign key attribute name as a key and its respective related class as value.
+     * If the passed in attributeName is not a foreign key, this method will return an empty map.
+     * 
+     * @param BusinessObject businessObject
+     * @param String attributeName
+     * @return Map<String, Class>
+     */
+    public Map<String, Class> getReferencesForForeignKey(BusinessObject businessObject, String attributeName);
 
 }

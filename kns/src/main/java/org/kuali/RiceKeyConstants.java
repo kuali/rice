@@ -45,6 +45,8 @@ public class RiceKeyConstants {
     public static final String ERROR_EXCLUSIVE_MIN = "error.exclusiveMin";
     public static final String ERROR_INCLUSIVE_MAX = "error.inclusiveMax";
     
+    public static final String ERROR_INACTIVATION_BLOCKED = "error.inactivation.blocked";
+
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
     public static final String ERROR_MISSING_ADHOC_PERSON_ID = "error.adhoc.missing.person";
     public static final String ERROR_UNAUTHORIZED_ADHOC_PERSON_ID = "error.adhoc.unauthorized.person";

@@ -181,7 +181,7 @@
     <classpathentry kind="var" path="M2_REPO/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1.jar" sourcepath="M2_REPO/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/wss4j/wss4j/1.5.1/wss4j-1.5.1.jar"/>
     <classpathentry kind="var" path="M2_REPO/xalan/xalan/2.7.0/xalan-2.7.0.jar" sourcepath="M2_REPO/xalan/xalan/2.7.0/xalan-2.7.0-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/xapool/xapool/1.5.0-patch/xapool-1.5.0-patch.jar"/>
+    <classpathentry kind="var" path="M2_REPO/xapool/xapool/1.5.0-patch2/xapool-1.5.0-patch2.jar"/>
     <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar" sourcepath="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar"/>
     <classpathentry kind="var" path="M2_REPO/xfire/opensaml/1.0.1/opensaml-1.0.1.jar"/>

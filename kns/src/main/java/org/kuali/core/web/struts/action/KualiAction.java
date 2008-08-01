@@ -38,6 +38,7 @@ import org.kuali.core.util.UrlFactory;
 import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiForm;
+import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -452,7 +453,14 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
 
         parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
-
+        
+    	if (form instanceof KualiDocumentFormBase) {
+			parameters.put(KNSConstants.DOC_NUM, ((KualiDocumentFormBase) form)
+					.getDocument().getDocumentNumber());
+		}else if(form instanceof LookupForm){
+    		parameters.put(KNSConstants.DOC_NUM, ((LookupForm) form).getDocNum());
+    	}
+    	
         String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
     }
@@ -616,6 +624,11 @@ public abstract class KualiAction extends DispatchAction {
         if (methodToCallAttribute != null) {
             parameters.put(KNSConstants.METHOD_TO_CALL_PATH, methodToCallAttribute);
         }
+        
+    	if (form instanceof KualiDocumentFormBase) {
+			parameters.put(KNSConstants.DOC_NUM, ((KualiDocumentFormBase) form)
+					.getDocument().getDocumentNumber());
+		}
 
         String questionUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.QUESTION_ACTION, parameters);
         return new ActionForward(questionUrl, true);
@@ -650,6 +663,10 @@ public abstract class KualiAction extends DispatchAction {
         if (conversionFields != null) {
             workgroupLookupUrl += "&conversionFields=" + conversionFields;
         }
+    	if (form instanceof KualiDocumentFormBase) {
+			workgroupLookupUrl +="&docNum="+ ((KualiDocumentFormBase) form).getDocument().getDocumentNumber();
+		}
+    	
         workgroupLookupUrl += "&returnLocation=" + returnUrl;
 
         return new ActionForward(workgroupLookupUrl, true);

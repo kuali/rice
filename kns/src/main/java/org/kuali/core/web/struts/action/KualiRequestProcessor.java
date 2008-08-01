@@ -20,7 +20,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.Cookie;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -34,15 +34,22 @@ import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.UserSession;
+import org.kuali.core.datadictionary.DataDictionary;
+import org.kuali.core.datadictionary.DocumentEntry;
+import org.kuali.core.document.Document;
+import org.kuali.core.document.SessionDocument;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.ErrorContainer;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.ExceptionUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.Guid;
 import org.kuali.core.util.Timer;
 import org.kuali.core.util.WebUtils;
+import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiForm;
+import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
@@ -99,6 +106,13 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    if (!isUserSessionEstablished(request)) {
 		id = KNSServiceLocator.getWebAuthenticationService().getNetworkId(request);
 		userSession = new UserSession(id);
+		String kualiSessionId = this.getKualiSessionId(request,response);
+		if (kualiSessionId == null) {
+			kualiSessionId = new Guid().toString();
+			Cookie kualiSessionIdCookie = new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId);
+			response.addCookie(kualiSessionIdCookie);
+		}
+		userSession.setKualiSessionId(kualiSessionId);
 	    } else {
 		userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 	    }
@@ -193,12 +207,9 @@ public class KualiRequestProcessor extends RequestProcessor {
     protected boolean processValidate(HttpServletRequest request, HttpServletResponse response, ActionForm form,
 	    ActionMapping mapping) throws IOException, ServletException, InvalidCancelException {
 
-	Timer t0 = new Timer("KualiRequestProcessor.processValidate");
-
 	// skip form validate if we had errors from populate
 	if (GlobalVariables.getErrorMap().isEmpty()) {
 	    if (form == null) {
-		t0.log();
 		return (true);
 	    }
 	    // Was this request cancelled?
@@ -206,13 +217,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 		if (log.isDebugEnabled()) {
 		    log.debug(" Cancelled transaction, skipping validation");
 		}
-		t0.log();
 		return (true);
 	    }
 
 	    // Has validation been turned off for this mapping?
 	    if (!mapping.getValidate()) {
-		t0.log();
 		return (true);
 	    }
 
@@ -242,7 +251,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 		response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, getInternal().getMessage("noInput",
 			mapping.getPath()));
-		t0.log();
 		return (false);
 	    }
 
@@ -253,167 +261,250 @@ public class KualiRequestProcessor extends RequestProcessor {
 		internalModuleRelativeForward(input, request, response);
 	    }
 
-	    t0.log();
 	    return (false);
 	} else {
-	    t0.log();
 	    return true;
 	}
 
     }
 
-    /**
+	/**
          * Checks for return from a lookup or question, and restores the action form stored under the request parameter
          * docFormKey.
-         */
-    @Override
+	 */
+	@Override
     protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
-        Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
+		Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
-        String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
-        String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-        String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
-        String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
-        String documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
-
-        if (StringUtils.isNotBlank(docFormKey)
-            && (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX)
-                || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
+		String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
+		String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+		String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+		String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
+		String documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
+		
+		String documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
+		
+		//from lookup pages.
+		if(documentNumber == null){
+			documentNumber = request.getParameter(KNSConstants.DOC_NUM);
+		}
+		
+		if (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX)
+			|| KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
                 || KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE
-                .equalsIgnoreCase(documentWebScope))) {
+                .equalsIgnoreCase(documentWebScope)) {
+			ActionForm form = null;
+			// check for search result storage and clear
+			GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_LIST_KEY_PREFIX);
+			
+			//We put different type of forms such as document form, lookup form in session but we only store document form in 
+			// database.
+			if(userSession.retrieveObject(docFormKey) != null){
+	    		 LOG.debug("getDecomentForm KualiDocumentFormBase from session");
+	             form = (ActionForm) userSession.retrieveObject(docFormKey);
+			}
+			else{
+					form = (ActionForm) KNSServiceLocator.getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+			}
+			request.setAttribute(mapping.getAttribute(), form);
+			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+				userSession.removeObject(docFormKey);
+			}
+			t0.log();
 
-            // check for search result storage and clear
-            GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_LIST_KEY_PREFIX);
-
-            if (userSession.retrieveObject(docFormKey) != null) {
-            ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
-            request.setAttribute(mapping.getAttribute(), form);
-            if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
-                userSession.removeObject(docFormKey);
-            }
-            t0.log();
-            
             // we should check whether this is a multipart request because we could have had a combination of query parameters and a multipart request
-            String contentType = request.getContentType();
-            String method = request.getMethod();
+			String contentType = request.getContentType();
+			String method = request.getMethod();
             if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {
                 // this method parses the multipart request and adds new non-file parameters into the request
-                WebUtils.getMultipartParameters(request, null, form);
-            }
-            
-            return form;
-            }
-        }
+				WebUtils.getMultipartParameters(request, null, form);
+			}
+			//The form can be null if the document is not a session document
+			if(form != null){
+				return form;
+			}
+		}
 
         // Rice has the ability to limit file upload sizes on a per-form basis, so the max upload sizes may be accessed by calling methods on PojoFormBase.
         // This requires that we are able know the file upload size limit (i.e. retrieve a form instance) before we parse a mulitpart request.
-        ActionForm form = super.processActionForm(request, response, mapping);
-        
-        // for sessiondocument with multipart request
-        String contentType = request.getContentType();
-        String method = request.getMethod(); 
+		ActionForm form = super.processActionForm(request, response, mapping);
 
-        // if we have a multipart request, parse it and return the stored form from session if the doc form key is not blank.  If it is blank, then we just return the form
-        // generated from the superclass processActionForm method.  Either way, we need to parse the mulitpart request now so that we may determine what the value of the doc form key is.
-        // This is generally against the contract of processActionForm, because processPopulate should be responsible for parsing the mulitpart request, but we need to parse it now
-        // to determine the doc form key value.
-        if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
-            Map params = WebUtils.getMultipartParameters(request, null, form);
-            docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
-            documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
+		// for sessiondocument with multipart request
+		String contentType = request.getContentType();
+		String method = request.getMethod();
 
-            if (StringUtils.isNotBlank(docFormKey)
-                &&  KNSConstants.SESSION_SCOPE
-                    .equalsIgnoreCase(documentWebScope)) {
-                if (userSession.retrieveObject(docFormKey) != null) {
-                form = (ActionForm) userSession.retrieveObject(docFormKey);
-                request.setAttribute(mapping.getAttribute(), form);
-                return form;
-                }
-            }
-        }
-        
-        t0.log();
-        return form;
-    }
+		// if we have a multipart request, parse it and return the stored form
+		// from session if the doc form key is not blank. If it is blank, then
+		// we just return the form
+		// generated from the superclass processActionForm method. Either way,
+		// we need to parse the mulitpart request now so that we may determine
+		// what the value of the doc form key is.
+		// This is generally against the contract of processActionForm, because
+		// processPopulate should be responsible for parsing the mulitpart
+		// request, but we need to parse it now
+		// to determine the doc form key value.
+		if ( ("POST".equalsIgnoreCase( method ) && contentType != null && contentType
+				.startsWith( "multipart/form-data" )) ) {
+			WebUtils.getMultipartParameters( request, null, form );
+			docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
+			documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
+			
+			documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
+			if (documentNumber == null){
+				documentNumber = request.getParameter(KNSConstants.DOC_NUM);
+			}
 
+			if (KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+				
+				if(userSession.retrieveObject(docFormKey) != null){
+		    		 LOG.debug("getDecomentForm KualiDocumentFormBase from session");
+		             form = (ActionForm) userSession.retrieveObject(docFormKey);
+				}
+				else{
+					
+						form = (ActionForm) KNSServiceLocator.getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+				}
+				
+				request.setAttribute(mapping.getAttribute(), form);
+				if(form != null){
+					return form;
+				}
+			}
+		}
+
+		t0.log();
+		return form;
+	}
+	
     /**
-         * Hook into action perform to handle errors in the error map and catch exceptions.
+	 * Hook into action perform to handle errors in the error map and catch
+	 * exceptions.
          * 
          * <p>
-         * A transaction is started prior to the execution of the action. This allows for the action code to execute
-         * efficiently without the need for using PROPAGATION_SUPPORTS in the transaction definitions. The
+	 * A transaction is started prior to the execution of the action. This
+	 * allows for the action code to execute efficiently without the need for
+	 * using PROPAGATION_SUPPORTS in the transaction definitions. The
          * PROPAGATION_SUPPORTS propagation type does not work well with JTA.
          */
     @Override
     protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response,
 	    final Action action, final ActionForm form, final ActionMapping mapping) throws IOException, ServletException {
 
-	Timer t0 = new Timer("KualiRequestProcessor.processActionPerform");
+		Timer t0 = new Timer("KualiRequestProcessor.processActionPerform");
 
-	try {
+		try {
 	    TransactionTemplate template = new TransactionTemplate(KNSServiceLocator.getTransactionManager());
-	    ActionForward forward = null;
-	    try {
+			ActionForward forward = null;
+			try {
 		forward = (ActionForward) template.execute(new TransactionCallback() {
 		    public Object doInTransaction(TransactionStatus status) {
-			ActionForward actionForward = null;
-			try {
+								ActionForward actionForward = null;
+								try {
 			    actionForward = action.execute(mapping, form, request, response);
-			} catch (Exception e) {
+								} catch (Exception e) {
 			    // the doInTransaction method has no means for throwing exceptions, so we will wrap the
-                                // exception in
+									// exception in
 			    // a RuntimeException and re-throw. The one caveat here is that this will always result in
-                                // the
+									// the
 			    // transaction being rolled back (since WrappedRuntimeException is a runtime exception).
-			    throw new WrappedRuntimeException(e);
-			}
-			if (status.isRollbackOnly()) {
+									throw new WrappedRuntimeException(e);
+								}
+								if (status.isRollbackOnly()) {
 			    // this means that the struts action execution caused the transaction to rollback, we want to
-                                // go ahead
+									// go ahead
 			    // and trigger the rollback by throwing an exception here but then return the action forward
-                                // from this method
+									// from this method
 			    throw new WrappedActionForwardRuntimeException(actionForward);
+								}
+								return actionForward;
+							}
+						});
+			} catch (WrappedActionForwardRuntimeException e) {
+				forward = e.getActionForward();
 			}
-			return actionForward;
-		    }
-		});
-	    } catch (WrappedActionForwardRuntimeException e) {
-		forward = e.getActionForward();
-	    }
-	    publishErrorMessages(request);
-	    saveMessages(request);
-	    saveAuditErrors(request);
+			
+			String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+			String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+			
+			if (form instanceof KualiDocumentFormBase && 
+				!KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)&&
+			    !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
+				KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
+				Document document = docForm.getDocument();
+				String docFormKey = docForm.getFormKey();
+				
+				UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
-	    t0.log();
-	    return forward;
+				boolean sessionDoc = document instanceof org.kuali.core.document.SessionDocument;
+				boolean dataDictionarySessionDoc = false;
+				if(!sessionDoc){
+					DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+					DocumentEntry documentEntry = null;
+					
+					if (docForm instanceof KualiMaintenanceForm) {
+						KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) docForm;
+						if(dataDictionary != null){
+							documentEntry = dataDictionary.getDocumentEntry(maintenanceForm.getDocTypeName());
+							dataDictionarySessionDoc = documentEntry.getSessionDocument();
+						}
+					} else {
+						if(dataDictionary != null){
+							documentEntry = dataDictionary.getDocumentEntry(document.getClass().getName());
+							dataDictionarySessionDoc = documentEntry.getSessionDocument();
+						}
+					}
+				}
 
-	} catch (Exception e) {
-	    if (e instanceof WrappedRuntimeException) {
-		e = (Exception) e.getCause();
-	    }
-	    if (e instanceof ValidationException) {
-		// add a generic error message if there are none
-		if (GlobalVariables.getErrorMap().isEmpty()) {
+				if (sessionDoc|| dataDictionarySessionDoc) {
+					KNSServiceLocator.getSessionDocumentService().setDocumentForm(docForm, userSession);	
+				}
+
+				Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
+
+				if (exitingDocument != null && exitingDocument.booleanValue()) {
+					// remove KualiDocumentFormBase object from session and
+					// table.
+					KNSServiceLocator.getSessionDocumentService()
+							.purgeDocumentForm(
+									docForm.getDocument().getDocumentNumber(),
+									docFormKey, userSession);
+				}
+			}
+
+			publishErrorMessages(request);
+			saveMessages(request);
+			saveAuditErrors(request);
+
+			t0.log();
+			return forward;
+
+		} catch (Exception e) {
+			if (e instanceof WrappedRuntimeException) {
+				e = (Exception) e.getCause();
+			}
+			if (e instanceof ValidationException) {
+				// add a generic error message if there are none
+				if (GlobalVariables.getErrorMap().isEmpty()) {
 
 		    GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM,
 			    e.getMessage());
+				}
+
+				// display error messages and return to originating page
+				publishErrorMessages(request);
+				t0.log();
+				return mapping.findForward(RiceConstants.MAPPING_BASIC);
+			}
+
+			publishErrorMessages(request);
+
+			t0.log();
+			return (processException(request, response, e, form, mapping));
 		}
-
-		// display error messages and return to originating page
-		publishErrorMessages(request);
-		t0.log();
-		return mapping.findForward(RiceConstants.MAPPING_BASIC);
-	    }
-
-	    publishErrorMessages(request);
-
-	    t0.log();
-	    return (processException(request, response, e, form, mapping));
 	}
-    }
+
 
     /**
          * Adds more detailed logging for unhandled exceptions
@@ -525,5 +616,17 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    return actionForward;
 	}
     }
+    
+    private String getKualiSessionId(HttpServletRequest request,
+			HttpServletResponse response) {
+		String kualiSessionId = null;
+		Cookie[] cookies = (Cookie[]) request.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			Cookie cookie = cookies[i];
+			if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName()))
+				kualiSessionId = cookie.getValue();
+		}
+		return kualiSessionId;
+	}
 
 }

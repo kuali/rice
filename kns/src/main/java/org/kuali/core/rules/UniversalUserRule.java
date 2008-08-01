@@ -92,11 +92,15 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
 
         // setup oldAccount convenience objects, make sure all possible sub-objects are populated
         oldUser = (UniversalUser) document.getOldMaintainableObject().getBusinessObject();
-        oldUser.refresh();
+        //KFSMI-798 - refreshNonUpdatableReferences() used instead of refresh(), 
+        //UniversalUser does not have any updatable references
+        oldUser.refreshNonUpdateableReferences();
 
         // setup newAccount convenience objects, make sure all possible sub-objects are populated
         newUser = (UniversalUser) document.getNewMaintainableObject().getBusinessObject();
-        newUser.refresh();
+        //KFSMI-798 - refreshNonUpdatableReferences() used instead of refresh(), 
+        //since UniversalUser does not have any updatable references
+        newUser.refreshNonUpdateableReferences();
 
         if ( userEditWorkgroupName == null ) {
             userEditWorkgroupName = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);

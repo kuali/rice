@@ -101,7 +101,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             docTypeName = docTypeNames[0];
         }
 
-        if (StringUtils.isNotBlank(docTypeName)) {
+        if (StringUtils.isNotBlank(docTypeName)) {          
+        	if(this.getDocument() == null){
             setDocTypeName(docTypeName);
             Class documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(docTypeName);
             if (documentClass == null) {
@@ -135,7 +136,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 throw new RuntimeException("Unable to instantiate document with type name '" + docTypeName + "' and document class '" + documentClass + "'");
             }
             setDocument(document);
-        }
+          } 
+       }
         
         MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
         
@@ -475,6 +477,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             } catch ( ClassNotFoundException ex ) {
                 LOG.error( "Unable to resolve business object class", ex);
             }
+        }else{
+            MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+            return maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(this.getDocTypeName()).getAdditionalSectionsFile();
         }
         return null;
     }

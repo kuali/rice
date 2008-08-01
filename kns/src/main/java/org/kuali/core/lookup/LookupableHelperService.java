@@ -156,6 +156,10 @@ public interface LookupableHelperService extends Serializable{
     
     public void setDocFormKey(String docFormKey);
     
+    public String getDocNum();
+    
+    public void setDocNum(String docNum);
+    
     public String getMaintenanceUrl(BusinessObject businessObject, String methodToCall);
     
     /**

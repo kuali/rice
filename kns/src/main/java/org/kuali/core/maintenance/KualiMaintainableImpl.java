@@ -79,7 +79,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     
     private String docTypeName;
 
-    private PersistenceStructureService persistenceStructureService;
+    private static PersistenceStructureService persistenceStructureService;
     
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
     private static DataDictionaryService dataDictionaryService;
@@ -1004,7 +1004,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	public void handleRouteStatusChange(DocumentHeader documentHeader) {
 	}
 
-	public PersistenceStructureService getPersistenceStructureService() {
+	public static PersistenceStructureService getPersistenceStructureService() {
 	    if ( persistenceStructureService == null ) {
 	        persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
 	    }

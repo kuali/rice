@@ -87,9 +87,23 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     private SequenceAccessorService sequenceAccessorService;
     private BusinessObjectService businessObjectService;
     private LookupResultsService lookupResultsService;
+    private String docNum;
     
-    
-    public AbstractLookupableHelperServiceImpl() {
+    /**
+	 * @return the docNum
+	 */
+	public String getDocNum() {
+		return this.docNum;
+	}
+
+	/**
+	 * @param docNum the docNum to set
+	 */
+	public void setDocNum(String docNum) {
+		this.docNum = docNum;
+	}
+
+	public AbstractLookupableHelperServiceImpl() {
         rows = null;
     }
     
@@ -541,6 +555,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.RETURN_METHOD_TO_CALL);
         parameters.put(KNSConstants.DOC_FORM_KEY, getDocFormKey());
         parameters.put(KNSConstants.REFRESH_CALLER, lookupImpl);
+        if(getDocNum() != null){
+        	parameters.put(KNSConstants.DOC_NUM, getDocNum());
+        }
+        
         if (getReferencesToRefresh() != null) {
             parameters.put(KNSConstants.REFERENCES_TO_REFRESH, getReferencesToRefresh());
         }

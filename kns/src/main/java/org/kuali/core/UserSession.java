@@ -52,8 +52,23 @@ public class UserSession implements Serializable {
     private UserVO backdoorWorkflowUser;
     private int nextObjectKey;
     private Map objectMap;
+    private String kualiSessionId;
 
-    private transient Map workflowDocMap = new HashMap();
+    /**
+	 * @return the kualiSessionId
+	 */
+	public String getKualiSessionId() {
+		return this.kualiSessionId;
+	}
+
+	/**
+	 * @param kualiSessionId the kualiSessionId to set
+	 */
+	public void setKualiSessionId(String kualiSessionId) {
+		this.kualiSessionId = kualiSessionId;
+	}
+
+	private transient Map workflowDocMap = new HashMap();
 
     /**
      * Take in a netid, and construct the user from that.
@@ -70,6 +85,7 @@ public class UserSession implements Serializable {
         this.objectMap = new HashMap();
     }
 
+    
     /**
      * @return the networkId of the current user in the system, backdoor network id if backdoor is set
      */

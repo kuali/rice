@@ -18,6 +18,7 @@ package org.kuali.core.service.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -422,5 +423,23 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         return relationships;
     }
     
-    
+    /***
+     * @see org.kuali.core.service.BusinessObjectMetaDataService#getReferencesForForeignKey(java.lang.Class, java.lang.String)
+     */
+    public Map<String, Class> getReferencesForForeignKey(BusinessObject bo, String attributeName){
+    	List<BusinessObjectRelationship> businessObjectRelationships = 
+    											getBusinessObjectRelationships(bo);
+    	Map<String, Class> referencesForForeignKey = new HashMap<String, Class>(); 
+    	for(BusinessObjectRelationship businessObjectRelationship: businessObjectRelationships){
+    		if(businessObjectRelationship!=null &&
+    				businessObjectRelationship.getParentToChildReferences()!=null && 
+    				businessObjectRelationship.getParentToChildReferences().containsKey(attributeName)){
+    			referencesForForeignKey.put(
+    					businessObjectRelationship.getParentAttributeName(), 
+    					businessObjectRelationship.getRelatedClass());
+    		}
+    	}
+    	return referencesForForeignKey;
+    }
+
 }

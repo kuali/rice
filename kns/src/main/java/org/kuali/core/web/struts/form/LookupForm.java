@@ -58,7 +58,23 @@ public class LookupForm extends KualiForm {
     private boolean searchUsingOnlyPrimaryKeyValues;
     private String primaryKeyFieldLabels;
     private boolean showMaintenanceLinks;
+    private String docNum;
+    
     /**
+	 * @return the docNum
+	 */
+	public String getDocNum() {
+		return this.docNum;
+	}
+
+	/**
+	 * @param docNum the docNum to set
+	 */
+	public void setDocNum(String docNum) {
+		this.docNum = docNum;
+	}
+
+	/**
      * Whether the results contain at least one row that is returnable.
      */
     private boolean hasReturnableRow;
@@ -129,6 +145,10 @@ public class LookupForm extends KualiForm {
             else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
                 setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
             }
+            
+            if (request.getParameter(KNSConstants.DOC_NUM) != null) {
+                setDocNum(request.getParameter(KNSConstants.DOC_NUM));
+           }
 
             if (request.getParameter("returnLocation") != null) {
                 setBackLocation(request.getParameter("returnLocation"));
@@ -211,6 +231,7 @@ public class LookupForm extends KualiForm {
             }
             fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
             fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
+            fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
             if (StringUtils.isNotBlank(getReferencesToRefresh())) {
                 fieldValues.put(KNSConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
             }

@@ -50,7 +50,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 	private String explanation;
     
     @Transient
-    private transient KualiWorkflowDocument workflowDocument;
+    private KualiWorkflowDocument workflowDocument;
 
     /**
      * Constructor - creates empty instances of dependent objects

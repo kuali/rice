@@ -18,20 +18,27 @@ package org.kuali.core.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.Inactivateable;
+import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.CollectionDefinition;
 import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.DocumentEntry;
+import org.kuali.core.datadictionary.InactivationBlockingDefinition;
+import org.kuali.core.datadictionary.InactivationBlockingMetadata;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.core.datadictionary.RelationshipDefinition;
 import org.kuali.core.datadictionary.control.ControlDefinition;
@@ -861,5 +868,18 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
+    }
+
+    /**
+     * Returns all of the inactivation blocks registered for a particular business object
+     * 
+     * @see org.kuali.core.service.DataDictionaryService#getAllInactivationBlockingDefinitions(java.lang.Class)
+     */
+    public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass) {
+        Set<InactivationBlockingMetadata> blockingClasses = dataDictionary.getAllInactivationBlockingMetadatas(inactivationBlockedBusinessObjectClass);
+        if (blockingClasses == null) {
+            return Collections.emptySet();
+        }
+        return blockingClasses;
     }
 }

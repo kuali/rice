@@ -260,23 +260,23 @@ public class ExceptionIncident implements KualiExceptionIncident {
         String userEmail=properties.get(USER_EMAIL);
         String userName=properties.get(USER_NAME);
         String description=properties.get(DESCRIPTION);
-        String component=properties.get(COMPONENT_NAME);
-        String exceptionMessage=properties.get(EXCEPTION_MESSAGE);
+//        String component=properties.get(COMPONENT_NAME);
+//        String exceptionMessage=properties.get(EXCEPTION_MESSAGE);
         String stackTrace=properties.get(STACK_TRACE);
         String format="documentId: %s%n"+
                       "userEmail: %s%n"+
                       "userName: %s%n"+
                       "description: %s%n"+
-                      "component: %s%n"+
-                      "errorMessage: %s%n"+
+//                      "component: %s%n"+
+//                      "errorMessage: %s%n"+
                       "stackTrace: %s%n";
         String message=String.format(format,
                 (documentId==null)?"":documentId,
                 (userEmail==null)?"":userEmail,
                 (userName==null)?"":userName,
                 (description==null)?"":description,
-                (component==null)?"":component,
-                (exceptionMessage==null)?"":exceptionMessage,
+//                (component==null)?"":component,
+//                (exceptionMessage==null)?"":exceptionMessage,
                 (stackTrace==null)?"":stackTrace);
 
         if (LOG.isTraceEnabled()) {

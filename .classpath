@@ -48,10 +48,6 @@
 	<classpathentry kind="src" output="shared/target/classes" path="shared/src/main/resources"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/java"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/resources"/>
-	<classpathentry kind="src" output="testharness/target/classes" path="testharness/src/main/java"/>
-	<classpathentry kind="src" output="testharness/target/classes" path="testharness/src/main/resources"/>
-	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/java"/>
-	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/resources"/>
 	<classpathentry kind="src" output="tools/target/classes" path="tools/src/main/java"/>
 	<classpathentry kind="src" output="tools/target/classes" path="tools/src/main/resources"/>
 	<classpathentry kind="src" output="tools/target/test-classes" path="tools/src/test/java"/>

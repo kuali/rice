@@ -6,5 +6,12 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>rice-kim-authn-sesn</artifactId>
-  <name>kim-authn-sesn</name>    
+  <name>kim-authn-sesn</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-impl</artifactId>
+      <version>0.9.4-SNAPSHOT</version>
+    </dependency>
+  </dependencies> 
 </project>

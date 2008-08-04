@@ -1,6 +1,6 @@
 <plugin>
 
-  <resourceLoader class="org.kuali.rice.resourceloader.BaseResourceLoader"/>
+  <resourceLoader class="org.kuali.rice.core.resourceloader.BaseResourceLoader"/>
 
   <listener>
   	<listener-class>edu.iu.uis.eden.plugin.TestPluginListener</listener-class>

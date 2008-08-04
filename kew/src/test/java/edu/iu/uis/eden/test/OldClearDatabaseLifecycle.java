@@ -28,7 +28,7 @@ import javax.sql.DataSource;
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -18,7 +18,7 @@ package edu.iu.uis.eden.testclient1;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.messaging.remotedservices.ChainedRequestService;
 

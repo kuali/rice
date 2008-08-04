@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.notification.test.NotificationTestCaseBase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 

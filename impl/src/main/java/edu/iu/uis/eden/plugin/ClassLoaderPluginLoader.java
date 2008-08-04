@@ -22,7 +22,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.plugin.manifest.PluginManifest;

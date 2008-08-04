@@ -22,12 +22,12 @@ import javax.xml.namespace.QName;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;

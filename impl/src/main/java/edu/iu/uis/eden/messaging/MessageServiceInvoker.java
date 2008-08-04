@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 

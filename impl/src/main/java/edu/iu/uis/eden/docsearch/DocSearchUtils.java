@@ -30,8 +30,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.EdenConstants;

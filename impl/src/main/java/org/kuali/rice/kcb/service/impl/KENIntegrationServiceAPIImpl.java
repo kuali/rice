@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.KENServiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.service.KENIntegrationService;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Integrates with KEN via the exposed KENAPIService (meaning there is a runtime dependency on KEN) 

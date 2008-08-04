@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 import edu.iu.uis.eden.core.dependencylifecycles.SpringLifeCycle;
 import edu.iu.uis.eden.core.dependencylifecycles.XmlPipelineLifeCycle;

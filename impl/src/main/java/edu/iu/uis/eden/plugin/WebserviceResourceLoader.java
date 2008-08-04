@@ -32,10 +32,10 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.BaseResourceLoader;
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 import edu.iu.uis.eden.KEWServiceLocator;

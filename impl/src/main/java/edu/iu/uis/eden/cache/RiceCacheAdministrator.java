@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.cache;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 /**
  * Service for accessing and managing KEW primary cache

@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.test;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
 
 public class JettyLifecycle implements Lifecycle {

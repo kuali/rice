@@ -23,7 +23,7 @@ import javax.servlet.ServletContextEvent;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 

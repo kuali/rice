@@ -31,11 +31,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoaderContainer;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;

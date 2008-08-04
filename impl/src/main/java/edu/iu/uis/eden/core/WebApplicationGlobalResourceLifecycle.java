@@ -18,8 +18,8 @@ package edu.iu.uis.eden.core;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.SpringLoader;
 import edu.iu.uis.eden.plugin.PluginRegistry;

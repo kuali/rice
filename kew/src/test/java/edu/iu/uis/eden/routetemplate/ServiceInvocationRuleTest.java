@@ -18,7 +18,7 @@ package edu.iu.uis.eden.routetemplate;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.test.FakeService;
 import org.kuali.workflow.test.KEWTestCase;
 import org.kuali.workflow.test.FakeServiceImpl.Invocation;

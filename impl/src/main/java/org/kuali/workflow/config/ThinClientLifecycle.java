@@ -16,8 +16,8 @@
  */
 package org.kuali.workflow.config;
 
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 /**
  *

@@ -22,8 +22,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoaderContainer;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 

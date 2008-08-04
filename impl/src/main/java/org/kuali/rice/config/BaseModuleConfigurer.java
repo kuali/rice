@@ -20,10 +20,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.ojb.BaseOjbConfigurer;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
 
 /**
  * A base module configurer that defines module name and test mode flag 
@@ -81,7 +81,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
 
     /**
      * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
-     * @see org.kuali.rice.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+     * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
      */
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {

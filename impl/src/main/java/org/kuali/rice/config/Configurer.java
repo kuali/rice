@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.config;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 public interface Configurer extends Lifecycle {
     // marker interface

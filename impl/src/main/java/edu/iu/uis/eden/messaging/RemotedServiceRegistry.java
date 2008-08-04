@@ -20,7 +20,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.resourceloader.ServiceLocator;
+import org.kuali.rice.core.resourceloader.ServiceLocator;
 
 
 /**

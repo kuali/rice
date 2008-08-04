@@ -7,8 +7,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.NodeSettings;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.workgroup.WorkgroupTypeService;
 import org.springframework.transaction.PlatformTransactionManager;

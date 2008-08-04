@@ -29,8 +29,8 @@ import javax.persistence.Entity;
 
 import java.util.List;
 
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;

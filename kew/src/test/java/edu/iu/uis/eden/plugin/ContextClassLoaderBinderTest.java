@@ -25,7 +25,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.kuali.rice.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 
 /**
  * Tests the ContextClassLoaderBinder

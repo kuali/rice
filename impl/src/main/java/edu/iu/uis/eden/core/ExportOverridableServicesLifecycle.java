@@ -15,7 +15,7 @@
  */
 package edu.iu.uis.eden.core;
 
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -39,7 +39,7 @@ public class ExportOverridableServicesLifecycle extends BaseLifecycle {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.lifecycle.BaseLifecycle#start()
+     * @see org.kuali.rice.core.lifecycle.BaseLifecycle#start()
      */
     @Override
     public void start() throws Exception {

@@ -42,7 +42,7 @@ import org.apache.ojb.broker.metadata.MetadataManager;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;

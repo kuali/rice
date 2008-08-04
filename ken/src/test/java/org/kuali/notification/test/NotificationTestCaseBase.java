@@ -20,10 +20,10 @@ import java.util.List;
 
 import org.kuali.notification.core.SpringNotificationServiceLocator;
 import org.kuali.rice.config.SpringModuleConfigurer;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;

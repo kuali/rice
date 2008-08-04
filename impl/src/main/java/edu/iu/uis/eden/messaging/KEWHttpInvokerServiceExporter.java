@@ -18,7 +18,7 @@ package edu.iu.uis.eden.messaging;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;

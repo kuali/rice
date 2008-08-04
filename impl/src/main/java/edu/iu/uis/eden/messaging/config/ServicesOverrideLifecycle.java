@@ -18,8 +18,8 @@ package edu.iu.uis.eden.messaging.config;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.resourceloader.SimpleServiceLocator;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.resourceloader.SimpleServiceLocator;
 
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 

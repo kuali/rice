@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.test;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
 
 /**

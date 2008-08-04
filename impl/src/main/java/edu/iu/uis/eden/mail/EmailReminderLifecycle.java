@@ -18,7 +18,7 @@ package edu.iu.uis.eden.mail;
 
 
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.quartz.Scheduler;
 
 import edu.iu.uis.eden.KEWServiceLocator;

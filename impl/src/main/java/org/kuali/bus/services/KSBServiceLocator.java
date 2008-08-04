@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.service.ServiceFactory;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;

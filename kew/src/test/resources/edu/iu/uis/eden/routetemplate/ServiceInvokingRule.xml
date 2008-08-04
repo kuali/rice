@@ -29,7 +29,7 @@
             <description>ServiceInvocationRule mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.RuleExpressionResult
-                import org.kuali.rice.resourceloader.*
+                import org.kuali.rice.core.resourceloader.*
                 import org.kuali.workflow.test.FakeService
                 import javax.xml.namespace.QName
 

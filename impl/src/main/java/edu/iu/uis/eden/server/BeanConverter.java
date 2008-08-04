@@ -31,10 +31,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.definition.DataDefinition;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.definition.PropertyDefinition;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.reflect.DataDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.reflect.PropertyDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

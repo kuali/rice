@@ -19,7 +19,7 @@ package edu.iu.uis.eden.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

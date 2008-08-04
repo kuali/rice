@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 import org.springframework.web.util.UrlPathHelper;

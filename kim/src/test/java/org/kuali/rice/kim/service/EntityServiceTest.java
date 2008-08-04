@@ -22,10 +22,10 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Basic test to verify we can access the EntityService through the GRL.

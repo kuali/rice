@@ -17,8 +17,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
 
 /**

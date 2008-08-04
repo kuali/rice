@@ -20,9 +20,9 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.messaging.AsynchronousCallback;

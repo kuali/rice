@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.core.dependencylifecycles;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;

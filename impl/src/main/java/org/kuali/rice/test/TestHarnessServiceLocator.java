@@ -18,8 +18,8 @@ package org.kuali.rice.test;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
 
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.jta.JtaTransactionManager;
 

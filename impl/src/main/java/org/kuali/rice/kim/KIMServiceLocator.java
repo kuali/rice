@@ -3,10 +3,10 @@ package org.kuali.rice.kim;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.service.EntityService;
 import org.kuali.rice.kim.service.GroupTypeService;
 import org.kuali.rice.kim.service.NamespaceService;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Service locator for KIM.

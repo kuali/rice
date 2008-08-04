@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.messaging.config;
 
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.messaging.ServiceDefinition;
 

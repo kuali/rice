@@ -18,10 +18,10 @@ import java.util.Map;
 
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;

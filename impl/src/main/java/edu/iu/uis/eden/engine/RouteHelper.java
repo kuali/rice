@@ -16,8 +16,8 @@
  */
 package edu.iu.uis.eden.engine;
 
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.engine.node.BasicJoinEngine;

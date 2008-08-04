@@ -14,7 +14,7 @@ package org.kuali.rice.testharness;
 
 import java.util.List;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;

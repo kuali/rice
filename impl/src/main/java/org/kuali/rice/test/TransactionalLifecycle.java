@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.test;
 
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;

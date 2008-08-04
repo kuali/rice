@@ -20,9 +20,9 @@ import java.lang.reflect.Method;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.proxy.BaseInvocationHandler;
 import org.kuali.rice.proxy.TargetedInvocationHandler;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 
 /**

@@ -20,8 +20,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ExceptionUtils;
 
 import edu.iu.uis.eden.messaging.ServiceInfo;

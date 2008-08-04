@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.proxy.BaseInvocationHandler;
 import org.kuali.rice.proxy.TargetedInvocationHandler;
-import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;

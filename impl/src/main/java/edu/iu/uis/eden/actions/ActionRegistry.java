@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actions;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.definition.DataDefinition;
+import org.kuali.rice.core.reflect.DataDefinition;
 
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;

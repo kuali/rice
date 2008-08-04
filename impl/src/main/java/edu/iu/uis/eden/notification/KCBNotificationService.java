@@ -20,10 +20,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.vo.MessageVO;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionitem.ActionItem;

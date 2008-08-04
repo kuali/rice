@@ -21,9 +21,9 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.util.RiceUtilities;
 import org.kuali.rice.web.jetty.JettyServer;
 

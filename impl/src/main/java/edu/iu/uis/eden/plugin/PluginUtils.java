@@ -28,10 +28,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.BaseResourceLoader;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoaderUtil;
+import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoaderUtil;
 
 import edu.iu.uis.eden.core.CoreResourceLoader;
 import edu.iu.uis.eden.plugin.client.PluginListener;

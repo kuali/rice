@@ -14,7 +14,7 @@ package org.kuali.rice.test.lifecycles;
 
 import java.lang.reflect.Method;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestDataUtils;

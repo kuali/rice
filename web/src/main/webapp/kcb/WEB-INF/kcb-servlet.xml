@@ -18,9 +18,9 @@
     </bean>
 
     <!-- import beans from GlobalResourceLoader -->
-    <bean id="recipientPreferenceService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
-    <bean id="messageDelivererRegistryService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
-    <bean id="kenIntegrationService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
+    <bean id="recipientPreferenceService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
+    <bean id="messageDelivererRegistryService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
+    <bean id="kenIntegrationService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
 
     <!-- Implement better strategy later -->
     <!-- 

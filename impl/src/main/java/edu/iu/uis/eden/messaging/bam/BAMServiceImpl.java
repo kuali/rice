@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
 
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.messaging.bam.dao.BAMConfigDAO;

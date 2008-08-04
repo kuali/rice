@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.jndi.JndiTemplate;
 

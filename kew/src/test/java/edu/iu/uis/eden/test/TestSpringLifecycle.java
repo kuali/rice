@@ -16,8 +16,8 @@
  */
 package edu.iu.uis.eden.test;
 
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 public class TestSpringLifecycle extends BaseLifecycle {
 

@@ -26,8 +26,8 @@ import junit.framework.Assert;
 
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 

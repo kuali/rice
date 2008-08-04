@@ -25,7 +25,7 @@ import java.util.Set;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;

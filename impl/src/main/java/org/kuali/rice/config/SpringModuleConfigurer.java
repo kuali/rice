@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 
 /**
  * ModuleConfigurer that supplies a Spring-based ResourceLoader.  By default the

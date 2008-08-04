@@ -13,11 +13,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Basic test to verify we can access the NamespaceService through the GRL.

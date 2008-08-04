@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package edu.iu.uis.eden.messaging.threadpool;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 

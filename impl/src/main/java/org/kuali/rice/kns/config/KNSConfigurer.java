@@ -28,7 +28,7 @@ import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.config.event.AfterStartEvent;
 import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

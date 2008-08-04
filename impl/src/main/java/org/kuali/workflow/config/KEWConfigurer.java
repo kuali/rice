@@ -29,7 +29,7 @@ import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
 import edu.iu.uis.eden.EdenConstants;

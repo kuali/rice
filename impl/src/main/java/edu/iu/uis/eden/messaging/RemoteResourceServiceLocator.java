@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 import edu.iu.uis.eden.messaging.exceptionhandling.MessageExceptionHandler;
 

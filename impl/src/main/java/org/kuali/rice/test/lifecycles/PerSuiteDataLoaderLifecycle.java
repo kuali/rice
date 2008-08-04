@@ -12,7 +12,7 @@
  */
 package org.kuali.rice.test.lifecycles;
 
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;

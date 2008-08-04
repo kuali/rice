@@ -24,8 +24,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.plugin.attributes.RoleAttribute;

@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
@@ -165,7 +165,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	    List<Lifecycle> lifeCycles = super.getInitialLifecycles();
 		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 		// opposite of what is passed to the clear database lifecycle that runs on every test execution
-		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test", "/../server/src/main/webapp/en");
+		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test", "/../web/src/main/webapp/en");
 		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		lifeCycles.add(server);

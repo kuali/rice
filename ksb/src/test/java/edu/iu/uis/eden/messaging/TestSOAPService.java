@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.messaging.remotedservices.EchoService;
 import edu.iu.uis.eden.messaging.remotedservices.SOAPService;

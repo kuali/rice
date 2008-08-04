@@ -23,8 +23,8 @@ import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
@@ -52,7 +52,7 @@ public class KIMConfigurer extends ModuleConfigurer {
     	}
 	
 	/**
-	 * @see org.kuali.rice.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
 	 * 
 	 * TODO - DO I NEED THIS?
 	 */

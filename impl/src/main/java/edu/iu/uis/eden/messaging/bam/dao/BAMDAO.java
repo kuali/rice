@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
 
 import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 

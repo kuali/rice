@@ -16,7 +16,7 @@
 package org.kuali.rice.config;
 
 import org.kuali.rice.config.event.RiceConfigEvent;
-import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
+import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 
 public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer {
 

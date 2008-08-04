@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.definition.DataDefinition;
+import org.kuali.rice.core.reflect.DataDefinition;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.ActionTakenEvent;

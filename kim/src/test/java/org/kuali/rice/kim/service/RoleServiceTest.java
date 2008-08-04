@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.GroupQualifiedRoleAttributeDTO;
@@ -33,7 +34,6 @@ import org.kuali.rice.kim.dto.PrincipalQualifiedRoleAttributeDTO;
 import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Basic test to verify we can access the QualifiedRoleService through the GRL.

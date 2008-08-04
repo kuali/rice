@@ -30,7 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 import org.kuali.workflow.attribute.ExtensionData;

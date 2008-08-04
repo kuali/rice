@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.definition;
 
-import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
 
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 

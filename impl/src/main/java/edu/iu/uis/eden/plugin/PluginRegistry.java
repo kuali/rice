@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 /**
  * Maintains a registry of Plugins and allows for loading of resources from those plugins.  It is

@@ -34,7 +34,7 @@ import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.util.Log4jConfigurer;
 import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 public class DerbyDBCreationLifecycle implements Lifecycle {
 	

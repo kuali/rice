@@ -17,7 +17,7 @@ package edu.iu.uis.eden.messaging;
 
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 import edu.iu.uis.eden.messaging.callforwarding.ForwardedCallHandlerImpl;
 import edu.iu.uis.eden.messaging.config.ServiceBasedServiceDefinitionRegisterer;

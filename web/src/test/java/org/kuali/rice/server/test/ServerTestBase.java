@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.config.spring.ConfigFactoryBean;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -39,7 +39,7 @@ public class ServerTestBase extends RiceTestCase {
 	protected static final String HTML_PAGE_TITLE_TEXT = "Kuali Rice";
 
     private String contextName = "/knstest";
-    private String relativeWebappRoot = "/../server/src/main/webapp";
+    private String relativeWebappRoot = "/../web/src/main/webapp";
     private String sqlFilename = "classpath:ServerDefaultTestData.sql";
     private String sqlDelimiter = ";";
     private String xmlFilename = "classpath:ServerDefaultTestData.xml";

@@ -23,8 +23,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.database.platform.Platform;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.user.WorkflowUser;

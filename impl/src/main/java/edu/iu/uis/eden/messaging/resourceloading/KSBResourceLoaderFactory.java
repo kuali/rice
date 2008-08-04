@@ -20,11 +20,11 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.BaseResourceLoader;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.SimpleServiceLocator;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.SimpleServiceLocator;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 
 import edu.iu.uis.eden.messaging.RemoteResourceServiceLocator;
 import edu.iu.uis.eden.messaging.RemoteResourceServiceLocatorImpl;

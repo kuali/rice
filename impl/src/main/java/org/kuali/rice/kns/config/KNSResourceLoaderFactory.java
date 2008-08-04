@@ -18,9 +18,9 @@ package org.kuali.rice.kns.config;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 
 
 /**

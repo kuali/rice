@@ -20,9 +20,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.BaseWrappingResourceLoader;
-import org.kuali.rice.resourceloader.ServiceLocator;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
+import org.kuali.rice.core.resourceloader.ServiceLocator;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;

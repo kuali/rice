@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.core.dependencylifecycles;
 
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 import edu.iu.uis.eden.SpringLoader;
 

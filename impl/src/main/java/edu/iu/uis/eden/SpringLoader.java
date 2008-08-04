@@ -21,8 +21,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.lifecycle.BaseLifecycle;
-import org.kuali.rice.resourceloader.ServiceLocator;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

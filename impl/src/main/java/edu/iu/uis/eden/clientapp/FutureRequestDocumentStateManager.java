@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.definition.DataDefinition;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.reflect.DataDefinition;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;

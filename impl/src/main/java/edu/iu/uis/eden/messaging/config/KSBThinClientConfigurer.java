@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.plugin.manifest.PluginManifest;

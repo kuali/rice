@@ -27,8 +27,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.definition.ObjectDefinition;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.role.dao.RoleDAO;
 
 import edu.iu.uis.eden.KEWServiceLocator;

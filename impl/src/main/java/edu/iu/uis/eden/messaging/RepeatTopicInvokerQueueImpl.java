@@ -18,8 +18,8 @@ package edu.iu.uis.eden.messaging;
 import java.lang.reflect.Method;
 
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.exceptions.RiceRuntimeException;
-import org.kuali.rice.lifecycle.BaseLifecycle;
 
 import edu.iu.uis.eden.messaging.config.ServiceBasedServiceDefinitionRegisterer;
 

@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill

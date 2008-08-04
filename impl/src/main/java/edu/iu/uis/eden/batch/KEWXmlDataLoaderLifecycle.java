@@ -18,7 +18,7 @@ package edu.iu.uis.eden.batch;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 /**
  * A lifecycle for loading KEW XML datasets.

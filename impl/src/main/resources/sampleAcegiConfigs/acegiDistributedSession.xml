@@ -4,7 +4,7 @@
 <!--
   - A sample Acegi Security configuration using CAS as the authentication provider
   -
-  - This file should be placed in /server/src/main/webapp/WEB-INF/acegi.xml
+  - This file should be placed in /web/src/main/webapp/WEB-INF/acegi.xml
   - web.xml would have to be modified to have the ACEGI filter chain proxy
   - with the following filter:
   -

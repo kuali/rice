@@ -16,8 +16,8 @@
 package org.kuali.rice.kom.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kom.test.KOMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * Basic test to verify we can access the KOMService through the GRL. 

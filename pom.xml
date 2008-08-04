@@ -186,7 +186,6 @@
 		<module>kom</module>
 		<module>impl</module>
         <module>server</module>
-        <module>tools</module>
 	</modules>
 	<repositories>
 		<repository>

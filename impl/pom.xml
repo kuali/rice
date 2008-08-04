@@ -119,21 +119,5 @@
       		<version>1.5.4</version>
     	</dependency>
 
-		<!-- Test dependencies -->
-
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbynet</artifactId>
-			<version>10.2.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyclient</artifactId>
-			<version>10.2.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 </project>

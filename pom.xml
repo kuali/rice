@@ -173,6 +173,8 @@
 	</build>
 	<modules>
 	    <module>api</module>
+		<module>impl</module>
+        <module>web</module>
 		<module>core</module>
 		<module>shared</module>
 		<module>ksb</module>
@@ -184,8 +186,6 @@
 		<module>kew</module>
 		<module>ken</module>
 		<module>kom</module>
-		<module>impl</module>
-        <module>server</module>
 	</modules>
 	<repositories>
 		<repository>

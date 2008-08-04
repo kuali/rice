@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="server/src/main/config/WEB-INF/classes"/>
-	<classpathentry kind="src" output="core/target/classes" path="core/src/main/resources"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/java"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/resources"/>
 	<classpathentry kind="src" output="kcb-api/target/classes" path="kcb-api/src/main/java"/>

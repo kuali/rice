@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<name>impl</name>
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -9,72 +8,126 @@
 		<version>0.9.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>rice-impl</artifactId>
-    
-    <build>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-        <includes>
-          <include>META-INF/testharness-test-config.xml</include>
-        </includes>
-        <filtering>true</filtering>
-      </testResource>
 
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-        <includes>
-          <include>META-INF/test-config-defaults.xml</include>
-        </includes>
-        <filtering>true</filtering>
-      </testResource>
+	<build>
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<includes>
+					<include>META-INF/testharness-test-config.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
 
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-        <excludes>
-          <exclude>testharness-test-config.xml</exclude>
-        </excludes>
-        <filtering>false</filtering>
-      </testResource>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<includes>
+					<include>META-INF/test-config-defaults.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
 
-    </testResources>
-  </build>
-    
-    
-    <dependencies>
-    
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<excludes>
+					<exclude>testharness-test-config.xml</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</testResource>
+
+		</testResources>
+	</build>
+
+
+	<dependencies>
+
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-api</artifactId>
 			<version>0.9.4-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>xapool</groupId>
 			<artifactId>xapool</artifactId>
 			<version>1.5.0-patch2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>jotm</groupId>
 			<artifactId>jotm</artifactId>
 			<version>2.0.10</version>
 		</dependency>
-        
-        <!-- Test dependencies -->
-        
+
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>oscache</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.xfire</groupId>
+			<artifactId>xfire-spring</artifactId>
+			<version>1.2.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.xfire</groupId>
+			<artifactId>xfire-ws-security</artifactId>
+			<version>1.2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.xfire</groupId>
+			<artifactId>xfire-java5</artifactId>
+			<version>1.2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.0.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>backport-util-concurrent</groupId>
+			<artifactId>backport-util-concurrent</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>cas</groupId>
+			<artifactId>casclient</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbynet</artifactId>
 			<version>10.2.2.0</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>
 			<version>10.2.2.0</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 </project>

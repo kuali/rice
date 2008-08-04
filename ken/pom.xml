@@ -14,13 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-testharness</artifactId>
-            <version>0.9.4-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-ken-api</artifactId>
+            <artifactId>rice-impl</artifactId>
             <version>0.9.4-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -33,18 +27,6 @@
             <artifactId>rice-kcb-api</artifactId>
             <version>0.9.4-SNAPSHOT</version>
         </dependency>
-        <!-- This includes the tests classes and resources that KCB exports
-             see: http://maven.apache.org/guides/mini/guide-attached-tests.html
-        -->
-        <!--
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-kcb</artifactId>
-            <version>0.9.4-SNAPSHOT</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-kcb</artifactId>

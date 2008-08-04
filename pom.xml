@@ -172,6 +172,7 @@
 		</extensions>
 	</build>
 	<modules>
+	    <module>api</module>
 		<module>core</module>
 		<module>shared</module>
 		<module>testharness</module>
@@ -179,7 +180,6 @@
         <module>kcb</module>
         <module>kcb-api</module>
 		<module>kns</module>
-        <module>kim-api</module>
         <module>kim-authn-client</module>
         <module>kim-authn-sesn</module>
 		<module>kim</module>
@@ -188,6 +188,7 @@
 		<module>ken</module>
 		<module>kom-api</module>
 		<module>kom</module>
+		<module>impl</module>
         <module>server</module>
         <module>tools</module>
 	</modules>

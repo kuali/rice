@@ -11,5 +11,10 @@
 	<artifactId>rice-core</artifactId>
     
     <dependencies>
+    	<dependency>
+            <groupId>org.kuali.rice</groupId>
+            <artifactId>rice-impl</artifactId>
+            <version>0.9.4-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

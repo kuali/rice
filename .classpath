@@ -8,8 +8,6 @@
 	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/resources"/>
 	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/java"/>
 	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/resources"/>
-	<classpathentry kind="src" output="kew/target/classes" path="kew/src/main/java"/>
-	<classpathentry kind="src" output="kew/target/classes" path="kew/src/main/resources"/>
 	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/java"/>
 	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/resources"/>
 	<classpathentry kind="src" output="kim-authn-client/target/classes" path="kim-authn-client/src/main/java"/>
@@ -19,8 +17,6 @@
 	<classpathentry kind="src" output="kim-authn-sesn/target/test-classes" path="kim-authn-sesn/src/test/java"/>
 	<classpathentry kind="src" output="kim/target/test-classes" path="kim/src/test/java"/>
 	<classpathentry kind="src" output="kim/target/test-classes" path="kim/src/test/resources"/>
-	<classpathentry kind="src" output="kns/target/classes" path="kns/src/main/java"/>
-	<classpathentry kind="src" output="kns/target/classes" path="kns/src/main/resources"/>
 	<classpathentry kind="src" output="kns/target/test-classes" path="kns/src/test/java"/>
 	<classpathentry kind="src" output="kns/target/test-classes" path="kns/src/test/resources"/>
 	<classpathentry kind="src" output="kom-api/target/classes" path="kom-api/src/main/java"/>
@@ -34,8 +30,6 @@
 	<classpathentry kind="src" output="server/target/classes" path="server/src/main/resources"/>
 	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/java"/>
 	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/resources"/>
-	<classpathentry kind="src" output="shared/target/classes" path="shared/src/main/java"/>
-	<classpathentry kind="src" output="shared/target/classes" path="shared/src/main/resources"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/java"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/resources"/>
 	<classpathentry kind="src" output="tools/target/classes" path="tools/src/main/java"/>

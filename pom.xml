@@ -178,13 +178,11 @@
 		<module>testharness</module>
 		<module>ksb</module>
         <module>kcb</module>
-        <module>kcb-api</module>
 		<module>kns</module>
         <module>kim-authn-client</module>
         <module>kim-authn-sesn</module>
 		<module>kim</module>
 		<module>kew</module>
-        <module>ken-api</module>
 		<module>ken</module>
 		<module>kom-api</module>
 		<module>kom</module>

@@ -10,29 +10,7 @@
     </parent>
     <artifactId>rice-kcb</artifactId>
 
-    <build>
-        <plugins>
-            <!-- This creates an artifact to "export" the test classes for use by other modules -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-kcb-api</artifactId>
-            <version>0.9.4-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-impl</artifactId>

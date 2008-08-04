@@ -4,12 +4,10 @@
 	<classpathentry kind="src" path="server/src/main/config/WEB-INF/classes"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/java"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/resources"/>
-	<classpathentry kind="src" output="kcb-api/target/classes" path="kcb-api/src/main/java"/>
 	<classpathentry kind="src" output="kcb/target/classes" path="kcb/src/main/java"/>
 	<classpathentry kind="src" output="kcb/target/classes" path="kcb/src/main/resources"/>
 	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/java"/>
 	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/resources"/>
-	<classpathentry kind="src" output="ken-api/target/classes" path="ken-api/src/main/java"/>
 	<classpathentry kind="src" output="ken/target/classes" path="ken/src/main/java"/>
 	<classpathentry kind="src" output="ken/target/classes" path="ken/src/main/resources"/>
 	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/java"/>

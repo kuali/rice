@@ -183,7 +183,6 @@
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>
-		<module>kom-api</module>
 		<module>kom</module>
 		<module>impl</module>
         <module>server</module>

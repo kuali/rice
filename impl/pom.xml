@@ -10,11 +10,71 @@
 	</parent>
 	<artifactId>rice-impl</artifactId>
     
+    <build>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+        <includes>
+          <include>META-INF/testharness-test-config.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </testResource>
+
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+        <includes>
+          <include>META-INF/test-config-defaults.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </testResource>
+
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+        <excludes>
+          <exclude>testharness-test-config.xml</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </testResource>
+
+    </testResources>
+  </build>
+    
+    
     <dependencies>
+    
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-api</artifactId>
 			<version>0.9.4-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>xapool</groupId>
+			<artifactId>xapool</artifactId>
+			<version>1.5.0-patch2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>jotm</groupId>
+			<artifactId>jotm</artifactId>
+			<version>2.0.10</version>
+		</dependency>
+        
+        <!-- Test dependencies -->
+        
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbynet</artifactId>
+			<version>10.2.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.2.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>

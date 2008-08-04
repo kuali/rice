@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="server/src/main/config/WEB-INF/classes"/>
+	<classpathentry kind="src" path="api/src/main/java"/>
+	<classpathentry kind="src" path="impl/src/main/java"/>
+	<classpathentry kind="src" path="impl/src/main/resources"/>
+	<classpathentry kind="src" path="impl/src/test/java"/>
+	<classpathentry kind="src" path="impl/src/test/resources"/>
+	<classpathentry kind="src" output="web/target/classes" path="web/src/main/java"/>
+	<classpathentry kind="src" output="web/target/classes" path="web/src/main/resources"/>
+	<classpathentry kind="src" output="web/target/test-classes" path="web/src/test/java"/>
+	<classpathentry kind="src" output="web/target/test-classes" path="web/src/test/resources"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/java"/>
 	<classpathentry kind="src" output="core/target/test-classes" path="core/src/test/resources"/>
 	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/java"/>
@@ -20,17 +27,9 @@
 	<classpathentry kind="src" output="kom/target/test-classes" path="kom/src/test/resources"/>
 	<classpathentry kind="src" output="ksb/target/test-classes" path="ksb/src/test/java"/>
 	<classpathentry kind="src" output="ksb/target/test-classes" path="ksb/src/test/resources"/>
-	<classpathentry kind="src" output="server/target/classes" path="server/src/main/java"/>
-	<classpathentry kind="src" output="server/target/classes" path="server/src/main/resources"/>
-	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/java"/>
-	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/resources"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/java"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/resources"/>
-	<classpathentry kind="src" path="api/src/main/java"/>
-	<classpathentry kind="src" path="impl/src/main/java"/>
-	<classpathentry kind="src" path="impl/src/main/resources"/>
-	<classpathentry kind="src" path="impl/src/test/java"/>
-	<classpathentry kind="src" path="impl/src/test/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar" sourcepath="M2_REPO/ant/ant/1.6.5/ant-1.6.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar" sourcepath="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>

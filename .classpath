@@ -20,7 +20,6 @@
 	<classpathentry kind="src" output="kew/target/classes" path="kew/src/main/resources"/>
 	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/java"/>
 	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/resources"/>
-	<classpathentry kind="src" output="kim-api/target/classes" path="kim-api/src/main/java"/>
 	<classpathentry kind="src" output="kim-authn-client/target/classes" path="kim-authn-client/src/main/java"/>
 	<classpathentry kind="src" output="kim-authn-client/target/classes" path="kim-authn-client/src/main/resources"/>
 	<classpathentry kind="src" output="kim-authn-client/target/test-classes" path="kim-authn-client/src/test/java"/>

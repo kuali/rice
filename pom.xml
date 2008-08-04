@@ -175,7 +175,6 @@
 	    <module>api</module>
 		<module>core</module>
 		<module>shared</module>
-		<module>testharness</module>
 		<module>ksb</module>
         <module>kcb</module>
 		<module>kns</module>

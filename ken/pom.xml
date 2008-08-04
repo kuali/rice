@@ -22,11 +22,5 @@
             <artifactId>rice-kew</artifactId>
             <version>0.9.4-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-kcb</artifactId>
-            <version>0.9.4-SNAPSHOT</version>
-            <scope>runtime</scope>
-        </dependency>
     </dependencies>
 </project>

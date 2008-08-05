@@ -15,8 +15,8 @@
     <class>org.kuali.rice.kew.actionitem.ActionItem</class>
     <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
     <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
-    <class>edu.iu.uis.eden.actiontaken.ActionTakenValue</class>
-    <class>edu.iu.uis.eden.actionrequests.ActionRequestValue</class>
+    <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
+    <class>org.kuali.rice.kew.actionrequests.ActionRequestValue</class>
     <class>edu.iu.uis.eden.docsearch.SearchableAttributeStringValue</class>
     <class>edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue</class>
     <class>edu.iu.uis.eden.docsearch.SearchableAttributeLongValue</class>
@@ -25,7 +25,7 @@
     <class>edu.iu.uis.eden.doctype.DocumentTypePolicy</class>
     <class>edu.iu.uis.eden.doctype.DocumentTypeAttribute</class>
     <class>edu.iu.uis.eden.useroptions.UserOptions</class>
-    <class>edu.iu.uis.eden.applicationconstants.ApplicationConstant</class>
+    <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
     <class>edu.iu.uis.eden.routetemplate.RuleTemplate</class>
     <class>edu.iu.uis.eden.routetemplate.RuleTemplateOption</class>
     <class>edu.iu.uis.eden.routetemplate.RuleAttribute</class>

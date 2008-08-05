@@ -34,9 +34,9 @@ import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.quartz.SchedulerException;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 
 /**

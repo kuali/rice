@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 
 /**
  * The resolution of a qualified role (role name + data) to a List of recipient

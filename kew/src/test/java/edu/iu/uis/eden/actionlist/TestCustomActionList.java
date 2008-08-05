@@ -19,10 +19,11 @@ package edu.iu.uis.eden.actionlist;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.DisplayParameters;
+import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
-import edu.iu.uis.eden.actions.ActionSet;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;

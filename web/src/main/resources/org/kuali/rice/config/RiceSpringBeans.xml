@@ -14,7 +14,7 @@
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
                     <property name="authorizationService">
-                      <bean class="edu.iu.uis.eden.authorization.WorkgroupAuthorizationServiceImpl">
+                      <bean class="org.kuali.rice.kew.authorization.WorkgroupAuthorizationServiceImpl">
                         <property name="workgroupName" value="WorkflowAdmin"/>
                       </bean>
                     </property>

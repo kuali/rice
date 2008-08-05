@@ -27,10 +27,10 @@ import java.util.Set;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;

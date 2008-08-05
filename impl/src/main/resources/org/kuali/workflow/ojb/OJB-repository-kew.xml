@@ -39,11 +39,11 @@
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionRequests">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
-    <collection-descriptor orderby="actionDate" sort="ASC" element-class-ref="edu.iu.uis.eden.actiontaken.ActionTakenValue" auto-retrieve="true" auto-update="false"
+    <collection-descriptor orderby="actionDate" sort="ASC" element-class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionsTaken">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
@@ -195,7 +195,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.actiontaken.ActionTakenValue" table="EN_ACTN_TKN_T">
+  <class-descriptor class="org.kuali.rice.kew.actiontaken.ActionTakenValue" table="EN_ACTN_TKN_T">
     <field-descriptor name="actionTakenId" column="ACTN_TKN_ID" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_ACTION_TAKEN"/>
     <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT"/>
@@ -208,13 +208,13 @@
     <field-descriptor name="delegatorWorkflowId" column="ACTN_TKN_DLGTR_PRSN_EN_ID"  jdbc-type="VARCHAR"/>
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_TKN_DLGTR_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="currentIndicator" column="ACTN_TKN_CUR_IND" jdbc-type="BIT" />
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
       auto-delete="false" name="actionRequests">
       <inverse-foreignkey field-ref="actionTakenId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.actionrequests.ActionRequestValue" table="EN_ACTN_RQST_T">
+  <class-descriptor class="org.kuali.rice.kew.actionrequests.ActionRequestValue" table="EN_ACTN_RQST_T">
     <field-descriptor column="ACTN_RQST_ID" name="actionRequestId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_ACTION_REQUEST"/>
     <field-descriptor column="ACTN_RQST_PARNT_ID" name="parentActionRequestId" jdbc-type="BIGINT" />
@@ -245,11 +245,11 @@
     <field-descriptor column="ACTN_RQST_APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
    	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="CHAR" />
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-    	class-ref="edu.iu.uis.eden.actionrequests.ActionRequestValue" name="parentActionRequest">
+    	class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" name="parentActionRequest">
     	<foreignkey field-ref="parentActionRequestId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-    	class-ref="edu.iu.uis.eden.actiontaken.ActionTakenValue" name="actionTaken">
+    	class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" name="actionTaken">
     	<foreignkey field-ref="actionTakenId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
@@ -264,7 +264,7 @@
       auto-delete="false" name="actionItems" proxy="true">
       <inverse-foreignkey field-ref="actionRequestId" />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="true"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="true"
       auto-delete="false" name="childrenRequests">
       <inverse-foreignkey field-ref="parentActionRequestId" />
     </collection-descriptor>
@@ -407,7 +407,7 @@
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.applicationconstants.ApplicationConstant" table="EN_APPL_CNST_T">
+  <class-descriptor class="org.kuali.rice.kew.applicationconstants.ApplicationConstant" table="EN_APPL_CNST_T">
     <field-descriptor name="applicationConstantName" column="APPL_CNST_NM" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="applicationConstantValue" column="APPL_CNST_VAL_TXT" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>

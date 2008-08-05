@@ -31,7 +31,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>CustomActionListAttribute</name>
-			<className>edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute</className>
+			<className>org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute</className>
 			<label>CustomActionListAttribute</label>
 			<description>CustomActionListAttribute</description>
 			<type>ActionListAttribute</type>

@@ -22,9 +22,10 @@ import java.util.Collection;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAO;
 import edu.iu.uis.eden.test.KEWTransactionalTest;
 
 

@@ -184,12 +184,12 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  ActionRequestService -->
-	<bean id="enActionRequestService" class="edu.iu.uis.eden.actionrequests.ActionRequestServiceImpl" lazy-init="true">
+	<bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequests.ActionRequestServiceImpl" lazy-init="true">
 		<property name="actionRequestDAO">
 			<ref bean="enActionRequestDAO" />
 		</property>
 	</bean>
-	<bean id="enActionRequestDAO" class="edu.iu.uis.eden.actionrequests.dao.ActionRequestDAOOjbImpl" lazy-init="true">
+	<bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequests.dao.ActionRequestDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  RuleAttributeService -->
@@ -277,7 +277,7 @@
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="edu.iu.uis.eden.routemodule.RoutingReportServiceImpl"  lazy-init="true"/>
 	<!--  ActionListService -->
-	<bean id="enActionListService" class="edu.iu.uis.eden.actionlist.ActionListServiceImpl" lazy-init="true">
+	<bean id="enActionListService" class="org.kuali.rice.kew.actionlist.ActionListServiceImpl" lazy-init="true">
 		<property name="actionListDAO">
 			<ref bean="enActionListDAO" />
 		</property>
@@ -285,7 +285,7 @@
 			<ref bean="enActionItemDAO" />
 		</property>
 	</bean>
-	<bean id="enActionListDAO" class="edu.iu.uis.eden.actionlist.dao.ActionListDAOOjbImpl" lazy-init="true">
+	<bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.ActionListDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<bean id="enActionItemDAO" class="org.kuali.rice.kew.actionitem.dao.ActionItemDAOOjbImpl" lazy-init="true">
@@ -338,12 +338,12 @@
   
   
 	<!--  ActionTakenService -->
-	<bean id="enActionTakenService" class="edu.iu.uis.eden.actiontaken.ActionTakenServiceImpl" lazy-init="true">
+	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.ActionTakenServiceImpl" lazy-init="true">
 		<property name="actionTakenDAO">
 			<ref bean="enActionTakenDAO" />
 		</property>
 	</bean>
-	<bean id="enActionTakenDAO" class="edu.iu.uis.eden.actiontaken.dao.ActionTakenDAOOjbImpl" lazy-init="true">
+	<bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.ActionTakenDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
@@ -358,15 +358,15 @@
     </bean>
 
 	<!-- Application Constants Service -->
-  <bean id="enApplicationConstantsDAO" class="edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDaoJpaImpl"/>
+  <bean id="enApplicationConstantsDAO" class="org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDaoJpaImpl"/>
 
     
-	<bean id="enApplicationConstantsOJBDAO" class="edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAOOjbImpl" lazy-init="true">
+	<bean id="enApplicationConstantsOJBDAO" class="org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 
-	<bean id="enApplicationConstantsService" class="edu.iu.uis.eden.applicationconstants.ApplicationConstantsServiceImpl"
+	<bean id="enApplicationConstantsService" class="org.kuali.rice.kew.applicationconstants.ApplicationConstantsServiceImpl"
 		depends-on="enWorkflowDataSource" lazy-init="true">
 		<property name="applicationConstantsDAO">
       <!-- <ref bean="enApplicationConstantsDAO" /> -->
@@ -416,7 +416,7 @@
     </bean>
 
 	<!-- Action Registry -->
-	<bean id="enActionRegistry" class="edu.iu.uis.eden.actions.ActionRegistryImpl" lazy-init="true"/>
+	<bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
 
     <!-- some beans shared by client and server -->
 
@@ -641,10 +641,10 @@
 
 	<bean id="enWorkflowUtilityService" class="edu.iu.uis.eden.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.ksb.messaging.RouteDocumentMessageService"/>
-    <bean id="enBlanketApproveProcessor" class="edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessor"/>
+    <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="edu.iu.uis.eden.docsearch.SearchableAttributeProcessor"/>
-    <bean id="enMoveDocumentService" class="edu.iu.uis.eden.actions.asyncservices.MoveDocumentProcessor" />
-    <bean id="enActionInvocationService" class="edu.iu.uis.eden.actions.asyncservices.ActionInvocationProcessor" />
+    <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
+    <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="edu.iu.uis.eden.mail.ActionListImmediateProcessorImpl" />
     <bean id="simpleDocumentActionsService" class="edu.iu.uis.eden.server.SimpleDocumentActionsWebServiceImpl"/>
 
@@ -799,7 +799,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="edu.iu.uis.eden.actionrequests.DocumentRequeuerImpl" />
+            <bean class="org.kuali.rice.kew.actionrequests.DocumentRequeuerImpl" />
           </property>
           <property name="localServiceName" value="DocumentRequeueProcessorService" />
           <property name="priority" value="10"/>

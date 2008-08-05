@@ -1,6 +1,6 @@
 package org.kuali.rice.kew;
 
-import edu.iu.uis.eden.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 
 /**
  * Event sent to the postprocessor when an action has been taken

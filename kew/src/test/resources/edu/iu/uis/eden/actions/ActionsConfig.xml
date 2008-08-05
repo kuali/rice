@@ -3,7 +3,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>BANotificationAttribute</name>
-			<className>edu.iu.uis.eden.actions.BANotificationRoleAttribute</className>
+			<className>org.kuali.rice.kew.actions.BANotificationRoleAttribute</className>
 			<label>BANotificationAttribute</label>
 			<description>BANotificationAttribute</description>
 			<type>RuleAttribute</type>
@@ -80,7 +80,7 @@
 			<name>SuperUserActionInvalidPostProcessor</name>
 			<description>SuperUserActionInvalidPostProcessor</description>
 			<label>SuperUserActionInvalidPostProcessor</label>
-			<postProcessorName>edu.iu.uis.eden.actions.SuperUserActionInvalidPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.actions.SuperUserActionInvalidPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -1164,7 +1164,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.actions.BANotificationRoleAttribute!Notify</role>
+					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
@@ -1176,7 +1176,7 @@
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
-									<role>edu.iu.uis.eden.actions.BANotificationRoleAttribute!NotifyDelegate</role>
+									<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!NotifyDelegate</role>
 									<approvePolicy>F</approvePolicy>
 								</responsibility>
 							</responsibilities>
@@ -1440,7 +1440,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.actions.BANotificationRoleAttribute!Notify</role>
+					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
@@ -1454,7 +1454,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.actions.BANotificationRoleAttribute!Notify2</role>
+					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify2</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>2</priority>

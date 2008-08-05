@@ -194,7 +194,7 @@
   </bean:define>
 
   <display-el:table class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="actionListPage" pagesize="${preferences.pageSize}" export="true" id="result"
-          decorator="edu.iu.uis.eden.actionlist.web.ActionListDecorator" excludedParams="*"
+          decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator" excludedParams="*"
           requestURI="${actionListURI}">
   <display-el:setProperty name="paging.banner.placement" value="both" />
   <display-el:setProperty name="export.banner" value="" />

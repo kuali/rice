@@ -3,7 +3,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleAttribute">
 		<ruleAttribute>
 			<name>RoleToRoleDelegationAttribute</name>
-			<className>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole</className>
+			<className>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole</className>
 			<label>Role To Role Delegation Attribute</label>
 			<description>Role To Role Delegation Attribute</description>
 		</ruleAttribute>
@@ -515,7 +515,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!MAIN</role>
+					<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!MAIN</role>
 					<approvePolicy>A</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
@@ -527,7 +527,7 @@
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
-									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
+									<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
 									<approvePolicy>A</approvePolicy>
 								</responsibility>
 							</responsibilities>
@@ -540,7 +540,7 @@
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
-									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
+									<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
 									<approvePolicy>A</approvePolicy>
 								</responsibility>
 							</responsibilities>
@@ -560,7 +560,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!MAIN</role>
+					<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!MAIN</role>
 					<approvePolicy>A</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
@@ -572,7 +572,7 @@
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
-									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
+									<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
 									<approvePolicy>F</approvePolicy>
 								</responsibility>
 							</responsibilities>
@@ -585,7 +585,7 @@
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
-									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
+									<role>org.kuali.rice.kew.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
 									<approvePolicy>F</approvePolicy>
 								</responsibility>
 							</responsibilities>

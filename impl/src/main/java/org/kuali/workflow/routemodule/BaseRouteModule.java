@@ -18,9 +18,9 @@ package org.kuali.workflow.routemodule;
 
 import java.util.List;
 
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.routemodule.RouteModule;
 import edu.iu.uis.eden.util.ResponsibleParty;

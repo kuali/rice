@@ -40,9 +40,9 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.engine.ActivationContext;

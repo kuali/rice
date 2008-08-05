@@ -18,7 +18,8 @@ package edu.iu.uis.eden.util;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.workgroup.GroupId;
 

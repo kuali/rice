@@ -21,12 +21,12 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.ActionTakenEvent;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 

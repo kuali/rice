@@ -20,11 +20,12 @@ package edu.iu.uis.eden.applicationconstants;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
-import edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAO;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

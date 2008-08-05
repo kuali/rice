@@ -23,6 +23,8 @@ import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.applicationconstants.ApplicationConstantsService;
 import org.kuali.workflow.test.KEWTestCase;
 
 

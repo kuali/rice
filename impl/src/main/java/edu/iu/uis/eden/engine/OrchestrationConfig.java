@@ -19,9 +19,9 @@ package edu.iu.uis.eden.engine;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 
 /**
  * Specifies configuration for orchestration through the engine.

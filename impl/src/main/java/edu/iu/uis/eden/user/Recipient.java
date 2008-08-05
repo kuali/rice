@@ -18,7 +18,8 @@ package edu.iu.uis.eden.user;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+
 
 /**
  * Marker interface for recipients of Action Requests in the system.

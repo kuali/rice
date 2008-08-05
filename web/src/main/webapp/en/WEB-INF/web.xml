@@ -155,7 +155,7 @@
 
   <servlet>
     <servlet-name>actionListCount</servlet-name>
-    <servlet-class>edu.iu.uis.eden.actionlist.ActionListCountServlet</servlet-class>
+    <servlet-class>org.kuali.rice.kew.actionlist.ActionListCountServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

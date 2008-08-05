@@ -19,11 +19,11 @@ package edu.iu.uis.eden.plugin.attributes;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
+import org.kuali.rice.kew.actionlist.DisplayParameters;
+import org.kuali.rice.kew.actionlist.web.ActionListAction;
+import org.kuali.rice.kew.actions.ActionSet;
 
-import edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute;
-import edu.iu.uis.eden.actionlist.DisplayParameters;
-import edu.iu.uis.eden.actionlist.web.ActionListAction;
-import edu.iu.uis.eden.actions.ActionSet;
 import edu.iu.uis.eden.web.session.UserSession;
 
 /**

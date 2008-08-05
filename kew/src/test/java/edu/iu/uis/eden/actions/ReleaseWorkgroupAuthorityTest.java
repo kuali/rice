@@ -23,11 +23,11 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.ActionListService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;

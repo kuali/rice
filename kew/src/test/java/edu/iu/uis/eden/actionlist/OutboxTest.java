@@ -24,6 +24,7 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;

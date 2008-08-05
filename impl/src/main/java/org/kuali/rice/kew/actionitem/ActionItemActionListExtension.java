@@ -22,11 +22,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;

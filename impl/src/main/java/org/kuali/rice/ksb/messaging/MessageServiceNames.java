@@ -19,12 +19,12 @@ package org.kuali.rice.ksb.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.actionrequests.DocumentRequeuerService;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
+import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.actionrequests.DocumentRequeuerService;
-import edu.iu.uis.eden.actions.asyncservices.ActionInvocationService;
-import edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessorService;
-import edu.iu.uis.eden.actions.asyncservices.MoveDocumentService;
 import edu.iu.uis.eden.docsearch.SearchableAttributeProcessingService;
 import edu.iu.uis.eden.mail.ActionListImmediateEmailReminderService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

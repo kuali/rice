@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.XmlLoader;
 
-import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 

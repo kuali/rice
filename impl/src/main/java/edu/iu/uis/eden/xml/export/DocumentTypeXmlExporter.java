@@ -29,12 +29,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
 import edu.iu.uis.eden.doctype.DocumentTypePolicy;

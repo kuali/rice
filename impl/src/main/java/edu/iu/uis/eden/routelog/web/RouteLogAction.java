@@ -27,10 +27,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;

@@ -27,11 +27,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
+import org.kuali.rice.kew.WorkflowPersistable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

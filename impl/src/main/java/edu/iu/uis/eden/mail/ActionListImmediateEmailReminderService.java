@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.mail;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
 
 /**
  * Service for sending immediate email reminders.

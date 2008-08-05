@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.workflow.workgroup.dao.WorkgroupTypeDAO;
 
-import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.WorkflowUser;
 

@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.actionlist;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 import edu.iu.uis.eden.actions.ActionSet;
 import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
 import edu.iu.uis.eden.web.session.UserSession;

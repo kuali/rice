@@ -28,10 +28,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;

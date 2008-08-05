@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypePolicy;
 import edu.iu.uis.eden.engine.node.BranchPrototype;

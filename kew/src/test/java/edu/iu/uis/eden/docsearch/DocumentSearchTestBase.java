@@ -16,9 +16,9 @@
 package edu.iu.uis.eden.docsearch;
 
 import org.junit.Ignore;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.lookupable.Field;

@@ -288,7 +288,7 @@
 	<bean id="enActionListDAO" class="edu.iu.uis.eden.actionlist.dao.ActionListDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-	<bean id="enActionItemDAO" class="edu.iu.uis.eden.actionitem.dao.ActionItemDAOOjbImpl" lazy-init="true">
+	<bean id="enActionItemDAO" class="org.kuali.rice.kew.actionitem.dao.ActionItemDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 

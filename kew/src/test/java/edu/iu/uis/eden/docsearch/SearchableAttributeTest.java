@@ -22,11 +22,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;

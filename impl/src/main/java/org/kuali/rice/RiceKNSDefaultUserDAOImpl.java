@@ -22,12 +22,12 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.bo.user.UserId;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

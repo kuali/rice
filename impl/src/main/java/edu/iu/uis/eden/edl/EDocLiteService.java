@@ -22,9 +22,9 @@ import java.util.List;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
+import org.kuali.rice.kew.XmlLoader;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
 public interface EDocLiteService extends XmlLoader, XmlExporter {

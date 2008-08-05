@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;

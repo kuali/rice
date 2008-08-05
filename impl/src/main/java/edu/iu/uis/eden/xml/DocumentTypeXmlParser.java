@@ -34,6 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -46,7 +47,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
 import edu.iu.uis.eden.doctype.DocumentTypePolicy;

@@ -19,11 +19,11 @@ package org.kuali.workflow.workgroup;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionData;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.workgroup.WorkgroupService;

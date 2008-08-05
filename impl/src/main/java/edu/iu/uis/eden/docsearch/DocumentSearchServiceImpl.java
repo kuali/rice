@@ -24,13 +24,13 @@ import java.util.List;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceError;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceError;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;

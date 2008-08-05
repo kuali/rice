@@ -20,10 +20,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 

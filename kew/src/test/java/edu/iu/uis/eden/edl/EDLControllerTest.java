@@ -21,11 +21,11 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 public class EDLControllerTest extends KEWTestCase {
 

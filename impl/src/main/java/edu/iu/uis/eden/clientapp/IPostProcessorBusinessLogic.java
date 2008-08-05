@@ -16,10 +16,10 @@
  */
 package edu.iu.uis.eden.clientapp;
 
+import org.kuali.rice.kew.DocumentRouteLevelChange;
+import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
-import edu.iu.uis.eden.DocumentRouteLevelChange;
-import edu.iu.uis.eden.DocumentRouteStatusChange;
 
 
 /**

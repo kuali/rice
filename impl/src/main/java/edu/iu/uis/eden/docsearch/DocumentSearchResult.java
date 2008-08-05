@@ -21,7 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import edu.iu.uis.eden.KEWPropertyConstants;
+import org.kuali.rice.kew.KEWPropertyConstants;
+
 import edu.iu.uis.eden.web.KeyValueSort;
 
 /**

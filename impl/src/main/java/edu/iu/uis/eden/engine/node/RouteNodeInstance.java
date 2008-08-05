@@ -36,8 +36,8 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 

@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.UserOptions;

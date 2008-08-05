@@ -28,10 +28,10 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.export.ExportDataSet;

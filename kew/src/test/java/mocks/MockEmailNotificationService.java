@@ -16,9 +16,9 @@
  */
 package mocks;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.mail.ActionListEmailService;
 import edu.iu.uis.eden.user.WorkflowUser;
 

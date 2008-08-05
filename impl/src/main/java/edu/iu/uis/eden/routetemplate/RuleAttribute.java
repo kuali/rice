@@ -32,8 +32,8 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.WorkflowPersistable;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
  * Model bean defining a rule attribute.  Includes the classname of the attribute

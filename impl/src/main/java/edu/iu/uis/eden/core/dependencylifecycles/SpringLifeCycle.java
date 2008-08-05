@@ -17,8 +17,8 @@
 package edu.iu.uis.eden.core.dependencylifecycles;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.SpringLoader;
 
-import edu.iu.uis.eden.SpringLoader;
 
 /**
  * A Lifecycle which simply initializes the SpringLoader with the correct spring context file.  It's important that

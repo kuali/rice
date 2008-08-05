@@ -28,6 +28,12 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -35,12 +41,6 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
-import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
-import edu.iu.uis.eden.actionitem.dao.ActionItemDAO;
 import edu.iu.uis.eden.actionlist.dao.ActionListDAO;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -447,7 +447,7 @@ public class ActionListServiceImpl implements ActionListService {
      * 
      * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
      * 
-     * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
+     * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(ActionItem actionItem) {
         try {

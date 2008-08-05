@@ -20,13 +20,13 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 

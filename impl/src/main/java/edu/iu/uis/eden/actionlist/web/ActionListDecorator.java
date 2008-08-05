@@ -17,8 +17,8 @@
 package edu.iu.uis.eden.actionlist.web;
 
 import org.displaytag.decorator.TableDecorator;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 
-import edu.iu.uis.eden.actionitem.ActionItemActionListExtension;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 
 /**

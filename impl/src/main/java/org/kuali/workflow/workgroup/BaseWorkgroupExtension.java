@@ -31,10 +31,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.kew.BaseWorkflowPersistable;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionData;
 
-import edu.iu.uis.eden.BaseWorkflowPersistable;
 import edu.iu.uis.eden.workgroup.BaseWorkgroup;
 import edu.iu.uis.eden.workgroup.Workgroup;
 

@@ -29,14 +29,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceError;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceError;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.doctype.SecuritySession;

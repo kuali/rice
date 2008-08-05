@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.actionitem;
+package org.kuali.rice.kew.actionitem;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.WorkflowUser;

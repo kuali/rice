@@ -37,11 +37,11 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.MyColumns;
 import edu.iu.uis.eden.lookupable.Row;

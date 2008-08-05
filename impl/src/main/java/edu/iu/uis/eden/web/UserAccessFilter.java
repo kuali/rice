@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.session.Authentication;
 import edu.iu.uis.eden.web.session.UserSession;

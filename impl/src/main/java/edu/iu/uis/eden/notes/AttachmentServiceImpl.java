@@ -20,7 +20,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 
 /**
  * Implementation of the {@link AttachmentService}.

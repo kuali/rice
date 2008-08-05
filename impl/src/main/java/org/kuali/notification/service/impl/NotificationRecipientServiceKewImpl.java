@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.web.WebWorkflowUser;

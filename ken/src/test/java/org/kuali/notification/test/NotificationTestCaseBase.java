@@ -24,6 +24,7 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -33,7 +34,6 @@ import org.quartz.SchedulerException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**

@@ -19,9 +19,9 @@ package edu.iu.uis.eden.doctype.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;

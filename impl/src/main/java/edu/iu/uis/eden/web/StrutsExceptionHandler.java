@@ -31,9 +31,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.ExceptionHandler;
 import org.apache.struts.config.ExceptionConfig;
+import org.kuali.rice.kew.WorkflowServiceError;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 
-import edu.iu.uis.eden.WorkflowServiceError;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.validation.ValidationResult;
 import edu.iu.uis.eden.validation.ValidationResults;

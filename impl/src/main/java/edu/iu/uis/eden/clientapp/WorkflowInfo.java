@@ -22,6 +22,7 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.config.RiceConfigurer;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -50,7 +51,6 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

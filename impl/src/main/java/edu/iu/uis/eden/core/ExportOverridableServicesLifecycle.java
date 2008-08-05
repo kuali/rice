@@ -16,11 +16,11 @@
 package edu.iu.uis.eden.core;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
 

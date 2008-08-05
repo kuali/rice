@@ -23,13 +23,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.user.AuthenticationUserId;

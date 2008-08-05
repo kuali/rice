@@ -18,7 +18,8 @@ package edu.iu.uis.eden.plugin.attributes;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 import edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.actionlist.web.ActionListAction;

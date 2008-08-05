@@ -38,13 +38,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;

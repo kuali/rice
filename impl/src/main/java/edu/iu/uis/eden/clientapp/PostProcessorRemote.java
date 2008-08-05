@@ -18,6 +18,7 @@ package edu.iu.uis.eden.clientapp;
 
 import java.rmi.RemoteException;
 
+import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -26,7 +27,6 @@ import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
-import edu.iu.uis.eden.DocumentRouteStatusChange;
 
 
 /**

@@ -19,9 +19,9 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.mail.EmailContent;
@@ -66,7 +66,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     /**
      * This overridden method is used in case the action item has an null route header attached
      * 
-     * @see edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl#getRouteHeader(edu.iu.uis.eden.actionitem.ActionItem)
+     * @see edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {

@@ -26,7 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.export.Exporter;

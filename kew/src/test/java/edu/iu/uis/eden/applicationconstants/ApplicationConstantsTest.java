@@ -21,10 +21,10 @@ package edu.iu.uis.eden.applicationconstants;
 import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 
 /**
  * Tests adding/modifying an application constant

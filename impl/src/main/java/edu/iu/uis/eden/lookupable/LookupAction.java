@@ -40,10 +40,10 @@ import org.apache.struts.action.ActionMessages;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.export.Exportable;

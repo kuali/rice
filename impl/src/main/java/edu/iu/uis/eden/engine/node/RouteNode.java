@@ -35,10 +35,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
 import edu.iu.uis.eden.routetemplate.RuleTemplateService;

@@ -24,11 +24,11 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.vo.MessageVO;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
 
 /**
  * NotificationService implementation that delegates to KCB 

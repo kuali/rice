@@ -31,10 +31,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
  * A note attached to a document.  May also contain a List of attachments.

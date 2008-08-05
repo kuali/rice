@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWHtmlUnitTestCase;
@@ -33,8 +35,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**

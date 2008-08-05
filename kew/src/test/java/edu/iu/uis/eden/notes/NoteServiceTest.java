@@ -22,9 +22,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.test.TestUtilities;
 
 public class NoteServiceTest extends KEWTestCase {

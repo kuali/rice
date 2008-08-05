@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.engine;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;

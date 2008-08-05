@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.ComparatorUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.engine.node.dao.RouteNodeDAO;

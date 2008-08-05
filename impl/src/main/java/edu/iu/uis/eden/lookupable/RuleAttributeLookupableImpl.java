@@ -23,9 +23,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.export.Exportable;

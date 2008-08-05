@@ -16,10 +16,10 @@
 package org.kuali.core.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 
 @KNSWithTestSpringContext

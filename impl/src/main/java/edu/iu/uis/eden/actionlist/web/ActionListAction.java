@@ -43,12 +43,12 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.actionitem.ActionItemActionListExtension;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.actionlist.ActionToTake;

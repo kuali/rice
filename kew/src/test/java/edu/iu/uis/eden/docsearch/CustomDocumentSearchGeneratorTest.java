@@ -17,12 +17,12 @@
 package edu.iu.uis.eden.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstantsService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;

@@ -33,8 +33,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.CompositeXmlDocCollection;
 import edu.iu.uis.eden.batch.FileXmlDocCollection;
 import edu.iu.uis.eden.batch.XmlDoc;

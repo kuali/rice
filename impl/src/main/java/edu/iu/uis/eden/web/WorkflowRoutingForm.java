@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.user.WorkflowUser;

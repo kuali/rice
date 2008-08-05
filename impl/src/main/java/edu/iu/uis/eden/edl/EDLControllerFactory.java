@@ -24,13 +24,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Templates;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.XmlHelper;
 

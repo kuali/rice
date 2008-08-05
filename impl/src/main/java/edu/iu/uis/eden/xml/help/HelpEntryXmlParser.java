@@ -33,9 +33,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.XMLOutputter;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.help.HelpEntry;
 import edu.iu.uis.eden.help.HelpService;
 

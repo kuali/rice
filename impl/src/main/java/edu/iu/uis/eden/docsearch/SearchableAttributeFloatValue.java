@@ -37,8 +37,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.WorkflowPersistable;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
 

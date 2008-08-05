@@ -35,7 +35,7 @@
     <field-descriptor name="routedByUserWorkflowId" column="DOC_RTE_USR_PRSN_EN_ID"  jdbc-type="VARCHAR" />
     <field-descriptor name="jrfVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
     <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
@@ -123,7 +123,7 @@
     <field-descriptor name="jrfVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.actionitem.ActionItem" table="EN_ACTN_ITM_T">
+  <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItem" table="EN_ACTN_ITM_T">
     <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_ACTN_ITM" />
     <field-descriptor name="workflowId" column="ACTN_ITM_PRSN_EN_ID" jdbc-type="VARCHAR" />
@@ -148,7 +148,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.actionitem.ActionItemActionListExtension" table="EN_ACTN_ITM_T">
+  <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItemActionListExtension" table="EN_ACTN_ITM_T">
     <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_ACTN_ITM" />
     <field-descriptor name="workflowId" column="ACTN_ITM_PRSN_EN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="dateAssigned" column="ACTN_ITM_ASND_DT" jdbc-type="TIMESTAMP" />
@@ -172,7 +172,7 @@
     </reference-descriptor>
   </class-descriptor>
   
-  <class-descriptor class="edu.iu.uis.eden.actionitem.OutboxItemActionListExtension" table="EN_OUT_BOX_ITM_T">
+  <class-descriptor class="org.kuali.rice.kew.actionitem.OutboxItemActionListExtension" table="EN_OUT_BOX_ITM_T">
     <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_OUT_BOX_ITM" />
     <field-descriptor name="workflowId" column="ACTN_ITM_PRSN_EN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="dateAssigned" column="ACTN_ITM_ASND_DT" jdbc-type="TIMESTAMP" />
@@ -260,7 +260,7 @@
     	class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="nodeInstance">
     	<foreignkey field-ref="nodeInstanceId"/>
     </reference-descriptor>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="false" name="actionItems" proxy="true">
       <inverse-foreignkey field-ref="actionRequestId" />
     </collection-descriptor>

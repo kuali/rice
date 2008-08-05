@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.UserService;

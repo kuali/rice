@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;

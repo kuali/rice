@@ -18,7 +18,8 @@ package edu.iu.uis.eden.applicationconstants;
 
 import java.util.List;
 
-import edu.iu.uis.eden.XmlLoader;
+import org.kuali.rice.kew.XmlLoader;
+
 
 /**
  * Defines contract for interacting with {@link ApplicationConstant} objects.

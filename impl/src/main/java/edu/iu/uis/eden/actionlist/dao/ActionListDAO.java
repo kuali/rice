@@ -19,8 +19,9 @@ package edu.iu.uis.eden.actionlist.dao;
 import java.util.Collection;
 import java.util.List;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.user.WorkflowUser;
 

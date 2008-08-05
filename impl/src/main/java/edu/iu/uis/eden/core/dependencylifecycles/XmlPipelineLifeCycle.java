@@ -18,12 +18,12 @@ package edu.iu.uis.eden.core.dependencylifecycles;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.KEWServiceLocator;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.XmlPollerService;
 
 public class XmlPipelineLifeCycle extends BaseLifecycle {

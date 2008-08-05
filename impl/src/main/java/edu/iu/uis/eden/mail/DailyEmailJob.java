@@ -17,12 +17,12 @@
 package edu.iu.uis.eden.mail;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 /**
  * Quartz job for sending daily email reminders.

@@ -16,10 +16,10 @@
  */
 package edu.iu.uis.eden.routemodule;
 
+import org.kuali.rice.kew.DocumentRouteLevelChange;
+import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
-import edu.iu.uis.eden.DocumentRouteLevelChange;
-import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.clientapp.IPostProcessorBusinessLogic;
 import edu.iu.uis.eden.clientapp.ResourceLocator;

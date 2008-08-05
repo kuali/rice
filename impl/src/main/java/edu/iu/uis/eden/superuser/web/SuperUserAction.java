@@ -30,11 +30,11 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;

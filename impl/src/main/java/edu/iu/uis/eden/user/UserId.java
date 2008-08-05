@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.user;
 
-import edu.iu.uis.eden.Id;
+import org.kuali.rice.kew.Id;
 
 /**
  * A user's Id which has a String representable value.

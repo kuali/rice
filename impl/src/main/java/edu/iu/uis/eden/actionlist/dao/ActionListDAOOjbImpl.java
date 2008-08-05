@@ -32,14 +32,14 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.actionitem.ActionItemActionListExtension;
-import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.user.WorkflowUser;
 
@@ -356,7 +356,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     /**
      * Saves an outbox item
      * 
-     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
+     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
         this.getPersistenceBrokerTemplate().store(outboxItem);

@@ -25,12 +25,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.plugin.attributes.MassRuleAttribute;

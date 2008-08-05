@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;

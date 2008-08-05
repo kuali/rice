@@ -15,7 +15,8 @@
  */
 package org.kuali.notification.kew;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.actions.ActionSet;
 import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
@@ -28,7 +29,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  */
 public class NotificationCustomActionListAttribute implements CustomActionListAttribute {
     /**
-     * @see edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute#getDocHandlerDisplayParameters(edu.iu.uis.eden.web.session.UserSession, edu.iu.uis.eden.actionitem.ActionItem)
+     * @see edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute#getDocHandlerDisplayParameters(edu.iu.uis.eden.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
     public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
 	DisplayParameters dp = new DisplayParameters(new Integer(400));
@@ -36,7 +37,7 @@ public class NotificationCustomActionListAttribute implements CustomActionListAt
     }
 
     /**
-     * @see edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute#getLegalActions(edu.iu.uis.eden.web.session.UserSession, edu.iu.uis.eden.actionitem.ActionItem)
+     * @see edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute#getLegalActions(edu.iu.uis.eden.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
     public ActionSet getLegalActions(UserSession userSession,ActionItem actionItem) throws Exception {
 	ActionSet as = new ActionSet();

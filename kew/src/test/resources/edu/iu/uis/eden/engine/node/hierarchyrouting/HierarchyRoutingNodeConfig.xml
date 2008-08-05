@@ -43,7 +43,7 @@
                 import edu.iu.uis.eden.workgroup.*
                 import edu.iu.uis.eden.engine.node.*
                 import edu.iu.uis.eden.EdenConstants
-                import edu.iu.uis.eden.KEWServiceLocator
+                import org.kuali.rice.kew.KEWServiceLocator
 
                 print 'NodeInstanceRecipientRule is executing...'
                 

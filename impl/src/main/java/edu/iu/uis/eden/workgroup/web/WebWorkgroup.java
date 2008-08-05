@@ -19,12 +19,12 @@ package edu.iu.uis.eden.workgroup.web;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.lookupable.MyColumns;
 import edu.iu.uis.eden.lookupable.WebLookupableDecorator;
 import edu.iu.uis.eden.user.Recipient;

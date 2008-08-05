@@ -12,9 +12,9 @@
     <class>edu.iu.uis.eden.notes.Note</class>
     <class>edu.iu.uis.eden.notes.Attachment</class>
     <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension</class>
-    <class>edu.iu.uis.eden.actionitem.ActionItem</class>
-    <class>edu.iu.uis.eden.actionitem.ActionItemActionListExtension</class>
-    <class>edu.iu.uis.eden.actionitem.OutboxItemActionListExtension</class>
+    <class>org.kuali.rice.kew.actionitem.ActionItem</class>
+    <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
+    <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
     <class>edu.iu.uis.eden.actiontaken.ActionTakenValue</class>
     <class>edu.iu.uis.eden.actionrequests.ActionRequestValue</class>
     <class>edu.iu.uis.eden.docsearch.SearchableAttributeStringValue</class>

@@ -18,10 +18,10 @@ package edu.iu.uis.eden.user;
 
 import java.util.List;
 
+import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.XmlLoader;
 
 /**
  * The UserService provides retrieval and search capibilities for WorkflowUsers.

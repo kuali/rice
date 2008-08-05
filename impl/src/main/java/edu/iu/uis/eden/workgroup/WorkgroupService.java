@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.workflow.attribute.Extension;
 
-import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.xml.export.XmlExporter;
 

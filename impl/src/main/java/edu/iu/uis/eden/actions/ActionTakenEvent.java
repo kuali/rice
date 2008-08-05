@@ -21,6 +21,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.DocumentRouteStatusChange;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -28,8 +30,6 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.ksb.messaging.RouteDocumentMessageService;
 
-import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
@@ -183,7 +183,7 @@ public abstract class ActionTakenEvent {
 		try {
 			LOG.debug("Notifying post processor of action taken");
 			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-			ProcessDocReport report = postProcessor.doActionTaken(new edu.iu.uis.eden.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), actionTaken));
+			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), actionTaken));
 			if (!report.isSuccess()) {
 				LOG.warn(report.getMessage(), report.getProcessException());
 				throw new InvalidActionTakenException(report.getMessage());

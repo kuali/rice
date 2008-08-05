@@ -34,6 +34,9 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
@@ -42,9 +45,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.edl.dao.EDocLiteDAO;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

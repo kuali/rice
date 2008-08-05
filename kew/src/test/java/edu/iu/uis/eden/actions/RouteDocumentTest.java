@@ -19,12 +19,12 @@ package edu.iu.uis.eden.actions;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 public class RouteDocumentTest extends KEWTestCase {

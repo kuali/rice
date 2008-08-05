@@ -16,9 +16,9 @@
 package edu.iu.uis.eden.workgroup;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 /**
  * Test workgroup import process. 

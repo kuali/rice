@@ -18,10 +18,10 @@ package edu.iu.uis.eden.workgroup;
 
 import java.util.List;
 
+import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.web.session.UserSession;
 

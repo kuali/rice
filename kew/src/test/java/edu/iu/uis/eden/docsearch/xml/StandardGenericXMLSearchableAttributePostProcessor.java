@@ -16,9 +16,9 @@
  */
 package edu.iu.uis.eden.docsearch.xml;
 
+import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 
-import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;

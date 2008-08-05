@@ -18,7 +18,8 @@ package edu.iu.uis.eden.batch;
 
 import java.io.IOException;
 
-import edu.iu.uis.eden.XmlLoader;
+import org.kuali.rice.kew.XmlLoader;
+
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

@@ -30,10 +30,10 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.BaseWorkgroup;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;

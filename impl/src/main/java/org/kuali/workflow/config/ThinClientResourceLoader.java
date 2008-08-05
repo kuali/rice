@@ -35,13 +35,13 @@ import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 /**
  * Initializes and loads webservice resources for the Embedded plugin.

@@ -18,7 +18,8 @@ package edu.iu.uis.eden.notification;
 
 import java.util.List;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 
 /**
  * A service which sends notifications regarding the generation of ActionItems.

@@ -31,6 +31,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -38,7 +39,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;

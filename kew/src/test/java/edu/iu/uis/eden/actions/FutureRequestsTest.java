@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
@@ -26,8 +28,6 @@ import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.Id;
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.clientapp.FutureRequestDocumentStateManager;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;

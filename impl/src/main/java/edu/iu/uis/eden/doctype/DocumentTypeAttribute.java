@@ -26,8 +26,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowPersistable;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowPersistable;
+
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleAttributeService;
 

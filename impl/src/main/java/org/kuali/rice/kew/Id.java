@@ -1,4 +1,4 @@
-package edu.iu.uis.eden;
+package org.kuali.rice.kew;
 
 import java.io.Serializable;
 

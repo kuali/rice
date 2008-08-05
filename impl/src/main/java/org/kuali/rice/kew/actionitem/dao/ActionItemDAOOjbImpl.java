@@ -11,7 +11,7 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package edu.iu.uis.eden.actionitem.dao;
+package org.kuali.rice.kew.actionitem.dao;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -24,11 +24,11 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;

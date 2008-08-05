@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.workgroup;
 
-import edu.iu.uis.eden.Id;
+import org.kuali.rice.kew.Id;
 
 /**
  * A marker interface for Id implementations for groups.

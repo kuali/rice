@@ -35,10 +35,10 @@ import java.util.Set;
 
 import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.user.WorkflowUser;

@@ -24,7 +24,8 @@ import java.util.List;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
-import edu.iu.uis.eden.XmlLoader;
+import org.kuali.rice.kew.XmlLoader;
+
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
 public interface StyleService extends XmlLoader, XmlExporter {

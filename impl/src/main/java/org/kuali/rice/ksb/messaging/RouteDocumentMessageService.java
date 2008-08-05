@@ -17,9 +17,9 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.WorkflowEngine;
 
 /**

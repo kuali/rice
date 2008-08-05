@@ -34,6 +34,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.DOMBuilder;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -43,7 +44,6 @@ import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;

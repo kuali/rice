@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
@@ -32,8 +34,6 @@ import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;

@@ -17,9 +17,9 @@
 package edu.iu.uis.eden.user.web;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;
 import edu.iu.uis.eden.user.UuId;

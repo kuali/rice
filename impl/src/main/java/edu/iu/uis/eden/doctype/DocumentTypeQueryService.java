@@ -18,7 +18,8 @@ package edu.iu.uis.eden.doctype;
 
 import java.util.Collection;
 
-import edu.iu.uis.eden.XmlLoader;
+import org.kuali.rice.kew.XmlLoader;
+
 
 /**
  * A service for querying document type stuff for plugins without exposing the document type service.

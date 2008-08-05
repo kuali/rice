@@ -21,9 +21,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.util.Utilities;
 

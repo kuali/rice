@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -31,8 +33,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actions.AcknowledgeAction;
 import edu.iu.uis.eden.actions.ActionTakenEvent;
 import edu.iu.uis.eden.actions.AdHocAction;

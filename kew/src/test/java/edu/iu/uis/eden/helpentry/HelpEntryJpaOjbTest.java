@@ -21,9 +21,9 @@ import java.util.StringTokenizer;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.help.HelpEntry;
 import edu.iu.uis.eden.help.dao.HelpDAO;
 import edu.iu.uis.eden.test.KEWTransactionalTest;

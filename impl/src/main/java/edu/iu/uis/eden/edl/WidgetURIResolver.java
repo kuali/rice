@@ -23,8 +23,8 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 /**
  * Imported into client style sheets to import other style sheets in our database into their stylesheet.

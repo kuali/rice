@@ -29,11 +29,11 @@ import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.util.XmlHelper;
 

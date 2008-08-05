@@ -22,11 +22,11 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 public class SQLDataLoader {
 

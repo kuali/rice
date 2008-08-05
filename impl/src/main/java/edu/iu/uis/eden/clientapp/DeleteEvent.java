@@ -17,7 +17,7 @@
  */
 package edu.iu.uis.eden.clientapp;
 
-import edu.iu.uis.eden.IDocumentEvent;
+import org.kuali.rice.kew.IDocumentEvent;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

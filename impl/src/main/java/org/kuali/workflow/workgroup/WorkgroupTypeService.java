@@ -18,7 +18,8 @@ package org.kuali.workflow.workgroup;
 
 import java.util.List;
 
-import edu.iu.uis.eden.XmlLoader;
+import org.kuali.rice.kew.XmlLoader;
+
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**

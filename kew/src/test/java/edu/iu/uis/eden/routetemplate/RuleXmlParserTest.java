@@ -24,13 +24,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.test.AssertThrows;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.batch.KEWXmlDataLoader;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.xml.RuleXmlParser;

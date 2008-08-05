@@ -30,7 +30,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 
 /**
  * Utility class responsible for polling and ingesting XML data files

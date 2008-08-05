@@ -6,6 +6,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
@@ -14,7 +15,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;

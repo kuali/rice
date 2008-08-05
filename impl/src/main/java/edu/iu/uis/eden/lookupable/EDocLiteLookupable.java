@@ -23,7 +23,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 import edu.iu.uis.eden.edl.EDocLiteAssociation;
 import edu.iu.uis.eden.edl.EDocLiteService;
 import edu.iu.uis.eden.edl.UserAction;

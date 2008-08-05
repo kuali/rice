@@ -1,4 +1,4 @@
-package edu.iu.uis.eden;
+package org.kuali.rice.kew;
 
 /**
  * Event sent to the postprocessor when the processor is ended

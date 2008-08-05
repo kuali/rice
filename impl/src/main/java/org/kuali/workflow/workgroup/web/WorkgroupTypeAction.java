@@ -24,10 +24,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeService;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;

@@ -14,11 +14,11 @@
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 /**
  * A {@link MessageExceptionHandler} which handles putting documents into exception routing.

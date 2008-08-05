@@ -26,8 +26,8 @@ import mocks.elements.UniversityOrganizationElement;
 
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.docsearch.SearchableAttributeStringValue;
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.lookupable.Field;

@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;
 import edu.iu.uis.eden.user.UserId;

@@ -33,12 +33,12 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

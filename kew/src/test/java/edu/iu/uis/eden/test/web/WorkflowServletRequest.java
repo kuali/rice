@@ -20,11 +20,11 @@ package edu.iu.uis.eden.test.web;
 
 import javax.servlet.ServletContext;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;

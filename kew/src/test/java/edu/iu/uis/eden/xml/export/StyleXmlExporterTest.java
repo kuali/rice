@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.edl.EDocLiteStyle;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;

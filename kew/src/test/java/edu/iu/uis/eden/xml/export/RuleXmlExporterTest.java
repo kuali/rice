@@ -27,10 +27,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;

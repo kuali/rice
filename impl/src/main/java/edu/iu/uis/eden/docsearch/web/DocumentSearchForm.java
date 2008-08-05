@@ -24,9 +24,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;

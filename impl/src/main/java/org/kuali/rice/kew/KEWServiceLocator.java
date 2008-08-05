@@ -1,4 +1,4 @@
-package edu.iu.uis.eden;
+package org.kuali.rice.kew;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;

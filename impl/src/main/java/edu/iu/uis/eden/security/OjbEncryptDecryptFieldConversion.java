@@ -19,8 +19,8 @@ package edu.iu.uis.eden.security;
 import java.security.GeneralSecurityException;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 public class OjbEncryptDecryptFieldConversion implements FieldConversion {
 

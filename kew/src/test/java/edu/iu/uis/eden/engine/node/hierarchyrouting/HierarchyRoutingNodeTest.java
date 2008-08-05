@@ -21,13 +21,13 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyProvider.SimpleStop;

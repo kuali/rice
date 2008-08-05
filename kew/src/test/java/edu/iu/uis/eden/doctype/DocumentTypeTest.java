@@ -25,10 +25,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.engine.node.NodeType;

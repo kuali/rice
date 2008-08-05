@@ -14,6 +14,7 @@ import javax.xml.xpath.XPathConstants;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Element;
@@ -23,7 +24,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 import edu.iu.uis.eden.util.Utilities;

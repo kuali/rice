@@ -33,10 +33,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.notes.Attachment;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.notes.Note;

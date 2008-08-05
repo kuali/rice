@@ -20,6 +20,7 @@ import java.rmi.RemoteException;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

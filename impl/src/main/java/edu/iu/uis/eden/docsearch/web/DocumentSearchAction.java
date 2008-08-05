@@ -46,11 +46,11 @@ import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.KEWPropertyConstants;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.KEWPropertyConstants;
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.DocumentSearchResult;

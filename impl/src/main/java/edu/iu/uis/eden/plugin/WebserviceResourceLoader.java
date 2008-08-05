@@ -36,14 +36,14 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.SpringLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.SpringLoader;
 import edu.iu.uis.eden.core.dependencylifecycles.SpringLifeCycle;
 
 /**

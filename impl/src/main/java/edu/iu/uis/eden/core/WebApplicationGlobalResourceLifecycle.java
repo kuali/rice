@@ -20,8 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.SpringLoader;
 
-import edu.iu.uis.eden.SpringLoader;
 import edu.iu.uis.eden.plugin.PluginRegistry;
 import edu.iu.uis.eden.plugin.PluginRegistryFactory;
 

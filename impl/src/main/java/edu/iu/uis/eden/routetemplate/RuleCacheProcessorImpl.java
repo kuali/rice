@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
-import edu.iu.uis.eden.KEWServiceLocator;
+import org.kuali.rice.kew.KEWServiceLocator;
+
 import edu.iu.uis.eden.util.PerformanceLogger;
 
 /**

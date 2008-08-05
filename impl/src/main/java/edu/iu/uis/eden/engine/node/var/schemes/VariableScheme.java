@@ -18,8 +18,8 @@
 package edu.iu.uis.eden.engine.node.var.schemes;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.BranchService;
 import edu.iu.uis.eden.engine.node.BranchState;

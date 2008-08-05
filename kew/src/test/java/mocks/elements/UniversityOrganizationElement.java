@@ -19,10 +19,10 @@ package mocks.elements;
 import mocks.MockChartOrgService;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
-import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.services.InconsistentDocElementStateException;
 import edu.iu.uis.eden.services.ServiceErrorConstants;
 

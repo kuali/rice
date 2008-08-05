@@ -22,8 +22,8 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.kuali.rice.kew.KEWServiceLocator;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.edl.EDocLiteAssociation;
 import edu.iu.uis.eden.edl.EDocLiteDefinition;
 import edu.iu.uis.eden.edl.EDocLiteService;

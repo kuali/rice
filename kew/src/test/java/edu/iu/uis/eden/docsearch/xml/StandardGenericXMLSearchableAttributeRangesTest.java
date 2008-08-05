@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;

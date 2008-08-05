@@ -35,9 +35,9 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
  * A model bean which represents a template upon which a rule is created.
@@ -253,7 +253,7 @@ public class RuleTemplate implements WorkflowPersistable {
 
     /**
      * Returns a copy of this object and its dependents
-     * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
+     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
      */
     public Object copy(boolean preserveKeys) {
         RuleTemplate ruleTemplateClone = new RuleTemplate();

@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.user;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
@@ -24,7 +25,6 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 
 public class UserServiceTest extends KEWTestCase {
 

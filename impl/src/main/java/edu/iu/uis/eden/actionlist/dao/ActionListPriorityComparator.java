@@ -18,7 +18,8 @@ package edu.iu.uis.eden.actionlist.dao;
 
 import java.util.Comparator;
 
-import edu.iu.uis.eden.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 
 /**
  * Compares an action item to another action item and determines if one

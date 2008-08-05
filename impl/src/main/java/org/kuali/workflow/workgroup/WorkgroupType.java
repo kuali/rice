@@ -26,7 +26,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import edu.iu.uis.eden.BaseWorkflowPersistable;
+import org.kuali.rice.kew.BaseWorkflowPersistable;
+
 
 /**
  *

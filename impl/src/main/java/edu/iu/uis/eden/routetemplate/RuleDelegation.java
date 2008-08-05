@@ -28,9 +28,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
  * A model bean representing the delegation of a rule from a responsibility to

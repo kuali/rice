@@ -17,10 +17,10 @@ package edu.iu.uis.eden.authorization;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.ksb.auth.AuthorizationService;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 

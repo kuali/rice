@@ -640,7 +640,7 @@
 
 
 	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
-    <bean id="enDocumentRoutingService" class="org.kuali.rice.ksb.messaging.RouteDocumentMessageService"/>
+    <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />

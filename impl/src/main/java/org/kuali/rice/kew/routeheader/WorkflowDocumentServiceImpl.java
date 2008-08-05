@@ -62,12 +62,12 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
 
 /**

@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.kew.messaging;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 
 
 /**

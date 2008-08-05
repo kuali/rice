@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.kew.messaging;
 
 import javax.xml.namespace.QName;
 
@@ -27,6 +27,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.mail.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.RuleCacheProcessor;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging.exceptionhandling;
+package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;

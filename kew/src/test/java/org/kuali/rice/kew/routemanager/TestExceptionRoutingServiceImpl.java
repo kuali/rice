@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.kew.routemanager;
 
+import org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
 
 
 

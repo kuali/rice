@@ -30,6 +30,8 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.messaging.RouteDocumentMessageService;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -38,8 +40,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
-import org.kuali.rice.ksb.messaging.MessageServiceNames;
-import org.kuali.rice.ksb.messaging.RouteDocumentMessageService;
 
 
 /**

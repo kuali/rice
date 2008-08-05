@@ -38,6 +38,7 @@ import org.kuali.rice.kew.clientapp.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.notification.NotificationService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
@@ -53,7 +54,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
 
 /**

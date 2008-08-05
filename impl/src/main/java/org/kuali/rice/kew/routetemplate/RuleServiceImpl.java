@@ -49,6 +49,7 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityIdService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
@@ -69,7 +70,6 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
-import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.util.RiceConstants;
 
 

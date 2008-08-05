@@ -824,7 +824,3 @@ public class KEWConstants {
         DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER, "After");
     }
 }
-
-/*
- * Copyright 2003 The Trustees of Indiana University. All rights reserved. This file is part of the EDEN software package. For license information, see the LICENSE file in the top level directory of the EDEN source distribution.
- */

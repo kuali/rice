@@ -102,15 +102,3 @@ public class DocElementValidator {
     return false;
   }
 }
-
-
-
-
-
-/*
- * Copyright 2003 The Trustees of Indiana University.  All rights reserved.
- *
- * This file is part of the EDEN software package.
- * For license information, see the LICENSE file in the top level directory
- * of the EDEN source distribution.
- */

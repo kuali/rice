@@ -101,15 +101,3 @@ public class ServiceConstants {
   public static final String USER_REPORT_WRKGRP = "IA.UITS.User Report Workgroup";
   public static final String DT_MONITOR_BLANKET_APPRV_WRKGRP = "IA.UITS.DocType Monitor Blanket Approve Workgroup";
 }
-
-
-
-
-
-/*
- * Copyright 2003 The Trustees of Indiana University.  All rights reserved.
- *
- * This file is part of the EDEN software package.
- * For license information, see the LICENSE file in the top level directory
- * of the EDEN source distribution.
- */

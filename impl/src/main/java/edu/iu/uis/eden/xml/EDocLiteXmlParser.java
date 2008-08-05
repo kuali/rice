@@ -37,13 +37,13 @@ import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.EDocLiteService;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 

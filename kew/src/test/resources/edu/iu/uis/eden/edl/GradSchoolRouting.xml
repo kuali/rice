@@ -20,7 +20,7 @@
 
     <ruleAttribute>
       <name>DepartmentAttribute</name>
-      <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+      <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
       <label>Department Routing</label>
       <description>Department Routing</description>
       <type>RuleXmlAttribute</type>
@@ -47,7 +47,7 @@
 
     <ruleAttribute>
       <name>SchoolAttribute</name>
-      <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+      <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
       <label>School/Division Routing</label>
       <description>School/Division Routing</description>
       <type>RuleXmlAttribute</type>

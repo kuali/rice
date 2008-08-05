@@ -10,7 +10,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>ChartOrgAttribute</name>
-			<className>edu.iu.uis.eden.routetemplate.attribute.ChartOrgAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.attribute.ChartOrgAttribute</className>
 			<label>Chart Org Attribute</label>
 			<description>Chart Org Attribute</description>
 			<type>RuleAttribute</type>

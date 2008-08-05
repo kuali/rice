@@ -35,12 +35,12 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowFunctionResolver;
+import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.WorkflowFunctionResolver;
-import edu.iu.uis.eden.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import edu.iu.uis.eden.util.KeyLabelPair;
 
 public class WorkflowUtils {

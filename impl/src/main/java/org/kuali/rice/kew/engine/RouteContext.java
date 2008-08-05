@@ -25,10 +25,10 @@ import java.util.Map;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
 
 /**
  * Represents the current context of a Document being processed by the engine.

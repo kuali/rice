@@ -68,12 +68,12 @@
                   <c:set var="respIndex" value="${status.index}" scope="request"/>
                   <c:set var="respIdVal" value="${ruleIdVal}z${respIndex}"/>
                   <c:set var="delKey" value="${extraId}rule${ruleIndex}resp${respIndex}"/>
-                  <% edu.iu.uis.eden.routetemplate.web.Rule2Form ruleForm = (edu.iu.uis.eden.routetemplate.web.Rule2Form)request.getAttribute("Rule2Form");
-                     String displayDelegationsValue = (String)ruleForm.getShowDelegationsMap().get(pageContext.getAttribute("delKey"));
-                     if (displayDelegationsValue == null) displayDelegationsValue = "true";
-                     pageContext.setAttribute("displayDelegationsValue", displayDelegationsValue);
-                  %>
-                  <c:set var="displayDelegationRules" value="${displayDelegationsValue || responsibility.numberOfDelegations <= Rule2Form.delegationLimit}"/>
+                  <%
+                  	org.kuali.rice.kew.routetemplate.web.Rule2Form ruleForm = (org.kuali.rice.kew.routetemplate.web.Rule2Form)request.getAttribute("Rule2Form");
+                                       String displayDelegationsValue = (String)ruleForm.getShowDelegationsMap().get(pageContext.getAttribute("delKey"));
+                                       if (displayDelegationsValue == null) displayDelegationsValue = "true";
+                                       pageContext.setAttribute("displayDelegationsValue", displayDelegationsValue);
+                  tionsValue || responsibility.numberOfDelegations <= Rule2Form.delegationLimit}"/>
                   <html-el:hidden property="showDelegationsMap(${extraId}rule${ruleIndex}resp${respIndex})" />
                   <table class="bord-r-t" border=0 cellpadding=0 cellspacing=0 width="100%">
                     <tbody>

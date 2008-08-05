@@ -261,21 +261,21 @@
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
-            <className>edu.iu.uis.eden.routetemplate.RuleRoutingAttribute</className>
+            <className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
             <label>Rule Routing Attribute</label>
             <description>Attribute used by rules to rout</description>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
             <name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
-            <className>edu.iu.uis.eden.routetemplate.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
+            <className>org.kuali.rice.kew.routetemplate.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
             <label>RemoveReplaceWorkgroupTypeRoutingAttribute</label>
             <description>An attribute for routing workgroups that have been changed via the Remove/Replace User document</description>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
 			<name>RemoveReplaceRuleRoutingAttribute</name>
-			<className>edu.iu.uis.eden.routetemplate.RemoveReplaceRuleRoutingAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.RemoveReplaceRuleRoutingAttribute</className>
 			<label>RemoveReplaceRuleRoutingAttribute</label>
 			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
 			<type>RuleAttribute</type>
@@ -400,7 +400,7 @@
             <parent>EDENSERVICE-DOCS</parent>
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
-            <postProcessorName>edu.iu.uis.eden.routetemplate.RulePostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.routetemplate.RulePostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

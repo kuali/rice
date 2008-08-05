@@ -38,7 +38,7 @@
             <expression type="BSF:groovy">
                 /* generates responsibility based on node instance state
                    filled in by the hierarchyroutingnode/hierarchyprovider */
-                import edu.iu.uis.eden.routetemplate.*
+                import org.kuali.rice.kew.routetemplate.*
                 import edu.iu.uis.eden.user.*
                 import edu.iu.uis.eden.workgroup.*
                 import org.kuali.rice.kew.engine.node.*

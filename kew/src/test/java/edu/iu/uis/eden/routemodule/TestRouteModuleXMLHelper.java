@@ -29,13 +29,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

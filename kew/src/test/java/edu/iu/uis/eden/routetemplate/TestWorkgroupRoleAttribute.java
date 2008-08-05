@@ -22,8 +22,11 @@ import java.util.List;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
+import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
+import org.kuali.rice.kew.routetemplate.Role;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**

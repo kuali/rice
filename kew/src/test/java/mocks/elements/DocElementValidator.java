@@ -18,8 +18,8 @@ package mocks.elements;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.services.InconsistentDocElementStateException;
 
-import edu.iu.uis.eden.services.InconsistentDocElementStateException;
 
 
 /**

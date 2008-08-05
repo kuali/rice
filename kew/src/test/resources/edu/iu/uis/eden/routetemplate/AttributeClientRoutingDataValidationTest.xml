@@ -3,14 +3,14 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>TestRuleAttributeDuex</name>
-			<className>edu.iu.uis.eden.routetemplate.TestRuleAttributeDuex</className>
+			<className>org.kuali.rice.kew.routetemplate.TestRuleAttributeDuex</className>
 			<label>TestRuleAttributeDuex</label>
 			<description>TestRuleAttributeDuex</description>
 			<type>TestRuleAttributeDuex</type>
 		</ruleAttribute>
         <ruleAttribute>
           <name>TestRuleAttributeThree</name>
-          <className>edu.iu.uis.eden.routetemplate.TestRuleAttributeThree</className>
+          <className>org.kuali.rice.kew.routetemplate.TestRuleAttributeThree</className>
           <label>TestRuleAttributeThree</label>
           <description>TestRuleAttributeThree</description>
           <type>TestRuleAttributeThree</type>

@@ -28,10 +28,10 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.routetemplate.RuleAttributeService;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.routetemplate.RuleAttributeService;
 import edu.iu.uis.eden.util.KeyLabelPair;
 import edu.iu.uis.eden.util.Utilities;
 

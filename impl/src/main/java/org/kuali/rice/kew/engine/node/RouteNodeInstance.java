@@ -38,8 +38,8 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Represents a materialized instance of a {@link RouteNode} definition on a {@link DocumentRouteHeaderValue}.  Node instances

@@ -25,12 +25,17 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.routetemplate.MyRules2;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.routetemplate.web.Rule2Form;
+import org.kuali.rice.kew.routetemplate.web.WebRuleBaseValues;
+import org.kuali.rice.kew.routetemplate.web.WebRuleResponsibility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routetemplate.web.Rule2Form;
-import edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues;
-import edu.iu.uis.eden.routetemplate.web.WebRuleResponsibility;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 

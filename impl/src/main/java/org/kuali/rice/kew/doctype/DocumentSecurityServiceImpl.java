@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchVO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;

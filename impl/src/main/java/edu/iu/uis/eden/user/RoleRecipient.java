@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.user;
 
-import edu.iu.uis.eden.routetemplate.ResolvedQualifiedRole;
+import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 
 /**
  * Marks a Role to be used in an ActionRequestValue.

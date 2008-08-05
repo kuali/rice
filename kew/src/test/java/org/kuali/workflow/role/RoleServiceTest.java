@@ -21,10 +21,10 @@ import java.sql.Timestamp;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.workflow.identity.IdentityType;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *

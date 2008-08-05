@@ -25,11 +25,11 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 
-import edu.iu.uis.eden.routetemplate.RuleTemplate;
-import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
-import edu.iu.uis.eden.routetemplate.RuleTemplateOption;
 import edu.iu.uis.eden.test.OldClearDatabaseLifecycle;
 
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {

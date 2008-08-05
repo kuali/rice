@@ -25,9 +25,9 @@ import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements RouteNodeDAO {
 

@@ -17,7 +17,8 @@ package org.kuali.rice.kew.removereplace.web;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

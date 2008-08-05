@@ -29,6 +29,11 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.test.AssertThrows;
 

@@ -28,9 +28,9 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
+import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 

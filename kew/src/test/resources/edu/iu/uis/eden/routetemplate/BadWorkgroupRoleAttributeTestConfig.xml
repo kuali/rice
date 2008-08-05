@@ -42,7 +42,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
     <ruleAttribute>
       <name>BadWorkgroupRoleAttribute</name>
-      <className>edu.iu.uis.eden.routetemplate.TestBadWorkgroupRoleAttribute</className>
+      <className>org.kuali.rice.kew.routetemplate.TestBadWorkgroupRoleAttribute</className>
       <label>Bad Workgroup Role Attribute</label>
       <type>RuleAttribute</type>
     </ruleAttribute>
@@ -66,7 +66,7 @@
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>
         <responsibility>
-        <role>edu.iu.uis.eden.routetemplate.TestBadWorkgroupRoleAttribute!workgroup</role>
+        <role>org.kuali.rice.kew.routetemplate.TestBadWorkgroupRoleAttribute!workgroup</role>
       <actionRequested>A</actionRequested>
     </responsibility>
       </responsibilities>

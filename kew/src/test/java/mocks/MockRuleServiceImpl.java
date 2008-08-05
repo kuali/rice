@@ -30,13 +30,13 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.routetemplate.MyRules2;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.MyRules2;
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleDelegation;
-import edu.iu.uis.eden.routetemplate.RuleResponsibility;
-import edu.iu.uis.eden.routetemplate.RuleService;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.GroupId;
@@ -222,7 +222,7 @@ public class MockRuleServiceImpl implements RuleService {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see edu.iu.uis.eden.routetemplate.RuleService#findRuleBaseValuesByResponsibilityReviewerTemplateDoc(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.routetemplate.RuleService#findRuleBaseValuesByResponsibilityReviewerTemplateDoc(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
 	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");

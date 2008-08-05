@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.routeheader.DocumentContent;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
 
 public class ExplodingRuleAttribute implements WorkflowAttribute {
     

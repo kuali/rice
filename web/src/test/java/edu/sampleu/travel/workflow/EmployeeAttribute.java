@@ -30,11 +30,11 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routetemplate.GenericRoleAttribute;
+import org.kuali.rice.kew.routetemplate.QualifiedRoleName;
+import org.kuali.rice.kew.routetemplate.Role;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routetemplate.GenericRoleAttribute;
-import edu.iu.uis.eden.routetemplate.QualifiedRoleName;
-import edu.iu.uis.eden.routetemplate.Role;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;
 import edu.iu.uis.eden.user.UserId;
@@ -166,7 +166,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 	/**
 	 * Required to support flex routing report
 	 * 
-	 * @see edu.iu.uis.eden.routetemplate.WorkflowAttribute#getFieldConversions()
+	 * @see org.kuali.rice.kew.routetemplate.WorkflowAttribute#getFieldConversions()
 	 */
 	public List getFieldConversions() {
 		List conversionFields = new ArrayList();

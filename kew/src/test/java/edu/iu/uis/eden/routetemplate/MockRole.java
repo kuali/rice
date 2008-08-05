@@ -23,6 +23,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
+import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute;
 
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.workgroup.GroupNameId;
@@ -34,7 +37,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
  * <pre>
  * <responsibilities>
  *   <responsibility>
- *     <role>edu.iu.uis.eden.routetemplate.MockRole!user1,user2,user3</role>
+ *     <role>org.kuali.rice.kew.routetemplate.MockRole!user1,user2,user3</role>
  *   </responsibility>
  * </responsibilities>
  * </pre>
@@ -55,7 +58,7 @@ public class MockRole extends UnqualifiedRoleAttribute {
 
     /**
      * Overridden to accept any role name
-     * @see edu.iu.uis.eden.routetemplate.UnqualifiedRoleAttribute#isValidRoleName(java.lang.String)
+     * @see org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute#isValidRoleName(java.lang.String)
      */
     @Override
     protected boolean isValidRoleName(String roleName) {

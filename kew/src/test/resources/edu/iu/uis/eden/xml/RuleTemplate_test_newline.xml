@@ -6,7 +6,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>TestAttribute_ForRuleTem</name>
-			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>TestAttribute_ForRuleTem</label>
 			<description>TestAttribute_ForRuleTemg</description>
 			<type>RuleXmlAttribute</type>

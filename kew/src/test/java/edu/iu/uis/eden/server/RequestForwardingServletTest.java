@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 
 import junit.framework.TestCase;
 
+import org.kuali.rice.kew.server.RequestForwardingServlet;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;

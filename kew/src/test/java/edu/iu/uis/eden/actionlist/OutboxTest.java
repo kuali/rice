@@ -29,6 +29,8 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.PreferencesServiceImpl;
+import org.kuali.rice.kew.useroptions.UserOptions;
+import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
@@ -38,8 +40,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.useroptions.UserOptions;
-import edu.iu.uis.eden.useroptions.UserOptionsService;
 
 /**
  * Tests Outbox functionality

@@ -19,8 +19,8 @@ package org.kuali.rice.kew.plugin.attributes;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.routetemplate.FlexRM;
 
-import edu.iu.uis.eden.routetemplate.FlexRM;
 
 /**
  * An attribute which can be used to filter a List of rules prior to evaluation

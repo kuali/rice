@@ -31,9 +31,9 @@ import org.kuali.rice.kew.engine.node.BranchService;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.var.Property;
 import org.kuali.rice.kew.engine.node.var.PropertyScheme;
+import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
  * A PropertyScheme that resolves the Property by evaluating it as an XPath expression.

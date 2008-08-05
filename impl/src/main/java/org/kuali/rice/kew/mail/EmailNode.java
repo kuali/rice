@@ -32,6 +32,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,7 +41,6 @@ import org.xml.sax.InputSource;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**

@@ -11,21 +11,21 @@
       <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
       <form-bean name="BackdoorForm" type="edu.iu.uis.eden.web.backdoor.BackdoorForm" />
       <form-bean name="DocumentTypeStartForm" type="org.kuali.rice.kew.doctype.web.DocumentTypeStartForm" />
-      <form-bean name="RouteLogForm" type="edu.iu.uis.eden.routelog.web.RouteLogForm" />
-      <form-bean name="DocHandlerForm" type="edu.iu.uis.eden.routing.web.DocHandlerForm" />
-      <form-bean name="SuperUserForm" type="edu.iu.uis.eden.superuser.web.SuperUserForm"/>
+      <form-bean name="RouteLogForm" type="org.kuali.rice.kew.routelog.web.RouteLogForm" />
+      <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
+      <form-bean name="SuperUserForm" type="org.kuali.rice.kew.superuser.web.SuperUserForm"/>
       <form-bean name="ApplicationConstantsForm" type="org.kuali.rice.kew.applicationconstants.web.ApplicationConstantsForm" />
-      <form-bean name="RuleAttributeReportForm" type="edu.iu.uis.eden.routetemplate.web.RuleAttributeReportForm" />
-      <form-bean name="RuleTemplateForm" type="edu.iu.uis.eden.routetemplate.web.RuleTemplateForm" />
+      <form-bean name="RuleAttributeReportForm" type="org.kuali.rice.kew.routetemplate.web.RuleAttributeReportForm" />
+      <form-bean name="RuleTemplateForm" type="org.kuali.rice.kew.routetemplate.web.RuleTemplateForm" />
       <form-bean name="WorkgroupTypeForm" type="org.kuali.workflow.workgroup.web.WorkgroupTypeForm" />
-      <form-bean name="Rule2Form" type="edu.iu.uis.eden.routetemplate.web.Rule2Form" />
-      <form-bean name="RoutingReportForm" type="edu.iu.uis.eden.routetemplate.web.RoutingReportForm" />
+      <form-bean name="Rule2Form" type="org.kuali.rice.kew.routetemplate.web.Rule2Form" />
+      <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.routetemplate.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
       <form-bean name="DocumentTypeForm" type="org.kuali.rice.kew.doctype.web.DocumentTypeForm" />
-      <form-bean name="StatsForm" type="edu.iu.uis.eden.stats.web.StatsForm" />
+      <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
       <form-bean name="RouteManagerDriverForm" type="edu.iu.uis.eden.routemanager.web.RouteManagerDriverForm"/>
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
-      <form-bean name="RuleQuickLinkForm" type="edu.iu.uis.eden.routetemplate.web.RuleQuickLinksForm" />
+      <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.routetemplate.web.RuleQuickLinksForm" />
       <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
@@ -51,7 +51,7 @@
     <!-- ========== action mapping definitions ============================= -->
     <action-mappings>
 
-      <action path="/RuleQuickLinks" scope="request" type="edu.iu.uis.eden.routetemplate.web.RuleQuickLinksAction"
+      <action path="/RuleQuickLinks" scope="request" type="org.kuali.rice.kew.routetemplate.web.RuleQuickLinksAction"
       	parameter="methodToCall" name="RuleQuickLinkForm">
       	<forward name="basic" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp" />
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>
@@ -75,7 +75,7 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/applicationconstants/ApplicationConstants.jsp"/>
       </action>
 
-      <action path="/SuperUser" type="edu.iu.uis.eden.superuser.web.SuperUserAction" input="/WEB-INF/jsp/superuser/SuperUser.jsp" name="SuperUserForm" scope="request" parameter="methodToCall">
+      <action path="/SuperUser" type="org.kuali.rice.kew.superuser.web.SuperUserAction" input="/WEB-INF/jsp/superuser/SuperUser.jsp" name="SuperUserForm" scope="request" parameter="methodToCall">
 		 <forward name="basic" path="/WEB-INF/jsp/superuser/SuperUser.jsp" />
 		 <forward name="actionTaken" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/superuser/SuperUser.jsp"/>
@@ -153,7 +153,7 @@
 
       <action path="/Stats" name="StatsForm" scope="request" validate="false"
           input="/WEB-INF/jsp/stats/StatsReport.jsp"
-          type="edu.iu.uis.eden.stats.web.StatsAction" parameter="methodToCall">
+          type="org.kuali.rice.kew.stats.web.StatsAction" parameter="methodToCall">
           <forward name="basic" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
           <forward name="requiredStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
@@ -161,7 +161,7 @@
 
       <action path="/RouteLog" name="RouteLogForm" scope="request" parameter="methodToCall"
         input="/WEB-INF/jsp/routelog/RouteLog.jsp"
-        type="edu.iu.uis.eden.routelog.web.RouteLogAction">
+        type="org.kuali.rice.kew.routelog.web.RouteLogAction">
         <forward name="viewRouteLog" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />
         <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
         <forward name="requiredStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
@@ -169,14 +169,14 @@
       </action>
 
       <action path="/DocHandler" name="DocHandlerForm" scope="request" parameter="methodToCall"
-        type="edu.iu.uis.eden.routing.web.ClientAppDocHandlerRedirectAction" >
+        type="org.kuali.rice.kew.routing.web.ClientAppDocHandlerRedirectAction" >
         <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
         <forward name="requiredStateError" path="/WEB-INF/jsp/DocumentLocked.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/DocumentLocked.jsp"/>
       </action>
 
        <action path="/WorkflowDocHandler" name="DocHandlerForm" scope="request" parameter="methodToCall"
-        type="edu.iu.uis.eden.routing.web.WorkflowDocHandlerAction">
+        type="org.kuali.rice.kew.routing.web.WorkflowDocHandlerAction">
         <forward name="actionTaken" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp"/>
@@ -206,7 +206,7 @@
          type="org.apache.struts.actions.ForwardAction"
          parameter="/WEB-INF/jsp/doctype/DocumentType.jsp"/>
 
-       <action path="/RuleAttributeReport" type="edu.iu.uis.eden.routetemplate.web.RuleAttributeReportAction"
+       <action path="/RuleAttributeReport" type="org.kuali.rice.kew.routetemplate.web.RuleAttributeReportAction"
                input="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp"
                name="RuleAttributeReportForm" scope="request" parameter="methodToCall">
           <forward path="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp" name="basic" />
@@ -214,7 +214,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp"/>
        </action>
 
-       <action path="/RuleTemplate" type="edu.iu.uis.eden.routetemplate.web.RuleTemplateAction"
+       <action path="/RuleTemplate" type="org.kuali.rice.kew.routetemplate.web.RuleTemplateAction"
           input="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"
           name="RuleTemplateForm" scope="request" parameter="methodToCall">
           <forward path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp" name="report" />
@@ -230,7 +230,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
        </action>
 
-       <action path="/Rule" type="edu.iu.uis.eden.routetemplate.web.Rule2Action"
+       <action path="/Rule" type="org.kuali.rice.kew.routetemplate.web.Rule2Action"
           input="/WEB-INF/jsp/rules/RuleEdit.jsp"
           name="Rule2Form" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/rules/RuleDocHandler.jsp" name="docHandler" />
@@ -243,7 +243,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
        </action>
 
-       <action path="/DelegateRule" type="edu.iu.uis.eden.routetemplate.web.DelegateRule2Action"
+       <action path="/DelegateRule" type="org.kuali.rice.kew.routetemplate.web.DelegateRule2Action"
           input="/WEB-INF/jsp/rules/DelegateRule.jsp"
           name="Rule2Form" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/rules/DelegateRule.jsp" name="basic" />
@@ -252,7 +252,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
        </action>
 
-       <action path="/RoutingReport" type="edu.iu.uis.eden.routetemplate.web.RoutingReportAction"
+       <action path="/RoutingReport" type="org.kuali.rice.kew.routetemplate.web.RoutingReportAction"
           input="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"
           name="RoutingReportForm" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp" name="basic" />

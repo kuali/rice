@@ -22,9 +22,9 @@ import java.util.List;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**

@@ -20,7 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
 
 /**
  * Model bean mapped to ojb that holds a single piece of searchable data for a document.

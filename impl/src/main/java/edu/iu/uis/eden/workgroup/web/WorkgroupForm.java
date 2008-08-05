@@ -24,11 +24,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.web.WebExtensions;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.KeyLabelPair;

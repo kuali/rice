@@ -31,9 +31,9 @@ import org.kuali.rice.kew.engine.node.DynamicResult;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 public class DynamicRoutingTest extends KEWTestCase {
 

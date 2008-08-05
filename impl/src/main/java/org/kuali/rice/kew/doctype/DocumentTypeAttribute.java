@@ -28,9 +28,9 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.routetemplate.RuleAttributeService;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.routetemplate.RuleAttributeService;
 
 /**
  * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute, 

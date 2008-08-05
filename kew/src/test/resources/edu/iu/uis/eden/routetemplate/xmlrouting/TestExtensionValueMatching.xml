@@ -12,7 +12,7 @@
 
         <ruleAttribute>
             <name>Attr1</name>
-            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <label>Attr1</label>
             <description>Attr1</description>
             <type>RuleXmlAttribute</type>

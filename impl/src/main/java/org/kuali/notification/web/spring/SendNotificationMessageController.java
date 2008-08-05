@@ -48,10 +48,10 @@ import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
 import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.routetemplate.GenericAttributeContent;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import edu.iu.uis.eden.routetemplate.GenericAttributeContent;
 
 /**
  * This class is the controller for sending Simple notification messages via an end user interface.

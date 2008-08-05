@@ -22,9 +22,9 @@ import java.util.Map;
 
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routetemplate.GenericWorkflowAttribute;
+import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 
-import edu.iu.uis.eden.routetemplate.GenericWorkflowAttribute;
-import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 
 public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 

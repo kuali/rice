@@ -39,7 +39,7 @@ public class KualiXmlSearchableAttributeImpl extends StandardGenericXMLSearchabl
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
      * 
-     * @see edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
     public Element getConfigXML() {
         Element root = getAttributeConfigXML();

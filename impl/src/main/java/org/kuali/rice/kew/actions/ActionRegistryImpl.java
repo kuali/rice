@@ -30,10 +30,10 @@ import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
@@ -125,7 +125,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 	}
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(edu.iu.uis.eden.user.WorkflowUser, edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue)
+     * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(edu.iu.uis.eden.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
      */
     public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, EdenUserNotFoundException {
         ValidActions validActions = new ValidActions();

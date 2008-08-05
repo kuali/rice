@@ -40,6 +40,8 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,8 +49,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.EDocLiteXmlParser;

@@ -455,13 +455,13 @@ public class KEWConstants {
      */
     public static final int ADHOC_ROUTE_LEVEL = 0;
     public static final String ADHOC_ROUTE_LEVEL_NAME = "Adhoc Routing";
-    public static final String PARALLEL_ADHOC_ROUTE_MODULE_NAME = "edu.iu.uis.eden.routemodule.ParallelAdHocRouteModule";
+    public static final String PARALLEL_ADHOC_ROUTE_MODULE_NAME = "org.kuali.rice.kew.routemodule.ParallelAdHocRouteModule";
 
     /**
      * The route level value for the Exception route level. The Exception route level does not have a route module and the core engine processes these requests since they have special rules, such as an exception request can not itself throw an exception request.
      */
     public static final int EXCEPTION_ROUTE_LEVEL = -1;
-    public static final String EXCEPTION_ROUTE_MODULE_NAME = "edu.iu.uis.eden.routemodule.ExceptionRouteModule";
+    public static final String EXCEPTION_ROUTE_MODULE_NAME = "org.kuali.rice.kew.routemodule.ExceptionRouteModule";
     public static final String EXCEPTION_ROUTE_LEVEL_NAME = "Exception Routing";
     public static final int INVALID_ROUTE_LEVEL = -2;
     

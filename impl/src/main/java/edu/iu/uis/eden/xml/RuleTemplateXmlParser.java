@@ -34,16 +34,16 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleDelegation;
-import edu.iu.uis.eden.routetemplate.RuleTemplate;
-import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
-import edu.iu.uis.eden.routetemplate.RuleTemplateOption;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 

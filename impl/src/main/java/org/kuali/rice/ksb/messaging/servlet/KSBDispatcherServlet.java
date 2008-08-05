@@ -25,6 +25,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.kew.security.SignatureSigningResponseWrapper;
+import org.kuali.rice.kew.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -40,8 +42,6 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 
-import edu.iu.uis.eden.security.SignatureSigningResponseWrapper;
-import edu.iu.uis.eden.security.SignatureVerifyingRequestWrapper;
 
 /**
  * A {@link DispatcherServlet} which dispatches incoming requests to the appropriate

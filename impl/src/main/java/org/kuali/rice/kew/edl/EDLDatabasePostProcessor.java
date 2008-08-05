@@ -26,13 +26,13 @@ import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.RouteHeaderService;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.routeheader.RouteHeaderService;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
 import edu.iu.uis.eden.util.XmlHelper;
 
 

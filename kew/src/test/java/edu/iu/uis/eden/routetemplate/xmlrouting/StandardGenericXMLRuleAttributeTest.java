@@ -36,16 +36,17 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.routetemplate.RuleExtension;
-import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
-import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
 
 public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
@@ -223,7 +224,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
     }
 
 	/*
-	 * Test method for 'edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute.isMatch(DocumentContent, List)'
+	 * Test method for 'org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute.isMatch(DocumentContent, List)'
 	 */
 	@Test public void testIsMatch() {
 		RuleExtension extension = new RuleExtension();
@@ -378,7 +379,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
 	/*
-	 * Test method for 'edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute.getRuleRows()'
+	 * Test method for 'org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute.getRuleRows()'
 	 */
 	@Test public void testGetRuleRows() {
 		assertTrue("Invalid number of rule rows", attribute.getRuleRows().size() == 5);

@@ -26,11 +26,11 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routemodule.TestDocContent;
 import edu.iu.uis.eden.routemodule.TestRecipient;
 import edu.iu.uis.eden.routemodule.TestResponsibility;

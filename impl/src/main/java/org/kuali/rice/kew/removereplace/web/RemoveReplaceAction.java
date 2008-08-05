@@ -39,11 +39,11 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
 import org.kuali.rice.kew.removereplace.RuleTarget;
 import org.kuali.rice.kew.removereplace.WorkgroupTarget;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.routing.web.DocHandlerForm;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleResponsibility;
-import edu.iu.uis.eden.routing.web.DocHandlerForm;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

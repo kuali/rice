@@ -27,8 +27,11 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
+import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

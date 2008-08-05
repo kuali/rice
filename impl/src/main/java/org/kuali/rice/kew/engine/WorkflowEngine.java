@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.engine;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Defines the contract to the core workflow engine.  The standard unit of work of the engine

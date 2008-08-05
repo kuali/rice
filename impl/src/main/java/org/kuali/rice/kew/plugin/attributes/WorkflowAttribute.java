@@ -22,12 +22,12 @@ import java.util.Map;
 
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routetemplate.RuleExtension;
-import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
-import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 
 /**
  * <p>Interface which abstracts a piece of information ("attribute") associated with
@@ -44,8 +44,8 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  * <ol>
  *   <li>...?...</li>
  *   <li>{@link #validateRuleData(Map)} and {@link #validateRoutingData(Map)} and are called to validate the configuration/extension values
- *       of the rule definition, and the user-configured rule data (??). see {@link edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues},
- *       {@link edu.iu.uis.eden.routetemplate.RuleRoutingAttribute}.</li>
+ *       of the rule definition, and the user-configured rule data (??). see {@link org.kuali.rice.kew.routetemplate.web.WebRuleBaseValues},
+ *       {@link org.kuali.rice.kew.routetemplate.RuleRoutingAttribute}.</li>
  *   <li>Not sure where and why these are called, or how that is reconciled with XML-based ingestion....?  The 'required' field only seems
  *       to matter with regard to these two methods; it seems to only ever be used in implementations of these two methods</li> 
  * </ol>
@@ -55,7 +55,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  *       it to the client-side document</li>
  *   <li>Upon action taken on the document, the Attributes that are described by the <code>WorkflowAttributeDefinitionVO</code>s
  *       are looked up (... how ...) and constructed on the client side.</li>
- *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute}),
+ *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute}),
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
  *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute
@@ -66,7 +66,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  *       <ol>
  *         <li>A special case is made for attributes defined in XML as
  *             of "RuleXmlAttribute" type ({@link KEWConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
- *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(edu.iu.uis.eden.routetemplate.RuleAttribute)}
+ *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(org.kuali.rice.kew.routetemplate.RuleAttribute)}
  *             before proceeding with isMatch invocation. (what about a RuleAttributeAware interface so this can be done generically for all worklfow attribute
  *             implementations?)</li>
  *         <li>{@link WorkflowAttribute#isMatch(DocumentContent, List)} is called with the Rule's extension values passed</li>

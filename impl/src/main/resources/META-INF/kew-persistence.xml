@@ -7,11 +7,11 @@
   
   <persistence-unit name="kew-unit" transaction-type="JTA">
     <mapping-file>META-INF/kew-orm.xml</mapping-file>
-    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue</class>
-    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueContent</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent</class>
     <class>org.kuali.rice.kew.notes.Note</class>
     <class>org.kuali.rice.kew.notes.Attachment</class>
-    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension</class>
     <class>org.kuali.rice.kew.actionitem.ActionItem</class>
     <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
     <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
@@ -24,18 +24,18 @@
     <class>org.kuali.rice.kew.doctype.DocumentType</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
-    <class>edu.iu.uis.eden.useroptions.UserOptions</class>
+    <class>org.kuali.rice.kew.useroptions.UserOptions</class>
     <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleTemplate</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleTemplateOption</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleAttribute</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleTemplateAttribute</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleBaseValues</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleExpressionDef</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleDelegation</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleResponsibility</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleExtension</class>
-    <class>edu.iu.uis.eden.routetemplate.RuleExtensionValue</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleTemplate</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleTemplateOption</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleAttribute</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleTemplateAttribute</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleBaseValues</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleExpressionDef</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleDelegation</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleResponsibility</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleExtension</class>
+    <class>org.kuali.rice.kew.routetemplate.RuleExtensionValue</class>
     <class>org.kuali.rice.kew.help.HelpEntry</class>
     <class>org.kuali.rice.kew.engine.node.RouteNode</class>
     <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>

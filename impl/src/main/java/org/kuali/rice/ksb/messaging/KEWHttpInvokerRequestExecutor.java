@@ -28,13 +28,13 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.security.HttpClientHeaderDigitalSigner;
+import org.kuali.rice.kew.security.SignatureVerifyingInputStream;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 
-import edu.iu.uis.eden.security.HttpClientHeaderDigitalSigner;
-import edu.iu.uis.eden.security.SignatureVerifyingInputStream;
 
 /**
  * At HttpInvokerRequestExecutor which is capable of digitally signing and verifying messages.  It's capabilities

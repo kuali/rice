@@ -29,9 +29,9 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.server.BeanConverter;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.xml.DocumentTypeXmlParser;

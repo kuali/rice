@@ -20,9 +20,9 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Implementation of the {@link ActionListImmediateEmailReminderService}.

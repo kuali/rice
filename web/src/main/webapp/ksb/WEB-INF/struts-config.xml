@@ -7,7 +7,7 @@
 		<form-bean name="ServiceRegistryForm" type="org.kuali.rice.ksb.messaging.web.ServiceRegistryForm" />
 		<form-bean name="ThreadPoolForm" type="org.kuali.rice.ksb.messaging.web.ThreadPoolForm" />
 		<form-bean name="QuartzForm" type="org.kuali.rice.ksb.messaging.web.QuartzQueueForm" />
-		<form-bean name="JavaSecurityManagementForm" type="edu.iu.uis.eden.security.admin.web.JavaSecurityManagementForm" />
+		<form-bean name="JavaSecurityManagementForm" type="org.kuali.rice.kew.security.admin.web.JavaSecurityManagementForm" />
 	</form-beans>
 
 	<global-forwards type="org.apache.struts.action.ActionForward">
@@ -25,7 +25,7 @@
 		</action>
 
 		<action path="/JavaSecurityManagement" name="JavaSecurityManagementForm" scope="request" input="/WEB-INF/jsp/javasecurity/JavaSecurityManagement.jsp" validate="false"
-			type="edu.iu.uis.eden.security.admin.web.JavaSecurityManagementAction" parameter="methodToCall">
+			type="org.kuali.rice.kew.security.admin.web.JavaSecurityManagementAction" parameter="methodToCall">
 			<forward name="report" path="/WEB-INF/jsp/javasecurity/JavaSecurityManagement.jsp" />
 			<forward name="restart" path="/JavaSecurityManagement.do?methodToCall=start" redirect="true" />
 		</action>

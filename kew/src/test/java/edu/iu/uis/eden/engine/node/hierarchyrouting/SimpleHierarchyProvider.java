@@ -32,10 +32,10 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider;
+import org.kuali.rice.kew.routetemplate.NamedRuleSelector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.routetemplate.NamedRuleSelector;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

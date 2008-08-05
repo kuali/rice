@@ -98,7 +98,7 @@
 
   <servlet>
     <servlet-name>RequestForwardingServlet</servlet-name>
-    <servlet-class>edu.iu.uis.eden.server.RequestForwardingServlet</servlet-class>
+    <servlet-class>org.kuali.rice.kew.server.RequestForwardingServlet</servlet-class>
     <init-param>
         <param-name>.*/(\S+)\.wsdl</param-name>
         <param-value>/remoting/{0}?wsdl</param-value>

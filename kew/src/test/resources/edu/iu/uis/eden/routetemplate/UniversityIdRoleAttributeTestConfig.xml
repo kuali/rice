@@ -30,7 +30,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>UniversityIdRoleAttribute</name>
-			<className>edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.UniversityIdRoleAttribute</className>
 			<label>UniversityIdRoleAttribute</label>
 			<description>UniversityIdRoleAttribute</description>
 			<type>RuleAttribute</type>
@@ -56,7 +56,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute!universityId</role>
+					<role>org.kuali.rice.kew.routetemplate.UniversityIdRoleAttribute!universityId</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>

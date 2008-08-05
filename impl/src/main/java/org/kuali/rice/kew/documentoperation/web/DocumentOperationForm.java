@@ -25,9 +25,9 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * struts form bean for {@link DocumentOperationAction}.

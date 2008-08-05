@@ -14,11 +14,11 @@ import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
  * Executes validations that are defined on the EDL Definitions.  These validation exist in a form

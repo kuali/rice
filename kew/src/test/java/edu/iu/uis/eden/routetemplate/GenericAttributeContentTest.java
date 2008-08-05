@@ -24,9 +24,10 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import org.kuali.rice.kew.routetemplate.GenericAttributeContent;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
 
 public class GenericAttributeContentTest extends TestCase {
     private static final String ATTRIB1_CONTENT = "    <boringAttribute>" +

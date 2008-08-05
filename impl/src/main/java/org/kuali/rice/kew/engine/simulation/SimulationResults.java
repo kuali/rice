@@ -19,7 +19,8 @@ package org.kuali.rice.kew.engine.simulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
 
 /**
  * A set of results from the {@link SimulationEngine}.

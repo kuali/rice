@@ -1,8 +1,8 @@
 package org.kuali.rice.kew.doctype;
 
 import org.kuali.rice.kew.docsearch.DocSearchVO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.web.session.UserSession;
 
 public interface DocumentSecurityService {

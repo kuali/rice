@@ -17,6 +17,8 @@ package edu.iu.uis.eden.security.admin;
 
 import java.security.KeyStore;
 
+import org.kuali.rice.kew.security.admin.JavaSecurityManagementService;
+
 /**
  * This interface is 
  * 

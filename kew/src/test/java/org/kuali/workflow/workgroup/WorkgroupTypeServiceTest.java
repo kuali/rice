@@ -18,9 +18,9 @@ package org.kuali.workflow.workgroup;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  * Tests interaction with the default WorkgroupTypeService implementation.

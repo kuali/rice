@@ -173,8 +173,8 @@
 		</property>
 	</bean>
 
-	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
-	<bean id="ksbJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
+	<bean id="digitalSignatureService" class="org.kuali.rice.kew.security.DigitalSignatureServiceImpl" lazy-init="true" />
+	<bean id="ksbJavaSecurityManagementService" class="org.kuali.rice.kew.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
 	<bean id="enRepeatTopicInvokerQueue" class="org.kuali.rice.ksb.messaging.RepeatTopicInvokerQueueImpl" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->

@@ -19,8 +19,8 @@ package org.kuali.rice.kew.actions.asyncservices;
 import java.util.Set;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

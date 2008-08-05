@@ -45,6 +45,7 @@ import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
@@ -55,7 +56,6 @@ import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 
-import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

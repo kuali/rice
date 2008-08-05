@@ -16,7 +16,7 @@
   <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl"/>
 </jdbc-connection-descriptor>
 
-<class-descriptor class="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" table="EN_DOC_HDR_T" >
+<class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" table="EN_DOC_HDR_T" >
     <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT"
       primarykey="true" autoincrement="true" sequence-name="SEQ_DOCUMENT_ROUTE_HEADER" />
     <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
@@ -73,10 +73,10 @@
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueContent" table="EN_DOC_HDR_CNTNT_T" >
+  <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent" table="EN_DOC_HDR_CNTNT_T" >
   <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor name="documentContent" column="DOC_CNTNT_TXT" jdbc-type="CLOB"
-    conversion="edu.iu.uis.eden.security.OjbEncryptDecryptFieldConversion"/>
+    conversion="org.kuali.rice.kew.security.OjbEncryptDecryptFieldConversion"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.notes.Note" table="EN_DOC_NTE_T">
@@ -104,7 +104,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension" table="EN_DOC_HDR_T" >
+  <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" table="EN_DOC_HDR_T" >
     <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT"
       primarykey="true" autoincrement="true" sequence-name="SEQ_DOCUMENT_ROUTE_HEADER" />
     <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
@@ -143,7 +143,7 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
   </class-descriptor>
@@ -167,7 +167,7 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
   </class-descriptor>
@@ -190,7 +190,7 @@
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
   </class-descriptor>
@@ -253,7 +253,7 @@
     	<foreignkey field-ref="actionTakenId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-      class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader">
+      class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
@@ -284,7 +284,7 @@
     <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="VARCHAR"/>
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -298,7 +298,7 @@
     <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="DECIMAL"/>
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -312,7 +312,7 @@
     <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="BIGINT"/>
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -326,7 +326,7 @@
     <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="TIMESTAMP"/>
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -391,7 +391,7 @@
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType"
@@ -400,7 +400,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.useroptions.UserOptions" table="EN_USR_OPTN_T">
+  <class-descriptor class="org.kuali.rice.kew.useroptions.UserOptions" table="EN_USR_OPTN_T">
     <field-descriptor name="optionId" column="PRSN_OPTN_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="optionVal" column="PRSN_OPTN_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="workflowId" column="PRSN_EN_ID" jdbc-type="VARCHAR" primarykey="true" />
@@ -413,29 +413,29 @@
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleTemplate" table="EN_RULE_TMPL_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleTemplate" table="EN_RULE_TMPL_T">
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_TMPL_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_TMPL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="DLGN_RULE_TMPL_ID" name="delegationTemplateId" jdbc-type="BIGINT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor name="delegationTemplate" class-ref="edu.iu.uis.eden.routetemplate.RuleTemplate"
+    <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.routetemplate.RuleTemplate"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="delegationTemplateId"/>
     </reference-descriptor>
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="edu.iu.uis.eden.routetemplate.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.routetemplate.RuleTemplateAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleTemplateId" />
     </collection-descriptor>
-    <collection-descriptor name="ruleTemplateOptions" element-class-ref="edu.iu.uis.eden.routetemplate.RuleTemplateOption"
+    <collection-descriptor name="ruleTemplateOptions" element-class-ref="org.kuali.rice.kew.routetemplate.RuleTemplateOption"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleTemplateId" />
     </collection-descriptor>
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleTemplateOption" table="EN_RULE_TMPL_OPTN_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleTemplateOption" table="EN_RULE_TMPL_OPTN_T">
     <field-descriptor column="RULE_TMPL_OPTN_ID" name="ruleTemplateOptionId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_RULE_TMPL_OPTN" />
 
@@ -444,14 +444,14 @@
     <field-descriptor column="RULE_TMPL_OPTN_VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
 
-    <reference-descriptor name="ruleTemplate" class-ref="edu.iu.uis.eden.routetemplate.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.routetemplate.RuleTemplate"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateId"/>
     </reference-descriptor>
   </class-descriptor>
 
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleAttribute" table="EN_RULE_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleAttribute" table="EN_RULE_ATTRIB_T">
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_ATTRIB_NM" name="name" jdbc-type="VARCHAR" />
@@ -462,13 +462,13 @@
     <field-descriptor column="RULE_ATTRIB_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTRIB_XML_RTE_TXT" name="xmlConfigData" jdbc-type="CLOB" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="edu.iu.uis.eden.routetemplate.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.routetemplate.RuleTemplateAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleAttributeId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleTemplateAttribute" table="EN_RULE_TMPL_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleTemplateAttribute" table="EN_RULE_TMPL_ATTRIB_T">
     <field-descriptor column="RULE_TMPL_ATTRIB_ID" name="ruleTemplateAttributeId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="BIGINT" />
@@ -478,21 +478,21 @@
     <field-descriptor column="DSPL_ORD" name="displayOrder" jdbc-type="INTEGER" />
     <field-descriptor column="DFLT_VAL" name="defaultValue" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" locking="true" />
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="ruleAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleTemplate" name="ruleTemplate"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleTemplate" name="ruleTemplate"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateId" />
     </reference-descriptor>
-    <collection-descriptor name="ruleExtensions" element-class-ref="edu.iu.uis.eden.routetemplate.RuleExtension"
+    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.routetemplate.RuleExtension"
         auto-delete="false" auto-retrieve="false" auto-update="false" proxy="true">
       <inverse-foreignkey field-ref="ruleTemplateAttributeId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleBaseValues" table="EN_RULE_BASE_VAL_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleBaseValues" table="EN_RULE_BASE_VAL_T">
     <field-descriptor column="RULE_BASE_VAL_ID" name="ruleBaseValuesId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_NM" name="name" jdbc-type="VARCHAR" />
@@ -513,49 +513,49 @@
     <field-descriptor column="RULE_BASE_VAL_DLGN_IND" name="delegateRule" jdbc-type="BIT" />
     <field-descriptor column="RULE_BASE_VAL_ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="ruleTemplate" class-ref="edu.iu.uis.eden.routetemplate.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.routetemplate.RuleTemplate"
         auto-delete="false" auto-retrieve="true" auto-update="false">
         <foreignkey field-ref="ruleTemplateId" />
     </reference-descriptor>
-    <reference-descriptor name="ruleExpressionDef" class-ref="edu.iu.uis.eden.routetemplate.RuleExpressionDef"
+    <reference-descriptor name="ruleExpressionDef" class-ref="org.kuali.rice.kew.routetemplate.RuleExpressionDef"
         auto-delete="true" auto-retrieve="true" auto-update="true">
         <foreignkey field-ref="ruleExpressionId" />
     </reference-descriptor>
-    <collection-descriptor name="responsibilities" element-class-ref="edu.iu.uis.eden.routetemplate.RuleResponsibility"
+    <collection-descriptor name="responsibilities" element-class-ref="org.kuali.rice.kew.routetemplate.RuleResponsibility"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" />
     </collection-descriptor>
-    <collection-descriptor name="ruleExtensions" element-class-ref="edu.iu.uis.eden.routetemplate.RuleExtension"
+    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.routetemplate.RuleExtension"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" />
     </collection-descriptor>
   </class-descriptor>
 
   <!-- Mapping for RuleExpressionDef/EN_RULE_EXPR_T; 1-to-1 relationship with Rule/RuleBaseValues/EN_RULE_BASE_VAL_T -->
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleExpressionDef" table="EN_RULE_EXPR_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleExpressionDef" table="EN_RULE_EXPR_T">
     <field-descriptor column="RULE_EXPR_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RULE_EXPR"/>
     <field-descriptor column="RULE_EXPR_TYP" name="type" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_EXPR" name="expression" jdbc-type="VARCHAR" nullable="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleDelegation" table="EN_DLGN_RSP_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleDelegation" table="EN_DLGN_RSP_T">
   	<field-descriptor column="DLGN_RULE_ID" name="ruleDelegationId" jdbc-type="BIGINT" primarykey="true" sequence-name="SEQ_ROUTE_TEMPLATE" autoincrement="true"/>
   	<field-descriptor column="RULE_RSP_ID" name="ruleResponsibilityId" jdbc-type="BIGINT"/>
   	<field-descriptor column="DLGN_RULE_BASE_VAL_ID" name="delegateRuleId" jdbc-type="BIGINT" />
   	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleBaseValues" name="delegationRuleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleBaseValues" name="delegationRuleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="delegateRuleId" />
     </reference-descriptor>
 
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleResponsibility" name="ruleResponsibility"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleResponsibility" name="ruleResponsibility"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
     	<foreignkey field-ref="ruleResponsibilityId" />
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleResponsibility" table="EN_RULE_RSP_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleResponsibility" table="EN_RULE_RSP_T">
     <field-descriptor column="RULE_RSP_ID" name="ruleResponsibilityKey" jdbc-type="BIGINT" primarykey="true" sequence-name="SEQ_RESPONSIBILITY_ID" autoincrement="true"/>
     <field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="BIGINT"/>
     <field-descriptor column="RULE_BASE_VAL_ID" name="ruleBaseValuesId" jdbc-type="BIGINT" />
@@ -566,47 +566,47 @@
     <field-descriptor column="RULE_RSP_APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
 
-	  <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleBaseValues" name="ruleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
+	  <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleBaseValues" name="ruleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleBaseValuesId" />
     </reference-descriptor>
 
     <!-- Uses a ManageableArrayList because we never want to delete RuleDelegation objects from the database -->
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.routetemplate.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.routetemplate.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
       collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
     	<inverse-foreignkey field-ref="ruleResponsibilityId" />
-        <!-- <query-customizer class="edu.iu.uis.eden.routetemplate.dao.RuleDelegationQueryCustomizer"/> -->
+        <!-- <query-customizer class="org.kuali.rice.kew.routetemplate.dao.RuleDelegationQueryCustomizer"/> -->
     </collection-descriptor>
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleExtension" table="EN_RULE_EXT_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleExtension" table="EN_RULE_EXT_T">
     <field-descriptor column="RULE_EXT_ID" name="ruleExtensionId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_TMPL_ATTRIB_ID" name="ruleTemplateAttributeId" jdbc-type="BIGINT" />
     <field-descriptor column="RULE_BASE_VAL_ID" name="ruleBaseValuesId" jdbc-type="BIGINT" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleBaseValues" name="ruleBaseValues"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleBaseValues" name="ruleBaseValues"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleBaseValuesId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleTemplateAttribute" name="ruleTemplateAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleTemplateAttribute" name="ruleTemplateAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateAttributeId" />
     </reference-descriptor>
-    <collection-descriptor name="extensionValues" element-class-ref="edu.iu.uis.eden.routetemplate.RuleExtensionValue"
+    <collection-descriptor name="extensionValues" element-class-ref="org.kuali.rice.kew.routetemplate.RuleExtensionValue"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleExtensionId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleExtensionValue" table="EN_RULE_EXT_VAL_T">
+  <class-descriptor class="org.kuali.rice.kew.routetemplate.RuleExtensionValue" table="EN_RULE_EXT_VAL_T">
     <field-descriptor column="RULE_EXT_VAL_ID" name="ruleExtensionValueId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_EXT_ID" name="ruleExtensionId" jdbc-type="BIGINT" />
     <field-descriptor column="RULE_EXT_VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_EXT_VAL_KEY" name="key" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleExtension" name="extension"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleExtension" name="extension"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleExtensionId" />
     </reference-descriptor>
@@ -934,7 +934,7 @@
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.workflow.workgroup.WorkgroupType" name="workgroupType">
       <foreignkey field-ref="workgroupTypeId"/>
     </reference-descriptor>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="attribute">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routetemplate.RuleAttribute" name="attribute">
       <foreignkey field-ref="attributeId"/>
     </reference-descriptor>
   </class-descriptor>
@@ -1052,7 +1052,7 @@
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="roleId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="ruleAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.routetemplate.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>

@@ -34,6 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.kuali.workflow.test.TestUtils;
 import org.w3c.dom.Document;
@@ -42,7 +43,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
 

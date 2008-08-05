@@ -30,14 +30,14 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleDelegation;
-import edu.iu.uis.eden.routetemplate.RuleExtension;
-import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
-import edu.iu.uis.eden.routetemplate.RuleResponsibility;
 
 /**
  * Tests the RuleXmlExporter by importing XML, exporting it, and then re-importing the xml.<br><br>

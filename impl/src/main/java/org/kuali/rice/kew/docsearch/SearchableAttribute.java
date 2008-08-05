@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 
-import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 
 /**
  * SearchableAttribute must implement this interface

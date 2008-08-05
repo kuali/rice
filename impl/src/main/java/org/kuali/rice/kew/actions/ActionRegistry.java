@@ -22,8 +22,8 @@ import java.util.Map;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

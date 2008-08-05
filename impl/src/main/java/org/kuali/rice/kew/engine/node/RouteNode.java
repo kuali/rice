@@ -38,10 +38,10 @@ import javax.persistence.Version;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.routetemplate.RuleTemplateService;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.RuleTemplate;
-import edu.iu.uis.eden.routetemplate.RuleTemplateService;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;

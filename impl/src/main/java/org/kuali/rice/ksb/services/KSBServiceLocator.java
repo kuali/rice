@@ -20,6 +20,8 @@ import javax.sql.DataSource;
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.service.ServiceFactory;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.security.DigitalSignatureService;
+import org.kuali.rice.kew.security.admin.JavaSecurityManagementService;
 import org.kuali.rice.ksb.messaging.BusAdminService;
 import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.MessageQueueService;
@@ -33,8 +35,6 @@ import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.security.DigitalSignatureService;
-import edu.iu.uis.eden.security.admin.JavaSecurityManagementService;
 
 public class KSBServiceLocator {
 

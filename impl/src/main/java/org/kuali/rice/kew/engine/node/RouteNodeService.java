@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * A service which provides data access for {@link RouteNode}, {@link RouteNodeInstance}, 

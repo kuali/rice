@@ -24,8 +24,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;

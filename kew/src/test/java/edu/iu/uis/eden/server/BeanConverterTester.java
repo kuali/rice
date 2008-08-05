@@ -31,6 +31,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 

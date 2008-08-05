@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  *

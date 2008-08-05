@@ -19,7 +19,8 @@ package org.kuali.rice.kew.engine.node;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
 
 /**
  * Logs {@link RouteNodeInstance} graphs in a format which is indented and easy to read. 

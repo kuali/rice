@@ -32,13 +32,13 @@ import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.useroptions.UserOptions;
+import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.useroptions.UserOptions;
-import edu.iu.uis.eden.useroptions.UserOptionsService;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.KeyValue;
 import edu.iu.uis.eden.workgroup.GroupNameId;

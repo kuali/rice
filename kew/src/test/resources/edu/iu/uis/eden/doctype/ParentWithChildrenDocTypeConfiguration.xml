@@ -6,7 +6,7 @@ version of the parent document type.  Taken from real life UGS edoclite document
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>DepartmentAttribute</name>
-			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>Department Routing</label>
 			<description>Department Routing</description>
 			<type>RuleXmlAttribute</type>
@@ -49,7 +49,7 @@ version of the parent document type.  Taken from real life UGS edoclite document
 		
 		<ruleAttribute>
 			<name>SchoolAttribute</name>
-			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>School/Division Routing</label>
 			<description>School/Division Routing</description>
 			<type>RuleXmlAttribute</type>

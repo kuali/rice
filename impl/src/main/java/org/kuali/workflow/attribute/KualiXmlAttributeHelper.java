@@ -38,12 +38,12 @@ import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 import edu.iu.uis.eden.util.XmlHelper;
 
 public class KualiXmlAttributeHelper {
@@ -75,7 +75,7 @@ public class KualiXmlAttributeHelper {
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
      * 
-     * @see edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
     public Element processConfigXML(Element root) {
@@ -86,7 +86,7 @@ public class KualiXmlAttributeHelper {
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, overwriting the original title in the XML.
      * 
-     * @see edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
     public Element processConfigXML(Element root, String[] xpathExpressionElements) {

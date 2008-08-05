@@ -21,13 +21,13 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleTemplate;
-import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
-import edu.iu.uis.eden.routetemplate.RuleTemplateOption;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 

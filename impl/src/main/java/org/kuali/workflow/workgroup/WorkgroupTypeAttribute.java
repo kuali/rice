@@ -30,8 +30,8 @@ import javax.persistence.Version;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  * Associates WorkgroupTypes to Attributes.

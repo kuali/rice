@@ -19,8 +19,8 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  * Interface representing attributes that are backed by xml.

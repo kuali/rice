@@ -23,8 +23,8 @@ import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.clientapp.DeleteEvent;
 import org.kuali.rice.kew.clientapp.PostProcessorRemote;
+import org.kuali.rice.kew.server.BeanConverter;
 
-import edu.iu.uis.eden.server.BeanConverter;
 
 /**
  * Adapts a {@link PostProcessorRemote} implementation to the {@link PostProcessor} interface.

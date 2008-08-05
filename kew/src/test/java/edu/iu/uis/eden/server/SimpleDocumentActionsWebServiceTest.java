@@ -43,17 +43,18 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.DocumentResponse;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.ErrorResponse;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.NoteDetail;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.NoteResponse;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.StandardResponse;
+import org.kuali.rice.kew.server.SimpleDocumentActionsWebService.UserInRouteLogResponse;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.DocumentResponse;
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.ErrorResponse;
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.NoteDetail;
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.NoteResponse;
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.StandardResponse;
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.UserInRouteLogResponse;
 
 /**
  * Tests SimpleDocumentActionsWebService

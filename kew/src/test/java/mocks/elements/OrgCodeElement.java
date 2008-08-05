@@ -19,9 +19,9 @@ package mocks.elements;
 import org.jdom.Element;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.services.InconsistentDocElementStateException;
+import org.kuali.rice.kew.services.ServiceErrorConstants;
 
-import edu.iu.uis.eden.services.InconsistentDocElementStateException;
-import edu.iu.uis.eden.services.ServiceErrorConstants;
 
 
 /**

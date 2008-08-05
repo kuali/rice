@@ -9,6 +9,6 @@
 		</property>
 	</bean>
 
-	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
+	<bean id="digitalSignatureService" class="org.kuali.rice.kew.security.DigitalSignatureServiceImpl" lazy-init="true" />
 
 </beans>

@@ -24,14 +24,14 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
-import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 public class XPathTest extends BaseRiceTestCase {
 

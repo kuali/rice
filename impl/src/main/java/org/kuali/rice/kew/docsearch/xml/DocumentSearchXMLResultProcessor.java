@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.docsearch.xml;
 
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *

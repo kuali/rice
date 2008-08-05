@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

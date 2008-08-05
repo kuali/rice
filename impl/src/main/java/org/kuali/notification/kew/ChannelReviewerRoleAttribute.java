@@ -27,12 +27,12 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routetemplate.GenericRoleAttribute;
+import org.kuali.rice.kew.routetemplate.QualifiedRoleName;
+import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routetemplate.GenericRoleAttribute;
-import edu.iu.uis.eden.routetemplate.QualifiedRoleName;
-import edu.iu.uis.eden.routetemplate.Role;
-import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 
@@ -62,7 +62,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
 
     /**
-     * @see edu.iu.uis.eden.routetemplate.GenericRoleAttribute#isMatch(edu.iu.uis.eden.routeheader.DocumentContent, java.util.List)
+     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#isMatch(org.kuali.rice.kew.routeheader.DocumentContent, java.util.List)
      */
     @Override
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
@@ -71,7 +71,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
 
     /**
-     * @see edu.iu.uis.eden.routetemplate.GenericWorkflowAttribute#getProperties()
+     * @see org.kuali.rice.kew.routetemplate.GenericWorkflowAttribute#getProperties()
      */
     @Override
     public Map<String, String> getProperties() {
@@ -89,7 +89,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
     
     /**
-     * @see edu.iu.uis.eden.routetemplate.GenericRoleAttribute#getQualifiedRoleNames(java.lang.String, edu.iu.uis.eden.routeheader.DocumentContent)
+     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
     @Override
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
@@ -101,7 +101,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     /**
      * This looks at the reviewers list passed through from KEN and then resolves the individuals that need to actually approve 
      * the message.
-     * @see edu.iu.uis.eden.routetemplate.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, edu.iu.uis.eden.routetemplate.QualifiedRoleName)
+     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, org.kuali.rice.kew.routetemplate.QualifiedRoleName)
      */
     @Override
     protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws EdenUserNotFoundException {

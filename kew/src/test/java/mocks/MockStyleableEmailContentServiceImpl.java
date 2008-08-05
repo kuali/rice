@@ -24,9 +24,9 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

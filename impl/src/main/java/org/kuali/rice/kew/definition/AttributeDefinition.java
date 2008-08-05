@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.definition;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *

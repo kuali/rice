@@ -21,10 +21,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.kuali.rice.kew.edl.EDocLitePostProcessor;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Used by {@link EDocLitePostProcessorTest} to test the {@link #postEvent(Long, Object, String)} method 

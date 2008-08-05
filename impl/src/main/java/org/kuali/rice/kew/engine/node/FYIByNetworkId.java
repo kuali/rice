@@ -27,11 +27,11 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import org.kuali.rice.kew.routetemplate.NetworkIdRoleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
-import edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 

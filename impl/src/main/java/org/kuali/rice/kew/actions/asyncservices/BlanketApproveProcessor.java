@@ -22,8 +22,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actions.BlanketApproveAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

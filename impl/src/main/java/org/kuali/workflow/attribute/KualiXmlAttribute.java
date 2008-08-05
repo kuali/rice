@@ -18,9 +18,9 @@ package org.kuali.workflow.attribute;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 public interface KualiXmlAttribute {
 

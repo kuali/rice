@@ -18,7 +18,8 @@ package org.kuali.rice.kew.plugin.attributes;
 
 import java.util.List;
 
-import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+
 
 /**
  * An interface which can be implemented by a {@link WorkflowAttribute} to allow for

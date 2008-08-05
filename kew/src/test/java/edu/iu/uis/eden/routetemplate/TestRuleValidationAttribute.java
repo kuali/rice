@@ -15,6 +15,8 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import org.kuali.rice.kew.routetemplate.RuleValidationAttribute;
+
 import edu.iu.uis.eden.validation.RuleValidationContext;
 import edu.iu.uis.eden.validation.ValidationResults;
 

@@ -23,13 +23,13 @@ import org.jdom.Element;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleDelegation;
-import edu.iu.uis.eden.routetemplate.RuleExtension;
-import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
-import edu.iu.uis.eden.routetemplate.RuleResponsibility;
-import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
 import edu.iu.uis.eden.xml.XmlConstants;
 import edu.iu.uis.eden.xml.XmlRenderer;
 

@@ -26,10 +26,10 @@ import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

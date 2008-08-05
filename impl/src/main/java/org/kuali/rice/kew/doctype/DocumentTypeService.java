@@ -19,8 +19,8 @@ package org.kuali.rice.kew.doctype;
 import java.util.List;
 
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**

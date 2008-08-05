@@ -55,7 +55,7 @@
 			<parent>EDENSERVICE-DOCS</parent>
 			<description>Rule Maintenance Document</description>
 			<label>Rule Maintenance Document</label>
-			<postProcessorName>edu.iu.uis.eden.routetemplate.RulePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.routetemplate.RulePostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>

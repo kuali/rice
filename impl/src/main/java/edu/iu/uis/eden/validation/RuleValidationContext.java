@@ -16,8 +16,9 @@
  */
 package edu.iu.uis.eden.validation;
 
-import edu.iu.uis.eden.routetemplate.RuleBaseValues;
-import edu.iu.uis.eden.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.routetemplate.RuleDelegation;
+
 import edu.iu.uis.eden.web.session.UserSession;
 
 /**

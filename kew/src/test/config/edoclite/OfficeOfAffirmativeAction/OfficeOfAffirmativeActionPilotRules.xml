@@ -71,7 +71,7 @@
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>
         <responsibility>
-          <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+          <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
           <approvePolicy>F</approvePolicy>
           <actionRequested>K</actionRequested>
           <priority>1</priority>

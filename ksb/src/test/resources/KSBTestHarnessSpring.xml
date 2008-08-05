@@ -209,6 +209,6 @@
 	</bean>
 
 	<bean id="testExceptionHandlerService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
-	<bean id="testJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.MockJavaSecurityManagementServiceImpl" />
+	<bean id="testJavaSecurityManagementService" class="org.kuali.rice.kew.security.admin.MockJavaSecurityManagementServiceImpl" />
 
 </beans>

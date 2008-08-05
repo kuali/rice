@@ -10,7 +10,7 @@
 			<name> 
 				TestAttribute </name>
 			<className>
-				edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute
+				org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute
 			</className>
 			<label> TestAttribute </label>
 			<description> TestAttribute </description>

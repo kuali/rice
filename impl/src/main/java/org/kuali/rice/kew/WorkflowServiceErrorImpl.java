@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.services.ServiceErrorConstants;
+import org.kuali.rice.kew.services.ServiceErrorConstants;
+
 
 
 /**

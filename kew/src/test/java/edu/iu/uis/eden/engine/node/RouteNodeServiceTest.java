@@ -29,9 +29,9 @@ import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
 import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.RouteNodeService;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.test.TestUtilities;
 
 public class RouteNodeServiceTest extends KEWTestCase {

@@ -7,7 +7,7 @@
             <name>KRABizRuleAttribute</name>
             <description>KRABizRuleAttribute description</description>
             <label>KRABizRuleAttribute label</label>
-            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <type>RuleXmlAttribute</type>
             <routingConfig>
                 <fieldDef name="field" title="some field" workflowType="ALL">
@@ -72,7 +72,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
-                import edu.iu.uis.eden.routetemplate.*
+                import org.kuali.rice.kew.routetemplate.*
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule1 is executing...'
@@ -133,7 +133,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
-                import edu.iu.uis.eden.routetemplate.*
+                import org.kuali.rice.kew.routetemplate.*
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule4 is executing...'
@@ -155,7 +155,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
-                import edu.iu.uis.eden.routetemplate.*
+                import org.kuali.rice.kew.routetemplate.*
                 print "KRABizRule5 is executing..."
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
@@ -176,7 +176,7 @@
             -->
             <expression type="BSF:groovy">
                 import java.util.*
-                import edu.iu.uis.eden.routetemplate.*
+                import org.kuali.rice.kew.routetemplate.*
 
                 responsibilityPriority = 0
                 responsibilities = new ArrayList()

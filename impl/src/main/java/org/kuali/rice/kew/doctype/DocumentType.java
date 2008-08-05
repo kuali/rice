@@ -58,10 +58,10 @@ import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
+import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
-import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.CodeTranslator;
 import edu.iu.uis.eden.util.Utilities;

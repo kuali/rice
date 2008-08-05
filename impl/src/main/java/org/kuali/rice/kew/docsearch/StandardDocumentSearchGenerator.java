@@ -38,10 +38,10 @@ import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.user.WorkflowUser;

@@ -4,19 +4,19 @@
 <script>
   <!-- load the expected output -->
 
-  <variable name="AFTER_INITIATION" value="res:/edu/iu/uis/eden/edoclite/AfterInitiation.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_INITIATION" value="res:/org/kuali/rice/kew/edoclite/AfterInitiation.html" filters="CANONICALIZE"/>
 
-  <variable name="AFTER_CREATE" value="res:/edu/iu/uis/eden/edoclite/AfterCreate.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_CREATE" value="res:/org/kuali/rice/kew/edoclite/AfterCreate.html" filters="CANONICALIZE"/>
   <!--
-  <variable name="AFTER_CREATE" value="res:/edu/iu/uis/eden/edoclite/AfterCreate_novalue.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_CREATE" value="res:/org/kuali/rice/kew/edoclite/AfterCreate_novalue.html" filters="CANONICALIZE"/>
   -->
 
-  <variable name="AFTER_ROUTE" value="res:/edu/iu/uis/eden/edoclite/AfterRoute.html" filters="CANONICALIZE"/>
-  <variable name="AFTER_PICKUP" value="res:/edu/iu/uis/eden/edoclite/AfterPickup.html" filters="CANONICALIZE"/>
-  <variable name="AFTER_APPROVAL" value="res:/edu/iu/uis/eden/edoclite/AfterApproval.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_ROUTE" value="res:/org/kuali/rice/kew/edoclite/AfterRoute.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_PICKUP" value="res:/org/kuali/rice/kew/edoclite/AfterPickup.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_APPROVAL" value="res:/org/kuali/rice/kew/edoclite/AfterApproval.html" filters="CANONICALIZE"/>
 
-  <variable name="AFTER_SECOND_PICKUP" value="res:/edu/iu/uis/eden/edoclite/AfterSecondPickup.html" filters="CANONICALIZE"/>
-  <variable name="AFTER_SECOND_APPROVAL" value="res:/edu/iu/uis/eden/edoclite/AfterSecondApproval.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_SECOND_PICKUP" value="res:/org/kuali/rice/kew/edoclite/AfterSecondPickup.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_SECOND_APPROVAL" value="res:/org/kuali/rice/kew/edoclite/AfterSecondApproval.html" filters="CANONICALIZE"/>
 
   <!--
     example of using urls

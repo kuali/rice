@@ -40,7 +40,7 @@ public class EDLGlobalConfigFactoryTest extends KEWTestCase {
 	 */
 	@Test public void testEDLGlobalConfigParsing() throws Exception {
 		
-		EDLGlobalConfig edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig("classpath:edu/iu/uis/eden/edl/TestEDLConfig.xml");
+		EDLGlobalConfig edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig("classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 		Map preProcessors = edlGlobalConfig.getPreProcessors();
 		Map postProcessors = edlGlobalConfig.getPostProcessors();
 		Map stateComps = edlGlobalConfig.getStateComponents();

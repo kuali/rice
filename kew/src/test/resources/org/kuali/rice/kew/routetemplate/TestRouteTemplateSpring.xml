@@ -15,7 +15,7 @@
   <bean id="appContext" class="org.springframework.context.support.ClassPathXmlApplicationContext">
   	<constructor-arg>
       <list>
-        <value>edu/iu/uis/eden/routetemplate/TestRouteTemplateBeanDefs.xml</value>
+        <value>org/kuali/rice/kew/routetemplate/TestRouteTemplateBeanDefs.xml</value>
       </list>
     </constructor-arg>
     <constructor-arg>

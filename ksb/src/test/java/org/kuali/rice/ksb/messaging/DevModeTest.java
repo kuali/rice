@@ -41,7 +41,7 @@ public class DevModeTest extends KSBTestCase {
 	public void setUp() throws Exception {
 		System.setProperty("dev.mode", "true");
 		// included in ksb-test-config.xml
-		System.setProperty("additional.config.locations", "classpath:edu/iu/uis/eden/messaging/dev_mode_config.xml");
+		System.setProperty("additional.config.locations", "classpath:org/kuali/rice/ksb/messaging/dev_mode_config.xml");
 		super.setUp();
 	}
 

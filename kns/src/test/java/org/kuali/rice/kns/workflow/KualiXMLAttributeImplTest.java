@@ -80,7 +80,7 @@ public class KualiXMLAttributeImplTest extends TestBase {
         super.setUp();
         // read in the file and make it a string
 
-//        InputStream is = new FileInputStream(getBaseDir() + "/src/test/resources/edu/iu/uis/eden/batch/data/RuleAttributeContent.xml");
+//        InputStream is = new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleAttributeContent.xml");
 //        is.
 //        if ((StringUtils.isNotBlank(ruleAttributeXml)) && (StringUtils.isNotBlank(searchAttributeXml))) {
 //            return;

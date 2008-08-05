@@ -4,8 +4,8 @@
      response -->
 <script>
   <!-- load the expected output -->
-  <variable name="AFTER_GET" value="res:/edu/iu/uis/eden/test/web/TestServletAfterGet.html" filters="CANONICALIZE"/>
-  <variable name="AFTER_POST" value="res:/edu/iu/uis/eden/test/web/TestServletAfterPost.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_GET" value="res:/org/kuali/rice/kew/test/web/TestServletAfterGet.html" filters="CANONICALIZE"/>
+  <variable name="AFTER_POST" value="res:/org/kuali/rice/kew/test/web/TestServletAfterPost.html" filters="CANONICALIZE"/>
 
   <user>quickstart</user>
 

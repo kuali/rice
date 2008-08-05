@@ -35,7 +35,7 @@ import org.kuali.workflow.test.KEWTestCase;
 public class PluginManifestParserTest extends KEWTestCase {
 
     private PluginManifestParser parser = new PluginManifestParser();
-    private static final String MANIFEST_PATH_SUFFIX = "/src/test/resources/edu/iu/uis/eden/plugin/workflow.xml";
+    private static final String MANIFEST_PATH_SUFFIX = "/src/test/resources/org/kuali/rice/kew/plugin/workflow.xml";
     private static final String EDEN_NAME = "jdbc/dev/en/EDEN";
     private static final String SUDS_NAME = "jdbc/dev/en/SUDS";
     private static final String DS_TYPE = "javax.sql.DataSource";

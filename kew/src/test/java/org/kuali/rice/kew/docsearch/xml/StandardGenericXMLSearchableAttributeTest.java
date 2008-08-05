@@ -770,7 +770,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
 //    protected String getAltAppContextFile() {
 //    	if (this.getName().equals("testIndexingRequeue")) {
-//    		return "edu/iu/uis/eden/docsearch/xml/SearchableAttributeProcessorSpring.xml";
+//    		return "org/kuali/rice/kew/docsearch/xml/SearchableAttributeProcessorSpring.xml";
 //    	} else {
 //    		return null;
 //    	}

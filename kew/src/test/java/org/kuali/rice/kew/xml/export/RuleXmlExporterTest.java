@@ -51,11 +51,11 @@ import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 public class RuleXmlExporterTest extends XmlExporterTestCase {
 
 	@Test public void testExport() throws Exception {
-        loadXmlFile("edu/iu/uis/eden/actions/ActionsConfig.xml");
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/edu/iu/uis/eden/batch/data/RuleAttributeContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/edu/iu/uis/eden/batch/data/RuleTemplateContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/edu/iu/uis/eden/batch/data/DocumentTypeContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/edu/iu/uis/eden/batch/data/RuleContent.xml"));
+        loadXmlFile("org/kuali/rice/kew/actions/ActionsConfig.xml");
+        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleAttributeContent.xml"));
+        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleTemplateContent.xml"));
+        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/DocumentTypeContent.xml"));
+        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleContent.xml"));
         assertExport();
     }
 

@@ -46,7 +46,7 @@ public class OldClearDatabaseLifecycle extends BaseLifecycle {
 
     protected static final Logger LOG = Logger.getLogger(OldClearDatabaseLifecycle.class);
 
-    private static final String SPRING_FILE = "edu/iu/uis/eden/test/TestBootstrapSpring.xml";
+    private static final String SPRING_FILE = "org/kuali/rice/kew/test/TestBootstrapSpring.xml";
     private static final String DATA_SOURCE = "dataSource";
     private static final String TRANSACTION_MANAGER = "transactionManager";
 

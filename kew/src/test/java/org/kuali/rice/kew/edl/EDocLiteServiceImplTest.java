@@ -187,7 +187,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
      * by the EDLControllerFactory.
      */
     @Test public void testConfigCaching() throws Exception {
-    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:edu/iu/uis/eden/edl/TestEDLConfig.xml");
+    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
     	loadXmlFile("EDocLiteContent.xml");
         loadXmlFile("edlstyle.xml");
@@ -230,7 +230,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
      * the "compiled" stylesheets.
      */
     @Test public void testStyleCaching() throws Exception {
-    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:edu/iu/uis/eden/edl/TestEDLConfig.xml");
+    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
     	loadXmlFile("EDocLiteContent.xml");
         loadXmlFile("edlstyle.xml");

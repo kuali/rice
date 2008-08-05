@@ -168,7 +168,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
     private static void loadProperties() {
         Properties properties = new Properties();
 
-        InputStream in = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream("edu/iu/uis/eden/ApplicationResources.properties");
+        InputStream in = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream("org/kuali/rice/kew/ApplicationResources.properties");
         try {
             if (in == null) {
             	LOG.warn("org.kuali.rice.kew.ApplicationResources.properties not found in CLASSPATH, using defaults.");

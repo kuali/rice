@@ -250,7 +250,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             LOG.warn("Could not find specified style, " + styleName + ", using default");
             try {
             
-                style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:edu/iu/uis/eden/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
+                style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:org/kuali/rice/kew/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
             } catch (Exception tce) {
                 String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC; 
                 LOG.error(message, tce);

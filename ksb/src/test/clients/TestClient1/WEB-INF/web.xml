@@ -4,7 +4,7 @@
 
     <context-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:edu/iu/uis/eden/testclient1/resources/TestClient1SpringBeans.xml</param-value>
+      <param-value>classpath:org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml</param-value>
     </context-param>
     
     <context-param>

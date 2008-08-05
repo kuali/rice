@@ -18,7 +18,7 @@ package org.kuali.rice.kew.services;
 
 /**
  * A random assortment of constants which are used by the code in the
- * edu.iu.uuis.eden.services.docelements package.
+ * org.kuali.rice.kew.services package.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

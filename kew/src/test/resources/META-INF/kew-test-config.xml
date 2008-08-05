@@ -28,12 +28,6 @@
 	<param name="webservices.settings.url">${kew.url.host}:${http.service.port}/en-test/services</param>
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
-	<param name="gds.settings.path">/opt/j2ee/dev/edu/iu/uis/settings/en/MYGDS.properties</param>
-	<param name="gds.security.path">/opt/sa_forms/java/dev/edu/iu/uis/security/en/MYGDS.properties</param>
-	<param name="ads.security.path">/opt/sa_forms/java/dev/edu/iu/uis/security/en/MYADS.properties</param>
-	<!-- for now these are dummy values and purely for Spring token replacement startup.
-		The plugins are not currently being started -->
-	<!-- <param name="en.plugin.dir">${workflow.base}/../../../test/plugin</param>
 	<param name="plugin.dir">${workflow.base}/../../../test/plugin</param> -->
 	<param name="en.plugin.dir">./work/unit-test/en-plugins</param>
 	<param name="plugin.dir">./work/unit-test/plugins</param>

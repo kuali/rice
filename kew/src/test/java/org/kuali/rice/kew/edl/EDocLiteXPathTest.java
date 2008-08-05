@@ -53,7 +53,7 @@ import org.w3c.dom.Text;
 public class EDocLiteXPathTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(XPathTest.class);
 
-    private static final String STYLESHEET_RESOURCE = "edu/iu/uis/eden/edoclite/DefaultStyle.xsl";
+    private static final String STYLESHEET_RESOURCE = "org/kuali/rice/kew/edoclite/DefaultStyle.xsl";
     private static final String INITIAL_EDOC_XML = "initial_edldoc.xml";
     private static final String SAMPLE_EDOC_XML = "sample_edldoc.xml";
 

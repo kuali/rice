@@ -22,12 +22,12 @@ import org.kuali.workflow.test.KEWTestCase;
 public abstract class XmlExporterTestCase extends KEWTestCase {
 
 	@Test public void testExportActionConfig() throws Exception { 
-        loadXmlFile("edu/iu/uis/eden/actions/ActionsConfig.xml");
+        loadXmlFile("org/kuali/rice/kew/actions/ActionsConfig.xml");
         assertExport();
     }
     
 	@Test public void testExportEngineConfig() throws Exception {
-        loadXmlFile("edu/iu/uis/eden/engine/EngineConfig.xml");
+        loadXmlFile("org/kuali/rice/kew/engine/EngineConfig.xml");
         assertExport();
     }
         

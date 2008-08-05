@@ -33,8 +33,8 @@ import org.kuali.workflow.test.KEWTestCase;
 /**
  * Tests that the extra classpath features of the plugin work as advertised.
  *
- * <p>Adds the test/src/edu/iu/uis/eden/plugin/classes directory to the extra classes on
- * the classpath.  Adds the test/src/edu/iu/uis/eden/plugin/lib directory to the extra
+ * <p>Adds the test/src/org/kuali/rice/kew/plugin/classes directory to the extra classes on
+ * the classpath.  Adds the test/src/org/kuali/rice/kew/plugin/lib directory to the extra
  * libs on the classpath.  Within the lib directory is a jar called extraclasspath.jar.
  * Inside this jar is a single resource called extraclasspath-lib.txt.
  *
@@ -50,7 +50,7 @@ public class ExtraClassPathTest extends KEWTestCase {
 		// test harness starts up.  That way the plugin will be loaded at startup time.
         super.setUp();
 		TestUtilities.initializePluginDirectories();
-		String pluginZipFileLocation = getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/extraclasspathtest.zip";
+		String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/extraclasspathtest.zip";
 		File pluginZipFile = new File(pluginZipFileLocation);
 		assertTrue("File " + pluginZipFileLocation + " should exist", pluginZipFile.exists());
 		assertTrue("File " + pluginZipFileLocation + " should be a file", pluginZipFile.isFile());

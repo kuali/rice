@@ -81,7 +81,7 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("There should still be no plugins.", 0, registry.getPluginEnvironments().size());
 		
 		// now let's copy a plugin over and run the hot deployer
-        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/ziptest.zip";
+        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip";
 		File pluginZipFile = new File(pluginZipFileLocation);
 		assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
 		assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());
@@ -142,7 +142,7 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("Resource loader should have no children.", 0, registry.getResourceLoaders().size());
 				
         // now let's copy a plugin over and run the hot deployer
-        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/ziptest.zip";
+        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip";
         File pluginZipFile = new File(pluginZipFileLocation);
         assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
         assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());

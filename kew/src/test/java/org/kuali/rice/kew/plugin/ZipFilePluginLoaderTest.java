@@ -94,7 +94,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	    Core.init(config);
 	}
 
-	File pluginZipFile = new File(this.getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/ziptest.zip");
+	File pluginZipFile = new File(this.getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip");
 	assertTrue(pluginZipFile.exists());
 	assertTrue(pluginZipFile.isFile());
 

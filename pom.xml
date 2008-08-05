@@ -180,8 +180,6 @@
 		<module>ksb</module>
         <module>kcb</module>
 		<module>kns</module>
-        <module>kim-authn-client</module>
-        <module>kim-authn-sesn</module>
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>

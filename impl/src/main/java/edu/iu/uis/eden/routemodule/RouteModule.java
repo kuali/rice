@@ -18,9 +18,10 @@ package edu.iu.uis.eden.routemodule;
 
 import java.util.List;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.util.ResponsibleParty;
 
 /**

@@ -21,12 +21,12 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.server.WorkflowDocumentActions;
-import edu.iu.uis.eden.server.WorkflowUtility;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

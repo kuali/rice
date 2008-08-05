@@ -16,9 +16,10 @@
  */
 package edu.iu.uis.eden.docsearch.xml;
 
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
@@ -26,7 +27,7 @@ public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultP
     
     @Override
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), statusChangeEvent.getRouteHeaderId());
+		WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), statusChangeEvent.getRouteHeaderId());
 		doc.setTitle("I'm a title - I should increment the lockVersion Number of this document");
 		doc.saveRoutingData();
 		return new ProcessDocReport(true);

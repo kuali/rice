@@ -29,8 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceError;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
@@ -754,7 +755,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	// add a default create date
         	Calendar calendar = Calendar.getInstance();
         	calendar.add(Calendar.DATE, defaultCreateDateDaysAgoValue.intValue());
-        	criteria.setFromDateCreated(EdenConstants.getDefaultDateFormat().format(calendar.getTime()));
+        	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));

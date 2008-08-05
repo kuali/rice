@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
+
 
 @Entity
 @Table(name="EN_EDL_DMP_T")
@@ -114,7 +116,7 @@ public class Dump {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = EdenConstants.getDefaultDateFormat();
+        DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(date);
     }
 	public void setDocId(Long docId) {

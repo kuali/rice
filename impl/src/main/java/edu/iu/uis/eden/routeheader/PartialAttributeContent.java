@@ -32,10 +32,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.kuali.rice.kew.util.EdenConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;

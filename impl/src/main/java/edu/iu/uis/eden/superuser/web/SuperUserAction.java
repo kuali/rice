@@ -30,18 +30,18 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.server.BeanConverter;
-import edu.iu.uis.eden.server.WorkflowDocumentActions;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.WorkflowAction;
@@ -209,7 +209,7 @@ public class SuperUserAction extends WorkflowAction {
 
         superUserForm.setDocId(superUserForm.getRouteHeaderId());
         if (superUserForm.getDocId() != null) {
-            superUserForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
+            superUserForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
             superUserForm.establishVisibleActionRequestCds();
         }
 

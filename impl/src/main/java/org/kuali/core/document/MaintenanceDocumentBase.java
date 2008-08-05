@@ -52,6 +52,7 @@ import org.kuali.core.util.UrlFactory;
 import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -59,7 +60,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * The maintenance xml structure will be: <maintainableDocumentContents maintainableImplClass="className">

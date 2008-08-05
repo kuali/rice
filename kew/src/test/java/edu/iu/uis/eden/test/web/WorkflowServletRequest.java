@@ -20,9 +20,9 @@ package edu.iu.uis.eden.test.web;
 
 import javax.servlet.ServletContext;
 
+import org.kuali.rice.kew.util.EdenConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.AuthenticationUserId;

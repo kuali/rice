@@ -29,22 +29,18 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -126,7 +122,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     protected static void addTimestampElement(Document doc, Element baseElement, String elementName, Timestamp elementData) {
-        addTextElement(doc, baseElement, elementName, EdenConstants.getDefaultDateFormat().format(elementData));
+        addTextElement(doc, baseElement, elementName, RiceConstants.getDefaultDateFormat().format(elementData));
     }
     
     protected static void addDelegatorElement(Document doc, Element baseElement, ActionItem actionItem) {

@@ -36,8 +36,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
@@ -140,7 +140,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         if (StringUtils.isNotBlank(parameterFormatPattern)) {
             return new SimpleDateFormat(parameterFormatPattern);
         }
-        return EdenConstants.getDefaultDateFormat();
+        return RiceConstants.getDefaultDateFormat();
     }
 
 	/* (non-Javadoc)

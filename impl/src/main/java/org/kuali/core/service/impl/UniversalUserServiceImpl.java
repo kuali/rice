@@ -52,14 +52,14 @@ import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.BaseUserService;
 import edu.iu.uis.eden.user.BaseWorkflowUser;
@@ -370,7 +370,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         universalUserDao.save(simpleUser);
     }
 
-    public WorkflowUser getWorkflowUser(UserIdVO userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException {
         return universalUserDao.getWorkflowUser(getWorkflowUserId(userId));
     }
 
@@ -392,19 +392,19 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         return universalUserDao.search(user, useWildcards);
     }
 
-    private edu.iu.uis.eden.user.UserId getWorkflowUserId(UserIdVO userId) throws EdenUserNotFoundException {
+    private edu.iu.uis.eden.user.UserId getWorkflowUserId(UserIdDTO userId) throws EdenUserNotFoundException {
         edu.iu.uis.eden.user.UserId userIdInterface = null;
-        if (userId instanceof EmplIdVO) {
-            userIdInterface = new edu.iu.uis.eden.user.EmplId(((EmplIdVO) userId).getEmplId());
+        if (userId instanceof EmplIdDTO) {
+            userIdInterface = new edu.iu.uis.eden.user.EmplId(((EmplIdDTO) userId).getEmplId());
         }
-        else if (userId instanceof NetworkIdVO) {
-            userIdInterface = new edu.iu.uis.eden.user.AuthenticationUserId(((NetworkIdVO) userId).getNetworkId());
+        else if (userId instanceof NetworkIdDTO) {
+            userIdInterface = new edu.iu.uis.eden.user.AuthenticationUserId(((NetworkIdDTO) userId).getNetworkId());
         }
-        else if (userId instanceof UuIdVO) {
-            userIdInterface = new edu.iu.uis.eden.user.UuId(((UuIdVO) userId).getUuId());
+        else if (userId instanceof UuIdDTO) {
+            userIdInterface = new edu.iu.uis.eden.user.UuId(((UuIdDTO) userId).getUuId());
         }
-        else if (userId instanceof WorkflowIdVO) {
-            userIdInterface = new WorkflowUserId(((WorkflowIdVO) userId).getWorkflowId());
+        else if (userId instanceof WorkflowIdDTO) {
+            userIdInterface = new WorkflowUserId(((WorkflowIdDTO) userId).getWorkflowId());
         }
         else {
             throw new EdenUserNotFoundException("Attempting to fetch user with unknown id type");

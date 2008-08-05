@@ -15,8 +15,9 @@
  */
 package edu.iu.uis.eden.removereplace;
 
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;

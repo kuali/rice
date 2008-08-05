@@ -16,10 +16,11 @@
  */
 package edu.iu.uis.eden.routemodule;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.simulation.SimulationCriteria;
 import edu.iu.uis.eden.engine.simulation.SimulationEngine;
 import edu.iu.uis.eden.engine.simulation.SimulationResults;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 public class RoutingReportServiceImpl implements RoutingReportService {

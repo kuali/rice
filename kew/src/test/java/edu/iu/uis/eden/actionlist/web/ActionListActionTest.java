@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWHtmlUnitTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
@@ -31,11 +33,9 @@ import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * Tests the web GUI for the ActionList.
@@ -62,8 +62,8 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		// route 10 documents to quickstart and add FYIs which should result in Mass Actions
 		int numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
-			WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdVO(QUICKSTART_USER_NETWORK_ID), "", true);
+			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
+			document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			assertTrue("Document should be FINAL.", document.stateIsFinal());
 		}
@@ -113,8 +113,8 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		for (int i = 0; i < numDocs; i++) {
 			boolean isMassActionable = (i % 2 == 0);
 			String actionRequested = (isMassActionable ? EdenConstants.ACTION_REQUEST_FYI_REQ : EdenConstants.ACTION_REQUEST_APPROVE_REQ);
-			WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdVO(QUICKSTART_USER_NETWORK_ID), "", true);
+			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
+			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			if (isMassActionable) {
 				massActionable.add(new Doc(i, document.getRouteHeaderId()));

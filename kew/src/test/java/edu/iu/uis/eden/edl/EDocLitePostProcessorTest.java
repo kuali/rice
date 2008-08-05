@@ -18,17 +18,17 @@ package edu.iu.uis.eden.edl;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.ActionTakenEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 
@@ -45,7 +45,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
     public void testPostEvent() throws Exception {
         String dummyData = "testing this stuff";
         Integer testServerPort = Integer.valueOf(getJettyServerPort() + 1);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
         String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + Core.getCurrentContextConfig().getProperty(EdenConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
         document.saveRoutingData();

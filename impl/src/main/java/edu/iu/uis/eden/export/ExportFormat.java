@@ -16,6 +16,9 @@
  */
 package edu.iu.uis.eden.export;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A type-safe enumeration representing a format for data export.  Currently the only
  * implemented format is XML.
@@ -26,11 +29,12 @@ package edu.iu.uis.eden.export;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportFormat {
-
+	
     private static final String XML_FORMAT = "XML";
     private static final String XML_EXT = ".xml";
     private static final String XML_MIME = "application/xml";
     
+    public static final List<ExportFormat> STANDARD_FORMATS = Arrays.asList(new ExportFormat[] { ExportFormat.XML });
     public static final ExportFormat XML = new ExportFormat(XML_FORMAT, XML_EXT, XML_MIME);
     
     private final String formatName;

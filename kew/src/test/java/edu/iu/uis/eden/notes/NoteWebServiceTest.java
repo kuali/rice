@@ -20,24 +20,24 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.NoteVO;
 
 public class NoteWebServiceTest extends KEWTestCase {
 	
 	@Test public void testNotesClient() throws Exception {
-		NoteVO testNoteVO;
-		WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+		NoteDTO testNoteVO;
+		WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
 		//Test add notes
-		testNoteVO = new NoteVO();
+		testNoteVO = new NoteDTO();
 		testNoteVO.setNoteAuthorWorkflowId("andlee");
 		testNoteVO.setNoteText("first added note");
 		doc.updateNote(testNoteVO);
 		
-		testNoteVO = new NoteVO();
+		testNoteVO = new NoteDTO();
 		testNoteVO.setNoteAuthorWorkflowId("rou");
 		testNoteVO.setNoteText("second added note");
 		doc.updateNote(testNoteVO);
@@ -63,7 +63,7 @@ public class NoteWebServiceTest extends KEWTestCase {
         notesList = doc.getNoteList();
         assertEquals("Note List size changed",2,notesList.size());
         for (Iterator iter = notesList.iterator(); iter.hasNext();) {
-			NoteVO noteVO = (NoteVO) iter.next();
+			NoteDTO noteVO = (NoteDTO) iter.next();
 			assertNotNull("Note saved through workflow document", noteVO.getNoteId());
 			System.out.println("Note ID is:" + noteVO.getNoteId());
 			i++;
@@ -85,10 +85,10 @@ public class NoteWebServiceTest extends KEWTestCase {
 		}*/
         
         notesList = doc.getNoteList();
-        testNoteVO = (NoteVO)notesList.get(0);
+        testNoteVO = (NoteDTO)notesList.get(0);
         doc.deleteNote(testNoteVO);
         
-        testNoteVO = (NoteVO)notesList.get(1);
+        testNoteVO = (NoteDTO)notesList.get(1);
         testNoteVO.setNoteText("Update second note text");
         doc.updateNote(testNoteVO);
         
@@ -97,7 +97,7 @@ public class NoteWebServiceTest extends KEWTestCase {
         notesList = doc.getNoteList();
         assertEquals("Note List size changed",1,notesList.size());
         for (Iterator iter = notesList.iterator(); iter.hasNext();) {
-			NoteVO noteVO = (NoteVO) iter.next();
+			NoteDTO noteVO = (NoteDTO) iter.next();
 			assertNotNull("Note saved through workflow document", noteVO.getNoteId());
 			System.out.println("Note ID is:" + noteVO.getNoteId());
 			i++;

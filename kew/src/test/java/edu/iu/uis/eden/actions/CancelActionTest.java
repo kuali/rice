@@ -20,12 +20,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 public class CancelActionTest extends KEWTestCase {
 
@@ -34,23 +34,23 @@ public class CancelActionTest extends KEWTestCase {
     }
 
     @Test public void testCancel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.approve("");//ewestfal had ignore previous rule
         
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         
         //this be the role delegate of jitrue
-        document = new WorkflowDocument(new NetworkIdVO("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("natjohns"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.cancel("");
         
         assertTrue("Document should be disapproved", document.stateIsCanceled());
@@ -67,9 +67,9 @@ public class CancelActionTest extends KEWTestCase {
     }
 
     @Test public void testInitiatorOnlyCancel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         
-        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         try {
             document.cancel("");
             fail("Document should not be allowed to be cancelled due to initiator check.");

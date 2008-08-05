@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 /**
  * Thrown when a resource is not available.
  *

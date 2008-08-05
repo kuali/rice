@@ -17,9 +17,9 @@ package org.kuali.notification.service;
 
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.document.kew.NotificationWorkflowDocument;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * The NotificationWorkflowDocumentService class is responsible for housing service methods for interacting with KEW.

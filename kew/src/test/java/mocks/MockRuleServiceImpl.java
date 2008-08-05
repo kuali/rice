@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

@@ -23,7 +23,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
@@ -239,7 +240,7 @@ public class RuleAttributeLookupableImpl implements WorkflowLookupable, Exportab
     }
 
     public List getSupportedExportFormats() {
-        return EdenConstants.STANDARD_FORMATS;
+        return ExportFormat.STANDARD_FORMATS;
     }
 
 

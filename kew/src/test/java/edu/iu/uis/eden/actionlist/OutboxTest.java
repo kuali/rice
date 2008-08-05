@@ -22,16 +22,16 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.preferences.PreferencesServiceImpl;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
@@ -67,10 +67,10 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(new AuthenticationUserId("rkirkend"));
         TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
         turnOnOutboxForUser(rkirkend);
@@ -89,10 +89,10 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(new AuthenticationUserId("rkirkend"));
         TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
         turnOnOutboxForUser(rkirkend);
@@ -111,27 +111,27 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(new AuthenticationUserId("user1"));
         TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
         turnOnOutboxForUser(rkirkend);
 
-        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdVO("user1"), "", true);
+        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdDTO("user1"), "", true);
 
         document.approve("");
 
         Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
-        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
-        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdVO("rkirkend"), "", true);
+        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdDTO("rkirkend"), "", true);
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
         document.approve("");
 
@@ -151,14 +151,14 @@ public class OutboxTest extends KEWTestCase {
         turnOnOutboxForUser(rkirkend);
         turnOnOutboxForUser(user1);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
         // verify test is sane and users have action items
         assertFalse(KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).isEmpty());
         assertFalse(KEWServiceLocator.getActionListService().getActionList(user1, new ActionListFilter()).isEmpty());
 
-        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         document.approve("");
         // verify only user who took action has the outbox item
         assertTrue(KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).isEmpty());
@@ -177,13 +177,13 @@ public class OutboxTest extends KEWTestCase {
         turnOnOutboxForUser(rkirkend);
         turnOnOutboxForUser(user1);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.blanketApprove("");
         // verify only user who took action has the outbox item
         assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
         assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.saveDocument("");
         // verify test is sane and users have action items
         assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).size());
@@ -191,7 +191,7 @@ public class OutboxTest extends KEWTestCase {
         assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
         assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.blanketApprove("");
         // verify only user who took action has the outbox item
         assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
@@ -208,7 +208,7 @@ public class OutboxTest extends KEWTestCase {
         turnOnOutboxForUser(rkirkend);
         turnOnOutboxForUser(user1);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user2"), "OutboxTestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user2"), "OutboxTestDocumentType");
         document.routeDocument("");
         // verify action items exist
         assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).size());
@@ -219,7 +219,7 @@ public class OutboxTest extends KEWTestCase {
         assertEquals("Wrong number of outbox items found for ewestfal", 0, KEWServiceLocator.getActionListService().getOutbox(ewestfal, new ActionListFilter()).size());
         assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         // verify only user who took action has the outbox item
         assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());

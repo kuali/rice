@@ -15,9 +15,10 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * A rule is an entity that can be evaluated at runtime to generate a list of {@link RuleResponsibility}s

@@ -35,8 +35,8 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 
 /**

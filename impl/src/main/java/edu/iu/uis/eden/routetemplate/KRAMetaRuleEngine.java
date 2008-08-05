@@ -19,10 +19,10 @@ import java.text.ParseException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Implements the KRA meta-rule processing and state machine engine 

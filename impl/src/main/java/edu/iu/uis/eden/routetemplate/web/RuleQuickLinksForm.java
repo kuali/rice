@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

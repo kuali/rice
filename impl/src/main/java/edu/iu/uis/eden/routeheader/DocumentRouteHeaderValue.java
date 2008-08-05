@@ -39,8 +39,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -48,7 +50,6 @@ import edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.CompatUtils;
@@ -60,7 +61,6 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.mail.CustomEmailAttributeImpl;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.notes.CustomNoteAttributeImpl;
@@ -656,7 +656,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      * @param routeHeaderVO
      * @throws WorkflowException
      */
-    public void setRouteHeaderData(RouteHeaderVO routeHeaderVO) throws WorkflowException {
+    public void setRouteHeaderData(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
 //    	String updatedDocumentContent = BeanConverter.buildUpdatedDocumentContent(routeHeaderVO);
 //    	// updatedDocumentContent will be null if the content has not changed, only update if its changed
 //    	if (updatedDocumentContent != null) {

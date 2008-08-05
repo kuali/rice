@@ -27,7 +27,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.springframework.beans.factory.BeanInitializationException;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -46,7 +45,7 @@ public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants 
     private List serviceOrder;
 
     public List getSupportedFormats() {
-        return EdenConstants.STANDARD_FORMATS;
+        return ExportFormat.STANDARD_FORMATS;
     }
 
     public byte[] export(ExportFormat format, ExportDataSet dataSet) {

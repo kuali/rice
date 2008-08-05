@@ -33,8 +33,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.notes.Attachment;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
@@ -263,7 +264,7 @@ public class NoteAction extends WorkflowAction {
 
     public String getCurrentDate() {
         Date currentDate = new Date();
-        DateFormat dateFormat = EdenConstants.getDefaultDateFormat();
+        DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(currentDate);
     }
     

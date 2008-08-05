@@ -23,10 +23,10 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.attribute.web.WebExtensions;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.user.Recipient;

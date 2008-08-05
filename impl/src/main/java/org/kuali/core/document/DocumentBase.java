@@ -60,14 +60,14 @@ import org.kuali.core.workflow.DocumentInitiator;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * @see Document
@@ -290,16 +290,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
      * for other needs.
      *
-     * @see org.kuali.core.document.Document#handleRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
+     * @see org.kuali.core.document.Document#handleRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public void handleRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent) {
+    public void handleRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
         // do nothing
     }
     
     /**
-     * @see org.kuali.core.document.Document#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     * @see org.kuali.core.document.Document#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
-    public void doActionTaken(ActionTakenEventVO event) {
+    public void doActionTaken(ActionTakenEventDTO event) {
         if ( (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
             documentAuthorizer.establishWorkflowPessimisticLocking(this);
@@ -617,7 +617,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return new ArrayList();
     }
 
-    public void doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws Exception {
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
     }
 
     /**

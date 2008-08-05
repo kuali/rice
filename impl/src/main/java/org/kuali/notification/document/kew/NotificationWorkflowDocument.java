@@ -16,10 +16,10 @@
 package org.kuali.notification.document.kew;
 
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class extends the KEW WorkflowDocument object and becomes our gateway for 
@@ -35,7 +35,7 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param user
      * @throws WorkflowException
      */
-    public NotificationWorkflowDocument(UserIdVO user) throws WorkflowException {
+    public NotificationWorkflowDocument(UserIdDTO user) throws WorkflowException {
     	super(user, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE);
     }
 
@@ -46,7 +46,7 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param documentTypeName
      * @throws WorkflowException
      */
-    public NotificationWorkflowDocument(UserIdVO user, String documentTypeName) throws WorkflowException {
+    public NotificationWorkflowDocument(UserIdDTO user, String documentTypeName) throws WorkflowException {
     	super(user, documentTypeName);
     }
     
@@ -57,7 +57,7 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param documentId
      * @throws WorkflowException
      */
-    public NotificationWorkflowDocument(UserIdVO user, Long documentId) throws WorkflowException {
+    public NotificationWorkflowDocument(UserIdDTO user, Long documentId) throws WorkflowException {
     	super(user, documentId);
     }
 }

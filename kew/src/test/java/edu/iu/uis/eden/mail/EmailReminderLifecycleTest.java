@@ -21,12 +21,12 @@ import mocks.MockEmailNotificationServiceImpl;
 
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -63,11 +63,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(EdenConstants.DAILY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
-		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdVO("ewestfal"), "", Boolean.TRUE);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
@@ -109,11 +109,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(EdenConstants.WEEKLY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
-		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdVO("ewestfal"), "", Boolean.TRUE);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);

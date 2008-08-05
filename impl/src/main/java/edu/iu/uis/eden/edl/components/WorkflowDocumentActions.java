@@ -18,17 +18,17 @@ package edu.iu.uis.eden.edl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
 import edu.iu.uis.eden.edl.UserAction;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.XmlHelper;
 
@@ -69,7 +69,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		UserAction userAction = edlContext.getUserAction();
 		WorkflowDocument document = null;
 		if (UserAction.ACTION_CREATE.equals(userAction.getAction())) {
-			document = new WorkflowDocument(new NetworkIdVO(edlContext.getUserSession().getNetworkId()), edlContext.getEdocLiteAssociation().getEdlName());
+			document = new WorkflowDocument(new NetworkIdDTO(edlContext.getUserSession().getNetworkId()), edlContext.getEdocLiteAssociation().getEdlName());
 			document.setTitle("Routing Document Type '" + document.getDocumentType() + "'");
 			document.getRouteHeaderId();
 			LOG.info("Created document " + document.getRouteHeaderId());
@@ -81,7 +81,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 					LOG.info("no document found for edl " + edlContext.getEdocLiteAssociation().getEdlName());
 					return;
 				} else {
-					document = new WorkflowDocument(new NetworkIdVO(edlContext.getUserSession().getNetworkId()), new Long(docId));
+					document = new WorkflowDocument(new NetworkIdDTO(edlContext.getUserSession().getNetworkId()), new Long(docId));
 				}
 			}
 		}

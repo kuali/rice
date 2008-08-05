@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -98,7 +98,7 @@ public class NotificationRecipientServiceKewImpl implements NotificationRecipien
      */
     public boolean isUserRecipientValid(String userRecipientId) {
 	try {
-	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(userRecipientId));
+	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(userRecipientId));
 	    if(user != null) {
 		return true;
 	    } else {
@@ -152,7 +152,7 @@ public class NotificationRecipientServiceKewImpl implements NotificationRecipien
      */
     public String getUserDisplayName(String userId) {
 	try {
-	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(userId));
+	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(userId));
 	    if(user != null) {
 		return user.getDisplayName();
 	    } else {

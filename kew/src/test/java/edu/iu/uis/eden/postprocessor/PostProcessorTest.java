@@ -17,14 +17,14 @@
 package edu.iu.uis.eden.postprocessor;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 public class PostProcessorTest extends KEWTestCase {
 
@@ -46,7 +46,7 @@ public class PostProcessorTest extends KEWTestCase {
 	 * being thrown after returning from the EPIC post processor.
 	 */
 	@Test public void testModifyDocumentInPostProcessor() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "testModifyDocumentInPostProcessor");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
 		assertEquals("application content should be empty initially", "", document.getApplicationContent());
 		assertNull("Doc title should be empty initially", document.getTitle());
@@ -63,7 +63,7 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		// check that the document we routed from the post processor exists
 		assertNotNull("SHould have routed a document from the post processor.", DocumentModifyingPostProcessor.routedDocumentId);
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
 		assertTrue("document should be enroute", document.stateIsEnroute());
 		assertEquals("Document should have 1 pending request.", 1, KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId()).size());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
@@ -79,14 +79,14 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
 			if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
-				WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), statusChangeEvent.getRouteHeaderId());
+				WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), statusChangeEvent.getRouteHeaderId());
 				document.setApplicationContent(APPLICATION_CONTENT);
 				document.setTitle(DOC_TITLE);
 				document.saveRoutingData();
 				// now route another document from the post processor, sending it an adhoc request
-				WorkflowDocument ppDocument = new WorkflowDocument(new NetworkIdVO("user1"), "testModifyDocumentInPostProcessor");
+				WorkflowDocument ppDocument = new WorkflowDocument(new NetworkIdDTO("user1"), "testModifyDocumentInPostProcessor");
 				routedDocumentId = ppDocument.getRouteHeaderId();
-				ppDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdVO("ewestfal"), "", true);
+				ppDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdDTO("ewestfal"), "", true);
 				ppDocument.routeDocument("");
 				processedChange = true;
 			}
@@ -95,7 +95,7 @@ public class PostProcessorTest extends KEWTestCase {
 
 		public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
 			levelChanges++;
-			WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), levelChangeEvent.getRouteHeaderId());
+			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), levelChangeEvent.getRouteHeaderId());
 			document.setTitle("Current level change: " + levelChanges);
 			document.saveRoutingData();
 			return new ProcessDocReport(true);

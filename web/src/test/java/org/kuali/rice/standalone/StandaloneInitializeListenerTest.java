@@ -24,10 +24,10 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 
-import edu.iu.uis.eden.EdenConstants;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

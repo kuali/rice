@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.Process;
 import edu.iu.uis.eden.engine.node.ProcessResult;
@@ -27,7 +29,6 @@ import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.engine.node.SubProcessNode;
 import edu.iu.uis.eden.engine.node.SubProcessResult;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Handles transitions into and out of {@link SubProcessNode} nodes.

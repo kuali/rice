@@ -28,20 +28,20 @@ import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.DocumentTypeNotFoundException;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the implementation of the WorkflowDocumentService, which makes use of OneStart Workflow.
@@ -324,7 +324,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             String[] currentNodes = workflowDocument.getNodeNames();
             if (currentNodes.length == 0) {
                 WorkflowInfo workflowInfo = new WorkflowInfo();
-                RouteNodeInstanceVO[] nodes = workflowInfo.getTerminalNodeInstances(workflowDocument.getRouteHeaderId());
+                RouteNodeInstanceDTO[] nodes = workflowInfo.getTerminalNodeInstances(workflowDocument.getRouteHeaderId());
                 currentNodes = new String[nodes.length];
                 for (int nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
                     currentNodes[nodeIndex] = nodes[nodeIndex].getName();
@@ -340,11 +340,11 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                        workflowDocument.appSpecificRouteDocumentToUser(recipient.getActionRequested(), currentNode, 0, annotation, new NetworkIdVO(recipient.getId()), "", true);
+                        workflowDocument.appSpecificRouteDocumentToUser(recipient.getActionRequested(), currentNode, 0, annotation, new NetworkIdDTO(recipient.getId()), "", true);
                     }
                     else {
                         // TODO is this recripientId truly a workgroup name??
-                        workflowDocument.appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), currentNode, 0, annotation, new WorkgroupNameIdVO(recipient.getId()), "", true);
+                        workflowDocument.appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), currentNode, 0, annotation, new WorkgroupNameIdDTO(recipient.getId()), "", true);
                     }
                 }
             }
@@ -375,8 +375,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return realAdHocRecipients;
     }
 
-    private UserIdVO getUserIdVO(UniversalUser user) {
-        return new NetworkIdVO(user.getPersonUserIdentifier());
+    private UserIdDTO getUserIdVO(UniversalUser user) {
+        return new NetworkIdDTO(user.getPersonUserIdentifier());
     }
 
 

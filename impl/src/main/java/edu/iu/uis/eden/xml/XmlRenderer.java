@@ -21,8 +21,7 @@ import java.util.Date;
 import org.jdom.CDATA;
 import org.jdom.Element;
 import org.jdom.Namespace;
-
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * A helper class which helps with building the XML for objects.
@@ -66,7 +65,7 @@ public class XmlRenderer {
     public Element renderDateElement(Element parent, String elementName, Date date) {
         Element element = null;
         if (date != null) {
-            element = renderTextElement(parent, elementName, EdenConstants.getDefaultDateFormat().format(date));
+            element = renderTextElement(parent, elementName, RiceConstants.getDefaultDateFormat().format(date));
         }
         return element;
     }

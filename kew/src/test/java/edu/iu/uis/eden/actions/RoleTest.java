@@ -21,13 +21,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 public class RoleTest extends KEWTestCase {
 
@@ -36,30 +36,30 @@ public class RoleTest extends KEWTestCase {
     }
 
     @Test public void testRoleRequestGeneration() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");//ewestfal had ignore previous rule
         
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
         //this be the role delegate of jitrue
-        document = new WorkflowDocument(new NetworkIdVO("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("natjohns"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdVO("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
         document.acknowledge("");
         
         assertTrue("Document should be final", document.stateIsFinal());

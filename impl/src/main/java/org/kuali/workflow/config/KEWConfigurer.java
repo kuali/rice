@@ -30,9 +30,9 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
-import edu.iu.uis.eden.EdenConstants;
 
 /**
  * Configures the KEW Rice module.  KEW module initiation proceeds as follows:

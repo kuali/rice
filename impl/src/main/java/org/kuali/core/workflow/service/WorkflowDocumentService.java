@@ -18,10 +18,10 @@ package org.kuali.core.workflow.service;
 import java.util.List;
 
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This interface defines the contract that must be implemented by the workflow engine.

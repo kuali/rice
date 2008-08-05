@@ -23,7 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actions.AcknowledgeAction;
@@ -61,7 +63,6 @@ import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.DocumentTypeNotFoundException;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.user.Recipient;

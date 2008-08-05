@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.testharness.HtmlUnitUtil;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**

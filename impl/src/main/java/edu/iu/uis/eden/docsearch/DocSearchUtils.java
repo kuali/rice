@@ -33,8 +33,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.web.SearchAttributeFormContainer;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -278,11 +278,11 @@ public class DocSearchUtils {
     }
 
     public static String getDisplayValueWithDateOnly(Timestamp value) {
-        return EdenConstants.getDefaultDateFormat().format(new Date(value.getTime()));
+        return RiceConstants.getDefaultDateFormat().format(new Date(value.getTime()));
     }
 
     public static String getDisplayValueWithDateTime(Timestamp value) {
-        return EdenConstants.getDefaultDateAndTimeFormat().format(new Date(value.getTime()));
+        return RiceConstants.getDefaultDateAndTimeFormat().format(new Date(value.getTime()));
     }
 
     public static Timestamp convertStringDateToTimestamp(String dateWithoutTime) {

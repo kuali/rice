@@ -27,17 +27,17 @@ import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.PostProcessorService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.AfterProcessEventDTO;
+import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the postProcessor for the Kuali application, and it is responsible for plumbing events up to documents using the
@@ -53,9 +53,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     private DateTimeService dateTimeService;
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws RemoteException {
+    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
         try {
             LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
             establishGlobalVariables();
@@ -89,9 +89,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent) throws RemoteException {
+    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
         // on route level change we'll serialize the XML for the document. we
         // are doing this here cause it's a heavy hitter, and we
         // want to avoid the user waiting for this during sync processing
@@ -114,16 +114,16 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(edu.iu.uis.eden.clientapp.vo.DeleteEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
-    public boolean doDeleteRouteHeader(DeleteEventVO event) throws RemoteException {
+    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
-    public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException {
+    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         try {
             LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
             establishGlobalVariables();
@@ -150,9 +150,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#afterWorkflowEngineProcess(boolean)} method will be invoked on it
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
-    public boolean afterProcess(AfterProcessEventVO event) throws Exception {
+    public boolean afterProcess(AfterProcessEventDTO event) throws Exception {
         try {
             LOG.debug(new StringBuffer("started after process method for document ").append(event.getRouteHeaderId()));
             establishGlobalVariables();
@@ -175,9 +175,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
-    public boolean beforeProcess(BeforeProcessEventVO event) throws Exception {
+    public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception {
         try {
             LOG.debug(new StringBuffer("started before process method for document ").append(event.getRouteHeaderId()));
             establishGlobalVariables();

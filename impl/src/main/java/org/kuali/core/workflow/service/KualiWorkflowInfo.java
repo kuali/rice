@@ -18,19 +18,20 @@ package org.kuali.core.workflow.service;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
-import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
-import edu.iu.uis.eden.exception.WorkflowException;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 
 /**
  * 
@@ -39,42 +40,42 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * 
  */
 public interface KualiWorkflowInfo {
-    public abstract RouteHeaderVO getRouteHeader(UserIdVO userId, Long routeHeaderId) throws WorkflowException;
+    public abstract RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException;
 
-    public abstract RouteHeaderVO getRouteHeader(Long routeHeaderId) throws WorkflowException;
-
-    /**
-     * @deprecated
-     */
-    public abstract WorkgroupVO getWorkgroup(String workgroupName) throws WorkflowException;
+    public abstract RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException;
 
     /**
      * @deprecated
      */
-    public abstract WorkgroupVO getWorkgroup(Long workgroupId) throws WorkflowException;
+    public abstract WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException;
 
-    public abstract WorkgroupVO getWorkgroup(WorkgroupIdVO workgroupId) throws WorkflowException;
+    /**
+     * @deprecated
+     */
+    public abstract WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException;
 
-    public abstract UserVO getWorkflowUser(UserIdVO userId) throws WorkflowException;
+    public abstract WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException;
+
+    public abstract UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException;
 
     /**
      * @deprecated use getDocType using the name
      */
-    public abstract RouteTemplateEntryVO[] getRoute(String documentTypeName) throws WorkflowException;
+    public abstract RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException;
 
-    public abstract DocumentTypeVO getDocType(Long documentTypeId) throws WorkflowException;
+    public abstract DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException;
 
-    public abstract DocumentTypeVO getDocType(String documentTypeName) throws WorkflowException;
+    public abstract DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException;
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
 
-    public abstract WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException;
+    public abstract WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException;
 
-    public abstract ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException;
+    public abstract ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException;
 
-    public abstract ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException;
+    public abstract ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException;
     
-    public abstract ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException;
+    public abstract ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException;
 
     public abstract void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
 
@@ -102,14 +103,14 @@ public interface KualiWorkflowInfo {
      * @return true if the document has or will have at least one request that matches the criteria and has a requested code that matches one of the given codes
      * @throws WorkflowException
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;
     
     /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)} instead
+     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
      * 
-     * Use of this method passes the value 'false' in for the <code>ignoreCurrentlyActiveRequests</code> parameter of {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)}
+     * Use of this method passes the value 'false' in for the <code>ignoreCurrentlyActiveRequests</code> parameter of {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)}
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException;
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException;
 
     /**
      * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the routeHeaderId parameter
@@ -124,11 +125,11 @@ public interface KualiWorkflowInfo {
      * This method allows a document search to be executed just as would occur from the User Interface
      * 
      * @param criteriaVO - criteria to use for the search
-     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
      * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException;
+    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
     
-    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException;    
+    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException;    
 }

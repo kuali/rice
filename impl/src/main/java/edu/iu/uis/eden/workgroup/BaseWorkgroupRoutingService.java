@@ -21,20 +21,20 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
@@ -81,7 +81,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         		documentType = workgroupType.getDocumentTypeName();
         	}
         }
-        return new WorkflowDocument(new WorkflowIdVO(initiator.getWorkflowUser().getWorkflowId()), documentType);
+        return new WorkflowDocument(new WorkflowIdDTO(initiator.getWorkflowUser().getWorkflowId()), documentType);
     }
 
     public Workgroup findByDocumentId(Long documentId) throws EdenUserNotFoundException {
@@ -414,7 +414,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     }
 
     protected WorkflowDocument getWorkflowDocumentForRouting(Long routeHeaderId, Workgroup workgroup, WorkflowUser user) throws WorkflowException {
-        WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
+        WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
         workflowDocument.setTitle(getDocTitle(workgroup));
         addSearchableAttributeDefinitions(workflowDocument, workgroup);
         return workflowDocument;
@@ -456,7 +456,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     protected void addSearchableAttributeDefinitions(WorkflowDocument document, Workgroup workgroup) {
         RuleAttribute searchableAttribute = KEWServiceLocator.getRuleAttributeService().findByName(WORKGROUP_SEARCHABLE_ATTRIBUTE_NAME);
         if (searchableAttribute != null) {
-            WorkflowAttributeDefinitionVO xmldef = new WorkflowAttributeDefinitionVO(WORKGROUP_SEARCHABLE_ATTRIBUTE_NAME);
+            WorkflowAttributeDefinitionDTO xmldef = new WorkflowAttributeDefinitionDTO(WORKGROUP_SEARCHABLE_ATTRIBUTE_NAME);
             xmldef.addProperty("wrkgrp_nm", workgroup.getGroupNameId().getNameId());
             document.addSearchableDefinition(xmldef);
         }

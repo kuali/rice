@@ -25,9 +25,9 @@ import org.kuali.core.document.authorization.PessimisticLock;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is used to handle session timeouts where {@link PessimisticLock} objects should

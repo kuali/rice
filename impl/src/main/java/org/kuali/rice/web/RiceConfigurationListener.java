@@ -25,8 +25,9 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.JSTLConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 
 public class RiceConfigurationListener implements ServletContextListener {
 
@@ -35,7 +36,7 @@ public class RiceConfigurationListener implements ServletContextListener {
     }
 
     public void contextInitialized(ServletContextEvent sce) {
-        sce.getServletContext().setAttribute("Constants", new EdenConstants());
+        sce.getServletContext().setAttribute("Constants", new JSTLConstants(EdenConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
         // use the system prop as an override of the default packaged META-INF/workflow.xml

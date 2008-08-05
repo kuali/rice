@@ -22,12 +22,12 @@ import java.net.Socket;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.test.JettyServerTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle.ConfigMode;
 import org.kuali.rice.test.server.JettyServer;
 import org.springframework.test.AssertThrows;
 
-import edu.iu.uis.eden.EdenConstants;
 
 /**
  * Tests that the JettyServer is present for the duration of all tests in this class 

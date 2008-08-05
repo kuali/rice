@@ -18,13 +18,13 @@ package edu.iu.uis.eden.routetemplate;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
 /**
@@ -48,7 +48,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
     protected void approve(String user, Long docId) throws WorkflowException {
         log.info("Approving as " + user);
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO(user), docId);
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(user), docId);
         doc.approve("approving as " + user);
     }
 
@@ -56,7 +56,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
     public void test() throws WorkflowException {
         loadXmlFile("KRAMetaRuleHierarchy.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("quickstart"), "KRAMetaRuleHierarchyTest");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("quickstart"), "KRAMetaRuleHierarchyTest");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
@@ -121,7 +121,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
         TestUtilities.logActionRequests(doc.getRouteHeaderId());
 
-        doc = new WorkflowDocument(new NetworkIdVO("quickstart"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("quickstart"), doc.getRouteHeaderId());
         assertTrue(doc.stateIsFinal());
     }
 }

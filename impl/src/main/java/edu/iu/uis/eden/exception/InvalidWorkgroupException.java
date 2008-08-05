@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 /**
  * Thrown whenever a problem with a workgroup exists, like one is execpected but not found.
  *

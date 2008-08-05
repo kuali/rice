@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * 
@@ -35,27 +35,27 @@ public class SuperUserDisapproveTest extends KEWTestCase {
     }
 	
     @Test public void testSuperUserDisapprove() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
 	}
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
 	}
 	
     @Test public void testSuperUserDisapproveInvalidUser() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("quickstart"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("quickstart"), document.getRouteHeaderId());
         try {
         	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
         	document.superUserDisapprove("");

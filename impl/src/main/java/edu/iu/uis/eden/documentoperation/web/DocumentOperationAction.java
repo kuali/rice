@@ -39,8 +39,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
@@ -56,7 +58,6 @@ import edu.iu.uis.eden.actions.asyncservices.MoveDocumentService;
 import edu.iu.uis.eden.actiontaken.ActionTakenService;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.docsearch.SearchableAttributeProcessingService;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
@@ -214,8 +215,8 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 			if (EdenConstants.UPDATE.equals(opValue)) {
 				try {
-					actionRequest.setCreateDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
-					actionRequest.setCreateDateString(EdenConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
+					actionRequest.setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
+					actionRequest.setCreateDateString(RiceConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
 					actionRequest.setRouteHeader(docForm.getRouteHeader());
 					actionRequest.setParentActionRequest(getActionRequestService().findByActionRequestId(actionRequest.getParentActionRequestId()));
 					actionRequest.setActionTaken(getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId()));
@@ -250,8 +251,8 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 			if (EdenConstants.UPDATE.equals(opValue)) {
 				try {
-					actionTaken.setActionDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(request.getParameter(actionDateParamName)).getTime()));
-					actionTaken.setActionDateString(EdenConstants.getDefaultDateFormat().format(actionTaken.getActionDate()));
+					actionTaken.setActionDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(actionDateParamName)).getTime()));
+					actionTaken.setActionDateString(RiceConstants.getDefaultDateFormat().format(actionTaken.getActionDate()));
 					// getActionTakenService().validateActionTaken(actionTaken);
 					getActionTakenService().saveActionTaken(actionTaken);
 					change = true;
@@ -277,8 +278,8 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 			if (EdenConstants.UPDATE.equals(opValue)) {
 				try {
-					actionItem.setDateAssigned(new Timestamp(EdenConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
-					actionItem.setDateAssignedString(EdenConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
+					actionItem.setDateAssigned(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
+					actionItem.setDateAssignedString(RiceConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
 					actionItem.setRouteHeader(docForm.getRouteHeader());
 					// getActionItemService().validateActionItem(actionItem);
 					getActionListService().saveActionItem(actionItem);
@@ -460,7 +461,7 @@ public class DocumentOperationAction extends WorkflowAction {
 		}
 
 
-		WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(getUserSession(request).getWorkflowUser().getAuthenticationUserId().getAuthenticationId()), new Long(docForm.getRouteHeaderId()));
+		WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(getUserSession(request).getWorkflowUser().getAuthenticationUserId().getAuthenticationId()), new Long(docForm.getRouteHeaderId()));
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;
@@ -507,7 +508,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			throw new WorkflowServiceErrorException("Document create date empty", new WorkflowServiceErrorImpl("Document create date empty", "docoperation.routeheader.createdate.empty"));
 		} else {
 			try {
-				docForm.getRouteHeader().setCreateDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getCreateDate()).getTime()));
+				docForm.getRouteHeader().setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getCreateDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("RouteHeader create date parsing error", new WorkflowServiceErrorImpl("Date parsing error", "docoperation.routeheader.createdate.invalid"));
 			}
@@ -517,7 +518,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			throw new WorkflowServiceErrorException("Document doc status mod date empty", new WorkflowServiceErrorImpl("Document doc status mod date empty", "docoperation.routeheader.statusmoddate.empty"));
 		} else {
 			try {
-				docForm.getRouteHeader().setStatusModDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getStatusModDate()).getTime()));
+				docForm.getRouteHeader().setStatusModDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getStatusModDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document doc status date parsing error", new WorkflowServiceErrorImpl("Document doc status mod date parsing error", "docoperation.routeheader.statusmoddate.invalid"));
 			}
@@ -525,7 +526,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 		if (docForm.getApprovedDate() != null && !docForm.getApprovedDate().trim().equals("")) {
 			try {
-				docForm.getRouteHeader().setApprovedDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getApprovedDate()).getTime()));
+				docForm.getRouteHeader().setApprovedDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getApprovedDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document approved date parsing error", new WorkflowServiceErrorImpl("Document approved date parsing error", "docoperation.routeheader.approveddate.invalid"));
 			}
@@ -534,7 +535,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 		if (docForm.getFinalizedDate() != null && !docForm.getFinalizedDate().trim().equals("")) {
 			try {
-				docForm.getRouteHeader().setFinalizedDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getFinalizedDate()).getTime()));
+				docForm.getRouteHeader().setFinalizedDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getFinalizedDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document finalized date parsing error", new WorkflowServiceErrorImpl("Document finalized date parsing error", "docoperation.routeheader.finalizeddate.invalid"));
 			}
@@ -542,7 +543,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 		if (docForm.getRouteStatusDate() != null && !docForm.getRouteStatusDate().trim().equals("")) {
 			try {
-				docForm.getRouteHeader().setRouteStatusDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getRouteStatusDate()).getTime()));
+				docForm.getRouteHeader().setRouteStatusDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getRouteStatusDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document route status date parsing error", new WorkflowServiceErrorImpl("Document route status date parsing error", "docoperation.routeheader.routestatusdate.invalid"));
 			}
@@ -551,7 +552,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 		if (docForm.getRouteLevelDate() != null && !docForm.getRouteLevelDate().trim().equals("")) {
 			try {
-				docForm.getRouteHeader().setRouteLevelDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse(docForm.getRouteLevelDate()).getTime()));
+				docForm.getRouteHeader().setRouteLevelDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(docForm.getRouteLevelDate()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document route level date parsing error", new WorkflowServiceErrorImpl("Document route level date parsing error", "docoperation.routeheader.routeleveldate.invalid"));
 			}
@@ -560,12 +561,12 @@ public class DocumentOperationAction extends WorkflowAction {
 
 	private void setRouteHeaderTimestampsToString(DocumentOperationForm docForm) {
 		try {
-			docForm.setCreateDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getCreateDate()));
-			docForm.setStatusModDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getStatusModDate()));
-			docForm.setApprovedDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getApprovedDate()));
-			docForm.setFinalizedDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getFinalizedDate()));
-			docForm.setRouteStatusDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getRouteStatusDate()));
-			docForm.setRouteLevelDate(EdenConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getRouteLevelDate()));
+			docForm.setCreateDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getCreateDate()));
+			docForm.setStatusModDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getStatusModDate()));
+			docForm.setApprovedDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getApprovedDate()));
+			docForm.setFinalizedDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getFinalizedDate()));
+			docForm.setRouteStatusDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getRouteStatusDate()));
+			docForm.setRouteLevelDate(RiceConstants.getDefaultDateFormat().format(docForm.getRouteHeader().getRouteLevelDate()));
 
 		} catch (Exception e) {
 			LOG.info("One or more of the dates in routeHeader may be null");

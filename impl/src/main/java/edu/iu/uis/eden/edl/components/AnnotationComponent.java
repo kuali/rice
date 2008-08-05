@@ -20,16 +20,16 @@ package edu.iu.uis.eden.edl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**
@@ -52,7 +52,7 @@ public class AnnotationComponent implements EDLModelComponent {
     	LOG.debug("Inserting annotation: " + annotation);
 
         // get the array of actions taken
-        ActionTakenVO[] actionsTaken;
+        ActionTakenDTO[] actionsTaken;
         try {
             actionsTaken = document.getActionsTaken();
         } catch (WorkflowException we) {
@@ -68,7 +68,7 @@ public class AnnotationComponent implements EDLModelComponent {
             // get the current version of data
             //Element currentVersion = VersioningPreprocessor.findCurrentVersion(dom);
             // for every ActionTaken, append every annotation as a child element of EDL data element
-            for (ActionTakenVO actionTaken: actionsTaken) {
+            for (ActionTakenDTO actionTaken: actionsTaken) {
                 if (actionTaken != null) {
                     annotation = actionTaken.getAnnotation();
                     if (annotation != null) {

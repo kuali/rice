@@ -20,8 +20,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.RuleExtension;
@@ -50,13 +51,13 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  * </ol>
  * <p>Runtime evaluation</p>
  * <ol>
- *   <li>Client application constructs {@link edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO} and attaches
+ *   <li>Client application constructs {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO} and attaches
  *       it to the client-side document</li>
  *   <li>Upon action taken on the document, the Attributes that are described by the <code>WorkflowAttributeDefinitionVO</code>s
  *       are looked up (... how ...) and constructed on the client side.</li>
  *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute}),
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
- *       on the client-instantiated attribute (the {@link edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO})</li>
+ *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute
  *       via {@link WorkflowAttribute#getDocContent()} or {@link edu.iu.uis.eden.docsearch.SearchableAttribute#getSearchContent()},
  *       depending on whether the attribute is a WorkflowAttribute or {@link edu.iu.uis.eden.docsearch.SearchableAttribute}</li>
@@ -74,7 +75,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  *    <li>If all attributes for the rule match, the rule is fired</li>
  * </ol>
  * 
- * @see WorkflowAttributeDefinitionVO
+ * @see WorkflowAttributeDefinitionDTO
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

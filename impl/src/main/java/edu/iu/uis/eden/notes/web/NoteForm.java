@@ -19,8 +19,8 @@ package edu.iu.uis.eden.notes.web;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.util.Utilities;
 

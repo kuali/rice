@@ -19,10 +19,10 @@ package edu.iu.uis.eden.mail;
 
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.quartz.Scheduler;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * A {@link Lifecycle} which is initialized on system startup that sets up

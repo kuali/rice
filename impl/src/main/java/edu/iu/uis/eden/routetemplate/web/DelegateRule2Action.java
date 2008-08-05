@@ -30,14 +30,14 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.routetemplate.MyRules2;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
@@ -134,7 +134,7 @@ public class DelegateRule2Action extends WorkflowAction {
             rule.establishRequiredState();
         }
         if(ruleForm.getDocId() != null && ruleForm.getWorkflowDocument() == null){
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
         }
         ruleForm.establishVisibleActionRequestCds();
         return null;
@@ -235,7 +235,7 @@ public class DelegateRule2Action extends WorkflowAction {
             ruleForm.setEditingDelegate(true);
             ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
             String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();
         }
@@ -533,7 +533,7 @@ public class DelegateRule2Action extends WorkflowAction {
             
 //            rule2Form.setWorkflowDocument(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
         	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
-            rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
             rule2Form.setDocId(rule2Form.getWorkflowDocument().getRouteHeaderId());
             rule2Form.establishVisibleActionRequestCds();
         }

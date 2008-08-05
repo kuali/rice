@@ -23,10 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.edl.EDLContext;
@@ -34,7 +36,6 @@ import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
 import edu.iu.uis.eden.edl.UserAction;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
@@ -55,7 +56,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			Element documentState = EDLXmlUtils.getDocumentStateElement(dom);
 
 			Element dateTime = EDLXmlUtils.getOrCreateChildElement(documentState, "dateTime", true);
-			dateTime.appendChild(dom.createTextNode(EdenConstants.getDefaultDateAndTimeFormat().format(new Date())));
+			dateTime.appendChild(dom.createTextNode(RiceConstants.getDefaultDateAndTimeFormat().format(new Date())));
 
 			Element definition = EDLXmlUtils.getOrCreateChildElement(documentState, "definition", true);
 			definition.appendChild(dom.createTextNode(edlContext.getEdocLiteAssociation().getDefinition()));
@@ -88,7 +89,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				EDLXmlUtils.createTextElementOnParent(documentState, "docId", document.getRouteHeaderId().toString());
 				Element workflowDocumentStatus = EDLXmlUtils.getOrCreateChildElement(documentState, "workflowDocumentState", true);
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "status", document.getStatusDisplayValue());
-				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", EdenConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
+				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", RiceConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
 				String[] nodeNames = document.getPreviousNodeNames();
 				if (nodeNames.length > 0) {
 				    Element previousNodes = EDLXmlUtils.getOrCreateChildElement(documentState, "previousNodes", true);

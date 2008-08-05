@@ -21,13 +21,13 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.routetemplate.web.Rule2Form;
 import edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues;
 import edu.iu.uis.eden.routetemplate.web.WebRuleResponsibility;
@@ -81,7 +81,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
         assertNotNull(rt.getRuleTemplateId());
         assertFalse(StringUtils.isEmpty(rt.getName()));
 
-        WorkflowUser user2 = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(DELEGATE_USER));
+        WorkflowUser user2 = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(DELEGATE_USER));
 
         /**
          * Route the delegate rule
@@ -90,7 +90,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
         Rule2Form ruleForm = routeNewDelegateRule(originalRule, rt, originalRuleResponsibilityKey, user2);
 
         // verify doc is ENROUTE still
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), ruleForm.getDocId());
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm.getDocId());
         assertTrue("Document should be enroute: " + document.getStatusDisplayValue(), document.stateIsEnroute());
         assertTrue(document.isApprovalRequested());
 
@@ -139,7 +139,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
          */
 
         document.approve("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), ruleForm.getDocId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm.getDocId());
         assertTrue("Document should be final: " + document.getStatusDisplayValue(), document.stateIsFinal());
 
         originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());
@@ -190,13 +190,13 @@ public class AddRuleDelegationTest extends KEWTestCase {
         assertEquals(1, originalResps.size());
         originalResp = originalResps.get(0);
         originalRuleResponsibilityKey = originalResp.getRuleResponsibilityKey();
-        WorkflowUser delegateUser = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(DELEGATE_USER2));
+        WorkflowUser delegateUser = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(DELEGATE_USER2));
 
         Rule2Form ruleForm2 = routeNewDelegateRule(originalRule, rt, originalRuleResponsibilityKey, delegateUser);
 
         // verify doc is ENROUTE still
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), ruleForm2.getDocId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm2.getDocId());
         assertTrue("Document should be enroute: " + document.getStatusDisplayValue(), document.stateIsEnroute());
         assertTrue(document.isApprovalRequested());
 
@@ -218,7 +218,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
         // Finally approve it, let's check the end result
 
         document.approve("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), ruleForm2.getDocId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm2.getDocId());
         assertTrue("Document should be final: " + document.getStatusDisplayValue(), document.stateIsFinal());
 
         newRules = KEWServiceLocator.getRuleService().findByRouteHeaderId(document.getRouteHeaderId());
@@ -299,9 +299,9 @@ public class AddRuleDelegationTest extends KEWTestCase {
         if (ruleForm.getWorkflowDocument() == null) {
 //          rule2Form.setFlexDoc(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
             String ruleDocTypeName = KEWServiceLocator.getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-            WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
+            WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
             // adhoc it to rkirkend so it will stop before going final
-            workflowDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdVO("rkirkend"), "", true);
+            workflowDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
             ruleForm.setWorkflowDocument(workflowDocument);
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();

@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
@@ -112,24 +112,24 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	testDoc("BlanketApprovePolicy", null);
     	
     	// on BlanketApprovePolicy1 anyone can blanket approve
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("pzhang"), "BlanketApprovePolicy1");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("pzhang"), "BlanketApprovePolicy1");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
     	// on BlanketApprovePolicy2 no-one can blanket approve
-    	document = new WorkflowDocument(new NetworkIdVO("pzhang"), "BlanketApprovePolicy2");
+    	document = new WorkflowDocument(new NetworkIdDTO("pzhang"), "BlanketApprovePolicy2");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy3 no-one can blanket approve
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "BlanketApprovePolicy3");
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BlanketApprovePolicy3");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy4 TestWorkgroup can blanket approve
@@ -138,45 +138,45 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));*/
     	
     	// on Blanket ApprovePolicy 5, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy5");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy5");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 6, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy6");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy6");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 7, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy7");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy7");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_NONE, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy_Override_NONE");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy_Override_NONE");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy_Override_ANY");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy_Override_ANY");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
 //  	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (new NetworkIdVO("pzhang"), "BlanketApprovePolicy_NoOverride");
+    	document = new WorkflowDocument (new NetworkIdDTO("pzhang"), "BlanketApprovePolicy_NoOverride");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument (new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     }
     

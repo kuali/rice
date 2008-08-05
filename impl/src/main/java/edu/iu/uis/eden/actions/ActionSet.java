@@ -20,7 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 
 /**
  * Specifies a set of Action codes.

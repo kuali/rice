@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 /**
  * The exception thrown whenever an ActionTaken can not be procesed for some reason.
  * 

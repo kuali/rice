@@ -25,19 +25,19 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.NoteDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.NoteVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -221,7 +221,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String docId = "";
 
 		try {
-			UserIdVO userIdVO = new NetworkIdVO(initiatorId);
+			UserIdDTO userIdVO = new NetworkIdDTO(initiatorId);
 			WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docType);
 			workflowDocument.setTitle(docTitle);
 			workflowDocument.setAppDocId(appDocId);
@@ -328,7 +328,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 		try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-			RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			if (routeHeader == null) {
 				results = createErrorResults("Error: NULL Route Header");
@@ -398,7 +398,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		WorkflowInfo info = new WorkflowInfo();
 		try {
 			Long id = Long.parseLong(docId);
-			UserIdVO userIdVO = new NetworkIdVO(userId);
+			UserIdDTO userIdVO = new NetworkIdDTO(userId);
 
 			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, userIdVO, true);
 		} catch (NumberFormatException e) {
@@ -555,7 +555,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
        	try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
 
-			WorkgroupIdVO recipientId = new WorkgroupNameIdVO(recipientGroupId);
+			WorkgroupIdDTO recipientId = new WorkgroupNameIdDTO(recipientGroupId);
 			// TODO: what should we put in the responsibility description?
 			workflowDocument.appSpecificRouteDocumentToWorkgroup(actionRequested, annotation, recipientId, responsibilityDesc, true);
 			results = createResults(workflowDocument);
@@ -585,7 +585,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
        	try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
 
-			UserIdVO recipientId = new NetworkIdVO(recipientUserId);
+			UserIdDTO recipientId = new NetworkIdDTO(recipientUserId);
 			// TODO: what should we put in the responsibility description?
 			workflowDocument.appSpecificRouteDocumentToUser(actionRequested, annotation, recipientId, responsibilityDesc, true);
 			results = createResults(workflowDocument);
@@ -692,7 +692,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
 
 			// setup note
-			NoteVO noteVO = new NoteVO();
+			NoteDTO noteVO = new NoteDTO();
 			noteVO.setNoteAuthorWorkflowId(userId);
 			noteVO.setNoteCreateDate(new GregorianCalendar());
 			noteVO.setNoteText(noteText);
@@ -701,7 +701,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 			//TODO: is this necessary?
 			workflowDocument.saveRoutingData();
-			RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			//TODO: do we need to return the standard result set?
 			//results = createResults(workflowDocument);
@@ -709,9 +709,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			noteVO = routeHeader.getNotes()[routeHeader.getNotes().length-1];
 
 			// return note info
-			UserIdVO userIdVO = new NetworkIdVO(noteVO.getNoteAuthorWorkflowId());
+			UserIdDTO userIdVO = new NetworkIdDTO(noteVO.getNoteAuthorWorkflowId());
 			WorkflowInfo info = new WorkflowInfo();
-			UserVO user = info.getWorkflowUser(userIdVO);
+			UserDTO user = info.getWorkflowUser(userIdVO);
 			author = user.getDisplayName();
 			noteId = noteVO.getNoteId().toString();
 			timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -757,10 +757,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 		try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-			RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			// setup note
-			NoteVO noteVO = getNote(routeHeader.getNotes(), noteId);
+			NoteDTO noteVO = getNote(routeHeader.getNotes(), noteId);
 			noteVO.setNoteText(noteText);
 			workflowDocument.updateNote(noteVO);
 
@@ -777,9 +777,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage = "Error retrieving note for id [" + noteId + "].";
 			} else {
 				// return note info
-				UserIdVO userIdVO = new NetworkIdVO(noteVO.getNoteAuthorWorkflowId());
+				UserIdDTO userIdVO = new NetworkIdDTO(noteVO.getNoteAuthorWorkflowId());
 				WorkflowInfo info = new WorkflowInfo();
-				UserVO user = info.getWorkflowUser(userIdVO);
+				UserDTO user = info.getWorkflowUser(userIdVO);
 				author = user.getDisplayName();
 				resultsNoteId = noteVO.getNoteId().toString();
 				timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -825,10 +825,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 		try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-			RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			// setup note
-			NoteVO noteVO = getNote(routeHeader.getNotes(), noteId);
+			NoteDTO noteVO = getNote(routeHeader.getNotes(), noteId);
 			workflowDocument.deleteNote(noteVO);
 
 			//TODO: is this necessary?
@@ -873,8 +873,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		return results;
     }
 
-    private NoteVO getNote(NoteVO[] notes, String noteId) {
-    	NoteVO note = null;
+    private NoteDTO getNote(NoteDTO[] notes, String noteId) {
+    	NoteDTO note = null;
 
     	if (notes != null){
 	    	for (int i=0; i<notes.length; i++){
@@ -924,7 +924,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @throws WorkflowException if something goes wrong
 	 */
 	private WorkflowDocument setupWorkflowDocument(String docId, String userId, String docTitle, String docContent) throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(userId);
+		UserIdDTO userIdVO = new NetworkIdDTO(userId);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, Long.decode(docId));
 		if (StringUtils.isNotEmpty(docTitle)) {
 			workflowDocument.setTitle(docTitle);
@@ -953,11 +953,11 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				//Map<String, String> noteDetail = new HashMap<String, String>(4);
 
 			    NoteDetail noteDetail = new NoteDetail();
-				NoteVO note = (NoteVO)notes.get(i);
+				NoteDTO note = (NoteDTO)notes.get(i);
 				//author, noteId, timestamp, noteText
-				UserIdVO userIdVO = new WorkflowIdVO(note.getNoteAuthorWorkflowId());
+				UserIdDTO userIdVO = new WorkflowIdDTO(note.getNoteAuthorWorkflowId());
 				WorkflowInfo info = new WorkflowInfo();
-				UserVO user = info.getWorkflowUser(userIdVO);
+				UserDTO user = info.getWorkflowUser(userIdVO);
 				//noteDetail.put(NOTE_AUTHOR_LABEL, user.getDisplayName());
 				//noteDetail.put(NOTE_ID_LABEL, note.getNoteId().toString());
 				//noteDetail.put(NOTE_TIMESTAMP_LABEL, formatCalendar(note.getNoteCreateDate()));
@@ -988,7 +988,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	    StandardResponse response;
 	    
-		RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+		RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 		if (routeHeader == null) {
 			response = createErrorResults("Error: NULL Route Header");
@@ -1037,7 +1037,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @return Map containing the standard result set populated with values contained in the
 	 * documents route header.
 	 */
-	private StandardResponse createStandardResults(RouteHeaderVO routeHeader) {
+	private StandardResponse createStandardResults(RouteHeaderDTO routeHeader) {
 		String docStatus = "";
 		String createDate = "";
 		String initiatorId = "";

@@ -16,16 +16,16 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
 /**
- * A {@link WorkflowAttributeDefinitionVO} for the {@link RuleRoutingAttribute}.
+ * A {@link WorkflowAttributeDefinitionDTO} for the {@link RuleRoutingAttribute}.
  * 
  * @see RuleRoutingAttribute
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RuleRoutingDefinition extends WorkflowAttributeDefinitionVO {
+public class RuleRoutingDefinition extends WorkflowAttributeDefinitionDTO {
         
 	private static final long serialVersionUID = -5633697385117416044L;
 	private static final String RULE_ROUTING_ATTRIBUTE_CLASS = "edu.iu.uis.eden.routetemplate.RuleRoutingAttribute";

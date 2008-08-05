@@ -23,8 +23,8 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This interface defines methods that a Note service must provide

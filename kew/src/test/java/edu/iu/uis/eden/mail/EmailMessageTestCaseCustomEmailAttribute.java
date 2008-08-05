@@ -18,8 +18,9 @@
 
 package edu.iu.uis.eden.mail;
 
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 
 /**
@@ -28,10 +29,10 @@ import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
  */
 public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttribute {
 
-    private ActionRequestVO actionRequestVO;
-    private RouteHeaderVO routeHeaderVO;
+    private ActionRequestDTO actionRequestVO;
+    private RouteHeaderDTO routeHeaderVO;
     
-    public ActionRequestVO getActionRequestVO() {
+    public ActionRequestDTO getActionRequestVO() {
         return this.actionRequestVO;
     }
 
@@ -43,16 +44,16 @@ public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttr
         return "CUSTOM EMAIL SUBJECT";
     }
 
-    public RouteHeaderVO getRouteHeaderVO() {
+    public RouteHeaderDTO getRouteHeaderVO() {
         return this.routeHeaderVO;
     }
 
-    public void setActionRequestVO(ActionRequestVO actionRequestVO) {
+    public void setActionRequestVO(ActionRequestDTO actionRequestVO) {
         this.actionRequestVO = actionRequestVO;
         this.actionRequestVO.setActionRequestId(new Long(-1));
     }
 
-    public void setRouteHeaderVO(RouteHeaderVO routeHeaderVO) {
+    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
         this.routeHeaderVO.setAppDocId("setByEmailComp");
     }

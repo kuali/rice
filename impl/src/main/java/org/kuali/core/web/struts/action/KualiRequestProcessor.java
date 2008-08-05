@@ -53,6 +53,7 @@ import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.transaction.TransactionStatus;
@@ -60,7 +61,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class handles setup of user session and restoring of action form.

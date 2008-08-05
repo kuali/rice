@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceError;
 import edu.iu.uis.eden.WorkflowServiceErrorException;

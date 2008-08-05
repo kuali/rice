@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 /**
  * Thrown whenever there is a problem with XML in an XML document.
  *

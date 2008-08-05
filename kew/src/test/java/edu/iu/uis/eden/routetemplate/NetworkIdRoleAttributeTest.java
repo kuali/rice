@@ -21,13 +21,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
@@ -45,14 +45,14 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
     public void testNetworkIdAttribute() throws Exception {
 	loadXmlFile("NetworkIdRoleAttributeTestConfig.xml");
 	
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "NetworkIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "NetworkIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionVO networkIdDef1 = new WorkflowAttributeDefinitionVO("NetworkIdRoleAttribute");
-	PropertyDefinitionVO networkIdProp1 = new PropertyDefinitionVO(NETWORK_ID_PROP, "rkirkend");
+	WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO("NetworkIdRoleAttribute");
+	PropertyDefinitionDTO networkIdProp1 = new PropertyDefinitionDTO(NETWORK_ID_PROP, "rkirkend");
 	networkIdDef1.addProperty(networkIdProp1);
 	
-	WorkflowAttributeDefinitionVO networkIdDef2 = new WorkflowAttributeDefinitionVO("NetworkIdRoleAttribute");
-	PropertyDefinitionVO networkIdProp2 = new PropertyDefinitionVO(NETWORK_ID_PROP, "bmcgough");
+	WorkflowAttributeDefinitionDTO networkIdDef2 = new WorkflowAttributeDefinitionDTO("NetworkIdRoleAttribute");
+	PropertyDefinitionDTO networkIdProp2 = new PropertyDefinitionDTO(NETWORK_ID_PROP, "bmcgough");
 	networkIdDef2.addProperty(networkIdProp2);
 	
 	document.addAttributeDefinition(networkIdDef1);
@@ -62,19 +62,19 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	
 	// load the document as bmcgough
-	document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
 	assertTrue("bmcgough should have an approve request.", document.isApprovalRequested());
 	
 	// submit an approve as bmcgough
 	document.approve("i approve");
 	
 	// reload as rkirkend, verify still enroute
-	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	document.approve("i also approve");
@@ -88,10 +88,10 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
     public void testParameterizedNetworkIdAttribute() throws Exception {
 	loadXmlFile("ParameterizedNetworkIdRoleAttributeTestConfig.xml");
 	
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "NetworkIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "NetworkIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionVO networkIdDef1 = new WorkflowAttributeDefinitionVO("NetworkIdRoleAttribute");
-	PropertyDefinitionVO networkIdProp1 = new PropertyDefinitionVO(NETWORK_ID_PROP, "rkirkend");
+	WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO("NetworkIdRoleAttribute");
+	PropertyDefinitionDTO networkIdProp1 = new PropertyDefinitionDTO(NETWORK_ID_PROP, "rkirkend");
 	networkIdDef1.addProperty(networkIdProp1);
 		
 	document.addAttributeDefinition(networkIdDef1);
@@ -100,7 +100,7 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	

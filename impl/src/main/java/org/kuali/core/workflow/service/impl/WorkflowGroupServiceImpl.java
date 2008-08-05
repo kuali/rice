@@ -23,12 +23,12 @@ import java.util.List;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.WorkflowGroupService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class implements the WorkflowGroup Service using OneStart Workflow.
@@ -42,13 +42,13 @@ public class WorkflowGroupServiceImpl implements WorkflowGroupService {
     /**
      * @see org.kuali.core.workflow.service.WorkflowGroupService#getWorkflowUsersGroups(edu.iu.uis.eden.user.UserId)
      */
-    public Collection getWorkflowUsersGroups(UserIdVO userId) throws WorkflowException {
+    public Collection getWorkflowUsersGroups(UserIdDTO userId) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("retrieving workflowGroups for '" + userId + "'");
         }
 
         List workgroupList = null;
-        WorkgroupVO[] workgroupArray = KNSServiceLocator.getWorkflowInfoService().getUserWorkgroups(userId);
+        WorkgroupDTO[] workgroupArray = KNSServiceLocator.getWorkflowInfoService().getUserWorkgroups(userId);
         if (workgroupArray != null) {
             workgroupList = Arrays.asList(workgroupArray);
         }
@@ -67,11 +67,11 @@ public class WorkflowGroupServiceImpl implements WorkflowGroupService {
      * @see org.kuali.core.workflow.service.WorkflowGroupService#getByGroupName(java.lang.String)
      */
     @Cached
-    public WorkgroupVO getWorkgroupByGroupName(String groupName) throws WorkflowException {
+    public WorkgroupDTO getWorkgroupByGroupName(String groupName) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("retrieving workgroup by name '" + groupName + "'");
         }
-        WorkgroupVO workgroupVO = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdVO(groupName));
+        WorkgroupDTO workgroupVO = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdDTO(groupName));
         if (LOG.isDebugEnabled()) {
             LOG.debug("retrieved workgroup by name '" + groupName + "'");
         }

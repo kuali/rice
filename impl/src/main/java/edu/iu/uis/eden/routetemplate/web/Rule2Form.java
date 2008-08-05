@@ -20,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.routetemplate.MyRules2;
 import edu.iu.uis.eden.routetemplate.RuleDelegation;
 import edu.iu.uis.eden.util.Utilities;

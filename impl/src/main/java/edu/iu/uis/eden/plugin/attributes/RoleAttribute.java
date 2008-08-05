@@ -18,7 +18,8 @@ package edu.iu.uis.eden.plugin.attributes;
 
 import java.util.List;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

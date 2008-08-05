@@ -16,24 +16,25 @@
  */
 package edu.iu.uis.eden.doctype;
 
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.clientapp.IDocHandler;
 
 /**
  * DocumentType policy enum type.
  * Encapsulates  policies of the document.
- * There are 4 policies 'DEFAULT_APPROVE', 'INITIATOR_MUST_ROUTE' and 'LOOK_FUTURE'.
- * FIXME:: fix the docs on this... are there 3, 4 or 5 policies?  what about PRE_APPROVE and DISAPPROVE?
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class DocumentTypePolicyEnum {
     /**
      * FIXME: needs docs
      */
-    public static final DocumentTypePolicyEnum PRE_APPROVE = new DocumentTypePolicyEnum("PRE_APPROVE");
+    public static final DocumentTypePolicyEnum PRE_APPROVE = new DocumentTypePolicyEnum(EdenConstants.PREAPPROVE_POLICY);
     /**
      * FIXME: needs docs
      */
-    public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum("DISAPPROVE");
+    public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum(EdenConstants.DISAPPROVE_POLICY);
     
     /**
      * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
@@ -41,7 +42,7 @@ public final class DocumentTypePolicyEnum {
      * handler URL has a post variable of the name defined by {@link IDocHandler#COMMAND_PARAMETER} and a value of
      * {@link IDocHandler#SUPERUSER_COMMAND}. The default is 'true'.
      */
-    public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum("USE_KEW_SUPERUSER_DOCHANDLER");
+    public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum(EdenConstants.USE_KEW_SUPERUSER_DOCHANDLER);
 
     /**
      * determines whether a document will go processed without any approval requests.  If
@@ -50,32 +51,32 @@ public final class DocumentTypePolicyEnum {
      * workgroup defined in the 'defaultExceptionWorkgroupName'.  This policy if not defined in this or a parent
      * document type defaults to true
      */
-    public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum("DEFAULT_APPROVE");
+    public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum(EdenConstants.DEFAULT_APPROVE_POLICY);
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_ROUTE = new DocumentTypePolicyEnum("INITIATOR_MUST_ROUTE");
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_ROUTE = new DocumentTypePolicyEnum(EdenConstants.INITIATOR_MUST_ROUTE_POLICY);
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_SAVE = new DocumentTypePolicyEnum("INITIATOR_MUST_SAVE");
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_CANCEL = new DocumentTypePolicyEnum("INITIATOR_MUST_CANCEL");
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_BLANKET_APPROVE = new DocumentTypePolicyEnum("INITIATOR_MUST_BLANKET_APPROVE");
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_SAVE = new DocumentTypePolicyEnum(EdenConstants.INITIATOR_MUST_SAVE_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_CANCEL = new DocumentTypePolicyEnum(EdenConstants.INITIATOR_MUST_CANCEL_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_BLANKET_APPROVE = new DocumentTypePolicyEnum(EdenConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY);
 
     /**
      * determines whether the document can be brought into a simulated route from the route log.  A
      * simulation of where the document would end up if it where routed to completion now.  Defaults to false.
      */
     // determines if route log will show the look into the future link
-    public static final DocumentTypePolicyEnum LOOK_FUTURE = new DocumentTypePolicyEnum("LOOK_FUTURE");
+    public static final DocumentTypePolicyEnum LOOK_FUTURE = new DocumentTypePolicyEnum(EdenConstants.LOOK_INTO_FUTURE_POLICY);
 
-    public static final DocumentTypePolicyEnum SEND_NOTIFICATION_ON_SU_APPROVE = new DocumentTypePolicyEnum("SEND_NOTIFICATION_ON_SU_APPROVE");
+    public static final DocumentTypePolicyEnum SEND_NOTIFICATION_ON_SU_APPROVE = new DocumentTypePolicyEnum(EdenConstants.SEND_NOTIFICATION_ON_SU_APPROVE_POLICY);
 
-    public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum("SUPPORTS_QUICK_INITIATE");
+    public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum(EdenConstants.SUPPORTS_QUICK_INITIATE_POLICY);
 
-    public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum("NOTIFY_ON_SAVE");
+    public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(EdenConstants.NOTIFY_ON_SAVE_POLICY);
 
     private final String name;
 

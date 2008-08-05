@@ -30,12 +30,12 @@ import org.kuali.core.service.KualiGroupService;
 import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.core.workflow.service.WorkflowGroupService;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the service implementation for the KualiGroupService structure. This is the default implementation, that is
@@ -64,10 +64,10 @@ public class KualiGroupServiceImpl implements KualiGroupService {
         }
         else {
 
-            WorkgroupVO workgroup = null;
+            WorkgroupDTO workgroup = null;
 
             try {
-                workgroup = getKualiWorkflowInfo().getWorkgroup(new WorkgroupNameIdVO(groupName));
+                workgroup = getKualiWorkflowInfo().getWorkgroup(new WorkgroupNameIdDTO(groupName));
             }
             catch (WorkflowException e) {
                 t0.log();
@@ -95,7 +95,7 @@ public class KualiGroupServiceImpl implements KualiGroupService {
             }
             else {
                 try {
-                    exists = getKualiWorkflowInfo().getWorkgroup(new WorkgroupNameIdVO(groupName)) != null;
+                    exists = getKualiWorkflowInfo().getWorkgroup(new WorkgroupNameIdDTO(groupName)) != null;
                 }
                 catch (WorkflowException e) {
                     throw new InfrastructureException("error retrieving groupName " + groupName + " from workflow", e);
@@ -118,13 +118,13 @@ public class KualiGroupServiceImpl implements KualiGroupService {
             userId = "";
         }
         try {
-            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdVO(userId.toUpperCase()));
+            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdDTO(userId.toUpperCase()));
             if (workflowUsersGroups != null) {
                 usersGroups = new ArrayList(workflowUsersGroups.size());
 
                 Iterator iter = workflowUsersGroups.iterator();
                 while (iter.hasNext()) {
-                    WorkgroupVO workgroup = (WorkgroupVO) iter.next();
+                    WorkgroupDTO workgroup = (WorkgroupDTO) iter.next();
                     KualiGroup kualiGroup = new KualiGroup();
                     kualiGroup.setGroupDescription(workgroup.getDescription());
                     kualiGroup.setGroupName(workgroup.getWorkgroupName());
@@ -151,7 +151,7 @@ public class KualiGroupServiceImpl implements KualiGroupService {
      * @param workgroup
      * @return
      */
-    private List getGroupUsers(WorkgroupVO workgroup) {
+    private List getGroupUsers(WorkgroupDTO workgroup) {
         // TODO do we want empty list here instead of null groupUsers attribute?
         List groupUsers = new ArrayList();
 
@@ -159,7 +159,7 @@ public class KualiGroupServiceImpl implements KualiGroupService {
         if (members != null) {
             Iterator iter = members.iterator();
             while (iter.hasNext()) {
-                groupUsers.add(((UserVO) iter.next()).getNetworkId());
+                groupUsers.add(((UserDTO) iter.next()).getNetworkId());
             }
         }
         return groupUsers;

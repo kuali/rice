@@ -26,10 +26,10 @@ import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.core.web.struts.action.KualiDocumentActionBase;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
 
 /**
  * This is the Document interface. All entities that are regarded as "eDocs" in the system, including Maintenance documents and
@@ -96,12 +96,12 @@ public interface Document extends PersistableBusinessObject{
     /**
      * method to integrate with workflow, where we will actually handle the transitions of levels for documents
      */
-    public void handleRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent);
+    public void handleRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent);
     
     /**
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
      */
-    public void doActionTaken(ActionTakenEventVO event);
+    public void doActionTaken(ActionTakenEventDTO event);
     
     /**
      * This method will be called after the Workflow engine has completely finished processing a document.
@@ -207,7 +207,7 @@ public interface Document extends PersistableBusinessObject{
      * Handle the doRouteStatusChange event from the post processor
      * 
      */
-    public void doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws Exception ;
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception ;
     
     
     /**

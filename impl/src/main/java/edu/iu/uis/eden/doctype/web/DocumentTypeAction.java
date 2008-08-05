@@ -25,10 +25,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -108,13 +108,13 @@ public class DocumentTypeAction extends WorkflowAction {
 
 		// this code sucks and needs reworked RK
 		if (documentTypeForm.getDocId() != null) { // I'm for the dochandler
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), documentTypeForm.getDocId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), documentTypeForm.getDocId()));
 			documentTypeForm.establishVisibleActionRequestCds();
 		} else if (documentTypeForm.getDocTypeId() != null) { // I'm for the
 																// report
 			// do nothing I'm doing work in report method
 		} else { // I'm for editing and creating new
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), DOCUMENT_TYPE));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), DOCUMENT_TYPE));
 			documentTypeForm.setDocId(documentTypeForm.getWorkflowDocument().getRouteHeaderId());
 			documentTypeForm.establishVisibleActionRequestCds();
 		}
@@ -133,7 +133,7 @@ public class DocumentTypeAction extends WorkflowAction {
 		DocumentType docType = getDocumentTypeService().findById(new Long(request.getParameter("docTypeId")));
 
 		if (docType.getRouteHeaderId() != null && docType.getRouteHeaderId().longValue() != 0) {
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docType.getRouteHeaderId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), docType.getRouteHeaderId()));
 		}
 		documentTypeForm.establishVisibleActionRequestCds();
 

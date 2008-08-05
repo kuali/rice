@@ -19,13 +19,14 @@ package edu.iu.uis.eden.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.DynamicNode;
 import edu.iu.uis.eden.engine.node.DynamicResult;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 public class DynamicSplitTestNode implements DynamicNode {
 

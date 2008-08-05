@@ -22,13 +22,13 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -54,7 +54,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	 */
 	@Test public void testSystemBranchState() throws Exception {
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 
@@ -78,7 +78,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	@Test public void testFinalDocumentExceptionRoutingRecovery() throws Exception {
 
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
@@ -107,7 +107,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue("Document should be in exception routing.", document.stateIsException());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);
@@ -116,7 +116,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		document.complete("");
 
 		// the document should be final once again
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);

@@ -25,11 +25,11 @@ import org.apache.log4j.Logger;
 import org.kuali.core.bo.user.KualiGroup;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.service.impl.KualiGroupServiceImpl;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Override kuali workgroup service because it's going directly against the workflow group service but 
@@ -51,13 +51,13 @@ public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
 
         try {
 
-            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdVO(universalUser.getPersonUserIdentifier()));
+            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdDTO(universalUser.getPersonUserIdentifier()));
             if (workflowUsersGroups != null) {
                 usersGroups = new ArrayList(workflowUsersGroups.size());
 
                 Iterator iter = workflowUsersGroups.iterator();
                 while (iter.hasNext()) {
-                    WorkgroupVO workgroup = (WorkgroupVO) iter.next();
+                    WorkgroupDTO workgroup = (WorkgroupDTO) iter.next();
                     KualiGroup kualiGroup = new KualiGroup();
                     kualiGroup.setGroupDescription(workgroup.getDescription());
                     kualiGroup.setGroupName(workgroup.getWorkgroupName());
@@ -79,7 +79,7 @@ public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
         return usersGroups;
     }
     
-    private List getGroupUsers(WorkgroupVO workgroup) {
+    private List getGroupUsers(WorkgroupDTO workgroup) {
         // TODO do we want empty list here instead of null groupUsers attribute?
         List groupUsers = new ArrayList();
 
@@ -87,7 +87,7 @@ public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
         if (members != null) {
             Iterator iter = members.iterator();
             while (iter.hasNext()) {
-                groupUsers.add(((UserVO) iter.next()).getNetworkId());
+                groupUsers.add(((UserDTO) iter.next()).getNetworkId());
             }
         }
         return groupUsers;

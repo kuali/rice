@@ -17,15 +17,15 @@
 package edu.iu.uis.eden.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstantsService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.user.AuthenticationUserId;
@@ -113,17 +113,17 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
         String documentTypeName1 = "SearchDocType_DefaultCustomProcessor";
-        WorkflowDocument workDoc_Matching1 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName1);
+        WorkflowDocument workDoc_Matching1 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName1);
     	DocumentType docType1 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName1);
-        WorkflowAttributeDefinitionVO stringXMLDef1 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
+        WorkflowAttributeDefinitionDTO stringXMLDef1 = new WorkflowAttributeDefinitionDTO("SearchableAttributeVisible");
         stringXMLDef1.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workDoc_Matching1.addSearchableDefinition(stringXMLDef1);
         workDoc_Matching1.routeDocument("");
 
         String documentTypeName2 = "SearchDocType_DefaultCustomProcessor_2";
-        WorkflowDocument workDoc_Matching2 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName2);
+        WorkflowDocument workDoc_Matching2 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName2);
     	DocumentType docType2 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName2);
-        WorkflowAttributeDefinitionVO stringXMLDef2 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
+        WorkflowAttributeDefinitionDTO stringXMLDef2 = new WorkflowAttributeDefinitionDTO("SearchableAttributeVisible");
         stringXMLDef2.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workDoc_Matching2.addSearchableDefinition(stringXMLDef2);
         workDoc_Matching2.routeDocument("");
@@ -155,9 +155,9 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
         
         String documentTypeName3 = "SearchDocType_DefaultCustomProcessor_3";
-        WorkflowDocument workDoc_Matching3 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName3);
+        WorkflowDocument workDoc_Matching3 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName3);
     	DocumentType docType3 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName3);
-        WorkflowAttributeDefinitionVO stringXMLDef3 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
+        WorkflowAttributeDefinitionDTO stringXMLDef3 = new WorkflowAttributeDefinitionDTO("SearchableAttributeVisible");
         stringXMLDef3.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workDoc_Matching3.addSearchableDefinition(stringXMLDef3);
         workDoc_Matching3.routeDocument("");
@@ -175,8 +175,8 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        WorkflowDocument workDoc_NonMatching2 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName2);
-        WorkflowAttributeDefinitionVO stringXMLDef1a = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
+        WorkflowDocument workDoc_NonMatching2 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName2);
+        WorkflowAttributeDefinitionDTO stringXMLDef1a = new WorkflowAttributeDefinitionDTO("SearchableAttributeVisible");
         // TODO delyea - adding underscore below invalidates via REGEX but doesn't blow up on route or addSearchable?
         String searchAttributeValue = TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE + "nonMatching";
         stringXMLDef1a.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue);

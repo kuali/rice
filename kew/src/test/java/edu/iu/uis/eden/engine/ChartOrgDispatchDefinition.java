@@ -16,9 +16,9 @@
  */
 package edu.iu.uis.eden.engine;
 
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
-public class ChartOrgDispatchDefinition extends WorkflowAttributeDefinitionVO {
+public class ChartOrgDispatchDefinition extends WorkflowAttributeDefinitionDTO {
 
     private static final long serialVersionUID = 1368857682079504618L;
 

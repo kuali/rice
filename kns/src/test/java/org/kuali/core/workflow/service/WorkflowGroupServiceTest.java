@@ -21,11 +21,11 @@ import java.util.Iterator;
 
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.test.KNSTestBase;
 
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 
 /**
  * This class tests the WorkflowGroupr service.
@@ -35,17 +35,17 @@ public class WorkflowGroupServiceTest extends KNSTestBase {
     private static final String SUPERVISOR_GROUP_NAME = "KUALI_ROLE_SUPERVISOR";
 
     @Test public void testGetByGroupName() throws Exception {
-        WorkgroupVO workgroup = KNSServiceLocator.getWorkflowGroupService().getWorkgroupByGroupName(SUPERVISOR_GROUP_NAME);
+        WorkgroupDTO workgroup = KNSServiceLocator.getWorkflowGroupService().getWorkgroupByGroupName(SUPERVISOR_GROUP_NAME);
         assertNotNull(workgroup);
         assertEquals(SUPERVISOR_GROUP_NAME, workgroup.getWorkgroupName());
     }
 
     @Test public void testGetUsersGroups() throws Exception {
         WorkflowGroupService groupService = KNSServiceLocator.getWorkflowGroupService();
-        WorkgroupVO workgroup = groupService.getWorkgroupByGroupName(SUPERVISOR_GROUP_NAME);
-        UserVO[] users = (UserVO[]) workgroup.getMembers();
+        WorkgroupDTO workgroup = groupService.getWorkgroupByGroupName(SUPERVISOR_GROUP_NAME);
+        UserDTO[] users = (UserDTO[]) workgroup.getMembers();
         String username = users[0].getNetworkId();
-        Collection workgroups = groupService.getWorkflowUsersGroups(new NetworkIdVO(username));
+        Collection workgroups = groupService.getWorkflowUsersGroups(new NetworkIdDTO(username));
         assertNotNull(workgroups);
         assertTrue(workgroupsContain(workgroups, workgroup));
         // the inquiry workgroup
@@ -58,12 +58,12 @@ public class WorkflowGroupServiceTest extends KNSTestBase {
      * @param workgroup
      * @return
      */
-    private boolean workgroupsContain(Collection workgroups, WorkgroupVO workgroup) {
+    private boolean workgroupsContain(Collection workgroups, WorkgroupDTO workgroup) {
         boolean workgroupContains = false;
 
         Iterator it = workgroups.iterator();
         while (it.hasNext()) {
-            WorkgroupVO group = (WorkgroupVO) it.next();
+            WorkgroupDTO group = (WorkgroupDTO) it.next();
             if (group.getWorkgroupId().longValue() == workgroup.getWorkgroupId().longValue()) {
                 workgroupContains = true;
                 break;

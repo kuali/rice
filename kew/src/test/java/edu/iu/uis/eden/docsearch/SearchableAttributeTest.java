@@ -22,14 +22,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
@@ -86,11 +86,11 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         String documentTypeName = "SearchDocType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         
-        workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), workflowDocument.getRouteHeaderId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
@@ -231,7 +231,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         loadXmlFile("testdoc0.xml");
         
         String documentTypeName = "SearchDoc";
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("arh14"), documentTypeName);
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("arh14"), documentTypeName);
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         doc.routeDocument("routing");
         
@@ -251,7 +251,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         
         // route a new doc
-        doc = new WorkflowDocument(new NetworkIdVO("arh14"), documentTypeName);
+        doc = new WorkflowDocument(new NetworkIdDTO("arh14"), documentTypeName);
         doc.routeDocument("routing");
         
         // with no attribute criteria, both docs should be found

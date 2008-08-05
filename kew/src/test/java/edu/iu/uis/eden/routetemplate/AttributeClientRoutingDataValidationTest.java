@@ -17,12 +17,12 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Tests that an attribute implementing WorkflowAttributeXmlValidator interface can be validated from the 
@@ -41,14 +41,14 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
     }    
 	
 	@Test public void testClientApplicationValidationImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinitionVO attDef = new WorkflowAttributeDefinitionVO(TestRuleAttributeThree.class.getName());
-		WorkflowAttributeValidationErrorVO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
+		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO(TestRuleAttributeThree.class.getName());
+		WorkflowAttributeValidationErrorDTO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
 		assertTrue("Validation errors should not be empty", validationErrors.length != 0);
 		assertEquals("Should be 2 validation errors", 2, validationErrors.length);
 		boolean foundKey1 = false;
 		boolean foundKey2 = false;
 		for (int i = 0; i < validationErrors.length; i++) {
-			WorkflowAttributeValidationErrorVO error = validationErrors[i];
+			WorkflowAttributeValidationErrorDTO error = validationErrors[i];
 			if (error.getKey().equals("key1")) {
 				assertEquals("key1 key should have message of value1", "value1", error.getMessage());
 				foundKey1 = true;
@@ -63,13 +63,13 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 	}
 	
 	@Test public void testClientApplicationValidationNoImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinitionVO attDef = new WorkflowAttributeDefinitionVO(TestRuleAttributeDuex.class.getName());
-		WorkflowAttributeValidationErrorVO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
+		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO(TestRuleAttributeDuex.class.getName());
+		WorkflowAttributeValidationErrorDTO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
 		assertTrue("Validation errors should be empty because WorkflowAttributeXmlValidator interface is not implemented", validationErrors.length == 0);
 	}
 	
 	@Test public void testThrowWorkflowExceptionNoneExistentAttribute() throws Exception {
-		WorkflowAttributeDefinitionVO attDef = new WorkflowAttributeDefinitionVO("FakeyMcAttribute");
+		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO("FakeyMcAttribute");
 		try {
 			new WorkflowInfo().validAttributeDefinition(attDef);
 			fail("Should have thrown WorkflowException attempting to lookup non-existent attribute");

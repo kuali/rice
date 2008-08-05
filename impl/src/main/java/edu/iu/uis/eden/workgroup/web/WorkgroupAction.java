@@ -31,6 +31,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 import org.kuali.workflow.attribute.ExtensionData;
@@ -40,15 +43,12 @@ import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
@@ -330,7 +330,7 @@ public class WorkgroupAction extends WorkflowAction {
         loadWorkgroupType(workgroupForm);
 
         if (workgroupForm.getDocId() != null) {
-            workgroupForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), workgroupForm.getDocId()));
+            workgroupForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), workgroupForm.getDocId()));
         }
 
         boolean typeChanged = workgroupForm.getCurrentWorkgroupType() != null && !ObjectUtils.equals(workgroupForm.getCurrentWorkgroupType(), workgroupForm.getWorkgroup().getWorkgroupType());

@@ -23,12 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.clientapp.RouteModuleRemote;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.server.BeanConverter;
@@ -61,14 +62,14 @@ public class RouteModuleRemoteAdapter implements RouteModule {
     public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         try {
             List actionRequests = new ArrayList();
-            RouteHeaderVO routeHeaderVO = BeanConverter.convertRouteHeader(routeHeader, null);
-            DocumentContentVO documentContentVO = BeanConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
-            ActionRequestVO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
+            RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(routeHeader, null);
+            DocumentContentDTO documentContentVO = BeanConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
+            ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {
                 Set rootRequests = findRootRequests(actionRequestVOs);
 
                 for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
-                    ActionRequestVO actionRequestVO = (ActionRequestVO) iterator.next();
+                    ActionRequestDTO actionRequestVO = (ActionRequestDTO) iterator.next();
                     actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
                     actionRequests.add(BeanConverter.convertActionRequestVO(actionRequestVO));
                 }
@@ -93,7 +94,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
         }
     }
 
-    private Set findRootRequests(ActionRequestVO[] actionRequestVOs) {
+    private Set findRootRequests(ActionRequestDTO[] actionRequestVOs) {
         Set rootRequests = new HashSet();
         for (int index = 0; index < actionRequestVOs.length; index++) {
             rootRequests.add(findRootRequest(actionRequestVOs[index], new HashSet()));
@@ -105,7 +106,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
      * Walks to the top of the request graph and returns the root request.  Also attempts to
      * avoid bad data by detecting cycles in the graph.
      */
-    private ActionRequestVO findRootRequest(ActionRequestVO actionRequestVO, Set parents) {
+    private ActionRequestDTO findRootRequest(ActionRequestDTO actionRequestVO, Set parents) {
         if (actionRequestVO.getParentActionRequest() != null) {
             if (parents.contains(actionRequestVO.getParentActionRequest())) {
                 throw new WorkflowRuntimeException("Detected a cycle in action request graph returned from route module "+routeModule.getClass());

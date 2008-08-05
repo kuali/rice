@@ -76,17 +76,17 @@ import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the
@@ -918,7 +918,7 @@ public class KualiDocumentActionBase extends KualiAction {
             // can kuali workgroup service work here it is backed by workflow groups
             if (parameterName.equals("newAdHocRouteWorkgroup.id") && !"".equals(request.getParameter(parameterName))) {
                 if (Long.parseLong(request.getParameter(parameterName)) > 0) {
-                    WorkgroupVO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdVO(new Long(request.getParameter(parameterName))));
+                    WorkgroupDTO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdDTO(new Long(request.getParameter(parameterName))));
                     kualiForm.getNewAdHocRouteWorkgroup().setId(workgroupVo.getWorkgroupName());
                 }
                 else {
@@ -927,7 +927,7 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             if (parameterName.startsWith("adHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
                 if (Long.getLong(request.getParameter(parameterName)) != null) {
-                    WorkgroupVO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdVO(new Long(request.getParameter(parameterName))));
+                    WorkgroupDTO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdDTO(new Long(request.getParameter(parameterName))));
                     int lineNumber = Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
                     kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(workgroupVo.getWorkgroupName());
                 }

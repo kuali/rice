@@ -22,13 +22,13 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the base class for a MockWorkflowDocument. It can be extended by any other kind of mock document that needs
@@ -89,16 +89,16 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addAttributeDefinition(edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
-    public void addAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void addAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeAttributeDefinition(edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
-    public void removeAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void removeAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         LOG.debug("Using MockWorkflowDocument");
     }
 
@@ -112,23 +112,23 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAttributeDefinitions()
      */
-    public WorkflowAttributeDefinitionVO[] getAttributeDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getAttributeDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
         return null;
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addSearchableDefinition(edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
-    public void addSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void addSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         LOG.debug("Using MockWorkflowDocument");
 
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeSearchableDefinition(edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
-    public void removeSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void removeSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         LOG.debug("Using MockWorkflowDocument");
 
     }
@@ -144,7 +144,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getSearchableDefinitions()
      */
-    public WorkflowAttributeDefinitionVO[] getSearchableDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getSearchableDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
         return null;
     }
@@ -152,7 +152,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRouteHeader()
      */
-    public RouteHeaderVO getRouteHeader() {
+    public RouteHeaderDTO getRouteHeader() {
         LOG.debug("Using MockWorkflowDocument");
         return null;
     }
@@ -335,18 +335,18 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
 
     /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToUser(java.lang.String,
-     *      java.lang.String, int, java.lang.String, edu.iu.uis.eden.clientapp.vo.UserIdVO, java.lang.String, boolean)
+     *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.UserIdDTO, java.lang.String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }
 
     /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToWorkgroup(java.lang.String,
-     *      java.lang.String, int, java.lang.String, edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO, java.lang.String, boolean)
+     *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.WorkgroupIdDTO, java.lang.String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }
@@ -455,9 +455,9 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, edu.iu.uis.eden.clientapp.vo.ReturnPointVO)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, org.kuali.rice.kew.dto.ReturnPointDTO)
      */
-    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException {
+    public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
     }
 

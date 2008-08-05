@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

@@ -68,10 +68,10 @@ import org.kuali.core.web.format.Formatter;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class contains all of the business rules that are common to all maintenance documents.

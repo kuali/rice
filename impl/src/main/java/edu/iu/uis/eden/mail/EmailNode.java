@@ -24,6 +24,9 @@ import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -31,10 +34,7 @@ import org.xml.sax.InputSource;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.engine.node.SimpleNode;
@@ -76,8 +76,8 @@ public class EmailNode implements SimpleNode {
         Document doc = db.newDocument();
         Element emailNodeElem = doc.createElement("emailNode");
         doc.appendChild(emailNodeElem);
-        RouteHeaderVO routeHeaderVO = BeanConverter.convertRouteHeader(context.getDocument(), null);
-        RouteNodeInstanceVO routeNodeInstanceVO = BeanConverter.convertRouteNodeInstance(context.getNodeInstance());
+        RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(context.getDocument(), null);
+        RouteNodeInstanceDTO routeNodeInstanceVO = BeanConverter.convertRouteNodeInstance(context.getNodeInstance());
         Document documentContent = context.getDocumentContent().getDocument();
         XStream xstream = new XStream();
         Element docElem = XmlHelper.readXml(xstream.toXML(routeHeaderVO)).getDocumentElement();

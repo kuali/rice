@@ -19,11 +19,11 @@ package edu.iu.uis.eden.clientapp;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.session.UserSession;
@@ -48,7 +48,7 @@ public class SimpleWebAuthenticationTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testUpdateUserSession() throws Exception {
-		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("rkirkend"));
+		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("rkirkend"));
 		UserSession userSession = new UserSession(user);
 		HttpServletRequest request = new MockHttpServletRequest();
 		assertNotNull("Should return same usersession that was passed in", new SimpleWebAuthenticationService().updateUserSession(userSession, request));

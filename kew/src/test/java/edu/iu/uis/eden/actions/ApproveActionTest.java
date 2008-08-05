@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 public class ApproveActionTest extends KEWTestCase {
 
@@ -29,45 +29,45 @@ public class ApproveActionTest extends KEWTestCase {
     }
     
     @Test public void testPreapprovals() throws Exception {
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "PreApprovalTest");
+    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "PreApprovalTest");
     	doc.routeDocument("");
     	
     	//rock some preapprovals and other actions... 
-    	doc = new WorkflowDocument(new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
     	doc.approve("");
     	
-    	doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("user2"), doc.getRouteHeaderId());
     	doc.acknowledge("");
     	
-    	doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("user3"), doc.getRouteHeaderId());
     	doc.complete("");
     	
     	//approve as the person the doc is routed to so we can move the documen on and hopefully to final
-    	doc = new WorkflowDocument(new NetworkIdVO("user1"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("user1"), doc.getRouteHeaderId());
     	doc.approve("");
     	
-    	doc = new WorkflowDocument(new NetworkIdVO("user1"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("user1"), doc.getRouteHeaderId());
     	assertTrue("the document should be final", doc.stateIsFinal());
     }
 
     @Test public void testInitiatorRole() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "InitiatorRoleApprovalTest");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "InitiatorRoleApprovalTest");
         doc.routeDocument("");
         //rock some preapprovals and other actions... 
-        doc = new WorkflowDocument(new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
         doc.approve("");
         
         
-        doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user2"), doc.getRouteHeaderId());
         doc.acknowledge("");
         
-        doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user3"), doc.getRouteHeaderId());
         doc.complete("");
 
         assertFalse("the document should NOT be final", doc.stateIsFinal());
 
         //approve as the person the doc is routed (initiator) to so we can move the document on and hopefully to final
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         doc.approve("");
         
         assertTrue("the document should be final", doc.stateIsFinal());

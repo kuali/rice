@@ -26,10 +26,11 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.edl.EDLContext;
@@ -615,7 +616,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	
 	public String getCurrentDate() {
         Date currentDate = new Date();
-        DateFormat dateFormat = EdenConstants.getDefaultDateFormat();
+        DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(currentDate);
     }
 	

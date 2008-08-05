@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.edl.EDocLiteAssociation;
 import edu.iu.uis.eden.edl.EDocLiteService;
@@ -134,7 +133,7 @@ public class EDocLiteLookupable implements WorkflowLookupable, Exportable {
 	}
 
 	public List getSupportedExportFormats() {
-		return EdenConstants.STANDARD_FORMATS;
+		return ExportFormat.STANDARD_FORMATS;
 	}
 
 	private static List establishColData() {

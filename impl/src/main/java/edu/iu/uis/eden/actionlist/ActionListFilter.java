@@ -19,7 +19,8 @@ package edu.iu.uis.eden.actionlist;
 import java.io.Serializable;
 import java.util.Date;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 
 /**
  * model for the action list filter preferences

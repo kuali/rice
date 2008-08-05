@@ -30,14 +30,14 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentContent;
@@ -203,9 +203,9 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
      */
     @Test public void testNonMatchingExtensionKey() throws WorkflowException {
         loadXmlFile("TestExtensionValueMatching.xml");
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("arh14"), "TestDocument");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("arh14"), "TestDocument");
 
-        WorkflowAttributeDefinitionVO attr = new WorkflowAttributeDefinitionVO(StandardGenericXMLRuleAttribute.class.getName());
+        WorkflowAttributeDefinitionDTO attr = new WorkflowAttributeDefinitionDTO(StandardGenericXMLRuleAttribute.class.getName());
         attr.setAttributeName("Attr1");
         // expected to match RuleTemplate with extension value: value='1' with xpath expression /xmlRouting/field[@name=attr1] = wf:ruledata('value')
         attr.addProperty("attr1", "2");
@@ -215,10 +215,10 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
         Long id = doc.getRouteHeaderId();
 
-        doc = new WorkflowDocument(new NetworkIdVO("user1"), id);
+        doc = new WorkflowDocument(new NetworkIdDTO("user1"), id);
         assertTrue("Request should have been generated to user1", doc.isApprovalRequested());
 
-        doc = new WorkflowDocument(new NetworkIdVO("user2"), id);
+        doc = new WorkflowDocument(new NetworkIdDTO("user2"), id);
         assertTrue("Expected approval request to user2", doc.isApprovalRequested());
     }
 

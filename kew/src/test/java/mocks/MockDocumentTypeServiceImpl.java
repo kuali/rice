@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -62,9 +62,9 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
     
-	public DocumentTypeVO getDocumentTypeVOById(Long documentTypeId) {
+	public DocumentTypeDTO getDocumentTypeVOById(Long documentTypeId) {
         DocumentType docType = findById(documentTypeId);
-        DocumentTypeVO docTypeVO = new DocumentTypeVO();
+        DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
         docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
         docTypeVO.setDocTypeDescription(docType.getDescription());
         docTypeVO.setDocTypeHandlerUrl(docType.getDocHandlerUrl());
@@ -151,13 +151,13 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     /* (non-Javadoc)
      * @see edu.iu.uis.eden.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.Long)
      */
-    public DocumentTypeVO getDocumentTypeVO(Long documentTypeId) {
+    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
         return null;
     }
     /* (non-Javadoc)
      * @see edu.iu.uis.eden.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.String)
      */
-    public DocumentTypeVO getDocumentTypeVO(String documentTypeName) {
+    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
         return null;
     }
     /* (non-Javadoc)

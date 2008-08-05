@@ -23,29 +23,29 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 @SuppressWarnings("deprecation")
@@ -64,13 +64,13 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         return workflowInfo;
     }
 
-    public RouteHeaderVO getRouteHeader(UserIdVO userId, Long routeHeaderId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
         return getWorkflowUtility().getRouteHeader(userId, routeHeaderId);
     }
 
-    public RouteHeaderVO getRouteHeader(Long routeHeaderId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getRouteHeader(new NetworkIdVO(KNSConstants.SYSTEM_USER), routeHeaderId);
+            return getWorkflowUtility().getRouteHeader(new NetworkIdDTO(KNSConstants.SYSTEM_USER), routeHeaderId);
         }
         catch (Exception e) {
             throw new WorkflowException(e);
@@ -80,25 +80,25 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     /**
      * @deprecated
      */
-    public WorkgroupVO getWorkgroup(String workgroupName) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException {
         if (StringUtils.isBlank(workgroupName)) {
             throw new InvalidWorkgroupException("Workgroup name cannot be empty");
         }
-        return getWorkgroup(new WorkgroupNameIdVO(workgroupName));// getWorkflowUtility().getWorkgroup(new
+        return getWorkgroup(new WorkgroupNameIdDTO(workgroupName));// getWorkflowUtility().getWorkgroup(new
         // WorkgroupNameIdVO(workgroupName));
     }
 
     /**
      * @deprecated
      */
-    public WorkgroupVO getWorkgroup(Long workgroupId) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException {
         if (workgroupId == null) {
             throw new InvalidWorkgroupException("Workgroup name cannot be empty");
         }
-        return getWorkgroup(new WorkflowGroupIdVO(workgroupId));
+        return getWorkgroup(new WorkflowGroupIdDTO(workgroupId));
     }
 
-    public WorkgroupVO getWorkgroup(WorkgroupIdVO workgroupId) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
         try {
             return getWorkflowUtility().getWorkgroup(workgroupId);
         }
@@ -108,7 +108,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
 
     @Cached
-    public UserVO getWorkflowUser(UserIdVO userId) throws WorkflowException {
+    public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getWorkflowUser(userId);
         }
@@ -120,7 +120,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     /**
      * @deprecated use getDocType using the name
      */
-    public RouteTemplateEntryVO[] getRoute(String documentTypeName) throws WorkflowException {
+    public RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException {
         try {
             return getWorkflowUtility().getRoute(documentTypeName);
         }
@@ -129,7 +129,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public DocumentTypeVO getDocType(Long documentTypeId) throws WorkflowException {
+    public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocType(documentTypeId);
         }
@@ -138,7 +138,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public DocumentTypeVO getDocType(String documentTypeName) throws WorkflowException {
+    public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
         try {
             // throw new WorkflowException("not supported");
             return getWorkflowUtility().getDocType(documentTypeName);
@@ -157,7 +157,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
+    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getUserWorkgroups(userId);
         }
@@ -166,7 +166,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionRequests(routeHeaderId);
         }
@@ -175,7 +175,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
         }
@@ -184,7 +184,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
+    public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionsTaken(routeHeaderId);
         }
@@ -220,7 +220,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
             throw new IllegalArgumentException("Null argument passed in for routeHeaderId.");
         }
 
-        RouteHeaderVO routeHeader = null;
+        RouteHeaderDTO routeHeader = null;
         try {
             routeHeader = getRouteHeader(routeHeaderId);
         }
@@ -239,16 +239,16 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     
     /**
      * @deprecated
-     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[])
+     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
         return documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, false);
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[], boolean)
+     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[], boolean)
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException {
         try {
             return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, ignoreCurrentlyActiveRequests);
         }
@@ -262,10 +262,10 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
      */
     public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
         try {
-            ActionItemVO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{EdenConstants.ACTION_REQUEST_COMPLETE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ});
+            ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{EdenConstants.ACTION_REQUEST_COMPLETE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ});
             List users = new ArrayList();
             for (int i = 0; i < actionItemVOs.length; i++) {
-                ActionItemVO actionItemVO = actionItemVOs[i];
+                ActionItemDTO actionItemVO = actionItemVOs[i];
                 users.add(actionItemVO.getUser().getUuId());
             }
             return users;
@@ -274,7 +274,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(criteriaVO);
         } catch (Exception e) {
@@ -282,7 +282,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
         } catch (Exception e) {

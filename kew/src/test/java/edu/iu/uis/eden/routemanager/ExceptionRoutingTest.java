@@ -21,16 +21,16 @@ import java.util.Collection;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -53,7 +53,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
 	}
 
     @Test public void testSequentialExceptionRouting() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "ExceptionRoutingSequentialDoc");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "ExceptionRoutingSequentialDoc");
         try {
             doc.routeDocument("");
             fail("should have thrown routing exception");
@@ -63,11 +63,11 @@ public class ExceptionRoutingTest extends KEWTestCase {
         TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
         
         WorkflowInfo info = new WorkflowInfo();
-        ActionRequestVO[] actionRequests = info.getActionRequests(doc.getRouteHeaderId());
+        ActionRequestDTO[] actionRequests = info.getActionRequests(doc.getRouteHeaderId());
         
         assertEquals("Should be a single exception request", 1, actionRequests.length);
         for (int i = 0; i < actionRequests.length; i++) {
-            ActionRequestVO actionRequest = actionRequests[i];
+            ActionRequestDTO actionRequest = actionRequests[i];
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isWorkgroupRequest());
@@ -76,12 +76,12 @@ public class ExceptionRoutingTest extends KEWTestCase {
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
         
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         assertTrue("Document should be in exception status", doc.stateIsException());
     }
 
 	@Test public void testInvalidActionsInExceptionRouting() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "ExceptionRoutingSequentialDoc");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "ExceptionRoutingSequentialDoc");
         try {
             doc.routeDocument("");
             fail("should have thrown routing exception");
@@ -91,7 +91,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
 
         TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
 
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         assertTrue("Document should be in exception status", doc.stateIsException());
 
         try {
@@ -105,13 +105,13 @@ public class ExceptionRoutingTest extends KEWTestCase {
     }
 
 	@Test public void testParallelExceptionRouting() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("user1"), "ExceptionRoutingParallelDoc");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), "ExceptionRoutingParallelDoc");
         doc.routeDocument("");
-        doc = new WorkflowDocument(new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
         assertTrue("User should have an approve request", doc.isApprovalRequested());
-        doc = new WorkflowDocument(new NetworkIdVO("bmcgough"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("bmcgough"), doc.getRouteHeaderId());
         assertTrue("User should have an approve request", doc.isApprovalRequested());
-        RouteNodeInstanceVO[] nodes = new WorkflowInfo().getActiveNodeInstances(doc.getRouteHeaderId());
+        RouteNodeInstanceDTO[] nodes = new WorkflowInfo().getActiveNodeInstances(doc.getRouteHeaderId());
         
         // at this point we should be at RouteNode1 and RouteNode3
         assertEquals("There should be two active nodes", 2, nodes.length);
@@ -126,9 +126,9 @@ public class ExceptionRoutingTest extends KEWTestCase {
         
         TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
         WorkflowInfo info = new WorkflowInfo();
-        ActionRequestVO[] actionRequests = info.getActionRequests(doc.getRouteHeaderId());
-        RouteNodeInstanceVO routeNode1 = null;
-        for (RouteNodeInstanceVO nodeInstanceVO : nodes) {
+        ActionRequestDTO[] actionRequests = info.getActionRequests(doc.getRouteHeaderId());
+        RouteNodeInstanceDTO routeNode1 = null;
+        for (RouteNodeInstanceDTO nodeInstanceVO : nodes) {
         	if (nodeInstanceVO.getName().equals("RouteNode1")) {
         		routeNode1 = nodeInstanceVO;
         	}
@@ -137,7 +137,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         
         boolean hasCompleteRequest = false;
         for (int i = 0; i < actionRequests.length; i++) {
-            ActionRequestVO actionRequest = actionRequests[i];
+            ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isWorkgroupRequest());
@@ -156,21 +156,21 @@ public class ExceptionRoutingTest extends KEWTestCase {
         Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(doc.getRouteHeaderId());
         assertEquals("There should only be action items for the member of our exception workgroup", 1, actionItems.size());
         
-        doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user3"), doc.getRouteHeaderId());
         assertTrue("Document should be routing for completion to member of exception workgroup", doc.isCompletionRequested());
         assertTrue("Document should be in exception status", doc.stateIsException());
         doc.complete("");
         
-        doc = new WorkflowDocument(new NetworkIdVO("bmcgough"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("bmcgough"), doc.getRouteHeaderId());
         doc.approve("");
         
-        doc = new WorkflowDocument(new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
         doc.approve("");
         
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         doc.approve("");
         
-        doc = new WorkflowDocument(new NetworkIdVO("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("jhopf"), doc.getRouteHeaderId());
         doc.approve("");
         
         assertTrue("Document should be final", doc.stateIsFinal());
@@ -184,7 +184,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
      */
     @Test public void testExceptionInTransitionFromStart() throws Exception {
 
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "AdhocTransitionTestDocument");
+    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "AdhocTransitionTestDocument");
     	//blow chunks transitioning out of adhoc to the first route node
     	ExceptionRoutingTestPostProcessor.THROW_ROUTE_STATUS_LEVEL_EXCEPTION = true;
     	
@@ -195,7 +195,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
     	}
     	
     	TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
-    	doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+    	doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
     	assertTrue("document should be in exception routing", doc.stateIsException());
     }
     
@@ -206,12 +206,12 @@ public class ExceptionRoutingTest extends KEWTestCase {
      * out of exception routing.  Then check that, if we complete it, it properly transitions out of exception routing.
      */
     @Test public void testRequeueOfExceptionDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "AdhocTransitionTestDocument");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "AdhocTransitionTestDocument");
     	document.routeDocument("");
         assertFalse("Document should not be in exception routing.", document.stateIsException());
         
         // in fact, at this point it should be routed to jhopf
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("Jhopf should have an approve.", document.isApprovalRequested());
         
         // let's tell it to blow up on level change
@@ -223,7 +223,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
     	}
     	
     	TestUtilities.waitForExceptionRouting();
-    	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue("document should be in exception routing", document.stateIsException());
     	
     	// now requeue the document it should stay at exception routing and the status change callback should not
@@ -240,7 +240,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
 //    	SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.DOCUMENT_ROUTING_SERVICE, String.valueOf(document.getRouteHeaderId()), routeHeaderValue);
     	
     	// the document should still be in exception routing
-    	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue("document should be in exception routing", document.stateIsException());
         assertFalse("document shouldn't have transitioned out of exception routing.", ExceptionRoutingTestPostProcessor.TRANSITIONED_OUT_OF_EXCEPTION_ROUTING);
         
@@ -252,7 +252,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         // Note: The behavior here will be a bit different then in a real setting because in these tests the route queue is synchronous so jhopf's original 
         // Approve never actually took place because the transaction was rolled back (because of the exception in the post process).  Therefore, we still
         // need to take action as him again to push the document to FINAL
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         document.approve("");
         

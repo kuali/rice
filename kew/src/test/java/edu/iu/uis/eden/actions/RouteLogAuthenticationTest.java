@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.edl.WorkflowFunctions;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.web.session.UserSession;
@@ -38,7 +38,7 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
      * Tests WorkflowFunctions.isUserRouteLogAuthenticated
      */
     @Test public void testUserRouteLogAuthenticated() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
     	document.routeDocument("");
 
         // false because we didn't set up the user session properly

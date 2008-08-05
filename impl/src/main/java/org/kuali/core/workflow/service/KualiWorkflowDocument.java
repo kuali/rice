@@ -19,17 +19,17 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
 
-import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.server.WorkflowDocumentActions;
 
 public interface KualiWorkflowDocument {
 
@@ -60,13 +60,13 @@ public interface KualiWorkflowDocument {
      * existing attribute doc content. If it is required to replace the attribute document content, then the clearAttributeContent()
      * method should be invoked prior to adding attribute definitions.
      */
-    public abstract void addAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition);
+    public abstract void addAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition);
 
-    public abstract void removeAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition);
+    public abstract void removeAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition);
 
     public abstract void clearAttributeDefinitions();
 
-    public abstract WorkflowAttributeDefinitionVO[] getAttributeDefinitions();
+    public abstract WorkflowAttributeDefinitionDTO[] getAttributeDefinitions();
 
     /**
      * Adds a searchable attribute definition which defines creation parameters for a SearchableAttribute implementation. The
@@ -74,16 +74,16 @@ public interface KualiWorkflowDocument {
      * appended to the existing searchable doc content. If it is required to replace the searchable document content, then the
      * clearSearchableContent() method should be invoked prior to adding definitions.
      */
-    public abstract void addSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition);
+    public abstract void addSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition);
 
-    public abstract void removeSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition);
+    public abstract void removeSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition);
 
     public abstract void clearSearchableDefinitions();
 
-    public abstract WorkflowAttributeDefinitionVO[] getSearchableDefinitions();
+    public abstract WorkflowAttributeDefinitionDTO[] getSearchableDefinitions();
 
     // ########################
-    public abstract RouteHeaderVO getRouteHeader();
+    public abstract RouteHeaderDTO getRouteHeader();
 
     public abstract Long getRouteHeaderId() throws WorkflowException;
 
@@ -129,9 +129,9 @@ public interface KualiWorkflowDocument {
 
     public abstract void refreshContent() throws WorkflowException;
 
-    public abstract void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    public abstract void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
-    public abstract void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    public abstract void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
     public abstract void setTitle(String title) throws WorkflowException;
 
@@ -228,7 +228,7 @@ public interface KualiWorkflowDocument {
      * @param annotation the message to log for the action
      * @param nodeName the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException;
 
@@ -236,11 +236,11 @@ public interface KualiWorkflowDocument {
      * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
      * the document is created first.
      * @param annotation the message to log for the action
-     * @param ReturnPointVO the node to return to
+     * @param ReturnPointDTO the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
-    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException;
+    public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException;
 
     /**
      * @param annotation

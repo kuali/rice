@@ -29,17 +29,17 @@ import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
@@ -157,7 +157,7 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testSecondaryActionList() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
 
     	// at this point the document should be routed to the following people

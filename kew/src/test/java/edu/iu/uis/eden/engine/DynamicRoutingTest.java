@@ -21,11 +21,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.DynamicNode;
 import edu.iu.uis.eden.engine.node.DynamicResult;
 import edu.iu.uis.eden.engine.node.NodeState;
@@ -47,7 +47,7 @@ public class DynamicRoutingTest extends KEWTestCase {
     }
 
     @Test public void testDynamicParallelRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), SEQ_DOC_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SEQ_DOC_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -57,25 +57,25 @@ public class DynamicRoutingTest extends KEWTestCase {
         assertEquals("Wrong active node.", INIT, ((RouteNodeInstance) nodeInstances.iterator().next()).getRouteNode().getRouteNodeName());
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document = new WorkflowDocument(new NetworkIdVO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 

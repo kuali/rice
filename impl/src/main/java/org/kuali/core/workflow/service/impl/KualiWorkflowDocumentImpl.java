@@ -28,32 +28,32 @@ import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.server.WorkflowDocumentActions;
 import java.io.Serializable;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
     private WorkflowDocument workflowDocument;
 
-    public KualiWorkflowDocumentImpl(UserIdVO userId, String documentType) throws WorkflowException {
+    public KualiWorkflowDocumentImpl(UserIdDTO userId, String documentType) throws WorkflowException {
         workflowDocument = new WorkflowDocument(userId, documentType);
     }
 
-    public KualiWorkflowDocumentImpl(UserIdVO userId, Long routeHeaderId) throws WorkflowException {
+    public KualiWorkflowDocumentImpl(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
         workflowDocument = new WorkflowDocument(userId, routeHeaderId);
     }
 
@@ -102,11 +102,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * existing attribute doc content. If it is required to replace the attribute document content, then the clearAttributeContent()
      * method should be invoked prior to adding attribute definitions.
      */
-    public void addAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void addAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         workflowDocument.addAttributeDefinition(attributeDefinition);
     }
 
-    public void removeAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void removeAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         workflowDocument.removeAttributeDefinition(attributeDefinition);
     }
 
@@ -114,7 +114,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.clearAttributeDefinitions();
     }
 
-    public WorkflowAttributeDefinitionVO[] getAttributeDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getAttributeDefinitions() {
         return workflowDocument.getAttributeDefinitions();
     }
 
@@ -124,11 +124,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * appended to the existing searchable doc content. If it is required to replace the searchable document content, then the
      * clearSearchableContent() method should be invoked prior to adding definitions.
      */
-    public void addSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void addSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         workflowDocument.addSearchableDefinition(searchableDefinition);
     }
 
-    public void removeSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void removeSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         workflowDocument.removeSearchableDefinition(searchableDefinition);
     }
 
@@ -136,7 +136,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.clearSearchableDefinitions();
     }
 
-    public WorkflowAttributeDefinitionVO[] getSearchableDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getSearchableDefinitions() {
         return workflowDocument.getSearchableDefinitions();
     }
 
@@ -144,7 +144,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     // END Document Content methods
     // ########################
 
-    public RouteHeaderVO getRouteHeader() {
+    public RouteHeaderDTO getRouteHeader() {
         return workflowDocument.getRouteHeader();
     }
 
@@ -257,11 +257,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.refreshContent();
     }
 
-    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         workflowDocument.appSpecificRouteDocumentToUser(actionRequested, routeTypeName, priority, annotation, recipient, responsibilityDesc, ignorePreviousActions);
     }
 
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         workflowDocument.appSpecificRouteDocumentToWorkgroup(actionRequested, routeTypeName, priority, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
     }
 
@@ -283,8 +283,8 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         try {
             routeHeaderId = getRouteHeaderId();
             workflowInfo = KNSServiceLocator.getWorkflowInfoService();
-            UserVO currentUser = workflowInfo.getWorkflowUser(workflowDocument.getUserId());
-            ActionRequestVO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
+            UserDTO currentUser = workflowInfo.getWorkflowUser(workflowDocument.getUserId());
+            ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
                 if (actionRequests[actionRequestIndex].isActivated() && actionRequests[actionRequestIndex].isAdHocRequest()) {
                     if (actionRequests[actionRequestIndex].isUserRequest() && currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getUserVO().getWorkflowId())) {
@@ -388,7 +388,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * @param annotation the message to log for the action
      * @param nodeName the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
         workflowDocument.returnToPreviousNode(annotation, nodeName);
@@ -398,11 +398,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
      * the document is created first.
      * @param annotation the message to log for the action
-     * @param ReturnPointVO the node to return to
+     * @param ReturnPointDTO the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
-    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException {
+    public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
         workflowDocument.returnToPreviousNode(annotation, returnPoint);
     }
 
@@ -627,11 +627,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      */
     public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
         UniversalUserService universalUserService = KNSServiceLocator.getUniversalUserService();
-        ActionTakenVO[] actionsTaken = workflowDocument.getActionsTaken();
+        ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
         Set<String> universalUserIds = new HashSet<String>();
         Set<UniversalUser> universalUsers = new HashSet<UniversalUser>();
         
-        for (ActionTakenVO actionTaken : actionsTaken) {
+        for (ActionTakenDTO actionTaken : actionsTaken) {
             if (EdenConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
                 String universalUserId = actionTaken.getUserVO().getUuId();
                 if (!universalUserIds.contains(universalUserId)) {

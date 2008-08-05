@@ -39,14 +39,14 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.ValidActionsDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.ValidActionsVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization code.
@@ -123,7 +123,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
 
             if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-                ValidActionsVO validActions = workflowDocument.getRouteHeader().getValidActions();
+                ValidActionsDTO validActions = workflowDocument.getRouteHeader().getValidActions();
                 boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
                 flags.setCanCancel(hasPreRouteEditAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_CANCELED_CD));
 
@@ -154,13 +154,13 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             }
             else if (workflowDocument.stateIsException()) {
             try {
-                    ActionRequestVO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
+                    ActionRequestDTO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
                     boolean reqFound = false;
-                    for ( ActionRequestVO req : requests ) {
+                    for ( ActionRequestDTO req : requests ) {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
                         if ( req.getWorkgroupVO() != null ) {
-                        UserVO[] users = req.getWorkgroupVO().getMembers();
-                        for ( UserVO usr : users ) {
+                        UserDTO[] users = req.getWorkgroupVO().getMembers();
+                        for ( UserDTO usr : users ) {
                             if ( usr.getUuId().equals( user.getPersonUniversalIdentifier() ) ) {
                             flags.setCanCancel( true );
                                     flags.setCanApprove( true );

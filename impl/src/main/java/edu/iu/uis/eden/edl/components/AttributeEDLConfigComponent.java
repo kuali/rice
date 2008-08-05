@@ -20,16 +20,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
@@ -52,13 +52,13 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 		    // clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
 		    document.clearAttributeContent();
 
-		    WorkflowAttributeDefinitionVO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
+		    WorkflowAttributeDefinitionDTO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
 		    for (Iterator iter = matchingParams.iterator(); iter.hasNext();) {
 			MatchingParam param = (MatchingParam) iter.next();
-			PropertyDefinitionVO property = attributeDef.getProperty(attributePropertyName);
+			PropertyDefinitionDTO property = attributeDef.getProperty(attributePropertyName);
 			//if the prop doesn't exist create it and add it to the definition otherwise update the property value
 			if (property == null) {
-			    property = new PropertyDefinitionVO(attributePropertyName, param.getParamValue());
+			    property = new PropertyDefinitionDTO(attributePropertyName, param.getParamValue());
 			    attributeDef.addProperty(property);
 			} else {
 			    property.setValue(param.getParamValue());
@@ -68,12 +68,12 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 		    try {
 			// validate if they are taking an action on the document (i.e. it's annotatable)
 			if (edlContext.getUserAction().isValidatableAction()) {
-			    WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
+			    WorkflowAttributeValidationErrorDTO[] errors = document.validateAttributeDefinition(attributeDef);
 			    if (errors.length > 0) {
 				getEdlContext().setInError(true);
 			    }
 			    for (int index = 0; index < errors.length; index++) {
-				WorkflowAttributeValidationErrorVO error = errors[index];
+				WorkflowAttributeValidationErrorDTO error = errors[index];
 				MatchingParam param = getMatchingParam(matchingParams, error.getKey());
 				// if it doesn't match a param, then this is a global error
 				if (param == null) {
@@ -92,14 +92,14 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 		return matchingParams;
 	}
 
-	private WorkflowAttributeDefinitionVO getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
+	private WorkflowAttributeDefinitionDTO getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
 		for (int i = 0; i < document.getAttributeDefinitions().length; i++) {
-			WorkflowAttributeDefinitionVO workflowAttributeDef = (WorkflowAttributeDefinitionVO)document.getAttributeDefinitions()[i];
+			WorkflowAttributeDefinitionDTO workflowAttributeDef = (WorkflowAttributeDefinitionDTO)document.getAttributeDefinitions()[i];
 			if (workflowAttributeDef.getAttributeName().equals(attributeName)) {
 				return workflowAttributeDef;
 			}
 		}
-		WorkflowAttributeDefinitionVO workflowAttributeDef = new WorkflowAttributeDefinitionVO(attributeName);
+		WorkflowAttributeDefinitionDTO workflowAttributeDef = new WorkflowAttributeDefinitionDTO(attributeName);
 		document.addAttributeDefinition(workflowAttributeDef);
 		return workflowAttributeDef;
 	}

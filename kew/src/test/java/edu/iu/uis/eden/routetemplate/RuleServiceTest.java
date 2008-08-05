@@ -23,14 +23,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -44,15 +44,15 @@ public class RuleServiceTest extends KEWTestCase {
 
     @Test public void testClearCacheWithDocumentTypeUpdate() throws Exception {
         //put the rules in the cache by routing documents
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "EDENSERVICE-DOCS.child1");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "EDENSERVICE-DOCS.child1child");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1child");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "EDENSERVICE-DOCS.child2");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child2");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "EDENSERVICE-DOCS.child3");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child3");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "NotRelated");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "NotRelated");
         document.routeDocument("");
 
         //verify the cache's contents are correct
@@ -207,7 +207,7 @@ public class RuleServiceTest extends KEWTestCase {
         assertNull("Rules should not be cached yet.", rulesCached);
 
         // routing a doc should put the rules into the cache
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "EDENSERVICE-DOCS.child1child1child");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1child1child");
         document.routeDocument("");
 
         rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");

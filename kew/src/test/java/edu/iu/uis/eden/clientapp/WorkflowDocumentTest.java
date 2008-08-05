@@ -18,14 +18,14 @@ package edu.iu.uis.eden.clientapp;
 
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 
 /**
  * Place to test WorkflowDocument.
@@ -38,26 +38,26 @@ public class WorkflowDocumentTest extends KEWTestCase {
     }
 
     @Test public void testLoadNonExistentDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), new Long(123456789));
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), new Long(123456789));
     	assertNull("RouteHeaderVO should be null.", document.getRouteHeader());
     }
 
     @Test public void testWorkflowDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         document.approve("");
 
-        RouteNodeInstanceVO[] nodeInstances = document.getRouteNodeInstances();
+        RouteNodeInstanceDTO[] nodeInstances = document.getRouteNodeInstances();
         boolean containsInitiated = false;
         boolean containsTemplate1 = false;
         boolean containsTemplate2 = false;
         for (int j = 0; j < nodeInstances.length; j++) {
-            RouteNodeInstanceVO routeNodeInstance = nodeInstances[j];
+            RouteNodeInstanceDTO routeNodeInstance = nodeInstances[j];
             if (routeNodeInstance.getName().equals("Initiated")) {
                 containsInitiated = true;
             } else if (routeNodeInstance.getName().equals("Template1")) {
@@ -79,29 +79,29 @@ public class WorkflowDocumentTest extends KEWTestCase {
      */
     @Test public void testReturnToPreviousCorrectlyUpdatingDocumentStatus() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.returnToPreviousNode("", "Initiated");
 
         assertFalse("ewestfal should no longer have approval status", document.isApprovalRequested());
         assertFalse("ewestfal should no long have blanket approve status", document.isBlanketApproveCapable());
 
         //just for good measure
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should now have an approve request", document.isApprovalRequested());
     }
 
     @Test public void testGetPreviousRouteNodeNames() throws Exception {
 
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         String[] previousNodeNames = document.getPreviousNodeNames();
         assertEquals("Should have 2 previous Node Names", 2, previousNodeNames.length);
         assertEquals("Last node name should be the first visisted", "Initiated", previousNodeNames[0]);
@@ -118,32 +118,32 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     @Test public void testIsRouteCapable() throws Exception {
 
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "UnitTestDocument");
 
-    	verifyIsRouteCapable(false, new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new WorkflowIdVO("1"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new UuIdVO("1"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new EmplIdVO("1"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, new UuIdDTO("1"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, new EmplIdDTO("1"), doc.getRouteHeaderId());
 
-    	verifyIsRouteCapable(true, new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new WorkflowIdVO("2"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new UuIdVO("2"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new EmplIdVO("2"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, new UuIdDTO("2"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, new EmplIdDTO("2"), doc.getRouteHeaderId());
 
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "NonInitiatorCanRouteDocument");
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "NonInitiatorCanRouteDocument");
 
-        verifyIsRouteCapable(true, new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new WorkflowIdVO("1"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new UuIdVO("1"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new EmplIdVO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new UuIdDTO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new EmplIdDTO("1"), doc.getRouteHeaderId());
 
-        verifyIsRouteCapable(true, new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new WorkflowIdVO("2"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new UuIdVO("2"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new EmplIdVO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new UuIdDTO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new EmplIdDTO("2"), doc.getRouteHeaderId());
     }
 
-    private void verifyIsRouteCapable(boolean routeCapable, UserIdVO userId, Long docId) throws Exception {
+    private void verifyIsRouteCapable(boolean routeCapable, UserIdDTO userId, Long docId) throws Exception {
     	WorkflowDocument doc = new WorkflowDocument(userId, docId);
     	assertEquals(routeCapable, doc.isRouteCapable());
     }

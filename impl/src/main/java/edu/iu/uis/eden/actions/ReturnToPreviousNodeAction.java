@@ -22,9 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.util.EdenConstants;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;

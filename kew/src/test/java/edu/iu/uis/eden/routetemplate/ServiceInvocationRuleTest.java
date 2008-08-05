@@ -19,13 +19,13 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.FakeService;
 import org.kuali.workflow.test.KEWTestCase;
 import org.kuali.workflow.test.FakeServiceImpl.Invocation;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Tests that a groovy expression in a rule can invoke an arbitrary service on the KSB 
@@ -42,7 +42,7 @@ public class ServiceInvocationRuleTest extends KEWTestCase {
         assertNotNull(fakeService);
         
         
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("arh14"), "ServiceInvocationRuleTest");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("arh14"), "ServiceInvocationRuleTest");
         doc.routeDocument("routing");
 
         // no requests whatsoever were sent...we're done

@@ -18,7 +18,6 @@ package edu.iu.uis.eden.actionitem;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -35,8 +34,9 @@ import javax.persistence.Version;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -325,7 +325,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     public String getDateAssignedString() {
         if(dateAssignedString == null || dateAssignedString.trim().equals("")){
-            return EdenConstants.getDefaultDateFormat().format(getDateAssigned());
+            return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
         } else {
             return dateAssignedString;
         }

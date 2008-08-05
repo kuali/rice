@@ -20,16 +20,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.test.TestUtilities;
 
 /**
@@ -43,10 +43,10 @@ public class SuperUserActionTest extends KEWTestCase {
     }
 	
     @Test public void testSuperUserApprove() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
@@ -61,18 +61,18 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
     @Test public void testSuperUserApproveExceptionCases() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "SUApproveDocument");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "SUApproveDocument");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("user2"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
         try {
         	document.approve("");
         } catch (Exception e) {
         }
         TestUtilities.getExceptionThreader().join();
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be in exception routing", document.stateIsException());
         document.superUserApprove("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be final", document.stateIsFinal());
         
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
@@ -80,18 +80,18 @@ public class SuperUserActionTest extends KEWTestCase {
     }
     
     @Test public void testSuperUserApproveExceptionCasesWithNotifications() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "SUApproveDocumentNotifications");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "SUApproveDocumentNotifications");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("user2"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
         try {
         	document.approve("");
         } catch (Exception e) {
         }
         TestUtilities.getExceptionThreader().join();
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be in exception routing", document.stateIsException());
         document.superUserApprove("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be 'processed'", document.stateIsProcessed());
         
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
@@ -103,7 +103,7 @@ public class SuperUserActionTest extends KEWTestCase {
     }
     
     @Test public void testSuperUserInitiatorApprove() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
@@ -118,7 +118,7 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	@Test public void testSuperUserApproveWithNotifications() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "NotificationTestChild");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "NotificationTestChild");
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
@@ -133,10 +133,10 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	@Test public void testSuperUserApproveInvalidUser() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdVO("quickstart"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("quickstart"), document.getRouteHeaderId());
         try {
         	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
         	document.superUserApprove("");
@@ -148,7 +148,7 @@ public class SuperUserActionTest extends KEWTestCase {
 	
 	@Test public void testSuperUserActionDisregardPostProcessing() throws Exception {
 	    // verify that the post processor class still throws exceptions when post processing document
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
             document.superUserApprove("");
             fail("Document should throw exception from post processor");
@@ -156,53 +156,53 @@ public class SuperUserActionTest extends KEWTestCase {
         }
         
         // test that ignoring the post processor works correctly
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserCancelAction");
         }
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserDisapproveAction");
         }
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserApprove(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserApprove(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserApprove");
         }
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), document.getRouteHeaderId(), "Acknowledge1", "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), document.getRouteHeaderId(), "Acknowledge1", "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserNodeApprove");
         }
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), document.getRouteHeaderId(), "WorkflowDocumentTemplate", "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), document.getRouteHeaderId(), "WorkflowDocumentTemplate", "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserReturnDocumentToPreviousNode");
         }
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
         try {
             Long actionRequestId = null;
             // get actionRequestId to use... there should only be one active action request
-            ActionRequestVO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+            ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
             for (int i = 0; i < actionRequests.length; i++) {
-                ActionRequestVO actionRequestVO = actionRequests[i];
+                ActionRequestDTO actionRequestVO = actionRequests[i];
                 if (actionRequestVO.isActivated()) {
                     // if we already found an active action request fail the test
                     if (actionRequestId != null) {
@@ -211,7 +211,7 @@ public class SuperUserActionTest extends KEWTestCase {
                     actionRequestId = actionRequestVO.getActionRequestId();
                 }
             }
-            KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("bmcgough")), document.getRouteHeaderId(), actionRequestId, "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("bmcgough")), document.getRouteHeaderId(), actionRequestId, "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserActionRequestApproveAction");
@@ -220,7 +220,7 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	private WorkflowDocument generateDummyEnrouteDocument(String initiatorNetworkId) throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiatorNetworkId), "SuperUserActionInvalidPostProcessor");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), "SuperUserActionInvalidPostProcessor");
         assertEquals("Document should be at start node","AdHoc", document.getNodeNames()[0]);
         document.routeDocument("");
         assertEquals("Document should be at WorkflowDocument2 node","WorkflowDocument2", document.getNodeNames()[0]);

@@ -28,12 +28,12 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class represents a User Session
@@ -48,8 +48,8 @@ public class UserSession implements Serializable {
 
     private UniversalUser universalUser;
     private UniversalUser backdoorUser;
-    private UserVO workflowUser;
-    private UserVO backdoorWorkflowUser;
+    private UserDTO workflowUser;
+    private UserDTO backdoorWorkflowUser;
     private int nextObjectKey;
     private Map objectMap;
     private String kualiSessionId;
@@ -80,7 +80,7 @@ public class UserSession implements Serializable {
      */
     public UserSession(String networkId) throws UserNotFoundException, WorkflowException {
         this.universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(networkId));
-        this.workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdVO(networkId));
+        this.workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.nextObjectKey = 0;
         this.objectMap = new HashMap();
     }
@@ -123,7 +123,7 @@ public class UserSession implements Serializable {
     /**
      * @return the workflowUser which is the current user in the system, backdoor if backdoor is set
      */
-    public UserVO getWorkflowUser() {
+    public UserDTO getWorkflowUser() {
         if (backdoorUser != null) {
             return backdoorWorkflowUser;
         }
@@ -145,7 +145,7 @@ public class UserSession implements Serializable {
        // only allow backdoor in non-production environments
        if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
         this.backdoorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(networkId));
-        this.backdoorWorkflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdVO(networkId));
+        this.backdoorWorkflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.workflowDocMap = new HashMap();
        }
     }

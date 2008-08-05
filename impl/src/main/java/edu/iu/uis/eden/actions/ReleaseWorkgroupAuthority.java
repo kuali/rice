@@ -19,7 +19,8 @@ package edu.iu.uis.eden.actions;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

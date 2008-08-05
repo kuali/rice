@@ -30,19 +30,20 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
+import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.JSTLConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.AdHocRevokeVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.web.ExportServlet;
@@ -65,7 +66,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			request.setAttribute("Constants", new EdenConstants());
+			request.setAttribute("Constants", new JSTLConstants(EdenConstants.class));
 			request.setAttribute("UrlResolver", UrlResolver.getInstance());
 			ActionMessages messages = null;
 			messages = establishRequiredState(request, form);
@@ -172,9 +173,9 @@ public abstract class WorkflowAction extends DispatchAction {
 		try {
 			String routeNodeName = getAdHocRouteNodeName(routingForm.getWorkflowDocument().getRouteHeaderId());
 			if (EdenConstants.PERSON.equals(recipient.getType())) {
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdVO(recipient.getId()), "", true);
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdDTO(recipient.getId()), "", true);
 			} else {
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdVO(recipient.getId()), "", true);
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdDTO(recipient.getId()), "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();
@@ -191,7 +192,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	protected String getAdHocRouteNodeName(Long routeHeaderId) throws WorkflowException {
 		WorkflowInfo info = new WorkflowInfo();
-		RouteNodeInstanceVO[] nodeInstances = info.getActiveNodeInstances(routeHeaderId);
+		RouteNodeInstanceDTO[] nodeInstances = info.getActiveNodeInstances(routeHeaderId);
 		if (nodeInstances == null || nodeInstances.length == 0) {
 			nodeInstances = info.getTerminalNodeInstances(routeHeaderId);
 		}
@@ -253,16 +254,16 @@ public abstract class WorkflowAction extends DispatchAction {
 		String[] nodeNames = document.getNodeNames();
 		for (int index = 0; index < nodeNames.length; index++) {
 			String nodeName = nodeNames[index];
-			AdHocRevokeVO revoke = new AdHocRevokeVO(nodeName);
+			AdHocRevokeDTO revoke = new AdHocRevokeDTO(nodeName);
 			if (recipient.getType().equals("person")) {
-				revoke.setUserId(new NetworkIdVO(recipient.getId()));
+				revoke.setUserId(new NetworkIdDTO(recipient.getId()));
 			} else if (recipient.getType().equals("workgroup")) {
-				revoke.setWorkgroupId(new WorkgroupNameIdVO(recipient.getId()));
+				revoke.setWorkgroupId(new WorkgroupNameIdDTO(recipient.getId()));
 			}
 			revocations.add(revoke);
 		}
 		for (Iterator iterator = revocations.iterator(); iterator.hasNext();) {
-			AdHocRevokeVO revoke = (AdHocRevokeVO) iterator.next();
+			AdHocRevokeDTO revoke = (AdHocRevokeDTO) iterator.next();
 			// TODO print better message here
 			document.revokeAdHocRequests(revoke, "Removed ad hoc recipient from node '" + revoke.getNodeName() + "'.");
 		}

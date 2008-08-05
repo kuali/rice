@@ -19,16 +19,16 @@
 package edu.iu.uis.eden.mail;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -79,9 +79,9 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 	}
         CustomEmailAttribute customEmailAttribute = actionItem.getRouteHeader().getCustomEmailAttribute();
         if (customEmailAttribute != null) {
-            RouteHeaderVO routeHeaderVO = BeanConverter.convertRouteHeader(actionItem.getRouteHeader(), user);
+            RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(actionItem.getRouteHeader(), user);
             ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
-            ActionRequestVO actionRequestVO = BeanConverter.convertActionRequest(actionRequest);
+            ActionRequestDTO actionRequestVO = BeanConverter.convertActionRequest(actionRequest);
             customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
             customEmailAttribute.setActionRequestVO(actionRequestVO);
         }

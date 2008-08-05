@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.notes;
 
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
 import edu.iu.uis.eden.web.session.UserSession;
 
 /**
@@ -26,7 +27,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  */
 public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 
-    private RouteHeaderVO routeHeaderVO;
+    private RouteHeaderDTO routeHeaderVO;
     private UserSession userSession;
     
     public CustomNoteAttributeImpl() {}
@@ -42,11 +43,11 @@ public class CustomNoteAttributeImpl implements CustomNoteAttribute {
     	return note.getNoteAuthorWorkflowId().equalsIgnoreCase(userSession.getWorkflowUser().getWorkflowId());
     }
 
-    public RouteHeaderVO getRouteHeaderVO() {
+    public RouteHeaderDTO getRouteHeaderVO() {
         return routeHeaderVO;
     }
 
-    public void setRouteHeaderVO(RouteHeaderVO routeHeaderVO) {
+    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
     }
 

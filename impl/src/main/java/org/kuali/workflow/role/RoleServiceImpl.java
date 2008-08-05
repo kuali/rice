@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.role.dao.RoleDAO;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -36,7 +37,6 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;

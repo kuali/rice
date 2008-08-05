@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
@@ -58,7 +58,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     public void blanketApprove(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
-	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdVO(user.getNetworkId()), document.getDocumentId());
+	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdDTO(user.getNetworkId()), document.getDocumentId());
 	    constructTitle(document, workflowDoc);
 	    attachDocumentContent(document, workflowDoc);
 	    workflowDoc.blanketApprove(annotation);
@@ -70,7 +70,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     public void route(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
-	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdVO(user.getNetworkId()), document.getDocumentId());
+	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdDTO(user.getNetworkId()), document.getDocumentId());
 	    constructTitle(document, workflowDoc);
 	    attachDocumentContent(document, workflowDoc);
 	    workflowDoc.routeDocument(annotation);

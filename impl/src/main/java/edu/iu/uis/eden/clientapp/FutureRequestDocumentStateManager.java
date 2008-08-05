@@ -22,10 +22,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -103,7 +103,7 @@ public class FutureRequestDocumentStateManager {
 	try {
 	    ObjectDefinition ojbDef = new ObjectDefinition(values[1]);
 	    ojbDef.addConstructorParameter(new DataDefinition(values[2], String.class));
-	    UserIdVO userId = (UserIdVO) ObjectDefinitionResolver.createObject(ojbDef, this.getClass().getClassLoader(), false);
+	    UserIdDTO userId = (UserIdDTO) ObjectDefinitionResolver.createObject(ojbDef, this.getClass().getClassLoader(), false);
 	    WorkflowUser stateUser = KEWServiceLocator.getUserService().getWorkflowUser(userId);
 	    if (stateUser.getWorkflowId().equals(user.getWorkflowId())) {
 		return true;
@@ -141,7 +141,7 @@ public class FutureRequestDocumentStateManager {
         return this.receiveFutureRequests;
     }
     
-    public static String getFutureRequestsKey(UserIdVO userId) {
+    public static String getFutureRequestsKey(UserIdDTO userId) {
 	return EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + userId.getClass().getName() + "," + userId.toString() + "," + new Date().toString() + ", " + Math.random();
     }
     

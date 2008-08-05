@@ -35,8 +35,11 @@ import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -44,11 +47,9 @@ import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstantsService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
@@ -159,7 +160,7 @@ public class RuleServiceImpl implements RuleService {
             Timestamp date = new Timestamp(System.currentTimeMillis());
             rule.setActivationDate(date);
             try {
-                rule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                rule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
             } catch (Exception e) {
                 LOG.error("Parse Exception", e);
             }
@@ -203,7 +204,7 @@ public class RuleServiceImpl implements RuleService {
                         delegatorRule.setActivationDate(date);
                     }
                     try {
-                        delegatorRule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                        delegatorRule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
                     } catch (Exception e) {
                         LOG.error("Parse Exception", e);
                     }
@@ -258,7 +259,7 @@ public class RuleServiceImpl implements RuleService {
             Timestamp date = new Timestamp(System.currentTimeMillis());
             rule.setActivationDate(date);
             try {
-                rule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                rule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
             } catch (Exception e) {
                 LOG.error("Parse Exception", e);
             }
@@ -282,7 +283,7 @@ public class RuleServiceImpl implements RuleService {
                         delegateRule.setActivationDate(date);
                     }
                     try {
-                        delegateRule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                        delegateRule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
                     } catch (Exception e) {
                         LOG.error("Parse Exception", e);
                     }
@@ -570,9 +571,9 @@ public class RuleServiceImpl implements RuleService {
         }
         WorkflowDocument workflowDocument = null;
         if (routeHeaderId == null) {
-            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(myRules.getRules()));
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), getRuleDocmentTypeName(myRules.getRules()));
         } else {
-            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
         }
 
         for (Iterator iter = myRules.getRules().iterator(); iter.hasNext();) {
@@ -634,12 +635,12 @@ public class RuleServiceImpl implements RuleService {
 
         WorkflowDocument workflowDocument = null;
         if (routeHeaderId != null) {
-            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            workflowDocument = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), getRuleDocmentTypeName(rules));
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), getRuleDocmentTypeName(rules));
         }
         workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
         delegateRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
@@ -747,7 +748,7 @@ public class RuleServiceImpl implements RuleService {
         }
         if (ruleBaseValues.getToDate() == null) {
             try {
-                ruleBaseValues.setToDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                ruleBaseValues.setToDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
             } catch (ParseException e) {
                 LOG.error("Error date-parsing default date");
                 throw new WorkflowServiceErrorException("Error parsing default date.", e);

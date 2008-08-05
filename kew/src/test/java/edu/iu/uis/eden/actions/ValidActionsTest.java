@@ -22,12 +22,12 @@ import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.ValidActionsDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.ValidActionsVO;
 
 public class ValidActionsTest extends KEWTestCase {
 
@@ -42,7 +42,7 @@ public class ValidActionsTest extends KEWTestCase {
     @Test public void testValidActions() throws Exception {
         WorkflowDocument document = null;
         String networkId = null;
-        document = new WorkflowDocument(new NetworkIdVO("user1"), DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
         Long routeHeaderId = document.getRouteHeaderId();
 
         networkId = "rkirkend";
@@ -121,24 +121,24 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no route "O"
         // check for no save "S"
 
-        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         document.approve("");
 
         // SHOULD NOW BE ONLY ACKNOWLEDGED
 
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         // test for Processed Status on document
         document.acknowledge("");
-        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         document.acknowledge("");
     }
 
     private WorkflowDocument checkActions(String networkId,Long routeHeaderId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(networkId), routeHeaderId);
-        ValidActionsVO validActions = document.getRouteHeader().getValidActions();
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(networkId), routeHeaderId);
+        ValidActionsDTO validActions = document.getRouteHeader().getValidActions();
         Set validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet();
 
         for (int i = 0; i < validActionsAllowed.length; i++) {

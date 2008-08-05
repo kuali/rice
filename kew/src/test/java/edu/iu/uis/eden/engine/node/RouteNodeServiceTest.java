@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.test.TestUtilities;
 
@@ -43,7 +43,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     }
     
     @Test public void testGetFlattenedNodeInstances() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SeqDocType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SeqDocType");
         document.saveDocument("");
         
         DocumentRouteHeaderValue serverDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
@@ -64,7 +64,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     }
 
     @Test public void testSearchNodeGraphSequentailBackward() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SeqDocType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SeqDocType");
     	document.blanketApprove("", "WorkflowDocument");
     	List activeNodeInstances = routeNodeService.getActiveNodeInstances(document.getRouteHeaderId());
     	NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "AdHoc");
@@ -107,7 +107,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     }
     
     @Test public void testSearchNodeGraphParallelBackward() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "ParallelDocType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "ParallelDocType");
     	document.blanketApprove("", new String[] { "WorkflowDocument2", "WorkflowDocument3" });
     	List activeNodeInstances = routeNodeService.getActiveNodeInstances(document.getRouteHeaderId());
     	assertEquals("Should be 2 active nodes.", 2, activeNodeInstances.size());
@@ -182,7 +182,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
      * functionality is implemented.
      */
     @Test public void testSearchNodeGraphForward() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SeqDocType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SeqDocType");
     	document.routeDocument("");
     	List initialNodeInstances = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(document.getRouteHeaderId());
     	NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_FORWARD, initialNodeInstances, "WorkflowDocument");

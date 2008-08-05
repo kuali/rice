@@ -25,13 +25,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -96,12 +96,12 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return workgroups;
 	}
 
-	public Workgroup getWorkgroup(WorkgroupIdVO groupIdVO) {
+	public Workgroup getWorkgroup(WorkgroupIdDTO groupIdVO) {
 		GroupId groupId = null;
-		if (groupIdVO instanceof WorkflowGroupIdVO) {
-			groupId = new WorkflowGroupId(((WorkflowGroupIdVO) groupIdVO).getWorkgroupId());
-		} else if (groupIdVO instanceof WorkgroupNameIdVO) {
-			groupId = new GroupNameId(((WorkgroupNameIdVO) groupIdVO).getWorkgroupName());
+		if (groupIdVO instanceof WorkflowGroupIdDTO) {
+			groupId = new WorkflowGroupId(((WorkflowGroupIdDTO) groupIdVO).getWorkgroupId());
+		} else if (groupIdVO instanceof WorkgroupNameIdDTO) {
+			groupId = new GroupNameId(((WorkgroupNameIdDTO) groupIdVO).getWorkgroupName());
 		} else {
 			throw new IllegalArgumentException("Attempting to find workgroup with invalid id type: " + groupIdVO);
 		}

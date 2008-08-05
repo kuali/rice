@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.mail;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 
 /**

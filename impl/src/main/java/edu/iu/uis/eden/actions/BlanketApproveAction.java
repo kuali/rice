@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessorService;

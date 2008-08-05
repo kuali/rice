@@ -31,7 +31,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
+
 import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
@@ -189,7 +191,7 @@ public class Note implements WorkflowPersistable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = EdenConstants.getDefaultDateFormat();
+        DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(date);
     }
     
@@ -198,7 +200,7 @@ public class Note implements WorkflowPersistable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = EdenConstants.getDefaultTimeFormat();
+        DateFormat dateFormat = RiceConstants.getDefaultTimeFormat();
         return dateFormat.format(date);
     }
     

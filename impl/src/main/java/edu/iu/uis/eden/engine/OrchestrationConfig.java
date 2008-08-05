@@ -19,7 +19,8 @@ package edu.iu.uis.eden.engine;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 
 /**

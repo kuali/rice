@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 /**
  * The exception used from the Simulation Engine when it has problems routing a
  * document

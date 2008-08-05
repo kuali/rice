@@ -30,10 +30,11 @@ import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.JSTLConstants;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.MessageFetcher;
 
@@ -67,7 +68,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
 		LOG.info("Initializing Workflow...");
 
-        sce.getServletContext().setAttribute("Constants", new EdenConstants());
+        sce.getServletContext().setAttribute("Constants", new JSTLConstants(EdenConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
 		// use the system prop as an override of the default packaged

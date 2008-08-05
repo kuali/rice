@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * Tests the generation of Action Requests from RoleAttributes
@@ -31,7 +31,7 @@ public class RoleAttributeTest extends KEWTestCase {
 
 	@Test public void testWorkgroupRoleAttribute() throws Exception {
 		loadXmlFile("WorkgroupRoleAttributeTestConfig.xml");
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "WorkgroupRoleAttributeDocument");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "WorkgroupRoleAttributeDocument");
 		document.routeDocument("");
 
 		assertTrue("document should be enroute.", document.stateIsEnroute());
@@ -43,7 +43,7 @@ public class RoleAttributeTest extends KEWTestCase {
 	 */
 	@Test public void testBadWorkgroupRoleAttribute() throws Exception {
 		loadXmlFile("BadWorkgroupRoleAttributeTestConfig.xml");
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "BadWorkgroupRoleAttributeDocument");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "BadWorkgroupRoleAttributeDocument");
 
 		try {
 			document.routeDocument("");

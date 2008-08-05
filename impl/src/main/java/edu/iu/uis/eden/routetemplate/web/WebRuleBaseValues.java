@@ -32,8 +32,9 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceError;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;
@@ -263,10 +264,10 @@ public class WebRuleBaseValues extends RuleBaseValues {
 
 	private void loadDates() {
 		if (getFromDate() != null) {
-			setFromDateValue(EdenConstants.getDefaultDateFormat().format(getFromDate()));
+			setFromDateValue(RiceConstants.getDefaultDateFormat().format(getFromDate()));
 		}
 		if (getToDate() != null) {
-			setToDateValue(EdenConstants.getDefaultDateFormat().format(getToDate()));
+			setToDateValue(RiceConstants.getDefaultDateFormat().format(getToDate()));
 		}
 	}
 
@@ -558,7 +559,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (convertedDate == null) {
 		    throw new ParseException("Date entered as '" + dateValue + "' is in invalid format", 0);
 		}
-		Date date = EdenConstants.getDefaultDateFormat().parse(convertedDate);
+		Date date = RiceConstants.getDefaultDateFormat().parse(convertedDate);
 		return new Timestamp(date.getTime());
 	}
 

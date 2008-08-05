@@ -18,13 +18,14 @@ package edu.iu.uis.eden.clientapp;
 
 import java.rmi.RemoteException;
 
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.AfterProcessEventDTO;
+import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 
@@ -53,7 +54,7 @@ public interface PostProcessorRemote {
    * later if this exception is thrown
    * @see DocumentRouteStatusChange
    */
-  public boolean doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws RemoteException;
+  public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException;
 
   /**
    * The document has changed route level. The docEvent contains the information about the change.
@@ -70,9 +71,9 @@ public interface PostProcessorRemote {
    * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
    * @throws ResourceUnavailableException EDEN will requeue the document and try the change again
    * later if this exception is thrown
-   * @see DocumentRouteLevelChangeVO
+   * @see DocumentRouteLevelChangeDTO
    */
-  public boolean doRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent) throws RemoteException;
+  public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException;
   
   /**
    * KEW is signaling that the document should be deleted. The application can reject this by
@@ -85,7 +86,7 @@ public interface PostProcessorRemote {
    * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
    * @throws ResourceUnavailableException EDEN will requeue the document and try the change again
    */
-  public boolean doDeleteRouteHeader(DeleteEventVO event) throws RemoteException;
+  public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException;
   
   /**
    * KEW is signaling that the document has had an action taken on it by a user
@@ -94,7 +95,7 @@ public interface PostProcessorRemote {
    * @return
    * @throws RemoteException
    */
-  public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException;
+  public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException;
   
   /**
    * The document is about to be processed by the Workflow engine.
@@ -103,7 +104,7 @@ public interface PostProcessorRemote {
    * @return true if the method is successful, false otherwise
    * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
    */
-  public boolean beforeProcess(BeforeProcessEventVO event) throws Exception;
+  public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception;
 
   /**
    * The document has just completed processing by the Workflow engine.
@@ -112,5 +113,5 @@ public interface PostProcessorRemote {
    * @return true if the method is successful, false otherwise
    * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
    */
-  public boolean afterProcess(AfterProcessEventVO event) throws Exception;
+  public boolean afterProcess(AfterProcessEventDTO event) throws Exception;
 }

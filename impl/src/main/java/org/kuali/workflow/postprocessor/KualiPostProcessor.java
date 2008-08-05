@@ -20,14 +20,14 @@ import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.AfterProcessEventDTO;
+import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
 
 /**
  * 
@@ -50,47 +50,47 @@ public class KualiPostProcessor implements PostProcessorRemote {
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws RemoteException {
+    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doRouteStatusChange(statusChangeEvent);
     }
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
-    public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException {
+    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doActionTaken(event);
     }
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(edu.iu.uis.eden.clientapp.vo.DeleteEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
-    public boolean doDeleteRouteHeader(DeleteEventVO event) throws RemoteException {
+    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doDeleteRouteHeader(event);
     }
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent) throws RemoteException {
+    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doRouteLevelChange(levelChangeEvent);
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
-    public boolean beforeProcess(BeforeProcessEventVO beforeProcessEvent) throws Exception {
+    public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
         return KNSServiceLocator.getPostProcessorService().beforeProcess(beforeProcessEvent);
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
-    public boolean afterProcess(AfterProcessEventVO afterProcessEvent) throws Exception {
+    public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return KNSServiceLocator.getPostProcessorService().afterProcess(afterProcessEvent);
     }
  }

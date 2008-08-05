@@ -19,7 +19,8 @@ package edu.iu.uis.eden.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 
 /**
  * Utility class to translate the various codes used in Eden into labels and vice versa.

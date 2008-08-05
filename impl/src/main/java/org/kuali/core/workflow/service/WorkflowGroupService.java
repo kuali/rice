@@ -17,12 +17,13 @@ package org.kuali.core.workflow.service;
 
 import java.util.Collection;
 
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 
 /**
@@ -40,7 +41,7 @@ public interface WorkflowGroupService {
      * @throws InvalidWorkgroupException
      * @throws EdenException
      */
-    public WorkgroupVO getWorkgroupByGroupName(String groupName) throws WorkflowException;
+    public WorkgroupDTO getWorkgroupByGroupName(String groupName) throws WorkflowException;
 
     /**
      * method to get a list of the users Workgroups
@@ -51,6 +52,6 @@ public interface WorkflowGroupService {
      * @throws ResourceUnavailableException
      * @throws EdenUserNotFoundException
      */
-    public Collection getWorkflowUsersGroups(UserIdVO userId) throws WorkflowException;
+    public Collection getWorkflowUsersGroups(UserIdDTO userId) throws WorkflowException;
 
 }

@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.dao.BaseUserDAO;
 import edu.iu.uis.eden.xml.UserXmlHandler;
@@ -62,16 +62,16 @@ public class BaseUserService implements UserService {
 		return capabilities;
 	}
 
-	public WorkflowUser getWorkflowUser(UserIdVO userId) throws EdenUserNotFoundException {
+	public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException {
         UserId userIdInterface = null;
-        if (userId instanceof EmplIdVO) {
-            userIdInterface = new EmplId(((EmplIdVO)userId).getEmplId());
-        } else if (userId instanceof NetworkIdVO) {
-            userIdInterface = new AuthenticationUserId(((NetworkIdVO)userId).getNetworkId());
-        } else if (userId instanceof UuIdVO) {
-            userIdInterface = new UuId(((UuIdVO)userId).getUuId());
-        } else if (userId instanceof WorkflowIdVO) {
-            userIdInterface = new WorkflowUserId(((WorkflowIdVO)userId).getWorkflowId());
+        if (userId instanceof EmplIdDTO) {
+            userIdInterface = new EmplId(((EmplIdDTO)userId).getEmplId());
+        } else if (userId instanceof NetworkIdDTO) {
+            userIdInterface = new AuthenticationUserId(((NetworkIdDTO)userId).getNetworkId());
+        } else if (userId instanceof UuIdDTO) {
+            userIdInterface = new UuId(((UuIdDTO)userId).getUuId());
+        } else if (userId instanceof WorkflowIdDTO) {
+            userIdInterface = new WorkflowUserId(((WorkflowIdDTO)userId).getWorkflowId());
         } else {
             throw new EdenUserNotFoundException("Attempting to fetch user with unknown id type");
         }

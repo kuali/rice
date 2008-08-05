@@ -26,8 +26,8 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.web.session.UserSession;
 
 /**

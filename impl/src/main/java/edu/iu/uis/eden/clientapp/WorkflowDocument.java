@@ -26,37 +26,37 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.config.RiceConfigurer;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.ModifiableDocumentContentDTO;
+import org.kuali.rice.kew.dto.MovePointDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.NoteDTO;
+import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.AdHocRevokeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.ModifiableDocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.MovePointVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.NoteVO;
-import edu.iu.uis.eden.clientapp.vo.ResponsiblePartyVO;
-import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.DocumentTypeNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.config.KSBThinClientConfigurer;
-import edu.iu.uis.eden.server.WorkflowDocumentActions;
-import edu.iu.uis.eden.server.WorkflowUtility;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -84,11 +84,11 @@ public class WorkflowDocument implements java.io.Serializable {
 	/**
 	 * UserId VO of the user as whom actions will be taken on the KEW document
 	 */
-    private UserIdVO userId;
+    private UserIdDTO userId;
     /**
      * RouteHeader VO of the KEW document this WorkflowDocument represents
      */
-    private RouteHeaderVO routeHeader;
+    private RouteHeaderDTO routeHeader;
     /**
      * Flag that indicates whether the document content currently loaded needs to be refreshed.
      * This is the case either if the document content has not yet been loaded, or an action
@@ -99,7 +99,7 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Value Object encapsulating the document content
      */
-    private ModifiableDocumentContentVO documentContent;
+    private ModifiableDocumentContentDTO documentContent;
 
     /**
      * Constructs a WorkflowDocument representing a new document in the workflow system.
@@ -109,7 +109,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param documentType the type of the document to create
      * @throws WorkflowException if anything goes awry
      */
-    public WorkflowDocument(UserIdVO userId, String documentType) throws WorkflowException {
+    public WorkflowDocument(UserIdDTO userId, String documentType) throws WorkflowException {
         init(userId, documentType, null);
     }
 
@@ -120,7 +120,7 @@ public class WorkflowDocument implements java.io.Serializable {
      *
      * @throws WorkflowException if there is a problem loading the WorkflowDocument
      */
-    public WorkflowDocument(UserIdVO userId, Long routeHeaderId) throws WorkflowException {
+    public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
         init(userId, null, routeHeaderId);
     }
 
@@ -132,10 +132,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param routeHeaderId the id of an existing document to load (either this parameter or documentType must be specified, non-null)
      * @throws WorkflowException if a routeHeaderId is specified but an exception occurs trying to load the document route header
      */
-    private void init(UserIdVO userId, String documentType, Long routeHeaderId) throws WorkflowException {
+    private void init(UserIdDTO userId, String documentType, Long routeHeaderId) throws WorkflowException {
         try {
             this.userId = userId;
-            routeHeader = new RouteHeaderVO();
+            routeHeader = new RouteHeaderDTO();
             routeHeader.setDocTypeName(documentType);
             if (routeHeaderId != null) {
                 routeHeader = getWorkflowUtility().getRouteHeaderWithUser(userId, routeHeaderId);
@@ -202,14 +202,14 @@ public class WorkflowDocument implements java.io.Serializable {
      * Returns an up-to-date DocumentContent of this document.
      * @see WorkflowUtility#getDocumentContent(Long)
      */
-    public DocumentContentVO getDocumentContent() {
+    public DocumentContentDTO getDocumentContent() {
     	try {
     		// create the document if it hasn't already been created
     		if (getRouteHeader().getRouteHeaderId() == null) {
         		routeHeader = getWorkflowDocumentActions().createDocument(userId, getRouteHeader());
         	}
     		if (documentContent == null || documentContentDirty) {
-    			documentContent = new ModifiableDocumentContentVO(getWorkflowUtility().getDocumentContent(routeHeader.getRouteHeaderId()));
+    			documentContent = new ModifiableDocumentContentDTO(getWorkflowUtility().getDocumentContent(routeHeader.getRouteHeaderId()));
     			documentContentDirty = false;
     		}
     	} catch (Exception e) {
@@ -220,12 +220,12 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns the application specific section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      *
      * For documents routed prior to Workflow 2.0:
      * If the application did NOT use attributes for XML generation, this method will
      * return the entire document content XML.  Otherwise it will return the empty string.
-     * @see DocumentContentVO#getApplicationContent()
+     * @see DocumentContentDTO#getApplicationContent()
      */
     public String getApplicationContent() {
         return getDocumentContent().getApplicationContent();
@@ -233,7 +233,7 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Sets the application specific section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      */
     public void setApplicationContent(String applicationContent) {
         getDocumentContent().setApplicationContent(applicationContent);
@@ -245,7 +245,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document.  This can be accomplished by clearing the content and then adding the
      * desired attribute definitions.
      *
-     * This is a convenience method that delegates to the {@link DocumentContentVO}.
+     * This is a convenience method that delegates to the {@link DocumentContentDTO}.
      *
      * In order for these changes to take effect, an action must be performed on the document (such as "save").
      */
@@ -255,8 +255,8 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns the attribute-generated section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
-     * @see DocumentContentVO#getAttributeContent()
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
+     * @see DocumentContentDTO#getAttributeContent()
      */
     public String getAttributeContent() {
         return getDocumentContent().getAttributeContent();
@@ -269,10 +269,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * doc content.  If it is required to replace the attribute document content, then the
      * clearAttributeContent() method should be invoked prior to adding attribute definitions.
      *
-     * This is a convenience method that delegates to the {@link DocumentContentVO}.
-     * @see DocumentContentVO#addAttributeDefinition(WorkflowAttributeDefinitionVO)
+     * This is a convenience method that delegates to the {@link DocumentContentDTO}.
+     * @see DocumentContentDTO#addAttributeDefinition(WorkflowAttributeDefinitionDTO)
      */
-    public void addAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void addAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         getDocumentContent().addAttributeDefinition(attributeDefinition);
     }
 
@@ -287,9 +287,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param attributeDefinition the workflow attribute definition VO to validate
      * @return WorkflowAttributeValidationErrorVO[] of error from the attribute
      * @throws WorkflowException when attribute doesn't implement WorkflowAttributeXmlValidator
-     * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionVO)
+     * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO)
      */
-    public WorkflowAttributeValidationErrorVO[] validateAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) throws WorkflowException {
+    public WorkflowAttributeValidationErrorDTO[] validateAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) throws WorkflowException {
         try {
             return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
         } catch (Exception e) {
@@ -299,28 +299,28 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Removes an attribute definition from the document content.  This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      * @param attributeDefinition the attribute definition VO to remove
      */
-    public void removeAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) {
+    public void removeAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         getDocumentContent().removeAttributeDefinition(attributeDefinition);
     }
 
     /**
      * Removes all attribute definitions from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      */
     public void clearAttributeDefinitions() {
-    	getDocumentContent().setAttributeDefinitions(new WorkflowAttributeDefinitionVO[0]);
+    	getDocumentContent().setAttributeDefinitions(new WorkflowAttributeDefinitionDTO[0]);
     }
 
     /**
      * Returns the attribute definition VOs currently defined on the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      * @return the attribute definition VOs currently defined on the document content.
-     * @see DocumentContentVO#getAttributeDefinitions()
+     * @see DocumentContentDTO#getAttributeDefinitions()
      */
-    public WorkflowAttributeDefinitionVO[] getAttributeDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getAttributeDefinitions() {
         return getDocumentContent().getAttributeDefinitions();
     }
 
@@ -330,32 +330,32 @@ public class WorkflowDocument implements java.io.Serializable {
      * When the document is sent to the server, this will be appended to the existing searchable
      * doc content.  If it is required to replace the searchable document content, then the
      * clearSearchableContent() method should be invoked prior to adding definitions. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      */
-    public void addSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void addSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         getDocumentContent().addSearchableDefinition(searchableDefinition);
     }
 
     /**
      * Removes a searchable attribute definition from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      * @param searchableDefinition the searchable attribute definition to remove
      */
-    public void removeSearchableDefinition(WorkflowAttributeDefinitionVO searchableDefinition) {
+    public void removeSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         getDocumentContent().removeSearchableDefinition(searchableDefinition);
     }
 
     /**
      * Removes all searchable attribute definitions from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      */
     public void clearSearchableDefinitions() {
-        getDocumentContent().setSearchableDefinitions(new WorkflowAttributeDefinitionVO[0]);
+        getDocumentContent().setSearchableDefinitions(new WorkflowAttributeDefinitionDTO[0]);
     }
 
     /**
      * Clears the searchable content from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      */
     public void clearSearchableContent() {
     	getDocumentContent().setSearchableContent("");
@@ -363,11 +363,11 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns the searchable attribute definitions on the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentVO}.
+     * a convenience method that delegates to the {@link DocumentContentDTO}.
      * @return the searchable attribute definitions on the document content.
-     * @see DocumentContentVO#getSearchableDefinitions()
+     * @see DocumentContentDTO#getSearchableDefinitions()
      */
-    public WorkflowAttributeDefinitionVO[] getSearchableDefinitions() {
+    public WorkflowAttributeDefinitionDTO[] getSearchableDefinitions() {
         return getDocumentContent().getSearchableDefinitions();
     }
 
@@ -378,7 +378,7 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Returns the RouteHeaderVO for the workflow document this WorkflowDocument represents
      */
-    public RouteHeaderVO getRouteHeader() {
+    public RouteHeaderDTO getRouteHeader() {
         return routeHeader;
     }
 
@@ -408,9 +408,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the pending action requests for this document
      * @see WorkflowUtility#getActionRequests(Long)
      */
-    public ActionRequestVO[] getActionRequests() throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests() throws WorkflowException {
         if (getRouteHeaderId() == null) {
-            return new ActionRequestVO[0];
+            return new ActionRequestDTO[0];
         }
         try {
             return getWorkflowUtility().getActionRequests(getRouteHeaderId());
@@ -430,13 +430,13 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the actions taken on this document
      * @see WorkflowUtility#getActionsTaken(Long)
      */
-    public ActionTakenVO[] getActionsTaken() throws WorkflowException {
+    public ActionTakenDTO[] getActionsTaken() throws WorkflowException {
         if (getRouteHeaderId() == null) {
-            return new ActionTakenVO[0];
+            return new ActionTakenDTO[0];
         }
         try {
             return getWorkflowUtility().getActionsTaken(getRouteHeaderId());
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             throw handleException(e);
         }
     }
@@ -478,7 +478,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs saving the document
-     * @see WorkflowDocumentActions#saveDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#saveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void saveDocument(String annotation) throws WorkflowException {
         try {
@@ -495,7 +495,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs routing the document
-     * @see WorkflowDocumentActions#routeDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#routeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void routeDocument(String annotation) throws WorkflowException {
         try {
@@ -512,7 +512,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs disapproving the document
-     * @see WorkflowDocumentActions#disapproveDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#disapproveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void disapprove(String annotation) throws WorkflowException {
         try {
@@ -530,7 +530,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs approving the document
-     * @see WorkflowDocumentActions#approveDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#approveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void approve(String annotation) throws WorkflowException {
         try {
@@ -547,7 +547,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs canceling the document
-     * @see WorkflowDocumentActions#cancelDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#cancelDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void cancel(String annotation) throws WorkflowException {
         try {
@@ -564,7 +564,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs blanket-approving the document
-     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdVO, RouteHeaderVO, String, String[])
+     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
      */
     public void blanketApprove(String annotation) throws WorkflowException {
         blanketApprove(annotation, (String)null);
@@ -574,7 +574,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * Commits any changes made to the local copy of this document to the workflow system.  If this is a new document,
      * the document is created first.
      * @throws WorkflowException in case an error occurs saving the document
-     * @see WorkflowDocumentActions#saveRoutingData(UserIdVO, RouteHeaderVO)
+     * @see WorkflowDocumentActions#saveRoutingData(UserIdDTO, RouteHeaderDTO)
      */
     public void saveRoutingData() throws WorkflowException {
         try {
@@ -591,7 +591,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs acknowledging the document
-     * @see WorkflowDocumentActions#acknowledgeDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#acknowledgeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void acknowledge(String annotation) throws WorkflowException {
         try {
@@ -624,7 +624,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs deleting the document
-     * @see WorkflowDocumentActions#deleteDocument(UserIdVO, RouteHeaderVO)
+     * @see WorkflowDocumentActions#deleteDocument(UserIdDTO, RouteHeaderDTO)
      */
     public void delete() throws WorkflowException {
         try {
@@ -652,39 +652,39 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
-     * @deprecated use {@link #appSpecificRouteDocumentToUser(String, String, String, UserIdVO, String, boolean)}
+     * @deprecated use {@link #appSpecificRouteDocumentToUser(String, String, String, UserIdDTO, String, boolean)}
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String nodeName, int priority, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToUser(String actionRequested, String nodeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         appSpecificRouteDocumentToUser(actionRequested, nodeName, annotation, recipient, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
-     * @deprecated use {@link #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdVO, String, boolean)}
+     * @deprecated use {@link #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)}
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, int priority, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
     	appSpecificRouteDocumentToWorkgroup(actionRequested, nodeName, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
      * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToUser(String, String, String, UserIdVO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdVO, RouteHeaderVO, String, String, String, ResponsiblePartyVO, String, boolean)
+     * @see #appSpecificRouteDocumentToUser(String, String, String, UserIdDTO, String, boolean)
+     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToUser(String actionRequested, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
     	appSpecificRouteDocumentToUser(actionRequested, null, annotation, recipient, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
      * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToUser(String, String, UserIdVO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdVO, RouteHeaderVO, String, String, String, ResponsiblePartyVO, String, boolean)
+     * @see #appSpecificRouteDocumentToUser(String, String, UserIdDTO, String, boolean)
+     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String nodeName, String annotation, UserIdVO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToUser(String actionRequested, String nodeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyVO(recipient), responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(recipient), responsibilityDesc, ignorePreviousActions);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -694,23 +694,23 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdVO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdVO, RouteHeaderVO, String, String, String, ResponsiblePartyVO, String, boolean)
+     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
+     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
     	appSpecificRouteDocumentToWorkgroup(actionRequested, null, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdVO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdVO, RouteHeaderVO, String, String, String, ResponsiblePartyVO, String, boolean)
+     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
+     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, String annotation, WorkgroupIdVO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyVO(workgroupId), responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(workgroupId), responsibilityDesc, ignorePreviousActions);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -725,9 +725,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param revoke AdHocRevokeVO
      * @param annotation message to note for this action
      * @throws WorkflowException if an error occurs revoking adhoc requests
-     * @see WorkflowDocumentActions#revokeAdHocRequests(UserIdVO, RouteHeaderVO, AdHocRevokeVO, String)
+     * @see WorkflowDocumentActions#revokeAdHocRequests(UserIdDTO, RouteHeaderDTO, AdHocRevokeDTO, String)
      */
-    public void revokeAdHocRequests(AdHocRevokeVO revoke, String annotation) throws WorkflowException {
+    public void revokeAdHocRequests(AdHocRevokeDTO revoke, String annotation) throws WorkflowException {
     	if (getRouteHeader().getRouteHeaderId() == null) {
     		throw new WorkflowException("Can't revoke request, the workflow document has not yet been created!");
     	}
@@ -759,7 +759,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * Returns the document type of the workflow document
      * @return the document type of the workflow document
      * @throws RuntimeException if document does not exist (is not yet created)
-     * @see RouteHeaderVO#getDocTypeName()
+     * @see RouteHeaderDTO#getDocTypeName()
      */
     public String getDocumentType() {
         if (getRouteHeader() == null) {
@@ -772,9 +772,9 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns whether an acknowledge is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderVO#isAckRequested()}.
+     * a convenience method that delegates to {@link RouteHeaderDTO#isAckRequested()}.
      * @return whether an acknowledge is requested of the user for this document
-     * @see RouteHeaderVO#isAckRequested()
+     * @see RouteHeaderDTO#isAckRequested()
      */
     public boolean isAcknowledgeRequested() {
         return getRouteHeader().isAckRequested();
@@ -782,9 +782,9 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns whether an approval is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderVO#isApproveRequested()}.
+     * a convenience method that delegates to {@link RouteHeaderDTO#isApproveRequested()}.
      * @return whether an approval is requested of the user for this document
-     * @see RouteHeaderVO#isApproveRequested()
+     * @see RouteHeaderDTO#isApproveRequested()
      */
     public boolean isApprovalRequested() {
         return getRouteHeader().isApproveRequested();
@@ -792,9 +792,9 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns whether a completion is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderVO#isCompleteRequested()}.
+     * a convenience method that delegates to {@link RouteHeaderDTO#isCompleteRequested()}.
      * @return whether an approval is requested of the user for this document
-     * @see RouteHeaderVO#isCompleteRequested()
+     * @see RouteHeaderDTO#isCompleteRequested()
      */
     public boolean isCompletionRequested() {
         return getRouteHeader().isCompleteRequested();
@@ -802,9 +802,9 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Returns whether an FYI is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderVO#isFyiRequested()}.
+     * a convenience method that delegates to {@link RouteHeaderDTO#isFyiRequested()}.
      * @return whether an FYI is requested of the user for this document
-     * @see RouteHeaderVO#isFyiRequested()
+     * @see RouteHeaderDTO#isFyiRequested()
      */
     public boolean isFYIRequested() {
         return getRouteHeader().isFyiRequested();
@@ -813,7 +813,7 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Returns whether the user can blanket approve the document
      * @return whether the user can blanket approve the document
-     * @see RouteHeaderVO#getValidActions()
+     * @see RouteHeaderDTO#getValidActions()
      */
     public boolean isBlanketApproveCapable() {
         // TODO delyea - refactor this to take into account non-initiator owned documents
@@ -823,7 +823,7 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Returns whether the specified action code is valid for the current user and document
      * @return whether the user can blanket approve the document
-     * @see RouteHeaderVO#getValidActions()
+     * @see RouteHeaderDTO#getValidActions()
      */
     public boolean isActionCodeValidForDocument(String actionTakenCode) {
     	return getRouteHeader().getValidActions().contains(actionTakenCode);
@@ -834,7 +834,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs super-user-approve-ing the document
-     * @see WorkflowDocumentActions#superUserApprove(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#superUserApprove(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserApprove(String annotation) throws WorkflowException {
     	try {
@@ -869,7 +869,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs super-user-disapprove-ing the document
-     * @see WorkflowDocumentActions#superUserDisapprove(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#superUserDisapprove(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserDisapprove(String annotation) throws WorkflowException {
     	try {
@@ -886,7 +886,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs super-user-cancel-ing the document
-     * @see WorkflowDocumentActions#superUserCancel(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#superUserCancel(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserCancel(String annotation) throws WorkflowException {
     	try {
@@ -902,7 +902,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * Returns whether the user is a super user on this document
      * @return whether the user is a super user on this document
      * @throws WorkflowException if an error occurs determining whether the user is a super user on this document
-     * @see WorkflowUtility#isSuperUserForDocumentType(UserIdVO, Long)
+     * @see WorkflowUtility#isSuperUserForDocumentType(UserIdDTO, Long)
      */
     public boolean isSuperUser() throws WorkflowException {
 		try {
@@ -928,7 +928,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs clearing FYI on the document
-     * @see WorkflowDocumentActions#clearFYIDocument(UserIdVO, RouteHeaderVO)
+     * @see WorkflowDocumentActions#clearFYIDocument(UserIdDTO, RouteHeaderDTO)
      */
     public void clearFYI() throws WorkflowException {
         try {
@@ -945,7 +945,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs clearing completing the document
-     * @see WorkflowDocumentActions#completeDocument(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#completeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void complete(String annotation) throws WorkflowException {
         try {
@@ -962,7 +962,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * the document is created first.  The 'logDocumentAction' simply logs a message on the document.
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs logging a document action on the document
-     * @see WorkflowDocumentActions#logDocumentAction(UserIdVO, RouteHeaderVO, String)
+     * @see WorkflowDocumentActions#logDocumentAction(UserIdDTO, RouteHeaderDTO, String)
      */
     public void logDocumentAction(String annotation) throws WorkflowException {
         try {
@@ -1067,7 +1067,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * Returns the userId with which this WorkflowDocument was constructed
      * @return the userId with which this WorkflowDocument was constructed
      */
-    public UserIdVO getUserId() {
+    public UserIdDTO getUserId() {
         return userId;
     }
 
@@ -1075,7 +1075,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * Sets the userId under which actions against this document should be taken
      * @param userId userId under which actions against this document should be taken
      */
-    public void setUserId(UserIdVO userId) {
+    public void setUserId(UserIdDTO userId) {
         this.userId = userId;
     }
 
@@ -1122,7 +1122,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param annotation the message to log for the action
      * @param nodeName the extent to which to blanket approve; blanket approval will stop at this node
      * @throws WorkflowException in case an error occurs blanket-approving the document
-     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdVO, RouteHeaderVO, String, String[])
+     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
      */
     public void blanketApprove(String annotation, String nodeName) throws WorkflowException {
         blanketApprove(annotation, (nodeName == null ? null : new String[] { nodeName }));
@@ -1134,7 +1134,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param annotation the message to log for the action
      * @param nodeNames the nodes at which blanket approval will stop (in case the blanket approval traverses a split, in which case there may be multiple "active" nodes)
      * @throws WorkflowException in case an error occurs blanket-approving the document
-     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdVO, RouteHeaderVO, String, String[])
+     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
      */
     public void blanketApprove(String annotation, String[] nodeNames) throws WorkflowException {
         try {
@@ -1153,9 +1153,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param annotation the message to log for the action
      * @param workgroupId the workgroup on which to take authority
      * @throws WorkflowException user taking action is not in workgroup
-     * @see WorkflowDocumentActions#takeWorkgroupAuthority(UserIdVO, RouteHeaderVO, WorkgroupIdVO, String)
+     * @see WorkflowDocumentActions#takeWorkgroupAuthority(UserIdDTO, RouteHeaderDTO, WorkgroupIdDTO, String)
      */
-    public void takeWorkgroupAuthority(String annotation, WorkgroupIdVO workgroupId) throws WorkflowException {
+    public void takeWorkgroupAuthority(String annotation, WorkgroupIdDTO workgroupId) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader = getWorkflowDocumentActions().takeWorkgroupAuthority(userId, getRouteHeader(), workgroupId, annotation);
@@ -1173,7 +1173,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param workgroupId the workgroup on which to take authority
      * @throws WorkflowException user taking action is not in workgroup or did not take workgroup authority
      */
-    public void releaseWorkgroupAuthority(String annotation, WorkgroupIdVO workgroupId) throws WorkflowException {
+    public void releaseWorkgroupAuthority(String annotation, WorkgroupIdDTO workgroupId) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader = getWorkflowDocumentActions().releaseWorkgroupAuthority(userId, getRouteHeader(), workgroupId, annotation);
@@ -1192,7 +1192,7 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     public String[] getNodeNames() throws WorkflowException {
         try {
-            RouteNodeInstanceVO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
+            RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
             String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
             for (int index = 0; index < activeNodeInstances.length; index++) {
                 nodeNames[index] = activeNodeInstances[index].getName();
@@ -1209,10 +1209,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param annotation the message to log for the action
      * @param nodeName the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
-        ReturnPointVO returnPoint = new ReturnPointVO(nodeName);
+        ReturnPointDTO returnPoint = new ReturnPointDTO(nodeName);
         returnToPreviousNode(annotation, returnPoint);
     }
 
@@ -1220,11 +1220,11 @@ public class WorkflowDocument implements java.io.Serializable {
      * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
      * the document is created first.
      * @param annotation the message to log for the action
-     * @param ReturnPointVO the node to return to
+     * @param ReturnPointDTO the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
-    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException {
+    public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader = getWorkflowDocumentActions().returnDocumentToPreviousNode(userId, getRouteHeader(), returnPoint, annotation);
@@ -1237,12 +1237,12 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Moves the document from a current node in it's route to another node.  If this is a new document,
      * the document is created first.
-     * @param MovePointVO VO representing the node at which to start, and the number of steps to move (negative steps is reverse)
+     * @param MovePointDTO VO representing the node at which to start, and the number of steps to move (negative steps is reverse)
      * @param annotation the message to log for the action
      * @throws WorkflowException in case an error occurs moving the document
-     * @see WorkflowDocumentActions#moveDocument(UserIdVO, RouteHeaderVO, MovePointVO, String)
+     * @see WorkflowDocumentActions#moveDocument(UserIdDTO, RouteHeaderDTO, MovePointDTO, String)
      */
-    public void moveDocument(MovePointVO movePoint, String annotation) throws WorkflowException {
+    public void moveDocument(MovePointDTO movePoint, String annotation) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader =  getWorkflowDocumentActions().moveDocument(userId, getRouteHeader(), movePoint, annotation);
@@ -1259,7 +1259,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException if there is an error getting the route node instances for the document
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
-    public RouteNodeInstanceVO[] getRouteNodeInstances() throws WorkflowException {
+    public RouteNodeInstanceDTO[] getRouteNodeInstances() throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentRouteNodeInstances(getRouteHeaderId());
         } catch (Exception e) {
@@ -1289,7 +1289,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return Returns a document detail VO representing the route header along with action requests, actions taken, and route node instances.
      * @throws WorkflowException
      */
-    public DocumentDetailVO getDetail() throws WorkflowException {
+    public DocumentDetailDTO getDetail() throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentDetail(getRouteHeaderId());
         } catch (Exception e) {
@@ -1301,9 +1301,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * Saves the given DocumentContentVO for this document.
      * @param documentContent document content VO to store for this document
      * @since 2.3
-     * @see WorkflowDocumentActions#saveDocumentContent(DocumentContentVO)
+     * @see WorkflowDocumentActions#saveDocumentContent(DocumentContentDTO)
      */
-    public DocumentContentVO saveDocumentContent(DocumentContentVO documentContent) throws WorkflowException {
+    public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
     	try {
     		if (documentContent.getRouteHeaderId() == null) {
     			throw new WorkflowException("Document Content does not have a valid document ID.");
@@ -1313,8 +1313,8 @@ public class WorkflowDocument implements java.io.Serializable {
     		if (!documentContent.getRouteHeaderId().equals(getRouteHeader().getRouteHeaderId())) {
     			throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getRouteHeaderId());
     		}
-    		DocumentContentVO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
-    		this.documentContent = new ModifiableDocumentContentVO(newDocumentContent);
+    		DocumentContentDTO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
+    		this.documentContent = new ModifiableDocumentContentDTO(newDocumentContent);
     		documentContentDirty = false;
     		return this.documentContent;
     	} catch (Exception e) {
@@ -1369,7 +1369,7 @@ public class WorkflowDocument implements java.io.Serializable {
             if (getDocumentType() == null) {
                 throw new DocumentTypeNotFoundException("Document Type Name is null");
             }
-            RouteTemplateEntryVO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
+            RouteTemplateEntryDTO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
             for (int i = 0; i < routeLevels.length; i++) {
                 if (routeLevels[i].getRouteLevel().equals(getDocRouteLevel())) {
                     return routeLevels[i].getRouteLevelName();
@@ -1393,7 +1393,7 @@ public class WorkflowDocument implements java.io.Serializable {
         }
 
         try {
-            RouteTemplateEntryVO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
+            RouteTemplateEntryDTO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
             for (int i = 0; i < routeLevels.length; i++) {
                 if (routeLevels[i].getRouteLevel().equals(getDocRouteLevel())) {
                     return routeLevels[i].getRouteMethodName();
@@ -1422,11 +1422,11 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Returns a list of NoteVO representing the notes on the document
      * @return a list of NoteVO representing the notes on the document
-     * @see RouteHeaderVO#getNotes()
+     * @see RouteHeaderDTO#getNotes()
      */
-    public List<NoteVO> getNoteList(){
-    	List<NoteVO> notesList = new ArrayList<NoteVO>();
-    	NoteVO[] notes = routeHeader.getNotes();
+    public List<NoteDTO> getNoteList(){
+    	List<NoteDTO> notesList = new ArrayList<NoteDTO>();
+    	NoteDTO[] notes = routeHeader.getNotes();
     	if (notes != null){
 	    	for (int i=0; i<notes.length; i++){
 	    		if (! isDeletedNote(notes[i])){
@@ -1441,9 +1441,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * Deletes a note from the document.  The deletion is deferred until the next time the document is committed (via an action).
      * @param noteVO the note to remove from the document
      */
-    public void deleteNote(NoteVO noteVO){
+    public void deleteNote(NoteDTO noteVO){
     	if (noteVO != null && noteVO.getNoteId()!=null){
-    		NoteVO noteToDelete = new NoteVO();
+    		NoteDTO noteToDelete = new NoteDTO();
     		noteToDelete.setNoteId(new Long(noteVO.getNoteId().longValue()));
     		/*noteToDelete.setRouteHeaderId(noteVO.getRouteHeaderId());
     		noteToDelete.setNoteAuthorWorkflowId(noteVO.getNoteAuthorWorkflowId());
@@ -1459,11 +1459,11 @@ public class WorkflowDocument implements java.io.Serializable {
      * Updates the note of the same note id, on the document. The update is deferred until the next time the document is committed (via an action).
      * @param noteVO the note to update
      */
-    public void updateNote (NoteVO noteVO){
+    public void updateNote (NoteDTO noteVO){
     	boolean isUpdateNote = false;
     	if (noteVO != null){
-    		NoteVO[] notes = routeHeader.getNotes();
-    		NoteVO  copyNote = new NoteVO();
+    		NoteDTO[] notes = routeHeader.getNotes();
+    		NoteDTO  copyNote = new NoteDTO();
 			if (noteVO.getNoteId() != null){
 				copyNote.setNoteId(new Long(noteVO.getNoteId().longValue()));
 			}
@@ -1578,8 +1578,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param noteVO the note to test for deletion
      * @return whether the note is already marked for deletion.
      */
-    private boolean isDeletedNote(NoteVO noteVO) {
-    	NoteVO[] notesToDelete = routeHeader.getNotesToDelete();
+    private boolean isDeletedNote(NoteDTO noteVO) {
+    	NoteDTO[] notesToDelete = routeHeader.getNotesToDelete();
     	if (notesToDelete != null){
     		for (int i=0; i<notesToDelete.length; i++){
     			if (notesToDelete[i].getNoteId().equals(noteVO.getNoteId())){
@@ -1594,12 +1594,12 @@ public class WorkflowDocument implements java.io.Serializable {
      * Increases the size of the routeHeader notes VO array
      */
    private void increaseNotesArraySizeByOne() {
-	   NoteVO[] tempArray;
-	   NoteVO[] notes = routeHeader.getNotes();
+	   NoteDTO[] tempArray;
+	   NoteDTO[] notes = routeHeader.getNotes();
 	   if (notes == null){
-		   tempArray = new NoteVO[1];
+		   tempArray = new NoteDTO[1];
 	   } else {
-		   tempArray = new NoteVO[notes.length + 1];
+		   tempArray = new NoteDTO[notes.length + 1];
 		   for (int i=0; i<notes.length; i++){
 			   tempArray[i] = notes[i];
 		   }
@@ -1611,12 +1611,12 @@ public class WorkflowDocument implements java.io.Serializable {
     * Increases the size of the routeHeader notesToDelete VO array
     */
    private void increaseNotesToDeleteArraySizeByOne() {
-	   NoteVO[] tempArray;
-	   NoteVO[] notesToDelete = routeHeader.getNotesToDelete();
+	   NoteDTO[] tempArray;
+	   NoteDTO[] notesToDelete = routeHeader.getNotesToDelete();
 	   if (notesToDelete == null){
-		   tempArray = new NoteVO[1];
+		   tempArray = new NoteDTO[1];
 	   } else {
-		   tempArray = new NoteVO[notesToDelete.length + 1];
+		   tempArray = new NoteDTO[notesToDelete.length + 1];
 		   for (int i=0; i<notesToDelete.length; i++){
 			   tempArray[i] = notesToDelete[i];
 		   }

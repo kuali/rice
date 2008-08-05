@@ -6,15 +6,15 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
@@ -55,17 +55,17 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 				String attributeName = attributeElem.getAttribute("name");
 
 
-				WorkflowAttributeDefinitionVO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
+				WorkflowAttributeDefinitionDTO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
 
 				NodeList fieldNodes = (NodeList)xpath.evaluate("./field", attributeElem, XPathConstants.NODESET);
 				for (int fIndex = 0; fIndex < fieldNodes.getLength(); fIndex++) {
 					Element fieldElem = (Element)fieldNodes.item(fIndex);
 					String edlField = fieldElem.getAttribute("edlField");
 					String attributeField = fieldElem.getAttribute("attributeField");
-					PropertyDefinitionVO property = attributeDef.getProperty(attributeField);
+					PropertyDefinitionDTO property = attributeDef.getProperty(attributeField);
 					String value = requestParser.getParameterValue(edlField);
 					if (property == null) {
-						property = new PropertyDefinitionVO(attributeField, value);
+						property = new PropertyDefinitionDTO(attributeField, value);
 						attributeDef.addProperty(property);
 					} else {
 						property.setValue(value);
@@ -73,13 +73,13 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 				}
 				// validate if they are taking an action on the document (i.e. it's annotatable)
 				if (edlContext.getUserAction().isValidatableAction()) {
-					WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
+					WorkflowAttributeValidationErrorDTO[] errors = document.validateAttributeDefinition(attributeDef);
 					if (errors.length > 0) {
 						edlContext.setInError(true);
 					}
 					Map<String, String> fieldErrors = (Map<String, String>)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_FIELD_ERRORS_KEY);
 					for (int atIndex = 0; atIndex < errors.length; atIndex++) {
-						WorkflowAttributeValidationErrorVO error = errors[atIndex];
+						WorkflowAttributeValidationErrorDTO error = errors[atIndex];
 						fieldErrors.put(error.getKey(), error.getMessage());
 					}
 				}
@@ -93,14 +93,14 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 	    }
 	}
 
-	private WorkflowAttributeDefinitionVO getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
+	private WorkflowAttributeDefinitionDTO getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
 		for (int i = 0; i < document.getAttributeDefinitions().length; i++) {
-			WorkflowAttributeDefinitionVO workflowAttributeDef = (WorkflowAttributeDefinitionVO)document.getAttributeDefinitions()[i];
+			WorkflowAttributeDefinitionDTO workflowAttributeDef = (WorkflowAttributeDefinitionDTO)document.getAttributeDefinitions()[i];
 			if (workflowAttributeDef.getAttributeName().equals(attributeName)) {
 				return workflowAttributeDef;
 			}
 		}
-		WorkflowAttributeDefinitionVO workflowAttributeDef = new WorkflowAttributeDefinitionVO(attributeName);
+		WorkflowAttributeDefinitionDTO workflowAttributeDef = new WorkflowAttributeDefinitionDTO(attributeName);
 		document.addAttributeDefinition(workflowAttributeDef);
 		return workflowAttributeDef;
 	}

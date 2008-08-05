@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 public class CreateDocumentTest extends KEWTestCase {
     
@@ -34,7 +34,7 @@ public class CreateDocumentTest extends KEWTestCase {
 	 * Tests the attempt to create a document from a non-existent document type.
 	 */
 	@Test public void testCreateNonExistentDocumentType() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "flim-flam-flooey");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "flim-flam-flooey");
 		try {
 			document.getRouteHeaderId();
 			fail("A workflow exception should have been thrown.");
@@ -49,7 +49,7 @@ public class CreateDocumentTest extends KEWTestCase {
 	@Test public void testCreateNonRoutableDocumentType() throws Exception {
 		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
 		// create documents of this type should throw a WorkflowException
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "BlanketApproveTest");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BlanketApproveTest");
 		try {
 			document.getRouteHeaderId();
 			fail("A workflow exception should have been thrown.");
@@ -64,7 +64,7 @@ public class CreateDocumentTest extends KEWTestCase {
     @Test public void testCreateInactiveDocumentType() throws Exception {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "CreatedDocumentInactive");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "CreatedDocumentInactive");
         try {
             document.getRouteHeaderId();
             fail("A workflow exception should have been thrown.");

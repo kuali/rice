@@ -17,13 +17,13 @@
 package edu.iu.uis.eden.user;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 
 public class UserServiceTest extends KEWTestCase {
@@ -76,25 +76,25 @@ public class UserServiceTest extends KEWTestCase {
 		// check the VO version of the same method
 		
 		//get 'ewestfal' by workflow id VO
-		user = userService.getWorkflowUser(new WorkflowIdVO("1"));
+		user = userService.getWorkflowUser(new WorkflowIdDTO("1"));
 		assertNotNull(user);
 		assertEquals("1", user.getWorkflowId());
 		assertEquals("ewestfal", user.getAuthenticationUserId().getAuthenticationId());
 		
 		// get 'ewestfal' by authentication id VO
-		user = userService.getWorkflowUser(new NetworkIdVO("ewestfal"));
+		user = userService.getWorkflowUser(new NetworkIdDTO("ewestfal"));
 		assertNotNull(user);
 		assertEquals("1", user.getWorkflowId());
 		assertEquals("ewestfal", user.getAuthenticationUserId().getAuthenticationId());
 		
 		// get 'ewestfal' by empl id VO
-		user = userService.getWorkflowUser(new EmplIdVO("1"));
+		user = userService.getWorkflowUser(new EmplIdDTO("1"));
 		assertNotNull(user);
 		assertEquals("1", user.getWorkflowId());
 		assertEquals("ewestfal", user.getAuthenticationUserId().getAuthenticationId());
 		
 		// get 'ewestfal' by uuid VO
-		user = userService.getWorkflowUser(new UuIdVO("1"));
+		user = userService.getWorkflowUser(new UuIdDTO("1"));
 		assertNotNull(user);
 		assertEquals("1", user.getWorkflowId());
 		assertEquals("ewestfal", user.getAuthenticationUserId().getAuthenticationId());

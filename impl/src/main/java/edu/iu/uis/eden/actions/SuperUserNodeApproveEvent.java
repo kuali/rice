@@ -19,7 +19,9 @@ package edu.iu.uis.eden.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
@@ -29,7 +31,6 @@ import edu.iu.uis.eden.engine.BlanketApproveEngine;
 import edu.iu.uis.eden.engine.OrchestrationConfig;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;

@@ -35,8 +35,8 @@ import java.util.Set;
 
 import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
@@ -224,8 +224,8 @@ public class Utilities {
         }
 
         try {
-            Date parsedDate = EdenConstants.getDefaultDateFormat().parse(date.trim());
-            if (! EdenConstants.getDefaultDateFormat().format(parsedDate).equals(date)) return false;
+            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(date.trim());
+            if (! RiceConstants.getDefaultDateFormat().format(parsedDate).equals(date)) return false;
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(parsedDate);
             int yearInt = calendar.get(Calendar.YEAR);
@@ -240,14 +240,14 @@ public class Utilities {
 
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
-            Date parsedDate = EdenConstants.getDefaultDateFormat().parse(fromDate.trim());
+            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
             fromCalendar.setTime(parsedDate);       
             fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
             fromCalendar.set(Calendar.MILLISECOND, 0);
-            parsedDate = EdenConstants.getDefaultDateFormat().parse(toDate.trim());
+            parsedDate = RiceConstants.getDefaultDateFormat().parse(toDate.trim());
             Calendar toCalendar = Calendar.getInstance();
             toCalendar.setTime(parsedDate);
             toCalendar.set(Calendar.HOUR_OF_DAY, 0);

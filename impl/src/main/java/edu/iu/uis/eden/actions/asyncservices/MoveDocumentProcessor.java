@@ -18,7 +18,8 @@ package edu.iu.uis.eden.actions.asyncservices;
 
 import java.util.Set;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.MoveDocumentAction;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;

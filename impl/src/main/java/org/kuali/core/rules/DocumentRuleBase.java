@@ -39,12 +39,12 @@ import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class contains all of the business rules that are common to all documents.
@@ -442,7 +442,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	if (StringUtils.isNotBlank(workgroup.getId())) {
 	    // validate that they are a workgroup from the workgroup service by looking them up
 	    try {
-		WorkgroupVO workgroupVo = getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdVO(workgroup.getId()));
+		WorkgroupDTO workgroupVo = getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdDTO(workgroup.getId()));
 		if (workgroupVo == null || !workgroupVo.isActiveInd()) {
 		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);

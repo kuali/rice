@@ -36,8 +36,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -726,7 +727,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public String getCreateDateString() {
         if (createDateString == null || createDateString.trim().equals("")) {
-            return EdenConstants.getDefaultDateFormat().format(getCreateDate());
+            return RiceConstants.getDefaultDateFormat().format(getCreateDate());
         } else {
             return createDateString;
         }

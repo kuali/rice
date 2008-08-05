@@ -21,8 +21,8 @@ import java.util.Properties;
 
 import org.kuali.rice.config.BaseConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 
 /**
  * Configuration object for client applications.

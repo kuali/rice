@@ -16,11 +16,12 @@
  */
 package edu.iu.uis.eden.edl;
 
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
@@ -59,7 +60,7 @@ public class WorkflowFunctions {
 		WorkflowInfo workflowInfo = new WorkflowInfo();
 		UserSession userSession=UserSession.getAuthenticatedUser();
 		if(userSession!=null){
-			UserIdVO userId = new WorkflowIdVO(userSession.getWorkflowUser().getWorkflowId());
+			UserIdDTO userId = new WorkflowIdDTO(userSession.getWorkflowUser().getWorkflowId());
 			try {
 				Long routeHeaderId = new Long(id);
 				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, userId, true);
@@ -159,8 +160,8 @@ public class WorkflowFunctions {
 	
 	public static boolean isAtNode(String documentId, String nodeName) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceVO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
-	    for (RouteNodeInstanceVO nodeInstance : activeNodeInstances) {
+	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    for (RouteNodeInstanceDTO nodeInstance : activeNodeInstances) {
 	        if (nodeInstance.getName().equals(nodeName)) {
 	            return true;
 	        }
@@ -170,7 +171,7 @@ public class WorkflowFunctions {
 	
 	public static boolean hasActiveNode(String documentId) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceVO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
 	    if (activeNodeInstances.length > 0) {
 	            return true;
 	    }

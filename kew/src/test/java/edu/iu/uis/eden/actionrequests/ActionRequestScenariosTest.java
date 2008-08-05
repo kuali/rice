@@ -20,13 +20,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
 /**
@@ -54,7 +54,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
             // should throw exception as no approvals were generated 
         }*/
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("arh14"), "InlineRequestsDocumentType");
         document.setApplicationContent("<blah><step>step1</step></blah>");
         document.routeDocument("");
         
@@ -65,7 +65,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertEquals("User One", user1Request.getRecipient().getDisplayName());
 
         // open doc as user1 and route it
-        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         document.setApplicationContent("<blah><step>step2</step></blah>");
         document.approve("");
         
@@ -76,7 +76,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertEquals("TestWorkgroup", workgroupRequest.getRecipient().getDisplayName());
 
         // open doc as user in TestWorkgroup and route it
-        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         document.setApplicationContent("<blah><step>step3</step></blah>");
         document.approve("");
 
@@ -90,7 +90,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertFalse("Document should not be FINAL", document.stateIsFinal());
 
         // open doc as initiator and route it
-        document = new WorkflowDocument(new NetworkIdVO("arh14"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("arh14"), document.getRouteHeaderId());
         document.approve("");
 
         assertTrue("Document should be FINAL", document.stateIsFinal());
@@ -105,7 +105,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
             // should throw exception as no approvals were generated 
         }*/
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
         document.setApplicationContent("<blah><step>step1</step></blah>");
         document.routeDocument("");
         
@@ -116,7 +116,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertEquals("User One", user1Request.getRecipient().getDisplayName());
 
         // open doc as user1 and route it
-        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         document.setApplicationContent("<blah><step>step2</step></blah>");
         document.approve("");
         
@@ -127,7 +127,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertEquals("TestWorkgroup", workgroupRequest.getRecipient().getDisplayName());
 
         // open doc as user in TestWorkgroup and route it
-        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         document.setApplicationContent("<blah><step>step3</step></blah>");
         document.approve("");
 
@@ -141,7 +141,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertFalse("Document should not be FINAL", document.stateIsFinal());
 
         // open doc as initiator and route it
-        document = new WorkflowDocument(new NetworkIdVO("arh14"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("arh14"), document.getRouteHeaderId());
         document.approve("");
 
         assertTrue("Document should be FINAL", document.stateIsFinal());
@@ -155,7 +155,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	 */
 	@Test public void testIgnorePreviousWithDelegation() throws Exception {
 		// at first, we'll route the document so that the bug is not exposed and verify the action request graph
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "testIgnorePreviousWithDelegation");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "testIgnorePreviousWithDelegation");
 		document.routeDocument("");
 		TestUtilities.assertAtNode(document, "Node1");
 		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
@@ -166,7 +166,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 		ActionRequestValue rkirkendRequest = (ActionRequestValue)ewestfalRequest.getChildrenRequests().get(0);
 		assertFalse("Request to rkirkend should be ignore previous of false", rkirkendRequest.getIgnorePrevAction().booleanValue());
 		
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "testIgnorePreviousWithDelegation");
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "testIgnorePreviousWithDelegation");
 		
 		// After we route the document it should be at the first node in the document where "ewestfal"
 		// is the primary approver with ignore previous = true and "rkirkend" is the primary
@@ -189,36 +189,36 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	 * Implemented to expose the bug and test the fix for KULWF-655. 
 	 */
 	@Test public void testRoleToRoleDelegation() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "testRoleToRoleDelegation");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "testRoleToRoleDelegation");
 		document.routeDocument("");
 		
 		// after routing the document we should have an approve request to ewestfal, this request should have
 		// one primary delegate and three secondary delegates
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		// now check all of ewestfal's delegates
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("xqi"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
 	
 		// now approve as the primary delegator, this is where we were seeing the problem in KULWF-655, the
 		// action request graph was not getting properly deactivated and it was not getting associated with the
 		// "ActionTaken" properly
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		document.approve("Approving as primary delegate.");
 		
 		// after the primary delegate approves, verify that the entire action request graph was
 		// deactivated in grand fashion
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertFalse("the primary approver should no longer have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("xqi"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
 		
 		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
@@ -238,36 +238,36 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	//testMixedbagRoleToRoleDelegation
 	
 	@Test public void testRoleToRoleMixedApprovePoliciesDelegation() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "testMixedbagRoleToRoleDelegation");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "testMixedbagRoleToRoleDelegation");
 		document.routeDocument("");
 		
 		// after routing the document we should have an approve request to ewestfal, this request should have
 		// one primary delegate and three secondary delegates
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		// now check all of ewestfal's delegates
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("xqi"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
 	
 		// now approve as the primary delegator, this is where we were seeing the problem in KULWF-655, the
 		// action request graph was not getting properly deactivated and it was not getting associated with the
 		// "ActionTaken" properly
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		document.approve("Approving as primary delegate.");
 		
 		// after the primary delegate approves, verify that the entire action request graph was
 		// deactivated in grand fashion
-		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
 		assertFalse("the primary approver should no longer have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("xqi"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+		document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
 		
 		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
@@ -292,7 +292,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	
 	// see: https://test.kuali.org/jira/browse/KULRICE-2001
 	@Test public void testUnresolvableRoleAttributeRecipients() throws WorkflowException {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "UnresolvableRoleRecipsDocType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "UnresolvableRoleRecipsDocType");
         document.routeDocument("");
         
         // this doc has a rule with a role that produces an invalid recipient id

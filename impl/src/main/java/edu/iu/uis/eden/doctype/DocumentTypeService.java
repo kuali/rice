@@ -18,7 +18,8 @@ package edu.iu.uis.eden.doctype;
 
 import java.util.List;
 
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
@@ -29,8 +30,8 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 
-    public DocumentTypeVO getDocumentTypeVO(Long documentTypeId);
-    public DocumentTypeVO getDocumentTypeVO(String documentTypeName);
+    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId);
+    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName);
     public void versionAndSave(DocumentType documentType);
     public void save(DocumentType documentType); 
     public List findAllCurrentRootDocuments();

@@ -17,7 +17,8 @@
 package edu.iu.uis.eden.preferences;
 
 import java.io.Serializable;
-import edu.iu.uis.eden.EdenConstants;
+
+import org.kuali.rice.kew.util.EdenConstants;
 
 /**
  * Model bean representing an individual user's Preferences within KEW.

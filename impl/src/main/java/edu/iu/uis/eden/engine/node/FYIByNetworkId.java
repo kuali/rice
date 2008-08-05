@@ -22,11 +22,11 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.routeheader.DocumentContent;
@@ -61,7 +61,7 @@ public class FYIByNetworkId extends RequestActivationNode {
                	if (field.getAttribute("name")!= null && field.getAttributeValue("name").equals("networkId")) {
             		LOG.debug("Should send an FYI to netID:  " + field.getChildText("value"));
                		if (field.getChildText("value") != null) {
-               			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(field.getChildText("value")));
+               			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(field.getChildText("value")));
                			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), routeHeaderId);
                			if (!context.isSimulation()) {
                    			KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, context.getDocument(), EdenConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user, "Notification Request", true);

@@ -18,8 +18,9 @@ package edu.iu.uis.eden.clientapp;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 
 public class WorkflowReports implements Serializable {
 
@@ -32,18 +33,18 @@ public class WorkflowReports implements Serializable {
 		workflowInfo = new WorkflowInfo();
 	}
 	
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws WorkflowException {
+    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdDTO userId, boolean lookFuture) throws WorkflowException {
         return workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, userId, lookFuture);
     }
     
     /**
      * @deprecated use isLastApproverAtNode instead
      */
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws WorkflowException {
+    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException {
         return workflowInfo.isLastApproverInRouteLevel(routeHeaderId, userId, routeLevel);
     }
     
-    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdVO userId, String nodeName) throws WorkflowException {
+    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
         return workflowInfo.isLastApproverAtNode(routeHeaderId, userId, nodeName);
     }
     
@@ -63,7 +64,7 @@ public class WorkflowReports implements Serializable {
      * 
      * @return True if user context applies to the final approver request for this document.
      */
-    public boolean isFinalApprover(Long routeHeaderId, UserIdVO userId) throws WorkflowException {
+    public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
         return workflowInfo.isFinalApprover(routeHeaderId, userId);
     }
     

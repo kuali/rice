@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
@@ -86,16 +86,16 @@ public class ActionListFilterForm extends ActionForm {
     public void setFilter(ActionListFilter filter) {
         this.filter = filter;
         if (filter.getCreateDateFrom() != null) {
-            setCreateDateFrom(EdenConstants.getDefaultDateFormat().format(filter.getCreateDateFrom()));    
+            setCreateDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateFrom()));    
         }
         if (filter.getCreateDateTo() != null) {
-            setCreateDateTo(EdenConstants.getDefaultDateFormat().format(filter.getCreateDateTo()));    
+            setCreateDateTo(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateTo()));    
         }
         if (filter.getLastAssignedDateFrom() != null) {
-            setLastAssignedDateFrom(EdenConstants.getDefaultDateFormat().format(filter.getLastAssignedDateFrom()));    
+            setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateFrom()));    
         }
         if (filter.getLastAssignedDateTo() != null) {
-            setLastAssignedDateTo(EdenConstants.getDefaultDateFormat().format(filter.getLastAssignedDateTo()));    
+            setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateTo()));    
         }
     }
 
@@ -111,28 +111,28 @@ public class ActionListFilterForm extends ActionForm {
         List errors = new ArrayList();
         if (getCreateDateFrom() != null && getCreateDateFrom().length() != 0) {
             try {
-                EdenConstants.getDefaultDateFormat().parse(getCreateDateFrom());
+                RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom());
             } catch (ParseException e) {
                 errors.add(new WorkflowServiceErrorImpl("Error with Create Date From", "general.error.fieldinvalid", "Create Date From"));
             }
         }
         if (getCreateDateTo() != null && getCreateDateTo().length() != 0) {
             try {
-                EdenConstants.getDefaultDateFormat().parse(getCreateDateTo());
+                RiceConstants.getDefaultDateFormat().parse(getCreateDateTo());
             } catch (ParseException e) {
                 errors.add(new WorkflowServiceErrorImpl("Error with Create Date To", "general.error.fieldinvalid", "Create Date To"));
             }
         }
         if (getLastAssignedDateFrom() != null && getLastAssignedDateFrom().length() != 0) {
             try {
-                EdenConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom());
+                RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom());
             } catch (ParseException e1) {
                 errors.add(new WorkflowServiceErrorImpl("Error with Last Assigned Date From", "general.error.fieldinvalid", "Last Assigned Date From"));
             }
         }
         if (getLastAssignedDateTo() != null && getLastAssignedDateTo().length() != 0) {
             try {
-                EdenConstants.getDefaultDateFormat().parse(getLastAssignedDateTo());
+                RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo());
             } catch (ParseException e1) {
                 errors.add(new WorkflowServiceErrorImpl("Error with Last Assigned Date To", "general.error.fieldinvalid", "Last Assigned Date To"));
             }
@@ -144,16 +144,16 @@ public class ActionListFilterForm extends ActionForm {
     
     public ActionListFilter getLoadedFilter() throws ParseException {
         if (getCreateDateFrom() != null && getCreateDateFrom().length() != 0) {
-            filter.setCreateDateFrom(EdenConstants.getDefaultDateFormat().parse(getCreateDateFrom()));    
+            filter.setCreateDateFrom(RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom()));    
         }
         if (getCreateDateTo() != null && getCreateDateTo().length() != 0) {
-            filter.setCreateDateTo(EdenConstants.getDefaultDateFormat().parse(getCreateDateTo()));
+            filter.setCreateDateTo(RiceConstants.getDefaultDateFormat().parse(getCreateDateTo()));
         }
         if (getLastAssignedDateFrom() != null && getLastAssignedDateFrom().length() != 0) {
-            filter.setLastAssignedDateFrom(EdenConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom()));    
+            filter.setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom()));    
         }
         if (getLastAssignedDateTo() != null && getLastAssignedDateTo().length() != 0) {
-            filter.setLastAssignedDateTo(EdenConstants.getDefaultDateFormat().parse(getLastAssignedDateTo()));    
+            filter.setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo()));    
         }
         if (getDocTypeFullName() != null && ! "".equals(getDocTypeFullName())) {
             filter.setDocumentType(getDocTypeFullName());

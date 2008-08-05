@@ -20,17 +20,18 @@ import java.rmi.RemoteException;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.MovePointDTO;
+import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocumentActions;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.AdHocRevokeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.MovePointVO;
-import edu.iu.uis.eden.clientapp.vo.ResponsiblePartyVO;
-import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -41,7 +42,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentActionsWebServiceImpl.class);
     
-    private DocumentRouteHeaderValue init(RouteHeaderVO routeHeaderVO) throws WorkflowException {
+    private DocumentRouteHeaderValue init(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         incomingParamCheck(routeHeaderVO, "routeHeaderVO");
         Long documentId = routeHeaderVO.getRouteHeaderId();
         LOG.debug("Initializing Document from incoming RouteHeaderVO [docId=" + documentId + "]");
@@ -69,7 +70,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         }
     }
     
-    public RouteHeaderVO releaseWorkgroupAuthority(UserIdVO userId, RouteHeaderVO routeHeaderVO, WorkgroupIdVO workgroupId, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO releaseWorkgroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, WorkgroupIdDTO workgroupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Releasing workgroup authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", workgroupId=" + workgroupId + ", annotation=" + annotation + "]");
@@ -79,7 +80,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO takeWorkgroupAuthority(UserIdVO userId, RouteHeaderVO routeHeaderVO, WorkgroupIdVO workgroupId, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO takeWorkgroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, WorkgroupIdDTO workgroupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Taking workgroup authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", workgroupId=" + workgroupId + ", annotation=" + annotation + "]");
@@ -89,7 +90,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO acknowledgeDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO acknowledgeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Acknowledge [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -98,7 +99,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO approveDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO approveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -107,7 +108,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO appSpecificRouteDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String actionRequested, String nodeName, String annotation, ResponsiblePartyVO responsiblePartyVO, String responsibilityDesc, boolean ignorePrevActions) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO appSpecificRouteDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, ResponsiblePartyDTO responsiblePartyVO, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         incomingParamCheck(actionRequested, "actionRequested");
@@ -121,7 +122,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO blanketApproval(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, Integer routeLevel) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO blanketApproval(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, Integer routeLevel) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Blanket Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", routeLevel=" + routeLevel + "]");
@@ -130,7 +131,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 
-    public RouteHeaderVO blanketApprovalToNodes(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, String[] nodeNames) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO blanketApprovalToNodes(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, String[] nodeNames) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Blanket Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", nodeNames=" + ArrayUtils.toString(nodeNames) + "]");
@@ -141,7 +142,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     }
 
     
-    public RouteHeaderVO cancelDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO cancelDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -150,7 +151,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO clearFYIDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO clearFYIDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Clear FYI [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + "]");
@@ -159,7 +160,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO completeDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO completeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Complete [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -168,7 +169,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO createDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO createDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         incomingParamCheck(userId, "userId");
         incomingParamCheck(routeHeaderVO, "routeHeaderVO");
         LOG.debug("Create Document [userId=" + userId + ", docTypeName=" + routeHeaderVO.getDocTypeName() + "]");
@@ -183,7 +184,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO disapproveDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO disapproveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -192,7 +193,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO returnDocumentToPreviousRouteLevel(UserIdVO userId, RouteHeaderVO routeHeaderVO, Integer destRouteLevel, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO returnDocumentToPreviousRouteLevel(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, Integer destRouteLevel, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         incomingParamCheck(destRouteLevel, "destRouteLevel");
@@ -202,7 +203,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO returnDocumentToPreviousNode(UserIdVO userId, RouteHeaderVO routeHeaderVO, ReturnPointVO returnPoint, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO returnDocumentToPreviousNode(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, ReturnPointDTO returnPoint, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         incomingParamCheck(returnPoint, "returnPoint");
@@ -212,7 +213,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO routeDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO routeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Route Document [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -221,7 +222,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO saveRoutingData(UserIdVO userId, RouteHeaderVO routeHeaderVO) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO saveRoutingData(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Saving Routing Data [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + "]");
@@ -230,7 +231,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO saveDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO saveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Save Document [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -239,7 +240,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public void deleteDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO) throws RemoteException, WorkflowException {
+    public void deleteDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Delete [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + "]");
@@ -247,7 +248,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         KEWServiceLocator.getWorkflowDocumentService().deleteDocument(user, routeHeader);
     }
     
-    public void logDocumentAction(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public void logDocumentAction(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Log [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -255,7 +256,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(user, routeHeader, annotation);
     }
     
-    public RouteHeaderVO moveDocument(UserIdVO userId, RouteHeaderVO routeHeaderVO, MovePointVO movePoint, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO moveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, MovePointDTO movePoint, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Move [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", startNode=" + movePoint.getStartNodeName() + "steps=" + movePoint.getStepsToMove() + "]");
@@ -264,7 +265,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 
-    public RouteHeaderVO revokeAdHocRequests(UserIdVO userId, RouteHeaderVO routeHeaderVO, AdHocRevokeVO revoke, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO revokeAdHocRequests(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, AdHocRevokeDTO revoke, String annotation) throws WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Revoke AdHoc [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -273,7 +274,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserApprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, boolean runPostProcessor) throws WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -282,11 +283,11 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserApprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
     	return superUserApprove(userId, routeHeaderVO, annotation, true);
     }
     
-    public RouteHeaderVO superUserActionRequestApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, Long actionRequestId, String annotation) throws WorkflowException {
+    public RouteHeaderDTO superUserActionRequestApprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, Long actionRequestId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
 	incomingParamCheck(userId, "userId");
 	LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -295,7 +296,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 
-    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserDisapprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, boolean runPostProcessor) throws WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -304,11 +305,11 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);    	
     }
     
-    public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserDisapprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
     	return superUserDisapprove(userId, routeHeaderVO, annotation, true);
     }
     
-    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserCancel(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, boolean runPostProcessor) throws WorkflowException {
     	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
@@ -317,11 +318,11 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeaderVO, String annotation) throws RemoteException, WorkflowException {
+    public RouteHeaderDTO superUserCancel(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
     	return superUserCancel(userId, routeHeaderVO, annotation, true);
     }
 
-	public DocumentContentVO saveDocumentContent(DocumentContentVO documentContent) throws RemoteException, WorkflowException {
+	public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
 		incomingParamCheck(documentContent, "documentContent");
 		Long documentId = documentContent.getRouteHeaderId();
 		incomingParamCheck(documentId, "documentContent document ID");
@@ -337,7 +338,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     	return BeanConverter.convertDocumentContent(document.getDocContent(), documentId);
 	}
     	
-	public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	public void superUserNodeApproveAction(UserIdDTO userId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws WorkflowException {
 	    init(documentId);
 	    incomingParamCheck(userId, "userId");
 	    LOG.debug("SU Node Approve Action [userId=" + userId + ", docId=" + documentId + ", nodeName=" + nodeName + ", annotation=" + annotation + "]");
@@ -345,11 +346,11 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	    KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(user, documentId, nodeName, annotation, runPostProcessor);	        
 	}
 	
-	public void superUserNodeApproveAction(UserIdVO userId, Long documentId, String nodeName, String annotation) throws RemoteException, WorkflowException {
+	public void superUserNodeApproveAction(UserIdDTO userId, Long documentId, String nodeName, String annotation) throws WorkflowException {
 		superUserNodeApproveAction(userId, documentId, nodeName, annotation, true);
 	}
 
-	public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	public void superUserActionRequestApproveAction(UserIdDTO userId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws WorkflowException {
 	    init(documentId);
 	    incomingParamCheck(userId, "userId");
 	    LOG.debug("SU Action Request Approve [userId=" + userId + ", docId=" + documentId + ", actionRequestId=" + actionRequestId + ", annotation=" + annotation + "]");
@@ -358,11 +359,11 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	    document = KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(user, document, actionRequestId, annotation, runPostProcessor);
 	}
 	
-	public void superUserActionRequestApproveAction(UserIdVO userId, Long documentId, Long actionRequestId, String annotation) throws RemoteException, WorkflowException {
+	public void superUserActionRequestApproveAction(UserIdDTO userId, Long documentId, Long actionRequestId, String annotation) throws WorkflowException {
 		superUserActionRequestApproveAction(userId, documentId, actionRequestId, annotation, true);
 	}
 
-	public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws RemoteException, WorkflowException {
+	public void superUserReturnToPreviousNode(UserIdDTO userId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws WorkflowException {
 	    init(documentId);
 	    incomingParamCheck(userId, "userId");
 	    LOG.debug("SU Cancel [userId=" + userId + ", docId=" + documentId + ", destinationNodeName=" + destinationNodeName + ", annotation=" + annotation + "]");
@@ -370,7 +371,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	    KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(user, documentId, destinationNodeName, annotation, runPostProcessor);
 	}
 	
-	public void superUserReturnToPreviousNode(UserIdVO userId, Long documentId, String destinationNodeName, String annotation) throws RemoteException, WorkflowException {
+	public void superUserReturnToPreviousNode(UserIdDTO userId, Long documentId, String destinationNodeName, String annotation) throws WorkflowException {
 		superUserReturnToPreviousNode(userId, documentId, destinationNodeName, annotation, true);
 	}
     

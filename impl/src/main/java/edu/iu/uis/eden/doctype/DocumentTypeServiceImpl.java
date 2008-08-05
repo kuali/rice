@@ -23,11 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.doctype.dao.DocumentTypeDAO;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
@@ -261,12 +261,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         this.documentTypeDAO = documentTypeDAO;
     }
 
-    public DocumentTypeVO getDocumentTypeVO(Long documentTypeId) {
+    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
         DocumentType docType = findById(documentTypeId);
         return BeanConverter.convertDocumentType(docType);
     }
 
-    public DocumentTypeVO getDocumentTypeVO(String documentTypeName) {
+    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
         DocumentType documentType = findByName(documentTypeName);
         return BeanConverter.convertDocumentType(documentType);
     }

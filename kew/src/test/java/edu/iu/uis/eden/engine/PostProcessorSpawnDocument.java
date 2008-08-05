@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.engine;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
@@ -38,7 +38,7 @@ public class PostProcessorSpawnDocument extends DefaultPostProcessor {
     	LOG.info("Moving document " + statusChangeEvent.getRouteHeaderId() + " from status '" + statusChangeEvent.getOldRouteStatus() + "' to status '" + statusChangeEvent.getNewRouteStatus() + "'");
     	if (StringUtils.equals(EdenConstants.ROUTE_HEADER_PROCESSED_CD, statusChangeEvent.getNewRouteStatus())) {
     		// spawn and route a new document
-        	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SpawnedDocumentType");
+        	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SpawnedDocumentType");
         	document.routeDocument("");
     	}
         return new ProcessDocReport(true, "");

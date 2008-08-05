@@ -1,0 +1,322 @@
+/*
+ * Copyright 2005-2006 The Kuali Foundation.
+ *
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kew.dto;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Transport object for the DocumentRouteHeaderValue.  Represents a document to the
+ * client programmer
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class RouteHeaderDTO implements Serializable {
+
+    static final long serialVersionUID = -677289794727007572L;
+
+    private Long routeHeaderId;
+    private String docRouteStatus;
+    private Calendar dateCreated;
+    private Calendar dateLastModified;
+    private Calendar dateApproved;
+    private Calendar dateFinalized;
+    //private String docContent;
+    private String docTitle;
+    private String appDocId;
+//    private String overrideInd;
+    private UserDTO initiator;
+    private UserDTO routedByUser;
+    private Integer docRouteLevel;
+    //private String[] nodeNames;
+    private String currentRouteNodeNames;
+    private Integer docVersion;
+    /**
+     * @deprecated this is unreliable user docTypeId to retrieve document type
+     */
+    private String docTypeName;
+    private String documentUrl;
+    private boolean fyiRequested;
+    private boolean ackRequested;
+    private boolean approveRequested;
+    private boolean completeRequested;
+    private boolean userBlanketApprover;
+    private Long docTypeId;
+    //private DocumentContentVO documentContent = new DocumentContentVO();
+    private ValidActionsDTO validActions;
+
+    //** Modify for adding notes to web service. Modify Date: April 7, 2006
+    private NoteDTO[] notes = null;
+    private NoteDTO[] notesToDelete = null;
+    //** Modify ends
+    
+//    private StateVO[] rootBranchStates = null; 
+
+    /**
+     * Probably needs to be an array for web services
+     */
+    private List<KeyValueDTO> variables = new ArrayList<KeyValueDTO>();
+
+    public RouteHeaderDTO() { }
+
+    public String getCurrentRouteNodeNames() {
+        return currentRouteNodeNames;
+    }
+
+    public void setCurrentRouteNodeNames(String currentRouteNodeNames) {
+        this.currentRouteNodeNames = currentRouteNodeNames;
+    }
+
+    public String getAppDocId() {
+        return appDocId;
+    }
+
+    public void setAppDocId(String appDocId) {
+        this.appDocId = appDocId;
+    }
+
+    public Calendar getDateApproved() {
+        return dateApproved;
+    }
+
+    public void setDateApproved(Calendar dateApproved) {
+        this.dateApproved = dateApproved;
+    }
+
+    public Calendar getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Calendar dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Calendar getDateFinalized() {
+        return dateFinalized;
+    }
+
+    public void setDateFinalized(Calendar dateFinalized) {
+        this.dateFinalized = dateFinalized;
+    }
+
+    public Calendar getDateLastModified() {
+        return dateLastModified;
+    }
+
+    public void setDateLastModified(Calendar dateLastModified) {
+        this.dateLastModified = dateLastModified;
+    }
+
+    public Integer getDocRouteLevel() {
+        return docRouteLevel;
+    }
+
+    public void setDocRouteLevel(Integer docRouteLevel) {
+        this.docRouteLevel = docRouteLevel;
+    }
+
+    public String getDocRouteStatus() {
+        return docRouteStatus;
+    }
+
+    public void setDocRouteStatus(String docRouteStatus) {
+        this.docRouteStatus = docRouteStatus;
+    }
+
+    public String getDocTitle() {
+        return docTitle;
+    }
+
+    public void setDocTitle(String docTitle) {
+        this.docTitle = docTitle;
+    }
+
+    /**
+     * @deprecated this is unreliable user docTypeId to retrieve document type
+     */
+    public String getDocTypeName() {
+        return docTypeName;
+    }
+
+    /**
+     * @deprecated this is unreliable user docTypeId to retrieve document type
+     */
+    public void setDocTypeName(String docTypeName) {
+        this.docTypeName = docTypeName;
+    }
+
+    public String getDocumentUrl() {
+        return documentUrl;
+    }
+
+    public void setDocumentUrl(String documentUrl) {
+        this.documentUrl = documentUrl;
+    }
+
+    public Integer getDocVersion() {
+        return docVersion;
+    }
+
+    public void setDocVersion(Integer docVersion) {
+        this.docVersion = docVersion;
+    }
+
+    public UserDTO getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(UserDTO initiator) {
+        this.initiator = initiator;
+    }
+
+    public UserDTO getRoutedByUser() {
+        return routedByUser;
+    }
+
+    public void setRoutedByUser(UserDTO routedByUser) {
+        this.routedByUser = routedByUser;
+    }
+
+    public Long getRouteHeaderId() {
+        return routeHeaderId;
+    }
+
+    public void setRouteHeaderId(Long routeHeaderId) {
+        this.routeHeaderId = routeHeaderId;
+    }
+    public boolean isAckRequested() {
+        return ackRequested;
+    }
+    public void setAckRequested(boolean ackRequested) {
+        this.ackRequested = ackRequested;
+    }
+    public boolean isApproveRequested() {
+        return approveRequested;
+    }
+    public void setApproveRequested(boolean approveRequested) {
+        this.approveRequested = approveRequested;
+    }
+    public boolean isCompleteRequested() {
+        return completeRequested;
+    }
+    public void setCompleteRequested(boolean completeRequested) {
+        this.completeRequested = completeRequested;
+    }
+    public boolean isFyiRequested() {
+        return fyiRequested;
+    }
+    public void setFyiRequested(boolean fyiRequested) {
+        this.fyiRequested = fyiRequested;
+    }
+    public boolean isUserBlanketApprover() {
+        return userBlanketApprover;
+    }
+    public void setUserBlanketApprover(boolean userBlanketApprover) {
+        this.userBlanketApprover = userBlanketApprover;
+    }
+
+
+    public Long getDocTypeId() {
+        return docTypeId;
+    }
+
+    public void setDocTypeId(Long docTypeId) {
+        this.docTypeId = docTypeId;
+    }
+
+
+   //  ** Modify for adding notes to web service. Modify Date: April 7, 2006
+    public NoteDTO[] getNotes() {
+		return notes;
+	}
+
+	public void setNotes(NoteDTO[] notes) {
+		this.notes = notes;
+	}
+
+	public NoteDTO[] getNotesToDelete() {
+		return notesToDelete;
+	}
+
+	public void setNotesToDelete(NoteDTO[] notesToDelete) {
+		this.notesToDelete = notesToDelete;
+	}
+	// ** Modify Ends
+
+    private KeyValueDTO findVariable(String name) {
+    	for (KeyValueDTO kvp : variables) {
+            if (isEqual(kvp.getKey(), name)) {
+                return kvp;
+            }
+        }
+        return null;
+    }
+    public String getVariable(String name) {
+        KeyValueDTO kvp = findVariable(name);
+        if (kvp == null) return null;
+        return kvp.getValue();
+    }
+
+    public void setVariable(String name, String value) {
+        KeyValueDTO kvp = findVariable(name);
+        if (kvp == null) {
+            if (value == null) {
+                return;
+            }
+            kvp = new KeyValueDTO();
+            kvp.setKey(name);
+            kvp.setValue(value);
+            variables.add(kvp);
+        } else {
+            // values do not need to be removed from the VO
+            // in fact they CAN'T be, as the DocumentRouteHeaderValue
+            // must observe the null value so the removal actually
+            // propagates (otherwise DocumentRouteHeaderValue can't
+            // guess what you wanted to remove...the alternative is
+            // to just reset all the vars wholesale but that requires
+            // a slightly more complicated implementation (to distinguish
+            // non-variable state in the state table) and is fraught
+            // with peril in general)
+            //if (value == null) {
+            //    LOG.error("Removing value: " + kvp.getKey() + "=" + kvp.getValue());
+            //    variables.remove(kvp);
+            //} else {
+                kvp.setValue(value);
+            //}
+        }
+    }
+
+    public List<KeyValueDTO> getVariables() {
+        return variables;
+    }
+
+    public ValidActionsDTO getValidActions() {
+        return validActions;
+    }
+
+    public void setValidActions(ValidActionsDTO validActions) {
+        this.validActions = validActions;
+    }
+    
+    private boolean isEqual(String a, String b) {
+        return ((a == null && b == null) || (a != null && a.equals(b)));
+    }
+
+}

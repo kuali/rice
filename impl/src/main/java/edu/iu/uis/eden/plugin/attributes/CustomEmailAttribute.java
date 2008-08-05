@@ -16,8 +16,8 @@
  */
 package edu.iu.uis.eden.plugin.attributes;
 
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
 /**
  * Application areas can implement this interface to generate custom email content.
@@ -44,9 +44,9 @@ public interface CustomEmailAttribute {
      * Gets the RouteHeaderVO bean which has document data 
      * @return
      */
-    public RouteHeaderVO getRouteHeaderVO();
-    public void setRouteHeaderVO(RouteHeaderVO routeHeaderVO);
-    public ActionRequestVO getActionRequestVO();
-    public void setActionRequestVO(ActionRequestVO actionRequestVO);
+    public RouteHeaderDTO getRouteHeaderVO();
+    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO);
+    public ActionRequestDTO getActionRequestVO();
+    public void setActionRequestVO(ActionRequestDTO actionRequestVO);
     
 }

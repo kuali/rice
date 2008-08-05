@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.ojb.broker.PersistenceBroker;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocumentSearchService;
 import edu.iu.uis.eden.doctype.DocumentType;

@@ -49,11 +49,11 @@ import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.core.web.ui.HeaderField;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * TODO we should not be referencing eden constants from this class and wedding ourselves to that workflow application This class is
  * the base action form for all documents.

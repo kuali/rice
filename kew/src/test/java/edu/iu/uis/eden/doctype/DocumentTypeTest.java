@@ -25,12 +25,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.NodeType;
 import edu.iu.uis.eden.engine.node.Process;
 import edu.iu.uis.eden.engine.node.RouteNode;
@@ -55,11 +55,11 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testChangingDocumentTypeOnEnrouteDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "DocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "DocumentType");
         document.setTitle("");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         WorkflowInfo info = new WorkflowInfo();
@@ -74,12 +74,12 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
 
         //the new version would take the document final
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdVO("user2"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
         Integer versionDocument = info.getDocType(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
@@ -94,17 +94,17 @@ public class DocumentTypeTest extends KEWTestCase {
      */
     @Test public void testFinalApproverRouting() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "FinalApproverDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "FinalApproverDocumentType");
         document.setTitle("");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         try {
             document.approve("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
     }
@@ -114,14 +114,14 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testMandatoryRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "MandatoryRouteDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "MandatoryRouteDocumentType");
         document.setTitle("");
         try {
             document.routeDocument("");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        	document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
     }

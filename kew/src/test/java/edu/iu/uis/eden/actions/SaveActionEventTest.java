@@ -21,13 +21,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 public class SaveActionEventTest extends KEWTestCase {
     
@@ -41,7 +41,7 @@ public class SaveActionEventTest extends KEWTestCase {
     }
     
     @Test public void testSaveActionEvent() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated.", document.stateIsInitiated());
         List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
@@ -50,7 +50,7 @@ public class SaveActionEventTest extends KEWTestCase {
         document.saveDocument("");
         
         // document should be SAVED now at the AdHoc node
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
         assertTrue("Document should be SAVED.", document.stateIsSaved());
         // there should now be one COMPLETE request to the initiator
@@ -63,7 +63,7 @@ public class SaveActionEventTest extends KEWTestCase {
         assertEquals("Request should be at the AdHoc node.", ADHOC_NODE, savedRequest.getNodeInstance().getName());
         
         // if we try and call route document as rkirkend, it should throw an InvalidActionTakenException
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         try {
             document.routeDocument("");
             fail("RouteDocument should have thrown an exception because we aren't the initiator");
@@ -71,7 +71,7 @@ public class SaveActionEventTest extends KEWTestCase {
         
         
         // now, route document as the initiator
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.routeDocument("Routing Rowdy Roddy Pipper");
         
         // document should be marked as ENROUTE, move to the WorkflowDocument node, 
@@ -79,11 +79,11 @@ public class SaveActionEventTest extends KEWTestCase {
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 2 pending requests.", 2, actionRequests.size());
         // rkirkend should have request
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be in routing.", document.stateIsEnroute());
         assertTrue("rkirkend should have approve request.", document.isApprovalRequested());
         // bmcgough should have request
-        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be in routing.", document.stateIsEnroute());
         assertTrue("bmcgough should have approve request.", document.isApprovalRequested());
         
@@ -97,20 +97,20 @@ public class SaveActionEventTest extends KEWTestCase {
         
         // now, since saveDocument effectively sets the status to saved and generates a complete request, let make sure that we can
         // take a complete or approve action against the doc to make it transition
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveDocument("");
         assertTrue("Document should be saved.", document.stateIsSaved());
         assertTrue("Should have complete request.", document.isCompletionRequested());
         assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
         // take the complete action
         document.complete("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
         assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
 
         // try above scenario with approve because approve should count for completion
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveDocument("");
         assertTrue("Document should be saved.", document.stateIsSaved());
         assertTrue("Should have complete request.", document.isCompletionRequested());
@@ -118,7 +118,7 @@ public class SaveActionEventTest extends KEWTestCase {
         assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
         // take the approve action
         document.approve("");
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
         assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
@@ -130,7 +130,7 @@ public class SaveActionEventTest extends KEWTestCase {
      * attempts a save of a document with this policy an exception should be thrown
      */
     @Test public void testDefaultInitiatorMustSavePolicy() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME);
     	document.saveRoutingData();
     	
     	// verify that there are no requests that have been generated
@@ -138,7 +138,7 @@ public class SaveActionEventTest extends KEWTestCase {
     	assertEquals("There should be no action requests.", 0, actionRequests.size());
     	
     	// try saving as a user who's not ewestfal
-    	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue(document.stateIsInitiated());
     	try {
     		document.saveDocument("");
@@ -152,7 +152,7 @@ public class SaveActionEventTest extends KEWTestCase {
     	assertEquals("There should be no action requests.", 0, actionRequests.size());
     	
     	// now save it as the intiator and it should be successful and generate a request
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	document.saveDocument("");
     	assertTrue(document.stateIsSaved());
     	actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
@@ -164,7 +164,7 @@ public class SaveActionEventTest extends KEWTestCase {
      * attempts a save of a document with this policy an exception should NOT be thrown
      */
     @Test public void testFalseInitiatorMustSavePolicy() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME_NON_INITIATOR);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME_NON_INITIATOR);
         document.saveRoutingData();
         
         // verify that there are no requests that have been generated
@@ -172,7 +172,7 @@ public class SaveActionEventTest extends KEWTestCase {
         assertEquals("There should be no action requests.", 0, actionRequests.size());
         
         // try saving as a user who's not ewestfal
-        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue(document.stateIsInitiated());
         try {
             document.saveDocument("");

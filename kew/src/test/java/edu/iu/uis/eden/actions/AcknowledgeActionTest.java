@@ -17,14 +17,14 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 
 /**
  *
@@ -37,9 +37,9 @@ public class AcknowledgeActionTest extends KEWTestCase {
     }
     
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
-        UserIdVO user = new NetworkIdVO("dewey");
+        UserIdDTO user = new NetworkIdDTO("dewey");
         doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", user, "respDesc1", false);
         doc = new WorkflowDocument(user, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + user, doc.isAcknowledgeRequested());
@@ -50,9 +50,9 @@ public class AcknowledgeActionTest extends KEWTestCase {
         }
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
         
-        WorkgroupIdVO workgroup = new WorkgroupNameIdVO("NonSIT");
-        UserIdVO workgroupUser = new NetworkIdVO("dewey");
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkgroupIdDTO workgroup = new WorkgroupNameIdDTO("NonSIT");
+        UserIdDTO workgroupUser = new NetworkIdDTO("dewey");
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", workgroup, "respDesc1", false);
         doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());

@@ -34,6 +34,8 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -41,8 +43,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 
 /**
  * Implements reviewer Approve/Disapprove and initiator Acknowledge of a Notification requests
@@ -160,7 +160,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
      */
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, AdministerNotificationRequestCommand command) {
         // obtain a workflow user object first
-        WorkflowIdVO initiator = new WorkflowIdVO(request.getRemoteUser());
+        WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
 
         // now construct the workflow document, which will interact with workflow
         if (command.getDocId() == null) {
@@ -222,7 +222,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     }
                     // if the current user is a reviewer, then disapprove as that user
                     if (user != null) {
-                        new WorkflowDocument(new NetworkIdVO(user), new Long(command.getDocId())).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
+                        new WorkflowDocument(new NetworkIdDTO(user), new Long(command.getDocId())).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
                         disapproved = true;
                     }
                 }
@@ -307,7 +307,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         }
         
         // obtain a workflow user object first
-        WorkflowIdVO user = new WorkflowIdVO(request.getRemoteUser());
+        WorkflowIdDTO user = new WorkflowIdDTO(request.getRemoteUser());
 
         try {
             // now construct the workflow document, which will interact with workflow

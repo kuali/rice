@@ -18,9 +18,10 @@ package edu.iu.uis.eden.routetemplate;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**

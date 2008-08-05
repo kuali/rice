@@ -16,12 +16,13 @@
  */
 package edu.iu.uis.eden.routemanager;
 
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.ActionTakenEvent;
 import edu.iu.uis.eden.AfterProcessEvent;
 import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;

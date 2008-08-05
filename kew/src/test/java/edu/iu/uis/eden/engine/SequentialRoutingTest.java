@@ -20,13 +20,13 @@ package edu.iu.uis.eden.engine;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
@@ -44,7 +44,7 @@ public class SequentialRoutingTest extends KEWTestCase {
     }
         
     @Test public void testSequentialRoute() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DOCUMENT_TYPE_NAME);
     	document.saveRoutingData();
     	assertNotNull(document.getRouteHeaderId());
     	assertTrue("Document should be initiatied", document.stateIsInitiated());
@@ -55,29 +55,29 @@ public class SequentialRoutingTest extends KEWTestCase {
     	document.routeDocument("Routing sequentially.");
         
         // should have generated a request to "bmcgough"
-    	document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
     	assertEquals("Invalid route level.", new Integer(1), document.getRouteHeader().getDocRouteLevel());
     	nodeNames = document.getNodeNames();
     	assertEquals("Wrong number of node names.", 1, nodeNames.length);
     	assertEquals("Wrong node name.", WORKFLOW_DOCUMENT_NODE, nodeNames[0]);
-        ActionRequestVO[] requests = document.getActionRequests();
+        ActionRequestDTO[] requests = document.getActionRequests();
         assertEquals(1, requests.length);
-        ActionRequestVO request = requests[0];
+        ActionRequestDTO request = requests[0];
         assertEquals("bmcgough", request.getUserVO().getNetworkId());
         assertEquals(EdenConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
         assertEquals(new Integer(1), request.getRouteLevel());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
         
-        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         requests = document.getActionRequests();
         assertEquals(3, requests.length);
         boolean toTemay = false;
         boolean toJhopf = false;
         for (int i = 0; i < requests.length; i++) {
-            ActionRequestVO requestVO = requests[i];
+            ActionRequestDTO requestVO = requests[i];
             if (requestVO.getUserVO().getNetworkId().equals("temay")) {
                 toTemay = true;
                 assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
@@ -96,13 +96,13 @@ public class SequentialRoutingTest extends KEWTestCase {
         // have temay take her acknowledge
         document.acknowledge("Temay taking acknowledge");
         
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         requests = document.getActionRequests();
         toTemay = false;
         toJhopf = false;
         for (int i = 0; i < requests.length; i++) {
-            ActionRequestVO requestVO = requests[i];
+            ActionRequestDTO requestVO = requests[i];
             if (requestVO.getUserVO().getNetworkId().equals("temay")) {
                 toTemay = true;
                 assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
@@ -120,7 +120,7 @@ public class SequentialRoutingTest extends KEWTestCase {
         document.acknowledge("Jhopf taking acknowledge");
         
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
     	assertTrue("Document should be final.", document.stateIsFinal());
         
         verifyRoutingPath(document.getRouteHeaderId());

@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -44,7 +44,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	TestRuleAttribute.setRecipients("TestRole", "QualRole", getRecipients());
 	
-	NetworkIdVO netId = new NetworkIdVO("rkirkend");
+	NetworkIdDTO netId = new NetworkIdDTO("rkirkend");
 	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(netId);
 	WorkflowDocument doc = new WorkflowDocument(netId, "TestDocumentType");
 	doc.routeDocument("");
@@ -62,7 +62,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	assertNotNull(request);
 	
-	user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
+	user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("user1"));
 	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
 	//do it again and make sure we don't have a blow up
 	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));

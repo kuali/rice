@@ -16,8 +16,8 @@
 package edu.iu.uis.eden.core;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
 import edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter;

@@ -22,14 +22,14 @@ import java.sql.Timestamp;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.LockingException;
 
@@ -78,13 +78,13 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     }
 
     @Test public void testGetMessageEntityByDocumentId() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType2");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType2");
     	Long documentId = document.getRouteHeaderId();
     	String messageEntity = routeHeaderService.getMessageEntityByDocumentId(documentId);
     	assertEquals("Message entity should be KEWNEW", "KEWNEW", messageEntity);
 
     	// now check TestDocumentType
-    	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType");
+    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
     	documentId = document.getRouteHeaderId();
     	messageEntity = routeHeaderService.getMessageEntityByDocumentId(documentId);
     	assertEquals("Message entity should be KEW", "KEW", messageEntity);
@@ -96,7 +96,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     		return;
     	}
 
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
     	document.saveRoutingData();
     	final Long documentId = document.getRouteHeaderId();
         Locker locker = null;

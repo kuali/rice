@@ -29,12 +29,12 @@ import org.kuali.core.service.impl.PessimisticLockServiceImpl;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is used to test the {@link PessimisticLockServiceImpl} class

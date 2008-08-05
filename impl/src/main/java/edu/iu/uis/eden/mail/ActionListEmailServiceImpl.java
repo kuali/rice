@@ -28,6 +28,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.ObjectAlreadyExistsException;
@@ -35,14 +38,11 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.preferences.Preferences;
@@ -173,13 +173,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				CustomEmailAttribute customEmailAttribute = actionItem
 						.getRouteHeader().getCustomEmailAttribute();
 				if (customEmailAttribute != null) {
-					RouteHeaderVO routeHeaderVO = BeanConverter
+					RouteHeaderDTO routeHeaderVO = BeanConverter
 							.convertRouteHeader(actionItem.getRouteHeader(),
 									user);
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());
-					ActionRequestVO actionRequestVO = BeanConverter
+					ActionRequestDTO actionRequestVO = BeanConverter
 							.convertActionRequest(actionRequest);
 					customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
 					customEmailAttribute.setActionRequestVO(actionRequestVO);

@@ -25,14 +25,14 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
@@ -102,7 +102,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_DisallowedRoleAndInitiator() throws Exception {
         String documentType = "SecurityDoc_RoleAndInitiator";
         WorkflowUser initiator = loginUser("user1", Arrays.asList(new String[]{GENERIC_ROLE_ALUMNI}));
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
@@ -138,7 +138,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_Initiator() throws Exception {
         String documentType = "SecurityDoc_InitiatorOnly";
         WorkflowUser initiator = loginUser(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
@@ -165,7 +165,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentType = "SecurityDoc_RouteLogAuthOnly";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
         WorkflowUser initiatorUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(initiatorNetworkId));
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiatorNetworkId), documentType);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
@@ -190,7 +190,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // approve the document
         WorkflowUser approverUser = loginUser(APPROVER_USER_NETWORK_ID);
-        document = new WorkflowDocument(new NetworkIdVO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
         assertEquals("Document route status is wrong",EdenConstants.ROUTE_HEADER_ENROUTE_CD,document.getRouteHeader().getDocRouteStatus());
         assertTrue("Approval should be requested of " + APPROVER_USER_NETWORK_ID, document.isApprovalRequested());
         // test that the approver can see the document
@@ -224,7 +224,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_Workgroup() throws Exception {
         String documentType = "SecurityDoc_WorkgroupOnly";
         WorkflowUser initiator = loginUser(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
@@ -268,8 +268,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
         WorkflowUser initiator = loginUser(initiatorNetworkId);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiator.getAuthenticationUserId().getAuthenticationId()), documentTypeName);
-        WorkflowAttributeDefinitionVO definition = new WorkflowAttributeDefinitionVO(searchAttributeName);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getAuthenticationUserId().getAuthenticationId()), documentTypeName);
+        WorkflowAttributeDefinitionDTO definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
         definition.addProperty(searchAttributeFieldName, "user3");
         document.addSearchableDefinition(definition);
         document.routeDocument("");
@@ -304,9 +304,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
         
         WorkflowUser approverUser = loginUser(APPROVER_USER_NETWORK_ID);
-        document = new WorkflowDocument(new NetworkIdVO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
         document.clearSearchableContent();
-        definition = new WorkflowAttributeDefinitionVO(searchAttributeName);
+        definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
         definition.addProperty(searchAttributeFieldName, "user2");
         document.addSearchableDefinition(definition);
         document.saveRoutingData();
@@ -387,7 +387,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
     private void testRoleFiltering(String documentType, List<String> allowedRoles, List<String> disallowedRoles) throws Exception {
         WorkflowUser initiator = loginUser(STANDARD_USER_NETWORK_ID, Arrays.asList(new String[]{}));
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getAuthenticationUserId().getAuthenticationId()), documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
@@ -465,26 +465,26 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     private void testSecurityAttributeFiltering(String documentType) throws Exception {
         String ackNetworkId = "xqi";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(initiatorNetworkId), documentType);
-        document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdVO(ackNetworkId), "", true);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), documentType);
+        document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdDTO(ackNetworkId), "", true);
         document.saveDocument("");
         assertEquals("Document should have saved", EdenConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
         
-        document = new WorkflowDocument(new NetworkIdVO(initiatorNetworkId), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), document.getRouteHeaderId());
         document.routeDocument("");
         assertEquals("Document should have routed", EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
 
         // approve the document
-        document = new WorkflowDocument(new NetworkIdVO(APPROVER_USER_NETWORK_ID), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO(APPROVER_USER_NETWORK_ID), document.getRouteHeaderId());
         assertTrue("Approval should be requested of " + APPROVER_USER_NETWORK_ID, document.isApprovalRequested());
         document.approve("");
         assertEquals("Document should have gone to processed", EdenConstants.ROUTE_HEADER_PROCESSED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
 
         // ack the document
-        document = new WorkflowDocument(new NetworkIdVO(ackNetworkId), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO(ackNetworkId), document.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of " + ackNetworkId, document.isAcknowledgeRequested());
         document.acknowledge("");
         assertEquals("Document should have gone to final", EdenConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
@@ -495,7 +495,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         Set<String> userNetworkIdList = new HashSet<String>(Arrays.asList(new String[]{"user1","user2","user3","dewey","xqi"}));
         for (String networkId : userNetworkIdList) {
             WorkflowUser user = loginUser(networkId);
-            WorkflowDocument document = new WorkflowDocument(new NetworkIdVO(user.getAuthenticationUserId().getAuthenticationId()), routeHeaderId);
+            WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(user.getAuthenticationUserId().getAuthenticationId()), routeHeaderId);
             DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
             criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
             DocumentSearchResultComponents resultComponents = KEWServiceLocator.getDocumentSearchService().getList(user, criteria);

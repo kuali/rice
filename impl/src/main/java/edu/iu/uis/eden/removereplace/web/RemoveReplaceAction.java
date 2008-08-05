@@ -29,14 +29,14 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.removereplace.RemoveReplaceDocument;
 import edu.iu.uis.eden.removereplace.RuleTarget;
@@ -82,7 +82,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	form.setActionRequestCodes(CodeTranslator.arLabels);
 	boolean isCreating = false;
 	if (form.getDocId() != null) {
-            form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), form.getDocId()));
+            form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), form.getDocId()));
         } else {
             // we're creating a new one if this action is being invoked without a method to call or with "start"
             isCreating = StringUtils.isEmpty(form.getMethodToCall()) || form.getMethodToCall().equals("start");
@@ -123,7 +123,7 @@ public class RemoveReplaceAction extends WorkflowAction {
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
-	return new WorkflowDocument(new WorkflowIdVO(UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId()), EdenConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
+	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId()), EdenConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
     }
 
     @Override

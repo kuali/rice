@@ -38,12 +38,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultProcessor;
@@ -544,7 +544,7 @@ public class DocumentType implements WorkflowPersistable {
     /**
      * @deprecated
      */
-    public DocumentTypeVO getDocumentTypeVO() {
+    public DocumentTypeDTO getDocumentTypeVO() {
         return BeanConverter.convertDocumentType(this);
     }
 

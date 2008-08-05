@@ -18,10 +18,11 @@ package edu.iu.uis.eden.actionlist;
 
 import java.io.Serializable;
 
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actions.ActionSet;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
@@ -32,8 +33,8 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 
 	private static final long serialVersionUID = -7212208304658959134L;
 
-	private RouteHeaderVO routeHeaderVO;
-    private ActionRequestVO actionRequestVO;
+	private RouteHeaderDTO routeHeaderVO;
+    private ActionRequestDTO actionRequestVO;
     private UserSession userSession;
     
     public TestCustomActionList() {}
@@ -69,19 +70,19 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 		return new DisplayParameters(new Integer(300));
 	}
     
-    public RouteHeaderVO getRouteHeaderVO() {
+    public RouteHeaderDTO getRouteHeaderVO() {
         return routeHeaderVO;
     }
 
-    public void setRouteHeaderVO(RouteHeaderVO routeHeaderVO) {
+    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
     }
 
-	public ActionRequestVO getActionRequestVO() {
+	public ActionRequestDTO getActionRequestVO() {
 		return actionRequestVO;
 	}
 
-	public void setActionRequestVO(ActionRequestVO actionRequestVO) {
+	public void setActionRequestVO(ActionRequestDTO actionRequestVO) {
 		this.actionRequestVO = actionRequestVO;
 	}
 

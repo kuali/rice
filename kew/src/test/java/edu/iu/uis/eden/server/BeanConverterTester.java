@@ -24,15 +24,15 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -61,7 +61,7 @@ public class BeanConverterTester extends KEWTestCase {
         assertTrue(list.size() > 0);
         Workgroup group = (Workgroup) list.get(0);
         assertNotNull(group);
-        WorkflowGroupIdVO vo = new WorkflowGroupIdVO(group.getWorkflowGroupId().getGroupId());
+        WorkflowGroupIdDTO vo = new WorkflowGroupIdDTO(group.getWorkflowGroupId().getGroupId());
         GroupId id = BeanConverter.convertWorkgroupIdVO(vo);
         assertNotNull(id);
     }
@@ -77,7 +77,7 @@ public class BeanConverterTester extends KEWTestCase {
         String searchableContent = null;
         String applicationContent = null;
         String xmlContent = constructContent(attributeContent, searchableContent, applicationContent);
-        DocumentContentVO contentVO = BeanConverter.convertDocumentContent(xmlContent, new Long(-1234));
+        DocumentContentDTO contentVO = BeanConverter.convertDocumentContent(xmlContent, new Long(-1234));
         assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", "", contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
@@ -137,7 +137,7 @@ public class BeanConverterTester extends KEWTestCase {
          */
 
         // test no content, this should return empty document content
-        DocumentContentVO contentVO = new DocumentContentVO();
+        DocumentContentDTO contentVO = new DocumentContentDTO();
         //routeHeaderVO.setDocumentContent(contentVO);
         String content = BeanConverter.buildUpdatedDocumentContent(contentVO);
         assertEquals("Invalid content conversion.", EdenConstants.DEFAULT_DOCUMENT_CONTENT, content);
@@ -145,7 +145,7 @@ public class BeanConverterTester extends KEWTestCase {
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
         String searchableContent = "<searchable1><data>hello</data></searchable1>";
-        contentVO = new DocumentContentVO();
+        contentVO = new DocumentContentDTO();
         contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
         contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
         content = BeanConverter.buildUpdatedDocumentContent(contentVO);
@@ -154,7 +154,7 @@ public class BeanConverterTester extends KEWTestCase {
 
         // now, add an attribute
         String testAttributeContent = new TestRuleAttribute().getDocContent();
-        WorkflowAttributeDefinitionVO attributeDefinition = new WorkflowAttributeDefinitionVO(TestRuleAttribute.class.getName());
+        WorkflowAttributeDefinitionDTO attributeDefinition = new WorkflowAttributeDefinitionDTO(TestRuleAttribute.class.getName());
         contentVO.addAttributeDefinition(attributeDefinition);
         content = BeanConverter.buildUpdatedDocumentContent(contentVO);
         fullContent = startContent+
@@ -179,7 +179,7 @@ public class BeanConverterTester extends KEWTestCase {
             "</"+DOCUMENT_CONTENT+">";
     }
 
-    private void assertContent(DocumentContentVO contentVO, String attributeContent, String searchableContent, String applicationContent) {
+    private void assertContent(DocumentContentDTO contentVO, String attributeContent, String searchableContent, String applicationContent) {
         if (Utilities.isEmpty(attributeContent)) {
         	attributeContent = "";
         } else {
@@ -238,7 +238,7 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setDelegatorWorkgroupId(testWorkgroupId);
         
         // convert to action item vo object and verify
-        ActionItemVO actionItemVO = BeanConverter.convertActionItem(actionItem);
+        ActionItemDTO actionItemVO = BeanConverter.convertActionItem(actionItem);
         assertEquals("Action Item VO object has incorrect value", actionRequestCd, actionItemVO.getActionRequestCd());
         assertEquals("Action Item VO object has incorrect value", actionRequestId, actionItemVO.getActionRequestId());
         assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());

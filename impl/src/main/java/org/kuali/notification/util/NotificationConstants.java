@@ -16,8 +16,8 @@
 package org.kuali.notification.util;
 
 import org.kuali.notification.bo.NotificationProducer;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 
 /**
  * This class houses all constants for the NotificationSystem.

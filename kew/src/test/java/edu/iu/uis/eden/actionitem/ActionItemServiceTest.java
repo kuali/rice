@@ -24,15 +24,15 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -64,7 +64,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      */
     @Test public void testUpdateActionItemsForWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -174,9 +174,9 @@ public class ActionItemServiceTest extends KEWTestCase {
      */
     @Test public void testUpdateActionItemsForNestedWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new WorkgroupNameIdVO("AIWGNested2"), "", true);
+        document.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new WorkgroupNameIdDTO("AIWGNested2"), "", true);
         document.routeDocument("");
 
         // remove a user from the AGWG1 workgroup
@@ -416,17 +416,17 @@ public class ActionItemServiceTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testWorkgroupActionItemGenerationWhenMultipleWorkgroupRequests() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 
-        ActionRequestVO[] ars = document.getActionRequests();
+        ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;
         boolean routedTestWorkgroup = false;
         for (int i = 0; i < ars.length; i++) {
-            ActionRequestVO request = ars[i];
+            ActionRequestDTO request = ars[i];
             if (request.isWorkgroupRequest() && request.getWorkgroupVO().getWorkgroupName().equals("TestWorkgroup")) {
                 routedTestWorkgroup = true;
             } else if (request.isWorkgroupRequest() && request.getWorkgroupVO().getWorkgroupName().equals("WorkflowAdmin")) {
@@ -457,7 +457,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      * multiple Action Items but only one of them will show up in their Action List.
      */
     @Test public void testMultipleActionItemGeneration() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "ActionItemDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -470,11 +470,11 @@ public class ActionItemServiceTest extends KEWTestCase {
         // now check the action list, there should be only one entry
         actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertTrue("Ewestfal should have an approval requested.", document.isApprovalRequested());
 
         // approve as a member from the first workgroup
-        document = new WorkflowDocument(new NetworkIdVO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
         assertTrue("Jitrue should have an approval requested.", document.isApprovalRequested());
         document.approve("");
 
@@ -501,7 +501,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      * The routing is configured in the BAOrphanedRequestDocumentType.
      */
     @Test public void testOrphanedAcknowledgeFromBlanketApprovalFix() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "BAOrphanedRequestDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BAOrphanedRequestDocumentType");
     	document.blanketApprove("");
     	assertTrue("Document should be processed.", document.stateIsProcessed());
 
@@ -511,8 +511,8 @@ public class ActionItemServiceTest extends KEWTestCase {
     	int numActionItems = actionListService.findByRouteHeaderId(document.getRouteHeaderId()).size();
     	assertEquals("Incorrect number of action items.", 2, numActionItems);
 
-    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
-    	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("rkirkend"));
+    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("user1"));
+    	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("rkirkend"));
 
     	// check that user1 has 1 action item
     	Collection actionItems = actionListService.findByWorkflowUserRouteHeaderId(user1.getWorkflowId(), document.getRouteHeaderId());
@@ -524,12 +524,12 @@ public class ActionItemServiceTest extends KEWTestCase {
     	assertEquals("rkirkend should have one action item.", 1, actionItems.size());
 
     	// lets go ahead and take it to final for funsies
-    	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should still be PROCESSED.", document.stateIsProcessed());
 
-    	document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should now be FINAL.", document.stateIsFinal());

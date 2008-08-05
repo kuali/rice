@@ -19,7 +19,8 @@ package edu.iu.uis.eden.lookupable;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.util.Utilities;
 

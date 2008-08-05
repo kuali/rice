@@ -19,15 +19,15 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.BranchState;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Test case that tests setting and getting variables, both programmatically
@@ -45,11 +45,11 @@ public class VariablesTest extends KEWTestCase {
     private void dumpInfoAboutDoc(WorkflowDocument doc) throws WorkflowException {
         LOG.info("\tDoc: class=" + doc.getDocumentType() + " title=" + doc.getTitle() + " status=" + doc.getStatusDisplayValue());
         LOG.info("\tActionRequests:");
-        for (ActionRequestVO ar: doc.getActionRequests()) {
+        for (ActionRequestDTO ar: doc.getActionRequests()) {
             LOG.info("\t\tId: " + ar.getActionRequestId() + " UserId: " + ar.getUserIdVO() + " User: " + (ar.getUserVO() != null ? ar.getUserVO().getDisplayName() : null) + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
         }
         LOG.info("\tActionTakens:");
-        for (ActionTakenVO at: doc.getActionsTaken()) {
+        for (ActionTakenDTO at: doc.getActionsTaken()) {
             LOG.info("\t\tId: " + at.getActionTakenId() + " User: " + (at.getUserVO() != null ? at.getUserVO().getDisplayName() : null) + " ActionTaken: " + at.getActionTaken());
         }
         LOG.info("\tNodeNames:");
@@ -66,24 +66,24 @@ public class VariablesTest extends KEWTestCase {
     }
 
     @Test public void testVariables() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "VariablesTest");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "VariablesTest");
         doc.routeDocument("");
 
         //rock some preapprovals and other actions...
-        doc = new WorkflowDocument(new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
         dumpInfoAboutDoc(doc);
         doc.setVariable("myexcellentvariable", "righton");
         doc.approve("");
         assertEquals("startedVariableValue", doc.getVariable("started"));
         assertEquals("startedVariableValue", doc.getVariable("copiedVar"));
 
-        doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user2"), doc.getRouteHeaderId());
         assertEquals("righton", doc.getVariable("myexcellentvariable"));
         doc.setVariable("vartwo", "two");
         doc.setVariable("myexcellentvariable", "ichangedit");
         doc.acknowledge("");
 
-        doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user3"), doc.getRouteHeaderId());
         assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
         assertEquals("two", doc.getVariable("vartwo"));
         doc.setVariable("another", "another");
@@ -91,7 +91,7 @@ public class VariablesTest extends KEWTestCase {
         doc.complete("");
 
         //approve as the person the doc is routed to so we can move the documen on and hopefully to final
-        doc = new WorkflowDocument(new NetworkIdVO("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("user1"), doc.getRouteHeaderId());
         assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
         assertEquals(null, doc.getVariable("vartwo"));
         assertEquals("another", doc.getVariable("another"));

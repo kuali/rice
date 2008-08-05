@@ -31,9 +31,9 @@ import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is responsible for describing the default delivery mechanism for

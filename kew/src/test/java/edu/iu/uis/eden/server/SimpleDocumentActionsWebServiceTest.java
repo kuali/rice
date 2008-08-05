@@ -38,15 +38,15 @@ import org.codehaus.xfire.util.dom.DOMInHandler;
 import org.codehaus.xfire.util.dom.DOMOutHandler;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.DocumentResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.ErrorResponse;
@@ -124,8 +124,8 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	private static final String TEST_NOTE_TEXT = "This is a test note.";
 	private static final String TEST_NOTE_TEXT2 = "This is an updated test note.";
 
-	protected static ActionRequestVO actionHasBeenRequested(ActionRequestVO[] actionsRequested, String recipient, String action) {
-		for (ActionRequestVO actionRequested : actionsRequested) {
+	protected static ActionRequestDTO actionHasBeenRequested(ActionRequestDTO[] actionsRequested, String recipient, String action) {
+		for (ActionRequestDTO actionRequested : actionsRequested) {
 			if (recipient != null) {
 				if (actionRequested.getUserVO() != null) {
 					if (!recipient.equals(actionRequested.getUserVO().getNetworkId()))
@@ -172,7 +172,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	@Test public void testAcknowledge() throws WorkflowException, InterruptedException {
 	    final int EXPECTED_RESULT_FIELDS = 8;
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		approveTestDoc(routeHeader.getRouteHeaderId(), "test approve");
@@ -199,15 +199,15 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("The last modified date should be after the create date", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 		assertEquals("There should be 3 action requests", 3, actionRequests.length);
 		assertNotNull(actionHasBeenRequested(actionRequests, TEST_USER, "A"));
 		assertNotNull(actionHasBeenRequested(actionRequests, TEST_USER, "K"));
 		assertNotNull(actionHasBeenRequested(actionRequests, TEST_FYI_USER, "F"));
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("We didn't send an annotation so it should be null", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -239,7 +239,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testApprove() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		StandardResponse results = service.approve(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_TITLE, "<key>value</key>", "test approve");
@@ -264,12 +264,12 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("AppDocId should be null since we're not using it.", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after dateCreated", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 		assertEquals(3, actionRequests.length);
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -301,7 +301,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testBlanketApprove() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		StandardResponse results = service.blanketApprove(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_TITLE, "<key>value</key>", "test blanket approve");
@@ -326,12 +326,12 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("lastModifiedDate should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 		assertEquals(3, actionRequests.length);
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -363,7 +363,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testCancel() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 
 		StandardResponse results = service.cancel(routeHeader.getRouteHeaderId().toString(), TEST_USER, "test cancel");
 
@@ -387,9 +387,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().compareTo(routeHeader.getDateCreated()) >= 0);
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(0, actionRequests.length);
@@ -422,7 +422,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		long docIdLong = Long.parseLong(docId);
 		assertTrue("docId should be >= 2000", docIdLong >= 2000);
 
-		RouteHeaderVO routeHeader = getTestDoc(docIdLong);
+		RouteHeaderDTO routeHeader = getTestDoc(docIdLong);
 		assertEquals(TEST_TITLE, routeHeader.getDocTitle());
 		assertEquals("I", routeHeader.getDocRouteStatus());
 		// TODO: better date test
@@ -443,7 +443,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testDisapprove() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		StandardResponse results = service.disapprove(routeHeader.getRouteHeaderId().toString(), TEST_USER, "test disapprove");
@@ -468,12 +468,12 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().compareTo(routeHeader.getDateCreated()) >= 0);
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 		assertEquals(2, actionRequests.length);
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -500,7 +500,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testFyi() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		approveTestDoc(routeHeader.getRouteHeaderId(), "test approve");
@@ -529,13 +529,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 		assertEquals(3, actionRequests.length);
 
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, "user1", "A");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, "user1", "A");
 //		ActionRequestVO actionRequest = actionRequests[0];
 //		assertEquals("A", actionRequest.getActionRequested());
 
@@ -573,7 +573,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testGetDocument() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		routeTestDoc(routeHeader.getRouteHeaderId(), "<key>value</key>", "test doc title", "test route");
 
 		DocumentResponse results = service.getDocument(routeHeader.getRouteHeaderId().toString(), TEST_USER);
@@ -650,7 +650,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	public void testIsUserInRouteLog() throws WorkflowException {
 
 		// create a new document
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument doc = new WorkflowDocument(userIdVO, TEST_DOC_TYPE);
 		String docId = doc.getRouteHeaderId().toString();
 
@@ -674,7 +674,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocAckGroup() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocAckToGroup(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_GROUP, "requesting adhoc acknowledge for " + TEST_ADHOC_GROUP);
@@ -703,13 +703,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(2, actionRequests.length);
-		ActionRequestVO actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_GROUP, "K");
+		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_GROUP, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
@@ -736,7 +736,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocAckUser() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocAckToUser(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_USER, "requesting adhoc acknowledge for " + TEST_ADHOC_USER);
@@ -765,13 +765,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(2, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
@@ -798,7 +798,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocApproveGroup() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocApproveToGroup(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_GROUP, "requesting adhoc approve for " + TEST_ADHOC_GROUP);
@@ -827,13 +827,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after dateCreated", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(1, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
@@ -860,7 +860,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocAproveUser() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocApproveToUser(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_USER, "requesting adhoc approve for " + TEST_ADHOC_USER);
@@ -889,13 +889,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(1, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
@@ -922,7 +922,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocApproveUserMulti() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestAdhocDoc();
+		RouteHeaderDTO routeHeader = createTestAdhocDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocApproveToUser(routeHeader.getRouteHeaderId().toString(), TEST_USER2, TEST_ADHOC_USER, "requesting adhoc approve for " + TEST_ADHOC_USER);
@@ -951,13 +951,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER2);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER2);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(1, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
@@ -1004,7 +1004,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		userIdVO = new NetworkIdVO(TEST_USER);
+		userIdVO = new NetworkIdDTO(TEST_USER);
 		workflowDocument = new WorkflowDocument(userIdVO, docId);
 		actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
@@ -1046,7 +1046,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		userIdVO = new NetworkIdVO(TEST_USER2);
+		userIdVO = new NetworkIdDTO(TEST_USER2);
 		workflowDocument = new WorkflowDocument(userIdVO, docId);
 		actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
@@ -1073,7 +1073,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocFyiGroup() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocFyiToGroup(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_GROUP, "requesting adhoc fyi for " + TEST_ADHOC_GROUP);
@@ -1102,13 +1102,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(2, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
@@ -1134,7 +1134,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRequestAdHocFyiUser() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		// routeTestDoc(routeHeader.getRouteHeaderId(), "test route");
 
 		service.requestAdHocFyiToUser(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_ADHOC_USER, "requesting adhoc fyi for " + TEST_ADHOC_USER);
@@ -1163,13 +1163,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		assertEquals(2, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
 		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
@@ -1195,7 +1195,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testRoute() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 
 		StandardResponse results = service.route(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_TITLE, "<key>value</key>", "routing document");
 
@@ -1224,14 +1224,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		System.err.println("date created: " + routeHeader.getDateCreated());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		// TODO: why is this 1 not 3?
 		assertEquals(1, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -1250,7 +1250,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testSave() throws WorkflowException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 
 		StandardResponse results = service.save(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_TITLE, "saving document");
 		//assertEquals(6, results.size());
@@ -1285,7 +1285,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 */
 	@Test public void testAddNote() throws WorkflowException {
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		Long docId = routeHeader.getRouteHeaderId();
 
 		NoteResponse results = service.addNote(docId.toString(), TEST_USER, TEST_NOTE_TEXT);
@@ -1303,7 +1303,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 */
 	@Test public void testUpdateNote() throws WorkflowException {
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		Long docId = routeHeader.getRouteHeaderId();
 
 		NoteResponse results = service.addNote(docId.toString(), TEST_USER, TEST_NOTE_TEXT);
@@ -1330,7 +1330,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 */
 	@Test public void testDeleteNote() throws WorkflowException {
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		Long docId = routeHeader.getRouteHeaderId();
 
 		NoteResponse results = service.addNote(docId.toString(), TEST_USER, TEST_NOTE_TEXT);
@@ -1360,7 +1360,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	public void testReturnToPrevious() throws WorkflowException, InterruptedException {
 
-		RouteHeaderVO routeHeader = createTestDoc();
+		RouteHeaderDTO routeHeader = createTestDoc();
 		Long docId = routeHeader.getRouteHeaderId();
 		routeTestDoc(docId, "test route");
 
@@ -1382,14 +1382,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNotNull(notes);
 		assertEquals(0, notes.size());
 
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docId);
-		ActionRequestVO[] actionRequests = workflowDocument.getActionRequests();
+		ActionRequestDTO[] actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
 
 		// TODO: why is this 1 not 3?
 		assertEquals(1, actionRequests.length);
-		ActionRequestVO actionRequest = actionRequests[0];
+		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
 		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
@@ -1422,7 +1422,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertNull("We aren't using appDocId so it should be null", routeHeader.getAppDocId());
 		assertTrue("dateLastModified should be after createDate", routeHeader.getDateLastModified().after(routeHeader.getDateCreated()));
 
-		userIdVO = new NetworkIdVO(TEST_USER);
+		userIdVO = new NetworkIdDTO(TEST_USER);
 		workflowDocument = new WorkflowDocument(userIdVO, docId);
 		actionRequests = workflowDocument.getActionRequests();
 		assertNotNull("We should have some action requests", actionRequests);
@@ -1445,12 +1445,12 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 *             if something goes wrong
 	 */
-	private RouteHeaderVO createTestDoc() throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+	private RouteHeaderDTO createTestDoc() throws WorkflowException {
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, TEST_DOC_TYPE);
 		workflowDocument.setTitle(TEST_TITLE);
 		workflowDocument.saveRoutingData();
-		RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+		RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 		return routeHeader;
 	}
 
@@ -1461,12 +1461,12 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 *             if something goes wrong
 	 */
-	private RouteHeaderVO createTestAdhocDoc() throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER2);
+	private RouteHeaderDTO createTestAdhocDoc() throws WorkflowException {
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER2);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, "GeneralPurposeRequest");
 		workflowDocument.setTitle("test adhoc doc");
 		workflowDocument.saveRoutingData();
-		RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+		RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 		return routeHeader;
 	}
 
@@ -1479,10 +1479,10 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 * @throws WorkflowException
 	 *             if something goes wrong
 	 */
-	private RouteHeaderVO getTestDoc(long docId) throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+	private RouteHeaderDTO getTestDoc(long docId) throws WorkflowException {
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, new Long(docId));
-		RouteHeaderVO routeHeader = workflowDocument.getRouteHeader();
+		RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 		return routeHeader;
 	}
 
@@ -1533,7 +1533,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 *             if something goes wrong
 	 */
 	private void routeTestDoc(long docId, String docContent, String docTitle, String annotation) throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, new Long(docId));
 		if (StringUtils.isNotEmpty(docContent)) {
 			workflowDocument.setApplicationContent(docContent);
@@ -1555,7 +1555,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 *             if something goes wrong
 	 */
 	private void approveTestDoc(long docId, String annotation) throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, new Long(docId));
 		workflowDocument.approve(annotation);
 	}
@@ -1571,7 +1571,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 *             if something goes wrong
 	 */
 	private void acknowledgeTestDoc(long docId, String annotation) throws WorkflowException {
-		UserIdVO userIdVO = new NetworkIdVO(TEST_USER);
+		UserIdDTO userIdVO = new NetworkIdDTO(TEST_USER);
 		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, new Long(docId));
 		workflowDocument.acknowledge(annotation);
 	}

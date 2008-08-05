@@ -20,7 +20,8 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import edu.iu.uis.eden.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 
 /**
  *	Used in the ejb days to provide easy access to jndi resources 

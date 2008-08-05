@@ -18,10 +18,11 @@ package edu.iu.uis.eden.clientapp;
 
 import java.rmi.RemoteException;
 
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.ResponsiblePartyVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
 
 /**
  * A RouteModule is responsible for generating Action Requests for a given Route Header document.
@@ -37,7 +38,7 @@ public interface RouteModuleRemote {
    * @return ActionRequestVO[] the generated action requests
    * @throws EdenException
    */
-  public ActionRequestVO[] findActionRequests(RouteHeaderVO routeHeader, DocumentContentVO documentContent) throws RemoteException;
+  public ActionRequestDTO[] findActionRequests(RouteHeaderDTO routeHeader, DocumentContentDTO documentContent) throws RemoteException;
 
   /**
    * The route module will resolve the given responsibilityId and return an object that contains the key to
@@ -46,6 +47,6 @@ public interface RouteModuleRemote {
    * @return The ResponsibleParty containing a key to a user or workgroup.
    * @throws EdenException if any problems are found this exception can be thrown.
    */
-  public ResponsiblePartyVO resolveResponsibilityId(Long responsibilityId) throws RemoteException;
+  public ResponsiblePartyDTO resolveResponsibilityId(Long responsibilityId) throws RemoteException;
 
 }

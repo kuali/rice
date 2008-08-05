@@ -22,12 +22,12 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
@@ -137,7 +137,7 @@ public class EmailMessageTest extends KEWTestCase {
     }
 
     private int generateDocs(String[] docTypes, WorkflowUser user) throws Exception {
-        NetworkIdVO nid = new NetworkIdVO(user.getAuthenticationUserId().getId());
+        NetworkIdDTO nid = new NetworkIdDTO(user.getAuthenticationUserId().getId());
 
         for (String docType: docTypes) {
             WorkflowDocument document = new WorkflowDocument(nid, docType);

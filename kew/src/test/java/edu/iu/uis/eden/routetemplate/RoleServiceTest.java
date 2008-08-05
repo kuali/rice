@@ -22,14 +22,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routemodule.TestDocContent;
 import edu.iu.uis.eden.routemodule.TestRecipient;
@@ -74,7 +74,7 @@ public class RoleServiceTest extends KEWTestCase {
 	}
 
 	private Long routeDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.routeDocument("testing only");
         return document.getRouteHeaderId();
@@ -129,7 +129,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
@@ -185,7 +185,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());

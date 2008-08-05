@@ -19,12 +19,12 @@ package edu.iu.uis.eden.notification;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.preferences.PreferencesService;
@@ -41,7 +41,7 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * Tests that when a user is routed to twice at the same time that only email is sent to them.
 	 */
 	@Test public void testNoDuplicateEmails() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "NotificationTest");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationTest");
 		document.routeDocument("");
 		
 		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
@@ -103,7 +103,7 @@ public class NotificationServiceTest extends KEWTestCase {
 		getPreferencesService().savePreferences(jhopf, prefs);
 		
 		// route the document
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "NotificationTest");
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationTest");
 		document.routeDocument("");
 		
 		// both ewestfal and jitrue should have one email
@@ -141,8 +141,8 @@ public class NotificationServiceTest extends KEWTestCase {
 		assertEquals("Wrong notification from address.", "fakey@mcfakey.com", documentType.getNotificationFromAddress());
 		
 		// Do an app specific route to a document which should send an email to fakey@mcchild.com
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "NotificationFromAddressChild");
-		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", new NetworkIdVO("ewestfal"), "", true);
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationFromAddressChild");
+		document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", new NetworkIdDTO("ewestfal"), "", true);
 		document.routeDocument("");
 		
 		// verify that ewestfal was sent an email

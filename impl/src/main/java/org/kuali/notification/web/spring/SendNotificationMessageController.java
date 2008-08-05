@@ -47,10 +47,10 @@ import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
 import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.routetemplate.GenericAttributeContent;
 
 /**
@@ -246,7 +246,7 @@ public class SendNotificationMessageController extends MultiActionController {
 	LOG.debug("remoteUser: " + request.getRemoteUser());
 
 	// obtain a workflow user object first
-	WorkflowIdVO initiator = new WorkflowIdVO(request.getRemoteUser());
+	WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
 
 	// now construct the workflow document, which will interact with workflow
 	NotificationWorkflowDocument document;

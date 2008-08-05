@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.util.ExceptionUtils;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;

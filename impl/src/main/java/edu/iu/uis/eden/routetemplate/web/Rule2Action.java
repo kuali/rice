@@ -32,16 +32,16 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
@@ -120,7 +120,7 @@ public class Rule2Action extends WorkflowAction {
                  * added on 2006-04-04 to support function of showing link to document type report page
                  */
                 if(!Utilities.isEmpty(webRule.getDocTypeName())){
-                	DocumentTypeVO docType=KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(webRule.getDocTypeName());
+                	DocumentTypeDTO docType=KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(webRule.getDocTypeName());
                 	if(docType!=null){
                 		ruleForm.setDocTypeId(docType.getDocTypeId());
                 	}
@@ -387,7 +387,7 @@ public class Rule2Action extends WorkflowAction {
             }
             ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
             String ruleDocumentTypeName = getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocumentTypeName));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocumentTypeName));
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
         }
         establishRequiredState(request, ruleForm);
@@ -617,7 +617,7 @@ public class Rule2Action extends WorkflowAction {
             rule.establishRequiredState();
         }
         if (ruleForm.getDocId() != null && ruleForm.getWorkflowDocument() == null) {
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
         }
         ruleForm.establishVisibleActionRequestCds();
         return null;
@@ -629,7 +629,7 @@ public class Rule2Action extends WorkflowAction {
         if (IDocHandler.INITIATE_COMMAND.equalsIgnoreCase(ruleForm.getCommand())) {
             return start(mapping, form, request, response);
         } else {
-             WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId());
+             WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId());
             ruleForm.setWorkflowDocument(workflowDocument);
             loadDocHandlerRules(workflowDocument.getRouteHeaderId(), ruleForm);
             return mapping.findForward("docHandler");
@@ -640,7 +640,7 @@ public class Rule2Action extends WorkflowAction {
         if (rule2Form.getWorkflowDocument() == null) {
             try {
             	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
-                rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+                rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
             } catch (Exception e) {
                 throw new WorkflowException(e);
             }

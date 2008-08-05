@@ -32,7 +32,12 @@ public class JSTLConstants extends HashMap {
     private boolean initialised = false;
 
     public JSTLConstants() {
-        publishFields(this, this.getClass());
+    	publishFields(this, this.getClass());
+        initialised = true;
+    }
+    
+    public JSTLConstants(Class constantsClass) {
+        publishFields(this, constantsClass);
         initialised = true;
     }
 

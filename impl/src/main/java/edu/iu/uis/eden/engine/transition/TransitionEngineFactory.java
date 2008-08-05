@@ -16,10 +16,11 @@
  */
 package edu.iu.uis.eden.engine.transition;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import edu.iu.uis.eden.engine.RouteHelper;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Factory which creates a {@link TransitionEngine} for the given {@link RouteNodeInstance}.  The 

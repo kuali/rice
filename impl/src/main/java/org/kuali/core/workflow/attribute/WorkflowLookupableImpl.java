@@ -35,11 +35,11 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler;
 import org.kuali.workflow.attribute.WorkflowLookupableResult;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.lookupable.LookupForm;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 

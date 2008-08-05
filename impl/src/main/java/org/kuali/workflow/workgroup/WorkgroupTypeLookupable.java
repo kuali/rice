@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -231,7 +230,7 @@ public class WorkgroupTypeLookupable implements WorkflowLookupable, Exportable {
     }
 
     public List getSupportedExportFormats() {
-        return EdenConstants.STANDARD_FORMATS;
+        return ExportFormat.STANDARD_FORMATS;
     }
 
     public static class WorkgroupTypeLookupResult {

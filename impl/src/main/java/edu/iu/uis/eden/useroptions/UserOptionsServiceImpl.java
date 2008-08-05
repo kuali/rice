@@ -22,9 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import org.kuali.rice.kew.util.EdenConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.dao.UserOptionsDAO;
 

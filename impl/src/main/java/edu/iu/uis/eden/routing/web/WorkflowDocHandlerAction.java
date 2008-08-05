@@ -24,10 +24,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.WorkflowAction;
 
@@ -135,7 +135,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
         try {
-            WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), docHandlerForm.getDocId());
+            WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), docHandlerForm.getDocId());
             docHandlerForm.setWorkflowDocument(workflowDocument);
         } catch (Exception e) {
             throw new RuntimeException(e);

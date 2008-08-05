@@ -25,16 +25,16 @@ import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.util.Util;
 import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.AfterProcessEventDTO;
+import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * This class is the post processor that gets run when the general notification 
@@ -68,32 +68,32 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     }
     
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
-    public boolean doActionTaken(ActionTakenEventVO arg0) throws RemoteException {
+    public boolean doActionTaken(ActionTakenEventDTO arg0) throws RemoteException {
 	return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(edu.iu.uis.eden.clientapp.vo.DeleteEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
-    public boolean doDeleteRouteHeader(DeleteEventVO arg0) throws RemoteException {
+    public boolean doDeleteRouteHeader(DeleteEventDTO arg0) throws RemoteException {
 	return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeVO arg0) throws RemoteException {
+    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO arg0) throws RemoteException {
 	return true;
     }
 
     /**
      * When the EDL simple message sending form is submitted, it is routed straight to FINAL and at that time (when RESOLVED), we 
      * actually send the notification.
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeVO arg0) throws RemoteException {
+    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
 	LOG.debug("ENTERING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
 	
 	if(arg0.getNewRouteStatus().equals(EdenConstants.ROUTE_HEADER_PROCESSED_CD)) {
@@ -101,7 +101,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    
 	    // obtain a workflow user object first
-	    NetworkIdVO proxyUser = new NetworkIdVO(Util.getNotificationSystemUser());
+	    NetworkIdDTO proxyUser = new NetworkIdDTO(Util.getNotificationSystemUser());
 	        
 	    // now construct the workflow document, which will interact with workflow
 	    NotificationWorkflowDocument document;
@@ -129,16 +129,16 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
-    public boolean beforeProcess(BeforeProcessEventVO beforeProcessEvent) throws Exception {
+    public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
-    public boolean afterProcess(AfterProcessEventVO afterProcessEvent) throws Exception {
+    public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return true;
     }
 }

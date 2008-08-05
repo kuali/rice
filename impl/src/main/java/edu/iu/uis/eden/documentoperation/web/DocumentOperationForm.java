@@ -23,8 +23,8 @@ import java.util.Map;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

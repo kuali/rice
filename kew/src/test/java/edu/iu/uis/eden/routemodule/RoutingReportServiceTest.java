@@ -21,16 +21,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 
 public class RoutingReportServiceTest extends KEWTestCase {
@@ -47,7 +47,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         
         
         // route a document to the first node
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
         // there should now be 1 active node and 2 pending requests on the document
@@ -59,10 +59,10 @@ public class RoutingReportServiceTest extends KEWTestCase {
         
         // now, lets "get our report on", the WorkflowInfo.routingReport method will call the service's report method.
         WorkflowInfo info = new WorkflowInfo();
-        ReportCriteriaVO criteria = new ReportCriteriaVO(document.getRouteHeaderId());
+        ReportCriteriaDTO criteria = new ReportCriteriaDTO(document.getRouteHeaderId());
         
         long start = System.currentTimeMillis();
-        DocumentDetailVO documentDetail = info.routingReport(criteria);
+        DocumentDetailDTO documentDetail = info.routingReport(criteria);
         long end = System.currentTimeMillis();
         System.out.println("Time to run routing report: " + (end-start)+" milliseconds.");
         
@@ -74,7 +74,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         boolean ackToTemay = false;
         boolean ackToJhopf = false;
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
-            ActionRequestVO requestVO = documentDetail.getActionRequests()[index];
+            ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
             String netId = requestVO.getUserVO().getNetworkId(); 
             if (netId.equals("bmcgough")) {
                 assertEquals("Should be approve.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
@@ -118,14 +118,14 @@ public class RoutingReportServiceTest extends KEWTestCase {
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
         // test reporting to a specified target node
-        criteria = new ReportCriteriaVO(document.getRouteHeaderId(), SeqSetup.ACKNOWLEDGE_1_NODE);
+        criteria = new ReportCriteriaDTO(document.getRouteHeaderId(), SeqSetup.ACKNOWLEDGE_1_NODE);
         documentDetail = info.routingReport(criteria);
         
         // document detail should have all of our requests except for the final acknowledge
         assertEquals("There should be 4 requets.", 4, documentDetail.getActionRequests().length);
         // assert that we don't have an acknowledge to jhopf
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
-            ActionRequestVO requestVO = documentDetail.getActionRequests()[index];
+            ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
             if (requestVO.getUserVO().getNetworkId().equals("jhopf")) {
                 fail("There should be no request to jhopf");
             }

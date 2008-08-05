@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.notes;
 
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
 import edu.iu.uis.eden.web.session.UserSession;
 
 /**
@@ -29,8 +30,8 @@ public interface CustomNoteAttribute {
 
     public boolean isAuthorizedToEditNote(Note note) throws Exception;
     public boolean isAuthorizedToAddNotes() throws Exception;
-    public RouteHeaderVO getRouteHeaderVO();
-    public void setRouteHeaderVO(RouteHeaderVO routeHeaderVO);
+    public RouteHeaderDTO getRouteHeaderVO();
+    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO);
     public UserSession getUserSession();
     public void setUserSession(UserSession workflowUserSession);
     

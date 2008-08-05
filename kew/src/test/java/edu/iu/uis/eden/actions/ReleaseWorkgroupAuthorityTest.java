@@ -21,14 +21,14 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
@@ -42,18 +42,18 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
     }
     
     @Test public void testReleaseWorkgroupAuthority() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
         
         Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("TestWorkgroup"));
         
         //have member rkirkend take authority
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
-        doc.takeWorkgroupAuthority("", new WorkflowGroupIdVO(workgroup.getWorkflowGroupId().getGroupId()));
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+        doc.takeWorkgroupAuthority("", new WorkflowGroupIdDTO(workgroup.getWorkflowGroupId().getGroupId()));
 
         //have rkirkend release authority
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
-        doc.releaseWorkgroupAuthority("", new WorkflowGroupIdVO(workgroup.getWorkflowGroupId().getGroupId()));
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+        doc.releaseWorkgroupAuthority("", new WorkflowGroupIdDTO(workgroup.getWorkflowGroupId().getGroupId()));
         
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();

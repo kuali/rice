@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.engine.node.RouteNode;
@@ -91,21 +91,21 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsFinal());
-        workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -127,7 +127,7 @@ public class DocumentSearchTest extends KEWTestCase {
         // load the document type again to change the route node ids
         loadXmlFile("DocSearchTest_RouteNode.xml");
 
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         criteria.setDocRouteNodeId(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
@@ -226,30 +226,30 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), standardDocHandlerDocumentType);
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), standardDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
 
         // route a document to enroute and route one to final
-        workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsFinal());
 
-        workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 

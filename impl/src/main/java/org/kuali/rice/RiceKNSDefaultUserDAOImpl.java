@@ -22,11 +22,11 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.bo.user.UserId;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UuIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 
@@ -43,13 +43,13 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
 
         try {
             if (userId instanceof org.kuali.core.bo.user.AuthenticationUserId) {
-                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO(userId.toString())));
+                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(userId.toString())));
             }
             if (userId instanceof org.kuali.core.bo.user.PersonPayrollId) {
-                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new EmplIdVO(userId.toString())));
+                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new EmplIdDTO(userId.toString())));
             }
             if (userId instanceof org.kuali.core.bo.user.UuId) {
-                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new UuIdVO(userId.toString())));
+                return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new UuIdDTO(userId.toString())));
             }
         } catch (EdenUserNotFoundException eunfe) {
         	return null;

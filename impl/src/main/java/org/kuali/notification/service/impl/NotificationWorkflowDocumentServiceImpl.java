@@ -21,13 +21,13 @@ import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that leverages the KEW client API.
@@ -55,7 +55,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId, 
 	    String recipientUserId, String annotation) throws WorkflowException {
 	// obtain a workflow user object first
-	WorkflowIdVO initiator = new WorkflowIdVO(initiatorUserId);
+	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
         
 	// now construct the workflow document, which will interact with workflow
 	NotificationWorkflowDocument document = new NotificationWorkflowDocument(initiator);
@@ -82,7 +82,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	}
 	
 	// construct the recipient object in KEW terms
-	NetworkIdVO recipient = new NetworkIdVO(recipientUserId);
+	NetworkIdDTO recipient = new NetworkIdDTO(recipientUserId);
 	
 	// Clarification of ad hoc route call
 	// param 1 - actionRequested will be either ACK or FYI
@@ -108,7 +108,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
      */
     public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException {
 	// construct the workflow id value object
-	WorkflowIdVO initiator = new WorkflowIdVO(initiatorUserId);
+	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 	
 	// now return the actual document instance
 	// this handles going out and getting the workflow document
@@ -119,7 +119,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
      * @see org.kuali.notification.service.NotificationWorkflowDocumentService#clearAllFyisAndAcknowledgeNotificationWorkflowDocument(java.lang.String, org.kuali.notification.document.kew.NotificationWorkflowDocument, java.lang.String)
      */
     public void clearAllFyisAndAcknowledgeNotificationWorkflowDocument(String initiatorUserId, NotificationWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-	ActionRequestVO[] reqs = workflowDocument.getActionRequests();
+	ActionRequestDTO[] reqs = workflowDocument.getActionRequests();
         for(int i = 0; i < reqs.length; i++) {
             LOG.info("Action Request[" + i + "] = " + reqs[i].getActionRequested());
             if(reqs[i].getActionRequested().equals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ)) {

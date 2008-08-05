@@ -33,8 +33,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
@@ -297,7 +298,7 @@ public class ActionTakenValue implements WorkflowPersistable {
 
     public String getActionDateString() {
         if(actionDateString == null || actionDateString.trim().equals("")){
-            return EdenConstants.getDefaultDateFormat().format(getActionDate());
+            return RiceConstants.getDefaultDateFormat().format(getActionDate());
         } else {
             return actionDateString;
         }

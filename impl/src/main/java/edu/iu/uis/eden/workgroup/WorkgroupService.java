@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.workflow.attribute.Extension;
 
 import edu.iu.uis.eden.XmlLoader;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.xml.export.XmlExporter;
@@ -57,7 +57,7 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
      */
     public Workgroup getWorkgroup(GroupId groupId, boolean loadWorkgroupExtensions);
 
-    public Workgroup getWorkgroup(WorkgroupIdVO groupIdVO);
+    public Workgroup getWorkgroup(WorkgroupIdDTO groupIdVO);
 
     public List<Workgroup> getUsersGroups(WorkflowUser member) throws EdenUserNotFoundException ;
 

@@ -37,8 +37,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.lookupable.Field;
@@ -481,28 +482,28 @@ public class RuleBaseValues implements WorkflowPersistable {
 
     public String getFromDateString() {
         if (this.fromDate != null) {
-            return EdenConstants.getDefaultDateFormat().format(this.fromDate);
+            return RiceConstants.getDefaultDateFormat().format(this.fromDate);
         }
         return null;
     }
 
     public void setFromDateString(String fromDateString) {
         try {
-            this.fromDate = new Timestamp(EdenConstants.getDefaultDateFormat().parse(fromDateString).getTime());
+            this.fromDate = new Timestamp(RiceConstants.getDefaultDateFormat().parse(fromDateString).getTime());
         } catch (Exception e) {
         }
     }
 
     public String getToDateString() {
         if (this.toDate != null) {
-            return EdenConstants.getDefaultDateFormat().format(this.toDate);
+            return RiceConstants.getDefaultDateFormat().format(this.toDate);
         }
         return null;
     }
 
     public void setToDateString(String toDateString) {
         try {
-            this.toDate = new Timestamp(EdenConstants.getDefaultDateFormat().parse(toDateString).getTime());
+            this.toDate = new Timestamp(RiceConstants.getDefaultDateFormat().parse(toDateString).getTime());
         } catch (Exception e) {
         }
     }

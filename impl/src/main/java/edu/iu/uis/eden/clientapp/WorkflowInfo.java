@@ -22,35 +22,35 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.config.RiceConfigurer;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
+import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
-import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
-import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
-import edu.iu.uis.eden.clientapp.vo.RuleReportCriteriaVO;
-import edu.iu.uis.eden.clientapp.vo.RuleVO;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.server.WorkflowUtility;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -112,9 +112,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param routeHeaderId the id of the document whose route header VO to obtain
      * @return the RouteHeaderVO of the specified document for the specified user
      * @throws WorkflowException if an error occurs obtaining the route header VO
-     * @see WorkflowUtility#getRouteHeaderWithUser(UserIdVO, Long)
+     * @see WorkflowUtility#getRouteHeaderWithUser(UserIdDTO, Long)
      */
-    public RouteHeaderVO getRouteHeader(UserIdVO userId, Long routeHeaderId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getRouteHeaderWithUser(userId, routeHeaderId);
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the route header VO
      * @see WorkflowUtility#getRouteHeader(Long)
      */
-    public RouteHeaderVO getRouteHeader(Long documentId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException {
         try {
             return getWorkflowUtility().getRouteHeader(documentId);
         } catch (Exception e) {
@@ -158,9 +158,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param workgroupId id of the workgroup to obtain
      * @return the WorkgroupVO given a workgroup id
      * @throws WorkflowException if an error occurs obtaining the workgroup
-     * @see WorkflowUtility#getWorkgroup(WorkgroupIdVO)
+     * @see WorkflowUtility#getWorkgroup(WorkgroupIdDTO)
      */
-    public WorkgroupVO getWorkgroup(WorkgroupIdVO workgroupId) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
         try {
             return getWorkflowUtility().getWorkgroup(workgroupId);
         } catch (Exception e) {
@@ -173,9 +173,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param userId id of the user to obtain
      * @return the UserVO given a user id
      * @throws WorkflowException if an error occurs obtaining the user
-     * @see WorkflowUtility#getWorkflowUser(UserIdVO)
+     * @see WorkflowUtility#getWorkflowUser(UserIdDTO)
      */
-    public UserVO getWorkflowUser(UserIdVO userId) throws WorkflowException {
+    public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getWorkflowUser(userId);
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the document type
      * @see WorkflowUtility#getDocumentType(Long)
      */
-    public DocumentTypeVO getDocType(Long documentTypeId) throws WorkflowException {
+    public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentType(documentTypeId);
         } catch (Exception e) {
@@ -205,7 +205,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the document type
      * @see WorkflowUtility#getDocumentTypeByName(String)
      */
-    public DocumentTypeVO getDocType(String documentTypeName) throws WorkflowException {
+    public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentTypeByName(documentTypeName);
         } catch (Exception e) {
@@ -232,9 +232,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param userId the id of the user whose workgroups we are to return
      * @return an array of workgroups the specified user is in
      * @throws WorkflowException if an error occurs obtaining the user's workgroups
-     * @see WorkflowUtility#getUserWorkgroups(UserIdVO)
+     * @see WorkflowUtility#getUserWorkgroups(UserIdDTO)
      */
-    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
+    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getUserWorkgroups(userId);
         } catch (Exception e) {
@@ -242,7 +242,7 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
     
-    public Integer getUserActionItemCount(UserIdVO userId) throws WorkflowException {
+    public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getUserActionItemCount(userId);
         } catch (Exception e) {
@@ -250,7 +250,7 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
     
-    public ActionItemVO[] getActionItems(Long routeHeaderId) throws WorkflowException {
+    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionItems(routeHeaderId);
         } catch (Exception e) {
@@ -258,7 +258,7 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
 
-    public ActionItemVO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
+    public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionItems(routeHeaderId, actionRequestedCodes);
         } catch (Exception e) {
@@ -273,7 +273,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the documents action requests
      * @see WorkflowUtility#getActionRequests(Long)
      */
-    public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionRequests(routeHeaderId);
         } catch (Exception e) {
@@ -292,7 +292,7 @@ public class WorkflowInfo implements java.io.Serializable {
     * @throws WorkflowException if an error occurs obtaining the documents action requests
     * @see WorkflowUtility#getActionRequests(Long)
     */
-   public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException {
+   public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException {
        try {
            return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
        } catch (Exception e) {
@@ -310,7 +310,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the actions taken
      * @see WorkflowUtility#getActionsTaken(Long)
      */
-    public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
+    public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionsTaken(routeHeaderId);
         } catch (Exception e) {
@@ -326,9 +326,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param lookFuture whether to evaluate potential future requests
      * @return whether the user is in the document's route log
      * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
-     * @see WorkflowUtility#isUserInRouteLog(Long, UserIdVO, boolean)
+     * @see WorkflowUtility#isUserInRouteLog(Long, UserIdDTO, boolean)
      */
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws WorkflowException {
+    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdDTO userId, boolean lookFuture) throws WorkflowException {
         try {
             return getWorkflowUtility().isUserInRouteLog(routeHeaderId, userId, lookFuture);
         } catch (Exception e) {
@@ -342,9 +342,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param userId the id of the user to check
      * @return whether the specified user is the final approver for the document
      * @throws WorkflowException if an error occurs determining whether the user is the final approver on the document
-     * @see WorkflowUtility#isFinalApprover(Long, UserIdVO)
+     * @see WorkflowUtility#isFinalApprover(Long, UserIdDTO)
      */
-    public boolean isFinalApprover(Long routeHeaderId, UserIdVO userId) throws WorkflowException {
+    public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().isFinalApprover(routeHeaderId, userId);
         } catch (Exception e) {
@@ -361,9 +361,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param attributeDefinition the attribute definition to validate
      * @return WorkflowAttributeValidationErrorVO[] of error from the attribute
      * @throws WorkflowException when attribute doesn't implement WorkflowAttributeXmlValidator
-     * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionVO)
+     * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO)
      */
-    public WorkflowAttributeValidationErrorVO[] validAttributeDefinition(WorkflowAttributeDefinitionVO attributeDefinition) throws WorkflowException {
+    public WorkflowAttributeValidationErrorDTO[] validAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) throws WorkflowException {
         try {
             return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
         } catch (Exception e) {
@@ -387,9 +387,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * Runs a "rule report" give a rule report criteria.
      * @param ruleReportCriteria the criteria for the rule report
      * @return an array of RuleVO representing rules that will fire under the specified criteria
-     * @see WorkflowUtility#ruleReport(RuleReportCriteriaVO)
+     * @see WorkflowUtility#ruleReport(RuleReportCriteriaDTO)
      */
-    public RuleVO[] ruleReport(RuleReportCriteriaVO ruleReportCriteria) throws WorkflowException {
+    public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException {
         try {
             return getWorkflowUtility().ruleReport(ruleReportCriteria);
         } catch (Exception e) {
@@ -407,7 +407,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException
      * @see WorkflowUtility#getDocumentDetail(Long)
      */
-    public DocumentDetailVO getDocumentDetail(Long documentId) throws WorkflowException {
+    public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentDetail(documentId);
         } catch (Exception e) {
@@ -422,7 +422,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the node instance
      * @see WorkflowUtility#getNodeInstance(Long)
      */
-    public RouteNodeInstanceVO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
+    public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
         try {
             return getWorkflowUtility().getNodeInstance(nodeInstanceId);
         } catch (Exception e) {
@@ -438,7 +438,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error getting the route node instances for the document
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
-    public RouteNodeInstanceVO[] getDocumentRouteNodeInstances(Long routeHeaderId) throws WorkflowException {
+    public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocumentRouteNodeInstances(routeHeaderId);
         } catch (Exception e) {
@@ -453,7 +453,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error obtaining the currently active nodes on the document
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
-    public RouteNodeInstanceVO[] getActiveNodeInstances(Long routeHeaderId) throws WorkflowException {
+    public RouteNodeInstanceDTO[] getActiveNodeInstances(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActiveNodeInstances(routeHeaderId);
         } catch (Exception e) {
@@ -468,7 +468,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error obtaining the terminal node instances on the document
      * @see WorkflowUtility#getTerminalNodeInstances(Long)
      */
-    public RouteNodeInstanceVO[] getTerminalNodeInstances(Long routeHeaderId) throws WorkflowException {
+    public RouteNodeInstanceDTO[] getTerminalNodeInstances(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getTerminalNodeInstances(routeHeaderId);
         } catch (Exception e) {
@@ -484,7 +484,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error obtaining the current node instances on the document
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
-    public RouteNodeInstanceVO[] getCurrentNodeInstances(Long routeHeaderId) throws WorkflowException {
+    public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getCurrentNodeInstances(routeHeaderId);
         } catch (Exception e) {
@@ -502,7 +502,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public String[] getCurrentNodeNames(Long documentId) throws WorkflowException {
         try {
-            RouteNodeInstanceVO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
+            RouteNodeInstanceDTO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
             String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
             for (int index = 0; index < currentNodeInstances.length; index++) {
                 nodeNames[index] = currentNodeInstances[index].getName();
@@ -549,9 +549,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * Runs a "routing report"
      * @param reportCriteria routing report criteria
      * @return DocumentDetailVO detailing the actionrequests that would be generated under the specified criteria
-     * @see WorkflowUtility#routingReport(ReportCriteriaVO)
+     * @see WorkflowUtility#routingReport(ReportCriteriaDTO)
      */
-    public DocumentDetailVO routingReport(ReportCriteriaVO reportCriteria) throws WorkflowException {
+    public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
         try {
             return getWorkflowUtility().routingReport(reportCriteria);
         } catch (Exception e) {
@@ -566,9 +566,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param nodeName name of node to check
      * @return whether the specified user is the last approver at the specified node name
      * @throws WorkflowException if an error occurs determining whether the user is the last approver at the specified node
-     * @see WorkflowUtility#isLastApproverAtNode(Long, UserIdVO, String)
+     * @see WorkflowUtility#isLastApproverAtNode(Long, UserIdDTO, String)
      */
-    protected boolean isLastApproverAtNode(Long routeHeaderId, UserIdVO userId, String nodeName) throws WorkflowException {
+    protected boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
         try {
             return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, userId, nodeName);
         } catch (Exception e) {
@@ -599,11 +599,11 @@ public class WorkflowInfo implements java.io.Serializable {
      * 
      * @param userId - user to use when executing the search (for security filtering purposes)
      * @param criteriaVO - criteria to use for the search
-     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
      * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
         } catch (Exception e) {
@@ -615,11 +615,11 @@ public class WorkflowInfo implements java.io.Serializable {
      * This method allows a document search to be executed just as would occur from the User Interface
      * 
      * @param criteriaVO - criteria to use for the search
-     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
      * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(criteriaVO);
         } catch (Exception e) {
@@ -632,27 +632,27 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * @deprecated use getWorkgroup(WorkgroupIdVO) instead
      */
-    public WorkgroupVO getWorkgroup(String workgroupName) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException {
         if (Utilities.isEmpty(workgroupName)) {
             throw new InvalidWorkgroupException("Workgroup name cannot be empty");
         }
-        return getWorkgroup(new WorkgroupNameIdVO(workgroupName));//getWorkflowUtility().getWorkgroup(new WorkgroupNameIdVO(workgroupName));
+        return getWorkgroup(new WorkgroupNameIdDTO(workgroupName));//getWorkflowUtility().getWorkgroup(new WorkgroupNameIdVO(workgroupName));
     }
 
     /**
      * @deprecated use getWorkgroup(WorkgroupIdVO) instead
      */
-    public WorkgroupVO getWorkgroup(Long workgroupId) throws WorkflowException {
+    public WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException {
         if (workgroupId == null) {
             throw new InvalidWorkgroupException("Workgroup name cannot be empty");
         }
-        return getWorkgroup(new WorkflowGroupIdVO(workgroupId));
+        return getWorkgroup(new WorkflowGroupIdDTO(workgroupId));
     }
 
     /**
      * @deprecated use getDocType using the name
      */
-    public RouteTemplateEntryVO[] getRoute(String documentTypeName) throws WorkflowException {
+    public RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocRoute(documentTypeName);
         } catch (Exception e) {
@@ -667,7 +667,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the document content
      * @see WorkflowUtility#getDocumentContent(Long)
      */
-    public DocumentContentVO getDocumentContent(Long routeHeaderId) throws WorkflowException {
+    public DocumentContentDTO getDocumentContent(Long routeHeaderId) throws WorkflowException {
     	try {
     		return getWorkflowUtility().getDocumentContent(routeHeaderId);
     	} catch (Exception e) {
@@ -700,9 +700,9 @@ public class WorkflowInfo implements java.io.Serializable {
      *        or both simulation generated requests and requests that are currently active on the document
      * @return whether a document would product at least one action request under the specified criteria
      * @throws WorkflowException if an error occurs
-     * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)
+     * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
         try {
             return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, ignoreCurrentActionRequests);
         } catch (Exception e) {
@@ -711,11 +711,11 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)} instead
+     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
      * 
      * This method assumes both existing and generated requests should be taken into account
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
         try {
             return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes);
         } catch (Exception e) {
@@ -726,9 +726,9 @@ public class WorkflowInfo implements java.io.Serializable {
     // DEPRECATED: as of Workflow 2.1
 
     /**
-     * @deprecated use {@link #isLastApproverAtNode(Long, UserIdVO, String)} instead
+     * @deprecated use {@link #isLastApproverAtNode(Long, UserIdDTO, String)} instead
      */
-    protected boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws WorkflowException {
+    protected boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException {
         try {
             return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, userId, routeLevel);
         } catch (Exception e) {

@@ -19,12 +19,12 @@ package org.kuali.core.workflow.service;
 
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.testharness.KNSTestCase;
 
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.UserVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class tests the WorkflowUser service.
@@ -49,7 +49,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         boolean failedAsExpected = false;
 
         try {
-            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdVO());
+            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO());
         }
         catch (WorkflowException e) {
             failedAsExpected = true;
@@ -62,7 +62,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         boolean failedAsExpected = false;
 
         try {
-            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdVO("unknownUserId"));
+            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO("unknownUserId"));
         }
         catch (WorkflowException we) {
             // in the case of embedded mode, we get the actual EdenUserNotFoundException as the cause of the WorkflowException
@@ -75,8 +75,8 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
     }
 
     @Test public void testGetWorkflowUser_knownAuthenticationUserId() throws Exception {
-        NetworkIdVO knownUserId = new NetworkIdVO(KNOWN_USERNAME);
-        UserVO workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(knownUserId);
+        NetworkIdDTO knownUserId = new NetworkIdDTO(KNOWN_USERNAME);
+        UserDTO workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(knownUserId);
 
         // TODO The network ID comes back as lower case. It's listed in the constant as lower case.
         // Is this a bug?

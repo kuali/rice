@@ -28,18 +28,18 @@ import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.AfterProcessEventDTO;
+import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
-import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
-import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
-import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the post processor that gets run when workflow state changes occur for the 
@@ -65,9 +65,9 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     /**
      * Need to intercept ACKNOWLEDGE or FYI actions taken on notification workflow documents and set the local state of the 
      * Notification to REMOVED as well.
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
-    public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException {
+    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
 
         // NOTE: this action could be happening because the user initiated it via KEW, OR because a dismiss or autoremove action
@@ -82,7 +82,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         Properties p = new Properties();
         WorkflowDocument doc;
         try {
-            doc = new WorkflowDocument(new NetworkIdVO(event.getActionTaken().getUserVO().getNetworkId()), event.getRouteHeaderId());
+            doc = new WorkflowDocument(new NetworkIdDTO(event.getActionTaken().getUserVO().getNetworkId()), event.getRouteHeaderId());
         } catch (WorkflowException we) {
             throw new RuntimeException("Could not create document", we);
         }
@@ -136,37 +136,37 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(edu.iu.uis.eden.clientapp.vo.DeleteEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
-    public boolean doDeleteRouteHeader(DeleteEventVO arg0) throws RemoteException {
+    public boolean doDeleteRouteHeader(DeleteEventDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeVO arg0) throws RemoteException {
+    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeVO arg0) throws RemoteException {
+    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
-    public boolean beforeProcess(BeforeProcessEventVO beforeProcessEvent) throws Exception {
+    public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
-    public boolean afterProcess(AfterProcessEventVO afterProcessEvent) throws Exception {
+    public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return true;
     }
 }

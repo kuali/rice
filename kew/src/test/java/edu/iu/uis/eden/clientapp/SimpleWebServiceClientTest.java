@@ -23,13 +23,13 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 import org.kuali.workflow.config.ThinClientResourceLoader;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 
 /**
  * Tests a simple web-service only client to verfiy backward compatability
@@ -64,12 +64,12 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 		assertTrue("First resource loader should be thin", tempThinRL instanceof ThinClientResourceLoader);
 		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
 
-		thinRL.getWorkflowUtility().getWorkflowUser(new NetworkIdVO("rkirkend"));
+		thinRL.getWorkflowUtility().getWorkflowUser(new NetworkIdDTO("rkirkend"));
 
-		RouteHeaderVO routeHeader = new RouteHeaderVO();
+		RouteHeaderDTO routeHeader = new RouteHeaderDTO();
         routeHeader.setDocTypeName("TestDocumentType");
 
-		thinRL.getWorkflowDocument().createDocument(new NetworkIdVO("rkirkend"), routeHeader);
+		thinRL.getWorkflowDocument().createDocument(new NetworkIdDTO("rkirkend"), routeHeader);
 
 	}
 

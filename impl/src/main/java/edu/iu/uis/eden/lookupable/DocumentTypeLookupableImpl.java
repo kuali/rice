@@ -28,9 +28,9 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
@@ -382,7 +382,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public List getSupportedExportFormats() {
-        return EdenConstants.STANDARD_FORMATS;
+        return ExportFormat.STANDARD_FORMATS;
     }
 
 }

@@ -4,13 +4,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -75,13 +76,13 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				CustomEmailAttribute customEmailAttribute = actionItem
 						.getRouteHeader().getCustomEmailAttribute();
 				if (customEmailAttribute != null) {
-					RouteHeaderVO routeHeaderVO = BeanConverter
+					RouteHeaderDTO routeHeaderVO = BeanConverter
 							.convertRouteHeader(actionItem.getRouteHeader(),
 									user);
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());
-					ActionRequestVO actionRequestVO = BeanConverter
+					ActionRequestDTO actionRequestVO = BeanConverter
 							.convertActionRequest(actionRequest);
 					customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
 					customEmailAttribute.setActionRequestVO(actionRequestVO);

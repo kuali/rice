@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentTypeSecurity;
 import edu.iu.uis.eden.doctype.SecurityAttribute;
 import edu.iu.uis.eden.doctype.SecuritySession;
@@ -64,7 +64,7 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
     
     private Boolean checkAuthorizations(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         try {
-            WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO(currentUser.getAuthenticationUserId().getAuthenticationId()),documentId);
+            WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(currentUser.getAuthenticationUserId().getAuthenticationId()),documentId);
             String networkId = VIEWERS_BY_STATUS.get(doc.getRouteHeader().getDocRouteStatus());
             return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getAuthenticationUserId().getAuthenticationId())) );
         } catch (Exception e) {

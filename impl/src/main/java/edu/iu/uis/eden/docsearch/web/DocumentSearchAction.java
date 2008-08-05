@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -45,8 +46,8 @@ import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.util.EdenConstants;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
@@ -90,6 +91,16 @@ public class DocumentSearchAction extends WorkflowAction {
         SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,"docSearch.DocumentSearch.results.label.dateCreated");
         SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG,"docSearch.DocumentSearch.results.label.routeLog");
     }
+    
+    public static final List<KeyValue> DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES = Arrays.asList(new KeyValue[] { new KeyValue("I", "Initiated"),
+            new KeyValue("R", "Enroute"),
+            new KeyValue("S", "Saved"),
+            new KeyValue("F", "Final"),
+            new KeyValue("A", "Approved"),
+            new KeyValue("X", "Canceled"),
+            new KeyValue("E", "Exception"),
+            new KeyValue("P", "Processed"),
+            new KeyValue("D", "Disapproved") });
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
@@ -459,7 +470,7 @@ public class DocumentSearchAction extends WorkflowAction {
 
         List documentRouteStatus = new ArrayList();
         documentRouteStatus.add(new KeyValue("", "All"));
-        documentRouteStatus.addAll(EdenConstants.DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES);
+        documentRouteStatus.addAll(DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES);
         request.setAttribute("documentRouteStatus", documentRouteStatus);
 
         if (!Utilities.isEmpty(dsForm.getCriteria().getDocTypeFullName())) {

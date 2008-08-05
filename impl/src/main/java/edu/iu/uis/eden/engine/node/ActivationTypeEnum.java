@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import org.kuali.rice.kew.util.EdenConstants;
+
 /**
  * Activation Type enum type which defines the two types of activation within the engine.
  * Sequential activation means that only a single request on a node will get activated at a time.
@@ -25,9 +27,9 @@ package edu.iu.uis.eden.engine.node;
  */
 public final class ActivationTypeEnum {
     /** Routing should process the associated ActionRequests in sequence */
-    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum("S", "Sequential", "SEQUENCE");
+    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(EdenConstants.ROUTE_LEVEL_SEQUENCE, EdenConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, EdenConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
     /** Routing should process the associated ActionRequests in parallel */
-    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum("P", "Parallel", "PARALLEL");
+    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(EdenConstants.ROUTE_LEVEL_PARALLEL, EdenConstants.ROUTE_LEVEL_PARALLEL_NAME, EdenConstants.ROUTE_LEVEL_PARALLEL_LABEL);
 
     private final String code;
     private final String name;

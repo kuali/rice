@@ -19,7 +19,8 @@ package edu.iu.uis.eden.routeheader;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routetemplate.web.RoutingReportAction;

@@ -16,12 +16,12 @@
 package edu.iu.uis.eden.clientapp;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -38,11 +38,11 @@ public class WorkflowInfoTest extends KEWTestCase {
      */
     @Test
     public void testGetRouteHeader() throws Exception {
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType");
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
 	assertNotNull(documentId);
 
-	RouteHeaderVO routeHeaderVO = new WorkflowInfo().getRouteHeader(documentId);
+	RouteHeaderDTO routeHeaderVO = new WorkflowInfo().getRouteHeader(documentId);
 	assertNotNull(routeHeaderVO);
 
 	assertEquals(documentId, routeHeaderVO.getRouteHeaderId());
@@ -64,7 +64,7 @@ public class WorkflowInfoTest extends KEWTestCase {
 	} catch (WorkflowException e) {}
 
 	// now create a doc and load it's status
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType");
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
 	assertNotNull(documentId);
 

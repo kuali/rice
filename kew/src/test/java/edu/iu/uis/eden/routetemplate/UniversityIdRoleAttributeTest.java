@@ -21,14 +21,14 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.EmplIdDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
@@ -52,14 +52,14 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	// rkirkend     ->     2
 	// bmcgough     ->     4
 	
-	WorkflowDocument document = new WorkflowDocument(new EmplIdVO("1"), "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument(new EmplIdDTO("1"), "UniversityIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionVO universityIdDef1 = new WorkflowAttributeDefinitionVO("UniversityIdRoleAttribute");
-	PropertyDefinitionVO universityIdProp1 = new PropertyDefinitionVO(UNIVERSITY_ID_PROP, "2");
+	WorkflowAttributeDefinitionDTO universityIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
+	PropertyDefinitionDTO universityIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2");
 	universityIdDef1.addProperty(universityIdProp1);
 	
-	WorkflowAttributeDefinitionVO universityIdDef2 = new WorkflowAttributeDefinitionVO("UniversityIdRoleAttribute");
-	PropertyDefinitionVO universityIdProp2 = new PropertyDefinitionVO(UNIVERSITY_ID_PROP, "4");
+	WorkflowAttributeDefinitionDTO universityIdDef2 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
+	PropertyDefinitionDTO universityIdProp2 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "4");
 	universityIdDef2.addProperty(universityIdProp2);
 	
 	document.addAttributeDefinition(universityIdDef1);
@@ -69,19 +69,19 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new EmplIdVO("2"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new EmplIdDTO("2"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	
 	// load the document as bmcgough
-	document = new WorkflowDocument(new EmplIdVO("4"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new EmplIdDTO("4"), document.getRouteHeaderId());
 	assertTrue("bmcgough should have an approve request.", document.isApprovalRequested());
 	
 	// submit an approve as bmcgough
 	document.approve("i approve");
 	
 	// reload as rkirkend, verify still enroute
-	document = new WorkflowDocument(new EmplIdVO("2"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new EmplIdDTO("2"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	document.approve("i also approve");
@@ -95,10 +95,10 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
     public void testParameterizedUniversityIdAttribute() throws Exception {
 	loadXmlFile("ParameterizedUniversityIdRoleAttributeTestConfig.xml");
 	
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "UniversityIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionVO univIdDef1 = new WorkflowAttributeDefinitionVO("UniversityIdRoleAttribute");
-	PropertyDefinitionVO univIdProp1 = new PropertyDefinitionVO(UNIVERSITY_ID_PROP, "2");
+	WorkflowAttributeDefinitionDTO univIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
+	PropertyDefinitionDTO univIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2");
 	univIdDef1.addProperty(univIdProp1);
 		
 	document.addAttributeDefinition(univIdDef1);
@@ -107,7 +107,7 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new EmplIdVO("2"), document.getRouteHeaderId());
+	document = new WorkflowDocument(new EmplIdDTO("2"), document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	

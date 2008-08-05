@@ -32,9 +32,10 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
@@ -316,7 +317,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             // set dates
             long farInTheFutureTime = -1;
             try {
-                farInTheFutureTime = EdenConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
+                farInTheFutureTime = RiceConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
             } catch (ParseException e) {
                 assert(false) : "This should never happen - fix the hardcoded date"; // or put it in a static initializer
                 LOG.error("Error parsing default future date: " + FAR_IN_THE_FUTURE, e);

@@ -17,12 +17,12 @@
 package edu.iu.uis.eden.routing;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
 public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
@@ -32,7 +32,7 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
     }
     
     @Test public void testRoutingToInactiveWorkgroup() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "InactiveWorkgroupDocType");
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "InactiveWorkgroupDocType");
         try {
             doc.routeDocument("");
             fail("document should have thrown routing exception");
@@ -40,7 +40,7 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
             
         }
         TestUtilities.getExceptionThreader().join();//wait for doc to go into exception routing
-        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         assertTrue("Document should be in exception routing because workgroup is inactive", doc.stateIsException());
 
         try {

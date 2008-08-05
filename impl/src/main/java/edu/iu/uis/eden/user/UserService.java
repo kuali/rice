@@ -18,8 +18,9 @@ package edu.iu.uis.eden.user;
 
 import java.util.List;
 
+import org.kuali.rice.kew.dto.UserIdDTO;
+
 import edu.iu.uis.eden.XmlLoader;
-import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 
 /**
@@ -63,7 +64,7 @@ public interface UserService extends XmlLoader {
      * @throws EdenUserNotFoundException if no user could be located for the given id or if
      * the given UserId is of an invalid type
      */
-    public WorkflowUser getWorkflowUser(UserIdVO userId) throws EdenUserNotFoundException;
+    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException;
     
     /**
      * Invokes a search for WorkflowUsers using an example user object as the search criteria.

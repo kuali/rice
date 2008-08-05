@@ -34,13 +34,13 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.DOMBuilder;
+import org.kuali.rice.kew.util.EdenConstants;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;

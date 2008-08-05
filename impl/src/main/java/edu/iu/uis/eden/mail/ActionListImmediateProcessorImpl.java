@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.mail;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.rice.kew.util.EdenConstants;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

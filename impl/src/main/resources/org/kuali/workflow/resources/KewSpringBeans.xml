@@ -763,7 +763,7 @@
           </property>
           <property name="localServiceName" value="DocumentRoutingService" />
           <property name="priority" value="5"/>
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
@@ -776,7 +776,7 @@
           </property>
           <property name="localServiceName" value="BlanketApproveProcessorService" />
           <property name="priority" value="4"/>
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
@@ -850,7 +850,7 @@
           <property name="serviceNameSpaceURI" value=""/>
           <property name="priority" value="30"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 		<property name="propertyName" value="Email.useRemoteServices"/>
@@ -865,7 +865,7 @@
           <property name="localServiceName" value="ActionInvocationProcessor" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
@@ -879,7 +879,7 @@
           <property name="localServiceName" value="MoveDocumentProcessor" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
     </property>
   </bean>

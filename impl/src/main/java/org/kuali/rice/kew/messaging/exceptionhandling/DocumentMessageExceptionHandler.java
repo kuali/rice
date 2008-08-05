@@ -11,12 +11,14 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.ksb.messaging.exceptionhandling;
+package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
+import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 

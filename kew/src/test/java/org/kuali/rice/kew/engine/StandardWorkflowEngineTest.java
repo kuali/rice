@@ -28,6 +28,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -36,7 +37,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
-import org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 

@@ -161,7 +161,7 @@
 								<property name="retryAttempts" value="1" />
 								<property name="busSecurity" value="true" />
 								<property name="messageExceptionHandler"
-									value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+									value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
 							</bean>
 							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service" ref="testXmlAsyncService"></property>
@@ -170,7 +170,7 @@
 								<property name="priority" value="5" />
 								<property name="retryAttempts" value="1" />
 								<property name="messageExceptionHandler"
-									value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+									value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
 							</bean>
 							<!-- 
 								<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">

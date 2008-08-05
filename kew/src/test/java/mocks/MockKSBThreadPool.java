@@ -16,7 +16,7 @@
  */
 package mocks;
 
-import edu.iu.uis.eden.messaging.threadpool.KSBThreadPoolImpl;
+import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl;
 
 public class MockKSBThreadPool extends KSBThreadPoolImpl {
 

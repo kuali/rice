@@ -26,13 +26,13 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.messaging.KEWXMLService;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.test.TestUtilities;
 

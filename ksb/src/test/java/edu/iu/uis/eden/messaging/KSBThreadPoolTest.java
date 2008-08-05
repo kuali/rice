@@ -17,9 +17,11 @@ package edu.iu.uis.eden.messaging;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 
 /**
  * This is a description of what this class does - rkirkend don't forget to fill this in. 

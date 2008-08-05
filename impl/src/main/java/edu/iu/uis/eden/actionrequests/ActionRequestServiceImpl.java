@@ -28,6 +28,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -40,7 +41,6 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.FutureRequestDocumentStateManager;
 import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;

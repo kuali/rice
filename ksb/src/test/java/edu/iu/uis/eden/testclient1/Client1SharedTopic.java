@@ -18,7 +18,8 @@ package edu.iu.uis.eden.testclient1;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+
 import edu.iu.uis.eden.messaging.remotedservices.ServiceCallInformationHolder;
 
 public class Client1SharedTopic implements KEWJavaService {

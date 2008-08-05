@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.exception;
 
-import edu.iu.uis.eden.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
 
 /**
  *

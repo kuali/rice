@@ -31,12 +31,12 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.JSTLConstants;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import edu.iu.uis.eden.messaging.MessageFetcher;
 
 /**
  * A ServletContextListener responsible for boostrapping the core workflow

@@ -18,8 +18,9 @@ package edu.iu.uis.eden.testclient1;
 
 import java.io.Serializable;
 
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+
 import edu.iu.uis.eden.messaging.ClientAppServiceSharedPayloadObj;
-import edu.iu.uis.eden.messaging.KEWJavaService;
 
 
 /**

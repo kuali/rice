@@ -21,13 +21,13 @@ import java.io.IOException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.kuali.rice.security.credentials.CredentialsSource;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 import org.springframework.util.Assert;
 
-import edu.iu.uis.eden.messaging.KEWHttpInvokerRequestExecutor;
-import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  * Extension to {@link KEWHttpInvokerRequestExecutor} that retrieves

@@ -18,8 +18,8 @@ package edu.iu.uis.eden.messaging.remotedservices;
 import java.io.Serializable;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
 
-import edu.iu.uis.eden.messaging.KEWJavaService;
 
 public class TestHarnessSharedTopic implements KEWJavaService {
 	

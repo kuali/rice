@@ -55,7 +55,7 @@
     <class>org.kuali.workflow.workgroup.BaseWorkgroupExtensionData</class>
     <class>org.kuali.workflow.workgroup.WorkgroupType</class>
     <class>org.kuali.workflow.workgroup.WorkgroupTypeAttribute</class>
-    <class>edu.iu.uis.eden.messaging.bam.BAMTargetEntry</class>
+    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <class>org.kuali.workflow.role.QualifiedRole</class>
     <class>org.kuali.workflow.role.QualifiedRoleMember</class>
     <class>org.kuali.workflow.role.QualifiedRoleExtension</class>

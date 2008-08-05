@@ -11,7 +11,7 @@
         <property name="environment" value="${environment}"/>
 		<property name="modules">
 			<list>
-				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
                     <property name="authorizationService">
                       <bean class="edu.iu.uis.eden.authorization.WorkgroupAuthorizationServiceImpl">

@@ -21,10 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.bam.BAMService;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.messaging.bam.BAMService;
-import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 
 /**

@@ -17,7 +17,8 @@ package edu.iu.uis.eden.testclient1;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+
 
 public class JavaAsyncTestServiceImpl implements KEWJavaService {
 

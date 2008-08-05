@@ -19,13 +19,14 @@ package edu.iu.uis.eden.messaging.exceptionhandling;
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import org.kuali.rice.ksb.util.KSBConstants;
 
-import edu.iu.uis.eden.messaging.AsynchronousCall;
-import edu.iu.uis.eden.messaging.JavaServiceDefinition;
-import edu.iu.uis.eden.messaging.PersistedMassagePayload;
-import edu.iu.uis.eden.messaging.PersistedMessage;
-import edu.iu.uis.eden.messaging.ServiceInfo;
 
 public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     

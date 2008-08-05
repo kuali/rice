@@ -89,9 +89,9 @@
 
 	<bean id="komService" class="org.kuali.rice.kom.service.impl.KOMServiceImpl" />
 
-   <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
           <property name="service" ref="komService" />
           <property name="serviceNameSpaceURI" value="KOM"/>
           <property name="localServiceName" value="komSoapService" />
@@ -102,9 +102,9 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service" ref="komService" />
           <property name="serviceNameSpaceURI" value="KOM"/>
           <property name="localServiceName" value="komService" />

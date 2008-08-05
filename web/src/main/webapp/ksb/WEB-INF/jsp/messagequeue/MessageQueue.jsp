@@ -182,7 +182,7 @@
     <td>
 
 		  <display-el:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&messageEntityFilter=${messageEntityFilter}" defaultsort="1" defaultorder="descending"
-				decorator="edu.iu.uis.eden.messaging.web.KSBTableDecorator">
+				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display-el:setProperty name="paging.banner.placement" value="both" />
 		    <display-el:setProperty name="export.banner" value="" />
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message<br />Queue Id</div>" sortProperty="routeQueueId">

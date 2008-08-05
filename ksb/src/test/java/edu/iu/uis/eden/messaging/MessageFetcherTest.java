@@ -17,6 +17,9 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.MessageFetcher;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 

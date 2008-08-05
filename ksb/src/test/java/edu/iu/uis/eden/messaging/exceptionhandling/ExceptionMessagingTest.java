@@ -21,13 +21,13 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TestUtilities;
 
-import edu.iu.uis.eden.messaging.GlobalCallbackRegistry;
-import edu.iu.uis.eden.messaging.KEWJavaService;
-import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.TestCallback;
 import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
 

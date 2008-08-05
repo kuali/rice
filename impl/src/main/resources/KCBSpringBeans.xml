@@ -222,9 +222,9 @@
 
     <!-- export our KCB service -->
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="priority" value="1"/>
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessagingService</value></property>
                 <property name="service"><ref bean="messagingService" /></property>
@@ -237,9 +237,9 @@
         </property>
     </bean>
     <!--
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
@@ -255,9 +255,9 @@
     </bean>
     -->
  
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="priority" value="1"/>
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessageDelivererRegistryAPI</value></property>
                 <property name="service"><ref bean="messageDelivererRegistryService" /></property>
@@ -270,9 +270,9 @@
         </property>
     </bean>
     <!--
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>

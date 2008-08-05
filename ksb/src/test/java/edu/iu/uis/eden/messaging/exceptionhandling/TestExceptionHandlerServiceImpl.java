@@ -15,9 +15,10 @@
  */
 package edu.iu.uis.eden.messaging.exceptionhandling;
 
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl;
 import org.kuali.rice.test.TestUtilities;
 
-import edu.iu.uis.eden.messaging.PersistedMessage;
 
 public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl {
 

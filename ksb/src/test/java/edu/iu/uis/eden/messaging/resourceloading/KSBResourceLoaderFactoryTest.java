@@ -26,6 +26,7 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 
 
 public class KSBResourceLoaderFactoryTest extends TestCase {

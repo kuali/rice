@@ -26,6 +26,7 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -36,7 +37,6 @@ import edu.iu.uis.eden.engine.BlanketApproveEngine;
 import edu.iu.uis.eden.engine.CompatUtils;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeService;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

@@ -17,8 +17,9 @@ package edu.iu.uis.eden.messaging.callbacks;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.messaging.AsynchronousCall;
-import edu.iu.uis.eden.messaging.AsynchronousCallback;
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.AsynchronousCallback;
+
 
 /**
  * This is a description of what this class does - rkirkend don't forget to fill

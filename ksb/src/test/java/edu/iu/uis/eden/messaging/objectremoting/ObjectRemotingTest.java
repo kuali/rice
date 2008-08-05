@@ -25,12 +25,12 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
-import edu.iu.uis.eden.messaging.RemotedServiceRegistry;
 import edu.iu.uis.eden.testclient1.RemotedObject;
 import edu.iu.uis.eden.testclient1.TestClient1ObjectToBeRemoted;
 

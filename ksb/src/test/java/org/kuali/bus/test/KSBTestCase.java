@@ -28,15 +28,15 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.messaging.bam.BAMService;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ojb.BaseOjbConfigurer;
 import org.kuali.rice.test.RiceTestCase;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.context.ApplicationContext;
 
-import edu.iu.uis.eden.messaging.bam.BAMService;
-import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 import edu.iu.uis.eden.server.TestClient1;
 import edu.iu.uis.eden.server.TestClient2;
 

@@ -21,14 +21,15 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.serviceconnectors.BusLocalConnector;
+import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
+import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.remotedservices.GenericTestService;
 import edu.iu.uis.eden.messaging.remotedservices.TestServiceInterface;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
-import edu.iu.uis.eden.messaging.serviceconnectors.BusLocalConnector;
-import edu.iu.uis.eden.messaging.serviceconnectors.ServiceConnector;
-import edu.iu.uis.eden.messaging.serviceconnectors.ServiceConnectorFactory;
 
 /**
  *

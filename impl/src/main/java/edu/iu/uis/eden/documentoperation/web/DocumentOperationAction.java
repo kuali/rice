@@ -43,6 +43,8 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -69,8 +71,6 @@ import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.NodeState;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.engine.node.RouteNodeService;
-import edu.iu.uis.eden.messaging.KEWXMLService;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;

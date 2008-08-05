@@ -16,13 +16,14 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.serviceproxies.MessageSendingTransactionSynchronization;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionSynchronization;
 
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
-import edu.iu.uis.eden.messaging.serviceproxies.MessageSendingTransactionSynchronization;
 
 /**
  * Verify that messaging works in the context of a transaction and message invokation is done via the

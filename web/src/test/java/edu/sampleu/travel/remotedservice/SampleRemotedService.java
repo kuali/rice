@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.remotedservice;
 
-import edu.iu.uis.eden.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 
 /**
  * Sample remoted service 

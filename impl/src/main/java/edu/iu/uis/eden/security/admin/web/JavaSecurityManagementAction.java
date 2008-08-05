@@ -30,10 +30,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.ksb.messaging.web.KSBAction;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.messaging.web.KSBAction;
 import edu.iu.uis.eden.security.admin.ExportServlet;
 import edu.iu.uis.eden.security.admin.KeyStoreEntryDataContainer;
 
@@ -48,7 +48,7 @@ public class JavaSecurityManagementAction extends KSBAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JavaSecurityManagementAction.class);
 
     /**
-     * @see edu.iu.uis.eden.messaging.web.KSBAction#establishRequiredState(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionForm)
+     * @see org.kuali.rice.ksb.messaging.web.KSBAction#establishRequiredState(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionForm)
      */
     @Override
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
@@ -61,7 +61,7 @@ public class JavaSecurityManagementAction extends KSBAction {
     }
 
     /**
-     * @see edu.iu.uis.eden.messaging.web.KSBAction#start(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see org.kuali.rice.ksb.messaging.web.KSBAction#start(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     @Override
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

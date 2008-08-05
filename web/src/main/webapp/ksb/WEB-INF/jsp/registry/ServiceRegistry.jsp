@@ -77,7 +77,7 @@
 		  <b>Published Services:</b>
 		  <%-- Table layout of the search results --%>
 		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
-				decorator="edu.iu.uis.eden.messaging.web.KSBTableDecorator">
+				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display-el:setProperty name="paging.banner.placement" value="both" />
 		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
 		    <display-el:setProperty name="export.banner" value="" />
@@ -111,7 +111,7 @@
 		  <b>Published Temp Services:</b>
 		  <%-- Table layout of the search results --%>
 		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedTempServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
-				decorator="edu.iu.uis.eden.messaging.web.KSBTableDecorator">
+				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display-el:setProperty name="paging.banner.placement" value="both" />
 		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
 		    <display-el:setProperty name="export.banner" value="" />
@@ -146,7 +146,7 @@
 		  <b>All Registry Services:</b>
 		  <%-- Table layout of the search results --%>
 		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.globalRegistryServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
-				decorator="edu.iu.uis.eden.messaging.web.KSBTableDecorator">
+				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display-el:setProperty name="paging.banner.placement" value="both" />
 		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
 		    <display-el:setProperty name="export.banner" value="" />

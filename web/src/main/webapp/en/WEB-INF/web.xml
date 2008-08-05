@@ -149,7 +149,7 @@
 
   <servlet>
 	<servlet-name>remoting</servlet-name>
-	<servlet-class>edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet</servlet-class>
+	<servlet-class>org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet</servlet-class>
 	<load-on-startup>1</load-on-startup>
   </servlet>
 

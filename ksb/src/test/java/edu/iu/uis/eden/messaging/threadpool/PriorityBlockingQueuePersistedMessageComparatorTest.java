@@ -20,9 +20,10 @@ import java.sql.Timestamp;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.threadpool.PriorityBlockingQueuePersistedMessageComparator;
 
-import edu.iu.uis.eden.messaging.MessageServiceInvoker;
-import edu.iu.uis.eden.messaging.PersistedMessage;
 
 /**
  * Tests that the {@link PriorityBlockingQueuePersistedMessageComparator} is sorting by 

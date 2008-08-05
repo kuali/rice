@@ -23,13 +23,13 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 import edu.iu.uis.eden.messaging.remotedservices.GenericTestService;
 import edu.iu.uis.eden.messaging.remotedservices.SOAPService;
 import edu.iu.uis.eden.messaging.remotedservices.TestServiceInterface;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
  * Verify services in a cluster are being both being called

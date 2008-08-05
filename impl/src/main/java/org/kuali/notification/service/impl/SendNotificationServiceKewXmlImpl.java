@@ -18,8 +18,8 @@ package org.kuali.notification.service.impl;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 
-import edu.iu.uis.eden.messaging.KEWXMLService;
 
 /**
  * This class allows the NotificationService.sendNotification(XML) service 
@@ -43,7 +43,7 @@ public class SendNotificationServiceKewXmlImpl implements KEWXMLService {
     /**
      * Actually invokes the sendNotification() service method.  The KSB calls 
      * this.
-     * @see edu.iu.uis.eden.messaging.KEWXMLService#invoke(java.lang.String)
+     * @see org.kuali.rice.ksb.messaging.KEWXMLService#invoke(java.lang.String)
      */
     public void invoke(String xml) {
     	try {

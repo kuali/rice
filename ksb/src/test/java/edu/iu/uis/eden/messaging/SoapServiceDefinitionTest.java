@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 
 /**
  * 

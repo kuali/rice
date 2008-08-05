@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import com.opensymphony.oscache.base.Cache;
@@ -32,8 +34,6 @@ import com.opensymphony.oscache.base.InitializationException;
 import com.opensymphony.oscache.plugins.clustersupport.AbstractBroadcastingListener;
 import com.opensymphony.oscache.plugins.clustersupport.ClusterNotification;
 
-import edu.iu.uis.eden.messaging.JavaServiceDefinition;
-import edu.iu.uis.eden.messaging.KEWJavaService;
 
 /**
  * An OSCache listener which listens for events from the local cache and sends

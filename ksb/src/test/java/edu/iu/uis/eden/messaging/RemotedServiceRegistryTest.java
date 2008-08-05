@@ -25,10 +25,14 @@ import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.ServiceDefinition;
+import org.kuali.rice.ksb.messaging.ServiceHolder;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.remotedservices.TestRepeatMessageQueue;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 public class RemotedServiceRegistryTest extends KSBTestCase {
 	

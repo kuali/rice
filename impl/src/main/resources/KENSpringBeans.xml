@@ -265,9 +265,9 @@
 
 
     <!-- export our sendNotificationKewXmlService -->
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
@@ -280,9 +280,9 @@
         <property name="forceRefresh" value="true"/>
     </bean>
     
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
@@ -296,9 +296,9 @@
     </bean>
     
     <!-- Export the KEN api service -->
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
         <property name="serviceDefinition">
-            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="service">
                     <ref bean="kenApiService" />
                 </property>

@@ -20,11 +20,11 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
 

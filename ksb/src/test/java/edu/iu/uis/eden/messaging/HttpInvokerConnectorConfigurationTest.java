@@ -28,8 +28,9 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.junit.Test;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 
-import edu.iu.uis.eden.messaging.serviceconnectors.HttpInvokerConnector;
 
 /**
  * A test which tests the RemoteResourceServiceLocatorImpl class.

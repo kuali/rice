@@ -25,14 +25,22 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
+import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
+import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
+import org.kuali.rice.ksb.messaging.RoutingTableDiffCalculator;
+import org.kuali.rice.ksb.messaging.ServiceDefinition;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
+import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.rice.util.DataAccessUtils;
 
-import edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler;
-import edu.iu.uis.eden.messaging.exceptionhandling.MessageExceptionHandler;
 import edu.iu.uis.eden.messaging.remotedservices.TestRepeatMessageQueue;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
  * Tests RemoteResourceLoader is working correctly by itself and working correctly with the RemoteServiceRegistry in marking

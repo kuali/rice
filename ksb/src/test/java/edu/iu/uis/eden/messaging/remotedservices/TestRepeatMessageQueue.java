@@ -17,7 +17,8 @@ package edu.iu.uis.eden.messaging.remotedservices;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.KEWJavaService;
+
 
 public class TestRepeatMessageQueue implements KEWJavaService {
 

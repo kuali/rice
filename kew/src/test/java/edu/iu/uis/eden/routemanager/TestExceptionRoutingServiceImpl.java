@@ -16,8 +16,9 @@
  */
 package edu.iu.uis.eden.routemanager;
 
-import edu.iu.uis.eden.messaging.PersistedMessage;
-import edu.iu.uis.eden.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
+
 import edu.iu.uis.eden.test.TestUtilities;
 
 

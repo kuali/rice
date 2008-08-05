@@ -20,19 +20,19 @@ import javax.sql.DataSource;
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.service.ServiceFactory;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.BusAdminService;
+import org.kuali.rice.ksb.messaging.MessageHelper;
+import org.kuali.rice.ksb.messaging.MessageQueueService;
+import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.messaging.ServiceRegistry;
+import org.kuali.rice.ksb.messaging.bam.BAMService;
+import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingService;
+import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
+import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.messaging.BusAdminService;
-import edu.iu.uis.eden.messaging.MessageHelper;
-import edu.iu.uis.eden.messaging.MessageQueueService;
-import edu.iu.uis.eden.messaging.RemotedServiceRegistry;
-import edu.iu.uis.eden.messaging.ServiceRegistry;
-import edu.iu.uis.eden.messaging.bam.BAMService;
-import edu.iu.uis.eden.messaging.exceptionhandling.ExceptionRoutingService;
-import edu.iu.uis.eden.messaging.threadpool.KSBScheduledPool;
-import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 import edu.iu.uis.eden.security.DigitalSignatureService;
 import edu.iu.uis.eden.security.admin.JavaSecurityManagementService;
 

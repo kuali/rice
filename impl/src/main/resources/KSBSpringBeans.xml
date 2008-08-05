@@ -128,43 +128,43 @@
 		</property>
 	</bean>
 
-	<bean id="enThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
-	<bean id="enScheduledThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
+	<bean id="enThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
+	<bean id="enScheduledThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
 
 
-	<bean id="bamService" class="edu.iu.uis.eden.messaging.bam.BAMServiceImpl">
+	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.BAMServiceImpl">
 		<property name="dao">
-		  <!-- <bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDaoJpaImpl" /> -->
-			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDAOOjbImpl">
+		  <!-- <bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMDaoJpaImpl" /> -->
+			<bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
 		<property name="configDao">
-			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMConfigDAOImpl" />
+			<bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMConfigDAOImpl" />
 		</property>
 	</bean>
 
-	<bean id="enMessageHelper" class="edu.iu.uis.eden.messaging.MessageHelperImpl" lazy-init="true" />
+	<bean id="enMessageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />
 
-	<bean id="enServiceInvoker" class="edu.iu.uis.eden.messaging.RemotedServiceRegistryImpl" lazy-init="true" />
+	<bean id="enServiceInvoker" class="org.kuali.rice.ksb.messaging.RemotedServiceRegistryImpl" lazy-init="true" />
 
-	<bean id="enRouteQueueService" class="edu.iu.uis.eden.messaging.MessageQueueServiceImpl" lazy-init="true">
+	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDAO">
-			<bean class="edu.iu.uis.eden.messaging.dao.MessageQueueDAOOjbImpl">
+			<bean class="org.kuali.rice.ksb.messaging.dao.MessageQueueDAOOjbImpl">
 				<property name="jcdAlias" value="ksbMessageDataSource" />
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="enRoutingTableService" class="edu.iu.uis.eden.messaging.ServiceRegistryImpl" lazy-init="true">
+	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.ServiceRegistryImpl" lazy-init="true">
 		<property name="dao">
-			<bean class="edu.iu.uis.eden.messaging.dao.ServiceInfoDAOOjbImpl">
+			<bean class="org.kuali.rice.ksb.messaging.dao.ServiceInfoDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="exceptionMessagingService" class="edu.iu.uis.eden.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
+	<bean id="exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
 
 	<!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true" /> -->
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
@@ -176,9 +176,9 @@
 	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
 	<bean id="ksbJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
-	<bean id="enRepeatTopicInvokerQueue" class="edu.iu.uis.eden.messaging.RepeatTopicInvokerQueueImpl" lazy-init="true" />
+	<bean id="enRepeatTopicInvokerQueue" class="org.kuali.rice.ksb.messaging.RepeatTopicInvokerQueueImpl" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->
-	<bean id="repeatTopicInvokerQueueDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
+	<bean id="repeatTopicInvokerQueueDefinition" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" lazy-init="true">
 		<property name="service">
 			<ref bean="enRepeatTopicInvokerQueue" />
 		</property>
@@ -187,8 +187,8 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="ObjectRemoterService" class="edu.iu.uis.eden.messaging.objectremoting.ObjectRemoterServiceImpl" lazy-init="true" />
-	<bean id="ksb.objectRemoterServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
+	<bean id="ObjectRemoterService" class="org.kuali.rice.ksb.messaging.objectremoting.ObjectRemoterServiceImpl" lazy-init="true" />
+	<bean id="ksb.objectRemoterServiceDefinition" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" lazy-init="true">
 		<property name="service">
 			<ref bean="ObjectRemoterService" />
 		</property>
@@ -246,21 +246,21 @@
 
 	<bean id="xfire.messageBindingProvider" class="org.codehaus.xfire.service.binding.MessageBindingProvider" lazy-init="true" />
 
-	<bean id="ksbScheduler" class="edu.iu.uis.eden.messaging.quartz.KSBSchedulerFactoryBean" lazy-init="true" destroy-method="stop">
+	<bean id="ksbScheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" lazy-init="true" destroy-method="stop">
 		<property name="jobListeners">
 			<list>
-				<bean class="edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener"/>
+				<bean class="org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener"/>
 			</list>
 		</property>
 		<property name="quartzProperties">
-			<bean class="edu.iu.uis.eden.messaging.quartz.QuartzConfigPropertiesFactoryBean"/>
+			<bean class="org.kuali.rice.ksb.messaging.quartz.QuartzConfigPropertiesFactoryBean"/>
 		</property>
 		<property name="jtaTransactionManager" ref="transactionManager"/>
 	</bean>
 
-  <bean id="busAdminService" class="edu.iu.uis.eden.messaging.BusAdminServiceImpl"/>
+  <bean id="busAdminService" class="org.kuali.rice.ksb.messaging.BusAdminServiceImpl"/>
   
-  <bean id="ksb.busAdminServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
+  <bean id="ksb.busAdminServiceDefinition" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" lazy-init="true">
     <property name="service">
       <ref bean="busAdminService" />
     </property>

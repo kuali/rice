@@ -51,11 +51,11 @@
 		<property name="rootConfig" ref="config" />
 		<property name="modules">
 			<list>
-				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
 					<property name="overrideServices">
 						<list>
-							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">
+							<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">
 								<property name="localServiceName" value="exceptionMessagingService" />
 								<property name="service" ref="testExceptionHandlerService" />
 							</bean>
@@ -67,7 +67,7 @@
 					</property>
 					<property name="services">
 						<list>
-							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
 								<property name="service">
 									<ref bean="soapService" />
 								</property>
@@ -77,7 +77,7 @@
 								<property name="retryAttempts" value="1" />
 								<property name="busSecurity" value="false"></property>
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
 								<property name="service">
 									<ref bean="soapService" />
 								</property>
@@ -87,40 +87,40 @@
 								<property name="queue" value="false" />
 								<property name="retryAttempts" value="1" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testLocalServiceFavoriteCall" />
 								</property>
 								<property name="localServiceName" value="testLocalServiceFavoriteCall" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testExplodingServiceWithDefaults" />
 								</property>
 								<property name="localServiceName" value="testExplodingServiceWithDefaults" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testJavaSecurityManagementService" />
 								</property>
 								<property name="localServiceName" value="testJavaSecurityManagementService" />
 								<property name="serviceNameSpaceURI" value="KEW" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testExplodingRetryCount" />
 								</property>
 								<property name="localServiceName" value="testExplodingRetryCount" />
 								<property name="retryAttempts" value="2" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testExplodingQueueTimeLimit" />
 								</property>
 								<property name="localServiceName" value="explodingQueueTimeLimit" />
 								<property name="millisToLive" value="2000" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testHarnessSharedTopic" />
 								</property>
@@ -129,7 +129,7 @@
 								<property name="queue" value="false" />
 								<property name="retryAttempts" value="1" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testHarnessSharedTopic" />
 								</property>
@@ -139,7 +139,7 @@
 								<property name="queue" value="false" />
 								<property name="retryAttempts" value="1" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service">
 									<ref bean="testRepeatMessageQueue" />
 								</property>
@@ -154,13 +154,13 @@
 		</property>
 	</bean>
 
-	<bean id="testHarnessSharedTopic" class="edu.iu.uis.eden.messaging.remotedservices.TestHarnessSharedTopic" />
-	<bean id="testRepeatMessageQueue" class="edu.iu.uis.eden.messaging.remotedservices.TestRepeatMessageQueue" />
-	<bean id="testExplodingQueueTimeLimit" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
-	<bean id="testExplodingRetryCount" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
-	<bean id="testExplodingServiceWithDefaults" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
-	<bean id="testLocalServiceFavoriteCall" class="edu.iu.uis.eden.messaging.remotedservices.GenericTestService" />
-	<bean id="soapService" class="edu.iu.uis.eden.messaging.remotedservices.SOAPServiceImpl" />
+	<bean id="testHarnessSharedTopic" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic" />
+	<bean id="testRepeatMessageQueue" class="org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue" />
+	<bean id="testExplodingQueueTimeLimit" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testExplodingRetryCount" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testExplodingServiceWithDefaults" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testLocalServiceFavoriteCall" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
+	<bean id="soapService" class="org.kuali.rice.ksb.messaging.remotedservices.SOAPServiceImpl" />
 
 
 	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
@@ -189,7 +189,7 @@
 		</property>
 	</bean>
 
-	<bean id="testExceptionHandlerService" class="edu.iu.uis.eden.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
+	<bean id="testExceptionHandlerService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
 	<bean id="testJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.MockJavaSecurityManagementServiceImpl" />
 
 </beans>

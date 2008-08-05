@@ -145,19 +145,19 @@
         <property name="kimServicesDao" ref="kimServicesDao"/>
     </bean>
 
-    <bean id="kimSoapService" class="edu.iu.uis.eden.messaging.SOAPServiceDefinition" abstract="true">
+    <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="priority" value="3" />
        <property name="retryAttempts" value="0" />
        <property name="busSecurity" value="false"/>
     </bean>
 
-    <bean id="kimService" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" abstract="true">
+    <bean id="kimService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
       <property name="serviceNameSpaceURI" value="KIM" />
       <property name="retryAttempts" value="0" />
     </bean>
 
-     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="entityService" />
@@ -166,7 +166,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="entityService" />
@@ -175,7 +175,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="principalService" />
@@ -184,7 +184,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="groupTypeService" />
@@ -193,7 +193,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="groupTypeService" />
@@ -250,7 +250,7 @@
             </list>
 		</property>
 	</bean>
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="principalService" />
@@ -259,7 +259,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="groupService" />
@@ -268,7 +268,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="groupService" />
@@ -277,7 +277,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="namespaceService" />
@@ -286,7 +286,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="namespaceService" />
@@ -295,7 +295,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="personService" />
@@ -304,7 +304,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="personService" />
@@ -313,7 +313,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="qualifiedRoleService" />
@@ -322,7 +322,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="qualifiedRoleService" />
@@ -331,7 +331,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="roleService" />
@@ -340,7 +340,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="roleService" />
@@ -349,7 +349,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimSoapService">
           <property name="service" ref="kimAuthorizationService" />
@@ -358,7 +358,7 @@
       </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
         <bean parent="kimService">
           <property name="service" ref="kimAuthorizationService" />

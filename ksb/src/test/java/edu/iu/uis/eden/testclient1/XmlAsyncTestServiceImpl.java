@@ -15,7 +15,7 @@
  */
 package edu.iu.uis.eden.testclient1;
 
-import edu.iu.uis.eden.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.KEWXMLService;
 
 public class XmlAsyncTestServiceImpl implements KEWXMLService {
 

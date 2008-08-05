@@ -319,7 +319,7 @@
     <bean id="enDocumentSecurityService" class="edu.iu.uis.eden.doctype.DocumentSecurityServiceImpl"/>
 
 	<!-- Exception routing service -->
-	<bean id="enExceptionRoutingService" class="edu.iu.uis.eden.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
+	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
 
 	<!--  PreferencesService -->
 	<bean id="enPreferencesService" class="edu.iu.uis.eden.preferences.PreferencesServiceImpl" lazy-init="true" />
@@ -640,7 +640,7 @@
 
 
 	<bean id="enWorkflowUtilityService" class="edu.iu.uis.eden.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
-    <bean id="enDocumentRoutingService" class="edu.iu.uis.eden.messaging.RouteDocumentMessageService"/>
+    <bean id="enDocumentRoutingService" class="org.kuali.rice.ksb.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="edu.iu.uis.eden.docsearch.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="edu.iu.uis.eden.actions.asyncservices.MoveDocumentProcessor" />
@@ -648,9 +648,9 @@
     <bean id="enImmediateEmailReminderService" class="edu.iu.uis.eden.mail.ActionListImmediateProcessorImpl" />
     <bean id="simpleDocumentActionsService" class="edu.iu.uis.eden.server.SimpleDocumentActionsWebServiceImpl"/>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enWorkflowDocumentActionsService" />
           </property>
@@ -662,9 +662,9 @@
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enWorkflowUtilityService" />
           </property>
@@ -676,9 +676,9 @@
           </property>
     </bean>
 
-    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
           <property name="service">
             <ref bean="simpleDocumentActionsService" />
           </property>
@@ -691,9 +691,9 @@
       </property>
     </bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enActionListEmailService" />
           </property>
@@ -711,9 +711,9 @@
      and the plugin framework in this case.  In the meantime, these exporters have been moved to the
    	 ExportOverridableServicesLifecycle
    	 
-	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enUserService" />
           </property>
@@ -725,9 +725,9 @@
 		<property name="propertyName" value="Identity.useRemoteServices"/>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enWorkgroupService" />
           </property>
@@ -740,9 +740,9 @@
         </bean>
 -->
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <bean class="edu.iu.uis.eden.workgroup.WorkgroupMembershipChangeProcessor" />
           </property>
@@ -750,69 +750,69 @@
           <property name="serviceNameSpaceURI" value="" />
           <property name="priority" value="10" />
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enDocumentRoutingService" />
           </property>
           <property name="localServiceName" value="DocumentRoutingService" />
           <property name="priority" value="5"/>
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enBlanketApproveProcessor" />
           </property>
           <property name="localServiceName" value="BlanketApproveProcessorService" />
           <property name="priority" value="4"/>
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enSearchableAttributeProcessor" />
           </property>
           <property name="localServiceName" value="SearchableAttributeProcessorService" />
           <property name="priority" value="30"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <bean class="edu.iu.uis.eden.actionrequests.DocumentRequeuerImpl" />
           </property>
           <property name="localServiceName" value="DocumentRequeueProcessorService" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
         </bean>
           </property>
         </bean>
 
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <bean class="edu.iu.uis.eden.routetemplate.RuleCacheProcessorImpl" />
           </property>
@@ -821,28 +821,28 @@
           <property name="priority" value="3"/>
           <property name="queue" value="false"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <bean class="edu.iu.uis.eden.routetemplate.RolePokerProcessor" />
           </property>
           <property name="localServiceName" value="RolePokerProcessorService" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 	
-	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enImmediateEmailReminderService" />
           </property>
@@ -850,41 +850,41 @@
           <property name="serviceNameSpaceURI" value=""/>
           <property name="priority" value="30"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 		<property name="propertyName" value="Email.useRemoteServices"/>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enActionInvocationService" />
           </property>
           <property name="localServiceName" value="ActionInvocationProcessor" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
             <ref bean="enMoveDocumentService" />
           </property>
           <property name="localServiceName" value="MoveDocumentProcessor" />
           <property name="priority" value="10"/>
           <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
     </property>
   </bean>
 
-  <bean id="enCacheAdministrator" class="edu.iu.uis.eden.messaging.RiceCacheExporterFactoryBean" />
+  <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 
 
 

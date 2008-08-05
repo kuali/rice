@@ -43,11 +43,11 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.DocumentResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.ErrorResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.NoteDetail;

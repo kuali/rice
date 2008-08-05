@@ -939,7 +939,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.messaging.bam.BAMTargetEntry" table="EN_BAM_T">
+  <class-descriptor class="org.kuali.rice.ksb.messaging.bam.BAMTargetEntry" table="EN_BAM_T">
   	<field-descriptor name="bamId" column="BAM_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="BAM_SEQ" />
   	<field-descriptor name="serviceName" column="SERVICE_NM" jdbc-type="VARCHAR"></field-descriptor>
   	<field-descriptor name="serviceURL" column="SERVICE_URL" jdbc-type="VARCHAR"></field-descriptor>
@@ -950,7 +950,7 @@
   	<field-descriptor name="serverInvocation" column="SRVR_IND_IND" jdbc-type="BIT"></field-descriptor>
   	<field-descriptor name="exceptionToString" column="EXCEPTION_TO_STRING" jdbc-type="VARCHAR"></field-descriptor>
   	<field-descriptor name="exceptionMessage" column="EXCEPTION_MSG" jdbc-type="CLOB"></field-descriptor>
-  	<collection-descriptor element-class-ref="edu.iu.uis.eden.messaging.bam.BAMParam"
+  	<collection-descriptor element-class-ref="org.kuali.rice.ksb.messaging.bam.BAMParam"
         name="bamParams"  auto-retrieve="true" auto-update="true" auto-delete="true">
         <inverse-foreignkey field-ref="bamId"  />
     </collection-descriptor>

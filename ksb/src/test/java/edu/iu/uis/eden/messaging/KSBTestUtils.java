@@ -16,9 +16,9 @@
 package edu.iu.uis.eden.messaging;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.util.KSBConstants;
 
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
  * Holder for common testing code. 

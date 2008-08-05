@@ -40,6 +40,7 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.Id;
@@ -52,7 +53,6 @@ import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.export.ExportDataSet;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.responsibility.ResponsibilityIdService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;

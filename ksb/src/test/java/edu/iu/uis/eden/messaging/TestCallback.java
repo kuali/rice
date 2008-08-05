@@ -25,6 +25,9 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.AsynchronousCallback;
+
 public class TestCallback implements AsynchronousCallback {
 	/**
 	 * 

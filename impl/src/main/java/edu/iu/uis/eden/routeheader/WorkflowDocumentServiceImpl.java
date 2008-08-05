@@ -29,6 +29,7 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -64,7 +65,6 @@ import edu.iu.uis.eden.docsearch.SearchableAttributeProcessingService;
 import edu.iu.uis.eden.engine.CompatUtils;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNode;
-import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;

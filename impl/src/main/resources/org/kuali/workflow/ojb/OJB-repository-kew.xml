@@ -76,7 +76,7 @@
   <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent" table="EN_DOC_HDR_CNTNT_T" >
   <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor name="documentContent" column="DOC_CNTNT_TXT" jdbc-type="CLOB"
-    conversion="org.kuali.rice.ksb.security.OjbEncryptDecryptFieldConversion"/>
+    conversion="org.kuali.rice.kew.security.OjbEncryptDecryptFieldConversion"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.notes.Note" table="EN_DOC_NTE_T">

@@ -32,7 +32,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -62,7 +62,7 @@ public class SuperUserAction extends WorkflowAction {
 
     public ActionForward displaySuperUserDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
-        superUserForm.setDocHandlerUrl(EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId=" + superUserForm.getRouteHeaderId() + "&" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.SUPERUSER_COMMAND);
+        superUserForm.setDocHandlerUrl(KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId=" + superUserForm.getRouteHeaderId() + "&" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.SUPERUSER_COMMAND);
         return mapping.findForward("basic");
     }
 
@@ -201,7 +201,7 @@ public class SuperUserAction extends WorkflowAction {
         Iterator requestIterator = actionRequests.iterator();
         while (requestIterator.hasNext()) {
             ActionRequestValue req = (ActionRequestValue) requestIterator.next();
-           // if (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equalsIgnoreCase(req.getActionRequested())) {
+           // if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equalsIgnoreCase(req.getActionRequested())) {
                 superUserForm.getActionRequests().add(req);
            // }
         }

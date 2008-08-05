@@ -23,7 +23,7 @@ import java.util.ListIterator;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -64,9 +64,9 @@ public class FYIByNetworkId extends RequestActivationNode {
                			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(field.getChildText("value")));
                			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), routeHeaderId);
                			if (!context.isSimulation()) {
-                   			KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, context.getDocument(), EdenConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user, "Notification Request", true);
+                   			KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user, "Notification Request", true);
                		}
-               			//wfDoc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new NetworkIdVO(field.getChildText("value")), "Notification Request", true);
+               			//wfDoc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new NetworkIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the appSpecificRouteDocumentToUser function to NetworkID:  " + user.getAuthenticationUserId());
                                	break;
                	}

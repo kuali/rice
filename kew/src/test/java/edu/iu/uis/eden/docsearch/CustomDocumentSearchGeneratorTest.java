@@ -19,7 +19,7 @@ package edu.iu.uis.eden.docsearch;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -84,18 +84,18 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the app constant
-        KEWServiceLocator.getApplicationConstantsService().delete(KEWServiceLocator.getApplicationConstantsService().findByName(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY));
+        KEWServiceLocator.getApplicationConstantsService().delete(KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY));
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
     
     private void adjustResultSetCapApplicationConstantValue(Integer newValue) {
         ApplicationConstantsService acs = KEWServiceLocator.getApplicationConstantsService();
-        ApplicationConstant ac = acs.findByName(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY);
+        ApplicationConstant ac = acs.findByName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY);
         if (ac == null) {
         	ac = new ApplicationConstant();
         }
-        ac.setApplicationConstantName(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY);
+        ac.setApplicationConstantName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY);
         ac.setApplicationConstantValue(newValue.toString());
         acs.save(ac);
     }

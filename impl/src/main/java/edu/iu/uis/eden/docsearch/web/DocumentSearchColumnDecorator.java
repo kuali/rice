@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.displaytag.decorator.DisplaytagColumnDecorator;
 import org.displaytag.exception.DecoratorException;
 import org.displaytag.properties.MediaTypeEnum;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -35,10 +35,10 @@ public class DocumentSearchColumnDecorator implements DisplaytagColumnDecorator 
 
 	public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
 		if (columnValue == null) {
-			return EdenConstants.HTML_NON_BREAKING_SPACE;
+			return KEWConstants.HTML_NON_BREAKING_SPACE;
 		}
 		if (columnValue instanceof String && StringUtils.isEmpty(((String)columnValue).trim())) {
-			return EdenConstants.HTML_NON_BREAKING_SPACE;
+			return KEWConstants.HTML_NON_BREAKING_SPACE;
 		}
 		return columnValue;
 	}

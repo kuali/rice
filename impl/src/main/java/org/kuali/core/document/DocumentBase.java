@@ -64,7 +64,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -308,12 +308,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     
     protected List<String> getNonLockingActionTakenCodes() {
         List<String> actionTakenStatusCodes = new ArrayList<String>();
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_SAVED_CD);
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_FYI_CD);
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_DENIED_CD);
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_CANCELED_CD);
-        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_SAVED_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_FYI_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_DENIED_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_CANCELED_CD);
+        actionTakenStatusCodes.add(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD);
         return actionTakenStatusCodes;
     }
 

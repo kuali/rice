@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.ojb.broker.PersistenceBroker;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -55,7 +55,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
                     selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from EN_ACTN_ITM_T where ACTN_ITM_PRSN_EN_ID = ? " +
-                            "and (dlgn_typ is null or dlgn_typ != '" + EdenConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
+                            "and (dlgn_typ is null or dlgn_typ != '" + KEWConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
                     selectDocTypeLabel = connection.prepareStatement("select DOC_TYP_LBL_TXT from EN_DOC_TYP_T WHERE DOC_TYP_NM = ? and DOC_TYP_CUR_IND = 1");
                     selectActionItems.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedActionItems = selectActionItems.executeQuery();
@@ -123,7 +123,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
-                    String documentNames = Utilities.getApplicationConstant(EdenConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
+                    String documentNames = Utilities.getApplicationConstant(KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
                     if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }
@@ -189,11 +189,11 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 ResultSet selectedWatchedDocuments = null;
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_RTE_STAT_CD, DOC_TTL, DOC_CRTE_DT from EN_DOC_HDR_T where DOC_INITR_PRSN_EN_ID = ? and DOC_RTE_STAT_CD in ('"+ EdenConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ EdenConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by DOC_CRTE_DT desc");
+                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_RTE_STAT_CD, DOC_TTL, DOC_CRTE_DT from EN_DOC_HDR_T where DOC_INITR_PRSN_EN_ID = ? and DOC_RTE_STAT_CD in ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by DOC_CRTE_DT desc");
                     selectWatchedDocuments.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {
-                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), (String)EdenConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
+                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), (String)KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
                     }           
                     return watchedDocuments;
                 } catch (Exception e) {

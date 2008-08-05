@@ -25,7 +25,7 @@ import java.util.Set;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -83,7 +83,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         OrchestrationConfig config = new OrchestrationConfig();
         config.setCause(actionTaken);
         config.setDestinationNodeNames(nodeNames);
-        config.setNotificationType(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        config.setNotificationType(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         config.setSendNotifications(true);
         return config;
     }
@@ -123,7 +123,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             context.setEngineState(new EngineState());
             NotificationContext notifyContext = null;
             if (config.isSendNotifications()) {
-                notifyContext = new NotificationContext(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getWorkflowUser(), config.getCause().getActionTaken());
+                notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getWorkflowUser(), config.getCause().getActionTaken());
             }
             try {
                 List processingQueue = new LinkedList();

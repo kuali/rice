@@ -84,9 +84,9 @@ public class DocumentTypeAction extends WorkflowAction {
 //			}
 //			if (existing.getParentDocType() != null) {
 //				existing.setCustomActionListAttributeClassName(existing
-//						.retrieveAttributeClassName(existing.getCustomActionListAttributeClassName(), EdenConstants.ACTION_LIST_ATTRIBUTE_CLASS_PROPERTY));
-//				existing.setCustomEmailAttributeClassName(existing.retrieveAttributeClassName(existing.getCustomEmailAttributeClassName(), EdenConstants.EMAIL_ATTRIBUTE_CLASS_PROPERTY));
-//				existing.setCustomNoteAttributeClassName(existing.retrieveAttributeClassName(existing.getCustomNoteAttributeClassName(), EdenConstants.NOTE_ATTRIBUTE_CLASS_PROPERTY));
+//						.retrieveAttributeClassName(existing.getCustomActionListAttributeClassName(), KEWConstants.ACTION_LIST_ATTRIBUTE_CLASS_PROPERTY));
+//				existing.setCustomEmailAttributeClassName(existing.retrieveAttributeClassName(existing.getCustomEmailAttributeClassName(), KEWConstants.EMAIL_ATTRIBUTE_CLASS_PROPERTY));
+//				existing.setCustomNoteAttributeClassName(existing.retrieveAttributeClassName(existing.getCustomNoteAttributeClassName(), KEWConstants.NOTE_ATTRIBUTE_CLASS_PROPERTY));
 //			}
 			documentTypeForm.setExistingDocumentType(existing);
 		}
@@ -96,13 +96,13 @@ public class DocumentTypeAction extends WorkflowAction {
 //			if (documentTypeForm.getDocumentType().getParentDocType() != null) {
 //				documentTypeForm.getDocumentType().setCustomActionListAttributeClassName(
 //						documentTypeForm.getDocumentType().retrieveAttributeClassName(documentTypeForm.getDocumentType().getCustomActionListAttributeClassName(),
-//								EdenConstants.ACTION_LIST_ATTRIBUTE_CLASS_PROPERTY));
+//								KEWConstants.ACTION_LIST_ATTRIBUTE_CLASS_PROPERTY));
 //				documentTypeForm.getDocumentType().setCustomEmailAttributeClassName(
 //						documentTypeForm.getDocumentType().retrieveAttributeClassName(documentTypeForm.getDocumentType().getCustomEmailAttributeClassName(),
-//								EdenConstants.EMAIL_ATTRIBUTE_CLASS_PROPERTY));
+//								KEWConstants.EMAIL_ATTRIBUTE_CLASS_PROPERTY));
 //				documentTypeForm.getDocumentType().setCustomNoteAttributeClassName(
 //						documentTypeForm.getDocumentType()
-//								.retrieveAttributeClassName(documentTypeForm.getDocumentType().getCustomNoteAttributeClassName(), EdenConstants.NOTE_ATTRIBUTE_CLASS_PROPERTY));
+//								.retrieveAttributeClassName(documentTypeForm.getDocumentType().getCustomNoteAttributeClassName(), KEWConstants.NOTE_ATTRIBUTE_CLASS_PROPERTY));
 //			}
 		}
 

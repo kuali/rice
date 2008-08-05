@@ -32,7 +32,7 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.xml.sax.SAXException;
 
@@ -240,15 +240,15 @@ public class RuleTemplateXmlParser implements XmlConstants {
             //    the existing rule template options on this template if it is a delegation template (which of course will be overwritten
             //    by this very same code if they subsequently upload without the delegation flag)
             // This is a minor point, but the second implementation is chosen as it preserved the current behavior
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
         }
 
         // always update the instructions RuleTemplateOption in either case
-        updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.RULE_INSTRUCTIONS_CD, ruleInstructions);
+        updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.RULE_INSTRUCTIONS_CD, ruleInstructions);
     }
     
     /**
@@ -294,9 +294,9 @@ public class RuleTemplateXmlParser implements XmlConstants {
             Boolean ignorePrevious = BooleanUtils.toBooleanObject(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
-            if (isDelegation && !EdenConstants.DELEGATION_PRIMARY.equals(delegationType) && !EdenConstants.DELEGATION_SECONDARY.equals(delegationType)) {
+            if (isDelegation && !KEWConstants.DELEGATION_PRIMARY.equals(delegationType) && !KEWConstants.DELEGATION_SECONDARY.equals(delegationType)) {
                 throw new InvalidXmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
-                        + EdenConstants.DELEGATION_PRIMARY + "," + EdenConstants.DELEGATION_SECONDARY);
+                        + KEWConstants.DELEGATION_PRIMARY + "," + KEWConstants.DELEGATION_SECONDARY);
             }
     
             // create our "default rule" which encapsulates the defaults for the rule

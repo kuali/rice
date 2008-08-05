@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -161,7 +161,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         String actionTakenCd = actionTaken.getActionTaken();
         if(actionTakenCd == null || actionTakenCd.trim().equals("")){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken cd null.", "actiontaken.actiontaken.empty", actionTaken.getActionTakenId().toString()));
-        } else if(!EdenConstants.ACTION_TAKEN_CD.containsKey(actionTakenCd)){
+        } else if(!KEWConstants.ACTION_TAKEN_CD.containsKey(actionTakenCd)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken invalid.", "actiontaken.actiontaken.invalid", actionTaken.getActionTakenId().toString()));
         }
         if(actionTaken.getActionDate() == null){
@@ -192,7 +192,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     public Timestamp getLastApprovedDate(Long routeHeaderId)
     {
     	Timestamp dateLastApproved = null;
-    	List actionsTaken=(List)getActionTakenDAO().findByDocIdAndAction(routeHeaderId, EdenConstants.ACTION_TAKEN_APPROVED_CD);
+    	List actionsTaken=(List)getActionTakenDAO().findByDocIdAndAction(routeHeaderId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
     	for (Iterator iter = actionsTaken.iterator(); iter.hasNext();) {
     		ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
     		// search for the most recent approval action

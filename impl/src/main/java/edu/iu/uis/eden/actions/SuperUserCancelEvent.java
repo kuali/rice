@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -31,17 +31,17 @@ import edu.iu.uis.eden.user.WorkflowUser;
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, user);
-        this.superUserAction = EdenConstants.SUPER_USER_CANCEL;
+        super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, user);
+        this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
     }
 
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(EdenConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, user, annotation, runPostProcessor);
-        this.superUserAction = EdenConstants.SUPER_USER_CANCEL;
+        super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, user, annotation, runPostProcessor);
+        this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
     }
 
     protected void markDocument() throws WorkflowException {
-        //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), EdenConstants.ROUTE_HEADER_CANCEL_CD);
+        //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_CANCEL_CD);
         getRouteHeader().markDocumentCanceled();
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }

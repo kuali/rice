@@ -39,7 +39,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -151,7 +151,7 @@ public class DocumentType implements WorkflowPersistable {
     @Transient
     private List processes = new ArrayList();
     @Column(name="DOC_TYP_RTE_VER_NBR")
-    private String routingVersion = EdenConstants.CURRENT_ROUTING_VERSION;
+    private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
 
     /* Workflow 2.2 Fields */
     @Column(name="DOC_TYP_NOTIFY_ADDR")
@@ -176,35 +176,35 @@ public class DocumentType implements WorkflowPersistable {
 
 
     public DocumentTypePolicy getDefaultApprovePolicy() {
-        return getPolicyByName(EdenConstants.DEFAULT_APPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.DEFAULT_APPROVE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getUseWorkflowSuperUserDocHandlerUrl() {
-        return getPolicyByName(EdenConstants.USE_KEW_SUPERUSER_DOCHANDLER, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.USE_KEW_SUPERUSER_DOCHANDLER, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustRoutePolicy() {
-        return getPolicyByName(EdenConstants.INITIATOR_MUST_ROUTE_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.INITIATOR_MUST_ROUTE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustSavePolicy() {
-        return getPolicyByName(EdenConstants.INITIATOR_MUST_SAVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.INITIATOR_MUST_SAVE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustCancelPolicy() {
-        return getPolicyByName(EdenConstants.INITIATOR_MUST_CANCEL_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.INITIATOR_MUST_CANCEL_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustBlanketApprovePolicy() {
-        return getPolicyByName(EdenConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getPreApprovePolicy() {
-        return getPolicyByName(EdenConstants.PREAPPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(KEWConstants.PREAPPROVE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getLookIntoFuturePolicy() {
-        return getPolicyByName(EdenConstants.LOOK_INTO_FUTURE_POLICY, Boolean.FALSE);
+        return getPolicyByName(KEWConstants.LOOK_INTO_FUTURE_POLICY, Boolean.FALSE);
     }
 
     public DocumentTypePolicy getSuperUserApproveNotificationPolicy() {
@@ -212,11 +212,11 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public DocumentTypePolicy getSupportsQuickInitiatePolicy() {
-    	return getPolicyByName(EdenConstants.SUPPORTS_QUICK_INITIATE_POLICY, Boolean.TRUE);
+    	return getPolicyByName(KEWConstants.SUPPORTS_QUICK_INITIATE_POLICY, Boolean.TRUE);
     }
 
     public DocumentTypePolicy getNotifyOnSavePolicy() {
-    	return getPolicyByName(EdenConstants.NOTIFY_ON_SAVE_POLICY, Boolean.FALSE);
+    	return getPolicyByName(KEWConstants.NOTIFY_ON_SAVE_POLICY, Boolean.FALSE);
     }
 
     public String getUseWorkflowSuperUserDocHandlerUrlValue() {
@@ -277,10 +277,10 @@ public class DocumentType implements WorkflowPersistable {
 //			String attributeType = attribute.getRuleAttribute().getType();
 			RuleAttribute ruleAttribute = attribute.getRuleAttribute();
 			SearchableAttribute searchableAttribute = null;
-			if (EdenConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+			if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
-			} else if (EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+			} else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
 				//required to make it work because ruleAttribute XML is required to construct fields
@@ -308,7 +308,7 @@ public class DocumentType implements WorkflowPersistable {
 
     public String getDocTypeActiveIndicatorDisplayValue() {
         if (getActiveInd() == null) {
-            return EdenConstants.INACTIVE_LABEL_LOWER;
+            return KEWConstants.INACTIVE_LABEL_LOWER;
         }
         return CodeTranslator.getActiveIndicatorLabel(getActiveInd());
     }
@@ -607,10 +607,10 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public boolean isUserBlanketApprover(WorkflowUser user) {
-    	if (EdenConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
+    	if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
     		// no one can blanket approve this doc type
     		return false;
-    	} else if (EdenConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
+    	} else if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
     		// anyone can blanket approve this doc type
     		return true;
     	}
@@ -647,7 +647,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public DocumentSearchGenerator getDocumentSearchGenerator() {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
+    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
     	if (objDef == null) {
     		if (getParentDocType() != null) {
     			return getParentDocType().getDocumentSearchGenerator();
@@ -667,7 +667,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
+    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
     	if (objDef == null) {
     		if (getParentDocType() != null) {
     			return getParentDocType().getDocumentSearchCriteriaProcessor();
@@ -694,10 +694,10 @@ public class DocumentType implements WorkflowPersistable {
     	for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
 			DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
 			RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-			if (EdenConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+			if (KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				return (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
-			} else if (EdenConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+			} else if (KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				DocumentSearchResultProcessor resultProcessor = (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
 				//required to make it work because ruleAttribute XML is required to construct custom columns
@@ -711,7 +711,7 @@ public class DocumentType implements WorkflowPersistable {
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
 
-    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.ACTION_LIST_ATTRIBUTE_TYPE);
+    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);
     	if (objDef == null) {
     		return null;
     	}
@@ -725,7 +725,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public CustomEmailAttribute getCustomEmailAttribute() throws ResourceUnavailableException {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.EMAIL_ATTRIBUTE_TYPE);
+    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.EMAIL_ATTRIBUTE_TYPE);
     	if (objDef == null) {
     		return null;
     	}
@@ -754,7 +754,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.NOTE_ATTRIBUTE_TYPE);
+    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
     	if (objDef == null) {
     		String defaultNoteClass = Core.getCurrentContextConfig().getDefaultNoteClass();
     		if (defaultNoteClass == null){

@@ -40,7 +40,7 @@ import org.apache.struts.action.ActionMessages;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -516,19 +516,19 @@ public class LookupAction extends WorkflowAction {
 				String property1Value = (property1 == null ? "" : property1.toString());
 				String property2Value = (property2 == null ? "" : property2.toString());
 				int compare = 0;
-				if (EdenConstants.LOOKUP_COLUMN_TYPE_INTEGER.equals(column.getType())) {
+				if (KEWConstants.LOOKUP_COLUMN_TYPE_INTEGER.equals(column.getType())) {
 					Integer i1 = (StringUtils.isEmpty(property1Value) ? new Integer(0) : Integer.valueOf(property1Value));
 					Integer i2 = (StringUtils.isEmpty(property2Value) ? new Integer(0) : Integer.valueOf(property2Value));
 					compare = i1.compareTo(i2);
-                } else if (EdenConstants.LOOKUP_COLUMN_TYPE_LONG.equals(column.getType())) {
+                } else if (KEWConstants.LOOKUP_COLUMN_TYPE_LONG.equals(column.getType())) {
                     Long value1 = (property1 != null) ? (Long) property1 : Long.MIN_VALUE;
                     Long value2 = (property2 != null) ? (Long) property2 : Long.MIN_VALUE;
                     compare = value1.compareTo(value2);
-                } else if (EdenConstants.LOOKUP_COLUMN_TYPE_FLOAT.equals(column.getType())) {
+                } else if (KEWConstants.LOOKUP_COLUMN_TYPE_FLOAT.equals(column.getType())) {
                     BigDecimal value1 = (property1 != null) ? (BigDecimal) property1 : BigDecimal.ZERO;
                     BigDecimal value2 = (property2 != null) ? (BigDecimal) property2 : BigDecimal.ZERO;
                     compare = value1.compareTo(value2);
-                } else if (EdenConstants.LOOKUP_COLUMN_TYPE_DATETIME.equals(column.getType())) {
+                } else if (KEWConstants.LOOKUP_COLUMN_TYPE_DATETIME.equals(column.getType())) {
                     Timestamp value1 = (Timestamp) property1;
                     Timestamp value2 = (Timestamp) property2;
                     if ((value1 != null) && (value2 != null)) {

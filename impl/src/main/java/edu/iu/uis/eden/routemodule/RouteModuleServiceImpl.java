@@ -19,7 +19,7 @@ package edu.iu.uis.eden.routemodule;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.RouteModuleRemote;
@@ -57,7 +57,7 @@ public class RouteModuleServiceImpl implements RouteModuleService {
     private RouteModule getRouteModule(String routeMethodName) throws ResourceUnavailableException {
         if (routeMethodName == null) {
             return null;
-        } else if ("".equals(routeMethodName.trim()) || EdenConstants.ROUTE_LEVEL_NO_ROUTE_MODULE.equals(routeMethodName)) {
+        } else if ("".equals(routeMethodName.trim()) || KEWConstants.ROUTE_LEVEL_NO_ROUTE_MODULE.equals(routeMethodName)) {
                 return null;
         }
         Object routeModule = GlobalResourceLoader.getObject(new ObjectDefinition(routeMethodName));//SpringServiceLocator.getExtensionService().getRouteModule(routeMethodName);

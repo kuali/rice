@@ -28,7 +28,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -103,7 +103,7 @@ public class FlexRM {
         // first see if there ruleselector is configured on a nodeinstance basis
         NodeState ns = null;
         if (nodeInstance != null) {
-            ns = nodeInstance.getNodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY);
+            ns = nodeInstance.getNodeState(KEWConstants.RULE_SELECTOR_NODE_STATE_KEY);
         }
         String ruleSelectorName = null;
         if (ns != null) {
@@ -375,7 +375,7 @@ public class FlexRM {
     }
 
     private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
-	List requests = getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
+	List requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
 	for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 	    ActionRequestValue request = (ActionRequestValue) iterator.next();
 	    if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request

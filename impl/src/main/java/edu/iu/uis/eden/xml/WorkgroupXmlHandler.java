@@ -34,7 +34,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.DOMBuilder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.workflow.workgroup.WorkgroupType;
@@ -112,7 +112,7 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
 	            String type = workgroupElement.getChildTextTrim(WORKGROUP_TYPE, WORKGROUP_NAMESPACE);
 	            WorkgroupType workgroupType = null;
 	            // if there are not using the default workgroup type
-	            if (!(StringUtils.isEmpty(type) || type.equals(EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE))) {
+	            if (!(StringUtils.isEmpty(type) || type.equals(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE))) {
 	            	workgroup.setWorkgroupType(type);
 		            workgroupType = KEWServiceLocator.getWorkgroupTypeService().findByName(type);
 		            if (workgroupType == null) {
@@ -200,10 +200,10 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
                     }
 	                if (workflowUser != null) {
 	                    member.setWorkflowId(workflowUser.getWorkflowId());
-	                    member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+	                    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 	                } else if (nestedWorkgroup != null) {
 	                    member.setWorkflowId(nestedWorkgroup.getWorkflowGroupId().getGroupId().toString());
-	                    member.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+	                    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
 	                } else  {
 	                    throw new Exception("A workflow user or nested workgroup cannot be found for "+memberElement.getName()+"="+memberElement.getText()+" on Workgroup " + workgroup.getWorkgroupName());
 	                }

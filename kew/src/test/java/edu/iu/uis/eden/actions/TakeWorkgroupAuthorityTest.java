@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -109,7 +109,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         for (int i = 0; i < actionsTaken.length; i++) {
             ActionTakenDTO at = actionsTaken[i];
             if (at.getUserVO().getNetworkId().equals("rkirkend")) {
-                assertEquals("Incorrect action code recorded", EdenConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken());
+                assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken());
                 rkirkendATFound = true;
             }
         }

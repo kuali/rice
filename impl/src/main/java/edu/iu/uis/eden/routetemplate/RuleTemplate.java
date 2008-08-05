@@ -35,7 +35,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.WorkflowPersistable;
 
@@ -56,12 +56,12 @@ public class RuleTemplate implements WorkflowPersistable {
      * A list of default rule template option keys.
      */
     public static final String[] DEFAULT_OPTION_KEYS = {
-        EdenConstants.RULE_INSTRUCTIONS_CD,
-        EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
-        EdenConstants.ACTION_REQUEST_APPROVE_REQ,
-        EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
-        EdenConstants.ACTION_REQUEST_FYI_REQ,
-        EdenConstants.ACTION_REQUEST_DEFAULT_CD
+        KEWConstants.RULE_INSTRUCTIONS_CD,
+        KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
+        KEWConstants.ACTION_REQUEST_APPROVE_REQ,
+        KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
+        KEWConstants.ACTION_REQUEST_FYI_REQ,
+        KEWConstants.ACTION_REQUEST_DEFAULT_CD
     };
     
     @Id
@@ -324,69 +324,69 @@ public class RuleTemplate implements WorkflowPersistable {
     }
 
     public void setInstructions(RuleTemplateOption instructions) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.RULE_INSTRUCTIONS_CD);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
         option.setValue(instructions.getValue());
         option.setRuleTemplateOptionId(instructions.getRuleTemplateOptionId());
         option.setLockVerNbr(instructions.getLockVerNbr());
     }
 
     public void setAcknowledge(RuleTemplateOption acknowledge) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         option.setValue(acknowledge.getValue());
         option.setRuleTemplateOptionId(acknowledge.getRuleTemplateOptionId());
         option.setLockVerNbr(acknowledge.getLockVerNbr());
     }
 
     public void setComplete(RuleTemplateOption complete) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         option.setValue(complete.getValue());
         option.setRuleTemplateOptionId(complete.getRuleTemplateOptionId());
         option.setLockVerNbr(complete.getLockVerNbr());
     }
 
     public void setApprove(RuleTemplateOption approve) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         option.setValue(approve.getValue());
         option.setRuleTemplateOptionId(approve.getRuleTemplateOptionId());
         option.setLockVerNbr(approve.getLockVerNbr());
     }
 
     public void setFyi(RuleTemplateOption fyi) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.ACTION_REQUEST_FYI_REQ);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
         option.setValue(fyi.getValue());
         option.setRuleTemplateOptionId(fyi.getRuleTemplateOptionId());
         option.setLockVerNbr(fyi.getLockVerNbr());
     }
 
     public void setDefaultActionRequestValue(RuleTemplateOption defaultActionRequestValue) {
-        RuleTemplateOption option = getRuleTemplateOption(EdenConstants.ACTION_REQUEST_DEFAULT_CD);
+        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
         option.setValue(defaultActionRequestValue.getValue());
         option.setRuleTemplateOptionId(defaultActionRequestValue.getRuleTemplateOptionId());
         option.setLockVerNbr(defaultActionRequestValue.getLockVerNbr());
     }
 
     public RuleTemplateOption getInstructions() {
-        return getRuleTemplateOption(EdenConstants.RULE_INSTRUCTIONS_CD);
+        return getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
     }
 
     public RuleTemplateOption getAcknowledge() {
-        return getRuleTemplateOption(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     }
 
     public RuleTemplateOption getComplete() {
-        return getRuleTemplateOption(EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
     }
 
     public RuleTemplateOption getApprove() {
-        return getRuleTemplateOption(EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     }
 
     public RuleTemplateOption getFyi() {
-        return getRuleTemplateOption(EdenConstants.ACTION_REQUEST_FYI_REQ);
+        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
     }
 
     public RuleTemplateOption getDefaultActionRequestValue() {
-        return getRuleTemplateOption(EdenConstants.ACTION_REQUEST_DEFAULT_CD);
+        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
     }
     
     public String toString() {

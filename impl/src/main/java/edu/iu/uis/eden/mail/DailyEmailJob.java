@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.mail;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -38,7 +38,7 @@ public class DailyEmailJob implements Job {
 	}
 
 	protected boolean shouldExecute() {
-		return Boolean.valueOf(Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_ACTIVE));
+		return Boolean.valueOf(Core.getCurrentContextConfig().getProperty(KEWConstants.DAILY_EMAIL_ACTIVE));
 	}
 
 }

@@ -37,7 +37,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.Id;
@@ -142,9 +142,9 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getApplicationConstant(EdenConstants.RULE_CHANGE_AR_GENERATION_KEY);
+        String generateRuleArs = Utilities.getApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY);
         if (!StringUtils.isBlank(generateRuleArs)) {
-            isGenerateRuleArs = EdenConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
         Set responsibilityIds = new HashSet();
         HashMap rulesToSave = new HashMap();
@@ -242,9 +242,9 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getApplicationConstant(EdenConstants.RULE_CHANGE_AR_GENERATION_KEY);
+        String generateRuleArs = Utilities.getApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY);
         if (!StringUtils.isBlank(generateRuleArs)) {
-            isGenerateRuleArs = EdenConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
         Set<Long> responsibilityIds = new HashSet<Long>();
         Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
@@ -309,9 +309,9 @@ public class RuleServiceImpl implements RuleService {
 
     private void queueRuleCache(Long ruleId){
 //      PersistedMessage ruleCache = new PersistedMessage();
-//      ruleCache.setQueuePriority(EdenConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
+//      ruleCache.setQueuePriority(KEWConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
 //      ruleCache.setQueueDate(new Timestamp(new Date().getTime()));
-//      ruleCache.setQueueStatus(EdenConstants.ROUTE_QUEUE_QUEUED);
+//      ruleCache.setQueueStatus(KEWConstants.ROUTE_QUEUE_QUEUED);
 //      ruleCache.setRetryCount(new Integer(0));
 //      ruleCache.setPayload("" + ruleId);
 //      ruleCache.setProcessorClassName("edu.iu.uis.eden.cache.RuleCacheProcessor");
@@ -724,7 +724,7 @@ public class RuleServiceImpl implements RuleService {
         } else {
             for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
                 RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-                if (responsibility.getRuleResponsibilityName() != null && EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+                if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
@@ -776,7 +776,7 @@ public class RuleServiceImpl implements RuleService {
 
         for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-            if (responsibility.getRuleResponsibilityName() != null && EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+            if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                 if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
@@ -785,7 +785,7 @@ public class RuleServiceImpl implements RuleService {
                 errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 LOG.error("User is invalid");
             } else if (responsibility.isUsingRole()) {
-                if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_ALL_APPROVE) || responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_FIRST_APPROVE))) {
+                if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE) || responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE))) {
                     errors.add(new WorkflowServiceErrorImpl("Approve Policy is Invalid", "routetemplate.ruleservice.approve.policy.invalid"));
                     LOG.error("Approve Policy is Invalid");
                 }
@@ -1091,7 +1091,7 @@ public class RuleServiceImpl implements RuleService {
             ruleDocTypeName = parentRulesDocTypeName;
         }
         if (ruleDocTypeName == null) {
-            ruleDocTypeName = EdenConstants.DEFAULT_RULE_DOCUMENT_NAME;
+            ruleDocTypeName = KEWConstants.DEFAULT_RULE_DOCUMENT_NAME;
         }
         return ruleDocTypeName;
     }
@@ -1309,11 +1309,11 @@ public class RuleServiceImpl implements RuleService {
                 if (responsibility.isUsingWorkflowUser()) {
                     if (userToReplace != null && responsibility.getRuleResponsibilityName().equals(userToReplace.getWorkflowId())) {
                         if (newUser != null) {
-                            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                             responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
                             modified = true;
                         } else if (newWorkgroup != null) {
-                            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
                             responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
                             modified = true;
                         }
@@ -1321,11 +1321,11 @@ public class RuleServiceImpl implements RuleService {
                 } else if (responsibility.isUsingWorkgroup()) {
                     if (workgroupToReplace != null && responsibility.getRuleResponsibilityName().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
                         if (newUser != null) {
-                            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                             responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
                             modified = true;
                         } else if (newWorkgroup != null) {
-                            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
                             responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
                             modified = true;
                         }
@@ -1527,7 +1527,7 @@ public class RuleServiceImpl implements RuleService {
         private List configs = new ArrayList();
         public static RuleRoutingConfig parse() {
             RuleRoutingConfig config = new RuleRoutingConfig();
-            String constant = Utilities.getApplicationConstant(EdenConstants.RULE_CUSTOM_DOC_TYPES_KEY);
+            String constant = Utilities.getApplicationConstant(KEWConstants.RULE_CUSTOM_DOC_TYPES_KEY);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
                 for (int index = 0; index < ruleConfigs.length; index++) {

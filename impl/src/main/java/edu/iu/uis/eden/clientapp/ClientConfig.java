@@ -21,7 +21,7 @@ import java.util.Properties;
 
 import org.kuali.rice.config.BaseConfig;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -32,7 +32,7 @@ import org.kuali.rice.kew.util.EdenConstants;
 public class ClientConfig extends BaseConfig {
 
 	public ClientConfig() {
-		super(EdenConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
+		super(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
 		Core.init(this);
 	}
 

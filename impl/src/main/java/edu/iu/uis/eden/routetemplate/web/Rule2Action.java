@@ -35,7 +35,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -761,7 +761,7 @@ public class Rule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule, boolean usePreviousId) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(EdenConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
             Long id = (usePreviousId ? rule.getPreviousVersionId() : rule.getRuleBaseValuesId());
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -46,7 +46,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         String dummyData = "testing this stuff";
         Integer testServerPort = Integer.valueOf(getJettyServerPort() + 1);
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
-        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + Core.getCurrentContextConfig().getProperty(EdenConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
+        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + Core.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
         document.saveRoutingData();
 
@@ -68,7 +68,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
             testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
 
             postProcessor = new EDocLitePostProcessor();
-            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), EdenConstants.ROUTE_HEADER_INITIATED_CD, EdenConstants.ROUTE_HEADER_ENROUTE_CD));
+            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_ENROUTE_CD));
             eventType = EDocLitePostProcessor.EVENT_TYPE_ROUTE_STATUS_CHANGE;
             testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
 

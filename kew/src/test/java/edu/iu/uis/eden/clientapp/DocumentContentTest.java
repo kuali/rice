@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -37,10 +37,10 @@ import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
  */
 public class DocumentContentTest extends KEWTestCase {
 
-    private static final String DOCUMENT_CONTENT = EdenConstants.DOCUMENT_CONTENT_ELEMENT;
-    private static final String ATTRIBUTE_CONTENT = EdenConstants.ATTRIBUTE_CONTENT_ELEMENT;
-    private static final String SEARCHABLE_CONTENT = EdenConstants.SEARCHABLE_CONTENT_ELEMENT;
-    private static final String APPLICATION_CONTENT = EdenConstants.APPLICATION_CONTENT_ELEMENT;
+    private static final String DOCUMENT_CONTENT = KEWConstants.DOCUMENT_CONTENT_ELEMENT;
+    private static final String ATTRIBUTE_CONTENT = KEWConstants.ATTRIBUTE_CONTENT_ELEMENT;
+    private static final String SEARCHABLE_CONTENT = KEWConstants.SEARCHABLE_CONTENT_ELEMENT;
+    private static final String APPLICATION_CONTENT = KEWConstants.APPLICATION_CONTENT_ELEMENT;
     
     @Test public void testDocumentContent() throws Exception {
         String startContent = "<"+DOCUMENT_CONTENT+">";
@@ -233,8 +233,8 @@ public class DocumentContentTest extends KEWTestCase {
     	
     	// fetch it from WorkflowInfo
     	DocumentContentDTO content = new WorkflowInfo().getDocumentContent(document.getRouteHeaderId());
-    	assertTrue("Should contain default content, was " + content.getFullContent(), EdenConstants.DEFAULT_DOCUMENT_CONTENT.equals(content.getFullContent()) ||
-    			EdenConstants.DEFAULT_DOCUMENT_CONTENT2.equals(content.getFullContent()));
+    	assertTrue("Should contain default content, was " + content.getFullContent(), KEWConstants.DEFAULT_DOCUMENT_CONTENT.equals(content.getFullContent()) ||
+    			KEWConstants.DEFAULT_DOCUMENT_CONTENT2.equals(content.getFullContent()));
     	
     	String appContent = "<abcdefg>hijklm n o p</abcdefg>";
     	content.setApplicationContent(appContent);

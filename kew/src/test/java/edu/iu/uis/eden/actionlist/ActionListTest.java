@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -177,10 +177,10 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter primaryFilter = new ActionListFilter();
-    	primaryFilter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+    	primaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
     	primaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
-    	secondaryFilter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+    	secondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
     	Collection actionItems = null;
     	ActionItem actionItem = null;
 
@@ -189,8 +189,8 @@ public class ActionListTest extends KEWTestCase {
     	actionItems = getActionListService().getActionList(bmcgough, secondaryFilter);
     	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
-    	assertEquals("Should be an approve request.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be a secondary delegation request.", EdenConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
+    	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+    	assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
     	actionItems = getActionListService().getActionList(bmcgough, noFilter);
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
@@ -207,15 +207,15 @@ public class ActionListTest extends KEWTestCase {
     	actionItems = getActionListService().getActionList(user1, noFilter);
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
-    	assertEquals("Should be an approve request.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+    	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
     	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getWorkgroupId());
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
-    	ackFilter.setActionRequestCd(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+    	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     	actionItems = getActionListService().getActionList(user1, ackFilter);
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
-    	assertEquals("Should be an acknowledge request.", EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionItem.getActionRequestCd());
+    	assertEquals("Should be an acknowledge request.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionItem.getActionRequestCd());
     	assertNull("Should not be to a workgroup.", actionItem.getWorkgroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
@@ -224,7 +224,7 @@ public class ActionListTest extends KEWTestCase {
 			actionItems = getActionListService().getActionList(user, primaryFilter);
 			assertEquals("Workgroup Member " + user.getDisplayName() + " should have 1 action item.", 1, actionItems.size());
 			actionItem = (ActionItem)actionItems.iterator().next();
-			assertEquals("Should be an approve request.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
 			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getWorkgroupId());
 		}
     }
@@ -236,10 +236,10 @@ public class ActionListTest extends KEWTestCase {
         routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
         routeHeader.setDocContent("test");
         routeHeader.setDocRouteLevel(new Integer(1));
-        routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_ENROUTE_CD);
+        routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
         routeHeader.setDocTitle("Test");
         routeHeader.setDocumentTypeId(new Long(1));
-        routeHeader.setDocVersion(new Integer(EdenConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
         routeHeader.setRouteStatusDate(new Timestamp(new Date().getTime()));
         routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");

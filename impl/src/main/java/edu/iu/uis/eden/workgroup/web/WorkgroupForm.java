@@ -23,7 +23,7 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.web.WebExtensions;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
@@ -80,9 +80,9 @@ public class WorkgroupForm extends WorkflowRoutingForm {
 
     public WorkgroupForm() {
 	workgroup = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
-	instructionForCreateNew = Utilities.getApplicationConstant(EdenConstants.WORKGROUP_CREATE_NEW_INSTRUCTION_KEY);
-	memberTypes.add(new KeyLabelPair(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD, "User"));
-	memberTypes.add(new KeyLabelPair(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD, "Workgroup"));
+	instructionForCreateNew = Utilities.getApplicationConstant(KEWConstants.WORKGROUP_CREATE_NEW_INSTRUCTION_KEY);
+	memberTypes.add(new KeyLabelPair(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, "User"));
+	memberTypes.add(new KeyLabelPair(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD, "Workgroup"));
     }
 
     public Long getWorkgroupId() {
@@ -102,7 +102,7 @@ public class WorkgroupForm extends WorkflowRoutingForm {
     }
 
     public String getRouteLogPopup() {
-	return Utilities.getApplicationConstant(EdenConstants.WORKGROUP_ROUTE_LOG_POPUP_KEY).trim();
+	return Utilities.getApplicationConstant(KEWConstants.WORKGROUP_ROUTE_LOG_POPUP_KEY).trim();
     }
 
     public Workgroup getExistingWorkgroup() {
@@ -306,7 +306,7 @@ public class WorkgroupForm extends WorkflowRoutingForm {
 
 	public WorkgroupMember(WorkflowUser user) {
 	    this.workflowId = user.getWorkflowId();
-	    this.memberType = EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD;
+	    this.memberType = KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD;
 	    this.displayName = user.getDisplayName();
 	    this.displayNameSafe = user.getDisplayNameSafe();
 	    this.authenticationId = user.getAuthenticationUserId().getAuthenticationId();
@@ -314,7 +314,7 @@ public class WorkgroupForm extends WorkflowRoutingForm {
 
 	public WorkgroupMember(Workgroup workgroup) {
 	    this.workflowId = workgroup.getWorkflowGroupId().getGroupId().toString();
-	    this.memberType = EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
+	    this.memberType = KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
 	    this.displayName = workgroup.getDisplayName();
 	}
 

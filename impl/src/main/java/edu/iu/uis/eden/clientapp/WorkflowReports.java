@@ -75,7 +75,7 @@ public class WorkflowReports implements Serializable {
     	if (isUser(detail.getInitiator(), userId) || detail.getActionsTaken().length > 0) {
     		return true;
     	}
-    	lookFuture = lookFuture && new Boolean(Utilities.getApplicationConstant(EdenConstants.CHECK_ROUTE_LOG_AUTH_FUTURE)).booleanValue();
+    	lookFuture = lookFuture && new Boolean(Utilities.getApplicationConstant(KEWConstants.CHECK_ROUTE_LOG_AUTH_FUTURE)).booleanValue();
     	for (int index = 0; index < detail.getActionRequests().length; index++) {
     		ActionRequestVO actionRequest = detail.getActionRequests()[index];
     		if (actionRequest.getRouteLevel().intValue() > detail.getDocRouteLevel().intValue() && ! lookFuture) {
@@ -90,7 +90,7 @@ public class WorkflowReports implements Serializable {
     	ReportCriteriaVO criteria = new ReportCriteriaVO(routeHeaderId, new Integer(0), routeLevel);
     	RouteHeaderDetailVO detail = workflowInfo.routingReport(criteria);
     	ActionTakenVO actionTaken = new ActionTakenVO();
-    	actionTaken.setActionTaken(EdenConstants.ACTION_TAKEN_APPROVED_CD);
+    	actionTaken.setActionTaken(KEWConstants.ACTION_TAKEN_APPROVED_CD);
     	actionTaken.setRouteHeaderId(routeHeaderId);
     	actionTaken.setUserVO(workflowInfo.getWorkflowUser(userId));
     	actionTaken.setActionDate(Calendar.getInstance());
@@ -99,7 +99,7 @@ public class WorkflowReports implements Serializable {
     	// see if there are any non-deactivated requests left at this level
     	for (int index = 0; index < resultDetail.getActionRequests().length; index++) {
 			ActionRequestVO request = resultDetail.getActionRequests()[index];
-			if (request.getRouteLevel().equals(routeLevel) && !EdenConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus())) {
+			if (request.getRouteLevel().equals(routeLevel) && !KEWConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus())) {
 				lastApprover = false;
 				break;
 			}

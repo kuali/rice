@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -54,7 +54,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param user User taking the action.
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_DENIED_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, user);
     }
 
     /**
@@ -63,7 +63,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_DENIED_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -71,7 +71,7 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -107,8 +107,8 @@ public class DisapproveAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // APPROVE request matches all but FYI and ACK
-            if ( (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -130,7 +130,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
         LOG.debug("Disapproving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
@@ -142,7 +142,7 @@ public class DisapproveAction extends ActionTakenEvent {
 //            throw new InvalidActionTakenException("Document is not in a state to be disapproved");
 //        }
 //
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
 //        }
@@ -151,7 +151,7 @@ public class DisapproveAction extends ActionTakenEvent {
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
         ActionTakenValue actionTaken = saveActionTaken(delegator);
 
-//        actionRequests = getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, getRouteHeaderId());
+//        actionRequests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, getRouteHeaderId());
 //        List actionRequestsToNotify = new ArrayList();
 //        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 //            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
@@ -189,7 +189,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     //generate notifications to all people that have approved the document including the initiator
     private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws EdenUserNotFoundException {
-        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         Set<WorkflowUser> systemUserWorkflowIds = new HashSet<WorkflowUser>();
         if (systemUserWorkgroup != null) {
             systemUserWorkflowIds = new HashSet<WorkflowUser>(systemUserWorkgroup.getUsers());
@@ -202,7 +202,7 @@ public class DisapproveAction extends ActionTakenEvent {
 			ActionTakenValue     action = (ActionTakenValue) iter.next();
 			if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getWorkflowId())) {
                 if (!systemUserWorkflowIds.contains(action.getWorkflowUser())) {
-                    ActionRequestValue request = arFactory.createNotificationRequest(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getWorkflowUser(), getActionTakenCode(), getUser(), getActionTakenCode());
+                    ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getWorkflowUser(), getActionTakenCode(), getUser(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getWorkflowId());
                 }

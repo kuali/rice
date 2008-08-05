@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -51,9 +51,9 @@ public class AddRuleDelegationTest extends KEWTestCase {
     @Test
     public void testAddRuleDelegation() throws Exception {
         // set some application constants that aren't defined in test data, and will cause NPEs if not defined
-        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(EdenConstants.RULE_DELEGATE_LIMIT_KEY, "1000"));
-        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(EdenConstants.RULE_CHANGE_AR_GENERATION_KEY, EdenConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE));
-        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(EdenConstants.DELEGATE_CHANGE_AR_GENERATION_KEY, EdenConstants.YES_DELEGATE_CHANGE_AR_GENERATION_VALUE));
+        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.RULE_DELEGATE_LIMIT_KEY, "1000"));
+        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY, KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE));
+        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.DELEGATE_CHANGE_AR_GENERATION_KEY, KEWConstants.YES_DELEGATE_CHANGE_AR_GENERATION_VALUE));
 
 
         final String DELEGATE_USER = "user2";
@@ -297,11 +297,11 @@ public class AddRuleDelegationTest extends KEWTestCase {
         //createFlexDoc(request, ruleForm, ruleForm.getMyRules().getRules());
 
         if (ruleForm.getWorkflowDocument() == null) {
-//          rule2Form.setFlexDoc(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
+//          rule2Form.setFlexDoc(new WorkflowDocument(KEWConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), KEWConstants.EDEN_APP_CODE));
             String ruleDocTypeName = KEWServiceLocator.getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
             WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
             // adhoc it to rkirkend so it will stop before going final
-            workflowDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
+            workflowDocument.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
             ruleForm.setWorkflowDocument(workflowDocument);
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();
@@ -326,7 +326,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
     resp.setDelegationRulesMaterialized(false);
     resp.setHasDelegateRuleTemplate(false);
     resp.setReviewer(delegateUser.getAuthenticationUserId().getId());
-    resp.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+    resp.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
     resp.setRuleResponsibilityName(delegateUser.getWorkflowId()); // This is taken as a WorkflowId (not NetworkId, etc.)
 
     delegateRule.setCurrentInd(Boolean.FALSE);

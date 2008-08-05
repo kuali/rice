@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.IDocHandler;
@@ -275,6 +275,6 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     private boolean isProduction() {
-        return EdenConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
+        return KEWConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
     }
 }

@@ -28,14 +28,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.WorkflowPersistable;
 
 /**
  * A model bean representing the delegation of a rule from a responsibility to
  * another rule.  Specifies the delegation type which can be either 
- * {@link EdenConstants#DELEGATION_PRIMARY} or {@link EdenConstants#DELEGATION_SECONDARY}.
+ * {@link KEWConstants#DELEGATION_PRIMARY} or {@link KEWConstants#DELEGATION_SECONDARY}.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -52,7 +52,7 @@ public class RuleDelegation implements WorkflowPersistable {
     @Column(name="DLGN_RULE_BASE_VAL_ID")
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
-    private String delegationType = EdenConstants.DELEGATION_PRIMARY;
+    private String delegationType = KEWConstants.DELEGATION_PRIMARY;
     @Version
 	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;

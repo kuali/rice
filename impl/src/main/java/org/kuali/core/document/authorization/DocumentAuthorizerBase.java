@@ -43,7 +43,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.util.RiceConstants;
 
@@ -125,11 +125,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
                 ValidActionsDTO validActions = workflowDocument.getRouteHeader().getValidActions();
                 boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
-                flags.setCanCancel(hasPreRouteEditAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_CANCELED_CD));
+                flags.setCanCancel(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_CANCELED_CD));
 
-                flags.setCanSave(hasPreRouteEditAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_SAVED_CD));
+                flags.setCanSave(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_SAVED_CD));
 
-                flags.setCanRoute(hasPreRouteEditAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
+                flags.setCanRoute(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_ROUTED_CD));
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());

@@ -25,7 +25,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
@@ -122,9 +122,9 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	ActionRequestDTO[] reqs = workflowDocument.getActionRequests();
         for(int i = 0; i < reqs.length; i++) {
             LOG.info("Action Request[" + i + "] = " + reqs[i].getActionRequested());
-            if(reqs[i].getActionRequested().equals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ)) {
+            if(reqs[i].getActionRequested().equals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ)) {
                 workflowDocument.acknowledge(annotation);
-            } else if(reqs[i].getActionRequested().equals(EdenConstants.ACTION_REQUEST_FYI_REQ)) {
+            } else if(reqs[i].getActionRequested().equals(KEWConstants.ACTION_REQUEST_FYI_REQ)) {
                 workflowDocument.logDocumentAction(annotation);
                 workflowDocument.clearFYI();
             } else {

@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -65,7 +65,7 @@ public class SequentialRoutingTest extends KEWTestCase {
         assertEquals(1, requests.length);
         ActionRequestDTO request = requests[0];
         assertEquals("bmcgough", request.getUserVO().getNetworkId());
-        assertEquals(EdenConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+        assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
         assertEquals(new Integer(1), request.getRouteLevel());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
@@ -80,14 +80,14 @@ public class SequentialRoutingTest extends KEWTestCase {
             ActionRequestDTO requestVO = requests[i];
             if (requestVO.getUserVO().getNetworkId().equals("temay")) {
                 toTemay = true;
-                assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(2), requestVO.getRouteLevel());
-                assertEquals(EdenConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
             } else if (requestVO.getUserVO().getNetworkId().equals("jhopf")) {
                 toJhopf = true;
-                assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());
-                assertEquals(EdenConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
             }
         }
         assertTrue("Should be an acknowledge to temay", toTemay);
@@ -105,13 +105,13 @@ public class SequentialRoutingTest extends KEWTestCase {
             ActionRequestDTO requestVO = requests[i];
             if (requestVO.getUserVO().getNetworkId().equals("temay")) {
                 toTemay = true;
-                assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(EdenConstants.ACTION_REQUEST_DONE_STATE, requestVO.getStatus());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(KEWConstants.ACTION_REQUEST_DONE_STATE, requestVO.getStatus());
             } else if (requestVO.getUserVO().getNetworkId().equals("jhopf")) {
                 toJhopf = true;
-                assertEquals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());
-                assertEquals(EdenConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
             }
         }
         assertTrue("Should be a DONE acknowledge to temay", toTemay);

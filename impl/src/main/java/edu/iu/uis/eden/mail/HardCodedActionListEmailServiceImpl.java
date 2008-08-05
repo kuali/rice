@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -47,7 +47,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 	public String getApplicationEmailAddress() {
 		// first check the configured value
 		String fromAddress = Utilities
-				.getApplicationConstant(EdenConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
+				.getApplicationConstant(KEWConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
 		// if there's no value configured, use the default
 		if (Utilities.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -112,7 +112,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public void sendDailyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(EdenConstants.EMAIL_RMNDR_DAY_VAL);
+			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
 			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
 				WorkflowUser user = (WorkflowUser) userIter.next();
 				try {
@@ -120,7 +120,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
 						sendReminder(user, actionItems,
-								EdenConstants.EMAIL_RMNDR_DAY_VAL);
+								KEWConstants.EMAIL_RMNDR_DAY_VAL);
 					}
 				} catch (Exception e) {
 					LOG.error(
@@ -134,7 +134,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public void sendWeeklyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
 			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
 				WorkflowUser user = (WorkflowUser) userIter.next();
 				try {
@@ -142,7 +142,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
 						sendReminder(user, actionItems,
-								EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+								KEWConstants.EMAIL_RMNDR_WEEK_VAL);
 					}
 				} catch (Exception e) {
 					LOG.error(
@@ -157,9 +157,9 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 	private void sendReminder(WorkflowUser user, Collection actionItems,
 			String emailSetting) {
 		String emailBody = null;
-		if (EdenConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
+		if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
 			emailBody = buildDailyReminderBody(user, actionItems);
-		} else if (EdenConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
+		} else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
 			emailBody = buildWeeklyReminderBody(user, actionItems);
 		}
 		sendEmail(user, getEmailSubject(), new EmailBody(emailBody));

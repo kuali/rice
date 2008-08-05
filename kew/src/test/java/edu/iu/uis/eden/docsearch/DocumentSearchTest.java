@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -192,7 +192,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         Calendar criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
-        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
+        assertEquals("Criteria date minus today's date should equal the constant value", KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
 
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTitle("testing");
@@ -200,7 +200,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
-        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
+        assertEquals("Criteria date minus today's date should equal the constant value", KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
     }
 
     private static double getDifferenceInDays(Calendar compareDate) {
@@ -264,7 +264,7 @@ public class DocumentSearchTest extends KEWTestCase {
         for (DocumentSearchResult resultElement : result.getSearchResults()) {
 	    KeyValueSort kvs = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, kvs);
-	    assertTrue("The document handler redirect for the client should be included in the route header id url", kvs.getValue().indexOf(EdenConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
+	    assertTrue("The document handler redirect for the client should be included in the route header id url", kvs.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
 	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().indexOf(IDocHandler.SUPERUSER_COMMAND) != -1);
 	}
 
@@ -281,10 +281,10 @@ public class DocumentSearchTest extends KEWTestCase {
 	    KeyValueSort documentTypeValue = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL);
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL, documentTypeValue);
 	    if (customDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
-		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(EdenConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
+		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
 		assertTrue("The document handler redirect for the client should include the command value for super user search", routeHeaderIdValue.getValue().indexOf(IDocHandler.SUPERUSER_COMMAND) != -1);
 	    } else if (standardDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
-		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(EdenConstants.DOC_HANDLER_REDIRECT_PAGE) == -1);
+		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) == -1);
 	    } else {
 		fail("Found document search result row with document type '" + documentTypeValue.getValue() + "' that should not have existed");
 	    }

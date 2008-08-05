@@ -21,7 +21,7 @@ import java.util.HashMap;
 /**
  * A random assortment of constants.
  * 
- * TODO shouldn't these be integrated into EdenConstants?  Seems that many of these are no
+ * TODO shouldn't these be integrated into KEWConstants?  Seems that many of these are no
  * longer being used?
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

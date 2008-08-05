@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -56,12 +56,12 @@ public class ServerTestBase extends RiceTestCase {
             }
 
             public void start() throws Exception {
-                System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
+                System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
                 new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-                System.getProperties().remove(EdenConstants.BOOTSTRAP_SPRING_FILE);
+                System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
                 this.started = true;
             }
 

@@ -25,7 +25,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.JSTLConstants;
 
 
@@ -36,11 +36,11 @@ public class RiceConfigurationListener implements ServletContextListener {
     }
 
     public void contextInitialized(ServletContextEvent sce) {
-        sce.getServletContext().setAttribute("Constants", new JSTLConstants(EdenConstants.class));
+        sce.getServletContext().setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
         // use the system prop as an override of the default packaged META-INF/workflow.xml
-        String altCoreConfigLocation = System.getProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
+        String altCoreConfigLocation = System.getProperty(KEWConstants.DEFAULT_CONFIG_LOCATION_PARAM);
         if (altCoreConfigLocation != null) {
             configLocations.add(altCoreConfigLocation);
         }
@@ -49,7 +49,7 @@ public class RiceConfigurationListener implements ServletContextListener {
         }
 
         // use the system property to add additional configurations (useful for testing)
-        String additionalConfigLocations = System.getProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
+        String additionalConfigLocations = System.getProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
         if (!StringUtils.isEmpty(additionalConfigLocations)) {
             String[] additionalConfigLocationArray = additionalConfigLocations.split(",");
             for (String additionalConfigLocation : additionalConfigLocationArray) {
@@ -74,7 +74,7 @@ public class RiceConfigurationListener implements ServletContextListener {
      * standard default config location.
      */
     protected void addDefaultConfigLocation(ServletContext context, List<String> configLocations) {
-        String defaultConfigLocation = context.getInitParameter(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
+        String defaultConfigLocation = context.getInitParameter(KEWConstants.DEFAULT_CONFIG_LOCATION_PARAM);
         if (!StringUtils.isEmpty(defaultConfigLocation)) {
             String[] locations = defaultConfigLocation.split(",");
             for (String location : locations) {

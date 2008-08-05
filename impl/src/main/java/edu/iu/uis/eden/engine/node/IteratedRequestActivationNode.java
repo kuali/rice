@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -217,7 +217,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         Collections.sort(requests, new Utilities().new PrioritySorter());
         LOG.info("Pending Root Requests " + requests.size());
         String activationType = nodeInstance.getRouteNode().getActivationType();
-        boolean isParallel = EdenConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
+        boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
         boolean activatedApproveRequest = false;
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             if (activatedApproveRequest && !isParallel) {

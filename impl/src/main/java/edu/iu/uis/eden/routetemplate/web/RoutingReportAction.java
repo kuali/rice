@@ -37,7 +37,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -142,7 +142,7 @@ public class RoutingReportAction extends WorkflowAction {
 		routeHeader.setRouteHeaderId(new Long(0));
 		routeHeader.setDocumentTypeId(docType.getDocumentTypeId());
 		routeHeader.setDocRouteLevel(new Integer(0));
-        routeHeader.setDocVersion(new Integer(EdenConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
 
         List<RouteReportRuleTemplateContainer> ruleTemplateContainers = new ArrayList<RouteReportRuleTemplateContainer>();
 		if (routingForm.getReportType().equals(DOC_TYPE_REPORTING)) {
@@ -184,7 +184,7 @@ public class RoutingReportAction extends WorkflowAction {
                     WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
                     RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-                    if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+                    if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
                     }
                     List attValidationErrors = workflowAttribute.validateRoutingData(routingForm.getFields());
@@ -205,7 +205,7 @@ public class RoutingReportAction extends WorkflowAction {
 
 		routeHeader.setDocContent(xmlDocumentContent);
 		routeHeader.setInitiatorWorkflowId(getUserSession(request).getWorkflowUser().getWorkflowUserId().getWorkflowId());
-		routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
+		routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
 		routeHeader.setDocTitle("Routing Report");
 		routeHeader.setRoutingReport(true);
 		long magicCounter = 0;
@@ -279,7 +279,7 @@ public class RoutingReportAction extends WorkflowAction {
 		for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 			populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequest.getChildrenRequests(), magicCounter);
-			actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
+			actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
 //			actionRequest.setRouteMethodName(routeLevel.getRouteMethodName());
 			RouteNodeInstance routeNode = new RouteNodeInstance();
 			routeNode.setRouteNode(routeLevel);
@@ -382,7 +382,7 @@ public class RoutingReportAction extends WorkflowAction {
 			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 			}
 			for (Iterator iterator = workflowAttribute.getRoutingDataRows().iterator(); iterator.hasNext();) {
@@ -469,7 +469,7 @@ public class RoutingReportAction extends WorkflowAction {
 				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 				}
 				boolean foundQuickFinder = false;

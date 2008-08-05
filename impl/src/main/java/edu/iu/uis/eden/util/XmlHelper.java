@@ -55,7 +55,7 @@ import org.jdom.input.DOMBuilder;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -103,7 +103,7 @@ public class XmlHelper {
 	}
 
 	public static Element getAttributeRootElement(Document document) throws InvalidXmlException {
-		return findElement(document.getRootElement(), EdenConstants.ATTRIBUTE_CONTENT_ELEMENT);
+		return findElement(document.getRootElement(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT);
 	}
 
 	public static Element getAttributeElement(Document document, String elementName) throws InvalidXmlException {

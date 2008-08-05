@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -94,20 +94,20 @@ public class RuleAttributeLookupableImpl implements WorkflowLookupable, Exportab
 
         List options = new ArrayList();
         options.add(new KeyLabelPair("", "All"));
-        options.add(new KeyLabelPair(EdenConstants.RULE_ATTRIBUTE_TYPE, "Rule Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCHABLE_ATTRIBUTE_TYPE, "Searchable Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.RULE_XML_ATTRIBUTE_TYPE, "Rule Xml Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, "Searchable Xml Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.EXTENSION_ATTRIBUTE_TYPE, "Extension Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.EMAIL_ATTRIBUTE_TYPE, "Email Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.NOTE_ATTRIBUTE_TYPE, "Note Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.ACTION_LIST_ATTRIBUTE_TYPE, "Action List Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.RULE_VALIDATION_ATTRIBUTE_TYPE, "Rule Validation Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Criteria Processor Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE, "Document Search Generator Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor XML Attribute"));
-        options.add(new KeyLabelPair(EdenConstants.DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE, "Document Search Security Filter Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.RULE_ATTRIBUTE_TYPE, "Rule Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE, "Searchable Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.RULE_XML_ATTRIBUTE_TYPE, "Rule Xml Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, "Searchable Xml Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.EXTENSION_ATTRIBUTE_TYPE, "Extension Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.EMAIL_ATTRIBUTE_TYPE, "Email Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.NOTE_ATTRIBUTE_TYPE, "Note Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE, "Action List Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE, "Rule Validation Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Criteria Processor Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE, "Document Search Generator Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor XML Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE, "Document Search Security Filter Attribute"));
 
         fields = new ArrayList();
         fields.add(new Field(TYPE_FIELD_LABEL, TYPE_FIELD_HELP, Field.DROPDOWN, false, TYPE_PROPERTY_NAME, "", options, null));

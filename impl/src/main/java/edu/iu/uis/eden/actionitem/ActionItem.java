@@ -34,7 +34,7 @@ import javax.persistence.Version;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -150,12 +150,12 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
 
     public String getRecipientTypeCode() {
-        String recipientTypeCode = EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD;
+        String recipientTypeCode = KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD;
         if (getRoleName() != null) {
-            recipientTypeCode = EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD;
+            recipientTypeCode = KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD;
         }
         if (getWorkgroupId() != null) {
-            recipientTypeCode = EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
+            recipientTypeCode = KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
         }
         return recipientTypeCode;
     }

@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.workgroup;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
@@ -39,7 +39,7 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 public class WorkgroupPostProcessor extends DefaultPostProcessor {
 
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception, ResourceUnavailableException {
-        if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+        if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
             KEWServiceLocator.getWorkgroupRoutingService().activateRoutedWorkgroup(statusChangeEvent.getRouteHeaderId());
         }
         

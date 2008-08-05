@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
@@ -308,11 +308,11 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public String getRouteLogPopup() {
-		return Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
+		return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
 	}
 
 	public String getDocumentPopup() {
-		return Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
+		return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
 	}
 
 	public void setInitiator(String initiator) {

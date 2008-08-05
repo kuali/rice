@@ -22,7 +22,7 @@ import java.util.List;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.workflow.test.KEWTestCase;
@@ -48,16 +48,16 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
     @Test public void testEmailCreationPerformance() throws Exception {
         getMockEmailService().resetReminderCounts();
         assertEquals("total number of reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent());
-        assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_DAY_VAL));
-        assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_WEEK_VAL));
+        assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL));
+        assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL));
 
         long totalStartTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), EdenConstants.WEEKLY);
+        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), KEWConstants.WEEKLY);
         long weeklyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendWeeklyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
         long weeklyEndTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), EdenConstants.DAILY);
+        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), KEWConstants.DAILY);
         long dailyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendDailyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
@@ -66,19 +66,19 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
 
         // check performance
         LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent() + " weekly and daily reminder messages was " + (totalEndTimeInMills - totalStartTimeInMills) + " milliseconds");
-        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_WEEK_VAL) + " weekly reminder messages was " + (weeklyEndTimeInMills - weeklyStartTimeInMills) + " milliseconds");
-        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_DAY_VAL) + " daily reminder messages was " + (dailyEndTimeInMills - dailyStartTimeInMills) + " milliseconds");
-        assertTrue("total number of daily reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_DAY_VAL));
-        assertTrue("total number of weekly reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_WEEK_VAL));
+        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL) + " weekly reminder messages was " + (weeklyEndTimeInMills - weeklyStartTimeInMills) + " milliseconds");
+        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL) + " daily reminder messages was " + (dailyEndTimeInMills - dailyStartTimeInMills) + " milliseconds");
+        assertTrue("total number of daily reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL));
+        assertTrue("total number of weekly reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL));
 
         // each action item should take less than 1 second
         Integer totalSent = getMockEmailService().getTotalPeriodicRemindersSent();
         int expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Total time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (totalEndTimeInMills - totalStartTimeInMills));
-        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Weekly Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (weeklyEndTimeInMills - weeklyStartTimeInMills));
-        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_DAY_VAL);
+        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
     }

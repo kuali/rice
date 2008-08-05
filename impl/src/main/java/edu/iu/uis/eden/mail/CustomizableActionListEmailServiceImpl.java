@@ -21,7 +21,7 @@ package edu.iu.uis.eden.mail;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -70,9 +70,9 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
             return;
         }
         EmailContent content;
-        if (EdenConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
+        if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
             content = getEmailContentGenerator().generateDailyReminder(user, actionItems);
-        } else if (EdenConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
+        } else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
             content = getEmailContentGenerator().generateWeeklyReminder(user, actionItems);
         } else {
             // else...refactor this...

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actions;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -45,7 +45,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param user
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
+        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
     }
     
     /**
@@ -55,7 +55,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param workgroup
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, Workgroup workgroup) {
-        super(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
         this.workgroup = workgroup;
     }
     
@@ -96,7 +96,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
                     if (! actionItem.getWorkflowId().equals(getUser().getWorkflowId())) {
                         return "User attempting to release workgroup authority did not take it.";
                     } else if (!forValidationOnly) {
-                        actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation
+                        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation
                         getActionRequestService().activateRequest(actionRequest);
                     }
                 }

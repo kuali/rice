@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -359,7 +359,7 @@ public class ActionListServiceImpl implements ActionListService {
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd empty.",
                     "actionitem.actionrequestcd.empty", actionItem.getActionItemId().toString()));
-        } else if (!EdenConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
+        } else if (!KEWConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd invalid.",
                     "actionitem.actionrequestcd.invalid", actionItem.getActionItemId().toString()));
         }
@@ -454,7 +454,7 @@ public class ActionListServiceImpl implements ActionListService {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
                     && Core.getCurrentContextConfig().getOutBoxOn()
                     && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getUser().getWorkflowId()) == null
-                    && !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
+                    && !actionItem.getRouteHeader().getDocRouteStatus().equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
                 // only create an outbox item if this user has taken action on the document
                 ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
                         actionItem.getActionRequestId());

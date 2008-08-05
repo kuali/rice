@@ -23,7 +23,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.plugin.Plugin;
@@ -112,7 +112,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 	
 	protected boolean useRemoteIdentityServices() {
-	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(EdenConstants.USE_REMOTE_IDENTITY_SERVICES);
+	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_IDENTITY_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
 	        return new Boolean(useRemoteIdentityServicesValue.trim());
 	    }
@@ -120,7 +120,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 	
 	protected boolean useRemoteEmailServices() {
-	    String useRemoteEmailServicesValue = Core.getCurrentContextConfig().getProperty(EdenConstants.USE_REMOTE_EMAIL_SERVICES);
+	    String useRemoteEmailServicesValue = Core.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_EMAIL_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteEmailServicesValue)) {
 	        return new Boolean(useRemoteEmailServicesValue.trim());
 	    }

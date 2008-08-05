@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.user.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
@@ -43,7 +43,7 @@ public class WorkflowUserForm extends ActionForm {
     }
 
     public String getInstructionForCreateNew() {
-        return Utilities.getApplicationConstant(EdenConstants.USER_CREATE_NEW_INSTRUCTION_KEY);
+        return Utilities.getApplicationConstant(KEWConstants.USER_CREATE_NEW_INSTRUCTION_KEY);
     }
     
 	public WebWorkflowUser getUser() {

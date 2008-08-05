@@ -33,7 +33,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -187,7 +187,7 @@ public class NoteAction extends WorkflowAction {
         if (! "workflowReport".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "add".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "cancel".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "edit".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "delete".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "save".equalsIgnoreCase(noteForm.getMethodToCall())) {
             retrieveNoteList(request, noteForm);
         }
-        noteForm.setShowAttachments(new Boolean(Utilities.getApplicationConstant(EdenConstants.APP_CONST_SHOW_ATTACHMENTS)));
+        noteForm.setShowAttachments(new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_SHOW_ATTACHMENTS)));
         return null;
     }
 
@@ -222,11 +222,11 @@ public class NoteAction extends WorkflowAction {
                 }
             }
             if (noteForm.getSortNotes() != null && noteForm.getSortNotes().booleanValue()) { 
-                if (EdenConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
-                    noteForm.setSortOrder(EdenConstants.Sorting.SORT_SEQUENCE_ASC);
+                if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
+                    noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
                     noteForm.setSortNotes(new Boolean(false));
                 } else {
-                    noteForm.setSortOrder(EdenConstants.Sorting.SORT_SEQUENCE_DSC);
+                    noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_DSC);
                     noteForm.setSortNotes(new Boolean(false));
                 }
             } else {
@@ -269,7 +269,7 @@ public class NoteAction extends WorkflowAction {
     }
     
     private List sortNotes(List allNotes, String sortOrder) {
-        final int returnCode = EdenConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;  
+        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;  
 
         try {
           Collections.sort(allNotes,

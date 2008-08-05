@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 import org.kuali.workflow.attribute.ExtensionData;
@@ -141,7 +141,7 @@ public class WorkGroupLookupableImpl implements WorkflowLookupable, Exportable {
 	private static List establishColumns() {
 		List columns = new ArrayList();
 		Column column = new Column("WorkGroup Id", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupId");
-		column.setType(EdenConstants.LOOKUP_COLUMN_TYPE_INTEGER);
+		column.setType(KEWConstants.LOOKUP_COLUMN_TYPE_INTEGER);
 		columns.add(column);
 		columns.add(new Column("WorkGroup Name", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupName"));
 		columns.add(new Column("Type", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupType"));
@@ -238,7 +238,7 @@ public class WorkGroupLookupableImpl implements WorkflowLookupable, Exportable {
 					if (!StringUtils.isEmpty(extensionValue)) {
 						newPair.setLabel(extensionValue);
 					} else {
-						newPair.setLabel(EdenConstants.HTML_NON_BREAKING_SPACE);
+						newPair.setLabel(KEWConstants.HTML_NON_BREAKING_SPACE);
 					}
 					myNewColumns.getColumns().add(newPair);
 				}
@@ -455,7 +455,7 @@ public class WorkGroupLookupableImpl implements WorkflowLookupable, Exportable {
 	 * @return Returns the instructions.
 	 */
 	public String getLookupInstructions() {
-		return Utilities.getApplicationConstant(EdenConstants.WORKGROUP_SEARCH_INSTRUCTION_KEY);
+		return Utilities.getApplicationConstant(KEWConstants.WORKGROUP_SEARCH_INSTRUCTION_KEY);
 	}
 
 	/**

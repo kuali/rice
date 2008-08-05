@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -79,7 +79,7 @@ public class ActionRequestFactory {
 	 * @return ActionRequestValue
 	 */
 	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean ignorePrevious, String annotation) {
-		return createActionRequest(actionRequested, new Integer(0), recipient, description, EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, ignorePrevious, annotation);
+		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, ignorePrevious, annotation);
 	}
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String annotation) {
@@ -123,7 +123,7 @@ public class ActionRequestFactory {
 
     //unify these 2 methods if possible
     public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws EdenUserNotFoundException {
-        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws EdenUserNotFoundException {
@@ -150,7 +150,7 @@ public class ActionRequestFactory {
     private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, WorkflowUser reasonUser, String notificationRequestCode, String actionTakenCode) throws EdenUserNotFoundException {
 
     	String annotation = generateNotificationAnnotation(reasonUser, notificationRequestCode, actionTakenCode, actionRequest);
-        ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
+        ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
 
         request.setDocVersion(actionRequest.getDocVersion());
         request.setApprovePolicy(actionRequest.getApprovePolicy());
@@ -163,7 +163,7 @@ public class ActionRequestFactory {
 
     private void setDefaultProperties(ActionRequestValue actionRequest) {
     	if (actionRequest.getApprovePolicy() == null) {
-    		actionRequest.setApprovePolicy(EdenConstants.APPROVE_POLICY_FIRST_APPROVE);
+    		actionRequest.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
     	}
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
         actionRequest.setCurrentIndicator(Boolean.TRUE);
@@ -174,20 +174,20 @@ public class ActionRequestFactory {
         	actionRequest.setNodeInstance(routeNode);
         }
         actionRequest.setJrfVerNbr(new Integer(0));
-        actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
+        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
         actionRequest.setRouteHeader(document);
     }
 
     private static void resolveRecipient(ActionRequestValue actionRequest, Recipient recipient) {
     	if (recipient instanceof WorkflowUser) {
-    		actionRequest.setRecipientTypeCd(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
     		actionRequest.setWorkflowId(((WorkflowUser)recipient).getWorkflowId());
     	} else if (recipient instanceof Workgroup){
-    		actionRequest.setRecipientTypeCd(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
     		actionRequest.setWorkgroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
     	} else {
     		RoleRecipient role = (RoleRecipient)recipient;
-    		actionRequest.setRecipientTypeCd(EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
     		actionRequest.setRoleName(role.getRoleName());
     		actionRequest.setQualifiedRoleName(role.getQualifiedRoleName());
     		ResolvedQualifiedRole qualifiedRole = role.getResolvedQualifiedRole();

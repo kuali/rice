@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
@@ -129,7 +129,7 @@ public class UserSession implements Serializable {
     }
     
     public boolean setBackdoorId(String id) throws EdenUserNotFoundException {
-        if (! EdenConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment())) {
+        if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment())) {
             if (id.matches("^\\d*$")) {
                 this.backdoorId = new EmplId(id);
             } else {
@@ -198,7 +198,7 @@ public class UserSession implements Serializable {
     }
     
     public boolean isAdmin(){
-    	 Workgroup workflowAdminGroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
+    	 Workgroup workflowAdminGroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
     	 return workflowAdminGroup.hasMember(getWorkflowUser()); 
     }
     

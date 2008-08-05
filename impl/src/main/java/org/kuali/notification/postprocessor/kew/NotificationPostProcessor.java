@@ -36,7 +36,7 @@ import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -100,7 +100,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         
         LOG.info("NotificationPostProcessor detected end-user action " + event.getActionTaken().getActionTaken() + " on document " + event.getActionTaken().getRouteHeaderId());
 
-        if(actionTakenCode.equals(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(EdenConstants.ACTION_TAKEN_FYI_CD)) {
+        if(actionTakenCode.equals(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(KEWConstants.ACTION_TAKEN_FYI_CD)) {
             LOG.debug("User has taken either acknowledge or fy action (action code=" + actionTakenCode + 
                     ") for Notification action item with route header ID: " + event.getRouteHeaderId() + 
             ".  We are now changing the status of the associated NotificationMessageDelivery to REMOVED.");
@@ -114,9 +114,9 @@ public class NotificationPostProcessor implements PostProcessorRemote {
 
                 //get the id of the associated notification message delivery record
                 String cause;
-                if (EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
+                if (KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
                     cause = NotificationConstants.ACK_CAUSE;
-                } else if (EdenConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
+                } else if (KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
                     cause = NotificationConstants.FYI_CAUSE;
                 } else {
                     cause = "unknown";

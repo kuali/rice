@@ -66,7 +66,7 @@ public class BaseResourceLoader extends ResourceLoaderContainer implements Resou
 		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getMessageEntity()) ||
 				objectDefinition.getMessageEntity() == null ||
 				// TODO did we really want to check for the KEW_MESSAGING_ENTITY here???
-				//(EdenConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getMessageEntity()) && Core.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
+				//(KEWConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getMessageEntity()) && Core.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
 				Core.getCurrentContextConfig().getRunningEmbeddedServerMode()) {
 			Object object = ObjectDefinitionResolver.createObject(objectDefinition, this.classLoader, true);
 			if (object != null) {

@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.IDocHandler;
@@ -123,7 +123,7 @@ public class RemoveReplaceAction extends WorkflowAction {
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
-	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId()), EdenConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
+	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	if (form.getUser() == null) {
 	    throw new RuntimeException("Please enter a valid user id before choosing rules.");
 	}
-	List<RuleBaseValues> rules = KEWServiceLocator.getRuleService().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(form.getRuleRuleTemplate(), form.getRuleDocumentTypeName(), form.getUser().getWorkflowId(), EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+	List<RuleBaseValues> rules = KEWServiceLocator.getRuleService().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(form.getRuleRuleTemplate(), form.getRuleDocumentTypeName(), form.getUser().getWorkflowId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 	form.getRules().clear();
 	form.getRules().addAll(loadRemoveReplaceRules(form, rules));
 	return mapping.findForward("basic");
@@ -288,7 +288,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	ResponsibilityEvaluation eval = new ResponsibilityEvaluation();
 	List<RuleResponsibility> responsibilities = rule.getResponsibilities();
 	for (RuleResponsibility responsibility : responsibilities) {
-	    if (EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType()) &&
+	    if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType()) &&
 		    responsibility.getRuleResponsibilityName().equals(form.getUser().getWorkflowId())) {
 		eval.foundResponsibility = true;
 		eval.hasDelegations = responsibility.getDelegationRules().size() > 0;

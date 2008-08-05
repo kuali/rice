@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchVO;
@@ -189,8 +189,8 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 
   protected List<String> getAdminWorkgroups() {
 	  List<String> workgroups = new ArrayList<String>();
-	  String adminGroupName = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
-	  String docSearchAdminGroupName = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY);
+	  String adminGroupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
+	  String docSearchAdminGroupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY);
 	  if (!StringUtils.isEmpty(adminGroupName)) {
 		  workgroups.add(adminGroupName);
 	  }

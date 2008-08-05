@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.routetemplate.RuleDelegation;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
@@ -61,7 +61,7 @@ public class RuleTemplateForm extends ActionForm {
         this.ruleTemplate = new RuleTemplate();
         this.ruleTemplateAttribute = new RuleTemplateAttribute();
         methodToCall = "";
-        instructionForCreateNew = Utilities.getApplicationConstant(EdenConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION_KEY);
+        instructionForCreateNew = Utilities.getApplicationConstant(KEWConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION_KEY);
     }
 
     public Integer getEditAttribute() {

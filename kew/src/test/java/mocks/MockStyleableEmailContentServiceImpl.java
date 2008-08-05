@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -74,7 +74,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
             return super.getRouteHeader(actionItem);
         }
         DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
-        routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_ENROUTE_CD);
+        routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
         routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
         return routeHeader;
     }

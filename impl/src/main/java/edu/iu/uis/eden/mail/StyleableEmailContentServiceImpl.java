@@ -34,7 +34,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
@@ -70,7 +70,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected StyleService styleService;
     protected EmailStyleHelper styleHelper = new EmailStyleHelper();
-    protected String globalEmailStyleSheet = EdenConstants.EMAIL_STYLESHEET_NAME;
+    protected String globalEmailStyleSheet = KEWConstants.EMAIL_STYLESHEET_NAME;
     
     
     public void setStyleService(StyleService styleService) {

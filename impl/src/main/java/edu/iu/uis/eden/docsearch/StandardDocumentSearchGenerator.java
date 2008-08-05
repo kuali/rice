@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -595,7 +595,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docSearchVO.setDocTypeLabel(docTypeLabel);
 
         if ((activeIndicatorCode == null) || (activeIndicatorCode.trim().length() == 0)) {
-            docSearchVO.setActiveIndicatorCode(EdenConstants.ACTIVE_CD);
+            docSearchVO.setActiveIndicatorCode(KEWConstants.ACTIVE_CD);
         } else {
             docSearchVO.setActiveIndicatorCode(activeIndicatorCode);
         }
@@ -744,12 +744,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String tempWhereSql = getDocTitleSql(criteria.getDocTitle(), getGeneratedPredicatePrefix(whereSQL.length()));
         if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (StringUtils.isNotBlank(tempWhereSql)) ) {
         	// doc title is not blank
-        	defaultCreateDateDaysAgoValue = EdenConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
+        	defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
         }
         whereSQL.append(tempWhereSql);
         if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (StringUtils.isBlank(criteria.getDocRouteStatus())) ) {
             // if they haven't set any criteria, default the from created date to today minus days from constant variable
-        	defaultCreateDateDaysAgoValue = EdenConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
+        	defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
         }
         if (defaultCreateDateDaysAgoValue != null) {
         	// add a default create date
@@ -914,7 +914,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(approver.trim())).getWorkflowUserId().getWorkflowId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_TKN_T.DOC_HDR_ID and upper(EN_ACTN_TKN_T.ACTN_TKN_CD) = '" + EdenConstants.ACTION_TAKEN_APPROVED_CD + "' and EN_ACTN_TKN_T.ACTN_TKN_PRSN_EN_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_TKN_T.DOC_HDR_ID and upper(EN_ACTN_TKN_T.ACTN_TKN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and EN_ACTN_TKN_T.ACTN_TKN_PRSN_EN_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }
@@ -967,7 +967,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
         	StringBuffer routeNodeCriteria = new StringBuffer("and EN_RTE_NODE_T.RTE_NODE_NM ");
-        	if (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
+        	if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
         		routeNodeCriteria.append("= '" + docRouteLevel + "' ");
         	} else {
         		routeNodeCriteria.append("in (");
@@ -985,8 +985,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     // below logic should be to add the current node to the criteria if we haven't found the specified node
 					// and the logic qualifier is 'route nodes before specified'... or we have found the specified node and
 					// the logic qualifier is 'route nodes after specified'
-                    if ( (!foundSpecifiedNode && (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) || 
-                         (foundSpecifiedNode && (EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER.equalsIgnoreCase(docRouteLevelLogic.trim()))) ) {
+                    if ( (!foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) || 
+                         (foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER.equalsIgnoreCase(docRouteLevelLogic.trim()))) ) {
                     	if (routeNodeInCriteria.length() > 0) {
                     		routeNodeInCriteria.append(", ");
                     	}
@@ -1007,7 +1007,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     protected String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
         if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
-            return whereClausePredicatePrefix + "DOC_HDR.DOC_RTE_STAT_CD != '" + EdenConstants.ROUTE_HEADER_INITIATED_CD + "'";
+            return whereClausePredicatePrefix + "DOC_HDR.DOC_RTE_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
             return whereClausePredicatePrefix + " DOC_HDR.DOC_RTE_STAT_CD = '" + docRouteStatus.trim() + "'";
         }

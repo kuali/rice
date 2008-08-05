@@ -34,7 +34,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -297,7 +297,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             // role name exists... nothing else matters
             ruleResponsibilityNameCrit = new Criteria();
             ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_ROLE_ID);
+            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else {
             if (!Utilities.isEmpty(workflowId)) {
                 // workflow user id exists
@@ -305,7 +305,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
                     // searching user wishes to search for rules specific to user
                     ruleResponsibilityNameCrit = new Criteria();
                     ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-                    ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                    ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                 }
                 if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                     // at least one workgroup id exists and user wishes to search on workgroups
@@ -314,19 +314,19 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
                     }
                     Criteria workgroupCrit = new Criteria();
                     workgroupCrit.addIn("ruleResponsibilityName", workgroupIds);
-                    workgroupCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                    workgroupCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
                     ruleResponsibilityNameCrit.addOrCriteria(workgroupCrit);
                 }
             } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
                 // no user and one workgroup id
                 ruleResponsibilityNameCrit = new Criteria();
                 ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workgroupIds.iterator().next());
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
             } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
                 // no user and more than one workgroup id
                 ruleResponsibilityNameCrit = new Criteria();
                 ruleResponsibilityNameCrit.addIn("ruleResponsibilityName", workgroupIds);
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
             }
         }
         if (ruleResponsibilityNameCrit != null) {
@@ -418,7 +418,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	    	}
 		Criteria responsibilityCrit = new Criteria();
 		responsibilityCrit.addIn("ruleResponsibilityName", workgroupIds);
-		responsibilityCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+		responsibilityCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
 		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
 		query.setAttributes(new String[] { "ruleBaseValuesId" });
 		return query;

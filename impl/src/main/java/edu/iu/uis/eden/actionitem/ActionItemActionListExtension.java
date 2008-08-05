@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
@@ -102,7 +102,7 @@ public class ActionItemActionListExtension extends ActionItem {
                 delegatorName = delegatorWorkgroup.getGroupNameId().getNameId();
             }
         }
-        if (EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
+        if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
         	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getRouteHeaderId()));
         }
         isInitialized = true;

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 public class OrchestrationConfig {
 
     private boolean sendNotifications = true;
-    private String notificationType = EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+    private String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
     private Set destinationNodeNames = new HashSet();
     private ActionTakenValue cause;
     

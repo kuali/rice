@@ -32,7 +32,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -62,8 +62,8 @@ public class PartialAttributeContent implements DocumentContent {
             this.routeContext = routeContext;
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			this.document = documentBuilder.newDocument();
-			Element rootElement = document.createElement(EdenConstants.DOCUMENT_CONTENT_ELEMENT);
-			this.attributeContent = document.createElement(EdenConstants.ATTRIBUTE_CONTENT_ELEMENT);
+			Element rootElement = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
+			this.attributeContent = document.createElement(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT);
 			rootElement.appendChild(attributeContent);
 			for (Iterator iterator = attributeContents.iterator(); iterator.hasNext();) {
 				Element element = (Element) iterator.next();

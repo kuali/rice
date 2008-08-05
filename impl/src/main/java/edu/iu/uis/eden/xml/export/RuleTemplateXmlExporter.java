@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -103,7 +103,7 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
                 RuleTemplateOption supportsApprove = ruleTemplate.getApprove();
                 RuleTemplateOption supportsAck = ruleTemplate.getAcknowledge();
                 RuleTemplateOption supportsFYI = ruleTemplate.getFyi();
-                String defaultActionValue = (defaultActionOption == null ? EdenConstants.ACTION_REQUEST_APPROVE_REQ : defaultActionOption.getValue());
+                String defaultActionValue = (defaultActionOption == null ? KEWConstants.ACTION_REQUEST_APPROVE_REQ : defaultActionOption.getValue());
                 String supportsCompleteValue = (supportsComplete == null ? Boolean.TRUE.toString() : supportsComplete.getValue());
                 String supportsApproveValue = (supportsApprove == null ? Boolean.TRUE.toString() : supportsApprove.getValue());
                 String supportsAckValue = (supportsAck == null ? Boolean.TRUE.toString() : supportsAck.getValue());

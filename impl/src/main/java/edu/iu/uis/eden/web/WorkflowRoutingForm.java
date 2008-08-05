@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.IDocHandler;
@@ -263,11 +263,11 @@ public class WorkflowRoutingForm extends ActionForm {
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 		    	}else if(workflowDocument.isFYIRequested()){
 	                appSpecificRouteActionRequestCds.clear();
-	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+	                appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	            } else if (workflowDocument.isAcknowledgeRequested()){
 	                appSpecificRouteActionRequestCds.clear();
-	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+	                appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+	                appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	            } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.stateIsInitiated()){
 	                appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 	            }

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -196,19 +196,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 		routeHeader.setInitiatorWorkflowId(user.getWorkflowUserId().getWorkflowId());
 		if (routeHeader.getDocRouteStatus() == null) {
-			routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
+			routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
 		}
 		if (routeHeader.getDocRouteLevel() == null) {
-			routeHeader.setDocRouteLevel(new Integer(EdenConstants.ADHOC_ROUTE_LEVEL));
+			routeHeader.setDocRouteLevel(new Integer(KEWConstants.ADHOC_ROUTE_LEVEL));
 		}
 		if (routeHeader.getCreateDate() == null) {
 			routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
 		}
 		if (routeHeader.getDocVersion() == null) {
-			routeHeader.setDocVersion(new Integer(EdenConstants.CURRENT_DOCUMENT_VERSION));
+			routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
 		}
 		if (routeHeader.getDocContent() == null) {
-			routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
+			routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
 		}
 		routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);

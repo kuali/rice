@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
@@ -54,7 +54,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user);
     }
 
     /**
@@ -68,7 +68,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user, annotation);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -123,7 +123,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // Acknowledge Taken Code matches Fyi and Ack
-            if ( (EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) || (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ) {
+            if ( (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) || (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -146,7 +146,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
         LOG.debug("Acknowledging document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -157,7 +157,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
 //            throw new InvalidActionTakenException("Document is not in a state to be acknowledged");
 //        }
 //
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
 //        }

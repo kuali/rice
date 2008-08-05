@@ -22,7 +22,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -49,7 +49,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getApplicationEmailAddress() {
         // first check the configured value
-        String fromAddress = Utilities.getApplicationConstant(EdenConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
+        String fromAddress = Utilities.getApplicationConstant(KEWConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
         // if there's no value configured, use the default
         if (Utilities.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;
@@ -89,10 +89,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected String getActionListUrl() {
-        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY) + "/" + "ActionList.do";
+        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "ActionList.do";
     }
 
     protected String getPreferencesUrl() {
-        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY) + "/" + "Preferences.do";
+        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "Preferences.do";
     }
 }

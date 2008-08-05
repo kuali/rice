@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.ComparatorUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -82,11 +82,11 @@ public class DefaultNotificationService implements NotificationService {
 			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getWorkflowId()));
 			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
 			boolean sendEmail = false;
-			if (EdenConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
-				if (EdenConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
-					sendEmail = EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-				} else if (EdenConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
-					sendEmail = EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+			if (KEWConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
+				if (KEWConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
+					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+				} else if (KEWConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
+					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 				} else {
 					sendEmail = true;
 				}
@@ -106,7 +106,7 @@ public class DefaultNotificationService implements NotificationService {
 	 * returns true if the document type policy
 	 */
 	protected boolean isItemOriginatingFromSave(ActionItem actionItem) {
-		return actionItem.getResponsibilityId() != null && actionItem.getResponsibilityId().equals(EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID);
+		return actionItem.getResponsibilityId() != null && actionItem.getResponsibilityId().equals(KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID);
 	}
 	
 	protected boolean shouldNotifyOnSave(ActionItem actionItem) {

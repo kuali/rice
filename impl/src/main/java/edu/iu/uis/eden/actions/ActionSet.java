@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -55,58 +55,58 @@ public class ActionSet implements Serializable {
 	// some convienance methods for common actions
 	
 	public boolean hasApprove() {
-		return hasAction(EdenConstants.ACTION_TAKEN_APPROVED_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_APPROVED_CD);
 	}
 	
 	public boolean hasComplete() {
-		return hasAction(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_COMPLETED_CD);
 	}
 	
 	public boolean hasAcknowledge() {
-		return hasAction(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
 	}
 	
 	public boolean hasFyi() {
-		return hasAction(EdenConstants.ACTION_TAKEN_FYI_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_FYI_CD);
 	}
 	
 	public boolean hasDisapprove() {
-		return hasAction(EdenConstants.ACTION_TAKEN_DENIED_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_DENIED_CD);
 	}
 	
 	public boolean hasCancel() {
-		return hasAction(EdenConstants.ACTION_TAKEN_CANCELED_CD);
+		return hasAction(KEWConstants.ACTION_TAKEN_CANCELED_CD);
 	}
 
     public boolean hasRouted() {
-        return hasAction(EdenConstants.ACTION_TAKEN_ROUTED_CD);
+        return hasAction(KEWConstants.ACTION_TAKEN_ROUTED_CD);
     }
 
 	public boolean addApprove() {
-		return addAction(EdenConstants.ACTION_TAKEN_APPROVED_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_APPROVED_CD);
 	}
 	
 	public boolean addComplete() {
-		return addAction(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_COMPLETED_CD);
 	}
 	
 	public boolean addAcknowledge() {
-		return addAction(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
 	}
 	
 	public boolean addFyi() {
-		return addAction(EdenConstants.ACTION_TAKEN_FYI_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_FYI_CD);
 	}
 	
 	public boolean addDisapprove() {
-		return addAction(EdenConstants.ACTION_TAKEN_DENIED_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_DENIED_CD);
 	}
 	
 	public boolean addCancel() {
-		return addAction(EdenConstants.ACTION_TAKEN_CANCELED_CD);
+		return addAction(KEWConstants.ACTION_TAKEN_CANCELED_CD);
 	}
 
     public boolean addRouted() {
-        return addAction(EdenConstants.ACTION_TAKEN_ROUTED_CD);
+        return addAction(KEWConstants.ACTION_TAKEN_ROUTED_CD);
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -82,7 +82,7 @@ public class RoleServiceTest extends KEWTestCase {
 
 	@Test public void testReResolveQualifiedRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(EdenConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		List requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
@@ -95,7 +95,7 @@ public class RoleServiceTest extends KEWTestCase {
 		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_1, newGroup1Recipients);
 		roleService.reResolveQualifiedRole(loadedDocument, TEST_ROLE, TEST_GROUP_1);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(EdenConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		requests = getTestRoleRequests(loadedDocument);
         // rkirkend is the initiator so his action should count for the TEST_GROUP_1 role after re-resolving, leaving only a single role request
 		assertEquals("Incorrect number of role control requests.", 1, requests.size());
@@ -142,7 +142,7 @@ public class RoleServiceTest extends KEWTestCase {
 
 	@Test public void testReResolveRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(EdenConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		List requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
@@ -158,7 +158,7 @@ public class RoleServiceTest extends KEWTestCase {
 		// re-resolve entire role
 		roleService.reResolveRole(loadedDocument, TEST_ROLE);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(EdenConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		requests = getTestRoleRequests(loadedDocument);
 		// should be 1 because group 1 has no members
 		assertEquals("Incorrect number of role control requests.", 1, requests.size());
@@ -237,8 +237,8 @@ public class RoleServiceTest extends KEWTestCase {
 		assertEquals("Incorrect role name.", roleName, request.getRoleName());
 		assertEquals("Incorrect qualified role name.", qualifiedRoleName, request.getQualifiedRoleName());
 		assertEquals("Incorrect qualified role name label.", qualifiedRoleName, request.getQualifiedRoleNameLabel());
-		assertTrue("Request should be activated or done.", EdenConstants.ACTION_REQUEST_ACTIVATED.equals(request.getStatus()) ||
-				EdenConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus()));
+		assertTrue("Request should be activated or done.", KEWConstants.ACTION_REQUEST_ACTIVATED.equals(request.getStatus()) ||
+				KEWConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus()));
 	}
 
 	private boolean containsUser(List users, WorkflowUser user) throws Exception {
@@ -258,7 +258,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
         WorkflowUser initiator = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, documentId);
+		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			if (!initiator.getWorkflowId().equals(request.getWorkflowId())) {
@@ -288,11 +288,11 @@ public class RoleServiceTest extends KEWTestCase {
 		List responsibilities = new ArrayList();
 		routeLevel1.setResponsibilities(responsibilities);
 		TestResponsibility responsibility1 = new TestResponsibility();
-		responsibility1.setActionRequested(EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+		responsibility1.setActionRequested(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 		responsibility1.setPriority(1);
 		TestRecipient recipient1 = new TestRecipient();
 		recipient1.setId("rkirkend");
-		recipient1.setType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+		recipient1.setType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 		responsibility1.setRecipient(recipient1);
 		responsibilities.add(responsibility1);
 		return docContent;

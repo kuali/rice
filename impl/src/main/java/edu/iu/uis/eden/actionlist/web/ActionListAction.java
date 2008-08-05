@@ -44,7 +44,7 @@ import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -130,7 +130,7 @@ public class ActionListAction extends WorkflowAction {
             WorkflowUser workflowUser = null;
             if (uSession.getActionListFilter() == null) {
                 ActionListFilter filter = new ActionListFilter();
-                filter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
                 filter.setExcludeDelegationType(true);
                 uSession.setActionListFilter(filter);
             }
@@ -189,8 +189,8 @@ public class ActionListAction extends WorkflowAction {
             request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
             
             // build the drop-down of delegators
-            if (EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
-                form.setDelegators(getDelegators(actionListSrv, workflowUser, EdenConstants.DELEGATION_SECONDARY));
+            if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
+                form.setDelegators(getDelegators(actionListSrv, workflowUser, KEWConstants.DELEGATION_SECONDARY));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
             }
 
@@ -325,24 +325,24 @@ public class ActionListAction extends WorkflowAction {
     			routeHeaderExtension.setActionListInitiatorUser(routeHeaderExtension.getInitiatorUser());
     			actionItem.setActionItemIndex(new Integer(index));
     			//set background colors for document statuses
-    			if (EdenConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
-    			} else if (EdenConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
-    			} else if (EdenConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
-    			} else if (EdenConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
-    			} else if (EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
-    			} else if (EdenConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
-    			} else if (EdenConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
-    			} else if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
-    			} else if (EdenConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)EdenConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
+    			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
+    			} else if (KEWConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
+    			} else if (KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
+    			} else if (KEWConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
+    			} else if (KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
+    			} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
+    			} else if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
+    			} else if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
+    			} else if (KEWConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
+    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
     			}
     			index++;
     		} catch (Exception e) {
@@ -362,7 +362,7 @@ public class ActionListAction extends WorkflowAction {
      */
     protected int getPageSize(Preferences preferences) {
     	int pageSize = Integer.parseInt(preferences.getPageSize());
-    	String pageSizeThrottle = Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
+    	String pageSizeThrottle = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
     	if (!StringUtils.isEmpty(pageSizeThrottle)) {
     		try {
     			int throttle = Integer.parseInt(pageSizeThrottle);
@@ -370,7 +370,7 @@ public class ActionListAction extends WorkflowAction {
     				pageSize = throttle;
     			}
     		} catch (Exception e) {
-    			LOG.warn("Encountered an error when parsing " + EdenConstants.ACTION_LIST_PAGE_SIZE_THROTTLE + ", " + e.getClass().getName() + ": " + e.getMessage());
+    			LOG.warn("Encountered an error when parsing " + KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE + ", " + e.getClass().getName() + ": " + e.getMessage());
     		}
     	}
     	return pageSize;
@@ -403,24 +403,24 @@ public class ActionListAction extends WorkflowAction {
     				Map customActions = new LinkedHashMap();
     				customActions.put("NONE", "NONE");
     				ActionSet legalActions = customActionListAttribute.getLegalActions(UserSession.getAuthenticatedUser(), actionItem);
-    				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, EdenConstants.ACTION_TAKEN_APPROVED_CD)) {
-    					customActions.put(EdenConstants.ACTION_TAKEN_APPROVED_CD, EdenConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_APPROVED_CD)) {
+    					customActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     					itemHasApproves = true;
     				}
-    				if (legalActions != null && legalActions.hasDisapprove() && isActionCompatibleRequest(actionItem, EdenConstants.ACTION_TAKEN_DENIED_CD)) {
-    					customActions.put(EdenConstants.ACTION_TAKEN_DENIED_CD, EdenConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
+    				if (legalActions != null && legalActions.hasDisapprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_DENIED_CD)) {
+    					customActions.put(KEWConstants.ACTION_TAKEN_DENIED_CD, KEWConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
     					itemHasDisapproves = true;
     				}
-    				if (legalActions != null && legalActions.hasCancel() && isActionCompatibleRequest(actionItem, EdenConstants.ACTION_TAKEN_CANCELED_CD)) {
-    					customActions.put(EdenConstants.ACTION_TAKEN_CANCELED_CD, EdenConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasCancel() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_CANCELED_CD)) {
+    					customActions.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, KEWConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
     					itemHasCancels = true;
     				}
-    				if (legalActions != null && legalActions.hasAcknowledge() && isActionCompatibleRequest(actionItem, EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD)) {
-    					customActions.put(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasAcknowledge() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD)) {
+    					customActions.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
     					itemHasAcknowledges = true;
     				}
-    				if (legalActions != null && legalActions.hasFyi() && isActionCompatibleRequest(actionItem, EdenConstants.ACTION_TAKEN_FYI_CD) && EdenConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    					customActions.put(EdenConstants.ACTION_TAKEN_FYI_CD, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasFyi() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_FYI_CD) && KEWConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
+    					customActions.put(KEWConstants.ACTION_TAKEN_FYI_CD, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
     					itemHasFyis = true;
     				}
     				if (customActions.size() > 1) {
@@ -448,24 +448,24 @@ public class ActionListAction extends WorkflowAction {
     	Map defaultActions = new LinkedHashMap();
     	defaultActions.put("NONE", "NONE");
     	if (haveApproves) {
-    		defaultActions.put(EdenConstants.ACTION_TAKEN_APPROVED_CD, EdenConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+    		defaultActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveDisapproves) {
-    		defaultActions.put(EdenConstants.ACTION_TAKEN_DENIED_CD, EdenConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
+    		defaultActions.put(KEWConstants.ACTION_TAKEN_DENIED_CD, KEWConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveCancels) {
-    		defaultActions.put(EdenConstants.ACTION_TAKEN_CANCELED_CD, EdenConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
+    		defaultActions.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, KEWConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveAcknowledges) {
-    		defaultActions.put(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+    		defaultActions.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	//clearing FYI's can be done in any action list not just a customized one
-    	if (haveFyis && EdenConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    		defaultActions.put(EdenConstants.ACTION_TAKEN_FYI_CD, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+    	if (haveFyis && KEWConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
+    		defaultActions.put(KEWConstants.ACTION_TAKEN_FYI_CD, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
     	}
     	if (defaultActions.size() > 1) {
     		form.setDefaultActions(defaultActions);
@@ -583,22 +583,22 @@ public class ActionListAction extends WorkflowAction {
         String requestCd = actionItem.getActionRequestCd();
 
         //FYI request matches FYI
-        if (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(requestCd) && EdenConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
+        if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(requestCd) && KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
             actionCompatible = true || actionCompatible;
         }
 
         // ACK request matches ACK
-        if (EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(requestCd) && EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
+        if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(requestCd) && KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
             actionCompatible = true || actionCompatible;
         }
 
         // APPROVE request matches all but FYI and ACK
-        if (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(requestCd) && !(EdenConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
+        if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(requestCd) && !(KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
             actionCompatible = true || actionCompatible;
         }
 
         // COMPLETE request matches all but FYI and ACK
-        if (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(requestCd) && !(EdenConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
+        if (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(requestCd) && !(KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
             actionCompatible = true || actionCompatible;
         }
 
@@ -616,21 +616,21 @@ public class ActionListAction extends WorkflowAction {
         request.setAttribute("preferences", getUserSession(request).getPreferences());
 
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
-        String edenHelpDeskWgName = Utilities.getApplicationConstant(EdenConstants.HELP_DESK_ACTION_LIST_KEY);
+        String edenHelpDeskWgName = Utilities.getApplicationConstant(KEWConstants.HELP_DESK_ACTION_LIST_KEY);
         if (edenHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(edenHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
             request.setAttribute("helpDeskActionList", "true");
         }
-        String routeLogPopup = Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY);
+        String routeLogPopup = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY);
         if (StringUtils.isEmpty(routeLogPopup)) {
         	routeLogPopup = "false";
         }
-        String documentPopup = Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_DOCUMENT_POPUP_KEY);
+        String documentPopup = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_DOCUMENT_POPUP_KEY);
         if (StringUtils.isEmpty(documentPopup)) {
         	documentPopup = "false";
         }
         actionListForm.setRouteLogPopup(routeLogPopup.trim());
         actionListForm.setDocumentPopup(documentPopup.trim());
-        request.setAttribute("noRefresh", new Boolean(Core.getCurrentContextConfig().getProperty(EdenConstants.ACTION_LIST_NO_REFRESH)));
+        request.setAttribute("noRefresh", new Boolean(Core.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
         LOG.debug("end establishRequiredState ActionListAction");
         return null;
     }

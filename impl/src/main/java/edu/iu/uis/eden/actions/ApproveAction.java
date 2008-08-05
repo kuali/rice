@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -53,7 +53,7 @@ public class ApproveAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public ApproveAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user);
+        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ApproveAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public ApproveAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -73,7 +73,7 @@ public class ApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -114,10 +114,10 @@ public class ApproveAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // Approve action matches Complete, Approve, FYI, and ACK requests
-            if ( (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
-                    (EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
-                    (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                    (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
+                    (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
+                    (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                    (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -141,7 +141,7 @@ public class ApproveAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Approving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -151,7 +151,7 @@ public class ApproveAction extends ActionTakenEvent {
 //              LOG.warn("Document not in state to be approved.");
 //              throw new InvalidActionTakenException("Document is not in a state to be approved");
 //        }
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //            throw new InvalidActionTakenException("No request for the user is compatible " + "with the APPROVE action");
 //        }
@@ -169,7 +169,7 @@ public class ApproveAction extends ActionTakenEvent {
         boolean isSaved = getRouteHeader().isStateSaved();
         if (isException || isSaved) {
             String oldStatus = getRouteHeader().getDocRouteStatus();
-            LOG.debug("Moving document back to Enroute from "+EdenConstants.DOCUMENT_STATUSES.get(oldStatus));
+            LOG.debug("Moving document back to Enroute from "+KEWConstants.DOCUMENT_STATUSES.get(oldStatus));
             getRouteHeader().markDocumentEnroute();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);

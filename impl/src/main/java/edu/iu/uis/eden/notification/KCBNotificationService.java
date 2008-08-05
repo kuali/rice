@@ -24,7 +24,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.vo.MessageVO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -41,7 +41,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         super.sendNotification(actionItem);
 
         // we only send per-user messages to KCB
-        if (!EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
+        if (!KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
             return;
 
         

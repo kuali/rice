@@ -37,7 +37,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -162,14 +162,14 @@ public class RuleBaseValues implements WorkflowPersistable {
             WorkflowAttribute workflowAttribute = ruleExtension.getRuleTemplateAttribute().getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleExtension.getRuleTemplateAttribute().getRuleAttribute();
-            if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
             }
             for (Iterator iterator = workflowAttribute.getRuleRows().iterator(); iterator.hasNext();) {
                 Row row = (Row) iterator.next();
                 for (Iterator iterator3 = row.getFields().iterator(); iterator3.hasNext();) {
                     Field field = (Field) iterator3.next();
-                    if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+                    if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
                     } else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
                         extensionLabels.put(field.getDefaultLookupableName(), field.getFieldLabel());
@@ -347,7 +347,7 @@ public class RuleBaseValues implements WorkflowPersistable {
 
     public String getActiveIndDisplay() {
         if (getActiveInd() == null) {
-            return EdenConstants.INACTIVE_LABEL_LOWER;
+            return KEWConstants.INACTIVE_LABEL_LOWER;
         }
         return CodeTranslator.getActiveIndicatorLabel(getActiveInd());
     }
@@ -525,7 +525,7 @@ public class RuleBaseValues implements WorkflowPersistable {
             WorkflowAttribute routingAttribute = (WorkflowAttribute) ruleTemplateAttribute.getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-            if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
             }
             String className = ruleAttribute.getClassName();
@@ -546,7 +546,7 @@ public class RuleBaseValues implements WorkflowPersistable {
     public RuleResponsibility findResponsibility(String roleName) {
         for (Iterator iter = getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility resp = (RuleResponsibility) iter.next();
-            if (EdenConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
+            if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
                     && roleName.equals(resp.getRuleResponsibilityName())) {
                 return resp;
             }

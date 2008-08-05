@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
@@ -123,7 +123,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 */
 	@Override
 	public void setUpInternal() throws Exception {
-	    System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
 	    super.setUpInternal();
 	    loadTestDataInternal();
 	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
@@ -174,7 +174,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	}
 	
 	protected int getJettyServerPort() {
-//	    String port = Core.getCurrentContextConfig().getProperty(EdenConstants.HTTP_SERVICE_PORT);
+//	    String port = Core.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT);
 //	    if (StringUtils.isNotBlank(port)) {
 //	        return Integer.valueOf(port).intValue();
 //	    }

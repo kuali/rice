@@ -25,7 +25,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -46,11 +46,11 @@ public class AdHocRouteTest extends KEWTestCase {
 	public void testParallelAdHocRouting() throws Exception {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
     	docId = doc.getRouteHeaderId();
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
 
     	doc = getDocument("dewey");
     	assertFalse("User andlee should not have an approve request yet.  Document not yet routed.", doc.isApprovalRequested());
-    	doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
 
     	doc = getDocument("quickstart");
     	assertFalse("User should not have approve request yet.  Document not yet routed.", doc.isApprovalRequested());
@@ -90,7 +90,7 @@ public class AdHocRouteTest extends KEWTestCase {
         final String ADHOC_NODE = "AdHoc";
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
         docId = doc.getRouteHeaderId();
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", true);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", true);
 
         doc.routeDocument("");
         assertTrue(doc.stateIsEnroute());
@@ -102,7 +102,7 @@ public class AdHocRouteTest extends KEWTestCase {
         // now try it with ignore previous=false
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
         docId = doc.getRouteHeaderId();
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", false);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", false);
 
         doc.routeDocument("");
         assertTrue(doc.stateIsEnroute());
@@ -120,8 +120,8 @@ public class AdHocRouteTest extends KEWTestCase {
     	docId = doc.getRouteHeaderId();
     	doc.routeDocument("");
     	doc = getDocument("user1");
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("user2"), "", false);
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("rkirkend"), "", true);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("user2"), "", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("rkirkend"), "", true);
     	doc.approve("");
     	doc = getDocument("rkirkend");
     	assertFalse("rkirkend should not have the document at this point 'S' activation", doc.isApprovalRequested());
@@ -138,7 +138,7 @@ public class AdHocRouteTest extends KEWTestCase {
         final String ADHOC_NODE = "AdHoc";
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
         docId = doc.getRouteHeaderId();
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("user2"), "", false);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("user2"), "", false);
         doc.routeDocument("");
         doc = getDocument("rkirkend");
         assertFalse("rkirkend should NOT have an approval request on the document", doc.isApprovalRequested());
@@ -148,14 +148,14 @@ public class AdHocRouteTest extends KEWTestCase {
 
         doc = getDocument("user2");
         assertTrue("user2 should have an approval request on document", doc.isApprovalRequested());
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("user3"), "", false);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("user3"), "", false);
         doc.approve("");
         doc = getDocument("user2");
         assertFalse("user2 should NOT have an approval request on the document", doc.isApprovalRequested());
 
         doc = getDocument("user3");
         assertTrue("user3 should have an approval request on document", doc.isApprovalRequested());
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", true);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdDTO("rkirkend"), "", true);
         doc.approve("");
         doc = getDocument("user3");
         assertFalse("user3 should NOT have an approval request on the document", doc.isApprovalRequested());
@@ -189,8 +189,8 @@ public class AdHocRouteTest extends KEWTestCase {
         document.saveRoutingData();
         assertTrue(document.stateIsInitiated());
 
-        document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "My Annotation", new NetworkIdDTO("rkirkend"), "", true);
-        document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "My Annotation", new NetworkIdDTO("user1"), "", true);
+        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "My Annotation", new NetworkIdDTO("rkirkend"), "", true);
+        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "My Annotation", new NetworkIdDTO("user1"), "", true);
 
         // this is an initiated document, the requests should not be activated yet
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
@@ -243,7 +243,7 @@ public class AdHocRouteTest extends KEWTestCase {
         // it should be legal to adhoc an FYI on a FINAL document
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertFalse("rkirkend should not have an FYI request.", document.isFYIRequested());
-    	document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "WorkgroupByDocument", "", new NetworkIdDTO("rkirkend"), "", true);
+    	document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "WorkgroupByDocument", "", new NetworkIdDTO("rkirkend"), "", true);
     	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue("rkirkend should have an FYI request", document.isFYIRequested());
     }
@@ -255,7 +255,7 @@ public class AdHocRouteTest extends KEWTestCase {
         // TODO test adhocing of approve requests
 
         assertTrue("Document should be saved.", document.stateIsSaved());
-    	document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "", new NetworkIdDTO("rkirkend"), "", true);
+    	document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "", new NetworkIdDTO("rkirkend"), "", true);
     	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
     	assertTrue("rkirkend should have an FYI request", document.isFYIRequested());
     }
@@ -272,7 +272,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
         // send the adhoc route request
         doc = getDocument("user1");
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("user2"), "respDesc", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdDTO("user2"), "respDesc", false);
  
     	// adhoc request should be only new request on document
     	ActionRequestValue request = null;
@@ -288,7 +288,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	// verify request data
         assertEquals("wrong person", request.getWorkflowUser().getAuthenticationUserId().getAuthenticationId(), "user2");
     	assertEquals("annotation incorrect", "annotation1", request.getAnnotation());
-    	assertEquals("action requested code incorrect", request.getActionRequested(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+    	assertEquals("action requested code incorrect", request.getActionRequested(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     	assertEquals("responsibility desc incorrect", request.getResponsibilityDesc(), "respDesc");
     	assertEquals("wrong ignore previous", request.getIgnorePrevAction(), Boolean.FALSE);
 

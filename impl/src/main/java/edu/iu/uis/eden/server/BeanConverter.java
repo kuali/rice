@@ -84,7 +84,7 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -177,7 +177,7 @@ public class BeanConverter {
             if (routeHeader.getDocumentType() != null) {
                 routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
             }
-            String topActionRequested = EdenConstants.ACTION_REQUEST_FYI_REQ;
+            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 // below will control what buttons are drawn on the client we only want the
@@ -224,7 +224,7 @@ public class BeanConverter {
             if (routeHeader.getDocumentType() != null) {
                 routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
             }
-            String topActionRequested = EdenConstants.ACTION_REQUEST_FYI_REQ;
+            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 // below will control what buttons are drawn on the client we only want the
@@ -367,10 +367,10 @@ public class BeanConverter {
         // if (updatedDocumentContent != null) {
         // routeHeader.setDocContent(updatedDocumentContent);
         // } else {
-        // routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
+        // routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
         // }
         if (StringUtils.isEmpty(routeHeader.getDocContent())) {
-            routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
+            routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
         }
         routeHeader.setDocRouteLevel(routeHeaderVO.getDocRouteLevel());
         routeHeader.setDocRouteStatus(routeHeaderVO.getDocRouteStatus());
@@ -440,10 +440,10 @@ public class BeanConverter {
      */
     public static String buildUpdatedDocumentContent(DocumentContentDTO documentContentVO) throws WorkflowException {
         DocumentType documentType = null;
-        String documentContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
+        String documentContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
         try {
             // parse the existing content on the document
-            String existingDocContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
+            String existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
             if (documentContentVO.getRouteHeaderId() != null) {
                 DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getRouteHeaderId());
                 documentType = document.getDocumentType();
@@ -452,21 +452,21 @@ public class BeanConverter {
             StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = builder.newDocument();
-            Element root = document.createElement(EdenConstants.DOCUMENT_CONTENT_ELEMENT);
+            Element root = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
             document.appendChild(root);
             Element applicationContentElement = standardDocContent.getApplicationContent();
             if (documentContentVO.getApplicationContent() != null) {
                 // application content has changed
                 if (!Utilities.isEmpty(documentContentVO.getApplicationContent())) {
-                    applicationContentElement = document.createElement(EdenConstants.APPLICATION_CONTENT_ELEMENT);
+                    applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
                     XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
                 } else {
                     // they've cleared the application content
                     applicationContentElement = null;
                 }
             }
-            Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), EdenConstants.ATTRIBUTE_CONTENT_ELEMENT, documentType);
-            Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), EdenConstants.SEARCHABLE_CONTENT_ELEMENT, documentType);
+            Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT, documentType);
+            Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), KEWConstants.SEARCHABLE_CONTENT_ELEMENT, documentType);
             if (applicationContentElement != null) {
                 root.appendChild(applicationContentElement);
             }
@@ -513,10 +513,10 @@ public class BeanConverter {
                 RuleAttribute ruleAttribute = definition.getRuleAttribute();
                 Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
                 boolean propertiesAsMap = false;
-                if (EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                     ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
                     propertiesAsMap = true;
-                } else if (EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                     ((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
                     propertiesAsMap = true;
                 }
@@ -633,7 +633,7 @@ public class BeanConverter {
         userVO.setFirstName(user.getGivenName());
         userVO.setEmailAddress(user.getEmailAddress());
         // Preferences preferences = SpringServiceLocator.getPreferencesService().getPreferences(user);
-        // userVO.setUserPreferencePopDocHandler(EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
+        // userVO.setUserPreferencePopDocHandler(KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
 
         userVO.setUserPreferencePopDocHandler(true);
         return userVO;
@@ -675,9 +675,9 @@ public class BeanConverter {
         if (currentInd == null) {
             docTypeVO.setDocTypeCurrentInd(null);
         } else if (currentInd.booleanValue()) {
-            docTypeVO.setDocTypeCurrentInd(EdenConstants.ACTIVE_CD);
+            docTypeVO.setDocTypeCurrentInd(KEWConstants.ACTIVE_CD);
         } else {
-            docTypeVO.setDocTypeCurrentInd(EdenConstants.INACTIVE_CD);
+            docTypeVO.setDocTypeCurrentInd(KEWConstants.INACTIVE_CD);
         }
         docTypeVO.setPostProcessorName(docType.getPostProcessorName());
         docTypeVO.setDocTypeJndiFactoryClass(null);
@@ -1155,7 +1155,7 @@ public class BeanConverter {
             String parameter = definitionVO.getConstructorParameters()[index];
             definition.addConstructorParameter(new DataDefinition(parameter, String.class));
         }
-        boolean propertiesAsMap = EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
         if (!propertiesAsMap) {
             for (int index = 0; index < definitionVO.getProperties().length; index++) {
                 PropertyDefinitionDTO propertyDefVO = definitionVO.getProperties()[index];

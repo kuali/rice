@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -224,7 +224,7 @@ public class SuperUserActionTest extends KEWTestCase {
         assertEquals("Document should be at start node","AdHoc", document.getNodeNames()[0]);
         document.routeDocument("");
         assertEquals("Document should be at WorkflowDocument2 node","WorkflowDocument2", document.getNodeNames()[0]);
-        assertEquals("Document should be enroute",EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should be enroute",KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         return document;
 	}
 	

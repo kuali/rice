@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
@@ -49,7 +49,7 @@ public class NamedRuleSelector implements RuleSelector {
         String ruleName = null;
         RouteNode routeNodeDef = nodeInstance.getRouteNode();
         // first check to see if there is a rule name configured on the node instance
-        NodeState ns = nodeInstance.getNodeState(EdenConstants.RULE_NAME_NODE_STATE_KEY);
+        NodeState ns = nodeInstance.getNodeState(KEWConstants.RULE_NAME_NODE_STATE_KEY);
         if (ns != null) {
             ruleName = ns.getValue();
         } else {

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -44,7 +44,7 @@ public class CompatUtils {
         if (isRouteLevelCompatible(documentType)) {
             return getLevelForNode(documentType.getPrimaryProcess().getInitialRouteNode(), nodeName, new Integer(0));
         }
-        return new Integer(EdenConstants.INVALID_ROUTE_LEVEL);
+        return new Integer(KEWConstants.INVALID_ROUTE_LEVEL);
     }
     
     private static Integer getLevelForNode(RouteNode node, String nodeName, Integer currentLevel) {
@@ -97,7 +97,7 @@ public class CompatUtils {
     }
 
     public static boolean isRouteLevelCompatible(DocumentType documentType) {
-        return EdenConstants.ROUTING_VERSION_ROUTE_LEVEL.equals(documentType.getRoutingVersion());
+        return KEWConstants.ROUTING_VERSION_ROUTE_LEVEL.equals(documentType.getRoutingVersion());
     }
     
     public static boolean isRouteLevelCompatible(DocumentRouteHeaderValue document) {
@@ -105,19 +105,19 @@ public class CompatUtils {
     }
     
     public static boolean isNodalDocument(DocumentRouteHeaderValue document) {
-        return EdenConstants.DOCUMENT_VERSION_NODAL == document.getDocVersion().intValue();
+        return KEWConstants.DOCUMENT_VERSION_NODAL == document.getDocVersion().intValue();
     }
     
     public static boolean isNodalRequest(ActionRequestValue request) {
-        return EdenConstants.DOCUMENT_VERSION_NODAL == request.getDocVersion().intValue();
+        return KEWConstants.DOCUMENT_VERSION_NODAL == request.getDocVersion().intValue();
     }
     
     public static boolean isRouteLevelDocument(DocumentRouteHeaderValue document) {
-        return EdenConstants.DOCUMENT_VERSION_ROUTE_LEVEL == document.getDocVersion().intValue();
+        return KEWConstants.DOCUMENT_VERSION_ROUTE_LEVEL == document.getDocVersion().intValue();
     }
     
     public static boolean isRouteLevelRequest(ActionRequestValue request) {
-        return EdenConstants.DOCUMENT_VERSION_ROUTE_LEVEL == request.getDocVersion().intValue();
+        return KEWConstants.DOCUMENT_VERSION_ROUTE_LEVEL == request.getDocVersion().intValue();
     }
     
     /**

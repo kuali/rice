@@ -33,7 +33,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 import org.kuali.workflow.attribute.ExtensionData;
@@ -152,7 +152,7 @@ public class WorkgroupAction extends WorkflowAction {
         WorkgroupForm workgroupForm = (WorkgroupForm) form;
         if (workgroupForm.getWorkgroupMember() != null && !"".equals(workgroupForm.getWorkgroupMember())) {
             List errors = new ArrayList();
-            if (EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(workgroupForm.getMemberType())) {
+            if (KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(workgroupForm.getMemberType())) {
             	try {
             		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(workgroupForm.getWorkgroupMember()));
             		workgroupForm.getWorkgroup().getMembers().add(user);
@@ -161,7 +161,7 @@ public class WorkgroupAction extends WorkflowAction {
             		LOG.warn("User " + workgroupForm.getWorkgroupMember() + " is invalid");
             		errors.add(new WorkflowServiceErrorImpl("User is invalid", "user.userservice.id.invalid"));
             	}
-            } else if (EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(workgroupForm.getMemberType())) {
+            } else if (KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(workgroupForm.getMemberType())) {
             	Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupForm.getWorkgroupMember()));
             	if (workgroup == null) {
             		errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "workgroup.WorkgroupService.name.invalid"));
@@ -349,9 +349,9 @@ public class WorkgroupAction extends WorkflowAction {
         workgroup.getMembers().clear();
         for (Iterator iterator = workgroupForm.getWorkgroupMembers().iterator(); iterator.hasNext();) {
 			WorkgroupMember member = (WorkgroupMember) iterator.next();
-			if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
 				workgroup.getMembers().add(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(member.getWorkflowId())));
-			} else if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+			} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
 				workgroup.getMembers().add(KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(Long.parseLong(member.getWorkflowId()))));
 			}
 		}
@@ -464,7 +464,7 @@ public class WorkgroupAction extends WorkflowAction {
     }
 
     private boolean isDefaultWorkgroupType(String workgroupTypeCode) {
-    	return StringUtils.isEmpty(workgroupTypeCode) || workgroupTypeCode.equals(EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE);
+    	return StringUtils.isEmpty(workgroupTypeCode) || workgroupTypeCode.equals(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE);
     }
 
     public ActionForward report(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -513,10 +513,10 @@ public class WorkgroupAction extends WorkflowAction {
         String conversionParameter = request.getParameter("conversionFields");
         StringBuffer conversionFields = new StringBuffer((conversionParameter != null) ? conversionParameter : "");
         if (lookupService.equals("memberLookup")) {
-        	if (workgroupForm.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+        	if (workgroupForm.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
         		lookupService = "WorkGroupLookupableImplService";
         		conversionFields = new StringBuffer("workgroupName:workgroupMember,workgroupId:null");
-        	} else if (workgroupForm.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        	} else if (workgroupForm.getMemberType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
         		lookupService = "UserLookupableImplService";
         	}
         }

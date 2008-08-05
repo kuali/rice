@@ -19,7 +19,7 @@ package edu.iu.uis.eden.workgroup.web;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
@@ -50,7 +50,7 @@ public class WebWorkgroup extends WebLookupableDecorator implements Workgroup {
 
     public WebWorkgroup(Workgroup workgroup) {
         this.workgroup = workgroup;
-        if (StringUtils.isBlank(workgroup.getWorkgroupType()) || workgroup.getWorkgroupType().equals(EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE)) {
+        if (StringUtils.isBlank(workgroup.getWorkgroupType()) || workgroup.getWorkgroupType().equals(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE)) {
         	workgroupType = WorkgroupForm.createDefaultWorkgroupType();
         } else {
         	workgroupType = KEWServiceLocator.getWorkgroupTypeService().findByName(workgroup.getWorkgroupType());
@@ -88,7 +88,7 @@ public class WebWorkgroup extends WebLookupableDecorator implements Workgroup {
 
     public String getActiveIndDisplay() {
         if (workgroup.getActiveInd() == null) {
-            return EdenConstants.INACTIVE_LABEL_LOWER;
+            return KEWConstants.INACTIVE_LABEL_LOWER;
         }
         return CodeTranslator.getActiveIndicatorLabel(workgroup.getActiveInd());
     }

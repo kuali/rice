@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
@@ -61,8 +61,8 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		// now look at the branch state
 		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
 		RouteNodeInstance nodeInstance = (RouteNodeInstance) routeHeader.getInitialRouteNodeInstance(0);
-		BranchState processedBranchState = nodeInstance.getBranch().getBranchState(EdenConstants.POST_PROCESSOR_PROCESSED_KEY);
-		BranchState finalBranchState = nodeInstance.getBranch().getBranchState(EdenConstants.POST_PROCESSOR_FINAL_KEY);
+		BranchState processedBranchState = nodeInstance.getBranch().getBranchState(KEWConstants.POST_PROCESSOR_PROCESSED_KEY);
+		BranchState finalBranchState = nodeInstance.getBranch().getBranchState(KEWConstants.POST_PROCESSOR_FINAL_KEY);
 		assertNotNull(processedBranchState);
 		assertNotNull(finalBranchState);
 		assertEquals("true", processedBranchState.getValue());
@@ -138,9 +138,9 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		public static int processedCount = 0;
 
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-			if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+			if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 				processedCount++;
-			} else if (EdenConstants.ROUTE_HEADER_FINAL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+			} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 				finalCount++;
 			}
 			return new ProcessDocReport(true);

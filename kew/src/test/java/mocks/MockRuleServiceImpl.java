@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -211,7 +211,7 @@ public class MockRuleServiceImpl implements RuleService {
 
 	}
 	public String getRuleDocmentTypeName(List rules) {
-		return EdenConstants.DEFAULT_RULE_DOCUMENT_NAME;
+		return KEWConstants.DEFAULT_RULE_DOCUMENT_NAME;
 	}
 	public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) {
 	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");

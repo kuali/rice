@@ -26,7 +26,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.web.session.UserSession;
 
@@ -67,7 +67,7 @@ public class StrutsRequestProcessor extends RequestProcessor {
     }
 
 	protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
-    	UserSession userSession = (UserSession) request.getSession().getAttribute(EdenConstants.USER_SESSION_KEY);
+    	UserSession userSession = (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
         if ((request.getParameter(DOC_FORM_KEY_ATTRIBUTE) != null && request.getParameter(DOC_FORM_KEY_ATTRIBUTE).length() > 0) && (mapping.getPath().startsWith(REFRESH_MAPPING_PREFIX) || "refresh".equalsIgnoreCase(request.getParameter(METHOD_PARAM)))) {
             if (userSession.retrieveObject(request.getParameter(DOC_FORM_KEY_ATTRIBUTE)) != null) {
                 ActionForm form = (ActionForm) userSession.retrieveObject(request.getParameter(DOC_FORM_KEY_ATTRIBUTE));

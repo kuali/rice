@@ -40,7 +40,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -109,7 +109,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			materializeDocument(routeHeader);
 			docForm.setRouteHeader(routeHeader);
 			setRouteHeaderTimestampsToString(docForm);
-			docForm.setRouteHeaderOp(EdenConstants.NOOP);
+			docForm.setRouteHeaderOp(KEWConstants.NOOP);
 			docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
 			String initials="";
 			for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
@@ -182,10 +182,10 @@ public class DocumentOperationAction extends WorkflowAction {
 		boolean change = false;
 
 		String routeHeaderOp = docForm.getRouteHeaderOp();
-		if (!EdenConstants.UPDATE.equals(routeHeaderOp) && !EdenConstants.NOOP.equals(routeHeaderOp)) {
+		if (!KEWConstants.UPDATE.equals(routeHeaderOp) && !KEWConstants.NOOP.equals(routeHeaderOp)) {
 			throw new WorkflowServiceErrorException("Document operation not defined", new WorkflowServiceErrorImpl("Document operation not defined", "docoperation.operation.invalid"));
 		}
-		if (EdenConstants.UPDATE.equals(routeHeaderOp)) {
+		if (KEWConstants.UPDATE.equals(routeHeaderOp)) {
 			setRouteHeaderTimestamps(docForm);
 			DocumentRouteHeaderValue dHeader=docForm.getRouteHeader();
 			String initials=docForm.getInitialNodeInstances();
@@ -210,10 +210,10 @@ public class DocumentOperationAction extends WorkflowAction {
 			ActionRequestValue actionRequest = docForm.getRouteHeader().getDocActionRequest(index);
 			String createDateParamName = "actionRequestCreateDate" + index;
 
-			if (!EdenConstants.UPDATE.equals(opValue) && !EdenConstants.DELETE.equals(opValue) && !EdenConstants.NOOP.equals(opValue)) {
+			if (!KEWConstants.UPDATE.equals(opValue) && !KEWConstants.DELETE.equals(opValue) && !KEWConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Action request operation not defined", new WorkflowServiceErrorImpl("Action request operation not defined", "docoperation.actionrequest.operation.invalid"));
 			}
-			if (EdenConstants.UPDATE.equals(opValue)) {
+			if (KEWConstants.UPDATE.equals(opValue)) {
 				try {
 					actionRequest.setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
 					actionRequest.setCreateDateString(RiceConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
@@ -233,7 +233,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 
 			}
-			if (EdenConstants.DELETE.equals(opValue)) {
+			if (KEWConstants.DELETE.equals(opValue)) {
 			    getActionRequestService().deleteActionRequestGraph(actionRequest);
 			    change = true;
 			}
@@ -246,10 +246,10 @@ public class DocumentOperationAction extends WorkflowAction {
 
 			String actionDateParamName = "actionTakenActionDate" + index;
 			ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(index);
-			if (!EdenConstants.UPDATE.equals(opValue) && !EdenConstants.DELETE.equals(opValue) && !EdenConstants.NOOP.equals(opValue)) {
+			if (!KEWConstants.UPDATE.equals(opValue) && !KEWConstants.DELETE.equals(opValue) && !KEWConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Action taken operation not defined", new WorkflowServiceErrorImpl("Action taken operation not defined", "docoperation.actiontaken.operation.invalid"));
 			}
-			if (EdenConstants.UPDATE.equals(opValue)) {
+			if (KEWConstants.UPDATE.equals(opValue)) {
 				try {
 					actionTaken.setActionDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(actionDateParamName)).getTime()));
 					actionTaken.setActionDateString(RiceConstants.getDefaultDateFormat().format(actionTaken.getActionDate()));
@@ -260,7 +260,7 @@ public class DocumentOperationAction extends WorkflowAction {
 					throw new WorkflowServiceErrorException("Action taken action date parsing error", new WorkflowServiceErrorImpl("Action taken action date parse error", "docoperation.actionstaken.dateparsing.error", actionTaken.getActionTakenId().toString()));
 				}
 			}
-			if (EdenConstants.DELETE.equals(opValue)) {
+			if (KEWConstants.DELETE.equals(opValue)) {
 				getActionTakenService().delete(actionTaken);
 				change = true;
 			}
@@ -273,10 +273,10 @@ public class DocumentOperationAction extends WorkflowAction {
 
 			String dateAssignedParamName = "actionItemDateAssigned" + index;
 			ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(index);
-			if (!EdenConstants.UPDATE.equals(opValue) && !EdenConstants.DELETE.equals(opValue) && !EdenConstants.NOOP.equals(opValue)) {
+			if (!KEWConstants.UPDATE.equals(opValue) && !KEWConstants.DELETE.equals(opValue) && !KEWConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Action Item operation not defined", new WorkflowServiceErrorImpl("Action Item operation not defined", "docoperation.operation.invalid"));
 			}
-			if (EdenConstants.UPDATE.equals(opValue)) {
+			if (KEWConstants.UPDATE.equals(opValue)) {
 				try {
 					actionItem.setDateAssigned(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
 					actionItem.setDateAssignedString(RiceConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
@@ -288,7 +288,7 @@ public class DocumentOperationAction extends WorkflowAction {
 					throw new WorkflowServiceErrorException("Action item date assigned parsing error", new WorkflowServiceErrorImpl("Action item date assigned parse error", "docoperation.actionitem.dateassignedparsing.error", actionItem.getActionItemId().toString()));
 				}
 			}
-			if (EdenConstants.DELETE.equals(opValue)) {
+			if (KEWConstants.DELETE.equals(opValue)) {
 				getActionListService().deleteActionItem(actionItem);
 				change = true;
 			}
@@ -312,10 +312,10 @@ public class DocumentOperationAction extends WorkflowAction {
             LOG.debug(opValue);
 			RouteNodeInstance routeNodeInstance = (RouteNodeInstance)(routeNodeInstances.get(index));
 			RouteNodeInstance routeNodeInstanceNew = (RouteNodeInstance)(docForm.getRouteNodeInstance(index));
-			if (!EdenConstants.UPDATE.equals(opValue) && !EdenConstants.DELETE.equals(opValue) && !EdenConstants.NOOP.equals(opValue)) {
+			if (!KEWConstants.UPDATE.equals(opValue) && !KEWConstants.DELETE.equals(opValue) && !KEWConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Route Node Instance Operation not defined", new WorkflowServiceErrorImpl("Route Node Instance Operation not defined", "docoperation.routenodeinstance.operation.invalid"));
 			}
-			if (EdenConstants.UPDATE.equals(opValue)) {
+			if (KEWConstants.UPDATE.equals(opValue)) {
 				//LOG.debug("saving routeNodeInstance:"+routeNodeInstance.getRouteNodeInstanceId());
 				//getRouteNodeService().save(routeNodeInstance);
 				routeNodeInstance.setActive(routeNodeInstanceNew.isActive());
@@ -343,7 +343,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 
 
-			if (EdenConstants.DELETE.equals(opValue)) {
+			if (KEWConstants.DELETE.equals(opValue)) {
 				List nodeStates=routeNodeInstance.getState();
 				List nodeStatesNew=routeNodeInstanceNew.getState();
 
@@ -362,7 +362,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				break;
 			}
 
-			if (EdenConstants.NOOP.equals(opValue)){
+			if (KEWConstants.NOOP.equals(opValue)){
 				routeNodeInstanceNew.setActive(routeNodeInstance.isActive());
 				routeNodeInstanceNew.setComplete(routeNodeInstance.isComplete());
 				routeNodeInstanceNew.setInitial(routeNodeInstance.isInitial());
@@ -381,7 +381,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 			}
 
-			//((DocOperationIndexedParameter)(docForm.getRouteNodeInstanceOps().get(index))).setValue(EdenConstants.NOOP);
+			//((DocOperationIndexedParameter)(docForm.getRouteNodeInstanceOps().get(index))).setValue(KEWConstants.NOOP);
 		}
 
 		if(statesToBeDeleted!=null && statesToBeDeleted.size()>0){
@@ -407,10 +407,10 @@ public class DocumentOperationAction extends WorkflowAction {
             LOG.debug(opValue);
 			Branch branch = (Branch)(branches.get(index));
 			Branch branchNew = (Branch)(docForm.getBranche(index));
-			if (!EdenConstants.UPDATE.equals(opValue) && !EdenConstants.NOOP.equals(opValue)) {
+			if (!KEWConstants.UPDATE.equals(opValue) && !KEWConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Route Node Instance Operation not defined", new WorkflowServiceErrorImpl("Route Node Instance Operation not defined", "docoperation.routenodeinstance.operation.invalid"));
 			}
-			if (EdenConstants.UPDATE.equals(opValue)) {
+			if (KEWConstants.UPDATE.equals(opValue)) {
 				//LOG.debug("saving routeNodeInstance:"+routeNodeInstance.getRouteNodeInstanceId());
 				//getRouteNodeService().save(routeNodeInstance);
 				branch.setName(branchNew.getName());
@@ -435,7 +435,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 
 
-			if (EdenConstants.NOOP.equals(opValue)){
+			if (KEWConstants.NOOP.equals(opValue)){
 				branchNew.setName(branch.getName());
 				List branchStates=branch.getBranchState();
 				List branchStatesNew=branchNew.getBranchState();
@@ -453,7 +453,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				   }
 				}
 			}
-			//((DocOperationIndexedParameter)(docForm.getBranchOps().get(index))).setValue(EdenConstants.NOOP);
+			//((DocOperationIndexedParameter)(docForm.getBranchOps().get(index))).setValue(KEWConstants.NOOP);
 		}
 
 		if(branchStatesToBeDeleted!=null && branchStatesToBeDeleted.size()>0){

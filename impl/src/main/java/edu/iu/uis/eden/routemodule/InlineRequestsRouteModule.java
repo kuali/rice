@@ -29,7 +29,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -143,7 +143,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
             Element e = (Element) o;
             RuleResponsibility responsibility = parser.parseResponsibility(e, fakeRule, null);
             System.err.println("Responsibility id: " + responsibility.getResponsibilityId());
-            responsibility.setResponsibilityId(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
+            responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
             responsibilities.add(responsibility);
         }
         if (responsibilities.size() == 0) {
@@ -170,10 +170,10 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
     
     private WorkflowAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
         if (ruleAttribute != null) {
-            if (EdenConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+            if (KEWConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
                 return (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
-            } else if (EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+            } else if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
                 WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns

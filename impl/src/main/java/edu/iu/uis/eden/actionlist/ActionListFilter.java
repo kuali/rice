@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actionlist;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -36,12 +36,12 @@ public class ActionListFilter implements Serializable {
 	private String filterLegend;
     private String documentTitle = "";
     private boolean excludeDocumentTitle;
-    private String docRouteStatus = EdenConstants.ALL_CODE;
+    private String docRouteStatus = KEWConstants.ALL_CODE;
     private boolean excludeRouteStatus;
-    private String actionRequestCd = EdenConstants.ALL_CODE;
+    private String actionRequestCd = KEWConstants.ALL_CODE;
     private boolean excludeActionRequestCd;
     private Long workgroupId;
-    private String workgroupIdString = EdenConstants.NO_FILTERING;
+    private String workgroupIdString = KEWConstants.NO_FILTERING;
     private String workgroupName = "";
     private boolean excludeWorkgroupId;
     private String documentType = "";

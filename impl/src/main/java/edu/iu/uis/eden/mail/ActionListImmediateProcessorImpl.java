@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.mail;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -40,7 +40,7 @@ public class ActionListImmediateProcessorImpl implements ActionListImmediateEmai
 			DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
 			actionItem.setRouteHeader(document);
 		    }
-            if (! actionItem.getActionRequestCd().equals(EdenConstants.ACTION_REQUEST_APPROVE_REQ) || 
+            if (! actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) || 
             			! doNotSendApproveNotificationEmails) {
                 try {
                 	if (LOG.isDebugEnabled()) {

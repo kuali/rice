@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -54,7 +54,7 @@ public class OutboxTest extends KEWTestCase {
     private void turnOnOutboxForUser(final WorkflowUser user) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(user, PreferencesServiceImpl.USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(user, PreferencesServiceImpl.USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });

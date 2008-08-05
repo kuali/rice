@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -227,9 +227,9 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			assertTrue("Request should be deactivated.", request.isDeactivated());
 			if (request.isRoleRequest()) {
-				assertEquals("Should be all approve request", EdenConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be all approve request", KEWConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
 			} else {
-				assertEquals("Should not have first approve policy set", EdenConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should not have first approve policy set", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
 			}
 		}
 		
@@ -276,15 +276,15 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			assertTrue("Request should be deactivated.", request.isDeactivated());
 			if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.MAIN_ROLE)) {
-				assertEquals("Should be all approve request", EdenConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be all approve request", KEWConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
 			} else if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.PRIMARY_DELEGATE_ROLE)) {
-				assertEquals("Should be first approve request", EdenConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be first approve request", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
 			} else if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.SECONDARY_DELEGATE_ROLE)) {
-				assertEquals("Should be first approve request", EdenConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be first approve request", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
 			} else if (request.isRoleRequest()) {
 				fail("the roles have been messed up");
 			} else {
-				assertEquals("Should not have first approve policy set", EdenConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should not have first approve policy set", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
 			}
 		}
 		

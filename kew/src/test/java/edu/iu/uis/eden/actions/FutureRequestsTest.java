@@ -23,7 +23,7 @@ import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.Id;
@@ -184,14 +184,14 @@ public class FutureRequestsTest extends KEWTestCase {
         ReportCriteriaDTO reportCriteriaVO = new ReportCriteriaDTO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdDTO[]{user1});
         String actionToTakeNode = "Node1";
-        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(EdenConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
-        assertTrue("User " + user1 + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
+        assertTrue("User " + user1 + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaDTO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdDTO[]{user1});
         actionToTakeNode = "Node1";
-        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(EdenConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
+        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
         DocumentDetailDTO documentVO = info.routingReport(reportCriteriaVO);
         assertTrue("User " + user1 + " should have one or more approval requests on the document", documentVO.getActionRequests().length > 0);
 
@@ -200,7 +200,7 @@ public class FutureRequestsTest extends KEWTestCase {
         NetworkIdDTO tempUser = new NetworkIdDTO("delyea");
         reportCriteriaVO.setTargetUsers(new NetworkIdDTO[]{tempUser});
         actionToTakeNode = "Node1";
-        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(EdenConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
+        reportCriteriaVO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1, actionToTakeNode)});
         documentVO = info.routingReport(reportCriteriaVO);
         assertTrue("User " + tempUser + " should not have any requests on the document but routingReport() method should return all action requests anyway", documentVO.getActionRequests().length > 0);
 
@@ -215,13 +215,13 @@ public class FutureRequestsTest extends KEWTestCase {
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaDTO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdDTO[]{user1});
-        assertFalse("User " + user1 + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        assertFalse("User " + user1 + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         // user2 should have approval requested
         info = new WorkflowInfo();
         reportCriteriaVO = new ReportCriteriaDTO(document.getRouteHeaderId());
         reportCriteriaVO.setTargetUsers(new NetworkIdDTO[]{user2});
-        assertTrue("User " + user2 + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        assertTrue("User " + user2 + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
     }
 }

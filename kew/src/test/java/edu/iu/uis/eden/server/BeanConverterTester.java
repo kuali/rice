@@ -28,7 +28,7 @@ import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -44,10 +44,10 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 
 public class BeanConverterTester extends KEWTestCase {
 
-    private static final String DOCUMENT_CONTENT = EdenConstants.DOCUMENT_CONTENT_ELEMENT;
-    private static final String ATTRIBUTE_CONTENT = EdenConstants.ATTRIBUTE_CONTENT_ELEMENT;
-    private static final String SEARCHABLE_CONTENT = EdenConstants.SEARCHABLE_CONTENT_ELEMENT;
-    private static final String APPLICATION_CONTENT = EdenConstants.APPLICATION_CONTENT_ELEMENT;
+    private static final String DOCUMENT_CONTENT = KEWConstants.DOCUMENT_CONTENT_ELEMENT;
+    private static final String ATTRIBUTE_CONTENT = KEWConstants.ATTRIBUTE_CONTENT_ELEMENT;
+    private static final String SEARCHABLE_CONTENT = KEWConstants.SEARCHABLE_CONTENT_ELEMENT;
+    private static final String APPLICATION_CONTENT = KEWConstants.APPLICATION_CONTENT_ELEMENT;
 
     @Test public void testConvertWorkflowGroupId() {
         BaseWorkgroup prototype = new BaseWorkgroup();
@@ -140,7 +140,7 @@ public class BeanConverterTester extends KEWTestCase {
         DocumentContentDTO contentVO = new DocumentContentDTO();
         //routeHeaderVO.setDocumentContent(contentVO);
         String content = BeanConverter.buildUpdatedDocumentContent(contentVO);
-        assertEquals("Invalid content conversion.", EdenConstants.DEFAULT_DOCUMENT_CONTENT, content);
+        assertEquals("Invalid content conversion.", KEWConstants.DEFAULT_DOCUMENT_CONTENT, content);
 
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
@@ -207,7 +207,7 @@ public class BeanConverterTester extends KEWTestCase {
         WorkflowUser testUser = (WorkflowUser)testWorkgroup.getMembers().get(0);
         assertNotNull("User from workgroup should not be null", testUser);
         String workflowId = testUser.getWorkflowId();
-        String actionRequestCd = EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+        String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         Long actionRequestId = Long.valueOf(4);
         String docName = "dummy";
         String roleName = "fakeRole";
@@ -217,7 +217,7 @@ public class BeanConverterTester extends KEWTestCase {
         String docTypeLabel = "Label Me Sexy";
         String docTitle = "Title me Nicely";
         Long responsibilityId = Long.valueOf(35);
-        String delegationType = EdenConstants.DELEGATION_PRIMARY;
+        String delegationType = KEWConstants.DELEGATION_PRIMARY;
 
         // create fake action item
         ActionItem actionItem = new ActionItem();

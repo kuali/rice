@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.util.Utilities;
 
@@ -49,7 +49,7 @@ public class RuleQuickLinksForm extends ActionForm {
         return rootDocuments;
     }
 	public boolean isUseOneStartPortalUrl() {
-		String useOneStartPortalUrl = Utilities.getApplicationConstant(EdenConstants.APP_CONST_USE_ONESTART_URL);
+		String useOneStartPortalUrl = Utilities.getApplicationConstant(KEWConstants.APP_CONST_USE_ONESTART_URL);
 		return (StringUtils.isEmpty(useOneStartPortalUrl) ? false : new Boolean(useOneStartPortalUrl).booleanValue());
 	}
     public List getDocumentTypeQuickLinksStructures() {

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.routetemplate.MyRules2;
 import edu.iu.uis.eden.routetemplate.RuleDelegation;
@@ -82,9 +82,9 @@ public class Rule2Form extends WorkflowRoutingForm {
     private Long docTypeId;
 
     public Rule2Form() {
-        delegationLimit = Integer.parseInt(Utilities.getApplicationConstant(EdenConstants.RULE_DELEGATE_LIMIT_KEY));
-        instructionForCreateNew = Utilities.getApplicationConstant(EdenConstants.RULE_CREATE_NEW_INSTRUCTION_KEY);
-        instructionForGlobalReviewerReplace = Utilities.getApplicationConstant(EdenConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION_KEY);
+        delegationLimit = Integer.parseInt(Utilities.getApplicationConstant(KEWConstants.RULE_DELEGATE_LIMIT_KEY));
+        instructionForCreateNew = Utilities.getApplicationConstant(KEWConstants.RULE_CREATE_NEW_INSTRUCTION_KEY);
+        instructionForGlobalReviewerReplace = Utilities.getApplicationConstant(KEWConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION_KEY);
         reset();
     }
 
@@ -354,7 +354,7 @@ public class Rule2Form extends WorkflowRoutingForm {
         this.parentShowHide = parentShowHide;
     }
     public String getRouteLogPopup() {
-        return Utilities.getApplicationConstant(EdenConstants.RULE_ROUTE_LOG_POPUP_KEY).trim();
+        return Utilities.getApplicationConstant(KEWConstants.RULE_ROUTE_LOG_POPUP_KEY).trim();
     }
     
     public String getForward() {

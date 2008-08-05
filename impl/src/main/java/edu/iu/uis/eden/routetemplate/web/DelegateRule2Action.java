@@ -32,7 +32,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -244,7 +244,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private ActionForward checkLocked(ActionMapping mapping, Rule2Form ruleForm, HttpServletRequest request, HttpServletResponse response) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(EdenConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
             Long routeHeaderId = getRuleService().isLockedForRouting(ruleForm.getRuleCreationValues().getRuleId());
             if (routeHeaderId != null) {
                 ActionErrors lockErrors = new ActionErrors();
@@ -531,7 +531,7 @@ public class DelegateRule2Action extends WorkflowAction {
     private void createWorkflowDocument(HttpServletRequest request, Rule2Form rule2Form, List rules) throws WorkflowException {
         if (rule2Form.getWorkflowDocument() == null) {
             
-//            rule2Form.setWorkflowDocument(new WorkflowDocument(EdenConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), EdenConstants.EDEN_APP_CODE));
+//            rule2Form.setWorkflowDocument(new WorkflowDocument(KEWConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), KEWConstants.EDEN_APP_CODE));
         	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
             rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
             rule2Form.setDocId(rule2Form.getWorkflowDocument().getRouteHeaderId());
@@ -540,7 +540,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(EdenConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
             Long id = rule.getRuleBaseValuesId();
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

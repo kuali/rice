@@ -36,7 +36,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -128,7 +128,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Long ruleBaseValuesId;
 
     @Column(name="DLGN_TYP")
-    private String delegationType = EdenConstants.DELEGATION_NONE;
+    private String delegationType = KEWConstants.DELEGATION_NONE;
     @Column(name="ACTN_RQST_APPR_PLCY")
 	private String approvePolicy;
 
@@ -173,7 +173,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         // this is for backward compatibility of requests which have not been converted
         if (CompatUtils.isRouteLevelRequest(this)) {
             int routeLevelInt = getRouteLevel().intValue();
-            if (routeLevelInt == EdenConstants.EXCEPTION_ROUTE_LEVEL) {
+            if (routeLevelInt == KEWConstants.EXCEPTION_ROUTE_LEVEL) {
                 return "Exception";
             }
 
@@ -210,7 +210,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isPending() {
-        return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus()) || EdenConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
+        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus()) || KEWConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
     }
 
     public DocumentRouteHeaderValue getRouteHeader() {
@@ -495,23 +495,23 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isInitialized() {
-        return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus());
+        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus());
     }
 
     public boolean isActive() {
-        return EdenConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
+        return KEWConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
     }
 
     public boolean isApproveOrCompleteRequest() {
-        return EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested()) || EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested()) || KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
     }
 
     public boolean isDone() {
-        return EdenConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
+        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
     }
 
     public boolean isReviewerUser() {
-        return EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRecipientRoutedRequest(Recipient recipient) throws EdenUserNotFoundException {
@@ -549,27 +549,27 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isWorkgroupRequest() {
-        return EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
-        return EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isAcknowledgeRequest() {
-        return EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(getActionRequested());
     }
 
     public boolean isApproveRequest() {
-        return EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested()) || EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested()) || KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
     }
 
     public boolean isCompleteRequst() {
-        return EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
     }
 
     public boolean isFYIRequest() {
-        return EdenConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested());
     }
 
     /**
@@ -689,7 +689,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isDeactivated() {
-        return EdenConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
+        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
     }
 
     public boolean hasParent() {
@@ -750,7 +750,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	}
 
 	public String getRecipientTypeLabel() {
-        return (String) EdenConstants.ACTION_REQUEST_RECIPIENT_TYPE.get(getRecipientTypeCd());
+        return (String) KEWConstants.ACTION_REQUEST_RECIPIENT_TYPE.get(getRecipientTypeCd());
     }
 
     public RuleBaseValues getRuleBaseValues(){
@@ -784,7 +784,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         boolean primaryDelegator = false;
         for (Iterator iter = childrenRequests.iterator(); iter.hasNext();) {
             ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-            primaryDelegator = EdenConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType()) || primaryDelegator;
+            primaryDelegator = KEWConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType()) || primaryDelegator;
         }
         return primaryDelegator;
     }
@@ -800,7 +800,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         List primaryDelegateRequests = new ArrayList();
         for (Iterator iter = childrenRequests.iterator(); iter.hasNext();) {
             ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-            if (EdenConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType())) {
+            if (KEWConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType())) {
                 if (childRequest.isRoleRequest()) {
                     for (Iterator iterator = childRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
                         primaryDelegateRequests.add(iterator.next());
@@ -814,15 +814,15 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isAdHocRequest() {
-    	return EdenConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isGeneratedRequest() {
-    	return EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isExceptionRequest() {
-    	return EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isRouteModuleRequest() {

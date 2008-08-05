@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -56,11 +56,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
     private MovePoint movePoint;
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user);
+        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user);
     }
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, MovePoint movePoint) {
-        super(EdenConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user, annotation);
         this.movePoint = movePoint;
     }
 
@@ -70,7 +70,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(),
-                EdenConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+                KEWConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) throws EdenUserNotFoundException {
@@ -105,7 +105,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
         String errorMessage = validateActionRules(actionRequests,activeNodes);
         if (!Utilities.isEmpty(errorMessage)) {
@@ -117,7 +117,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
 
             RouteNodeInstance startNodeInstance = determineStartNode(activeNodes, movePoint);
 
-//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 //            if (! isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //                throw new InvalidActionTakenException("No request for the user is compatible with the MOVE action");
 //            }
@@ -136,14 +136,14 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 moveDocumentProcessor.moveDocument(getUser(), getRouteHeader(), actionTaken, targetNodeNames);
 
 //                SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(),
-//                		EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0), MoveDocumentProcessor.class.getName(),
+//                		KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0), MoveDocumentProcessor.class.getName(),
 //                		MoveDocumentProcessor.getMoveDocumentProcessorValue(getUser(), getActionTaken(), targetNodeNames));
                 //BlanketApproveAction blanketAction = new BlanketApproveAction(getRouteHeader(), getUser(), annotation, targetNodeName);
                 //blanketAction.actionTaken = actionTaken;
                 //blanketAction.recordAction();
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
-                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(EdenConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getUser(), annotation, targetNodeName, false);
+                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getUser(), annotation, targetNodeName, false);
                 
                 // this is immediately overwritten in recordAction() anyway
                 //returnAction.actionTaken = actionTaken;

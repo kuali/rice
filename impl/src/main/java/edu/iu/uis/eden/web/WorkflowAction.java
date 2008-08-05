@@ -35,7 +35,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.JSTLConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -66,7 +66,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			request.setAttribute("Constants", new JSTLConstants(EdenConstants.class));
+			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 			request.setAttribute("UrlResolver", UrlResolver.getInstance());
 			ActionMessages messages = null;
 			messages = establishRequiredState(request, form);
@@ -172,7 +172,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 		try {
 			String routeNodeName = getAdHocRouteNodeName(routingForm.getWorkflowDocument().getRouteHeaderId());
-			if (EdenConstants.PERSON.equals(recipient.getType())) {
+			if (KEWConstants.PERSON.equals(recipient.getType())) {
 				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdDTO(recipient.getId()), "", true);
 			} else {
 				routingForm.getWorkflowDocument().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdDTO(recipient.getId()), "", true);
@@ -208,7 +208,7 @@ public abstract class WorkflowAction extends DispatchAction {
 			messages.add(new WorkflowServiceErrorImpl("AppSpecific Recipient empty", "appspecificroute.recipient.required"));
 		}
 
-		if (EdenConstants.PERSON.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
+		if (KEWConstants.PERSON.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
 			try {
 				getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
 			} catch (EdenUserNotFoundException e) {
@@ -217,7 +217,7 @@ public abstract class WorkflowAction extends DispatchAction {
 			}
 		}
 
-		if (EdenConstants.WORKGROUP.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
+		if (KEWConstants.WORKGROUP.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
 			if (getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId())) == null) {
 				messages.add(new WorkflowServiceErrorImpl("AppSpecific Recipient workgroup invalid", "appspecificroute.workgroup.invalid"));
 			}

@@ -28,7 +28,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -231,7 +231,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         List columns = new ArrayList();
 
         Column column = new Column(DOC_TYP_ID_COLUMN_LABEL, "true", "documentTypeId");
-        column.setType(EdenConstants.LOOKUP_COLUMN_TYPE_INTEGER);
+        column.setType(KEWConstants.LOOKUP_COLUMN_TYPE_INTEGER);
         columns.add(column);
         columns.add(new Column(DOC_TYP_NAME_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "name"));
         columns.add(new Column(DOC_TYP_PARENT_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "lookupParentName"));
@@ -349,7 +349,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
      * @return Returns the instructions.
      */
     public String getLookupInstructions() {
-        return Utilities.getApplicationConstant(EdenConstants.DOCUMENT_TYPE_SEARCH_INSTRUCTION_KEY);
+        return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_TYPE_SEARCH_INSTRUCTION_KEY);
     }
 
     /**

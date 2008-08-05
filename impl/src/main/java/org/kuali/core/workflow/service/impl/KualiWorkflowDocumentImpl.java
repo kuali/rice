@@ -38,7 +38,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
@@ -546,7 +546,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
 
     public boolean isStandardSaveAllowed() {
-        return workflowDocument.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_SAVED_CD);
+        return workflowDocument.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_SAVED_CD);
     }
 
     public void setReceiveFutureRequests() throws WorkflowException {
@@ -632,7 +632,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         Set<UniversalUser> universalUsers = new HashSet<UniversalUser>();
         
         for (ActionTakenDTO actionTaken : actionsTaken) {
-            if (EdenConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
+            if (KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
                 String universalUserId = actionTaken.getUserVO().getUuId();
                 if (!universalUserIds.contains(universalUserId)) {
                     universalUserIds.add(universalUserId);

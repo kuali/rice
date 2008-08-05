@@ -40,7 +40,7 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -262,7 +262,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
      */
     public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
         try {
-            ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{EdenConstants.ACTION_REQUEST_COMPLETE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ});
+            ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
             List users = new ArrayList();
             for (int i = 0; i < actionItemVOs.length; i++) {
                 ActionItemDTO actionItemVO = actionItemVOs[i];

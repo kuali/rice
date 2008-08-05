@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -158,7 +158,7 @@ public class HelpServiceImpl implements HelpService {
         try { 
             parser.parseHelpEntries(inputStream);
         } catch(Exception e){
-            throw new WorkflowServiceErrorException("Error parsing help  XML file", new WorkflowServiceErrorImpl("Error parsing xml file.", EdenConstants.XML_FILE_PARSE_ERROR) );
+            throw new WorkflowServiceErrorException("Error parsing help  XML file", new WorkflowServiceErrorImpl("Error parsing xml file.", KEWConstants.XML_FILE_PARSE_ERROR) );
     	} 
     }
 

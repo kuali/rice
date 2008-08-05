@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
@@ -73,9 +73,9 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         docTypeVO.setName(docType.getName());
         docTypeVO.setDocTypeVersion(docType.getVersion());
         if (docType.getCurrentInd().booleanValue()) {
-            docTypeVO.setDocTypeCurrentInd(EdenConstants.ACTIVE_CD);
+            docTypeVO.setDocTypeCurrentInd(KEWConstants.ACTIVE_CD);
         } else {
-            docTypeVO.setDocTypeCurrentInd(EdenConstants.INACTIVE_CD);
+            docTypeVO.setDocTypeCurrentInd(KEWConstants.INACTIVE_CD);
         }
         docTypeVO.setPostProcessorName(docType.getPostProcessorName());
         docTypeVO.setDocTypeJndiFactoryClass(null);

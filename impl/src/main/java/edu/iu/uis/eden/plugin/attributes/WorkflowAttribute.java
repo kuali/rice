@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentContent;
@@ -65,7 +65,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  *       (those associated with the Rule Template associated with the rule) which are WorkflowAttributes are enumerated and for each:
  *       <ol>
  *         <li>A special case is made for attributes defined in XML as
- *             of "RuleXmlAttribute" type ({@link EdenConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
+ *             of "RuleXmlAttribute" type ({@link KEWConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
  *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(edu.iu.uis.eden.routetemplate.RuleAttribute)}
  *             before proceeding with isMatch invocation. (what about a RuleAttributeAware interface so this can be done generically for all worklfow attribute
  *             implementations?)</li>

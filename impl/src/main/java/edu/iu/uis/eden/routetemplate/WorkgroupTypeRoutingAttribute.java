@@ -28,7 +28,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -79,7 +79,7 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
     private List getWorkgroupTypeOptions() {
 	List options = new ArrayList();
 	options.add(new KeyLabelPair("", ""));
-	options.add(new KeyLabelPair(EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE, "Default"));
+	options.add(new KeyLabelPair(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE, "Default"));
 	List<WorkgroupType> workgroupTypes = KEWServiceLocator.getWorkgroupTypeService().findAll();
 	for (WorkgroupType workgroupType : workgroupTypes) {
 		options.add(new KeyLabelPair(workgroupType.getName(), workgroupType.getLabel()));
@@ -160,7 +160,7 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
             errors.add(new WorkflowServiceErrorImpl(message, "general.message", message));
         }
 
-        if (!StringUtils.isBlank(workgroupTypeValue) && !workgroupTypeValue.equals(EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE)) {
+        if (!StringUtils.isBlank(workgroupTypeValue) && !workgroupTypeValue.equals(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE)) {
             WorkgroupType workgroupType = KEWServiceLocator.getWorkgroupTypeService().findByName(workgroupTypeValue);
             if (workgroupType == null) {
         	String message = "Specified workgroup type of " + workgroupTypeValue + " in invalid.";
@@ -181,7 +181,7 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
 
     public void setWorkgroupType(String workgroupType) {
 	if (StringUtils.isBlank(workgroupType)) {
-	    workgroupType = EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE;
+	    workgroupType = KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE;
 	}
         this.workgroupType = workgroupType;
     }

@@ -23,7 +23,7 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.node.BranchState;
@@ -48,8 +48,8 @@ public class FutureRequestDocumentStateManager {
     private boolean clearFutureRequestState;
     
     
-    public static final String FUTURE_REQUESTS_VAR_KEY = BranchState.VARIABLE_PREFIX + EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY;
-    public static final String DEACTIVATED_REQUESTS_VARY_KEY = BranchState.VARIABLE_PREFIX + EdenConstants.DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY;
+    public static final String FUTURE_REQUESTS_VAR_KEY = BranchState.VARIABLE_PREFIX + KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY;
+    public static final String DEACTIVATED_REQUESTS_VARY_KEY = BranchState.VARIABLE_PREFIX + KEWConstants.DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY;
     
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, WorkflowUser user) {
 	for (BranchState state : document.getRootBranchState()) {
@@ -117,16 +117,16 @@ public class FutureRequestDocumentStateManager {
     }
     
     protected boolean isReceiveFutureRequests(BranchState state) {
-	return state.getValue().equals(EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+	return state.getValue().equals(KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
     
     
     protected boolean isDoNotReceiveFutureRequests(BranchState state) {
-	return state.getValue().equals(EdenConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+	return state.getValue().equals(KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
     
     protected boolean isClearFutureRequests(BranchState state) {
-	return state.getValue().equals(EdenConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+	return state.getValue().equals(KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
     public boolean isClearFutureRequestState() {
@@ -142,19 +142,19 @@ public class FutureRequestDocumentStateManager {
     }
     
     public static String getFutureRequestsKey(UserIdDTO userId) {
-	return EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + userId.getClass().getName() + "," + userId.toString() + "," + new Date().toString() + ", " + Math.random();
+	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + userId.getClass().getName() + "," + userId.toString() + "," + new Date().toString() + ", " + Math.random();
     }
     
     public static String getReceiveFutureRequestsValue() {
-	return EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
     
     public static String getDoNotReceiveFutureRequestsValue() {
-	return EdenConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+	return KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
     
     public static String getClearFutureRequestsValue() {
-	return EdenConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+	return KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
 
 }

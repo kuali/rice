@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.core;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
@@ -50,7 +50,7 @@ public class ExportOverridableServicesLifecycle extends BaseLifecycle {
 	userServiceDef.setServiceNameSpaceURI("");
 	userServiceDef.setLocalServiceName(KEWServiceLocator.USER_SERVICE);
 	userServiceExporter.setServiceDefinition(userServiceDef);
-	userServiceExporter.setPropertyName(EdenConstants.USE_REMOTE_IDENTITY_SERVICES);
+	userServiceExporter.setPropertyName(KEWConstants.USE_REMOTE_IDENTITY_SERVICES);
 	userServiceExporter.afterPropertiesSet();
 	
 	PropertyConditionalKSBExporter workgroupServiceExporter = new PropertyConditionalKSBExporter();
@@ -60,7 +60,7 @@ public class ExportOverridableServicesLifecycle extends BaseLifecycle {
 	workgroupServiceDef.setServiceNameSpaceURI("");
 	workgroupServiceDef.setLocalServiceName(KEWServiceLocator.WORKGROUP_SRV);
 	workgroupServiceExporter.setServiceDefinition(workgroupServiceDef);
-	workgroupServiceExporter.setPropertyName(EdenConstants.USE_REMOTE_IDENTITY_SERVICES);
+	workgroupServiceExporter.setPropertyName(KEWConstants.USE_REMOTE_IDENTITY_SERVICES);
 	workgroupServiceExporter.afterPropertiesSet();
 	super.start();
     }

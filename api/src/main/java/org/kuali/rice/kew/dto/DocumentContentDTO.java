@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -69,15 +69,15 @@ public class DocumentContentDTO implements Serializable {
     }
     public String getFullContent() {
         StringBuffer fullContent = new StringBuffer();
-        fullContent.append("<").append(EdenConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        fullContent.append("<").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         if (!isEmpty(getApplicationContent())) {
-            fullContent.append("<").append(EdenConstants.APPLICATION_CONTENT_ELEMENT).append(">");
+            fullContent.append("<").append(KEWConstants.APPLICATION_CONTENT_ELEMENT).append(">");
             fullContent.append(getApplicationContent());
-            fullContent.append("</").append(EdenConstants.APPLICATION_CONTENT_ELEMENT).append(">");        	
+            fullContent.append("</").append(KEWConstants.APPLICATION_CONTENT_ELEMENT).append(">");        	
         }
         fullContent.append(getAttributeContent());
         fullContent.append(getSearchableContent());
-        fullContent.append("</").append(EdenConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        fullContent.append("</").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         return fullContent.toString();
     }
     

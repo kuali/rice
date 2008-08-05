@@ -19,7 +19,7 @@ package edu.iu.uis.eden.notes.web;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.util.Utilities;
@@ -91,7 +91,7 @@ public class NoteForm extends ActionForm {
     }
   
     public String getInstructionForCreateNew() {
-        return Utilities.getApplicationConstant(EdenConstants.NOTE_CREATE_NEW_INSTRUCTION_KEY);
+        return Utilities.getApplicationConstant(KEWConstants.NOTE_CREATE_NEW_INSTRUCTION_KEY);
     }
 
     public Long getDocId() {

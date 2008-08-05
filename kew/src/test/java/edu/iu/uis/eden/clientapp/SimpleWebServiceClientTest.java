@@ -25,7 +25,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 import org.kuali.workflow.config.ThinClientResourceLoader;
 import org.kuali.workflow.test.KEWTestCase;
@@ -76,7 +76,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 	protected void setUpWebservices() throws Exception {
 		try {
 		    String remoteUrlLocation = Core.getCurrentContextConfig().getProperty("serviceServletUrl");
-			Core.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, EdenConstants.WEBSERVICE_CLIENT_PROTOCOL);
+			Core.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
             Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowUtilityService");
 //            Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
             Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowDocumentActionsService");

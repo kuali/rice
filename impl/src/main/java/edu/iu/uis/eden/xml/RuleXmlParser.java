@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.xml.sax.SAXException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -73,11 +73,11 @@ public class RuleXmlParser implements XmlConstants {
     /**
      * Default approve policy, if omitted; defaults to FIRST_APPROVE, the request will be satisfied by the first approval
      */
-    private static final String DEFAULT_APPROVE_POLICY = EdenConstants.APPROVE_POLICY_FIRST_APPROVE;
+    private static final String DEFAULT_APPROVE_POLICY = KEWConstants.APPROVE_POLICY_FIRST_APPROVE;
     /**
      * Default action requested, if omitted; defaults to "A"pprove
      */
-    private static final String DEFAULT_ACTION_REQUESTED = EdenConstants.ACTION_REQUEST_APPROVE_REQ;
+    private static final String DEFAULT_ACTION_REQUESTED = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
 
     public List<RuleBaseValues> parseRules(InputStream input) throws IOException, InvalidXmlException {
         try {
@@ -364,7 +364,7 @@ public class RuleXmlParser implements XmlConstants {
         if (actionRequested == null) {
             throw new InvalidXmlException("actionRequested is required on responsibility");
         }
-        if (!actionRequested.equals(EdenConstants.ACTION_REQUEST_COMPLETE_REQ) && !actionRequested.equals(EdenConstants.ACTION_REQUEST_APPROVE_REQ) && !actionRequested.equals(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && !actionRequested.equals(EdenConstants.ACTION_REQUEST_FYI_REQ)) {
+        if (!actionRequested.equals(KEWConstants.ACTION_REQUEST_COMPLETE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_FYI_REQ)) {
             throw new InvalidXmlException("Invalid action requested code '" + actionRequested + "'");
         }
         if (user == null && workgroup == null && role == null) {
@@ -373,7 +373,7 @@ public class RuleXmlParser implements XmlConstants {
         if (approvePolicy == null) {
             approvePolicy = DEFAULT_APPROVE_POLICY;
         }
-        if (!approvePolicy.equals(EdenConstants.APPROVE_POLICY_ALL_APPROVE) && !approvePolicy.equals(EdenConstants.APPROVE_POLICY_FIRST_APPROVE)) {
+        if (!approvePolicy.equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE) && !approvePolicy.equals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE)) {
             throw new InvalidXmlException("Invalid approve policy '" + approvePolicy + "'");
         }
         if (priority == null) {
@@ -392,7 +392,7 @@ public class RuleXmlParser implements XmlConstants {
                     throw new InvalidXmlException("Could not locate workflow user for given network id: " + user);
                 }
                 responsibility.setRuleResponsibilityName(workflowUser.getWorkflowId());
-                responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
             } catch (EdenUserNotFoundException e) {
                 throw new InvalidXmlException(e);
             }
@@ -404,10 +404,10 @@ public class RuleXmlParser implements XmlConstants {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);
             }
             responsibility.setRuleResponsibilityName(workgroupObject.getWorkflowGroupId().getGroupId().toString());
-            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
         } else if (role != null) {
             responsibility.setRuleResponsibilityName(role);
-            responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_ROLE_ID);
+            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         }
         if (ruleDelegation == null && delegations != null) {
             responsibility.setDelegationRules(parseRuleDelegations(delegations, responsibility));
@@ -426,7 +426,7 @@ public class RuleXmlParser implements XmlConstants {
 
     private RuleDelegation parseRuleDelegation(Element element, RuleResponsibility responsibility) throws InvalidXmlException {
         String delegationType = element.getChildText(DELEGATION_TYPE, RULE_NAMESPACE);
-        if (delegationType == null || !(delegationType.equals(EdenConstants.DELEGATION_PRIMARY) || delegationType.equals(EdenConstants.DELEGATION_SECONDARY))) {
+        if (delegationType == null || !(delegationType.equals(KEWConstants.DELEGATION_PRIMARY) || delegationType.equals(KEWConstants.DELEGATION_SECONDARY))) {
             throw new InvalidXmlException("Invalid delegation type specified for delegate rule '" + delegationType + "'");
         }
         RuleDelegation ruleDelegation = new RuleDelegation();

@@ -35,7 +35,7 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler;
 import org.kuali.workflow.attribute.WorkflowLookupableResult;
@@ -263,7 +263,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
      *      javax.servlet.http.HttpServletRequest)
      */
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
-        edu.iu.uis.eden.web.session.UserSession workflowUserSession = (edu.iu.uis.eden.web.session.UserSession) request.getSession().getAttribute(EdenConstants.USER_SESSION_KEY);
+        edu.iu.uis.eden.web.session.UserSession workflowUserSession = (edu.iu.uis.eden.web.session.UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
         if (GlobalVariables.getUserSession() == null) {
             GlobalVariables.setUserSession(new org.kuali.core.UserSession(workflowUserSession.getNetworkId()));
         }

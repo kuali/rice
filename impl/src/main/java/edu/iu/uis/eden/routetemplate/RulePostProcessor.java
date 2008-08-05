@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
@@ -41,7 +41,7 @@ public class RulePostProcessor extends DefaultPostProcessor {
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
         DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(statusChangeEvent.getRouteHeaderId());
         
-        if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(routeHeader.getDocRouteStatus())) {
+        if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(routeHeader.getDocRouteStatus())) {
             getRuleService().makeCurrent(routeHeader.getRouteHeaderId());
         }
         return new ProcessDocReport(true, "");

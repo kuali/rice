@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -77,9 +77,9 @@ public class TestRouteModule implements RouteModule {
 
     public Recipient getRealRecipient(TestRecipient recipient) throws WorkflowException {
         Recipient realRecipient = null;
-        if (recipient.getType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
         	realRecipient = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
-        } else if (recipient.getType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
         	realRecipient = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId()));
         } else {
         	throw new WorkflowException("Could not resolve recipient with type " + recipient.getType());
@@ -93,11 +93,11 @@ public class TestRouteModule implements RouteModule {
             return null;
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
-        if (recipient.getType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
             responsibleParty.setUserId(new AuthenticationUserId(recipient.getId()));
-        } else if (recipient.getType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
             responsibleParty.setGroupId(new GroupNameId(recipient.getId()));
-        } else if (recipient.getType().equals(EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
             responsibleParty.setRoleName(recipient.getId());
         } else {
             throw new WorkflowException("Invalid recipient type code of '"+recipient.getType()+"' for responsibility id "+responsibilityId);

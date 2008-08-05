@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -40,7 +40,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param user User taking the action.
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user);
     }
 
     /**
@@ -49,7 +49,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)

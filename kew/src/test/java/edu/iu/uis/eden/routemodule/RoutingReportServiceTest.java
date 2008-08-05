@@ -25,7 +25,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -77,28 +77,28 @@ public class RoutingReportServiceTest extends KEWTestCase {
             ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
             String netId = requestVO.getUserVO().getNetworkId(); 
             if (netId.equals("bmcgough")) {
-                assertEquals("Should be approve.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be activated.", EdenConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
+                assertEquals("Should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_NODE, requestVO.getNodeName());
                 approveToBmcgough = true;
             } else if (netId.equals("rkirkend")) {
-                assertEquals("Should be approve.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be activated.", EdenConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
+                assertEquals("Should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_NODE, requestVO.getNodeName());
                 approveToRkirkend = true;
             } else if (netId.equals("pmckown")) {
-                assertEquals("Should be approve.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", EdenConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
+                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, requestVO.getNodeName());
                 approveToPmckown = true;
             } else if (netId.equals("temay")) {
-                assertEquals("Should be acknowledge.", EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", EdenConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be acknowledge.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.ACKNOWLEDGE_1_NODE, requestVO.getNodeName());
                 ackToTemay = true;
             } else if (netId.equals("jhopf")) {
-                assertEquals("Should be acknowledge.", EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", EdenConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be acknowledge.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.ACKNOWLEDGE_2_NODE, requestVO.getNodeName());
                 ackToJhopf = true;
             } 

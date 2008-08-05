@@ -34,7 +34,7 @@ import javax.persistence.Version;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -130,15 +130,15 @@ public class RuleResponsibility implements WorkflowPersistable {
     }
 
     public boolean isUsingRole() {
-    	return (ruleResponsibilityName != null && ruleResponsibilityType != null && ruleResponsibilityType.equals(EdenConstants.RULE_RESPONSIBILITY_ROLE_ID));
+    	return (ruleResponsibilityName != null && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID));
     }
 
     public boolean isUsingWorkflowUser() {
-    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
+    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
     }
 
     public boolean isUsingWorkgroup() {
-    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID));
+    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID));
     }
 
     public Long getRuleBaseValuesId() {

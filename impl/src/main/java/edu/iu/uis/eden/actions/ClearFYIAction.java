@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
@@ -52,7 +52,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_FYI_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, user);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_FYI_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, user, annotation);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_FYI_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -109,7 +109,7 @@ public class ClearFYIAction extends ActionTakenEvent {
             actionRequest = (ActionRequestValue) ars.next();
 
             //FYI request matches all but deny and cancel
-            if (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequest.getActionRequested())) {
+            if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequest.getActionRequested())) {
                 actionCompatible = true;
                 break;
             }
@@ -132,7 +132,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         LOG.debug("Clear FYI for document : " + annotation);
         LOG.debug("Checking to see if the action is legal");
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_FYI_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -143,7 +143,7 @@ public class ClearFYIAction extends ActionTakenEvent {
 //            throw new InvalidActionTakenException("Document is not in a state to have FYI processed");
 //        }
 //
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_FYI_REQ);
+//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //            throw new InvalidActionTakenException("No request for the user is compatible with the ClearFYI Action");
 //        }

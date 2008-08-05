@@ -25,7 +25,7 @@ import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -48,7 +48,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     @Test public void testRevokeByActionRequestId() throws Exception {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
     	
     	// check the action requests
     	TestUtilities.assertNumberOfPendingRequests(docId, 1);
@@ -94,9 +94,9 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	// ad hoc the document to dewey (twice) and the workgroup WorkflowAdmin
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey2", new NetworkIdDTO("dewey"), "respDesc1", false);
-    	doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);    	
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey2", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);    	
     
     	TestUtilities.assertNumberOfPendingRequests(docId, 3);
     	TestUtilities.assertUserHasPendingRequest(docId, "dewey");
@@ -141,15 +141,15 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	// ad hoc requests at the AdHoc node and then revoke the entire node
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
-    	doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
     	TestUtilities.assertNumberOfPendingRequests(docId, 2);
     	
     	// now revoke the node
     	doc.revokeAdHocRequests(new AdHocRevokeDTO("AdHoc"), "");
     	TestUtilities.assertNumberOfPendingRequests(docId, 0);
     	// send an Acknowledge to the AdHoc node prior to routing
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "AdHoc", "annotationEwestfal1", new NetworkIdDTO("ewestfal"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "AdHoc", "annotationEwestfal1", new NetworkIdDTO("ewestfal"), "respDesc1", false);
     	
     	// route the document
     	doc = getDocument("rkirkend");
@@ -186,11 +186,11 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	// ad hoc the document to dewey and the workgroup WorkflowAdmin
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", new NetworkIdDTO("dewey"), "respDesc1", false);
     	
     	doc = getDocument("dewey");
     	assertFalse("User andlee should not have an approve request yet.  Document not yet routed.", doc.isApprovalRequested());
-    	doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
     	doc = getDocument("quickstart");
     	assertFalse("User should not have approve request yet.  Document not yet routed.", doc.isApprovalRequested());
     	
@@ -215,7 +215,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	assertEquals("There should be no pending requests.", 0, actionRequests.size());
     	
     	// check that the "ActionTakens" have been properly recorded
-    	Collection actionTakens = KEWServiceLocator.getActionTakenService().findByDocIdAndAction(docId, EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+    	Collection actionTakens = KEWServiceLocator.getActionTakenService().findByDocIdAndAction(docId, KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
     	assertEquals("There should be 2 'AdHocRevoked' action takens", 2, actionTakens.size());
     	
     	// now check that the document is still intiated
@@ -231,7 +231,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	// send an FYI to the AdHoc node prior to blanket approving
-    	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "annotationEwestfal1", new NetworkIdDTO("ewestfal"), "respDesc1", false);
+    	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "annotationEwestfal1", new NetworkIdDTO("ewestfal"), "respDesc1", false);
     	
     	// blanket approve the document
     	doc.blanketApprove("");

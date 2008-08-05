@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
@@ -34,19 +34,19 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
     private String nodeName;
     
     public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
-        this.superUserAction = EdenConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
+        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
+        this.superUserAction = KEWConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
     }
     
     public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
-        super(EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessor);
-        this.superUserAction = EdenConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
+        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessor);
+        this.superUserAction = KEWConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
         this.nodeName = nodeName;
     }
     
     protected void markDocument() throws WorkflowException {
         if (getRouteHeader().isInException()) {
-            //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), EdenConstants.ROUTE_HEADER_ENROUTE_CD);
+            //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_ENROUTE_CD);
             getRouteHeader().markDocumentEnroute();
         }
         ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(this.getActionTakenCode(), getRouteHeader(), getUser(), annotation, nodeName, true, isRunPostProcessorLogic());

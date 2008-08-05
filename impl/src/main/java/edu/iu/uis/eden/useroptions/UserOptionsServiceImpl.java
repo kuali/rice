@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -36,7 +36,7 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     private static final Properties defaultProperties = new Properties();
 
     static {
-        defaultProperties.setProperty(EdenConstants.EMAIL_RMNDR_KEY, EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+        defaultProperties.setProperty(KEWConstants.EMAIL_RMNDR_KEY, KEWConstants.EMAIL_RMNDR_WEEK_VAL);
     }
 
     private Long getNewOptionIdForActionList() {
@@ -85,16 +85,16 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
     
     public boolean refreshActionList(WorkflowUser user) {
-        List options = findByUserQualified(user, EdenConstants.RELOAD_ACTION_LIST + "%");
+        List options = findByUserQualified(user, KEWConstants.RELOAD_ACTION_LIST + "%");
         boolean refresh = ! options.isEmpty();
         if (refresh && user != null) {
-            getUserOptionsDAO().deleteByUserQualified(user, EdenConstants.RELOAD_ACTION_LIST + "%");
+            getUserOptionsDAO().deleteByUserQualified(user, KEWConstants.RELOAD_ACTION_LIST + "%");
         }
         return refresh;
     }
     
     public void saveRefreshUserOption(WorkflowUser user) {
-        save(user, EdenConstants.RELOAD_ACTION_LIST + new Date().getTime() + getNewOptionIdForActionList(), "true");
+        save(user, KEWConstants.RELOAD_ACTION_LIST + new Date().getTime() + getNewOptionIdForActionList(), "true");
     }
 
     public UserOptionsDAO getUserOptionsDAO() {

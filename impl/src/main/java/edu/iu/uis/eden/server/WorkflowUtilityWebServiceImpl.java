@@ -53,7 +53,7 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -446,7 +446,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
             //using app constant to turn the future look off if need be
             //TODO remove this app constant it has out lived it's usefulness
-            lookFuture = lookFuture && new Boolean(Utilities.getApplicationConstant(EdenConstants.CHECK_ROUTE_LOG_AUTH_FUTURE)).booleanValue();
+            lookFuture = lookFuture && new Boolean(Utilities.getApplicationConstant(KEWConstants.CHECK_ROUTE_LOG_AUTH_FUTURE)).booleanValue();
             if (!lookFuture) {
                 return authorized;
             }
@@ -576,12 +576,12 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         // attempting to deactivate them, this is in order to address the ignore previous issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
         boolean activateFirst = false;
-        String activateFirstValue = Utilities.getApplicationConstant(EdenConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
+        String activateFirstValue = Utilities.getApplicationConstant(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
         if (!Utilities.isEmpty(activateFirstValue)) {
             activateFirst = new Boolean(activateFirstValue).booleanValue();
         }
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(routeHeaderId, EdenConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
+        List requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(routeHeaderId, KEWConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
         if (requests == null || requests.isEmpty()) {
             return false;
         }
@@ -640,7 +640,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         LOG.debug("Evaluating routeNodeHasApproverActionRequest [docTypeName=" + documentTypeName + ", nodeName=" + nodeName + "]");
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(documentType.getDocumentTypeId(), nodeName);
-        return routeNodeHasApproverActionRequest(documentType, docContent, routeNode, new Integer(EdenConstants.INVALID_ROUTE_LEVEL));
+        return routeNodeHasApproverActionRequest(documentType, docContent, routeNode, new Integer(KEWConstants.INVALID_ROUTE_LEVEL));
     }
 
     /**
@@ -665,12 +665,12 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         routeHeader.setRouteHeaderId(new Long(0));
         routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
         routeHeader.setDocRouteLevel(routeLevel);
-        routeHeader.setDocVersion(new Integer(EdenConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
 
         if (node.getRuleTemplate() != null && node.isFlexRM()) {
             String ruleTemplateName = node.getRuleTemplate().getName();
             routeHeader.setDocContent(docContent);
-            routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
+            routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
             FlexRM flexRM = new FlexRM();
     		RouteContext context = RouteContext.getCurrentRouteContext();
     		context.setDocument(routeHeader);

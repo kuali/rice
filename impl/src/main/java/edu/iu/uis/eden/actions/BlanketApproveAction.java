@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -53,7 +53,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private Set nodeNames;
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user);
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Integer routeLevel) {
@@ -65,7 +65,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Set nodeNames) {
-        super(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet() : nodeNames);
     }
 
@@ -92,7 +92,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -137,7 +137,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
    //     checkLocking();
         updateSearchableAttributesIfPossible();
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -166,7 +166,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
                 markDocumentEnroute(getRouteHeader());
             }
 
-//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 //            if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //                throw new InvalidActionTakenException("No request for the user is compatible with the BlanketApprove Action");
 //            }
@@ -206,7 +206,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
             LOG.error(e);
             throw new WorkflowRuntimeException(e);
         }
-//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
+//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
 //              BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
     }
     

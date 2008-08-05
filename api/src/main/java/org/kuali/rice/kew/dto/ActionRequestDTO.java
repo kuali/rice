@@ -19,7 +19,7 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -268,31 +268,31 @@ public class ActionRequestDTO implements Serializable {
     }
 
     public boolean isCompleteRequest() {
-        return EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequested);
+        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequested);
     }
 
     public boolean isInitialized() {
-        return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(status);
+        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(status);
     }
 
     public boolean isActivated() {
-        return EdenConstants.ACTION_REQUEST_ACTIVATED.equals(status);
+        return KEWConstants.ACTION_REQUEST_ACTIVATED.equals(status);
     }
 
     public boolean isDone() {
-        return EdenConstants.ACTION_REQUEST_DONE_STATE.equals(status);
+        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(status);
     }
 
     public boolean isUserRequest() {
-        return EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isWorkgroupRequest() {
-        return EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
-        return EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public UserIdDTO getUserIdVO() {
@@ -395,15 +395,15 @@ public class ActionRequestDTO implements Serializable {
     }
 
     public boolean isAdHocRequest() {
-    	return EdenConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isGeneratedRequest() {
-    	return EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isExceptionRequest() {
-    	return EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isRouteModuleRequest() {

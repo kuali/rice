@@ -294,7 +294,7 @@ private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLo
 //	}
 //
 //	private boolean isDuplicateActionRequestDetected(RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
-//		List requests = getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
+//		List requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
 //		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 //			ActionRequestValue request = (ActionRequestValue) iterator.next();
 //			if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request

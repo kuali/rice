@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -82,22 +82,22 @@ public class ParallelRoutingTest extends KEWTestCase {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("temay")) {
                 isToTemay = true;
-                assertEquals("Request should be activated.", EdenConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
-                assertEquals("Wrong action requested.", EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
+                assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
+                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", ACKNOWLEDGE_1_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
             if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("rkirkend")) {
                 isToRkirkend = true;
-                assertEquals("Request should be activated.", EdenConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
-                assertEquals("Wrong action requested.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
+                assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
+                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", WORKFLOW_DOCUMENT_2_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
             if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("pmckown")) {
                 isToPmckown = true;
-                assertEquals("Request should be activated.", EdenConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
-                assertEquals("Wrong action requested.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
+                assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
+                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", WORKFLOW_DOCUMENT_3_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }

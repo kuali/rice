@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.ExceptionUtils;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
@@ -75,7 +75,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 if (actionRequest.isActive()) {
-                    actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
+                    actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
                     for (Iterator iterator = actionRequest.getActionItems().iterator(); iterator.hasNext();) {
                         KEWServiceLocator.getActionListService().deleteActionItem((ActionItem) iterator.next());
                     }
@@ -87,15 +87,15 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             Throwable cause = determineActualCause(throwable, 0);
 
             String message = (cause != null && cause.getMessage() != null) ? cause.getMessage() : "";
-            if (message.length() > EdenConstants.MAX_ANNOTATION_LENGTH) {
-                message = message.substring(0, EdenConstants.MAX_ANNOTATION_LENGTH);
+            if (message.length() > KEWConstants.MAX_ANNOTATION_LENGTH) {
+                message = message.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
             }
             ActionRequestFactory arFactory = new ActionRequestFactory(document, nodeInstance);
-            ActionRequestValue exceptionRequest = arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), nodeInstance.getRouteNode().getExceptionWorkgroup(), "Exception Workgroup for route node " + nodeInstance.getName(), EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
+            ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), nodeInstance.getRouteNode().getExceptionWorkgroup(), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
             DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
             String oldStatus = rh.getDocRouteStatus();
-            rh.setDocRouteStatus(EdenConstants.ROUTE_HEADER_EXCEPTION_CD);
-            notifyStatusChange(rh, EdenConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
+            rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+            notifyStatusChange(rh, KEWConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
             KEWServiceLocator.getActionRequestService().activateRequest(exceptionRequest);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);

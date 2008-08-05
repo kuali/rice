@@ -24,7 +24,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -88,7 +88,7 @@ public class RemoveReplaceWorkgroupTypeRoutingAttribute extends WorkgroupTypeRou
 		String workgroupType = XmlHelper.getChildElementText(workgroupNode, XmlConstants.WORKGROUP_TYPE);
 		// if there is no workgroup type, let's set it to a default value
 		if (StringUtils.isBlank(workgroupType)) {
-		    workgroupType = EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE;
+		    workgroupType = KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE;
 		}
 		workgroupTypes.add(workgroupType);
 	    }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -60,7 +60,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String COLUMN_WORKGROUP_REQUEST_KEY = "WORKGROUP_REQUEST_COL_SHOW_NEW";
     private static final String COLUMN_CLEAR_FYI_KEY = "CLEAR_FYI_COL_SHOW_NEW";
     private static final String ACTION_LIST_SIZE_KEY = "ACTION_LIST_SIZE_NEW";
-    private static final String EMAIL_REMINDER_KEY = EdenConstants.EMAIL_RMNDR_KEY;
+    private static final String EMAIL_REMINDER_KEY = KEWConstants.EMAIL_RMNDR_KEY;
     private static final String EMAIL_NOTIFY_PRIMARY_KEY = "EMAIL_NOTIFY_PRIMARY";
     private static final String EMAIL_NOTIFY_SECONDARY_KEY = "EMAIL_NOTIFY_SECONDARY";
     private static final String DEFAULT_COLOR = "white";
@@ -87,29 +87,29 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setColorInitiated(getOption(INITIATED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
         preferences.setColorProccessed(getOption(PROCESSED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
         preferences.setColorSaved(getOption(SAVED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
-        preferences.setEmailNotification(getOption(EMAIL_REMINDER_KEY, EdenConstants.EMAIL_RMNDR_IMMEDIATE, user, preferences).getOptionVal());
-        preferences.setNotifyPrimaryDelegation(getOption(EMAIL_NOTIFY_PRIMARY_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setNotifySecondaryDelegation(getOption(EMAIL_NOTIFY_SECONDARY_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
-        preferences.setOpenNewWindow(getOption(OPEN_NEW_WINDOW_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setEmailNotification(getOption(EMAIL_REMINDER_KEY, KEWConstants.EMAIL_RMNDR_IMMEDIATE, user, preferences).getOptionVal());
+        preferences.setNotifyPrimaryDelegation(getOption(EMAIL_NOTIFY_PRIMARY_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setNotifySecondaryDelegation(getOption(EMAIL_NOTIFY_SECONDARY_KEY, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+        preferences.setOpenNewWindow(getOption(OPEN_NEW_WINDOW_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
         preferences.setPageSize(getOption(ACTION_LIST_SIZE_KEY, DEFAULT_ACTION_LIST_SIZE, user, preferences).getOptionVal());
         preferences.setRefreshRate(getOption(REFRESH_RATE_KEY, DEFAULT_REFRESH_RATE, user, preferences).getOptionVal());
-        preferences.setShowActionRequested(getOption(COLUMN_ACTION_REQ_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
-        preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user, preferences).getOptionVal());
-        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
-        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+        preferences.setShowActionRequested(getOption(COLUMN_ACTION_REQ_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user, preferences).getOptionVal());
+        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         
         if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    
         } else {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         }
         
         LOG.debug("end preferences fetch user " + user);

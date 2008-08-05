@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -191,7 +191,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         // approve the document
         WorkflowUser approverUser = loginUser(APPROVER_USER_NETWORK_ID);
         document = new WorkflowDocument(new NetworkIdDTO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
-        assertEquals("Document route status is wrong",EdenConstants.ROUTE_HEADER_ENROUTE_CD,document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document route status is wrong",KEWConstants.ROUTE_HEADER_ENROUTE_CD,document.getRouteHeader().getDocRouteStatus());
         assertTrue("Approval should be requested of " + APPROVER_USER_NETWORK_ID, document.isApprovalRequested());
         // test that the approver can see the document
         criteria = new DocSearchCriteriaVO();
@@ -466,28 +466,28 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String ackNetworkId = "xqi";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), documentType);
-        document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdDTO(ackNetworkId), "", true);
+        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdDTO(ackNetworkId), "", true);
         document.saveDocument("");
-        assertEquals("Document should have saved", EdenConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should have saved", KEWConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
         
         document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), document.getRouteHeaderId());
         document.routeDocument("");
-        assertEquals("Document should have routed", EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should have routed", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
 
         // approve the document
         document = new WorkflowDocument(new NetworkIdDTO(APPROVER_USER_NETWORK_ID), document.getRouteHeaderId());
         assertTrue("Approval should be requested of " + APPROVER_USER_NETWORK_ID, document.isApprovalRequested());
         document.approve("");
-        assertEquals("Document should have gone to processed", EdenConstants.ROUTE_HEADER_PROCESSED_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should have gone to processed", KEWConstants.ROUTE_HEADER_PROCESSED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
 
         // ack the document
         document = new WorkflowDocument(new NetworkIdDTO(ackNetworkId), document.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of " + ackNetworkId, document.isAcknowledgeRequested());
         document.acknowledge("");
-        assertEquals("Document should have gone to final", EdenConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should have gone to final", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
     }
 

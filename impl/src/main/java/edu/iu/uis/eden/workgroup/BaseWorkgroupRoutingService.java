@@ -24,7 +24,7 @@ import org.jdom.Element;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 import org.kuali.workflow.workgroup.WorkgroupType;
@@ -193,11 +193,11 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
 	    List<BaseWorkgroupMember> finalMembers = new ArrayList<BaseWorkgroupMember>();
 	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
-		if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+		if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
 		    if (userToRemove != null && member.getWorkflowId().equals(userToRemove.getWorkflowId())) {
 			continue;
 		    }
-		} else if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
 		    if (workgroupToRemove != null && member.getWorkflowId().equals(workgroupToRemove.getWorkflowGroupId().getGroupId().toString())) {
 			continue;
 		    }
@@ -250,23 +250,23 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	    }
 	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
 	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
-		if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+		if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
 		    if (userToReplace != null && member.getWorkflowId().equals(userToReplace.getWorkflowId())) {
 			if (newUser != null) {
-			    member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 			    member.setWorkflowId(newUser.getWorkflowId());
 			} else if (newWorkgroup != null) {
-			    member.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
 			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
 			}
 		    }
-		} else if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
 		    if (workgroupToReplace != null && member.getWorkflowId().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
 			if (newUser != null) {
-			    member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 			    member.setWorkflowId(newUser.getWorkflowId());
 			} else if (newWorkgroup != null) {
-			    member.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
 			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
 			}
 		    }
@@ -344,7 +344,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         	if (member instanceof WorkflowUser) {
         		WorkflowUser user = (WorkflowUser)member;
                 workgroupMember.setWorkflowId(user.getWorkflowId());
-                workgroupMember.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+                workgroupMember.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         	} else if (member instanceof Workgroup) {
         		Workgroup nestedWorkgroup = (Workgroup)member;
         		// check for a cycle in the workgroup membership
@@ -352,7 +352,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
                 	throw new WorkflowException("A cycle was detected in workgroup membership.  Workgroup '" + nestedWorkgroup.getGroupNameId().getNameId() + "' has '" + workgroup.getGroupNameId() +"' as a member");
                 }
                 workgroupMember.setWorkflowId(nestedWorkgroup.getWorkflowGroupId().getGroupId().toString());
-                workgroupMember.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+                workgroupMember.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
         	} else {
         		LOG.error("Invalid recipient type found for workgroup member when materializing members for routing: " + member.getClass().getName());
         		continue;

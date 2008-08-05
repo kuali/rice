@@ -27,7 +27,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -144,7 +144,7 @@ public class HelpAction extends WorkflowAction {
         HelpForm helpForm = (HelpForm) form;
         String helpKey = request.getParameter("helpKey");
         helpForm.setHelpEntry(getHelpService().findByKey(helpKey));
-        helpForm.setShowEdit(EdenConstants.NO_LABEL);
+        helpForm.setShowEdit(KEWConstants.NO_LABEL);
         return mapping.findForward("popHelp");
     }
     

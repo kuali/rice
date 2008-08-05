@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 
@@ -46,7 +46,7 @@ public class WorkflowInfoTest extends KEWTestCase {
 	assertNotNull(routeHeaderVO);
 
 	assertEquals(documentId, routeHeaderVO.getRouteHeaderId());
-	assertEquals(EdenConstants.ROUTE_HEADER_INITIATED_CD, routeHeaderVO.getDocRouteStatus());
+	assertEquals(KEWConstants.ROUTE_HEADER_INITIATED_CD, routeHeaderVO.getDocRouteStatus());
     }
 
     @Test
@@ -69,12 +69,12 @@ public class WorkflowInfoTest extends KEWTestCase {
 	assertNotNull(documentId);
 
 	String status = info.getDocumentStatus(documentId);
-	assertEquals("Document should be INITIATED.", EdenConstants.ROUTE_HEADER_INITIATED_CD, status);
+	assertEquals("Document should be INITIATED.", KEWConstants.ROUTE_HEADER_INITIATED_CD, status);
 
 	// cancel the doc, it's status should be updated
 	document.cancel("");
 	status = info.getDocumentStatus(documentId);
-	assertEquals("Document should be CANCELED.", EdenConstants.ROUTE_HEADER_CANCEL_CD, status);
+	assertEquals("Document should be CANCELED.", KEWConstants.ROUTE_HEADER_CANCEL_CD, status);
     }
 
 }

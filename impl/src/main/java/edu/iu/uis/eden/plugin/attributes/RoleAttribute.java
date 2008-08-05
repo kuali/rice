@@ -18,7 +18,7 @@ package edu.iu.uis.eden.plugin.attributes;
 
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.engine.RouteContext;
@@ -41,7 +41,7 @@ import edu.iu.uis.eden.routetemplate.Role;
  *   <blockquote><code>&lt;role&gt;edu.whatever.attribute.SomeAttribute!RoleName&lt;/role&gt;</code></blockquote>
  *   </li>
  *   <li>When the <code>&lt;role&gt;</code> element is parsed, the Rule's "responsibility" is set to the role element value
- *       and the responsibility is marked to indicate that it is a role ("R", {@link EdenConstants#RULE_RESPONSIBILITY_ROLE_ID})</li>
+ *       and the responsibility is marked to indicate that it is a role ("R", {@link KEWConstants#RULE_RESPONSIBILITY_ROLE_ID})</li>
  *   <li>When a Rule that is configured with a Role responsibility is fired, {@link #getQualifiedRoleNames(String, DocumentContent)}
  *       is called to return a list of "qualified" role names.  Qualified role names are role names which have been qualified
  *       with some relevant contextual information (e.g. from the document) that is useful for subsequent responsibility

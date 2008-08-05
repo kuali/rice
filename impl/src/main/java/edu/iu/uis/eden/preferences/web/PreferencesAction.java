@@ -27,7 +27,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.preferences.Preferences;
@@ -64,7 +64,7 @@ public class PreferencesAction extends WorkflowAction {
     }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("actionListContent", EdenConstants.ACTION_LIST_CONTENT);
+        request.setAttribute("actionListContent", KEWConstants.ACTION_LIST_CONTENT);
         getDelegatorFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
         prefForm.setShowOutbox(Core.getCurrentContextConfig().getOutBoxOn());
@@ -73,8 +73,8 @@ public class PreferencesAction extends WorkflowAction {
 
     public void getDelegatorFilterChoices(HttpServletRequest request) {
         List delegatorFilterChoices = new ArrayList();
-        delegatorFilterChoices.add(new KeyValue(EdenConstants.DELEGATORS_ON_FILTER_PAGE, EdenConstants.DELEGATORS_ON_FILTER_PAGE));
-        delegatorFilterChoices.add(new KeyValue(EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
+        delegatorFilterChoices.add(new KeyValue(KEWConstants.DELEGATORS_ON_FILTER_PAGE, KEWConstants.DELEGATORS_ON_FILTER_PAGE));
+        delegatorFilterChoices.add(new KeyValue(KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
         request.setAttribute("delegatorFilter", delegatorFilterChoices);
     }
     

@@ -43,7 +43,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -151,7 +151,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testEmptyStringParameter() throws WorkflowException, InterruptedException {
 	    DocumentResponse results = service.create(TEST_USER, "", TEST_DOC_TYPE, TEST_TITLE);
-	    assertEquals(EdenConstants.ROUTE_HEADER_INITIATED_CD, results.getDocStatus());
+	    assertEquals(KEWConstants.ROUTE_HEADER_INITIATED_CD, results.getDocStatus());
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	 */
 	@Test public void testNullStringParameter() throws WorkflowException, InterruptedException {
         DocumentResponse results = service.create(TEST_USER, null, TEST_DOC_TYPE, TEST_TITLE);
-        assertEquals(EdenConstants.ROUTE_HEADER_INITIATED_CD, results.getDocStatus());
+        assertEquals(KEWConstants.ROUTE_HEADER_INITIATED_CD, results.getDocStatus());
     }
 
 	/**
@@ -181,7 +181,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		//assertEquals("There should be " + EXPECTED_RESULT_FIELDS + " elements in the result return set.", EXPECTED_RESULT_FIELDS, results.size());
 		assertEquals("There shouldn't be an error message if things went well.", "", results.getErrorMessage());
-		assertEquals("The document should be in FINAL status", EdenConstants.ROUTE_HEADER_FINAL_CD, (String) results.getDocStatus());
+		assertEquals("The document should be in FINAL status", KEWConstants.ROUTE_HEADER_FINAL_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals("We were expecting the initiator to be " + TEST_USER, TEST_USER, (String) results.getInitiatorId());
@@ -191,7 +191,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		Long docId = routeHeader.getRouteHeaderId();
 		routeHeader = getTestDoc(docId.longValue());
 		assertEquals("The docTitle should be " + TEST_TITLE, TEST_TITLE, routeHeader.getDocTitle());
-		assertEquals("The docRouteStatus should be F)inal ", EdenConstants.ROUTE_HEADER_FINAL_CD, routeHeader.getDocRouteStatus());
+		assertEquals("The docRouteStatus should be F)inal ", KEWConstants.ROUTE_HEADER_FINAL_CD, routeHeader.getDocRouteStatus());
 		// TODO: better date test
 		assertNotNull("dateCreated should NOT be null", routeHeader.getDateCreated());
 		assertEquals("We were expecting the initiator to be " + TEST_USER, TEST_USER, routeHeader.getInitiator().getNetworkId());
@@ -245,7 +245,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		StandardResponse results = service.approve(routeHeader.getRouteHeaderId().toString(), TEST_USER, TEST_TITLE, "<key>value</key>", "test approve");
 
 		//assertEquals("We are expecting six entries in the result Map", 6, results.size());
-		assertEquals(EdenConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("Create date shouldn't be null", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -308,7 +308,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		//assertEquals(6, results.size());
 		assertEquals("", (String) results.getErrorMessage());
-		assertEquals(EdenConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -368,7 +368,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		StandardResponse results = service.cancel(routeHeader.getRouteHeaderId().toString(), TEST_USER, "test cancel");
 
 		//assertEquals(6, results.size());
-		assertEquals(EdenConstants.ROUTE_HEADER_CANCEL_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_CANCEL_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -409,7 +409,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	    DocumentResponse results = service.create(TEST_USER, "1234", TEST_DOC_TYPE, TEST_TITLE);
 		//assertEquals(7, results.size());
 
-		assertEquals(EdenConstants.ROUTE_HEADER_INITIATED_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_INITIATED_CD, (String) results.getDocStatus());
 
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
@@ -450,7 +450,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		//assertEquals(6, results.size());
 		assertEquals("There shouldn't be an error message if things went well.", "", (String) results.getErrorMessage());
-		assertEquals(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -460,7 +460,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		Long docId = routeHeader.getRouteHeaderId();
 		routeHeader = getTestDoc(docId.longValue());
 		assertEquals(TEST_TITLE, routeHeader.getDocTitle());
-		assertEquals(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, routeHeader.getDocRouteStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, routeHeader.getDocRouteStatus());
 		// TODO: better date test
 		assertNotNull("dateCreated should NOT be null", routeHeader.getDateCreated());
 		assertEquals(TEST_USER, routeHeader.getInitiator().getNetworkId());
@@ -511,7 +511,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		//assertEquals(6, results.size());
 		assertEquals("There shouldn't be an error message if things went well.", "", (String) results.getErrorMessage());
-		assertTrue("docStatus should be FINAL", ((String) results.getDocStatus()).equals(EdenConstants.ROUTE_HEADER_FINAL_CD));
+		assertTrue("docStatus should be FINAL", ((String) results.getDocStatus()).equals(KEWConstants.ROUTE_HEADER_FINAL_CD));
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -580,7 +580,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		//assertEquals(10, results.size());
 		assertEquals("There shouldn't be an error message if things went well.", "", (String) results.getErrorMessage());
-		assertEquals(EdenConstants.ROUTE_HEADER_ENROUTE_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -601,7 +601,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		results = service.getDocument(routeHeader.getRouteHeaderId().toString(), TEST_USER);
 
 		//assertEquals(10, results.size());
-		assertEquals(EdenConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_PROCESSED_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());
@@ -623,7 +623,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		results = service.getDocument(routeHeader.getRouteHeaderId().toString(), TEST_FYI_USER);
 
 		//assertEquals(10, results.size());
-		assertEquals(EdenConstants.ROUTE_HEADER_FINAL_CD, (String) results.getDocStatus());
+		assertEquals(KEWConstants.ROUTE_HEADER_FINAL_CD, (String) results.getDocStatus());
 		// TODO: better date test
 		assertTrue("createDate should not be empty", StringUtils.isNotEmpty((String) results.getCreateDate()));
 		assertEquals(TEST_USER, (String) results.getInitiatorId());

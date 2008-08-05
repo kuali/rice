@@ -30,7 +30,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -84,7 +84,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
                 workflowIds.add(wfUser.getWorkflowUserId().getWorkflowId());
             }
             crit.addIn("workgroupMembers.workflowId", workflowIds);
-            crit.addEqualTo("workgroupMembers.memberType", EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+            crit.addEqualTo("workgroupMembers.memberType", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         }
         return (List) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BaseWorkgroup.class, crit));
 	}
@@ -107,7 +107,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         		Criteria nullType = new Criteria();
         		nullType.addIsNull("workgroupType");
         		Criteria legType = new Criteria();
-        		legType.addEqualTo("workgroupType", EdenConstants.LEGACY_DEFAULT_WORKGROUP_TYPE);
+        		legType.addEqualTo("workgroupType", KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE);
         		orCrit.addOrCriteria(nullType);
         		orCrit.addOrCriteria(legType);
         		crit.addAndCriteria(orCrit);
@@ -223,7 +223,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", Boolean.TRUE);
 		crit.addEqualTo("workgroupMembers.workflowId", workgroupId.toString());
-		crit.addEqualTo("workgroupMembers.memberType", EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+		crit.addEqualTo("workgroupMembers.memberType", KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
 		ReportQueryByCriteria query = QueryFactory.newReportQuery(BaseWorkgroup.class, crit);
     	query.setAttributes(new String[] { "workgroupId" });
     	List<Long> workgroupIds = new ArrayList<Long>(10);

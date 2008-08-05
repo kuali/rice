@@ -46,7 +46,7 @@ import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -83,7 +83,7 @@ public class WorkflowInfo implements java.io.Serializable {
     private synchronized void initializeBus() throws WorkflowException {
     	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
     		RiceConfigurer configurer = new RiceConfigurer();
-    		configurer.setMessageEntity(EdenConstants.KEW_MESSAGING_ENTITY);
+    		configurer.setMessageEntity(KEWConstants.KEW_MESSAGING_ENTITY);
     		configurer.getModules().add(new KEWConfigurer());
     		try {
     			configurer.start();
@@ -101,7 +101,7 @@ public class WorkflowInfo implements java.io.Serializable {
     private boolean isLocal() {
 	Config config = Core.getCurrentContextConfig();
 	if (config != null) {
-	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(EdenConstants.LOCAL_CLIENT_PROTOCOL);
+	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(KEWConstants.LOCAL_CLIENT_PROTOCOL);
 	}
 	return false;
     }

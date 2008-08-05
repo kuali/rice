@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
@@ -99,7 +99,7 @@ public class ActionListFilterAction extends WorkflowAction {
         Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser());
         request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
-        Collection delegators = actionListSrv.findUserDelegators(getUserSession(request).getWorkflowUser(), EdenConstants.DELEGATION_SECONDARY);
+        Collection delegators = actionListSrv.findUserDelegators(getUserSession(request).getWorkflowUser(), KEWConstants.DELEGATION_SECONDARY);
         request.setAttribute("delegators", getWebFriendlyRecipients(delegators));
         if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
@@ -111,7 +111,7 @@ public class ActionListFilterAction extends WorkflowAction {
     	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
     	List sortedUserWorkgroups = new ArrayList();
     	KeyValue keyValue = null;
-    	keyValue = new KeyValue(EdenConstants.NO_FILTERING, EdenConstants.NO_FILTERING);
+    	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
     	if (userWorkgroups != null && userWorkgroups.size() > 0) {
     		Collections.sort(userWorkgroups, new Comparator() {

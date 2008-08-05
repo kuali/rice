@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -280,7 +280,7 @@ public class RoutingReportForm extends ActionForm {
     }
 
     public boolean isDisplayCloseButton() {
-        return (EdenConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
+        return (KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
     }
 
     public String getShowCloseButton() {

@@ -24,7 +24,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.util.CodeTranslator;
 
@@ -56,7 +56,7 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
 
     public AdHocRouteRecipient() {
         // set some defaults that can be overridden
-        this.actionRequested = EdenConstants.ACTION_REQUEST_APPROVE_REQ;
+        this.actionRequested = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
         this.versionNumber = new Long(1);
     }
 

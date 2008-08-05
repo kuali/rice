@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -509,13 +509,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	}
 
 	private boolean isDocumentHandlerPopup() {
-		String applicationConstant = Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
-		return (EdenConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(applicationConstant));
+		String applicationConstant = Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
+		return (KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(applicationConstant));
 	}
 
 	private boolean isRouteLogPopup() {
-		String applicationConstant = Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
-		return (EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(applicationConstant));
+		String applicationConstant = Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
+		return (KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(applicationConstant));
 	}
 
 	private String getDocHandlerUrlPrefix(String routeHeaderId,boolean superUserSearch,String documentTypeName) {
@@ -526,11 +526,11 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		if (superUserSearch) {
 		    String url = "<a href=\"SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId=" + routeHeaderId + "\"" + linkPopup + " >";
 		    if (!getDocumentType(documentTypeName).getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
-			url = "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.SUPERUSER_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
+			url = "<a href=\"" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.SUPERUSER_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
 		    }
 		    return url;
 		} else {
-			return "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
+			return "<a href=\"" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId + "\"" + linkPopup + ">";
 		}
 	}
 

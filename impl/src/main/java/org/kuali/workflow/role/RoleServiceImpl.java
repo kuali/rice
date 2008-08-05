@@ -136,7 +136,7 @@ public class RoleServiceImpl implements RoleService {
     		rolePoker.reResolveRole(documentId, roleName);
 
 //			String parameters = generateProcessorParameters(roleName, null);
-//			SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeaderId, EdenConstants.ROUTE_QUEUE_RERESOLVE_PRIORITY, new Long(0), RolePokerProcessor.class.getName(), parameters);
+//			SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeaderId, KEWConstants.ROUTE_QUEUE_RERESOLVE_PRIORITY, new Long(0), RolePokerProcessor.class.getName(), parameters);
 		}
     }
 

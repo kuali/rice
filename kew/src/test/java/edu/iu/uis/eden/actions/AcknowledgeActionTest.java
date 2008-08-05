@@ -21,7 +21,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -33,14 +33,14 @@ import edu.iu.uis.eden.clientapp.WorkflowDocument;
 public class AcknowledgeActionTest extends KEWTestCase {
 
     private String getSavedStatusDisplayValue() {
-        return (String) EdenConstants.DOCUMENT_STATUSES.get(EdenConstants.ROUTE_HEADER_SAVED_CD);
+        return (String) KEWConstants.DOCUMENT_STATUSES.get(KEWConstants.ROUTE_HEADER_SAVED_CD);
     }
     
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         UserIdDTO user = new NetworkIdDTO("dewey");
-        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", user, "respDesc1", false);
+        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", user, "respDesc1", false);
         doc = new WorkflowDocument(user, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + user, doc.isAcknowledgeRequested());
         try {
@@ -54,7 +54,7 @@ public class AcknowledgeActionTest extends KEWTestCase {
         UserIdDTO workgroupUser = new NetworkIdDTO("dewey");
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
-        doc.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", workgroup, "respDesc1", false);
+        doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", workgroup, "respDesc1", false);
         doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + workgroupUser, doc.isAcknowledgeRequested());
         try {

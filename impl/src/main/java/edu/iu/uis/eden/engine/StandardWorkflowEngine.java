@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.AfterProcessEvent;
 import edu.iu.uis.eden.BeforeProcessEvent;
@@ -368,13 +368,13 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			checkDefaultApprovalPolicy(document);
 			LOG.debug("Marking document approved");
 			// TODO factor out this magical post processing
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), EdenConstants.ROUTE_HEADER_APPROVED_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_APPROVED_CD);
 			document.markDocumentApproved();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);
 
 			LOG.debug("Marking document processed");
-			event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), EdenConstants.ROUTE_HEADER_PROCESSED_CD);
+			event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 			document.markDocumentProcessed();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);
@@ -383,7 +383,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// if document is processed and no pending action requests put the
 		// document into the finalized state.
 		if (document.isProcessed()) {
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), EdenConstants.ROUTE_HEADER_FINAL_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_FINAL_CD);
 			List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
 			if (actionRequests.isEmpty()) {
 				document.markDocumentFinalized();
@@ -393,7 +393,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				boolean markFinalized = true;
 				for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 					ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-					if (EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequest.getActionRequested())) {
+					if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequest.getActionRequested())) {
 						markFinalized = false;
 					}
 				}
@@ -428,7 +428,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			for (Iterator iter = requests.iterator(); iter.hasNext();) {
 				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 				if (actionRequest.isApproveOrCompleteRequest() && actionRequest.isDone()) { // &&
-																							// !(actionRequest.getRouteMethodName().equals(EdenConstants.ADHOC_ROUTE_MODULE_NAME)
+																							// !(actionRequest.getRouteMethodName().equals(KEWConstants.ADHOC_ROUTE_MODULE_NAME)
 																							// &&
 																							// actionRequest.isReviewerUser()
 																							// &&
@@ -474,14 +474,14 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			processReport = postProc.doRouteStatusChange(event);
 		} catch (Exception e) {
 			LOG.error("Error notifying post processor", e);
-			throw new RouteManagerException(EdenConstants.POST_PROCESSOR_FAILURE_MESSAGE, e);
+			throw new RouteManagerException(KEWConstants.POST_PROCESSOR_FAILURE_MESSAGE, e);
 		} finally {
 			performanceLogger.log("Time to notifyPostProcessor of event " + event.getDocumentEventCode() + ".");
 		}
 
 		if (!processReport.isSuccess()) {
 			LOG.warn("PostProcessor failed to process document: " + processReport.getMessage());
-			throw new RouteManagerException(EdenConstants.POST_PROCESSOR_FAILURE_MESSAGE + processReport.getMessage());
+			throw new RouteManagerException(KEWConstants.POST_PROCESSOR_FAILURE_MESSAGE + processReport.getMessage());
 		}
 		return document;
 	}
@@ -502,10 +502,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		RouteNodeInstance initialInstance = (RouteNodeInstance) context.getDocument().getInitialRouteNodeInstance(0);
 		Branch rootBranch = initialInstance.getBranch();
 		String key = null;
-		if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(event.getNewRouteStatus())) {
-			key = EdenConstants.POST_PROCESSOR_PROCESSED_KEY;
-		} else if (EdenConstants.ROUTE_HEADER_FINAL_CD.equals(event.getNewRouteStatus())) {
-			key = EdenConstants.POST_PROCESSOR_FINAL_KEY;
+		if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(event.getNewRouteStatus())) {
+			key = KEWConstants.POST_PROCESSOR_PROCESSED_KEY;
+		} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equals(event.getNewRouteStatus())) {
+			key = KEWConstants.POST_PROCESSOR_FINAL_KEY;
 		} else {
 			return false;
 		}
@@ -644,7 +644,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);
-		helper.getNodeFactory().createBranch(EdenConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+		helper.getNodeFactory().createBranch(KEWConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
 		// TODO we may (probably) need only one of these initial node instances
 		document.getInitialRouteNodeInstances().add(nodeInstance);
 		saveNode(context, nodeInstance);
@@ -655,7 +655,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
 	private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
-	    String maxNodesConstant = Utilities.getApplicationConstant(EdenConstants.APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    String maxNodesConstant = Utilities.getApplicationConstant(KEWConstants.APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS);
 	    int maxNodes = (Utilities.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.routeheader;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
@@ -45,14 +45,14 @@ public class AttributeDocumentContent extends StandardDocumentContent {
     
     private static String generateDocContent(List attributes) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<").append(EdenConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
-        buffer.append("<").append(EdenConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
+        buffer.append("<").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        buffer.append("<").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
         for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
             WorkflowAttribute attribute = (WorkflowAttribute) iterator.next();
             buffer.append(attribute.getDocContent());
         }
-        buffer.append("</").append(EdenConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
-        buffer.append("</").append(EdenConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        buffer.append("</").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
+        buffer.append("</").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         return buffer.toString();
     }
 

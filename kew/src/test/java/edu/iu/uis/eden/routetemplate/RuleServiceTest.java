@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -336,7 +336,7 @@ public class RuleServiceTest extends KEWTestCase {
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
         RuleResponsibility responsibility = replacedRule.getResponsibility(0);
         assertEquals(replacedRule.getRuleBaseValuesId(), responsibility.getRuleBaseValuesId());
-        assertEquals(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, responsibility.getRuleResponsibilityType());
+        assertEquals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, responsibility.getRuleResponsibilityType());
         assertEquals("Rkirkend should now be on the rule.", rkirkend.getWorkflowId(), responsibility.getRuleResponsibilityName());
 
         // reload the old rule, verify it's no longer current

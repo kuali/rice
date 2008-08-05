@@ -20,7 +20,7 @@ package edu.iu.uis.eden.test.web;
 
 import javax.servlet.ServletContext;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -105,10 +105,10 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
     }
 
     public void setUserSession(UserSession userSession) {
-        getSession().setAttribute(EdenConstants.USER_SESSION_KEY, userSession);
+        getSession().setAttribute(KEWConstants.USER_SESSION_KEY, userSession);
     }
 
     public UserSession getUserSession() {
-        return (UserSession) getSession().getAttribute(EdenConstants.USER_SESSION_KEY);
+        return (UserSession) getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
     }
 }

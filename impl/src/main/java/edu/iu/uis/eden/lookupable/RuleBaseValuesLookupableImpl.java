@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -163,7 +163,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 
 		fields = new ArrayList();
 		fields.add(new Field(RULE_ID_FIELD_LABEL, RULE_ID_FIELD_HELP, Field.TEXT, false, RULE_ID_PROPERTY_NAME, "", null, null));
-		fields.add(new Field("", "", Field.HIDDEN, false, EdenConstants.DELEGATION_WIZARD, "", null, null));
+		fields.add(new Field("", "", Field.HIDDEN, false, KEWConstants.DELEGATION_WIZARD, "", null, null));
 		rows.add(new Row(fields));
 
 		options = new ArrayList();
@@ -234,7 +234,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 				WorkflowAttribute attribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 					((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
 				}
 				// run through the attributes fields once to populate field values we have to do this
@@ -358,7 +358,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
 		String delegateRuleParam = (String) fieldValues.get(DELEGATE_RULE_PROPERTY_NAME);
 		String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
-		String delegationWizard = (String) fieldValues.get(EdenConstants.DELEGATION_WIZARD);
+		String delegationWizard = (String) fieldValues.get(KEWConstants.DELEGATION_WIZARD);
 		String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
 		String ruleBaseValueIdReturn = (String) fieldConversions.get(RULE_ID_PROPERTY_NAME);
@@ -427,7 +427,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 				}
 				WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName(), ruleTemplateAttribute.getRuleAttribute().getMessageEntity()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
 				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 					((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
 				}
 				attribute.setRequired(false);
@@ -446,7 +446,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 						if (fieldValues.get(field.getPropertyName()) != null) {
 							String attributeParam = (String) fieldValues.get(field.getPropertyName());
 							if (!attributeParam.equals("")) {
-								if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+								if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 									attributes.put(field.getPropertyName(), attributeParam.trim());
 								} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
 									attributes.put(field.getDefaultLookupableName(), attributeParam.trim());
@@ -456,7 +456,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 							}
 						}
 						if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
-							if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
 							} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
 								myColumns.getColumns().add(new KeyLabelPair(field.getDefaultLookupableName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
@@ -498,7 +498,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			RuleBaseValues record = (RuleBaseValues) rules.next();
 
 			if (Utilities.isEmpty(record.getDescription())) {
-				record.setDescription(EdenConstants.HTML_NON_BREAKING_SPACE);
+				record.setDescription(KEWConstants.HTML_NON_BREAKING_SPACE);
 			}
 
 			if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
@@ -510,7 +510,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 					if (record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()) != null) {
 						newPair.setLabel(record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()).getValue());
 					} else {
-						newPair.setLabel(EdenConstants.HTML_NON_BREAKING_SPACE);
+						newPair.setLabel(KEWConstants.HTML_NON_BREAKING_SPACE);
 					}
 					myNewColumns.getColumns().add(newPair);
 				}
@@ -562,7 +562,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	}
 
 	public String getLookupInstructions() {
-		return Utilities.getApplicationConstant(EdenConstants.RULE_SEARCH_INSTRUCTION_KEY);
+		return Utilities.getApplicationConstant(KEWConstants.RULE_SEARCH_INSTRUCTION_KEY);
 	}
 
 	public String getNoReturnParams(Map fieldConversions) {

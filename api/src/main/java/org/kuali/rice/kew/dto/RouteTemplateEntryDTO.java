@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.dto;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * Represents a route level
@@ -115,7 +115,7 @@ public class RouteTemplateEntryDTO implements java.io.Serializable, Cloneable {
   }
 
   public void setMandatoryRoute(String mandatoryRoute) {
-    this.mandatoryRoute = EdenConstants.TRUE_CD.equals(mandatoryRoute);
+    this.mandatoryRoute = KEWConstants.TRUE_CD.equals(mandatoryRoute);
 
     if (mandatoryRoute == null) {
       this.mandatoryRoute = false;

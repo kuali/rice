@@ -28,7 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.WorkflowPersistable;
 
@@ -88,15 +88,15 @@ public class DocumentTypePolicy implements WorkflowPersistable {
     }
 
     public boolean isDefaultApprove() {
-        return EdenConstants.DEFAULT_APPROVE_POLICY.equals(policyName);
+        return KEWConstants.DEFAULT_APPROVE_POLICY.equals(policyName);
     }
 
     public boolean isDisApprove() {
-        return EdenConstants.DISAPPROVE_POLICY.equals(policyName);
+        return KEWConstants.DISAPPROVE_POLICY.equals(policyName);
     }
 
     public boolean isPreApprove() {
-        return EdenConstants.PREAPPROVE_POLICY.equals(policyName);
+        return KEWConstants.PREAPPROVE_POLICY.equals(policyName);
     }
 
     public Long getDocumentTypeId() {

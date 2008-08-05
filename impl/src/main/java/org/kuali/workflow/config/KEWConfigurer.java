@@ -30,7 +30,7 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
 
@@ -65,7 +65,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if (EdenConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(Core.getCurrentContextConfig().getClientProtocol())) {
+		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(Core.getCurrentContextConfig().getClientProtocol())) {
 			lifecycles.add(createThinClientLifecycle());
 		} else {
 			if (isStandaloneServer()) {
@@ -103,8 +103,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	protected Config parseConfig(Config parentConfig) throws Exception {
 		List<String> defaultConfigLocations = new ArrayList<String>();
-		defaultConfigLocations.add(EdenConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
-		defaultConfigLocations.add(EdenConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
+		defaultConfigLocations.add(KEWConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
+		defaultConfigLocations.add(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
 		Config kewConfig = new SimpleConfig(defaultConfigLocations, parentConfig.getProperties());
 		kewConfig.parseConfig();
 		mergeDefaultsIntoParentConfig(parentConfig, kewConfig);
@@ -136,15 +136,15 @@ public class KEWConfigurer extends ModuleConfigurer {
 		if (StringUtils.isBlank(clientProtocol)) {
 			clientProtocol = config.getClientProtocol();
 			if (clientProtocol == null) {
-				clientProtocol = EdenConstants.WEBSERVICE_CLIENT_PROTOCOL;
+				clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
 			}
 		}
 		// from a client, LOCAL protocol is equivalent to EMBEDDED
 		// TODO this was messing up the tests were LOCAL was actually being used
-		/*if (EdenConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
-			clientProtocol = EdenConstants.EMBEDDED_CLIENT_PROTOCOL;
+		/*if (KEWConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
+			clientProtocol = KEWConstants.EMBEDDED_CLIENT_PROTOCOL;
 		}*/
-		if (!EdenConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
+		if (!KEWConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
 			throw new ConfigurationException("Invalid client protocol specified '" + clientProtocol + "'.");
 		}
 		config.getProperties().put(Config.CLIENT_PROTOCOL, clientProtocol);

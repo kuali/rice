@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWHtmlUnitTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
@@ -63,7 +63,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		int numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
+			document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			assertTrue("Document should be FINAL.", document.stateIsFinal());
 		}
@@ -88,13 +88,13 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 				if (option.getValueAttribute().equals("NONE")) {
 					hasNone = true;
 				}
-				else if (option.getValueAttribute().equals(EdenConstants.ACTION_REQUEST_FYI_REQ)){
+				else if (option.getValueAttribute().equals(KEWConstants.ACTION_REQUEST_FYI_REQ)){
 					hasFYI = true;
 				}
 			}
 			assertTrue("Should have had NONE option", hasNone);
 			assertTrue("Should have had FYI option", hasFYI);
-			select.setSelectedAttribute(EdenConstants.ACTION_REQUEST_FYI_REQ, true);
+			select.setSelectedAttribute(KEWConstants.ACTION_REQUEST_FYI_REQ, true);
 		}
 
 		// get a reference to the "takeMassActions" link and click it
@@ -112,7 +112,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
 			boolean isMassActionable = (i % 2 == 0);
-			String actionRequested = (isMassActionable ? EdenConstants.ACTION_REQUEST_FYI_REQ : EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+			String actionRequested = (isMassActionable ? KEWConstants.ACTION_REQUEST_FYI_REQ : KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
 			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
@@ -172,7 +172,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		// check that the documents remaining are the ones which are approve requests and not the mass actionable fyi requests
 		for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			assertEquals(EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+			assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
 			boolean foundDoc = false;
 			for (Doc doc : nonMassActionable) {
 				if (doc.docId.equals(actionItem.getRouteHeaderId())) {

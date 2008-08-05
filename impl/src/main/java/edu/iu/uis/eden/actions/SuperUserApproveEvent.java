@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -52,13 +52,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user);
-        this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user);
+        this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
-        this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
+        this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
 	public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
@@ -115,13 +115,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	@SuppressWarnings("unchecked")
 	protected void completeAnyOutstandingCompleteApproveRequests(ActionTakenValue actionTaken, boolean sendNotifications) throws Exception {
-		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeaderId());
-		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, getRouteHeaderId()));
+		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeaderId());
+		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, getRouteHeaderId()));
 		for (ActionRequestValue actionRequest : actionRequests) {
 			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
 		}
 		if (sendNotifications) {
-			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, this.getUser(), this.findDelegatorForActionRequests(actionRequests), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_TAKEN_SU_APPROVED_CD);
+			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, this.getUser(), this.findDelegatorForActionRequests(actionRequests), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_TAKEN_SU_APPROVED_CD);
 		}
 	}
 

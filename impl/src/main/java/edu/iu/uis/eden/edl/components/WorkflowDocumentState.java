@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,7 +72,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			style.appendChild(dom.createTextNode(styleName));
 
 			Element showAttachments = EDLXmlUtils.getOrCreateChildElement(documentState, "showAttachments", true);
-			String showContants = Utilities.getApplicationConstant(EdenConstants.APP_CONST_SHOW_ATTACHMENTS);
+			String showContants = Utilities.getApplicationConstant(KEWConstants.APP_CONST_SHOW_ATTACHMENTS);
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showContants).toString()));
 
 			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);

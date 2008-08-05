@@ -35,7 +35,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -354,7 +354,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                     LOG.error("Error obtaining document type routingVersion", xpee);
                     throw xpee;
                 }
-                if (!(version.equals(EdenConstants.ROUTING_VERSION_ROUTE_LEVEL) || version.equals(EdenConstants.ROUTING_VERSION_NODAL))) {
+                if (!(version.equals(KEWConstants.ROUTING_VERSION_ROUTE_LEVEL) || version.equals(KEWConstants.ROUTING_VERSION_NODAL))) {
                     throw new WorkflowRuntimeException("Invalid routing version on document type: " + version);
                 }
                 documentType.setRoutingVersion(version);
@@ -423,7 +423,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 LOG.error("Error obtaining routePath start name attribute", xpee);
                 throw xpee;
             }
-            String processName = EdenConstants.PRIMARY_PROCESS_NAME;
+            String processName = KEWConstants.PRIMARY_PROCESS_NAME;
             if (Utilities.isEmpty(startName)) {
                 try {
                     startName = (String) xpath.evaluate("./@initialNode", processNode, XPathConstants.STRING);
@@ -501,7 +501,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             Process process = new Process();
             if (Utilities.isEmpty(processName)) {
                 process.setInitial(true);
-                process.setName(EdenConstants.PRIMARY_PROCESS_NAME);
+                process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
             } else {
                 process.setInitial(false);
                 process.setName(processName);
@@ -730,10 +730,10 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 throw new InvalidXmlException("Rule template for node '" + routeNode.getRouteNodeName() + "' not found: " + ruleTemplateName);
             }
             routeNode.setRouteMethodName(ruleTemplateName);
-            routeNode.setRouteMethodCode(EdenConstants.ROUTE_LEVEL_FLEX_RM);
+            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_FLEX_RM);
         } else if (((Boolean) xpath.evaluate("./routeModule", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setRouteMethodName((String) xpath.evaluate("./routeModule", node, XPathConstants.STRING));
-            routeNode.setRouteMethodCode(EdenConstants.ROUTE_LEVEL_ROUTE_MODULE);
+            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
         }
 
         String nodeType = null;

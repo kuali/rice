@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -128,7 +128,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 	}
 	
 	private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
-        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, EdenConstants.XML_FILE_PARSE_ERROR));
+        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
         if (cause != null) {
             wsee.initCause(cause);
         }
@@ -158,7 +158,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
         } catch (Exception e) {
-            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing EDocLite XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", EdenConstants.XML_FILE_PARSE_ERROR));
+            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing EDocLite XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", KEWConstants.XML_FILE_PARSE_ERROR));
             wsee.initCause(e);
             throw wsee;
         }

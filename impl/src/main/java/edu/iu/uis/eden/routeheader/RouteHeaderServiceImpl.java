@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -76,7 +76,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 
         if (routeHeader.getDocRouteStatus() == null || routeHeader.getDocRouteStatus().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("RouteHeader route status null.", "routeheader.routestatus.empty"));
-        } else if (!EdenConstants.DOCUMENT_STATUSES.containsKey(routeHeader.getDocRouteStatus())){
+        } else if (!KEWConstants.DOCUMENT_STATUSES.containsKey(routeHeader.getDocRouteStatus())){
             errors.add(new WorkflowServiceErrorImpl("RouteHeader route status invalid.", "routeheader.routestatus.invalid"));
         }
 

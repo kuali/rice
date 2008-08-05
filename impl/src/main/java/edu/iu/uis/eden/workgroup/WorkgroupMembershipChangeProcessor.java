@@ -89,7 +89,7 @@ public class WorkgroupMembershipChangeProcessor implements KEWXMLService {
 		// (and hopefully prevent thrashing of the workgroup cache), regardless we will fall back on the version
 		// number of the workgroup and check it against the machine this processor is processed on to ensure that
 		// it's cache is up to date
-		//SpringServiceLocator.getRouteQueueService().requeueDocument(new Long(-1), EdenConstants.ROUTE_QUEUE_DEFAULT_PRIORITY, new Long(10*1000), WorkgroupMembershipChangeProcessor.class.getName(), translator.getUntranslatedString());
+		//SpringServiceLocator.getRouteQueueService().requeueDocument(new Long(-1), KEWConstants.ROUTE_QUEUE_DEFAULT_PRIORITY, new Long(10*1000), WorkgroupMembershipChangeProcessor.class.getName(), translator.getUntranslatedString());
 		return translator.getUntranslatedString();
 	}
 

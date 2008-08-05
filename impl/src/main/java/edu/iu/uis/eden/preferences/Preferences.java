@@ -18,7 +18,7 @@ package edu.iu.uis.eden.preferences;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * Model bean representing an individual user's Preferences within KEW.
@@ -363,7 +363,7 @@ public class Preferences implements Serializable {
         this.useOutbox = useOutbox;
     }
     public boolean isUsingOutbox() {
-	if (this.getUseOutbox() != null && this.getUseOutbox().equals(EdenConstants.PREFERENCES_YES_VAL)) {
+	if (this.getUseOutbox() != null && this.getUseOutbox().equals(KEWConstants.PREFERENCES_YES_VAL)) {
 	    return true;
 	}
 	return false;

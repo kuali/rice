@@ -15,7 +15,7 @@
  */
 package edu.iu.uis.eden.removereplace;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,7 +34,7 @@ public class RemoveReplacePostProcessor extends DefaultPostProcessor {
 
     @Override
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-	if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+	if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 	    LOG.info("Finalizing RemoveReplaceDocument with ID " + statusChangeEvent.getRouteHeaderId());
 	    KEWServiceLocator.getRemoveReplaceDocumentService().finalize(statusChangeEvent.getRouteHeaderId());
 	}

@@ -26,7 +26,7 @@ import mocks.MockEmailNotificationService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -99,30 +99,30 @@ public class BlanketApproveTest extends KEWTestCase {
         boolean isAck2 = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            assertEquals("Should only be acknowledges.", EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
+            assertEquals("Should only be acknowledges.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
             assertNotNull(nodeInstance);
             String nodeName = nodeInstance.getRouteNode().getRouteNodeName();
             if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("bmcgough")) {
                 isNotification1 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
-                assertEquals(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("rkirkend")) {
                 isNotification2 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
-                assertEquals(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("pmckown")) {
                 isNotification3 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, nodeName);
-                assertEquals(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("temay")) {
                 isAck1 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_1_NODE, nodeName);
-                assertFalse(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
+                assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
             } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("jhopf")) {
                 isAck2 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_2_NODE, nodeName);
-                assertFalse(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
+                assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
             }
         }
         assertTrue(isNotification1);
@@ -133,34 +133,34 @@ public class BlanketApproveTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));        
-        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));        
+        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
+        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
@@ -393,13 +393,13 @@ public class BlanketApproveTest extends KEWTestCase {
                     String childId = (childRequest.isWorkgroupRequest() ? childRequest.getWorkgroup().getGroupNameId().getNameId() : childRequest.getWorkflowUser().getAuthenticationUserId().getId());
                     if ("temay".equals(childId)) {
                         foundTemayDelegate = true;
-                        assertEquals("Should be primary delegation.", EdenConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
                     } else if ("pmckown".equals(childId)) {
                         foundPmckownDelegate = true;
-                        assertEquals("Should be secondary delegation.", EdenConstants.DELEGATION_SECONDARY, childRequest.getDelegationType());
+                        assertEquals("Should be secondary delegation.", KEWConstants.DELEGATION_SECONDARY, childRequest.getDelegationType());
                     } else if ("NonSIT".equals(childId)) {
                         foundNonSITWGDelegate = true;
-                        assertEquals("Should be primary delegation.", EdenConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
                     }
                 }
                 assertTrue("Could not locate delegate request for temay.", foundTemayDelegate);
@@ -430,7 +430,7 @@ public class BlanketApproveTest extends KEWTestCase {
                assertEquals("Should be 1 delegate role requests", 1, delegateRoleRequests.size());
                ActionRequestValue delegateRoleRequest = (ActionRequestValue)delegateRoleRequests.get(0);
                assertEquals("Should be NotifyDelegate role", "NotifyDelegate", delegateRoleRequest.getRoleName());
-               assertEquals("Should be secondary delegation", EdenConstants.DELEGATION_SECONDARY, delegateRoleRequest.getDelegationType());
+               assertEquals("Should be secondary delegation", KEWConstants.DELEGATION_SECONDARY, delegateRoleRequest.getDelegationType());
                List delegateRequests = arService.getTopLevelRequests(delegateRoleRequest);
                assertEquals("Should be 2 delegate requests", 2, delegateRequests.size());
                boolean foundNatjohnsDelegate = false;

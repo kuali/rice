@@ -50,7 +50,7 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.config.KEWConfigurer;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -169,7 +169,7 @@ public class WorkflowDocument implements java.io.Serializable {
     private synchronized void initializeBus() throws WorkflowException {
     	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
     		RiceConfigurer configurer = new RiceConfigurer();
-    		configurer.setMessageEntity(EdenConstants.KEW_MESSAGING_ENTITY);
+    		configurer.setMessageEntity(KEWConstants.KEW_MESSAGING_ENTITY);
     		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
     		configurer.getModules().add(new KSBThinClientConfigurer());
     		configurer.getModules().add(new KEWConfigurer());
@@ -189,7 +189,7 @@ public class WorkflowDocument implements java.io.Serializable {
     private boolean isLocal() {
 	Config config = Core.getCurrentContextConfig();
 	if (config != null) {
-	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(EdenConstants.LOCAL_CLIENT_PROTOCOL);
+	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(KEWConstants.LOCAL_CLIENT_PROTOCOL);
 	}
 	return false;
     }
@@ -749,8 +749,8 @@ public class WorkflowDocument implements java.io.Serializable {
         if (title == null) {
             title = "";
         }
-        if (title.length() > EdenConstants.TITLE_MAX_LENGTH) {
-            title = title.substring(0, EdenConstants.TITLE_MAX_LENGTH);
+        if (title.length() > KEWConstants.TITLE_MAX_LENGTH) {
+            title = title.substring(0, KEWConstants.TITLE_MAX_LENGTH);
         }
         getRouteHeader().setDocTitle(title);
     }
@@ -817,7 +817,7 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     public boolean isBlanketApproveCapable() {
         // TODO delyea - refactor this to take into account non-initiator owned documents
-    	return getRouteHeader().getValidActions().contains(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD) && (isCompletionRequested() || isApprovalRequested() || stateIsInitiated());
+    	return getRouteHeader().getValidActions().contains(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD) && (isCompletionRequested() || isApprovalRequested() || stateIsInitiated());
     }
 
     /**
@@ -920,7 +920,7 @@ public class WorkflowDocument implements java.io.Serializable {
 	 *         the document.
 	 */
     public boolean isRouteCapable() {
-        return isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_ROUTED_CD);
+        return isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_ROUTED_CD);
     }
 
     /**
@@ -980,7 +980,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsInitiated() {
-        return EdenConstants.ROUTE_HEADER_INITIATED_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -989,7 +989,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsSaved() {
-        return EdenConstants.ROUTE_HEADER_SAVED_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_SAVED_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -998,7 +998,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsEnroute() {
-        return EdenConstants.ROUTE_HEADER_ENROUTE_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1007,7 +1007,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsException() {
-        return EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1016,7 +1016,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsCanceled() {
-        return EdenConstants.ROUTE_HEADER_CANCEL_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_CANCEL_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1025,7 +1025,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsDisapproved() {
-        return EdenConstants.ROUTE_HEADER_DISAPPROVED_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1034,7 +1034,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsApproved() {
-        return EdenConstants.ROUTE_HEADER_APPROVED_CD.equals(getRouteHeader().getDocRouteStatus()) || stateIsProcessed() || stateIsFinal();
+        return KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(getRouteHeader().getDocRouteStatus()) || stateIsProcessed() || stateIsFinal();
     }
 
     /**
@@ -1043,7 +1043,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsProcessed() {
-        return EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1052,7 +1052,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return true if in the specified state
      */
     public boolean stateIsFinal() {
-        return EdenConstants.ROUTE_HEADER_FINAL_CD.equals(getRouteHeader().getDocRouteStatus());
+        return KEWConstants.ROUTE_HEADER_FINAL_CD.equals(getRouteHeader().getDocRouteStatus());
     }
 
     /**
@@ -1060,7 +1060,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return the display value of the current document status
      */
     public String getStatusDisplayValue() {
-        return (String) EdenConstants.DOCUMENT_STATUSES.get(getRouteHeader().getDocRouteStatus());
+        return (String) KEWConstants.DOCUMENT_STATUSES.get(getRouteHeader().getDocRouteStatus());
     }
 
     /**

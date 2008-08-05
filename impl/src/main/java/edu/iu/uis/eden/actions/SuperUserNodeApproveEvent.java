@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -49,13 +49,13 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     private String nodeName;
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user);
-        this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user);
+        this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
     }
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
-        super(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
-        this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
+        this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
         this.nodeName = nodeName;
     }
 

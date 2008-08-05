@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.JSTLConstants;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -68,12 +68,12 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
 		LOG.info("Initializing Workflow...");
 
-        sce.getServletContext().setAttribute("Constants", new JSTLConstants(EdenConstants.class));
+        sce.getServletContext().setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
 		// use the system prop as an override of the default packaged
 		// META-INF/workflow.xml
-//        String altCoreConfigLocation = System.getProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
+//        String altCoreConfigLocation = System.getProperty(KEWConstants.DEFAULT_CONFIG_LOCATION_PARAM);
 //        if (altCoreConfigLocation != null) {
 //        	configLocations.add(altCoreConfigLocation);
 //        } else {
@@ -82,7 +82,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 //
 //		// use the system property to add additional configurations (useful for
 //		// testing)
-        String additionalConfigLocations = System.getProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
+        String additionalConfigLocations = System.getProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
         if (!StringUtils.isBlank(additionalConfigLocations)) {
         	String[] additionalConfigLocationArray = additionalConfigLocations.split(",");
         	for (String additionalConfigLocation : additionalConfigLocationArray) {
@@ -91,10 +91,10 @@ public class ApplicationInitializeListener implements ServletContextListener {
         }
 
         String bootstrapSpringBeans = "org/kuali/workflow/resources/ServerKewSpringBeans.xml";
-        if (!StringUtils.isBlank(System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
-        	bootstrapSpringBeans = System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE);
-        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
-            bootstrapSpringBeans = sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE);
+        if (!StringUtils.isBlank(System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
+        	bootstrapSpringBeans = System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE);
+        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
+            bootstrapSpringBeans = sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE);
             LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
         }
         try {
@@ -115,7 +115,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
     		// However, currently, the ConfigFactoryBean operates on String locations, not
     		// Resources.  Spring can coerce string <value>s into Resources, but not vice-versa
     		if (StringUtils.isEmpty(additionalConfigLocations)) {
-    		    baseProps.setProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
+    		    baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
     		}
     		SimpleConfig config = new SimpleConfig(baseProps);
     		config.parseConfig();
@@ -158,14 +158,14 @@ public class ApplicationInitializeListener implements ServletContextListener {
 	 * config location.
 	 */
 	protected void addDefaultConfigLocation(ServletContext context, List<String> configLocations) {
-		String defaultConfigLocation = context.getInitParameter(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
+		String defaultConfigLocation = context.getInitParameter(KEWConstants.DEFAULT_CONFIG_LOCATION_PARAM);
 		if (!StringUtils.isEmpty(defaultConfigLocation)) {
 			String[] locations = defaultConfigLocation.split(",");
 			for (String location : locations) {
 				configLocations.add(location);
 			}
 		} else {
-			configLocations.add(EdenConstants.DEFAULT_SERVER_CONFIG_LOCATION);
+			configLocations.add(KEWConstants.DEFAULT_SERVER_CONFIG_LOCATION);
 		}
 	}
 

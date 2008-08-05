@@ -24,7 +24,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.util.Utilities;
@@ -49,10 +49,10 @@ public class ClientServiceLocator {
 	public static WorkflowUtility getWorkflowUtility() throws WorkflowException {
 		WorkflowUtility workflowUtility = null;
 		String clientProtocol = getClientProtocol();
-        if (EdenConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
+        if (KEWConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
             LOG.debug("Connecting to locally running instance of WorkflowUtility");
             workflowUtility = KEWServiceLocator.getWorkflowUtilityService();
-        } else if (EdenConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(clientProtocol)) {
+        } else if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(clientProtocol)) {
             LOG.debug("Connecting to WorkflowUtility web service at url " + getClientConfig().getBaseWebServiceURL());
 //            workflowUtility = WebServiceLocator.getWorkflowUtilityProxy();
             throw new UnsupportedOperationException("This object does not currently support Web services");
@@ -65,10 +65,10 @@ public class ClientServiceLocator {
 	public static WorkflowDocumentActions getWorkflowDocumentActions() throws WorkflowException {
         WorkflowDocumentActions workflowDocumentActions = null;
 		String clientProtocol = getClientProtocol();
-        if (EdenConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
+        if (KEWConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
             LOG.debug("Connecting to locally running instance of WorkflowDocumentActions");
             workflowDocumentActions = KEWServiceLocator.getWorkflowDocumentActionsService();
-        } else if (EdenConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(clientProtocol)) {
+        } else if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(clientProtocol)) {
             LOG.debug("Connecting to WorkflowDocumentActions web service at url " + getClientConfig().getBaseWebServiceURL());
 //            workflowDocumentActions = WebServiceLocator.getWorkflowDocumentActionsProxy();
             throw new UnsupportedOperationException("This object does not currently support web services");
@@ -98,7 +98,7 @@ public class ClientServiceLocator {
 	private static String getClientProtocol() throws WorkflowException {
 		String clientProtocol = getClientConfig().getClientProtocol();
 		if (Utilities.isEmpty(clientProtocol)) {
-			clientProtocol = EdenConstants.WEBSERVICE_CLIENT_PROTOCOL;
+			clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
 		}
 		return clientProtocol;
 	}

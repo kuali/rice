@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -42,11 +42,11 @@ public class CancelAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
     public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_CANCELED_CD, rh, user);
+        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, user);
     }
 
     public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_CANCELED_CD, rh, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, user, annotation);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CancelAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -97,8 +97,8 @@ public class CancelAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // APPROVE and COMPLETE request matches CANCEL Taken code
-            if ( (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -114,14 +114,14 @@ public class CancelAction extends ActionTakenEvent {
 
         LOG.debug("Canceling document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 //
 //        LOG.debug("Checking to see if the action is legal");
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {

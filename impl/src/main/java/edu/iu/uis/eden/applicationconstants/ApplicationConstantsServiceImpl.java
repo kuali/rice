@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -131,7 +131,7 @@ public class ApplicationConstantsServiceImpl implements ApplicationConstantsServ
 		try {
 			parser.parseAppConstEntries(inputStream);
 		} catch (Exception e) {
-			WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing Application Constants  XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", EdenConstants.XML_FILE_PARSE_ERROR));
+			WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing Application Constants  XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", KEWConstants.XML_FILE_PARSE_ERROR));
 			wsee.initCause(e);
 			throw wsee;
 		}

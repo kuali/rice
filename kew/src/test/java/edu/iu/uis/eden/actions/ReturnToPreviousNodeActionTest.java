@@ -24,7 +24,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
@@ -69,7 +69,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.getWorkflowUser().getAuthenticationUserId().getId().equals("ewestfal")) {
-                assertEquals("Should be approve request.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+                assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToEwestfal = true;
             }
         }
@@ -110,12 +110,12 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             String netId = request.getWorkflowUser().getAuthenticationUserId().getId(); 
             if (netId.equals("rkirkend")) {
-                assertEquals("Should be approve request.", EdenConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+                assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToRkirkend = true;
             } else if (netId.equals("bmcgough")) {
-                if (request.getActionRequested().equals(EdenConstants.ACTION_REQUEST_APPROVE_REQ)) {
+                if (request.getActionRequested().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ)) {
                     isApproveToBmcgough = true;
-                } else if (request.getActionRequested().equals(EdenConstants.ACTION_REQUEST_FYI_REQ)) {
+                } else if (request.getActionRequested().equals(KEWConstants.ACTION_REQUEST_FYI_REQ)) {
                     isFyiToBmcgough = true;
                 }
                 

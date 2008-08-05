@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.engine.node;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * Activation Type enum type which defines the two types of activation within the engine.
@@ -27,9 +27,9 @@ import org.kuali.rice.kew.util.EdenConstants;
  */
 public final class ActivationTypeEnum {
     /** Routing should process the associated ActionRequests in sequence */
-    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(EdenConstants.ROUTE_LEVEL_SEQUENCE, EdenConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, EdenConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
+    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
     /** Routing should process the associated ActionRequests in parallel */
-    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(EdenConstants.ROUTE_LEVEL_PARALLEL, EdenConstants.ROUTE_LEVEL_PARALLEL_NAME, EdenConstants.ROUTE_LEVEL_PARALLEL_LABEL);
+    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_NAME, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
 
     private final String code;
     private final String name;

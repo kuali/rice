@@ -30,7 +30,7 @@ import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.ObjectAlreadyExistsException;
@@ -93,7 +93,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	public String getApplicationEmailAddress() {
 		// first check the configured value
 		String fromAddress = Utilities
-				.getApplicationConstant(EdenConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
+				.getApplicationConstant(KEWConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
 		// if there's no value configured, use the default
 		if (Utilities.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -150,7 +150,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 								getEmailFrom(documentType),
 								new EmailTo(
 										Utilities
-												.getApplicationConstant(EdenConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+												.getApplicationConstant(KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
 								subject, body, false);
 			}
 		} catch (Exception e) {
@@ -209,12 +209,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean isProduction() {
-		return EdenConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
+		return KEWConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
 	}
 
 	public void sendDailyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(EdenConstants.EMAIL_RMNDR_DAY_VAL);
+			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
 			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
 				WorkflowUser user = (WorkflowUser) userIter.next();
 				try {
@@ -222,7 +222,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
 					    sendPeriodicReminder(user, actionItems,
-								EdenConstants.EMAIL_RMNDR_DAY_VAL);
+								KEWConstants.EMAIL_RMNDR_DAY_VAL);
 					}
 				} catch (Exception e) {
 					LOG.error(
@@ -236,7 +236,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public void sendWeeklyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
 			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
 				WorkflowUser user = (WorkflowUser) userIter.next();
 				try {
@@ -244,7 +244,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
 					    sendPeriodicReminder(user, actionItems,
-								EdenConstants.EMAIL_RMNDR_WEEK_VAL);
+								KEWConstants.EMAIL_RMNDR_WEEK_VAL);
 					}
 				} catch (Exception e) {
 					LOG.error(
@@ -264,9 +264,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		if (actionItems.isEmpty()) {
 			return;
 		}
-		if (EdenConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
+		if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
 			emailBody = buildDailyReminderBody(user, actionItems);
-		} else if (EdenConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
+		} else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
 			emailBody = buildWeeklyReminderBody(user, actionItems);
 		}
 		sendEmail(user, getEmailSubject(), new EmailBody(emailBody));
@@ -289,10 +289,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				continue;
 			}
 			boolean includeItem = true;
-			if (EdenConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
-				includeItem = EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-			} else if (EdenConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
-				includeItem = EdenConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+			if (KEWConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
+				includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+			} else if (KEWConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
+				includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 			}
 			if (includeItem) {
 				filteredItems.add(actionItem);
@@ -304,7 +304,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	protected List getUsersWithEmailSetting(String setting) {
 		List users = new ArrayList();
 		Collection userOptions = getUserOptionsService().findByOptionValue(
-				EdenConstants.EMAIL_RMNDR_KEY, setting);
+				KEWConstants.EMAIL_RMNDR_KEY, setting);
 		for (Iterator iter = userOptions.iterator(); iter.hasNext();) {
 			String workflowId = ((UserOptions) iter.next()).getWorkflowId();
 			try {
@@ -516,15 +516,15 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean sendActionListEmailNotification() {
-        LOG.debug("actionlistsendconstant: " + Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
-		return EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
+        LOG.debug("actionlistsendconstant: " + Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
+		return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
 				.equals(Utilities
-						.getApplicationConstant(EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
+						.getApplicationConstant(KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {
 	    String emailBatchGroup = "Email Batch";
-	    String dailyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION);
+	    String dailyCron = Core.getCurrentContextConfig().getProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION);
 	    if (!StringUtils.isBlank(dailyCron)) {
 		LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
 		CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
@@ -534,10 +534,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		addJobToScheduler(dailyJobDetail);
 		addTriggerToScheduler(dailyTrigger);
 	    } else {
-		LOG.warn("No " + EdenConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
+		LOG.warn("No " + KEWConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
 	    }
 
-	    String weeklyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+	    String weeklyCron = Core.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
 	    if (!StringUtils.isBlank(dailyCron)) {
 		LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
 		CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
@@ -547,7 +547,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		addJobToScheduler(weeklyJobDetail);
 		addTriggerToScheduler(weeklyTrigger);
 	    } else {
-		LOG.warn("No " + EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Weekly Email batch was not scheduled!");
+		LOG.warn("No " + KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Weekly Email batch was not scheduled!");
 	    }
 	}
 
@@ -596,14 +596,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	protected String getActionListUrl() {
 		return Core.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
-						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)
+						.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
 		return Core.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
-						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)
+						.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY)
 				+ "/" + "Preferences.do";
 	}
 }

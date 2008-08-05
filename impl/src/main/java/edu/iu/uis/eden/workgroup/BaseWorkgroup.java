@@ -30,7 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -246,7 +246,7 @@ public class BaseWorkgroup implements Workgroup, Routable {
 
     public String getActiveIndDisplay() {
         if (getActiveInd() == null) {
-            return EdenConstants.INACTIVE_LABEL_LOWER;
+            return KEWConstants.INACTIVE_LABEL_LOWER;
         }
         return CodeTranslator.getActiveIndicatorLabel(getActiveInd());
     }
@@ -292,13 +292,13 @@ public class BaseWorkgroup implements Workgroup, Routable {
     	getMembers().clear();
 		for (Iterator iter = getWorkgroupMembers().iterator(); iter.hasNext();) {
 			BaseWorkgroupMember member = (BaseWorkgroupMember) iter.next();
-			if (EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(member.getMemberType())) {
+			if (KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(member.getMemberType())) {
 				try {
 					getMembers().add(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(member.getWorkflowId())));
 				} catch (IllegalArgumentException e) {
 					LOG.error("Problem retrieving user from user service, workflowId=" + member.getWorkflowId(), e);
 				}
-			} else if (EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(member.getMemberType())) {
+			} else if (KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(member.getMemberType())) {
 				Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(Long.parseLong(member.getWorkflowId())));
 				if (workgroup == null) {
 					LOG.error("Problem retrieving workgroup from workgroup service, workgroup id=" + member.getWorkgroupId());

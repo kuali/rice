@@ -32,7 +32,7 @@ import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 
@@ -96,7 +96,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
 	LOG.debug("ENTERING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
 	
-	if(arg0.getNewRouteStatus().equals(EdenConstants.ROUTE_HEADER_PROCESSED_CD)) {
+	if(arg0.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD)) {
 	    LOG.debug("Workflow status has changed to RESOLVED for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId() + 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    

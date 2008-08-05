@@ -33,7 +33,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -308,10 +308,10 @@ public class ActionTakenValue implements WorkflowPersistable {
     }
 
     public boolean isApproval() {
-    	return EdenConstants.ACTION_TAKEN_APPROVED_CD.equals(getActionTaken());
+    	return KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(getActionTaken());
     }
 
     public boolean isCompletion() {
-    	return EdenConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
+    	return KEWConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
     }
 }

@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.lookupable.Column;
@@ -234,7 +234,7 @@ public class UserLookupableImpl implements WorkflowLookupable {
      * @return Returns the instructions.
      */
     public String getLookupInstructions() {
-        return Utilities.getApplicationConstant(EdenConstants.USER_SEARCH_INSTRUCTION_KEY);
+        return Utilities.getApplicationConstant(KEWConstants.USER_SEARCH_INSTRUCTION_KEY);
     }
 
     /**

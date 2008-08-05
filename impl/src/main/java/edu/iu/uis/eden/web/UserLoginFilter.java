@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -71,10 +71,10 @@ public class UserLoginFilter implements Filter {
         if (!isUserSessionEstablished(request)) {
             userSession = login(request);
             if (userSession != null) {
-                request.getSession().setAttribute(EdenConstants.USER_SESSION_KEY, userSession);
+                request.getSession().setAttribute(KEWConstants.USER_SESSION_KEY, userSession);
             }
         } else {
-            userSession = (UserSession) request.getSession().getAttribute(EdenConstants.USER_SESSION_KEY);
+            userSession = (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
         }
 
         if (userSession != null) {
@@ -129,7 +129,7 @@ public class UserLoginFilter implements Filter {
      * @return true if the user session has been established, false otherwise
      */
     public static boolean isUserSessionEstablished(HttpServletRequest request) {
-        return (request.getSession(false) != null && request.getSession(false).getAttribute(EdenConstants.USER_SESSION_KEY) != null);
+        return (request.getSession(false) != null && request.getSession(false).getAttribute(KEWConstants.USER_SESSION_KEY) != null);
     }
 
     /**
@@ -174,7 +174,7 @@ public class UserLoginFilter implements Filter {
     }
 
     public static UserSession getUserSession(HttpServletRequest request) {
-        return (UserSession) request.getSession().getAttribute(EdenConstants.USER_SESSION_KEY);
+        return (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
     }
 
     private static String currentRestrictionSet = "";
@@ -183,7 +183,7 @@ public class UserLoginFilter implements Filter {
     private static boolean isAuthorizedToViewResource(UserSession userSession, HttpServletRequest request) {
         LOG.debug("Checking authorization to view resources...");
         try {
-            String restrictedResourceTokens = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_URL_KEY);
+            String restrictedResourceTokens = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_URL_KEY);
             if (restrictedResourceTokens == null) {
                 restrictedResourceTokens = "";
             }

@@ -34,7 +34,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.database.platform.Platform;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
@@ -169,9 +169,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             respIds += ")";
             String query = "SELECT DISTINCT(doc_hdr_id) FROM EN_ACTN_RQST_T "+
             	"WHERE (ACTN_RQST_STAT_CD='" +
-            	EdenConstants.ACTION_REQUEST_INITIALIZED+
+            	KEWConstants.ACTION_REQUEST_INITIALIZED+
             	"' OR ACTN_RQST_STAT_CD='"+
-            	EdenConstants.ACTION_REQUEST_ACTIVATED+
+            	KEWConstants.ACTION_REQUEST_ACTIVATED+
             	"') AND ACTN_RQST_RESP_ID IN "+respIds;
             LOG.debug("Query to find pending documents for requeue: " + query);
             rs = conn.createStatement().executeQuery(query);

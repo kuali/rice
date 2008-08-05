@@ -32,7 +32,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -83,7 +83,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("setting up Action List criteria");
         boolean filterOn = false;
         String filteredByItems = "";
-        if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(EdenConstants.ALL_CODE)) {
+        if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KEWConstants.ALL_CODE)) {
             if (filter.isExcludeActionRequestCd()) {
                 crit.addNotEqualTo("actionRequestCd", filter.getActionRequestCd());
             } else {
@@ -115,7 +115,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             filteredByItems += "Date Created";
         }
 
-        if (filter.getDocRouteStatus() != null && !"".equals(filter.getDocRouteStatus().trim()) && !filter.getDocRouteStatus().equals(EdenConstants.ALL_CODE)) {
+        if (filter.getDocRouteStatus() != null && !"".equals(filter.getDocRouteStatus().trim()) && !filter.getDocRouteStatus().equals(KEWConstants.ALL_CODE)) {
             if (filter.isExcludeRouteStatus()) {
                 crit.addNotEqualTo("routeHeader.docRouteStatus", filter.getDocRouteStatus());
             } else {
@@ -173,7 +173,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         }
 
         filter.setWorkgroupId(null);
-        if (filter.getWorkgroupIdString() != null && !"".equals(filter.getWorkgroupIdString().trim()) && !filter.getWorkgroupIdString().trim().equals(EdenConstants.NO_FILTERING)) {
+        if (filter.getWorkgroupIdString() != null && !"".equals(filter.getWorkgroupIdString().trim()) && !filter.getWorkgroupIdString().trim().equals(KEWConstants.NO_FILTERING)) {
             filter.setWorkgroupId(new Long (filter.getWorkgroupIdString().trim()));
             if (filter.isExcludeWorkgroupId()) {
                 Criteria critNotEqual = new Criteria();
@@ -193,9 +193,9 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             filterOn = true;
         }
 
-        if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(EdenConstants.DELEGATION_DEFAULT)
-                && !filter.getDelegatorId().trim().equals(EdenConstants.ALL_CODE)) {
-            filter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+        if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
+                && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(false);
             Criteria userCrit = new Criteria();
             Criteria groupCrit = new Criteria();
@@ -221,11 +221,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
             filteredByItems += "Delegator Id";
             filterOn = true;
-        } else if (filter.getDelegatorId().trim().equals(EdenConstants.DELEGATION_DEFAULT)) {
-            filter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+        } else if (filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)) {
+            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(true);
-        } else if (filter.getDelegatorId().trim().equals(EdenConstants.ALL_CODE)) {
-            filter.setDelegationType(EdenConstants.DELEGATION_SECONDARY);
+        } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(false);
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
             filteredByItems += "Delegator Id";

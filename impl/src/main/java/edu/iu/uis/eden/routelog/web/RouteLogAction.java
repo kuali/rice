@@ -27,7 +27,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
@@ -108,9 +108,9 @@ public class RouteLogAction extends WorkflowAction {
             if (actionRequest.isPending()) {
                 arCount++;
 
-                if (EdenConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("PENDING");
-                } else if (EdenConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("IN ACTION LIST");
                 }
             }
@@ -131,9 +131,9 @@ public class RouteLogAction extends WorkflowAction {
             if (actionRequest.isPending()) {
                 arCount++;
 
-                if (EdenConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("PENDING");
-                } else if (EdenConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("IN ACTION LIST");
                 }
             }

@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -157,7 +157,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public String getLookupInstructions() {
-        return Utilities.getApplicationConstant(EdenConstants.RULE_TEMPLATE_SEARCH_INSTRUCTION_KEY);
+        return Utilities.getApplicationConstant(KEWConstants.RULE_TEMPLATE_SEARCH_INSTRUCTION_KEY);
     }
 
     public String getTitle() {

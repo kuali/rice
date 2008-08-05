@@ -19,7 +19,7 @@ package edu.iu.uis.eden.doctype.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -165,10 +165,10 @@ public class DocumentTypeForm extends WorkflowRoutingForm {
             this.documentType.getInitiatorMustRoutePolicy().setPolicyValue(null);
             this.documentType.getInitiatorMustSavePolicy().setPolicyValue(null);
 
-            defaultApprove = EdenConstants.INHERITED_CD;
-            preApprove = EdenConstants.INHERITED_CD;
-            initiatorMustRoute = EdenConstants.INHERITED_CD;
-            initiatorMustSave = EdenConstants.INHERITED_CD;
+            defaultApprove = KEWConstants.INHERITED_CD;
+            preApprove = KEWConstants.INHERITED_CD;
+            initiatorMustRoute = KEWConstants.INHERITED_CD;
+            initiatorMustSave = KEWConstants.INHERITED_CD;
 
             documentType.setRouteLevels(new ArrayList());
 

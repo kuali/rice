@@ -29,7 +29,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -368,9 +368,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         if (!StringUtils.isBlank(node.getRouteMethodName())) {
             String routeMethodCode = node.getRouteMethodCode();
             String elementName = null;
-            if (EdenConstants.ROUTE_LEVEL_FLEX_RM.equals(routeMethodCode)) {
+            if (KEWConstants.ROUTE_LEVEL_FLEX_RM.equals(routeMethodCode)) {
                 elementName = RULE_TEMPLATE;
-            } else if (EdenConstants.ROUTE_LEVEL_ROUTE_MODULE.equals(routeMethodCode)) {
+            } else if (KEWConstants.ROUTE_LEVEL_ROUTE_MODULE.equals(routeMethodCode)) {
                 elementName = ROUTE_MODULE;
             } else {
                 throw new WorkflowRuntimeException("Invalid route method code '"+routeMethodCode+"' for node " + node.getRouteNodeName());

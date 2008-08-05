@@ -19,7 +19,7 @@ package edu.iu.uis.eden.lookupable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.util.Utilities;
@@ -37,23 +37,23 @@ public class Column {
 	public static final String COLUMN_NOT_SORTABLE_VALUE = "false";
 
 	/**
-	 * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_TEXT} instead
+	 * @deprecated USE {@link KEWConstants#LOOKUP_COLUMN_TYPE_TEXT} instead
 	 */
 	public static final String TEXT = "text";
     /**
-     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_INTEGER} instead
+     * @deprecated USE {@link KEWConstants#LOOKUP_COLUMN_TYPE_INTEGER} instead
      */
 	public static final String INTEGER = "integer";
     /**
-     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_LONG} instead
+     * @deprecated USE {@link KEWConstants#LOOKUP_COLUMN_TYPE_LONG} instead
      */
 	public static final String LONG = "long";
     /**
-     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_FLOAT} instead
+     * @deprecated USE {@link KEWConstants#LOOKUP_COLUMN_TYPE_FLOAT} instead
      */
 	public static final String FLOAT = "float";
     /**
-     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_DATETIME} instead
+     * @deprecated USE {@link KEWConstants#LOOKUP_COLUMN_TYPE_DATETIME} instead
      */
 	public static final String DATETIME = "datetime";
 
@@ -62,7 +62,7 @@ public class Column {
 	private String key;
 	private String propertyName;
 	private String sortPropertyName;
-	private String type = EdenConstants.LOOKUP_COLUMN_TYPE_TEXT;
+	private String type = KEWConstants.LOOKUP_COLUMN_TYPE_TEXT;
 	private Map<String,String> displayParameters = new HashMap<String,String>();
 
 	public Column() {}

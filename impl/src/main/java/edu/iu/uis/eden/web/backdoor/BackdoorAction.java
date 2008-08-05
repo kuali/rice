@@ -24,7 +24,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.util.Utilities;
@@ -122,13 +122,13 @@ public class BackdoorAction extends WorkflowAction {
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
-        Workgroup workflowAdminGroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
+        Workgroup workflowAdminGroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
         backdoorForm.setIsWorkflowAdmin(new Boolean(workflowAdminGroup.hasMember(getUserSession(request).getWorkflowUser())));
         	}
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
-    	String showBackdoorLoginValue = Utilities.getApplicationConstant(EdenConstants.SHOW_BACK_DOOR_LOGIN_KEY);
+    	String showBackdoorLoginValue = Utilities.getApplicationConstant(KEWConstants.SHOW_BACK_DOOR_LOGIN_KEY);
     	// default to true if not defined
     	Boolean showBackdoorLogin = Boolean.TRUE;
     	if (!StringUtils.isEmpty(showBackdoorLoginValue)) {

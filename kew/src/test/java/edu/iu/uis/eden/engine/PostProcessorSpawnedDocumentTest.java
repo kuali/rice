@@ -18,7 +18,7 @@ package edu.iu.uis.eden.engine;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -47,17 +47,17 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
         // should have generated a request to "bmcgough"
     	document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
-        assertEquals("Document should be enroute.", EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
         Long originalRouteHeaderId = document.getRouteHeaderId();
     	
     	// get spawned document (should be next document id)
     	document = new WorkflowDocument(new NetworkIdDTO("jhopf"), Long.valueOf(originalRouteHeaderId.longValue() + 1));
-        assertEquals("Document should be final.", EdenConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
 
     	// get original document
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), originalRouteHeaderId);
-        assertEquals("Document should be final.", EdenConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
     }
 }

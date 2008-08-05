@@ -35,7 +35,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -264,7 +264,7 @@ public class RouteNode implements Serializable {
     }
 
     public boolean isFlexRM() {
-        return routeMethodCode != null && routeMethodCode.equals(EdenConstants.ROUTE_LEVEL_FLEX_RM);
+        return routeMethodCode != null && routeMethodCode.equals(KEWConstants.ROUTE_LEVEL_FLEX_RM);
     }
 
     public Boolean getFinalApprovalInd() {

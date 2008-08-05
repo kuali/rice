@@ -26,7 +26,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -98,8 +98,8 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public WebRuleResponsibility() {
-		setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-		setApprovePolicy(EdenConstants.APPROVE_POLICY_FIRST_APPROVE);
+		setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+		setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
 	}
 
 	public void initialize() throws Exception {
@@ -119,20 +119,20 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 	private void loadWebValues() throws Exception {
 		if (!Utilities.isEmpty(getRuleResponsibilityName())) {
-			if (EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
 				// WorkflowUserId(getRuleResponsibilityName())).getAuthenticationUserId().getAuthenticationId());
 				WorkflowUser user = getUserService().getWorkflowUser(new WorkflowUserId(getRuleResponsibilityName()));
 				setReviewer(user.getAuthenticationUserId().getAuthenticationId());
 				setReviewerId(user.getWorkflowId());
-			} else if (EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+			} else if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
 				Workgroup group = getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(getRuleResponsibilityName())));
 				setReviewer(group.getGroupNameId().getNameId());
 				setReviewerId(String.valueOf(group.getWorkflowGroupId().getGroupId()));
-			} else if (EdenConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+			} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 				setRoleReviewer(getRuleResponsibilityName());
 				setReviewer(getResolvedRoleName());
 			}
@@ -171,7 +171,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	public RuleDelegation addNewDelegation() {
 		RuleDelegation ruleDelegation = new RuleDelegation();
 		ruleDelegation.setDelegationRuleBaseValues(new WebRuleBaseValues());
-		ruleDelegation.setDelegationType(EdenConstants.DELEGATION_PRIMARY);
+		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
 		ruleDelegation.getDelegationRuleBaseValues().setDelegateRule(Boolean.TRUE);
 		ruleDelegation.getDelegationRuleBaseValues().setDocTypeName(getRuleBaseValues().getDocTypeName());
 		getDelegationRules().add(ruleDelegation);
@@ -276,19 +276,19 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void establishRequiredState() throws Exception {
-		if (EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_INLINE;
 			personLookupStyle = DISPLAY_INLINE;
 			workgroupLookupStyle = DISPLAY_NONE;
 			roleAreaStyle = DISPLAY_NONE;
 		}
-		if (EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+		if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_INLINE;
 			personLookupStyle = DISPLAY_NONE;
 			workgroupLookupStyle = DISPLAY_INLINE;
 			roleAreaStyle = DISPLAY_NONE;
 		}
-		if (EdenConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+		if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_NONE;
 			personLookupStyle = DISPLAY_NONE;
 			workgroupLookupStyle = DISPLAY_NONE;
@@ -304,7 +304,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
-		if (EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidUser = Utilities.isEmpty(getReviewer());
 			if (!invalidUser) {
 				try {
@@ -317,7 +317,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (invalidUser) {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.user.invalid"));
 			}
-		} else if (EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+		} else if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
@@ -332,7 +332,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.workgroup.invalid"));
 			}
 
-		} else if (EdenConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+		} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 			setRuleResponsibilityName(getRoleReviewer());
 		}
 

@@ -46,7 +46,7 @@ import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -475,8 +475,8 @@ public class DocumentSearchAction extends WorkflowAction {
 
         if (!Utilities.isEmpty(dsForm.getCriteria().getDocTypeFullName())) {
             List qualifierLogic = new ArrayList();
-            for (String key : EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet()) {
-                qualifierLogic.add(new KeyValue(key, EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(key)));
+            for (String key : KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet()) {
+                qualifierLogic.add(new KeyValue(key, KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(key)));
             }
             request.setAttribute("qualifierLogic", qualifierLogic);
 

@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -59,7 +59,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         buffer.append("</content>");
         DocumentRouteHeaderValue document = new DocumentRouteHeaderValue();
         document.setDocContent(buffer.toString());
-        document.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
+        document.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
         document.setDocRouteLevel(0);
         document.setStatusModDate(new Timestamp(System.currentTimeMillis()));
         document.setCreateDate(new Timestamp(System.currentTimeMillis()));

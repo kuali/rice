@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
@@ -44,11 +44,11 @@ public class RevokeAdHocAction extends ActionTakenEvent {
     private AdHocRevoke revoke;
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user);
+        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user);
     }
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, AdHocRevoke revoke, String annotation) {
-        super(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user, annotation);
         this.revoke = revoke;
     }
 

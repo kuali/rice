@@ -18,7 +18,7 @@ package edu.iu.uis.eden.postprocessor;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
@@ -78,7 +78,7 @@ public class PostProcessorTest extends KEWTestCase {
 		public static Long routedDocumentId;
 		
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-			if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+			if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 				WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), statusChangeEvent.getRouteHeaderId());
 				document.setApplicationContent(APPLICATION_CONTENT);
 				document.setTitle(DOC_TITLE);
@@ -86,7 +86,7 @@ public class PostProcessorTest extends KEWTestCase {
 				// now route another document from the post processor, sending it an adhoc request
 				WorkflowDocument ppDocument = new WorkflowDocument(new NetworkIdDTO("user1"), "testModifyDocumentInPostProcessor");
 				routedDocumentId = ppDocument.getRouteHeaderId();
-				ppDocument.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdDTO("ewestfal"), "", true);
+				ppDocument.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdDTO("ewestfal"), "", true);
 				ppDocument.routeDocument("");
 				processedChange = true;
 			}

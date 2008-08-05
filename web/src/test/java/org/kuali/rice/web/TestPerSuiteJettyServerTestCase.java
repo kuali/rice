@@ -22,7 +22,7 @@ import java.net.Socket;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.JettyServerTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle.ConfigMode;
 import org.kuali.rice.test.server.JettyServer;
@@ -47,7 +47,7 @@ import org.springframework.test.AssertThrows;
 public class TestPerSuiteJettyServerTestCase extends JettyServerTestCase {
     public TestPerSuiteJettyServerTestCase() {
         super("server");
-        System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
+        System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
     }
 
     private void testJettyServerIsPresent() {

@@ -18,7 +18,7 @@ package edu.iu.uis.eden.actions;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -45,11 +45,11 @@ public class SaveActionEvent extends ActionTakenEvent {
     private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-	super(EdenConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user);
+	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user);
     }
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-	super(EdenConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user, annotation);
+	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -130,8 +130,8 @@ public class SaveActionEvent extends ActionTakenEvent {
 	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
 		getRouteHeaderId()).get(0);
 	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);
-	ActionRequestValue saveRequest = arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
-		new Integer(0), getUser(), RESPONSIBILITY_DESCRIPTION, EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
+		new Integer(0), getUser(), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
 		Boolean.TRUE, annotation);
 	//      this.getActionRequestService().saveActionRequest(saveRequest);
 	this.getActionRequestService().activateRequest(saveRequest);

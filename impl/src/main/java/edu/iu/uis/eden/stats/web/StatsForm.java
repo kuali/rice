@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.stats.Stats;
 
@@ -106,10 +106,10 @@ public class StatsForm extends ActionForm {
     public Map makePerUnitOfTimeDropDownMap() {
 
         Map dropDownMap = new HashMap();
-        dropDownMap.put(DAY_TIME_UNIT, EdenConstants.DAILY_UNIT);
-        dropDownMap.put(WEEK_TIME_UNIT, EdenConstants.WEEKLY_UNIT);
-        dropDownMap.put(MONTH_TIME_UNIT, EdenConstants.MONTHLY_UNIT);
-        dropDownMap.put(YEAR_TIME_UNIT, EdenConstants.YEARLY_UNIT);
+        dropDownMap.put(DAY_TIME_UNIT, KEWConstants.DAILY_UNIT);
+        dropDownMap.put(WEEK_TIME_UNIT, KEWConstants.WEEKLY_UNIT);
+        dropDownMap.put(MONTH_TIME_UNIT, KEWConstants.MONTHLY_UNIT);
+        dropDownMap.put(YEAR_TIME_UNIT, KEWConstants.YEARLY_UNIT);
         return dropDownMap;
 
     }
@@ -145,39 +145,39 @@ public class StatsForm extends ActionForm {
         this.stats = stats;
     }
     public String getApprovedLabel() {
-        return EdenConstants.ROUTE_HEADER_APPROVED_LABEL;
+        return KEWConstants.ROUTE_HEADER_APPROVED_LABEL;
     }
 
     public String getCanceledLabel() {
-        return EdenConstants.ROUTE_HEADER_CANCEL_LABEL;
+        return KEWConstants.ROUTE_HEADER_CANCEL_LABEL;
     }
 
     public String getDisapprovedLabel() {
-        return EdenConstants.ROUTE_HEADER_DISAPPROVED_LABEL;
+        return KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL;
     }
 
     public String getEnrouteLabel() {
-        return EdenConstants.ROUTE_HEADER_ENROUTE_LABEL;
+        return KEWConstants.ROUTE_HEADER_ENROUTE_LABEL;
     }
 
     public String getExceptionLabel() {
-        return EdenConstants.ROUTE_HEADER_EXCEPTION_LABEL;
+        return KEWConstants.ROUTE_HEADER_EXCEPTION_LABEL;
     }
 
     public String getFinalLabel() {
-        return EdenConstants.ROUTE_HEADER_FINAL_LABEL;
+        return KEWConstants.ROUTE_HEADER_FINAL_LABEL;
     }
 
     public String getInitiatedLabel() {
-        return EdenConstants.ROUTE_HEADER_INITIATED_LABEL;
+        return KEWConstants.ROUTE_HEADER_INITIATED_LABEL;
     }
 
     public String getProcessedLabel() {
-        return EdenConstants.ROUTE_HEADER_PROCESSED_LABEL;
+        return KEWConstants.ROUTE_HEADER_PROCESSED_LABEL;
     }
 
     public String getSavedLabel() {
-        return EdenConstants.ROUTE_HEADER_SAVED_LABEL;
+        return KEWConstants.ROUTE_HEADER_SAVED_LABEL;
     }
 
     public String getAvgActionsPerTimeUnit() {

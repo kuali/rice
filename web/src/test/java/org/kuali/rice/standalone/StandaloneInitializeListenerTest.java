@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 
@@ -48,7 +48,7 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
         try{
             MockServletContext mockServletContext = new MockServletContext();
             mockServletContext.setServletContextName(CONTEXT_NAME);
-            mockServletContext.addInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/rice/standalone/TestStandaloneInitializeListener.xml");
+            mockServletContext.addInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/rice/standalone/TestStandaloneInitializeListener.xml");
             mockServletContext.addInitParameter(TEST_INIT_PARAM, TEST_INIT_PARAM_VAL);
             mockServletContext.addInitParameter(StandaloneInitializeListener.RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER, "false");
             
@@ -68,7 +68,7 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
             String testInitParam = Core.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
         
-            assertTrue(mockServletContext.getAttribute("Constants") instanceof EdenConstants);
+            assertTrue(mockServletContext.getAttribute("Constants") instanceof KEWConstants);
         
             // now destroy the context
             listener.contextDestroyed(sce);

@@ -32,7 +32,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -97,14 +97,14 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					}
 					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 					}
 					for (Iterator iterator = workflowAttribute.getRuleRows().iterator(); iterator.hasNext();) {
 						Row row = (Row) iterator.next();
 						for (Iterator rowIter = row.getFields().iterator(); rowIter.hasNext();) {
 							Field field = (Field) rowIter.next();
-							if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								String fieldValue = "";
 								RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getRuleTemplateAttributeId(), (String) field.getPropertyName());
 								if (extensionValue != null) {
@@ -203,14 +203,14 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					}
 					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 					}
 					for (Iterator iterator = workflowAttribute.getRuleRows().iterator(); iterator.hasNext();) {
 						Row row = (Row) iterator.next();
 						for (Iterator rowIter = row.getFields().iterator(); rowIter.hasNext();) {
 							Field field = (Field) rowIter.next();
-							if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
 							} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
 								fields.add(new KeyValueId(field.getDefaultLookupableName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
@@ -247,7 +247,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 					}
 					workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
@@ -577,7 +577,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 			}
 
@@ -632,16 +632,16 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
 				if (ruleTemplate.getAcknowledge() != null && "false".equals(ruleTemplate.getAcknowledge().getValue())) {
-					actionRequestCodes.remove(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
 				}
 				if (ruleTemplate.getComplete() != null && "false".equals(ruleTemplate.getComplete().getValue())) {
-					actionRequestCodes.remove(EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 				}
 				if (ruleTemplate.getApprove() != null && "false".equals(ruleTemplate.getApprove().getValue())) {
-					actionRequestCodes.remove(EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 				}
 				if (ruleTemplate.getFyi() != null && "false".equals(ruleTemplate.getFyi().getValue())) {
-					actionRequestCodes.remove(EdenConstants.ACTION_REQUEST_FYI_REQ);
+					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_FYI_REQ);
 				}
 			}
 		}

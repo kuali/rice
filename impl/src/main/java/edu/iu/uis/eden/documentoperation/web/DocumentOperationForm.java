@@ -23,7 +23,7 @@ import java.util.Map;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
@@ -56,11 +56,11 @@ public class DocumentOperationForm extends ActionForm{
     private String routeLevelDate;
     private String lookupableImplServiceName;
     private String lookupType;
-    private Map docStatuses = EdenConstants.DOCUMENT_STATUSES;
-    private Map actionRequestCds = EdenConstants.ACTION_REQUEST_CD;
-    private Map actionRequestStatuses = EdenConstants.ACTION_REQUEST_STATUS;
-    private Map actionRequestRecipientTypes = EdenConstants.ACTION_REQUEST_RECIPIENT_TYPE;
-    private Map actionTakenCds = EdenConstants.ACTION_TAKEN_CD;
+    private Map docStatuses = KEWConstants.DOCUMENT_STATUSES;
+    private Map actionRequestCds = KEWConstants.ACTION_REQUEST_CD;
+    private Map actionRequestStatuses = KEWConstants.ACTION_REQUEST_STATUS;
+    private Map actionRequestRecipientTypes = KEWConstants.ACTION_REQUEST_RECIPIENT_TYPE;
+    private Map actionTakenCds = KEWConstants.ACTION_TAKEN_CD;
     private List routeModules;
     private String routeModuleName;
 
@@ -149,35 +149,35 @@ public class DocumentOperationForm extends ActionForm{
 
     public DocOperationIndexedParameter getActionRequestOp(int index) {
         while (actionRequestOps.size() <= index) {
-            actionRequestOps.add(new DocOperationIndexedParameter(new Integer(index), EdenConstants.NOOP));
+            actionRequestOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionRequestOps().get(index);
     }
 
     public DocOperationIndexedParameter getActionTakenOp(int index) {
         while (actionTakenOps.size() <= index) {
-            actionTakenOps.add(new DocOperationIndexedParameter(new Integer(index), EdenConstants.NOOP));
+            actionTakenOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionTakenOps().get(index);
     }
 
     public DocOperationIndexedParameter getRouteNodeInstanceOp(int index) {
         while (routeNodeInstanceOps.size() <= index) {
-        	routeNodeInstanceOps.add(new DocOperationIndexedParameter(new Integer(index), EdenConstants.NOOP));
+        	routeNodeInstanceOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getRouteNodeInstanceOps().get(index);
     }
 
     public DocOperationIndexedParameter getBranchOp(int index) {
         while (branchOps.size() <= index) {
-        	branchOps.add(new DocOperationIndexedParameter(new Integer(index), EdenConstants.NOOP));
+        	branchOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getBranchOps().get(index);
     }
 
     public DocOperationIndexedParameter getActionItemOp(int index) {
         while (actionItemOps.size() <= index) {
-            actionItemOps.add(new DocOperationIndexedParameter(new Integer(index), EdenConstants.NOOP));
+            actionItemOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionItemOps().get(index);
     }

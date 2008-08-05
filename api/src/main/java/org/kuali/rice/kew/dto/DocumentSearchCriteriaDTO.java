@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * This is a virtual object representing the DocSearchCriteriaVO class
@@ -39,7 +39,7 @@ public class DocumentSearchCriteriaDTO implements Serializable {
     private String workgroupViewerName; // workgroup Id that has had an action request to the document
     private String approver; // network Id of the person who is approving the document
     private String docRouteNodeName; // current level of routing, i.e. which route method is the document currently in
-    private String docRouteNodeLogic = EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT; // exactly, before or after
+    private String docRouteNodeLogic = KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT; // exactly, before or after
     private String docVersion; // document version
     private String docTypeFullName; // the fullname for the document's docType
 
@@ -64,15 +64,15 @@ public class DocumentSearchCriteriaDTO implements Serializable {
     private boolean saveSearchForUser = false;
 
     public void findDocsBeforeSpecifiedRouteNode() {
-        setDocRouteNodeLogic(EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE);
+        setDocRouteNodeLogic(KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE);
     }
 
     public void findDocsAfterSpecifiedRouteNode() {
-        setDocRouteNodeLogic(EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER);
+        setDocRouteNodeLogic(KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER);
     }
 
     public void findDocsAtExactSpecifiedRouteNode() {
-        setDocRouteNodeLogic(EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT);
+        setDocRouteNodeLogic(KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT);
     }
 
     public String getRouteHeaderId() {

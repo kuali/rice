@@ -29,7 +29,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -141,8 +141,8 @@ public class RuleAttributeXmlParser implements XmlConstants {
 			label = name;
 		}
 		if (Utilities.isEmpty(type)) {
-			LOG.debug("No type specified, default to " + EdenConstants.RULE_ATTRIBUTE_TYPE);
-			type = EdenConstants.RULE_ATTRIBUTE_TYPE;
+			LOG.debug("No type specified, default to " + KEWConstants.RULE_ATTRIBUTE_TYPE);
+			type = KEWConstants.RULE_ATTRIBUTE_TYPE;
 			//throw new InvalidXmlException("RuleAttribute must have an attribute type");
 		}
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -164,11 +164,11 @@ public class RuleAttributeXmlParser implements XmlConstants {
 				throw new InvalidXmlException("XML config is invalid", e);
 			}	
 		} else {
-			if(EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
+			if(KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new InvalidXmlException("A routing config must be present to be of type: "+type);
-			} else if(EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
+			} else if(KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new InvalidXmlException("A searching config must be present to be of type: "+type);
-			} else if(EdenConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(type)){
+			} else if(KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(type)){
 				throw new InvalidXmlException("A searching config must be present to be of type: "+type);
 			}
 		}

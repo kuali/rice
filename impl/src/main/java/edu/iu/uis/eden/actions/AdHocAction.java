@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actions;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
@@ -98,7 +98,7 @@ public class AdHocAction extends ActionTakenEvent {
                 if (!forValidationOnly) {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
                     adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, ignorePrevious, annotation);
-                    adhocRequest.setResponsibilityId(EdenConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
+                    adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
                 } else {
                     adhocRequest.setActionRequested(actionRequested);
                 }

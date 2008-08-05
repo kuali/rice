@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -64,7 +64,7 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
             WorkflowAttribute routingAttribute = (WorkflowAttribute) ruleTemplateAttribute.getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-            if (ruleAttribute.getType().equals(EdenConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
             }
             String className = ruleAttribute.getClassName();

@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -64,17 +64,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private boolean sendNotifications = true;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
-        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation);
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
     
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessorLogic);
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -105,7 +105,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
         	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
-        	List notificationRequests = arFactory.generateNotifications(pendingRequests, getUser(), delegator, EdenConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
+        	List notificationRequests = arFactory.generateNotifications(pendingRequests, getUser(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }
@@ -132,7 +132,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(EdenConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorUser(), getActionTakenCode(), getUser(), "Document initiator");
+            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorUser(), getActionTakenCode(), getUser(), "Document initiator");
             getActionRequestService().activateRequest(notificationRequest);
         }
     }
@@ -142,7 +142,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws EdenUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
@@ -152,7 +152,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             String docStatus = getRouteHeader().getDocRouteStatus();
-            return "Document of status '" + docStatus + "' cannot taken action '" + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
+            return "Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
         }
         if (! isActionCompatibleRequest(actionRequests) && ! isSuperUserUsage()) {
             return "No request for the user is compatible with the RETURN TO PREVIOUS NODE action";
@@ -168,7 +168,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         String actionTakenCode = getActionPerformedCode();
 
         // Move is always correct because the client application has authorized it
-        if (EdenConstants.ACTION_TAKEN_MOVE_CD.equals(actionTakenCode)) {
+        if (KEWConstants.ACTION_TAKEN_MOVE_CD.equals(actionTakenCode)) {
             return true;
         }
 
@@ -192,17 +192,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 
             String request = actionRequest.getActionRequested();
 
-            if ( (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
-                 (EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
-                 (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
+                 (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
+                 (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
 
             // RETURN_TO_PREVIOUS_ROUTE_LEVEL action available only if you've been routed a complete or approve request
-            if (EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD.equals(actionTakenCode) &&
-                    (EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request) || EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(request))) {
+            if (KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD.equals(actionTakenCode) &&
+                    (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request) || KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request))) {
                 actionCompatible = true;
             }
         }
@@ -216,7 +216,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -224,7 +224,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 
 //        if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
 //
-//        	List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+//        	List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
 //            if (! isActionCompatibleRequest(actionRequests, getActionTakenCode()) && ! isSuperUserUsage()) {
 //                throw new InvalidActionTakenException("No request for the user is compatible with the RETURN TO PREVIOUS NODE action");
 //            }
@@ -266,7 +266,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             executeNodeChange(activeNodeInstances, result);
 //        } else {
 //            String docStatus = getRouteHeader().getDocRouteStatus();
-//            throw new InvalidActionTakenException("Document of status '" + docStatus + "' cannot taken action '" + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName);
+//            throw new InvalidActionTakenException("Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName);
 //        }
     }
 

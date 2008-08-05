@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentTypeSecurity;
@@ -42,10 +42,10 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
     
     public static final Map<String,String> VIEWERS_BY_STATUS = new HashMap<String,String>();
     static {
-        VIEWERS_BY_STATUS.put(EdenConstants.ROUTE_HEADER_SAVED_CD, "user3");
-        VIEWERS_BY_STATUS.put(EdenConstants.ROUTE_HEADER_ENROUTE_CD, "dewey");
-        VIEWERS_BY_STATUS.put(EdenConstants.ROUTE_HEADER_PROCESSED_CD, "jitrue");
-        VIEWERS_BY_STATUS.put(EdenConstants.ROUTE_HEADER_FINAL_CD, "user2");
+        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_SAVED_CD, "user3");
+        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, "dewey");
+        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, "jitrue");
+        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_FINAL_CD, "user2");
     }
 
     /**

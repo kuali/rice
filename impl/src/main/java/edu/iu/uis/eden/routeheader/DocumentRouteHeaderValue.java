@@ -41,7 +41,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -81,7 +81,7 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * <p>During a document's lifecycle it progresses through a series of statuses, starting
  * with INITIATED and moving to one of the terminal states (such as FINAL, CANCELED, etc).
- * The list of status on a document are defined in the {@link EdenConstants} class and
+ * The list of status on a document are defined in the {@link KEWConstants} class and
  * include the constants starting with "ROUTE_HEADER_" and ending with "_CD".
  *
  * <p>Associated with the document is the document content.  The document content is XML
@@ -104,7 +104,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see ActionItem
  * @see ActionTakenValue
  * @see RouteNodeInstance
- * @see EdenConstants
+ * @see KEWConstants
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -137,7 +137,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     @Column(name="DOC_APPL_DOC_ID")
 	private java.lang.String appDocId;
     @Column(name="DOC_VER_NBR")
-    private java.lang.Integer docVersion = new Integer(EdenConstants.DOCUMENT_VERSION_NODAL);
+    private java.lang.Integer docVersion = new Integer(KEWConstants.DOCUMENT_VERSION_NODAL);
     @Version
 	@Column(name="DB_LOCK_VER_NBR")
 	private java.lang.Integer jrfVerNbr;
@@ -183,35 +183,35 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 
     static {
         stateTransitionMap = new HashMap<String,String>();
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_INITIATED_CD, EdenConstants.ROUTE_HEADER_SAVED_CD + EdenConstants.ROUTE_HEADER_ENROUTE_CD + EdenConstants.ROUTE_HEADER_CANCEL_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_SAVED_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD);
 
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_SAVED_CD, EdenConstants.ROUTE_HEADER_SAVED_CD + EdenConstants.ROUTE_HEADER_ENROUTE_CD + EdenConstants.ROUTE_HEADER_CANCEL_CD + EdenConstants.ROUTE_HEADER_APPROVED_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_SAVED_CD, KEWConstants.ROUTE_HEADER_SAVED_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD);
 
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_ENROUTE_CD, EdenConstants.ROUTE_HEADER_DISAPPROVED_CD +
-                EdenConstants.ROUTE_HEADER_CANCEL_CD + EdenConstants.ROUTE_HEADER_APPROVED_CD + EdenConstants.ROUTE_HEADER_EXCEPTION_CD + EdenConstants.ROUTE_HEADER_SAVED_CD);
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, "");
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_CANCEL_CD, "");
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_FINAL_CD, "");
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_EXCEPTION_CD, EdenConstants.ROUTE_HEADER_EXCEPTION_CD + EdenConstants.ROUTE_HEADER_ENROUTE_CD + EdenConstants.ROUTE_HEADER_CANCEL_CD + EdenConstants.ROUTE_HEADER_APPROVED_CD + EdenConstants.ROUTE_HEADER_DISAPPROVED_CD + EdenConstants.ROUTE_HEADER_SAVED_CD);
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_APPROVED_CD, EdenConstants.ROUTE_HEADER_APPROVED_CD + EdenConstants.ROUTE_HEADER_PROCESSED_CD + EdenConstants.ROUTE_HEADER_EXCEPTION_CD);
-        stateTransitionMap.put(EdenConstants.ROUTE_HEADER_PROCESSED_CD, EdenConstants.ROUTE_HEADER_FINAL_CD + EdenConstants.ROUTE_HEADER_PROCESSED_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_CD +
+                KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, "");
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, "");
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_FINAL_CD, "");
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_DISAPPROVED_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD + KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, KEWConstants.ROUTE_HEADER_FINAL_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 
         legalActions = new HashMap<String,String>();
-        legalActions.put(EdenConstants.ROUTE_HEADER_INITIATED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_SAVED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_SAVED_CD + KEWConstants.ACTION_TAKEN_COMPLETED_CD + KEWConstants.ACTION_TAKEN_ROUTED_CD + KEWConstants.ACTION_TAKEN_CANCELED_CD + KEWConstants.ACTION_TAKEN_ADHOC_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KEWConstants.ACTION_TAKEN_MOVE_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_SAVED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_SAVED_CD + KEWConstants.ACTION_TAKEN_COMPLETED_CD + KEWConstants.ACTION_TAKEN_ROUTED_CD + KEWConstants.ACTION_TAKEN_APPROVED_CD + KEWConstants.ACTION_TAKEN_CANCELED_CD + KEWConstants.ACTION_TAKEN_ADHOC_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KEWConstants.ACTION_TAKEN_MOVE_CD);
         /* ACTION_TAKEN_ROUTED_CD not included in enroute state
          * ACTION_TAKEN_SAVED_CD removed as of version 2.4
          */
-        legalActions.put(EdenConstants.ROUTE_HEADER_ENROUTE_CD, /*EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + */EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, /*KEWConstants.ACTION_TAKEN_SAVED_CD + KEWConstants.ACTION_TAKEN_ROUTED_CD + */KEWConstants.ACTION_TAKEN_APPROVED_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ADHOC_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KEWConstants.ACTION_TAKEN_CANCELED_CD + KEWConstants.ACTION_TAKEN_COMPLETED_CD + KEWConstants.ACTION_TAKEN_DENIED_CD + KEWConstants.ACTION_TAKEN_SU_APPROVED_CD + KEWConstants.ACTION_TAKEN_SU_CANCELED_CD + KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + KEWConstants.ACTION_TAKEN_MOVE_CD);
         /* ACTION_TAKEN_ROUTED_CD not included in exception state
          * ACTION_TAKEN_SAVED_CD removed as of version 2.4.2
          */
-        legalActions.put(EdenConstants.ROUTE_HEADER_EXCEPTION_CD, /*EdenConstants.ACTION_TAKEN_SAVED_CD + */EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_FINAL_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_CANCEL_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_APPROVED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
-        legalActions.put(EdenConstants.ROUTE_HEADER_PROCESSED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, /*KEWConstants.ACTION_TAKEN_SAVED_CD + */KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KEWConstants.ACTION_TAKEN_APPROVED_CD + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KEWConstants.ACTION_TAKEN_CANCELED_CD + KEWConstants.ACTION_TAKEN_COMPLETED_CD + KEWConstants.ACTION_TAKEN_DENIED_CD + KEWConstants.ACTION_TAKEN_SU_APPROVED_CD + KEWConstants.ACTION_TAKEN_SU_CANCELED_CD + KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + KEWConstants.ACTION_TAKEN_MOVE_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_FINAL_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
     }
 
     public DocumentRouteHeaderValue() {
@@ -464,14 +464,14 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      * @return True if the document is in the state of Initiated
      */
     public boolean isStateInitiated() {
-        return EdenConstants.ROUTE_HEADER_INITIATED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(docRouteStatus);
     }
 
     /**
      * @return True if the document is in the state of Saved
      */
     public boolean isStateSaved() {
-        return EdenConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus);
     }
 
     /**
@@ -482,45 +482,45 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     }
 
     public boolean isInException() {
-        return EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus);
     }
 
     public boolean isDisaproved() {
-        return EdenConstants.ROUTE_HEADER_DISAPPROVED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equals(docRouteStatus);
     }
 
     public boolean isCanceled() {
-        return EdenConstants.ROUTE_HEADER_CANCEL_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_CANCEL_CD.equals(docRouteStatus);
     }
 
     public boolean isFinal() {
-        return EdenConstants.ROUTE_HEADER_FINAL_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_FINAL_CD.equals(docRouteStatus);
     }
 
     public boolean isEnroute() {
-    	return EdenConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus);
+    	return KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus);
     }
 
     /**
      * @return true if the document is in the processed state
      */
     public boolean isProcessed() {
-        return EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
     }
 
     /**
      * @return true if the document is in the approved state
      */
     public boolean isApproved() {
-        return EdenConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus);
     }
 
     public boolean isRoutable() {
-        return EdenConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus) ||
-        		//EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus) ||
-        		EdenConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus) ||
-        		EdenConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus) ||
-        		EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
+        return KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus) ||
+        		//KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus) ||
+        		KEWConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus) ||
+        		KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus) ||
+        		KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
     }
 
     /**
@@ -570,7 +570,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentProcessed() throws InvalidActionTakenException {
         LOG.debug(this + " marked processed");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_PROCESSED_CD, !FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_PROCESSED_CD, !FINAL_STATE);
     }
 
     /**
@@ -581,7 +581,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentCanceled() throws InvalidActionTakenException {
         LOG.debug(this + " marked canceled");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_CANCEL_CD, FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_CANCEL_CD, FINAL_STATE);
     }
 
     /**
@@ -592,7 +592,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentDisapproved() throws InvalidActionTakenException {
         LOG.debug(this + " marked disapproved");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, FINAL_STATE);
     }
 
     /**
@@ -603,7 +603,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentSaved() throws InvalidActionTakenException {
         LOG.debug(this + " marked saved");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_SAVED_CD, !FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_SAVED_CD, !FINAL_STATE);
     }
 
     /**
@@ -615,7 +615,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public void markDocumentApproved() throws InvalidActionTakenException {
         LOG.debug(this + " marked approved");
         setApprovedDate(new Timestamp(System.currentTimeMillis()));
-        setRouteStatus(EdenConstants.ROUTE_HEADER_APPROVED_CD, !FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_APPROVED_CD, !FINAL_STATE);
     }
 
     /**
@@ -626,7 +626,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentInException() throws InvalidActionTakenException {
         LOG.debug(this + " marked in exception");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_EXCEPTION_CD, !FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, !FINAL_STATE);
     }
 
     /**
@@ -637,7 +637,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentEnroute() throws InvalidActionTakenException {
         LOG.debug(this + " marked enroute");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_ENROUTE_CD, !FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD, !FINAL_STATE);
     }
 
     /**
@@ -648,7 +648,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      */
     public void markDocumentFinalized() throws InvalidActionTakenException {
         LOG.debug(this + " marked finalized");
-        setRouteStatus(EdenConstants.ROUTE_HEADER_FINAL_CD, FINAL_STATE);
+        setRouteStatus(KEWConstants.ROUTE_HEADER_FINAL_CD, FINAL_STATE);
     }
 
     /**

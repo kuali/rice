@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -124,7 +124,7 @@ public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
 
     public boolean isRuleValidationAttribute() {
 	// just check the type here to avoid having to load the class from the class loader if it's not actually there
-	return EdenConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
+	return KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
     }
 
     /**

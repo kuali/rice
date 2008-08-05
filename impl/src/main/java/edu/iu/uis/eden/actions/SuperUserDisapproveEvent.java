@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -31,17 +31,17 @@ import edu.iu.uis.eden.user.WorkflowUser;
 public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
 
     public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, routeHeader, user);
-        this.superUserAction = EdenConstants.SUPER_USER_DISAPPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, routeHeader, user);
+        this.superUserAction = KEWConstants.SUPER_USER_DISAPPROVE;
     }
 
     public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, routeHeader, user, annotation, runPostProcessor);
-        this.superUserAction = EdenConstants.SUPER_USER_DISAPPROVE;
+        super(KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, routeHeader, user, annotation, runPostProcessor);
+        this.superUserAction = KEWConstants.SUPER_USER_DISAPPROVE;
     }
 
     protected void markDocument() throws WorkflowException {
-        //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), EdenConstants.ROUTE_HEADER_DISAPPROVED_CD);
+        //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_DISAPPROVED_CD);
         getRouteHeader().markDocumentDisapproved();
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }

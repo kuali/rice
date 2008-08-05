@@ -142,7 +142,7 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	}
 	
 	protected boolean isSecure() {
-		return getSecure();// && Utilities.getBooleanConstant(EdenConstants.SECURITY_HTTP_INVOKER_SIGN_MESSAGES, false);
+		return getSecure();// && Utilities.getBooleanConstant(KEWConstants.SECURITY_HTTP_INVOKER_SIGN_MESSAGES, false);
 	}
 
 	public Boolean getSecure() {

@@ -79,7 +79,7 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.RiceConstants;
@@ -580,19 +580,19 @@ public class KualiDocumentActionBase extends KualiAction {
         request.setAttribute("backFormHiddenVariables", backFormParameters);
 
         // setup route report form variables
-        request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + EdenConstants.DOCUMENT_ROUTING_REPORT_PAGE);
+        request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
-        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
-        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
+        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
+        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         LOG.debug("XML being used for Routing Report is: " + xml);
-        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
+        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
         
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyLabelPair> javaScriptFormParameters = new ArrayList<KeyLabelPair>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
-        javaScriptFormParameters.add(new KeyLabelPair(EdenConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, EdenConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
+        javaScriptFormParameters.add(new KeyLabelPair(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
         request.setAttribute("javaScriptFormVariables", javaScriptFormParameters);
 
         // set up the variables for the form if java script is NOT working (includes a back url but no close button)
@@ -602,7 +602,7 @@ public class KualiDocumentActionBase extends KualiAction {
         for (KeyLabelPair pair : backFormParameters) {
             parameters.put(pair.getKey(), pair.getLabel());
         }
-        noJavaScriptFormParameters.add(new KeyLabelPair(EdenConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
+        noJavaScriptFormParameters.add(new KeyLabelPair(KEWConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
         return mapping.findForward(KNSConstants.MAPPING_ROUTE_REPORT);
@@ -1227,7 +1227,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * 
      * @param request
      * @param note
-     * @return a value from {@link EdenConstants}
+     * @return a value from {@link KEWConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
         KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();

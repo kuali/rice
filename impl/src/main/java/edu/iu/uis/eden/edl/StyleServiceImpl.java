@@ -32,7 +32,7 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -85,7 +85,7 @@ public class StyleServiceImpl implements StyleService {
                 return null;
             }
         
-            if (new Boolean(Utilities.getApplicationConstant(EdenConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
+            if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
                 LOG.info("using xsltc to compile stylesheet");
                 String key = "javax.xml.transform.TransformerFactory";
                 String value = "org.apache.xalan.xsltc.trax.TransformerFactoryImpl";
@@ -98,10 +98,10 @@ public class StyleServiceImpl implements StyleService {
             URIResolver resolver = new WidgetURIResolver();
             factory.setURIResolver(resolver);
         
-            if (new Boolean(Utilities.getApplicationConstant(EdenConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
+            if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
                 factory.setAttribute("translet-name",name);
                 factory.setAttribute("generate-translet",Boolean.TRUE);
-                if (new Boolean(Utilities.getApplicationConstant(EdenConstants.APP_CONST_EDL_DEBUG_TRANSFORM)).booleanValue()) {
+                if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_DEBUG_TRANSFORM)).booleanValue()) {
                     factory.setAttribute("debug", Boolean.TRUE);    
                 }
             
@@ -236,7 +236,7 @@ public class StyleServiceImpl implements StyleService {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
         } catch (Exception e) {
-            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing Style XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", EdenConstants.XML_FILE_PARSE_ERROR));
+            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing Style XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", KEWConstants.XML_FILE_PARSE_ERROR));
             wsee.initCause(e);
             throw wsee;
         }
@@ -255,7 +255,7 @@ public class StyleServiceImpl implements StyleService {
     }
 
     private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
-        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, EdenConstants.XML_FILE_PARSE_ERROR));
+        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
         if (cause != null) {
             wsee.initCause(cause);
         }

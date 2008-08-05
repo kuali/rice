@@ -34,7 +34,7 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
@@ -340,14 +340,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				noteDetails = buildNoteDetails(notes);
 
 				if (routeHeader.isApproveRequested()) {
-					actionRequested = EdenConstants.ACTION_REQUEST_APPROVE_REQ_LABEL;
+					actionRequested = KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL;
 				} else if (routeHeader.isAckRequested()) {
-					actionRequested = EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL;
+					actionRequested = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL;
 				} else if (routeHeader.isFyiRequested()) {
-					actionRequested = EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL;
+					actionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL;
 				} else if (routeHeader.isCompleteRequested()) {
 					// TODO: how do we want to handle a "Complete" request?
-					actionRequested = EdenConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL;
+					actionRequested = KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL;
 				}
 			}
 		} catch (WorkflowException e) {
@@ -432,7 +432,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	public StandardResponse requestAdHocAckToGroup(String docId, String userId,
 			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
 	}
 
 	/**
@@ -452,7 +452,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	public StandardResponse requestAdHocAckToUser(String docId, String userId,
 			String recipientUserId, String annotation) {
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
 	}
 
 	/**
@@ -472,7 +472,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	public StandardResponse requestAdHocApproveToGroup(String docId, String userId,
 			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, EdenConstants.ACTION_REQUEST_APPROVE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
 	}
 
 	/**
@@ -493,7 +493,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	public StandardResponse requestAdHocApproveToUser(String docId, String userId,
 			String recipientUserId, String annotation) {
 
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, EdenConstants.ACTION_REQUEST_APPROVE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
 	}
 
 	/**
@@ -513,7 +513,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	public StandardResponse requestAdHocFyiToGroup(String docId, String userId,
 			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	}
 
 	/**
@@ -533,7 +533,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	public StandardResponse requestAdHocFyiToUser(String docId, String userId,
 			String recipientUserId, String annotation) {
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	}
 
 	/**
@@ -1071,7 +1071,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
             if (routeHeader.getRoutedByUser() == null) {
                 // of the document has been routed, but there is no routed-by user, that is an error
-                if (EdenConstants.ROUTE_HEADER_ENROUTE_CD.equals(routeHeader.getDocRouteStatus())) {
+                if (KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(routeHeader.getDocRouteStatus())) {
                         errorMessage += "Error: NULL routedBy user; ";
                 }
             } else {

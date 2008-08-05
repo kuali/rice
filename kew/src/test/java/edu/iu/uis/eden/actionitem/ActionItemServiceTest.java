@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -109,7 +109,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         		WorkflowUser user = (WorkflowUser) recipient;
         		BaseWorkgroupMember member = new BaseWorkgroupMember();
         		member.setWorkflowId(user.getWorkflowId());
-        		member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+        		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         		member.setWorkgroup(newWorkgroup);
         		member.setWorkgroupVersionNumber(newWorkgroup.getVersionNumber());
         		member.setWorkgroupId(newWorkgroup.getWorkgroupId());
@@ -176,7 +176,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.appSpecificRouteDocumentToWorkgroup(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "", new WorkgroupNameIdDTO("AIWGNested2"), "", true);
+        document.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new WorkgroupNameIdDTO("AIWGNested2"), "", true);
         document.routeDocument("");
 
         // remove a user from the AGWG1 workgroup
@@ -237,7 +237,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         // add user1
         BaseWorkgroupMember member = new BaseWorkgroupMember();
 		member.setWorkflowId(user1.getWorkflowId());
-		member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 		member.setWorkgroup(workgroup2);
 		member.setWorkgroupVersionNumber(workgroup2.getVersionNumber());
 		member.setWorkgroupId(workgroup2.getWorkgroupId());
@@ -271,7 +271,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         for (Iterator iterator = workgroup3.getWorkgroupMembers().iterator(); iterator.hasNext();) {
 			member = (BaseWorkgroupMember) iterator.next();
 			// remove ewestfal
-			if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD) &&
+			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD) &&
 					member.getWorkflowId().equals(aiwgNested1Workgroup.getWorkflowGroupId().getGroupId().toString())) {
 				iterator.remove();
 			}
@@ -353,7 +353,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 //        		WorkflowUser user = (WorkflowUser) recipient;
 //        		BaseWorkgroupMember member = new BaseWorkgroupMember();
 //        		member.setWorkflowId(user.getWorkflowId());
-//        		member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+//        		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 //        		member.setWorkgroup(newWorkgroup);
 //        		member.setWorkgroupVersionNumber(newWorkgroup.getVersionNumber());
 //        		member.setWorkgroupId(newWorkgroup.getWorkgroupId());

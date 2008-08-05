@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.util.Utilities;
@@ -161,7 +161,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
    
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
-        docHandlerForm.setDocHandlerRedirectUrl(request.getParameter(EdenConstants.DOC_HANDLER_RETURN_URL));
+        docHandlerForm.setDocHandlerRedirectUrl(request.getParameter(KEWConstants.DOC_HANDLER_RETURN_URL));
         
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
         StringBuffer lookupUrl = new StringBuffer(basePath);

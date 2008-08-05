@@ -26,7 +26,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.EdenConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -94,7 +94,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setDocVersion(document.getDocVersion());
         actionRequest.setRouteLevel(document.getDocRouteLevel());
         actionRequest.setNodeInstance(nodeInstance);
-        actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
+        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
     }
 
     
@@ -175,7 +175,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (deactivateOnActionAlreadyTaken(actionRequest, activationContext)) {
             return;
         }
-        actionRequest.setStatus(EdenConstants.ACTION_REQUEST_ACTIVATED);
+        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_ACTIVATED);
         if (!activationContext.isSimulation()) {
             saveActionRequest(actionRequest);
             activationContext.getGeneratedActionItems().addAll(generateActionItems(actionRequest, activationContext));
@@ -341,7 +341,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 || haltForAllApprove(actionRequest, deactivationRequester)) {
             return;
         }
-        actionRequest.setStatus(EdenConstants.ACTION_REQUEST_DONE_STATE);
+        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_DONE_STATE);
         actionRequest.setActionTaken(actionTaken);
         if (actionTaken != null) {
             actionTaken.getActionRequests().add(actionRequest);
@@ -360,7 +360,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * deactivated or a non-child request initiated deactivation, then this method returns false. false otherwise.
      */
     private boolean haltForAllApprove(ActionRequestValue actionRequest, ActionRequestValue deactivationRequester) {
-        if (EdenConstants.APPROVE_POLICY_ALL_APPROVE.equals(actionRequest.getApprovePolicy())
+        if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(actionRequest.getApprovePolicy())
                 && actionRequest.hasChild(deactivationRequester)) {
             boolean allDeactivated = true;
             for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
@@ -431,8 +431,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
-        String cacheWaitValue = Utilities.getApplicationConstant(EdenConstants.RULE_CACHE_REQUEUE_WAIT_TIME_KEY);
-        Long cacheWait = new Long(EdenConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
+        String cacheWaitValue = Utilities.getApplicationConstant(KEWConstants.RULE_CACHE_REQUEUE_WAIT_TIME_KEY);
+        Long cacheWait = new Long(KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
         if (!Utilities.isEmpty(cacheWaitValue)) {
             try {
                 cacheWait = Long.valueOf(cacheWaitValue);
@@ -624,7 +624,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeader().getRouteHeaderId());
         for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
             ActionRequestValue existingRequest = (ActionRequestValue) iterator.next();
-            if (existingRequest.getStatus().equals(EdenConstants.ACTION_REQUEST_DONE_STATE)
+            if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
                     && existingRequest.getRouteLevel().equals(actionRequest.getRouteHeader().getDocRouteLevel())
                     && ObjectUtils.equals(existingRequest.getWorkflowId(), actionRequest.getWorkflowId())
                     && ObjectUtils.equals(existingRequest.getWorkgroupId(), actionRequest.getWorkgroupId())
@@ -639,7 +639,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public Recipient findDelegator(List actionRequests) throws EdenUserNotFoundException {
         Recipient delegator = null;
-        String requestCode = EdenConstants.ACTION_REQUEST_FYI_REQ;
+        String requestCode = KEWConstants.ACTION_REQUEST_FYI_REQ;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             ActionRequestValue delegatorRequest = findDelegatorRequest(actionRequest);
@@ -686,7 +686,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest cd null.", "actionrequest.actionrequestcd.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (!EdenConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
+        } else if (!KEWConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest cd invalid.", "actionrequest.actionrequestcd.invalid",
                     actionRequest.getActionRequestId().toString()));
         }
@@ -704,7 +704,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequestStatus == null || actionRequestStatus.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest status null.", "actionrequest.actionrequeststatus.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (!EdenConstants.ACTION_REQUEST_STATUS.containsKey(actionRequestStatus)) {
+        } else if (!KEWConstants.ACTION_REQUEST_STATUS.containsKey(actionRequestStatus)) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest status invalid.",
                     "actionrequest.actionrequeststatus.invalid", actionRequest.getActionRequestId().toString()));
         }
@@ -747,7 +747,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
         String recipientType = actionRequest.getRecipientTypeCd();
         if (recipientType != null && !recipientType.trim().equals("")) {
-            if (recipientType.equals(EdenConstants.WORKGROUP)) {
+            if (recipientType.equals(KEWConstants.WORKGROUP)) {
                 Long workgroupId = actionRequest.getWorkgroupId();
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
@@ -758,7 +758,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 }
 
             }
-            if (recipientType.equals(EdenConstants.PERSON)) {
+            if (recipientType.equals(KEWConstants.PERSON)) {
                 String workflowId = actionRequest.getWorkflowId();
                 if (workflowId == null || workflowId.trim().equals("")) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest person id null.", "actionrequest.persosn.empty",
@@ -772,7 +772,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     }
                 }
 
-                if (recipientType.equals(EdenConstants.ROLE)
+                if (recipientType.equals(KEWConstants.ROLE)
                         && (actionRequest.getRoleName() == null || actionRequest.getRoleName().trim().equals(""))) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest role name null.", "actionrequest.rolename.null",
                             actionRequest.getActionRequestId().toString()));
@@ -806,7 +806,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public boolean isValidActionRequestCode(String actionRequestCode) {
-        return actionRequestCode != null && EdenConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
+        return actionRequestCode != null && KEWConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
     }
 
     public boolean doesUserHaveRequest(WorkflowUser user, Long documentId) {

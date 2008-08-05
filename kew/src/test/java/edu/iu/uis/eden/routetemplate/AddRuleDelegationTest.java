@@ -33,11 +33,11 @@ import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.web.Rule2Form;
 import org.kuali.rice.kew.routetemplate.web.WebRuleBaseValues;
 import org.kuali.rice.kew.routetemplate.web.WebRuleResponsibility;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests adding a delegation rule

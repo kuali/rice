@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.WorkflowServiceError;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * TODO delyea - documentation

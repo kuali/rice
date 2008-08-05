@@ -18,8 +18,8 @@ package org.kuali.rice.kew.docsearch;
 import java.util.List;
 
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * This interface is used to define pre document search screen display processes for

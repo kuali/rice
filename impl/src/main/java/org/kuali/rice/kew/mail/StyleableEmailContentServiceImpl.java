@@ -43,18 +43,18 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 
 /**
  * EmailContentService that serves EmailContent customizable via XSLT style sheets

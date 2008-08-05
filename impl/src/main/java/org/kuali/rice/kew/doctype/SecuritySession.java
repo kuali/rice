@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.iu.uis.eden.web.session.UserSession;
+import org.kuali.rice.kew.web.session.UserSession;
+
 
 /**
  * Caches information about various security constraints for a single user which have already been

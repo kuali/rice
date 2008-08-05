@@ -25,8 +25,8 @@ import java.util.Set;
 
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * This is the standard document search criteria processor implementation. 

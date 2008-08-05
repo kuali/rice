@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * A service which allows for the sending of email reminders triggered by the state

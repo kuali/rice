@@ -37,8 +37,8 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Implementation of the SimpleDocumentActionsWebService

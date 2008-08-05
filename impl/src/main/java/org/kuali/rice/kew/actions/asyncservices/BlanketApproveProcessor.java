@@ -23,8 +23,8 @@ import org.kuali.rice.kew.actions.BlanketApproveAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Responsible for invoking the async piece of BlanketApprove

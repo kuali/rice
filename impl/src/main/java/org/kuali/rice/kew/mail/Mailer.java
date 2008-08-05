@@ -31,7 +31,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import edu.iu.uis.eden.util.ByteArrayDataSource;
+import org.kuali.rice.kew.util.ByteArrayDataSource;
+
 
 /**
  * Maintains a Java Mail session and can be used for sending emails.

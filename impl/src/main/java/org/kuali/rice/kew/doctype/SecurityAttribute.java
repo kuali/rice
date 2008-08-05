@@ -18,8 +18,9 @@ package org.kuali.rice.kew.doctype;
 import java.io.Serializable;
 import java.util.List;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.session.Authentication;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.session.Authentication;
+
 
 /**
  * This is an attribute used for document security and based off document type. 

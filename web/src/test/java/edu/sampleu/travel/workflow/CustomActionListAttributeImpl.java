@@ -19,8 +19,8 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class CustomActionListAttributeImpl implements CustomActionListAttribute {
 

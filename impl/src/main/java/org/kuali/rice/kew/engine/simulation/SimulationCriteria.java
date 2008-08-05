@@ -19,8 +19,9 @@ package org.kuali.rice.kew.engine.simulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
+
 
 /**
  * Criteria which acts as input to the {@link SimulationEngine}.

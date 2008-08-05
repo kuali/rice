@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  *

@@ -24,8 +24,8 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.WorkflowRoutingForm;
 
-import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**
  * Struts form for {@link DocumentTypeAction}

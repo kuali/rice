@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.core.service.WebAuthenticationService;
 import org.kuali.core.web.filter.KualiCasFilter;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * This class is used to perform the webAuthentication Service when using the Kuali Cas Filter.
@@ -50,7 +50,7 @@ public class WebAuthenticationServiceCas implements WebAuthenticationService {
     }
 
     /**
-     * @see edu.iu.uis.eden.web.WebAuthenticationService#updateUserSession(edu.iu.uis.eden.web.session.UserSession,
+     * @see org.kuali.rice.kew.web.WebAuthenticationService#updateUserSession(org.kuali.rice.kew.web.session.UserSession,
      *      javax.servlet.http.HttpServletRequest)
      */
     public UserSession updateUserSession(UserSession userSession, HttpServletRequest request) {

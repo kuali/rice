@@ -42,10 +42,10 @@ import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.xml.RuleXmlParser;
+import org.kuali.rice.kew.xml.XmlConstants;
 
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.xml.RuleXmlParser;
-import edu.iu.uis.eden.xml.XmlConstants;
 
 /**
  * A RouteModule that generates requests for responsibilities statically defined

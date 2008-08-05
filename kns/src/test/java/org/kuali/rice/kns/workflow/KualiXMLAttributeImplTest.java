@@ -46,6 +46,7 @@ import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.workflow.attribute.KualiXmlAttribute;
 import org.kuali.workflow.attribute.KualiXmlAttributeHelper;
 import org.kuali.workflow.attribute.KualiXmlRuleAttributeImpl;
@@ -55,7 +56,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.xml.XmlConstants;
 
 /**
  * This class tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow

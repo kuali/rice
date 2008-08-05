@@ -22,12 +22,12 @@ import javax.servlet.http.HttpServletRequest;
  *
  *
  */
-public interface WebAuthenticationService extends edu.iu.uis.eden.web.WebAuthenticationService {
+public interface WebAuthenticationService extends org.kuali.rice.kew.web.WebAuthenticationService {
     /**
      * This method retrieves the network id from the servlet request.
      *
      * <p>TODO should probably get rid of this method in favor of one which returns a UserId object
-     * as the edu.iu.uis.eden.web.WebAuthenticationService does
+     * as the org.kuali.rice.kew.web.WebAuthenticationService does
      *
      * @param request
      * @return The network Id of the user as a string.

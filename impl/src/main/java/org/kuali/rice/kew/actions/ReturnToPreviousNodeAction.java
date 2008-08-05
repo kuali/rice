@@ -40,11 +40,11 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Returns a document to a previous node in the route.

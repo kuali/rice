@@ -34,6 +34,7 @@ import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,7 +42,6 @@ import org.xml.sax.InputSource;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A node which will send emails using the configured stylesheet to generate the email content.

@@ -26,11 +26,11 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Responsible for creating adhoc requests that are requested from the client.

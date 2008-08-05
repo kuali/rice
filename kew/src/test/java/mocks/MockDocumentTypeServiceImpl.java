@@ -29,9 +29,9 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 

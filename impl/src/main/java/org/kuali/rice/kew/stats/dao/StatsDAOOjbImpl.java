@@ -30,9 +30,9 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.KeyValue;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.web.KeyValue;
 
 public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements StatsDAO {
 

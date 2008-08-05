@@ -31,18 +31,18 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.BaseWorkgroup;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupMember;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.BaseWorkgroup;
-import edu.iu.uis.eden.workgroup.BaseWorkgroupMember;
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 public class ActionItemServiceTest extends KEWTestCase {
 

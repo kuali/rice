@@ -19,6 +19,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KeyValue;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -26,8 +28,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.KeyValue;
 
 public class DocumentTypeSecurity {
   private Boolean active;

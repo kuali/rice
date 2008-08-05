@@ -49,8 +49,8 @@ import org.kuali.rice.kew.engine.node.SimpleSplitNode;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import org.kuali.rice.kew.engine.transition.SplitTransitionEngine;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Generic hierarchy routing node

@@ -9,14 +9,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchVO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.web.session.Authentication;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.user.UserUtils;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.KeyValue;
-import edu.iu.uis.eden.web.session.Authentication;
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSecurityServiceImpl.class);

@@ -43,17 +43,17 @@ import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
  * A {@link WorkflowLookupable} implementation for {@link RuleBaseValues}.

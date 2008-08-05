@@ -37,17 +37,17 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.xml.StyleXmlParser;
+import org.kuali.rice.kew.xml.export.StyleXmlExporter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.xml.StyleXmlParser;
-import edu.iu.uis.eden.xml.export.StyleXmlExporter;
 
 /**
  * Implements generic StyleService via existing EDL style table

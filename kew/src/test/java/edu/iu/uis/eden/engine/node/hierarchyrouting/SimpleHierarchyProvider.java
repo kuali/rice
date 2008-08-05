@@ -33,10 +33,10 @@ import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider;
 import org.kuali.rice.kew.routetemplate.NamedRuleSelector;
+import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A simple hierarchy provider that provides hierarchy based on doc content

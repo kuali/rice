@@ -33,12 +33,12 @@ import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.util.RiceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Generates document state based on the workflow document in session.

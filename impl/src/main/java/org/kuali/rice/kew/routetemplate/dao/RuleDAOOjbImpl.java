@@ -40,13 +40,13 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.Utilities;
 
 public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDAO {
 

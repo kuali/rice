@@ -18,7 +18,8 @@ package org.kuali.rice.kew.actions.asyncservices;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.util.Utilities;
+import org.kuali.rice.kew.util.Utilities;
+
 
 /**
  * Used for mass actions from the action list.

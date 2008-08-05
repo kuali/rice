@@ -2,7 +2,8 @@ package org.kuali.rice.kew;
 
 import java.io.InputStream;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
+
 
 
 public interface XmlLoader {

@@ -28,10 +28,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.quicklinks.QuickLinksService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.KeyValue;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for interfacing with the Quick Links system

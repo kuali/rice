@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.routetemplate;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.util.PerformanceLogger;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
 
 /**
  * Implementation of the {@link RuleCacheProcessor} which notifies the rule cache of

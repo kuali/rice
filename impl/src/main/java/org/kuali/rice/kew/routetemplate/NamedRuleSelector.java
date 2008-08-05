@@ -28,8 +28,8 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Rule selector that select a rule based on configured rule name 

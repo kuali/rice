@@ -828,7 +828,7 @@
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.user.BaseWorkflowUser" table="EN_USR_T">
+  <class-descriptor class="org.kuali.rice.kew.user.BaseWorkflowUser" table="EN_USR_T">
     <field-descriptor name="workflowUserId"                 column="PRSN_EN_ID"       jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="SEQUENCE_EN_USR" />
     <field-descriptor name="emplId"                         column="PRSN_UNIV_ID"     jdbc-type="VARCHAR" />
     <field-descriptor name="authenticationUserId"           column="PRSN_NTWRK_ID"    jdbc-type="VARCHAR" />
@@ -843,7 +843,7 @@
     <field-descriptor name="dtype"                      column="DTYPE"      jdbc-type="VARCHAR"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.workgroup.BaseWorkgroup" table="EN_WRKGRP_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.BaseWorkgroup" table="EN_WRKGRP_T">
     <field-descriptor name="workgroupId" column="WRKGRP_ID" jdbc-type="BIGINT" primarykey="true" />
     <field-descriptor name="versionNumber" column="WRKGRP_VER_NBR" jdbc-type="INTEGER" primarykey="true"/>
 	<field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="BIGINT"/>
@@ -853,7 +853,7 @@
     <field-descriptor name="workgroupType" column="WRKGRP_TYP_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="currentInd" column="WRKGRP_CUR_IND" jdbc-type="BIT" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.workgroup.BaseWorkgroupMember"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroupMember"
         name="workgroupMembers"  auto-retrieve="true" auto-update="true" auto-delete="true">
         <inverse-foreignkey field-ref="workgroupId"  />
 		<inverse-foreignkey field-ref="workgroupVersionNumber"/>
@@ -865,7 +865,7 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.workgroup.BaseWorkgroupMember" table="EN_WRKGRP_MBR_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.BaseWorkgroupMember" table="EN_WRKGRP_MBR_T">
     <field-descriptor name="workgroupId" column="WRKGRP_ID" jdbc-type="BIGINT" primarykey="true" />
     <field-descriptor name="workflowId" column="WRKGRP_MBR_PRSN_EN_ID" jdbc-type="VARCHAR"
       primarykey="true" />
@@ -873,7 +873,7 @@
       primarykey="true" />
     <field-descriptor name="memberType" column="WRKGRP_MBR_TYP" jdbc-type="VARCHAR"/>
 	<field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.workgroup.BaseWorkgroup" name="workgroup">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroup" name="workgroup">
       <foreignkey field-ref="workgroupId"/>
 	  <foreignkey field-ref="workgroupVersionNumber"/>
     </reference-descriptor>
@@ -885,7 +885,7 @@
     <field-descriptor name="workgroupVersionNumber" column="WRKGRP_VER_NBR" jdbc-type="INTEGER" access="anonymous" />
     <field-descriptor name="workgroupTypeAttributeId" column="WRKGRP_TYP_ATTRIB_ID" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.workgroup.BaseWorkgroup" name="workgroup">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroup" name="workgroup">
       <foreignkey field-ref="workgroupId"/>
       <foreignkey field-ref="workgroupVersionNumber"/>
     </reference-descriptor>

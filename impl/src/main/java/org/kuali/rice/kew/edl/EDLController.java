@@ -23,10 +23,10 @@ import javax.xml.transform.Templates;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Responsible for notifying components associated with a particular EDL definition.

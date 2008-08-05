@@ -29,9 +29,9 @@ import org.kuali.core.lookup.LookupUtils;
 import org.kuali.rice.jpa.criteria.Criteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
 
 /**
  * This class is the JPA implementation of the UniversalUserDao interface.
@@ -58,22 +58,22 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 		return (UniversalUser) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	}
 
-	public WorkflowUser getWorkflowUser(edu.iu.uis.eden.user.UserId userId) throws EdenUserNotFoundException {
+	public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
 		if ((userId == null) || userId.isEmpty()) {
 			throw new EdenUserNotFoundException("Attempting to lookup user with null or empty id");
 		}
 		Criteria criteria = new Criteria(org.kuali.core.workflow.bo.WorkflowUser.class.getName());
-		if (userId instanceof edu.iu.uis.eden.user.AuthenticationUserId) {
-			criteria.eq("authenticationUserId", ((edu.iu.uis.eden.user.AuthenticationUserId) userId).getAuthenticationId().trim().toUpperCase());
+		if (userId instanceof org.kuali.rice.kew.user.AuthenticationUserId) {
+			criteria.eq("authenticationUserId", ((org.kuali.rice.kew.user.AuthenticationUserId) userId).getAuthenticationId().trim().toUpperCase());
 		}
-		if (userId instanceof edu.iu.uis.eden.user.EmplId) {
-			criteria.eq("emplId", ((edu.iu.uis.eden.user.EmplId) userId).getEmplId().trim().toUpperCase());
+		if (userId instanceof org.kuali.rice.kew.user.EmplId) {
+			criteria.eq("emplId", ((org.kuali.rice.kew.user.EmplId) userId).getEmplId().trim().toUpperCase());
 		}
 		if (userId instanceof WorkflowUserId) {
 			criteria.eq("uuId", ((WorkflowUserId) userId).getWorkflowId().trim().toUpperCase());
 		}
-		if (userId instanceof edu.iu.uis.eden.user.UuId) {
-			criteria.eq("uuId", ((edu.iu.uis.eden.user.UuId) userId).getUuId().trim().toUpperCase());
+		if (userId instanceof org.kuali.rice.kew.user.UuId) {
+			criteria.eq("uuId", ((org.kuali.rice.kew.user.UuId) userId).getUuId().trim().toUpperCase());
 		}
 		WorkflowUser user = (WorkflowUser) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 		if (user == null) {

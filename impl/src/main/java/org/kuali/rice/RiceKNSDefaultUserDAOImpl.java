@@ -27,8 +27,8 @@ import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Used to eliminate kauli user table and delegate user fetches to workflow User service. Wired in the CoreServiceOverride.xml file.
@@ -61,7 +61,7 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
         throw new UnsupportedOperationException("Id type given to dao that is not supported. " + userId);
     }
 
-    public WorkflowUser getWorkflowUser(edu.iu.uis.eden.user.UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
         return KEWServiceLocator.getUserService().getWorkflowUser(userId);
     }
 

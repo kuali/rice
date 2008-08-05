@@ -32,9 +32,9 @@ import org.kuali.rice.kew.routetemplate.GenericRoleAttribute;
 import org.kuali.rice.kew.routetemplate.QualifiedRoleName;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  * KEW RoleAttribute implementation that is responsible for encapsulating a list

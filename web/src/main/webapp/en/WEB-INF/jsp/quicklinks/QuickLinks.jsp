@@ -40,7 +40,7 @@
         <ul>
           <br>
 		  <c:forEach begin="0" end="4" var="recentSearch" items="${QuickLinksForm.recentSearches}" >
-	  		<li><a target="_blank" title="<c:out value="${recentSearch.value}"/>" href="DocumentSearch.do?methodToCall=doDocSearch&namedSearch=<c:out value="${recentSearch.key}" />"><%=  ((edu.iu.uis.eden.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue().length() > 100 ? ((edu.iu.uis.eden.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue().substring(0,100) + "..." : ((edu.iu.uis.eden.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue() %></a></li>
+	  		<li><a target="_blank" title="<c:out value="${recentSearch.value}"/>" href="DocumentSearch.do?methodToCall=doDocSearch&namedSearch=<c:out value="${recentSearch.key}" />"><%=((org.kuali.rice.kew.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue().length() > 100 ? ((org.kuali.rice.kew.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue().substring(0,100) + "..." : ((org.kuali.rice.kew.web.KeyValue)pageContext.getAttribute("recentSearch")).getValue()%></a></li>
 	  	  </c:forEach>
         </ul>
       </td>

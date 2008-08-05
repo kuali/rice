@@ -39,9 +39,13 @@ import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
@@ -50,10 +54,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * ActionListeEmailService which generates messages whose body and subject can be customized via

@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
  * Service for data access and some cache behavior of document types.

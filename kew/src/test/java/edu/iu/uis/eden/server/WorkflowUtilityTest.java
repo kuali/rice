@@ -50,7 +50,10 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime;
@@ -58,9 +61,6 @@ import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
 import edu.iu.uis.eden.test.TestUtilities;
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);

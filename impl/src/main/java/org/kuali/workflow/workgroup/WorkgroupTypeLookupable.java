@@ -33,9 +33,9 @@ import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A {@link WorkflowLookupable} implementation for {@link WorkgroupType}.

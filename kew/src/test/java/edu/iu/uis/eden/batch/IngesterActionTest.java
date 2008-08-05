@@ -36,13 +36,13 @@ import org.apache.struts.upload.FormFile;
 import org.junit.Test;
 import org.kuali.rice.kew.batch.web.IngesterAction;
 import org.kuali.rice.kew.batch.web.IngesterForm;
+import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.workflow.test.KEWTestCase;
 import org.kuali.workflow.test.TestUtils;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import edu.iu.uis.eden.test.web.MockFormFile;
 import edu.iu.uis.eden.test.web.WorkflowServletRequest;
-import edu.iu.uis.eden.web.UserLoginFilter;
 
 /**
  * Tests workflow Struts IngesterAction

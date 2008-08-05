@@ -66,13 +66,13 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A document within KEW.  A document effectively represents a process that moves through

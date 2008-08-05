@@ -25,10 +25,10 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A class which has some convenience methods for handling Emails and stylesheets. 

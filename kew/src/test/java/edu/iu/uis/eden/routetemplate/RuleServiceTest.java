@@ -33,13 +33,13 @@ import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routetemplate.RuleServiceImpl;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class RuleServiceTest extends KEWTestCase {
 

@@ -18,7 +18,8 @@ package org.kuali.rice.kew.actions.asyncservices;
 
 import java.util.Set;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
+
 
 /**
  * Created to front the BlanketApproveProcessor when it went to a service for async remoting.

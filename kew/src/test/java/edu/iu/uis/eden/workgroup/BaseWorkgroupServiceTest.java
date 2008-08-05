@@ -24,12 +24,19 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.BaseWorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.BaseWorkgroup;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupMember;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupService;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.BaseWorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests the BaseWorkgroupService.

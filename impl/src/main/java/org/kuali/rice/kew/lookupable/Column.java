@@ -21,8 +21,8 @@ import java.util.Map;
 
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Represents a column within a table in the user interface for Lookupables.

@@ -40,7 +40,7 @@ public class WorkflowGroupServiceImpl implements WorkflowGroupService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowGroupServiceImpl.class);
 
     /**
-     * @see org.kuali.core.workflow.service.WorkflowGroupService#getWorkflowUsersGroups(edu.iu.uis.eden.user.UserId)
+     * @see org.kuali.core.workflow.service.WorkflowGroupService#getWorkflowUsersGroups(org.kuali.rice.kew.user.UserId)
      */
     public Collection getWorkflowUsersGroups(UserIdDTO userId) throws WorkflowException {
         if (LOG.isDebugEnabled()) {

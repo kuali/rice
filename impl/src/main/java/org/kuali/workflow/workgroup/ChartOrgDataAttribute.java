@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.validation.ValidationContext;
+import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 
-import edu.iu.uis.eden.validation.ValidationContext;
-import edu.iu.uis.eden.validation.ValidationResults;
 
 /**
  *

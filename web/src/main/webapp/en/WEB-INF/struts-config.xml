@@ -4,12 +4,12 @@
     <!-- ========== form bean definitions ================================== -->
     <form-beans>
       <form-bean name="ActionListForm" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
-      <form-bean name="WorkgroupForm" type="edu.iu.uis.eden.workgroup.web.WorkgroupForm" />
+      <form-bean name="WorkgroupForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupForm" />
       <form-bean name="DocumentSearchForm" type="org.kuali.rice.kew.docsearch.web.DocumentSearchForm" />
       <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
       <form-bean name="LookupForm" type="org.kuali.rice.kew.lookupable.LookupForm" />
       <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
-      <form-bean name="BackdoorForm" type="edu.iu.uis.eden.web.backdoor.BackdoorForm" />
+      <form-bean name="BackdoorForm" type="org.kuali.rice.kew.web.backdoor.BackdoorForm" />
       <form-bean name="DocumentTypeStartForm" type="org.kuali.rice.kew.doctype.web.DocumentTypeStartForm" />
       <form-bean name="RouteLogForm" type="org.kuali.rice.kew.routelog.web.RouteLogForm" />
       <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
@@ -30,14 +30,14 @@
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
-      <form-bean name="WorkflowUserForm" type="edu.iu.uis.eden.user.web.WorkflowUserForm" />
-	  <form-bean name="WorkgroupForm" type="edu.iu.uis.eden.workgroup.web.WorkgroupForm" />
+      <form-bean name="WorkflowUserForm" type="org.kuali.rice.kew.user.web.WorkflowUserForm" />
+	  <form-bean name="WorkgroupForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupForm" />
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
     </form-beans>
 
     <!-- =================== exception handler definitions ================= -->
     <global-exceptions>
-		  <exception handler="edu.iu.uis.eden.web.StrutsExceptionHandler" key="error.global.message"
+		  <exception handler="org.kuali.rice.kew.web.StrutsExceptionHandler" key="error.global.message"
                  path="/WEB-INF/jsp/Error.jsp" scope="request" type="java.lang.Exception"/>
     </global-exceptions>
 
@@ -82,7 +82,7 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/superuser/SuperUser.jsp"/>
       </action>
 
-      <action path="/Error" scope="request" validate="false" type="edu.iu.uis.eden.web.ModuleRelativeForwardAction"
+      <action path="/Error" scope="request" validate="false" type="org.kuali.rice.kew.web.ModuleRelativeForwardAction"
              parameter="/WEB-INF/jsp/Error.jsp"/>
 
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"
@@ -133,7 +133,7 @@
 
       <action path="/Backdoor" name="BackdoorForm" scope="request" parameter="methodToCall"
         input="/WEB-INF/jsp/backdoor/Backdoor.jsp"
-        type="edu.iu.uis.eden.web.backdoor.BackdoorAction">
+        type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
         <forward name="viewBackdoor" path="/WEB-INF/jsp/backdoor/Backdoor.jsp"/>
         <forward name="viewPortal" path="/WEB-INF/jsp/backdoor/index.jsp"/>
         <forward name="requiredStateError" path="/WEB-INF/jsp/backdoor/Backdoor.jsp"/>
@@ -142,12 +142,12 @@
 
       <action path="/Portal" name="BackdoorForm" scope="request" parameter="methodToCall"
       	input="/WEB-INF/jsp/backdoor/index.jsp"
-      	type="edu.iu.uis.eden.web.backdoor.BackdoorAction">
+      	type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
       	<forward name="viewPortal" path="/WEB-INF/jsp/backdoor/index.jsp"/>
       </action>
 
       <action path="/Administration" name="BackdoorForm" scope="request" parameter="methodToCall"
-        type="edu.iu.uis.eden.web.backdoor.BackdoorAction">
+        type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
         <forward name="administration" path="/WEB-INF/jsp/backdoor/Admin.jsp"/>
       </action>
 
@@ -184,7 +184,7 @@
 
       <action path="/Workgroup" name="WorkgroupForm" scope="request" validate="true"
          input="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"
-         type="edu.iu.uis.eden.workgroup.web.WorkgroupAction" parameter="methodToCall">
+         type="org.kuali.rice.kew.workgroup.web.WorkgroupAction" parameter="methodToCall">
          <forward name="basic" path="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"/>
          <forward name="summary" path="/WEB-INF/jsp/workgroup/WorkgroupSummary.jsp"/>
          <forward name="docHandler" path="/WEB-INF/jsp/workgroup/WorkgroupDocHandler.jsp" />
@@ -321,7 +321,7 @@
 
 	   <action path="/WorkflowUser" name="WorkflowUserForm" scope="request" validate="false"
          input="/WEB-INF/jsp/user/WorkflowUserEntry.jsp"
-         type="edu.iu.uis.eden.user.web.WorkflowUserAction" parameter="methodToCall">
+         type="org.kuali.rice.kew.user.web.WorkflowUserAction" parameter="methodToCall">
          <forward name="basic" path="/WEB-INF/jsp/user/WorkflowUserEntry.jsp"/>
          <forward name="summary" path="/WEB-INF/jsp/user/WorkflowUserSummary.jsp"/>
          <forward name="requiredStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
@@ -329,7 +329,7 @@
        </action>
 
 	   <action path="/WorkflowUserReport" name="WorkflowUserForm" scope="request" validate="false"
-         type="edu.iu.uis.eden.user.web.WorkflowUserAction" parameter="methodToCall">
+         type="org.kuali.rice.kew.user.web.WorkflowUserAction" parameter="methodToCall">
          <forward name="report" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
          <forward name="requiredStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
          <forward name="finalStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
@@ -337,7 +337,7 @@
 
 	   <action path="/Workgroup" name="WorkgroupForm" scope="request" validate="true"
          input="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"
-         type="edu.iu.uis.eden.workgroup.web.WorkgroupAction" parameter="methodToCall">
+         type="org.kuali.rice.kew.workgroup.web.WorkgroupAction" parameter="methodToCall">
          <forward name="basic" path="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"/>
          <forward name="summary" path="/WEB-INF/jsp/workgroup/WorkgroupSummary.jsp"/>
          <forward name="docHandler" path="/WEB-INF/jsp/workgroup/WorkgroupDocHandler.jsp" />
@@ -361,7 +361,7 @@
     </action-mappings>
 
 	<!-- =================== controller definitions ======================== -->
-    <controller processorClass="edu.iu.uis.eden.web.StrutsRequestProcessor" />
+    <controller processorClass="org.kuali.rice.kew.web.StrutsRequestProcessor" />
 
 	<!-- ======== message resource Definitions ======== -->
     <message-resources parameter="edu.iu.uis.eden.ApplicationResources" />

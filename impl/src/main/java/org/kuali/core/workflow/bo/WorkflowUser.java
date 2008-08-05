@@ -21,8 +21,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.BaseWorkflowUser;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.BaseWorkflowUser;
+
 
 /**
  * This class ensures that a lower case authenticationUserId is returned.
@@ -35,7 +36,7 @@ public class WorkflowUser extends BaseWorkflowUser {
     /**
      * This method returns a lower case version of the authenticationUserId
      * 
-     * @see edu.iu.uis.eden.user.BaseWorkflowUser#getAuthenticationUserId()
+     * @see org.kuali.rice.kew.user.BaseWorkflowUser#getAuthenticationUserId()
      */
     public AuthenticationUserId getAuthenticationUserId() {
         if (super.getAuthenticationUserId() != null) {

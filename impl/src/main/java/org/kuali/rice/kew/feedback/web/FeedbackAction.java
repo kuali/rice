@@ -36,10 +36,10 @@ import org.kuali.rice.kew.mail.EmailFrom;
 import org.kuali.rice.kew.mail.EmailService;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.mail.EmailTo;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.WorkflowAction;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Struts action which handles the Feedback screen.

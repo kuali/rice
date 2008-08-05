@@ -18,7 +18,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>WorkgroupNameSearch</name>
-			<className>edu.iu.uis.eden.workgroup.WorkgroupNameXmlAttribute</className>
+			<className>org.kuali.rice.kew.workgroup.WorkgroupNameXmlAttribute</className>
 			<label>WorkgroupName Search</label>
 			<description>Searching by workgroup Name</description>
 			<type>SearchableXmlAttribute</type>

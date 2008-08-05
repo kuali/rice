@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A factory for creating {@link PluginRegistry} instances based on the configured client protocol of the application.

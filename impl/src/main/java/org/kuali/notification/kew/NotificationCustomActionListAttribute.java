@@ -19,8 +19,8 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * This class is our custom action list for Notifications in KEW.  It's wired in as the implementation to use as part of the NotificationData.xml 
@@ -29,7 +29,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  */
 public class NotificationCustomActionListAttribute implements CustomActionListAttribute {
     /**
-     * @see org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute#getDocHandlerDisplayParameters(edu.iu.uis.eden.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute#getDocHandlerDisplayParameters(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
     public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
 	DisplayParameters dp = new DisplayParameters(new Integer(400));
@@ -37,7 +37,7 @@ public class NotificationCustomActionListAttribute implements CustomActionListAt
     }
 
     /**
-     * @see org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute#getLegalActions(edu.iu.uis.eden.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute#getLegalActions(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
     public ActionSet getLegalActions(UserSession userSession,ActionItem actionItem) throws Exception {
 	ActionSet as = new ActionSet();

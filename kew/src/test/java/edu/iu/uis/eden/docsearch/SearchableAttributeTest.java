@@ -39,10 +39,10 @@ import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.

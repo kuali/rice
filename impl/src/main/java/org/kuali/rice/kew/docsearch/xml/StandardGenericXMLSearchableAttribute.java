@@ -43,6 +43,11 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -50,11 +55,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.web.session.UserSession;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  * implementation of {@link GenericXMLSearchableAttribute}.

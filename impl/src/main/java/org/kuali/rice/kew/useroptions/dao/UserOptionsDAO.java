@@ -19,9 +19,9 @@ package org.kuali.rice.kew.useroptions.dao;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public interface UserOptionsDAO {
 

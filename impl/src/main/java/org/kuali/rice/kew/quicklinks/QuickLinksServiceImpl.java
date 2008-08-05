@@ -19,8 +19,8 @@ package org.kuali.rice.kew.quicklinks;
 import java.util.List;
 
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class QuickLinksServiceImpl implements QuickLinksService {
 

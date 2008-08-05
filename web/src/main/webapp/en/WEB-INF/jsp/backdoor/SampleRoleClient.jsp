@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  <html-el:form method="get" action="/Role.do" name="SampleRoleClientForm" type="edu.iu.uis.eden.web.backdoor.SampleRoleClientForm">
+  <html-el:form method="get" action="/Role.do" name="SampleRoleClientForm" type="org.kuali.rice.kew.web.backdoor.SampleRoleClientForm">
   <html-el:hidden name="SampleRoleClientForm" property="methodToCall" />
   <html-el:hidden name="SampleRoleClientForm" property="studyId" />
   <html-el:hidden name="SampleRoleClientForm" property="returnLocation" />

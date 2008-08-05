@@ -381,8 +381,8 @@
 	<bean id="RuleBaseValuesLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableImpl" scope="prototype" />
 	<bean id="RuleTemplateLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
 	<bean id="EDocLiteLookupableService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupable" scope="prototype" />
-	<bean id="UserLookupableImplService" class="edu.iu.uis.eden.user.UserLookupableImpl" scope="prototype" />
-	<bean id="WorkGroupLookupableImplService" class="edu.iu.uis.eden.workgroup.WorkGroupLookupableImpl" scope="prototype" />
+	<bean id="UserLookupableImplService" class="org.kuali.rice.kew.user.UserLookupableImpl" scope="prototype" />
+	<bean id="WorkGroupLookupableImplService" class="org.kuali.rice.kew.workgroup.WorkGroupLookupableImpl" scope="prototype" />
     <bean id="WorkgroupTypeLookup" class="org.kuali.workflow.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.DefaultEmailService"  lazy-init="true"/>
@@ -533,7 +533,7 @@
     </property>
   </bean>
 
-  <bean id="enXmlExporterService" class="edu.iu.uis.eden.xml.export.XmlExporterServiceImpl" lazy-init="true">
+  <bean id="enXmlExporterService" class="org.kuali.rice.kew.xml.export.XmlExporterServiceImpl" lazy-init="true">
     <property name="serviceOrder">
       <list>
         <value>enWorkgroupService</value>
@@ -585,29 +585,29 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWebAuthenticationService" class="edu.iu.uis.eden.web.RemoteUserWebAuthenticationService"/>
+  <bean id="enWebAuthenticationService" class="org.kuali.rice.kew.web.RemoteUserWebAuthenticationService"/>
 
-  <bean id="enWebAuthorizationService" class="edu.iu.uis.eden.web.DefaultWebAuthorizationService"/>
+  <bean id="enWebAuthorizationService" class="org.kuali.rice.kew.web.DefaultWebAuthorizationService"/>
 
-  <bean id="enUserService" class="edu.iu.uis.eden.user.BaseUserService">
+  <bean id="enUserService" class="org.kuali.rice.kew.user.BaseUserService">
     <property name="userDAO">
       <ref local="enUserDAO" />
     </property>
     </bean>
 
-  <bean id="enUserDAO" class="edu.iu.uis.eden.user.dao.BaseUserDAOOjbImpl">
+  <bean id="enUserDAO" class="org.kuali.rice.kew.user.dao.BaseUserDAOOjbImpl">
       <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWorkgroupDAO" class="edu.iu.uis.eden.workgroup.dao.BaseWorkgroupDAOOjbImpl">
+  <bean id="enWorkgroupDAO" class="org.kuali.rice.kew.workgroup.dao.BaseWorkgroupDAOOjbImpl">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWorkgroupMemberDAO" class="edu.iu.uis.eden.workgroup.dao.BaseWorkgroupMemberDAOOjbImpl">
+  <bean id="enWorkgroupMemberDAO" class="org.kuali.rice.kew.workgroup.dao.BaseWorkgroupMemberDAOOjbImpl">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWorkgroupService" class="edu.iu.uis.eden.workgroup.BaseWorkgroupService">
+  <bean id="enWorkgroupService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupService">
     <property name="workgroupDAO">
       <ref local="enWorkgroupDAO" />
     </property>
@@ -616,7 +616,7 @@
     </property>
     </bean>
 
-    <bean id="enWorkgroupRoutingService" class="edu.iu.uis.eden.workgroup.BaseWorkgroupRoutingService">
+    <bean id="enWorkgroupRoutingService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupRoutingService">
     <property name="workgroupDAO">
       <ref local="enWorkgroupDAO" />
     </property>
@@ -717,7 +717,7 @@
           <property name="service">
             <ref bean="enUserService" />
           </property>
-          <property name="serviceInterface" value="edu.iu.uis.eden.user.UserService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.user.UserService" />
           <property name="serviceNameSpaceURI" value=""/>
           <property name="localServiceName" value="enUserService" />
         </bean>
@@ -731,7 +731,7 @@
           <property name="service">
             <ref bean="enWorkgroupService" />
           </property>
-          <property name="serviceInterface" value="edu.iu.uis.eden.workgroup.WorkgroupService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.workgroup.WorkgroupService" />
           <property name="serviceNameSpaceURI" value=""/>
           <property name="localServiceName" value="enWorkgroupService" />
         </bean>
@@ -744,7 +744,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="edu.iu.uis.eden.workgroup.WorkgroupMembershipChangeProcessor" />
+            <bean class="org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor" />
           </property>
           <property name="localServiceName" value="WorkgroupMembershipChangeService" />
           <property name="serviceNameSpaceURI" value="" />

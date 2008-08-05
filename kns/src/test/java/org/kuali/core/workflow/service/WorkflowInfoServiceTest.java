@@ -66,7 +66,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         }
         catch (WorkflowException we) {
             // in the case of embedded mode, we get the actual EdenUserNotFoundException as the cause of the WorkflowException
-            if (we.getMessage().startsWith("edu.iu.uis.eden.exception.WorkflowException: edu.iu.uis.eden.exception.EdenUserNotFoundException") || we.getCause() instanceof EdenUserNotFoundException) {
+            if (we.getMessage().startsWith("org.kuali.rice.kew.exception.WorkflowException: org.kuali.rice.kew.exception.EdenUserNotFoundException") || we.getCause() instanceof EdenUserNotFoundException) {
                 failedAsExpected = true;
             }
         }

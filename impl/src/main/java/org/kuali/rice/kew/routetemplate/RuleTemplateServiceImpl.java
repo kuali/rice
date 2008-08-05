@@ -32,10 +32,10 @@ import org.kuali.rice.kew.routetemplate.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.routetemplate.dao.RuleTemplateAttributeDAO;
 import org.kuali.rice.kew.routetemplate.dao.RuleTemplateDAO;
 import org.kuali.rice.kew.routetemplate.dao.RuleTemplateOptionDAO;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
+import org.kuali.rice.kew.xml.export.RuleTemplateXmlExporter;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.xml.RuleTemplateXmlParser;
-import edu.iu.uis.eden.xml.export.RuleTemplateXmlExporter;
 
 public class RuleTemplateServiceImpl implements RuleTemplateService {
 

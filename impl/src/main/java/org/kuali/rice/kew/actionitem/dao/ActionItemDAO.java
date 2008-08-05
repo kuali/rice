@@ -20,9 +20,9 @@ import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Data Access Object for {@link ActionItem}s.

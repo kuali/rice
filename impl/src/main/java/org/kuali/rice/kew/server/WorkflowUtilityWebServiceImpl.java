@@ -78,11 +78,11 @@ import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 @SuppressWarnings("deprecation")
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {

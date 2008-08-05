@@ -27,6 +27,9 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.test.KEWTestCase;
@@ -36,9 +39,6 @@ import edu.iu.uis.eden.routemodule.TestRecipient;
 import edu.iu.uis.eden.routemodule.TestResponsibility;
 import edu.iu.uis.eden.routemodule.TestRouteLevel;
 import edu.iu.uis.eden.routemodule.TestRouteModuleXMLHelper;
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests the role re-resolving.  This test depends on the route queue being synchronous.

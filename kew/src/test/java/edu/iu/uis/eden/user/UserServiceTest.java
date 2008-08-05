@@ -23,6 +23,13 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.EmplId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.UuId;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.workflow.test.KEWTestCase;
 
 

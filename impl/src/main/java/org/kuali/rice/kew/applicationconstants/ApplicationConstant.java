@@ -26,7 +26,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import edu.iu.uis.eden.util.Utilities;
+import org.kuali.rice.kew.util.Utilities;
+
 
 /**
  * Model object for application constants mapped ot ojb.

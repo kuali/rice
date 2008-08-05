@@ -18,7 +18,8 @@ package org.kuali.rice.kew.engine.simulation;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
+
 
 /**
  * An object represnting an action to take in the simulation engine

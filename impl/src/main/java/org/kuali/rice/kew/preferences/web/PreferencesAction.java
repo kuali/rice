@@ -31,9 +31,9 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.PreferencesService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.web.KeyValue;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for interfaces with {@link Preferences}.

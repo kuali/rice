@@ -32,8 +32,8 @@ import org.jdom.input.SAXBuilder;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.plugin.PluginException;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Parses a {@link PluginManifest} configuration from an XML file.

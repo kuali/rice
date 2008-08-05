@@ -19,8 +19,8 @@ package org.kuali.rice.kew.help;
 import java.util.List;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
  * A service which provides data access for {@link HelpEntry} objects.

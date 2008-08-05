@@ -29,8 +29,8 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.XmlHelper;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * TransitionEngine responsible for returning the workflow engine to another RouteNode

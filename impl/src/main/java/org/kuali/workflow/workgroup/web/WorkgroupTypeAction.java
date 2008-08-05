@@ -29,10 +29,10 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.kuali.workflow.workgroup.WorkgroupTypeService;
 
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for interactig with {@link RuleTemplate}s.

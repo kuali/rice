@@ -17,12 +17,12 @@ package org.kuali.rice.kew.core;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter;
 
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
  * This class is used to export the UserService and WorkgroupService to the service bus.  We originally did this in

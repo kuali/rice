@@ -39,9 +39,9 @@ import org.kuali.rice.kew.batch.FileXmlDocCollection;
 import org.kuali.rice.kew.batch.XmlDoc;
 import org.kuali.rice.kew.batch.XmlDocCollection;
 import org.kuali.rice.kew.batch.ZipXmlDocCollection;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.UserLoginFilter;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.UserLoginFilter;
 
 /**
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService

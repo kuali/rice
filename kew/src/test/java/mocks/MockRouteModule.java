@@ -23,8 +23,8 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.RouteModule;
+import org.kuali.rice.kew.util.ResponsibleParty;
 
-import edu.iu.uis.eden.util.ResponsibleParty;
 
 public class MockRouteModule implements RouteModule {
     

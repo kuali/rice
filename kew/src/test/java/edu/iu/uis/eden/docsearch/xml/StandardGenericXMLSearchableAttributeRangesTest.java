@@ -46,16 +46,16 @@ import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
 
 import edu.iu.uis.eden.docsearch.DocumentSearchTestBase;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.

@@ -24,8 +24,8 @@ import java.util.StringTokenizer;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A basic implementation of the JoinEngine which handles join setup and makes determinations

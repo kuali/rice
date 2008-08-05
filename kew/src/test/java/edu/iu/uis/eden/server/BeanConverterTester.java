@@ -32,16 +32,16 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.BaseWorkgroup;
+import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.workgroup.BaseWorkgroup;
-import edu.iu.uis.eden.workgroup.GroupId;
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 public class BeanConverterTester extends KEWTestCase {
 

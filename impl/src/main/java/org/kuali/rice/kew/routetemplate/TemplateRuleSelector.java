@@ -31,8 +31,8 @@ import org.kuali.rice.kew.plugin.attributes.MassRuleAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.util.PerformanceLogger;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
 
 /**
  * Rule selector that selects rules based on configured template name 

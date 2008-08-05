@@ -26,9 +26,9 @@ import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 
 /**

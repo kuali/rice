@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.docsearch.web.DocumentSearchForm;
+import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kew.web.RowStyleable;
 
-import edu.iu.uis.eden.web.KeyValueSort;
-import edu.iu.uis.eden.web.RowStyleable;
 
 /**
  * Bean that representing a row displayed in a document search.
@@ -181,10 +181,10 @@ public class DocSearchVO implements Serializable, RowStyleable {
 	}
 
     public String getDocRouteStatusCodeDesc() {
-        if (this.docRouteStatusCode == null || edu.iu.uis.eden.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode) == null || "".equalsIgnoreCase(edu.iu.uis.eden.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode))) {
+        if (this.docRouteStatusCode == null || org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode) == null || "".equalsIgnoreCase(org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode))) {
             return UNKNOWN_ROUTING_STATUS;
         } else {
-            return edu.iu.uis.eden.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode);
+            return org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode);
         }
     }
 

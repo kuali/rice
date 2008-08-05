@@ -19,7 +19,8 @@ package org.kuali.rice.kew.batch;
 import java.util.Collection;
 import java.util.List;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
+
 
 /**
  * A service which is responsible for iterating through

@@ -16,9 +16,9 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.kuali.rice.kew.routetemplate.RuleValidationAttribute;
+import org.kuali.rice.kew.validation.RuleValidationContext;
+import org.kuali.rice.kew.validation.ValidationResults;
 
-import edu.iu.uis.eden.validation.RuleValidationContext;
-import edu.iu.uis.eden.validation.ValidationResults;
 
 /**
  * A simple test implementation of a RuleValidationAttribute that can be used in the unit tests.

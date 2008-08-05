@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.notes;
 
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * An attribute which allows for customization of the Notes interface for

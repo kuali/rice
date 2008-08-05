@@ -17,9 +17,9 @@
 package edu.iu.uis.eden.test.services;
 
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public interface EchoService {
 

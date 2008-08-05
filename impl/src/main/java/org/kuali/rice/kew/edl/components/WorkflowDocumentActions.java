@@ -27,10 +27,10 @@ import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Used as a pre processor and post processor.

@@ -24,8 +24,8 @@ import org.kuali.rice.kew.routetemplate.RuleDelegation;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A Struts ActionForm for the {@link RuleTemplateAction}.

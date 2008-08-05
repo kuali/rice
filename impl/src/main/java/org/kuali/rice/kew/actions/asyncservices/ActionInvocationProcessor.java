@@ -22,8 +22,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Service for doing the actual work of a mass action in the action list. Represents a single action on a single document.

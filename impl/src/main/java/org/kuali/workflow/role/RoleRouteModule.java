@@ -30,10 +30,10 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.FlexRM;
+import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.workflow.routemodule.BaseRouteModule;
 import org.kuali.workflow.routemodule.RouteModuleException;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
 
 /**
  * The RouteModule which is responsible for generating Action Requests from Roles configured in the system.

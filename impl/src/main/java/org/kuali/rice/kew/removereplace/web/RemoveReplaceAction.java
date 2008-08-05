@@ -42,20 +42,20 @@ import org.kuali.rice.kew.removereplace.WorkgroupTarget;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routing.web.DocHandlerForm;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.web.WorkgroupForm;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.WorkflowAction;
-import edu.iu.uis.eden.web.session.UserSession;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.web.WorkgroupForm;
 
 /**
  * Struts Action for the Remove/Replace User Document.

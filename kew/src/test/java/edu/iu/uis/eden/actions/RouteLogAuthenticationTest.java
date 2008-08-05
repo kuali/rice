@@ -21,10 +21,10 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.edl.WorkflowFunctions;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class RouteLogAuthenticationTest extends KEWTestCase {
 

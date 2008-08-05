@@ -74,7 +74,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     /**
      * @see org.kuali.core.workflow.service.WorkflowDocumentService#createWorkflowDocument(java.lang.String,
-     *      edu.iu.uis.eden.user.WorkflowUser)
+     *      org.kuali.rice.kew.user.WorkflowUser)
      */
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, UniversalUser universalUser) throws WorkflowException {
         Timer t0 = new Timer("createWorkflowDocument");
@@ -120,7 +120,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     /**
      * @see org.kuali.core.workflow.service.WorkflowDocumentService#createWorkflowDocument(java.lang.Long,
-     *      edu.iu.uis.eden.user.WorkflowUser)
+     *      org.kuali.rice.kew.user.WorkflowUser)
      */
     public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, UniversalUser user) throws WorkflowException {
         if (documentHeaderId == null) {

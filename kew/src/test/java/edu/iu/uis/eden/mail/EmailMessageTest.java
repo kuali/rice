@@ -34,10 +34,10 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.HardCodedEmailContentServiceImpl;
 import org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests email content generation

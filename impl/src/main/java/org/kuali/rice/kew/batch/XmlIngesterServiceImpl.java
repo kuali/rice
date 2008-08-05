@@ -32,15 +32,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
 
 /**
  * XmlIngesterService implementation which delegates to XmlDigesterService.

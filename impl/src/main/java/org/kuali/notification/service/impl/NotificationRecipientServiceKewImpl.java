@@ -26,14 +26,14 @@ import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.web.WebWorkflowUser;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kew.workgroup.web.WebWorkgroup;
 
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.web.WebWorkflowUser;
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
-import edu.iu.uis.eden.workgroup.web.WebWorkgroup;
 
 /**
  * NotificationRecipientService implementation - this is the default out-of-the-box implementation of the service.  

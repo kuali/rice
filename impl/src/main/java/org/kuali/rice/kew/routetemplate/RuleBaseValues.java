@@ -45,11 +45,11 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A model bean for a Rule within the KEW rules engine.

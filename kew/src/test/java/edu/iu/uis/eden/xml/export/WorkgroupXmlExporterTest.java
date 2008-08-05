@@ -24,7 +24,7 @@ package edu.iu.uis.eden.xml.export;
 public class WorkgroupXmlExporterTest extends XmlExporterTestCase {
 
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.xml.export.XmlExporterTestCase#assertExport()
+     * @see org.kuali.rice.kew.xml.export.XmlExporterTestCase#assertExport()
      */
     @Override
     protected void assertExport() throws Exception {

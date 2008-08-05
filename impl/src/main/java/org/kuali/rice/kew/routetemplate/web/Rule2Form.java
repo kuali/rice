@@ -23,10 +23,10 @@ import java.util.Map;
 import org.kuali.rice.kew.routetemplate.MyRules2;
 import org.kuali.rice.kew.routetemplate.RuleDelegation;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.ShowHideTree;
+import org.kuali.rice.kew.web.WorkflowRoutingForm;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.ShowHideTree;
-import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**
  * Struts ActionForm for {@link Rule2Action}.

@@ -28,11 +28,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Helper class that can parse and generate generic attribute content

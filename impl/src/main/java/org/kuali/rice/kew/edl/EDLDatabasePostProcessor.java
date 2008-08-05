@@ -30,10 +30,10 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 
 public class EDLDatabasePostProcessor extends EDocLitePostProcessor {

@@ -22,8 +22,8 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routemodule.RouteModule;
+import org.kuali.rice.kew.util.ResponsibleParty;
 
-import edu.iu.uis.eden.util.ResponsibleParty;
 
 /**
  *

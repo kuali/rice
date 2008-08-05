@@ -37,11 +37,11 @@ import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
 
 public class WorkflowUtils {
     private static final String XPATH_ROUTE_CONTEXT_KEY = "_xpathKey";

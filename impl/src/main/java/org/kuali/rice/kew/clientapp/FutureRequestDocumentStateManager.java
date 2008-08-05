@@ -27,10 +27,10 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Manages document state in relation to users seeing future requests for a particular document.  

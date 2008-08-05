@@ -48,9 +48,9 @@
     <class>org.kuali.rice.kew.edl.EDocLiteStyle</class>
     <class>org.kuali.rice.kew.edl.EDocLiteDefinition</class>
     <class>org.kuali.rice.kew.edl.EDocLiteAssociation</class>
-    <class>edu.iu.uis.eden.user.BaseWorkflowUser</class>
-    <class>edu.iu.uis.eden.workgroup.BaseWorkgroup</class>
-    <class>edu.iu.uis.eden.workgroup.BaseWorkgroupMember</class>
+    <class>org.kuali.rice.kew.user.BaseWorkflowUser</class>
+    <class>org.kuali.rice.kew.workgroup.BaseWorkgroup</class>
+    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupMember</class>
     <class>org.kuali.workflow.workgroup.BaseWorkgroupExtension</class>
     <class>org.kuali.workflow.workgroup.BaseWorkgroupExtensionData</class>
     <class>org.kuali.workflow.workgroup.WorkgroupType</class>

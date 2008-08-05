@@ -24,11 +24,11 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * This is the inverse of the {@link TakeWorkgroupAuthority} action.  This puts the document back 

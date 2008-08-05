@@ -22,10 +22,10 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * A collection of handy workflow queries to be used from style sheets.

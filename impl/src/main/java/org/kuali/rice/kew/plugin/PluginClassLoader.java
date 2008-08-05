@@ -25,8 +25,8 @@ import java.util.Enumeration;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.plugin.manifest.PluginManifest;
+import org.kuali.rice.kew.util.SimpleEnumeration;
 
-import edu.iu.uis.eden.util.SimpleEnumeration;
 
 /**
  * A simple class loader implementation which looks at itself before delegating to its parent.

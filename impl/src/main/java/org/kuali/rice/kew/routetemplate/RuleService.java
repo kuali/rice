@@ -27,11 +27,11 @@ import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.GroupId;
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
  * A service which provides data access and functions for the KEW Rules engine.

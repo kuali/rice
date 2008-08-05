@@ -50,10 +50,10 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
 import org.kuali.workflow.config.KEWConfigurer;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Represents a document in Workflow from the perspective of the client.  This class is one of two

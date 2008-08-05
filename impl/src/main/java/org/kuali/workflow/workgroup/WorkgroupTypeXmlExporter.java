@@ -21,10 +21,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.xml.XmlConstants;
+import org.kuali.rice.kew.xml.XmlRenderer;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.xml.XmlConstants;
-import edu.iu.uis.eden.xml.XmlRenderer;
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
  * Exports {@link WorkgroupType}s to XML.

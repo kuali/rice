@@ -42,17 +42,17 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.xml.EDocLiteXmlParser;
+import org.kuali.rice.kew.xml.export.EDocLiteXmlExporter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.xml.EDocLiteXmlParser;
-import edu.iu.uis.eden.xml.export.EDocLiteXmlExporter;
 
 /**
  * DAO-based EDocLiteService implementation

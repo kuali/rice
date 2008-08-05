@@ -36,8 +36,8 @@ import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for building and interacting with the Rule Quick Links.

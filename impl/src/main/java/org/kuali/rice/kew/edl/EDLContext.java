@@ -18,7 +18,8 @@ package org.kuali.rice.kew.edl;
 
 import javax.xml.transform.Transformer;
 
-import edu.iu.uis.eden.web.session.UserSession;
+import org.kuali.rice.kew.web.session.UserSession;
+
 
 /**
  * Convenience object to hang valuable objects in edl off of.

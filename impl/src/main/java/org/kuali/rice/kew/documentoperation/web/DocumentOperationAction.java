@@ -70,15 +70,15 @@ import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * Struts Action for doing editing of workflow documents.

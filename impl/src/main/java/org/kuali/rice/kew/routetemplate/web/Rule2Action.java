@@ -52,12 +52,12 @@ import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.ShowHideTree;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.ShowHideTree;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for interacting with the Rules engine.  Provides creation,

@@ -28,9 +28,9 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.mail.CustomizableActionListEmailServiceImpl;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
     private static final Logger LOG = Logger.getLogger(MockEmailNotificationServiceImpl.class);
@@ -51,7 +51,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      * This overridden method will perform the standard operations from org.kuali.rice.kew.mail.ActionListEmailServiceImpl but will also keep track of action
      * items processed
      * 
-     * @see org.kuali.rice.kew.mail.ActionListEmailServiceImpl#sendImmediateReminder(edu.iu.uis.eden.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.mail.ActionListEmailServiceImpl#sendImmediateReminder(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {

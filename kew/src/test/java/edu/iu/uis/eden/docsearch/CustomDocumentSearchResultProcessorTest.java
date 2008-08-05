@@ -34,11 +34,11 @@ import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  *

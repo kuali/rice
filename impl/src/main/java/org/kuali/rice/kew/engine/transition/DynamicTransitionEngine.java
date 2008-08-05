@@ -27,8 +27,8 @@ import org.kuali.rice.kew.engine.node.DynamicResult;
 import org.kuali.rice.kew.engine.node.ProcessResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.exception.RouteManagerException;
 
-import edu.iu.uis.eden.exception.RouteManagerException;
 
 /**
  * The DynamicTransitionEngine operates on a {@link DynamicNode} and takes the next node instances returned 

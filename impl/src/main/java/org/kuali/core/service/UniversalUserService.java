@@ -25,8 +25,8 @@ import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.bo.user.UserId;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kew.user.UserService;
 
-import edu.iu.uis.eden.user.UserService;
 
 
 /**

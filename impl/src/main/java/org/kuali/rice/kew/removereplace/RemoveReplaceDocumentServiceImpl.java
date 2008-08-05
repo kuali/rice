@@ -31,14 +31,14 @@ import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.removereplace.dao.RemoveReplaceDocumentDAO;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.web.session.UserSession;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupRoutingService;
 
 public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentService {
 

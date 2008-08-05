@@ -33,7 +33,7 @@
 	<param name="keystore.password">*** password ***</param>
 
 	<!-- Dummy Login Filter - use if you don't want to go through CAS -->
-	<param name="filter.login.class">edu.iu.uis.eden.web.DummyLoginFilter</param>
+	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>
 
 </config>

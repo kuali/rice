@@ -32,10 +32,10 @@ import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

@@ -27,10 +27,10 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
 import org.kuali.rice.kew.applicationconstants.xml.ApplicationConstantsXmlParser;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Default implementation of the {@link ApplicationConstantsService}.

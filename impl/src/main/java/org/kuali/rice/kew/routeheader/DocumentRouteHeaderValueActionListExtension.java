@@ -20,9 +20,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import edu.iu.uis.eden.user.UserUtils;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.session.UserSession;
+import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.session.UserSession;
+
 
 /**
  * An extension of {@link DocumentRouteHeaderValue} which is mapped to OJB to help

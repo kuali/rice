@@ -33,8 +33,8 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 
 public class RouteNodeServiceImpl implements RouteNodeService {

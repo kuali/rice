@@ -47,9 +47,9 @@ import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * Struts Action for interacting with lookupables.
@@ -355,7 +355,7 @@ public class LookupAction extends WorkflowAction {
     /*
      * (non-Javadoc)
      *
-     * @see edu.iu.uis.eden.web.WorkflowAction#establishRequiredState(javax.servlet.http.HttpServletRequest)
+     * @see org.kuali.rice.kew.web.WorkflowAction#establishRequiredState(javax.servlet.http.HttpServletRequest)
      */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
@@ -471,7 +471,7 @@ public class LookupAction extends WorkflowAction {
     /*
      * (non-Javadoc)
      *
-     * @see edu.iu.uis.eden.web.WorkflowAction#start(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see org.kuali.rice.kew.web.WorkflowAction#start(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;

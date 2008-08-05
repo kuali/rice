@@ -423,7 +423,7 @@
             <parent>EDENSERVICE-DOCS</parent>
             <description>Document to generate a new workgroup</description>
             <label>Add/modify EDEN workgroup</label>
-            <postProcessorName>edu.iu.uis.eden.workgroup.WorkgroupPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

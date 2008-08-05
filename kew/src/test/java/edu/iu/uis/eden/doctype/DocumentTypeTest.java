@@ -37,13 +37,13 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.workgroup.GroupNameId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 
 public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);

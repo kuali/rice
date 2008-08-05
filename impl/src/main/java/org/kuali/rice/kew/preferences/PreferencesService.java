@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.preferences;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
 
 /**
  * A service which provides data access for {@link Preferences}.

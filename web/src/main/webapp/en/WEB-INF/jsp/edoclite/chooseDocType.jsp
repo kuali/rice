@@ -20,12 +20,12 @@
   <br>
   	<table>
 			<%
-                pageContext.setAttribute("associations", SpringServiceLocator.getEDocLiteService().getEDocLiteAssociations());
-                String targetFrame=edu.iu.uis.eden.util.Utilities.getApplicationConstant("Config.Backdoor.TargetFrameName");
-                String action="Choosedoctype";
-                String def="__default__";
-                String style="__default__";
-            %>
+				pageContext.setAttribute("associations", SpringServiceLocator.getEDocLiteService().getEDocLiteAssociations());
+			                String targetFrame=org.kuali.rice.kew.util.Utilities.getApplicationConstant("Config.Backdoor.TargetFrameName");
+			                String action="Choosedoctype";
+			                String def="__default__";
+			                String style="__default__";
+			%>
             
             <c:forEach items="${associations}" var="assoc">
                 <c:if test="${assoc.activeInd}">

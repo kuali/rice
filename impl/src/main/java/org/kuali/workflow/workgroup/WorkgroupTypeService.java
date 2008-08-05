@@ -19,8 +19,8 @@ package org.kuali.workflow.workgroup;
 import java.util.List;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
  * A service for interfacing with Workgroup Types.

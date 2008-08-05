@@ -19,7 +19,8 @@ package org.kuali.rice.kew.useroptions;
 import java.util.Collection;
 import java.util.List;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
+
 
 /**
  * Sits on top of the UserOptionsTable and manages certain aspects of action list refresh behaviors.

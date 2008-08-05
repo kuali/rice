@@ -35,11 +35,11 @@ import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleDelegation;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routetemplate.RuleService;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.GroupId;
 
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.GroupId;
 
 
 public class MockRuleServiceImpl implements RuleService {

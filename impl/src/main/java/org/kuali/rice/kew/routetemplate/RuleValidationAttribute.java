@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.kew.routetemplate;
 
-import edu.iu.uis.eden.validation.RuleValidationContext;
-import edu.iu.uis.eden.validation.ValidationResults;
+import org.kuali.rice.kew.validation.RuleValidationContext;
+import org.kuali.rice.kew.validation.ValidationResults;
 
 /**
  * A simple interface for handling validation of rules.  Validation results are returned in a

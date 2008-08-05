@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.ksb.auth.AuthorizationService;
 
-import edu.iu.uis.eden.web.session.UserSession;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 

@@ -25,10 +25,10 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.database.platform.Platform;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
 

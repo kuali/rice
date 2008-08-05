@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Data Access Object for {@link ActionRequestValue}s.

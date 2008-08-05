@@ -33,12 +33,12 @@ import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kew.web.UrlResolver;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.KeyValueSort;
-import edu.iu.uis.eden.web.UrlResolver;
 
 /**
  *
@@ -124,7 +124,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
     }
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, edu.iu.uis.eden.user.WorkflowUser)
+	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.kew.user.WorkflowUser)
 	 */
 	public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchVO> docSearchResultRows, DocSearchCriteriaVO criteria, WorkflowUser user) {
         this.setSearchCriteria(criteria);

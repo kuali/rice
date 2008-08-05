@@ -34,8 +34,8 @@ import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A {@link WorkflowLookupable} implementation which is used to lookup roles.

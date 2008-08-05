@@ -23,9 +23,9 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * XmlDigesterService implementation.  This class simply loads the specified xml doc

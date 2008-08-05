@@ -31,9 +31,9 @@ import org.kuali.rice.kew.routetemplate.RuleDelegationService;
 import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for interactig with {@link RuleTemplate}s.

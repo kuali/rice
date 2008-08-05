@@ -20,8 +20,8 @@ import java.util.Set;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Interface fronting {@link MoveDocumentProcessor} so it can be invoked remotely async.  Created 

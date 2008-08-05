@@ -19,7 +19,8 @@ package org.kuali.rice.ksb.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.iu.uis.eden.util.Utilities;
+import org.kuali.rice.kew.util.Utilities;
+
 
 /**
  * A simple utility class which can handle translated a comma-seperated String

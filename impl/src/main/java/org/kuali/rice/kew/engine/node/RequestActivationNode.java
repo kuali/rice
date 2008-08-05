@@ -31,9 +31,9 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A node which will activate any requests on it, returning true when there are no more requests 

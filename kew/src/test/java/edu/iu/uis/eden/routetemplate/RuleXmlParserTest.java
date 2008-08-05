@@ -34,11 +34,11 @@ import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
 import org.kuali.rice.kew.routetemplate.RuleService;
+import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.test.AssertThrows;
 
 import edu.iu.uis.eden.test.TestUtilities;
-import edu.iu.uis.eden.xml.RuleXmlParser;
 
 public class RuleXmlParserTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(RuleXmlParserTest.class);

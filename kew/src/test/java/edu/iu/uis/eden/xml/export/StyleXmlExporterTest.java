@@ -28,8 +28,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.util.XmlHelper;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Tests exporting Styles

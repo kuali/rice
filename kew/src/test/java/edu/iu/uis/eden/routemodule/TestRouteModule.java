@@ -31,12 +31,12 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.RouteModule;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.util.ResponsibleParty;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

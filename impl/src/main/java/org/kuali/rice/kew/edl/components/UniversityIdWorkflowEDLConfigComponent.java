@@ -20,10 +20,10 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.EmplId;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.user.EmplId;
 
 /**
  * Matches university ID param to UserService to validate universityId.  Returns error message if 

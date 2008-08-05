@@ -28,10 +28,10 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routetemplate.dao.RuleAttributeDAO;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.xml.RuleAttributeXmlParser;
+import org.kuali.rice.kew.xml.export.RuleAttributeXmlExporter;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.xml.RuleAttributeXmlParser;
-import edu.iu.uis.eden.xml.export.RuleAttributeXmlExporter;
 
 public class RuleAttributeServiceImpl implements RuleAttributeService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeServiceImpl.class);

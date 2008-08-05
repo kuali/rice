@@ -60,13 +60,13 @@ import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that

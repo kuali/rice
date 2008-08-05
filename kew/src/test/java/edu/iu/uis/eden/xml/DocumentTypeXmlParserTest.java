@@ -30,6 +30,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.workflow.test.KEWTestCase;
 
 

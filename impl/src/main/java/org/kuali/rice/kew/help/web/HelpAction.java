@@ -33,9 +33,9 @@ import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.HelpService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.WorkflowAction;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Struts action for interfacing with the Help system.

@@ -49,9 +49,9 @@ import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.workflow.config.KEWConfigurer;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two

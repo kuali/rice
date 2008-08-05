@@ -27,12 +27,12 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Creates EDL controllers.  Contains a cache of parsed EDL configurations.  The parsed config is a definition name related to 

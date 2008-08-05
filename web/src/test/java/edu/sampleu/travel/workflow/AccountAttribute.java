@@ -33,10 +33,10 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.sampleu.travel.bo.TravelAccount;
 
 /**

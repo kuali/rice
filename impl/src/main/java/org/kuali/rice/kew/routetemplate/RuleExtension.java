@@ -28,12 +28,12 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * An extension of a {@link RuleBaseValues}.  Provides attribute-specific data

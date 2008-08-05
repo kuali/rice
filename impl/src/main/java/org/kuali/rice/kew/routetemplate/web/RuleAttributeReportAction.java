@@ -31,8 +31,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for generating a report for {@link RuleAttribute}s.

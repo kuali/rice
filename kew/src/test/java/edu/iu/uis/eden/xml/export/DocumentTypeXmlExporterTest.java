@@ -32,8 +32,8 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
 

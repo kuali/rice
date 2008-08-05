@@ -41,15 +41,15 @@ import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A generic WorkflowAttribute implementation that can be defined completely by XML.

@@ -27,8 +27,8 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * The value of an extension to a rule.  Essentially contains a

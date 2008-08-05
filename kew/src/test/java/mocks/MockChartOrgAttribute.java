@@ -35,8 +35,8 @@ import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.util.XmlHelper;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A Mock attribute which mimics the concept of a Chart/Org hierarchy as it exists at Indiana University.

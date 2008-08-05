@@ -22,12 +22,12 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.SimpleWebAuthenticationService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Verify that the {@link SimpleWebAuthenticationService} can get the logged in user

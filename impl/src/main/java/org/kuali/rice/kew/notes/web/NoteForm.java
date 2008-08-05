@@ -21,8 +21,8 @@ import java.util.List;
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Struts ActionForm for {@link NoteAction}.

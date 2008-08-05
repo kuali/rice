@@ -27,8 +27,8 @@ import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class TestCustomActionList implements CustomActionListAttribute, Serializable, CustomEmailAttribute, CustomNoteAttribute {
 

@@ -27,7 +27,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import edu.iu.uis.eden.web.UserLoginFilter;
+import org.kuali.rice.kew.web.UserLoginFilter;
+
 
 /**
  * A wrapper servlet that invokes the UserLoginFilter, and then delegates to a

@@ -30,11 +30,11 @@ import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLController;
 import org.kuali.rice.kew.edl.EDocLiteService;
 import org.kuali.rice.kew.edl.RequestParser;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.session.UserSession;
 
 public class EDLCreationTest extends KEWTestCase {
 

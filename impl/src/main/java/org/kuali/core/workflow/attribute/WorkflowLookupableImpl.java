@@ -263,7 +263,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
      *      javax.servlet.http.HttpServletRequest)
      */
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
-        edu.iu.uis.eden.web.session.UserSession workflowUserSession = (edu.iu.uis.eden.web.session.UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+        org.kuali.rice.kew.web.session.UserSession workflowUserSession = (org.kuali.rice.kew.web.session.UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
         if (GlobalVariables.getUserSession() == null) {
             GlobalVariables.setUserSession(new org.kuali.core.UserSession(workflowUserSession.getNetworkId()));
         }

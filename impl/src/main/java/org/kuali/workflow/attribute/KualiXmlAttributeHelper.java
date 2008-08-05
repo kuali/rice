@@ -39,12 +39,12 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 public class KualiXmlAttributeHelper {
     private static Log LOG = LogFactory.getLog(KualiXmlRuleAttributeImpl.class);

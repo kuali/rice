@@ -25,9 +25,9 @@ import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  * NotificationAuthorizationService implementation - this is the default out-of-the-box implementation of the service.

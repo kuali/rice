@@ -34,13 +34,13 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.GenericRoleAttribute;
 import org.kuali.rice.kew.routetemplate.QualifiedRoleName;
 import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.EmplId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.KeyLabelPair;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.EmplId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.KeyLabelPair;
 
 /**
  * An attribute implementation that can resolve organizational roles

@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.actions;
 
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Used to determine store notifications to be sent in the {@link BlanketApproveEngine}.

@@ -22,13 +22,13 @@ import javax.servlet.ServletContext;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Subclass of MockHttpServletRequest that initializes the request with a user session

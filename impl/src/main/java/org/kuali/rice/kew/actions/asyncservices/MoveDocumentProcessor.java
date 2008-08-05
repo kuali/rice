@@ -23,9 +23,9 @@ import org.kuali.rice.kew.actions.MoveDocumentAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Service to do the async work of moving a document.

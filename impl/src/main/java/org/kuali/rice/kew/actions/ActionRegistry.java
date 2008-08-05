@@ -23,8 +23,8 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Maintains the registry of Workflow Actions.  Actions are (currently) identified by a one-letter

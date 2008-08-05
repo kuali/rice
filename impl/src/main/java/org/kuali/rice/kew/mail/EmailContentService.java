@@ -23,8 +23,8 @@ import java.util.Collection;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Interface for generating email message content for various types of messages the system needs to send

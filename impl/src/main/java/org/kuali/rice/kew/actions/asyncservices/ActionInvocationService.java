@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import edu.iu.uis.eden.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUser;
 
 /**
  * Interface for defining the contract for the remoting of ActionInvocationProcessor.  

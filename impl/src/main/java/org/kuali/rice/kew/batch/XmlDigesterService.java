@@ -19,8 +19,8 @@ package org.kuali.rice.kew.batch;
 import java.io.IOException;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.user.WorkflowUser;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * A service which is responsible for digesting (by delegating to other target services)

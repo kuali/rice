@@ -30,12 +30,12 @@ import org.kuali.rice.kew.plugin.attributes.MassRuleAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.xml.XmlConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.XmlHelper;
-import edu.iu.uis.eden.xml.XmlConstants;
 
 /**
  * An attribute for handling routing of RemoveReplace documents according to the Document Types of the

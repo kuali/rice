@@ -39,12 +39,12 @@ import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.user.UserUtils;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Various static utility methods for helping with Searcha.

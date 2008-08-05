@@ -32,8 +32,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.util.ResponsibleParty;
 
-import edu.iu.uis.eden.util.ResponsibleParty;
 
 /**
  * Adapts a {@link RouteModuleRemote} to the {@link RouteModule} interface.

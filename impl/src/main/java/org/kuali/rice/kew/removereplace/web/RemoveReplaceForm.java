@@ -22,11 +22,11 @@ import java.util.Map;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.web.ShowHideTree;
+import org.kuali.rice.kew.web.WorkflowRoutingForm;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.web.ShowHideTree;
-import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**
  * A struts form for Remove/Replace.

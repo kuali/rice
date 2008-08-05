@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -39,7 +40,6 @@ import edu.iu.uis.eden.test.web.framework.actions.SleepAction;
 import edu.iu.uis.eden.test.web.framework.actions.SubmitAction;
 import edu.iu.uis.eden.test.web.framework.actions.UserAction;
 import edu.iu.uis.eden.test.web.framework.actions.VariableAction;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * A web site interaction script.

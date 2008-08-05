@@ -17,9 +17,10 @@ package org.kuali.rice.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.web.RemoteUserWebAuthenticationService;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.web.RemoteUserWebAuthenticationService;
+
 
 /**
  *

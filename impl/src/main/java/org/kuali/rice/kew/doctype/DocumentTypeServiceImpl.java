@@ -31,11 +31,11 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
+import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.xml.DocumentTypeXmlParser;
-import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 
 /**
  * The standard implementation of the DocumentTypeService.

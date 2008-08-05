@@ -42,18 +42,18 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
+import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.user.Recipient;
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupMembershipChangeProcessor;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -426,7 +426,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kew.actionlist.ActionListService#getOutbox(edu.iu.uis.eden.user.WorkflowUser,
+     * @see org.kuali.rice.kew.actionlist.ActionListService#getOutbox(org.kuali.rice.kew.user.WorkflowUser,
      *      org.kuali.rice.kew.actionlist.ActionListFilter)
      */
     public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
@@ -436,7 +436,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kew.actionlist.ActionListService#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser,
+     * @see org.kuali.rice.kew.actionlist.ActionListService#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser,
      *      java.util.List)
      */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {

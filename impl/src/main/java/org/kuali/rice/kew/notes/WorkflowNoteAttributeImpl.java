@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.notes;
 
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * The default implementation of a CustomNoteAttribute in core workflow.  This can be overriden

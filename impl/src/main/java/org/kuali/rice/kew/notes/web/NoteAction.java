@@ -40,14 +40,14 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
+import org.kuali.rice.kew.user.UserService;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.user.UserService;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * Struts action for interfacing with the Notes system.

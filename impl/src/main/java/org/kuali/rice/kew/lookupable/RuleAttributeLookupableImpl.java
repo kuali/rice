@@ -31,9 +31,9 @@ import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.RuleAttributeService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A {@link WorkflowLookupable} implementation for {@link RuleAttribute}.

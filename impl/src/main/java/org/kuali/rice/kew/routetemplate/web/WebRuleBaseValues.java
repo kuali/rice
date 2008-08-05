@@ -51,11 +51,11 @@ import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A decorator around a {@link RuleBaseValues} object which provides some

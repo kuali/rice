@@ -33,9 +33,9 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KeyValue;
 
-import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.KeyValue;
 
 /**
  * Struts ActionForm for the {@link RoutingReportAction}.

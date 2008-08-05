@@ -24,9 +24,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.util.CodeTranslator;
 
 /**
  * TODO we should not be referencing eden constants from this class and wedding ourselves to that workflow application Ad Hoc Route

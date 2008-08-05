@@ -26,6 +26,7 @@ import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 import org.kuali.workflow.test.KEWTestCase;
 
 

@@ -37,11 +37,11 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -345,7 +345,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     /**
      * Deletes all outbox items specified by the list of ids
      * 
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser, java.util.List)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
      */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
         Criteria crit = new Criteria();

@@ -25,9 +25,9 @@ import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * This is a class used to substitute for a StyleableEmailContentServiceImpl class 

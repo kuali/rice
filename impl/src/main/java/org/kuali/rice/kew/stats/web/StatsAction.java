@@ -28,8 +28,8 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.StatsService;
+import org.kuali.rice.kew.web.WorkflowAction;
 
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * A Struts Action for compiling and displaying statistics about the KEW application.

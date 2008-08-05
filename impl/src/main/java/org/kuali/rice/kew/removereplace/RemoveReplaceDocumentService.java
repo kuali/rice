@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.removereplace;
 
-import edu.iu.uis.eden.web.session.UserSession;
+import org.kuali.rice.kew.web.session.UserSession;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

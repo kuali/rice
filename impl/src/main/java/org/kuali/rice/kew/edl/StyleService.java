@@ -25,8 +25,8 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 public interface StyleService extends XmlLoader, XmlExporter {
     public void saveStyle(InputStream xml);

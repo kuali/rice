@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.user.EmplId;
 
-import edu.iu.uis.eden.user.EmplId;
 
 /**
  * A generic Role Attribute that can be used to route to an Empl ID.  Can take as configuration the

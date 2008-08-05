@@ -37,11 +37,11 @@ import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.workflow.workgroup.WorkgroupType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.util.KeyLabelPair;
 
 /**
  * A {@link WorkflowAttribute} which can be used to route documents based on Workgroup Type.

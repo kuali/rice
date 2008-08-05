@@ -30,9 +30,9 @@ import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
+import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.web.WorkflowAction;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * A Struts Action for redirecting from the KEW web application to the appropriate

@@ -26,9 +26,9 @@ import org.jdom.Element;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.workflow.workgroup.dao.WorkgroupTypeDAO;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Basic implementation of the WorkgroupTypeService.

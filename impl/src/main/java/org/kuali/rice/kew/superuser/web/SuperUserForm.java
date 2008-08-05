@@ -29,9 +29,9 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.web.WorkflowRoutingForm;
 
-import edu.iu.uis.eden.web.KeyValue;
-import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**
  * A Struts ActionForm for the {@link SuperUserAction}.

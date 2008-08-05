@@ -25,12 +25,12 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.database.platform.Platform;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implements UserOptionsDAO {
 

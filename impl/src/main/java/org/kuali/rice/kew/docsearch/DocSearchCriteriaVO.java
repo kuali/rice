@@ -28,8 +28,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Model bean representing document searches.  Persisted each search as part of the users saved searches.

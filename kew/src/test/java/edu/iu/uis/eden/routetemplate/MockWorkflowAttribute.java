@@ -25,8 +25,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.util.XmlHelper;
 
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

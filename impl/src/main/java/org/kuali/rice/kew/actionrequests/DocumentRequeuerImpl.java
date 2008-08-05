@@ -26,8 +26,8 @@ import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.RouteNodeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.util.PerformanceLogger;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
 
 /**
  * A service which effectively "refreshes" and requeus a document.  It first deletes any

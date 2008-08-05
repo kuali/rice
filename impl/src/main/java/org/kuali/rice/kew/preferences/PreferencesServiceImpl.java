@@ -23,11 +23,11 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * An implementation of the {@link PreferencesService}.

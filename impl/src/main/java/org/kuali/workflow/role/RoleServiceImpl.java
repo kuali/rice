@@ -42,12 +42,12 @@ import org.kuali.rice.kew.routetemplate.RolePoker;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.workflow.role.dao.RoleDAO;
 
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  *

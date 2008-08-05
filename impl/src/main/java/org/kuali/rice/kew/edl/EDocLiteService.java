@@ -23,9 +23,9 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.xml.export.XmlExporter;
 
 public interface EDocLiteService extends XmlLoader, XmlExporter {
 	//looks like these are here only for tests, the question is why...

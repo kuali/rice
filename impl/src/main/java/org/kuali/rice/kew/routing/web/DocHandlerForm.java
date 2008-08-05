@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routing.web;
 
-import edu.iu.uis.eden.web.WorkflowRoutingForm;
+import org.kuali.rice.kew.web.WorkflowRoutingForm;
 
 /**
  * A Struts ActionForm for the {@link WorkflowDocHandlerAction}.

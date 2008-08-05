@@ -26,8 +26,8 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
+import org.kuali.rice.kew.workgroup.GroupNameId;
 
-import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  *

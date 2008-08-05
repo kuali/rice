@@ -31,9 +31,9 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kew.util.Utilities;
 
-import edu.iu.uis.eden.util.PerformanceLogger;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A node which will iteratively activate any requests pending on it.  Subclasses are responsible for generating the requests

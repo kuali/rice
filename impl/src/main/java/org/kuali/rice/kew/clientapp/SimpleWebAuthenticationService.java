@@ -19,12 +19,12 @@ package org.kuali.rice.kew.clientapp;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.WebAuthenticationService;
+import org.kuali.rice.kew.web.session.UserSession;
 
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.UserId;
-import edu.iu.uis.eden.web.UserLoginFilter;
-import edu.iu.uis.eden.web.WebAuthenticationService;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Class that extracts the networkid of the user from request using the request attribute

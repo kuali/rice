@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -28,7 +29,6 @@ import edu.iu.uis.eden.test.web.framework.Property;
 import edu.iu.uis.eden.test.web.framework.PropertyScheme;
 import edu.iu.uis.eden.test.web.framework.Script;
 import edu.iu.uis.eden.test.web.framework.Util;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * ScriptAction that sets request parameters

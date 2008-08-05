@@ -19,9 +19,9 @@ package org.kuali.rice.kew.actions;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.workgroup.Workgroup;
 
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Represents a revocation of an AdHoc request.<br><br>

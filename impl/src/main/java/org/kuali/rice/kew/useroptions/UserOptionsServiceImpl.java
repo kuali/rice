@@ -22,11 +22,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.user.WorkflowUser;
 
 @Transactional
 public class UserOptionsServiceImpl implements UserOptionsService {

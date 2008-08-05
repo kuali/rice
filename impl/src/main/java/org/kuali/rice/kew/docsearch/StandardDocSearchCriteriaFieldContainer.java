@@ -20,7 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import edu.iu.uis.eden.util.Utilities;
+import org.kuali.rice.kew.util.Utilities;
+
 
 /**
  * This class is a holder for fields for standard document search criteria objects

@@ -27,9 +27,9 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.user.WorkflowUserId;
 
 public class RouteHeaderServiceImpl implements RouteHeaderService {
 

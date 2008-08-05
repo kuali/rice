@@ -37,11 +37,11 @@ import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.EDocLiteService;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.test.TestUtilities;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Tests EDocLiteServiceImpl

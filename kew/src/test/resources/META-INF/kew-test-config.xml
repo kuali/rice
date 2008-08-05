@@ -48,7 +48,7 @@
 
 	<param name="config.spring.file">TestSpring.xml</param>
 
-    <param name="filter.login.class">edu.iu.uis.eden.web.DummyLoginFilter</param>
+    <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
     <param name="filtermapping.login.1">/*</param>
 
     <param name="workgroup.url">Workgroup.do</param>

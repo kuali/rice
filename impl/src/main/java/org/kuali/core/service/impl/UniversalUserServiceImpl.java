@@ -58,14 +58,14 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.user.BaseUserService;
+import org.kuali.rice.kew.user.BaseWorkflowUser;
+import org.kuali.rice.kew.user.UserCapabilities;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.user.BaseUserService;
-import edu.iu.uis.eden.user.BaseWorkflowUser;
-import edu.iu.uis.eden.user.UserCapabilities;
-import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
 
 /**
  * This class is the service implementation for the KualiUser structure. This is the default implementation, that is delivered with
@@ -95,7 +95,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     /**
      * Overriding inherited method which returns true for all to allow configuration
      * 
-     * @see edu.iu.uis.eden.user.BaseUserService#getCapabilities()
+     * @see org.kuali.rice.kew.user.BaseUserService#getCapabilities()
      */
     public UserCapabilities getCapabilities() {
 	if (workflowUserCapabilities == null) {
@@ -374,7 +374,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         return universalUserDao.getWorkflowUser(getWorkflowUserId(userId));
     }
 
-    public WorkflowUser getWorkflowUser(edu.iu.uis.eden.user.UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
         WorkflowUser user = getFromCache(userId);
         if (user == null) {
             user = (WorkflowUser) universalUserDao.getWorkflowUser(userId);
@@ -392,16 +392,16 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         return universalUserDao.search(user, useWildcards);
     }
 
-    private edu.iu.uis.eden.user.UserId getWorkflowUserId(UserIdDTO userId) throws EdenUserNotFoundException {
-        edu.iu.uis.eden.user.UserId userIdInterface = null;
+    private org.kuali.rice.kew.user.UserId getWorkflowUserId(UserIdDTO userId) throws EdenUserNotFoundException {
+        org.kuali.rice.kew.user.UserId userIdInterface = null;
         if (userId instanceof EmplIdDTO) {
-            userIdInterface = new edu.iu.uis.eden.user.EmplId(((EmplIdDTO) userId).getEmplId());
+            userIdInterface = new org.kuali.rice.kew.user.EmplId(((EmplIdDTO) userId).getEmplId());
         }
         else if (userId instanceof NetworkIdDTO) {
-            userIdInterface = new edu.iu.uis.eden.user.AuthenticationUserId(((NetworkIdDTO) userId).getNetworkId());
+            userIdInterface = new org.kuali.rice.kew.user.AuthenticationUserId(((NetworkIdDTO) userId).getNetworkId());
         }
         else if (userId instanceof UuIdDTO) {
-            userIdInterface = new edu.iu.uis.eden.user.UuId(((UuIdDTO) userId).getUuId());
+            userIdInterface = new org.kuali.rice.kew.user.UuId(((UuIdDTO) userId).getUuId());
         }
         else if (userId instanceof WorkflowIdDTO) {
             userIdInterface = new WorkflowUserId(((WorkflowIdDTO) userId).getWorkflowId());

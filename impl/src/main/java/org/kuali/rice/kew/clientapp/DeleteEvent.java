@@ -44,7 +44,7 @@ public class DeleteEvent implements IDocumentEvent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.iu.uis.eden.IDocumentEvent#getDocumentEventCode()
+	 * @see org.kuali.rice.kew.IDocumentEvent#getDocumentEventCode()
 	 */
 	public String getDocumentEventCode() {
 		return DELETE_CHANGE;
@@ -53,7 +53,7 @@ public class DeleteEvent implements IDocumentEvent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.iu.uis.eden.IDocumentEvent#getRouteHeaderId()
+	 * @see org.kuali.rice.kew.IDocumentEvent#getRouteHeaderId()
 	 */
 	public Long getRouteHeaderId() {
 		return routeHeaderId;
@@ -62,7 +62,7 @@ public class DeleteEvent implements IDocumentEvent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.iu.uis.eden.IDocumentEvent#getAppDocId()
+	 * @see org.kuali.rice.kew.IDocumentEvent#getAppDocId()
 	 */
 	public String getAppDocId() {
 		return this.appDocId;

@@ -248,7 +248,7 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     }
 
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
+     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
      */
     @Deprecated
     public Object copy(boolean preserveKeys) {

@@ -126,7 +126,7 @@
 
   <%--
   <display-el:table class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${reqSearchResults}" pagesize="100" defaultsort="1" sort="external" id="result" requestURI="Lookup.do?methodToCall=viewResults&listKey=${listKey}"
-       decorator="edu.iu.uis.eden.lookupable.LookupDecorator" > --%>
+       decorator="org.kuali.rice.kew.lookupable.LookupDecorator" > --%>
   <%-- TODO delyea - add external sorting 'sort="external"' --%>
   <%-- TODO delyea - add in pagesize? --%>
   <%-- Table layout of the search results --%>

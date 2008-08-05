@@ -249,7 +249,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     }
 
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
+     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
      */
     public Object copy(boolean preserveKeys) {
         return null;

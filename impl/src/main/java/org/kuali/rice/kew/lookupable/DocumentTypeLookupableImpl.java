@@ -171,7 +171,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         InputStream in = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream("edu/iu/uis/eden/ApplicationResources.properties");
         try {
             if (in == null) {
-            	LOG.warn("edu.iu.uis.eden.ApplicationResources.properties not found in CLASSPATH, using defaults.");
+            	LOG.warn("org.kuali.rice.kew.ApplicationResources.properties not found in CLASSPATH, using defaults.");
             } else {
                 properties.load(in);
                 if (properties.getProperty(PARENT_DOC_TYP_FIELD_LABEL_KEY) != null) {
@@ -214,7 +214,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
 
             }
         } catch (IOException e) {
-            LOG.error("Error loading edu.iu.uis.eden.ApplicationResources.properties, using defaults.", e);
+            LOG.error("Error loading org.kuali.rice.kew.ApplicationResources.properties, using defaults.", e);
         } finally {
             if (in != null) {
                 try {

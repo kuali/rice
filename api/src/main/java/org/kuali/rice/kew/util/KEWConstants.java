@@ -171,9 +171,9 @@ public class KEWConstants {
     public static final String ROUTE_HEADER_EJB = EDEN_APP_CODE + "/RouteHeader";
     public static final String NPD_ACTIONLIST_EJB = EDEN_APP_CODE + "/DelegationActionList";
     public static final String BASE_REVIEW_HIERARCHY_EJB = EDEN_APP_CODE + "/BaseReviewHierarchy";
-    public static final String DELEGATION_RM_CLASS = "edu.iu.uis.eden.ejb.rm.DelegationRouteModuleRemote";
-    public static final String ROUTE_MODULE_CLASS = "edu.iu.uis.eden.ejb.RouteModuleHome";
-    public static final String ENGINE_CLASS = "edu.iu.uis.eden.eden.EdenWorkflowEngineHome";
+    public static final String DELEGATION_RM_CLASS = "org.kuali.rice.kew.ejb.rm.DelegationRouteModuleRemote";
+    public static final String ROUTE_MODULE_CLASS = "org.kuali.rice.kew.ejb.RouteModuleHome";
+    public static final String ENGINE_CLASS = "org.kuali.rice.kew.eden.EdenWorkflowEngineHome";
     public static final String PROD_DEPLOYMENT_CODE = "prd";
 
     public static final String YES_LABEL = "Yes";

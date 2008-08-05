@@ -47,11 +47,11 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="echoService" class="edu.iu.uis.eden.testclient2.EchoService2Impl" />
-	<bean id="chainedRequestService" class="edu.iu.uis.eden.testclient2.ChainedRequestService2Impl" />
-	<bean id="sharedQueue" class="edu.iu.uis.eden.testclient2.ClientApp2SharedQueue" />
+	<bean id="echoService" class="org.kuali.rice.kew.testclient2.EchoService2Impl" />
+	<bean id="chainedRequestService" class="org.kuali.rice.kew.testclient2.ChainedRequestService2Impl" />
+	<bean id="sharedQueue" class="org.kuali.rice.kew.testclient2.ClientApp2SharedQueue" />
 	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
-	<bean id="soapService" class="edu.iu.uis.eden.testclient2.Client2SOAPService" />
+	<bean id="soapService" class="org.kuali.rice.kew.testclient2.Client2SOAPService" />
 
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.security.credentials.CredentialsSourceFactory" />
 

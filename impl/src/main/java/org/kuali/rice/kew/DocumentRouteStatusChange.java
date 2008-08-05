@@ -62,7 +62,7 @@ public class DocumentRouteStatusChange implements IDocumentEvent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.iu.uis.eden.IDocumentEvent#getAppDocId()
+	 * @see org.kuali.rice.kew.IDocumentEvent#getAppDocId()
 	 */
 	public String getAppDocId() {
 		return this.appDocId;

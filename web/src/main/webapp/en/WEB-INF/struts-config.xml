@@ -364,7 +364,7 @@
     <controller processorClass="org.kuali.rice.kew.web.StrutsRequestProcessor" />
 
 	<!-- ======== message resource Definitions ======== -->
-    <message-resources parameter="edu.iu.uis.eden.ApplicationResources" />
+    <message-resources parameter="org.kuali.rice.kew.ApplicationResources" />
 
 	<!-- ======== plug-in definitions ======== -->
 </struts-config>

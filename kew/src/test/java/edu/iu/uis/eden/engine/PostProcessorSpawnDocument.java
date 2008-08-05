@@ -20,10 +20,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
-import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
 /**
  * Tests a new document being spawned from the post processing of an existing document

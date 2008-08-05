@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_BadBlanketApproveWG</name>
       <description>This document has an invalid blanket approve workgroup</description>
       <label>DocumentTypeXmlParserTestDoc_BadBlanketApproveWG</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>BOGUS_WORKGROUP</blanketApproveWorkgroupName>

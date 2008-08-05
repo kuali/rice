@@ -18,8 +18,8 @@ package edu.sampleu.travel.workflow;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
 
-import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
 import edu.iu.uis.eden.web.session.UserSession;
 
 public class CustomActionListAttributeImpl implements CustomActionListAttribute {

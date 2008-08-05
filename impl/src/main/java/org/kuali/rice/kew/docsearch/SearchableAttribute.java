@@ -18,7 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import edu.iu.uis.eden.lookupable.Row;
+import org.kuali.rice.kew.lookupable.Row;
+
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 
 /**

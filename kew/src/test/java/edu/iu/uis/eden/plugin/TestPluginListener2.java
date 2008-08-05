@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.plugin;
 
-import edu.iu.uis.eden.plugin.client.PluginListener;
+import org.kuali.rice.kew.plugin.Plugin;
+import org.kuali.rice.kew.plugin.client.PluginListener;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

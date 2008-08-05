@@ -29,10 +29,10 @@ import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleExtensionValue;

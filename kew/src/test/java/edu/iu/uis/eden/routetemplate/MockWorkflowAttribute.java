@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.util.XmlHelper;
 

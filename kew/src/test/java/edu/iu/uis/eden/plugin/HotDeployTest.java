@@ -23,6 +23,13 @@ import javax.xml.namespace.QName;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.plugin.HotDeployer;
+import org.kuali.rice.kew.plugin.Plugin;
+import org.kuali.rice.kew.plugin.PluginEnvironment;
+import org.kuali.rice.kew.plugin.PluginRegistry;
+import org.kuali.rice.kew.plugin.PluginUtils;
+import org.kuali.rice.kew.plugin.Reloader;
+import org.kuali.rice.kew.plugin.ServerPluginRegistry;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;

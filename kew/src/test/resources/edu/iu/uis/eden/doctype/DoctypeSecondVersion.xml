@@ -8,7 +8,7 @@ old path it will go final after the first approve is taken, which is bad  -->
 			<name>DocumentType</name>
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

@@ -23,6 +23,9 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.plugin.PluginEnvironment;
+import org.kuali.rice.kew.plugin.PluginRegistry;
+import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;

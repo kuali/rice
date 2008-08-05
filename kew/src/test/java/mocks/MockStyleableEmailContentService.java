@@ -16,7 +16,7 @@
  */
 package mocks;
 
-import edu.iu.uis.eden.mail.EmailContentService;
+import org.kuali.rice.kew.mail.EmailContentService;
 
 /**
  * Class to use for verification of style service being called

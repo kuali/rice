@@ -22,10 +22,10 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.kew.plugin.manifest.PluginManifest;
+import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.plugin.manifest.PluginManifest;
-import edu.iu.uis.eden.plugin.manifest.PluginManifestParser;
 
 /**
  * Tests that the PluginManifestParser properly parses the plugin manifest xml file.
@@ -52,8 +52,8 @@ public class PluginManifestParserTest extends KEWTestCase {
         assertEquals(2, listeners.size());
         String listenerClassName1 = (String)listeners.get(0);
         String listenerClassName2 = (String)listeners.get(1);
-        assertEquals("edu.iu.uis.eden.plugin.TestPluginListener", listenerClassName1);
-        assertEquals("edu.iu.uis.eden.plugin.TestPluginListener2", listenerClassName2);
+        assertEquals("org.kuali.rice.kew.plugin.TestPluginListener", listenerClassName1);
+        assertEquals("org.kuali.rice.kew.plugin.TestPluginListener2", listenerClassName2);
 
         assertEquals("Plugin resource loader classname should be base resource loader", BaseResourceLoader.class.getName(), plugin.getResourceLoaderClassname());
     }

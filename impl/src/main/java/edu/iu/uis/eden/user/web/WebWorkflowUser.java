@@ -19,8 +19,8 @@ package edu.iu.uis.eden.user.web;
 import java.sql.Timestamp;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.lookupable.WebLookupableDecorator;
 
-import edu.iu.uis.eden.lookupable.WebLookupableDecorator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.EmplId;
 import edu.iu.uis.eden.user.UuId;

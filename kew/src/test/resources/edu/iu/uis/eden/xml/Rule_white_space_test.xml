@@ -6,7 +6,7 @@
 			<name>KualiMaintenanceDocument</name>
 			<description>KualiMaintenanceDocument</description>
 			<label>KualiMaintenanceDocument</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<!--  below will make the parser blow chunks if white space is not handled correctly -->
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>

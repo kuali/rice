@@ -6,7 +6,7 @@
       <name>DocumentTypeXmlParserTestDoc_ValidRuleSelector</name>
       <description>This document has a valid ruleselector defined</description>
       <label>DocumentTypeXmlParserTestDoc_ValidRuleSelector</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

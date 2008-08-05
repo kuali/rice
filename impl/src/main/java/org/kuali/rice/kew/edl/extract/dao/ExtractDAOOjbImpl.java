@@ -6,9 +6,9 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kew.edl.extract.Dump;
 import org.kuali.rice.kew.edl.extract.Fields;
+import org.kuali.rice.kew.notes.Note;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.notes.Note;
 
 public class ExtractDAOOjbImpl extends PersistenceBrokerDaoSupport implements ExtractDAO {
 

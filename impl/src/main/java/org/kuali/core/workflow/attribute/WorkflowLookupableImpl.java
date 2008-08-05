@@ -35,16 +35,16 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.lookupable.LookupForm;
+import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler;
 import org.kuali.workflow.attribute.WorkflowLookupableResult;
 
-import edu.iu.uis.eden.lookupable.LookupForm;
-import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 
 /**
- * This is a shim to translate from an org.kuali.core.lookup.Lookupable to edu.iu.uis.eden.plugin.attributes.WorkflowLookupable,
+ * This is a shim to translate from an org.kuali.core.lookup.Lookupable to org.kuali.rice.kew.plugin.attributes.WorkflowLookupable,
  * since quickfinders specified as part of workflow attribute field definitions have to implement the workflow lookupable interface.
  * 
  * 
@@ -114,7 +114,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
             Iterator kualiFieldItr = kualiRow.getFields().iterator();
             while (kualiFieldItr.hasNext()) {
                 org.kuali.core.web.ui.Field kualiField = (org.kuali.core.web.ui.Field) kualiFieldItr.next();
-                edu.iu.uis.eden.lookupable.Field workflowField = new edu.iu.uis.eden.lookupable.Field(kualiField.getFieldLabel(), WorkflowUtils.getHelpUrl(kualiField), kualiField.getFieldType(), kualiField.getQuickFinderClassNameImpl() != null, kualiField.getPropertyName(), kualiField.getPropertyValue(), kualiField.getFieldValidValues(), kualiField.getQuickFinderClassNameImpl());
+                org.kuali.rice.kew.lookupable.Field workflowField = new org.kuali.rice.kew.lookupable.Field(kualiField.getFieldLabel(), WorkflowUtils.getHelpUrl(kualiField), kualiField.getFieldType(), kualiField.getQuickFinderClassNameImpl() != null, kualiField.getPropertyName(), kualiField.getPropertyValue(), kualiField.getFieldValidValues(), kualiField.getQuickFinderClassNameImpl());
                 
                 //  dont display KualiUser based fieldTypes ... they fail on the lookups for now
                 if (org.kuali.core.web.ui.Field.KUALIUSER.equals(kualiField.getFieldType())) {
@@ -128,11 +128,11 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
                 //  add a quickfinder icon if one is indicated
                 workflowFields.add(workflowField);
                 if (kualiField.getQuickFinderClassNameImpl() != null && !org.kuali.core.web.ui.Field.HIDDEN.equals(kualiField.getFieldType())) {
-                    edu.iu.uis.eden.lookupable.Field workflowLookupField = new edu.iu.uis.eden.lookupable.Field("", "", edu.iu.uis.eden.lookupable.Field.QUICKFINDER, false, "", "", null, getLookupableName(new StringBuffer(LOOKUPABLE_IMPL_NAME_PREFIX).append(workflowField.getQuickFinderClassNameImpl()).append(LOOKUPABLE_IMPL_NAME_SUFFIX).toString(), kualiField.getFieldConversions(), kualiField.getLookupParameters()));
+                    org.kuali.rice.kew.lookupable.Field workflowLookupField = new org.kuali.rice.kew.lookupable.Field("", "", org.kuali.rice.kew.lookupable.Field.QUICKFINDER, false, "", "", null, getLookupableName(new StringBuffer(LOOKUPABLE_IMPL_NAME_PREFIX).append(workflowField.getQuickFinderClassNameImpl()).append(LOOKUPABLE_IMPL_NAME_SUFFIX).toString(), kualiField.getFieldConversions(), kualiField.getLookupParameters()));
                     workflowFields.add(workflowLookupField);
                 }
             }
-            edu.iu.uis.eden.lookupable.Row workflowRow = new edu.iu.uis.eden.lookupable.Row(workflowFields);
+            org.kuali.rice.kew.lookupable.Row workflowRow = new org.kuali.rice.kew.lookupable.Row(workflowFields);
             workflowRows.add(workflowRow);
         }
     }
@@ -141,13 +141,13 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
         Iterator kualiColumnItr = lookupable.getColumns().iterator();
         while (kualiColumnItr.hasNext()) {
             org.kuali.core.web.ui.Column kualiColumn = (org.kuali.core.web.ui.Column) kualiColumnItr.next();
-            workflowColumns.add(new edu.iu.uis.eden.lookupable.Column(kualiColumn.getColumnTitle(), kualiColumn.getSortable(), "workflowLookupableResult(" + kualiColumn.getPropertyName() + ")"));
+            workflowColumns.add(new org.kuali.rice.kew.lookupable.Column(kualiColumn.getColumnTitle(), kualiColumn.getSortable(), "workflowLookupableResult(" + kualiColumn.getPropertyName() + ")"));
         }
     }
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getSearchResults(java.util.Map)
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getSearchResults(java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getSearchResults(java.util.Map, java.util.Map)
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) throws Exception {
         List searchResults = lookupable.getSearchResults(fieldValues);
@@ -223,7 +223,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getReturnLocation()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getReturnLocation()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getReturnLocation()
      */
     public String getReturnLocation() {
         return RETURN_LOCATION;
@@ -231,7 +231,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getTitle()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getTitle()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getTitle()
      */
     public String getTitle() {
         return lookupable.getTitle();
@@ -239,7 +239,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getHtmlMenuBar()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getHtmlMenuBar()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getHtmlMenuBar()
      */
     public String getHtmlMenuBar() {
         //  dont show the kuali 'create-new' menu bar in workflow lookups
@@ -248,7 +248,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getLookupInstructions()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getLookupInstructions()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getLookupInstructions()
      */
     public String getLookupInstructions() {
         return lookupable.getLookupInstructions();
@@ -259,7 +259,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
      * and setting them on our rows, based on our lookupParameters attribute.
      * 
      * @see org.kuali.core.lookup.Lookupable#checkForAdditionalFields(java.util.Map)
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#checkForAdditionalFields(java.util.Map,
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#checkForAdditionalFields(java.util.Map,
      *      javax.servlet.http.HttpServletRequest)
      */
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
@@ -282,11 +282,11 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     private void setFieldValue(String propertyName, String propertyValue) {
         Iterator rowItr = getRows().iterator();
         while (rowItr.hasNext()) {
-            edu.iu.uis.eden.lookupable.Row row = (edu.iu.uis.eden.lookupable.Row) rowItr.next();
+            org.kuali.rice.kew.lookupable.Row row = (org.kuali.rice.kew.lookupable.Row) rowItr.next();
             Iterator fieldItr = row.getFields().iterator();
             while (fieldItr.hasNext()) {
-                edu.iu.uis.eden.lookupable.Field field = (edu.iu.uis.eden.lookupable.Field) fieldItr.next();
-                if (field.getPropertyName().equals(propertyName) && edu.iu.uis.eden.lookupable.Field.TEXT.equals(field.getFieldType())) {
+                org.kuali.rice.kew.lookupable.Field field = (org.kuali.rice.kew.lookupable.Field) fieldItr.next();
+                if (field.getPropertyName().equals(propertyName) && org.kuali.rice.kew.lookupable.Field.TEXT.equals(field.getFieldType())) {
                     field.setPropertyValue(propertyValue);
                     break;
                 }
@@ -296,7 +296,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getRows()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getRows()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getRows()
      */
     public List getRows() {
         return workflowRows;
@@ -304,7 +304,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.core.lookup.Lookupable#getColums()
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getColumns()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getColumns()
      */
     public List getColumns() {
         return workflowColumns;
@@ -313,7 +313,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method does nothing.
      * 
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#changeIdToName(java.util.Map)
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#changeIdToName(java.util.Map)
      */
     public void changeIdToName(Map fieldValues) throws Exception {
     }
@@ -321,7 +321,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method always returns an empty list.
      * 
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getDefaultReturnType()
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getDefaultReturnType()
      */
     public List getDefaultReturnType() {
         return new ArrayList();
@@ -330,7 +330,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method always returns the empty string.
      * 
-     * @see edu.iu.uis.eden.plugin.attributes.WorkflowLookupable#getNoReturnParams(java.util.Map)
+     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getNoReturnParams(java.util.Map)
      */
     public String getNoReturnParams(Map fieldConversions) {
         return "";

@@ -19,10 +19,10 @@ package org.kuali.workflow.workgroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.validation.ValidationContext;
 import edu.iu.uis.eden.validation.ValidationResults;
 

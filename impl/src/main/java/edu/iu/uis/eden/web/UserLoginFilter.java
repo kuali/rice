@@ -36,9 +36,9 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;

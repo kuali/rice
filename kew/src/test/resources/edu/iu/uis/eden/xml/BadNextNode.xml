@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_BadNextNode</name>
       <description>This document has an invalid nextNode</description>
       <label>DocumentTypeXmlParserTestDoc_BadNextNode</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

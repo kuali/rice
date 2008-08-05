@@ -27,9 +27,9 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.plugin.attributes.MassRuleAttribute;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 
-import edu.iu.uis.eden.plugin.attributes.MassRuleAttribute;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.PerformanceLogger;

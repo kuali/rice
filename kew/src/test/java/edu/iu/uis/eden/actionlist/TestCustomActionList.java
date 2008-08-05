@@ -23,11 +23,11 @@ import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.notes.CustomNoteAttribute;
+import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
+import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 
-import edu.iu.uis.eden.notes.CustomNoteAttribute;
-import edu.iu.uis.eden.notes.Note;
-import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
-import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.web.session.UserSession;
 
 public class TestCustomActionList implements CustomActionListAttribute, Serializable, CustomEmailAttribute, CustomNoteAttribute {

@@ -23,6 +23,8 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.plugin.Plugin;
+import org.kuali.rice.kew.plugin.ZipFilePluginLoader;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.workflow.test.KEWTestCase;
 

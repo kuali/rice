@@ -5,7 +5,7 @@
 			<name>NetworkIdRoleAttributeTest</name>
 			<description>NetworkIdRoleAttributeTest</description>
 			<label>NetworkIdRoleAttributeTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<routePaths>

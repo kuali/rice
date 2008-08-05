@@ -25,12 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.lookupable.Column;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.lookupable.Column;
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
-import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.user.web.WebWorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.UrlResolver;

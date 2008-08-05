@@ -18,8 +18,8 @@ package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
 
-import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
 import edu.iu.uis.eden.web.session.UserSession;
 
 

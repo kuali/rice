@@ -25,7 +25,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import edu.iu.uis.eden.preferences.Preferences;
+import org.kuali.rice.kew.preferences.Preferences;
+
 
 /**
  * An option defined for a user.  These are used to store user {@link Preferences}.

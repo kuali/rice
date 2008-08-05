@@ -31,7 +31,7 @@
             <name>servicesTestRequest</name>
             <description>Services Test Request</description>
             <label>Services Test Request</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <superUserWorkgroupName>TestAdhocWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestAdhocWorkgroup</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>TestAdhocWorkgroup</defaultExceptionWorkgroupName>

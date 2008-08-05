@@ -47,7 +47,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 <!--
-    <bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/>
+    <bean id="enNotificationService" class="org.kuali.rice.kew.notification.KCBNotificationService"  lazy-init="true"/>
 -->
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="dataSource" ref="workflowDataSource" />

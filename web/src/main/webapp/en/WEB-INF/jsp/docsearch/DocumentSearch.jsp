@@ -1,5 +1,5 @@
 <%@ page import="org.apache.commons.beanutils.BeanUtils" %>
-<%@ page import="edu.iu.uis.eden.lookupable.Column" %>
+<%@ page import="org.kuali.rice.kew.lookupable.Column" %>
 <%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
 <%@ taglib uri="../../tld/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>

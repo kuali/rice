@@ -32,9 +32,9 @@ import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.lookupable.Column;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;

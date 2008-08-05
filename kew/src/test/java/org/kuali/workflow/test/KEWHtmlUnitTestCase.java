@@ -18,13 +18,13 @@ package org.kuali.workflow.test;
 import java.net.URL;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.preferences.Preferences;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
-import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 

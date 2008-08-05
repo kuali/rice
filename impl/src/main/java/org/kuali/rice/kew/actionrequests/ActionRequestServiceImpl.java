@@ -38,10 +38,10 @@ import org.kuali.rice.kew.clientapp.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.notification.NotificationService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceNames;
 
-import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.routemodule.RouteModule;

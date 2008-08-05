@@ -121,7 +121,7 @@
 			<name>BlanketApproveTest</name>
 			<description>BlanketApproveTest</description>
 			<label>BlanketApproveTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -143,7 +143,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>CreatedDocumentInactive document</description>
 			<label>CreatedDocumentInactive</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -165,7 +165,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApprovePolicyTest document</description>
 			<label>BlanketApprovePolicyTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -202,7 +202,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveSequentialTest</description>
 			<label>BlanketApproveSequentialTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -244,7 +244,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveParallelTest</description>
 			<label>BlanketApproveParallelTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -321,7 +321,7 @@
 			<name>SuperUserApproveActionRequestFyiTest</name>
 			<description>SuperUserApproveActionRequestFyiTest</description>
 			<label>SuperUserApproveActionRequestFyiTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -342,7 +342,7 @@
 			<name>SuperUserApproveActionRequestApproveTest</name>
 			<description>SuperUserApproveActionRequestApproveTest</description>
 			<label>SuperUserApproveActionRequestApproveTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -368,7 +368,7 @@
 			<name>NotificationTest</name>
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -419,7 +419,7 @@
 			<parent>NotificationTest</parent>
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -437,7 +437,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveMandatoryNodeTest</description>
 			<label>BlanketApproveMandatoryNodeTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -482,7 +482,7 @@
 			<name>SaveActionEventTest</name>
 			<description>SaveActionEventTest</description>
 			<label>SaveActionEventTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -518,7 +518,7 @@
 			<name>SaveActionEventTestNonInitiator</name>
 			<description>SaveActionEventTest With No Initiator Only Save Required</description>
 			<label>SaveActionEventTestNonInitiator</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -560,7 +560,7 @@
 			<name>TakeWorkgroupAuthorityDoc</name>
 			<description>TakeWorkgroupAuthority Action Test</description>
 			<label>TakeWorkgroupAuthorityDoc</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -599,7 +599,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>Move Sequential Test</description>
 			<label>Move Sequential Test</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -641,7 +641,7 @@
 			<parent>BlanketApproveTest</parent>
 			<description>Move In Process Test</description>
 			<label>Move In Process Test</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -687,7 +687,7 @@
 			<name>AdhocRouteTest</name>
 			<description>AdhocRouteTest</description>
 			<label>AdhocRouteTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -716,7 +716,7 @@
 			<name>PreApprovalTest</name>
 			<description>PreApprovalTest</description>
 			<label>PreApprovalTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -747,7 +747,7 @@
 			<name>VariablesTest</name>
 			<description>VariablesTest</description>
 			<label>VariablesTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -826,7 +826,7 @@
 			<name>InitiatorRoleApprovalTest</name>
 			<description>InitiatorRoleApprovalTest</description>
 			<label>InitiatorRoleApprovalTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -857,7 +857,7 @@
 			<name>BlanketApproveThroughRoleAndWorkgroupTest</name>
 			<description>BlanketApproveThroughRoleAndWorkgroupTest</description>
 			<label>BlanketApproveThroughRoleAndWorkgroupTest</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>NonSIT</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -897,7 +897,7 @@
 			<name>SUApproveDocument</name>
 			<description>SUApproveDocument</description>
 			<label>SUApproveDocument</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>NonSIT</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -936,7 +936,7 @@
 			<parent>SUApproveDocument</parent>
 			<description>SUApproveDocumentNotifications</description>
 			<label>SUApproveDocumentNotifications</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>NonSIT</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_ValidActivationTypes</name>
       <description>This document has variations of valid activation types</description>
       <label>DocumentTypeXmlParserTestDoc_ValidActivationTypes</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

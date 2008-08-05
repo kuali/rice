@@ -18,7 +18,8 @@ package org.kuali.workflow.attribute;
 
 import java.util.List;
 
-import edu.iu.uis.eden.lookupable.Row;
+import org.kuali.rice.kew.lookupable.Row;
+
 import edu.iu.uis.eden.validation.ValidationContext;
 import edu.iu.uis.eden.validation.ValidationResults;
 

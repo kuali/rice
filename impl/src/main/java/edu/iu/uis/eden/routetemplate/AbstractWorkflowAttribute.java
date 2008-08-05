@@ -20,8 +20,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import edu.iu.uis.eden.lookupable.Row;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+
 
 /**
  * Abstract base class for {@link WorkflowAttribute}s.

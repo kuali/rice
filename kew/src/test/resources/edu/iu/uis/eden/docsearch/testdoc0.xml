@@ -4,7 +4,7 @@
         <documentType>
     		<name>SearchDoc</name>
             <label>SearchDoc</label>
-    		<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+    		<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
     		<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
     		<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
     		<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

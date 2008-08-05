@@ -24,9 +24,9 @@ import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.mail.ActionListImmediateEmailReminderService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.mail.ActionListImmediateEmailReminderService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.RuleCacheProcessor;
 

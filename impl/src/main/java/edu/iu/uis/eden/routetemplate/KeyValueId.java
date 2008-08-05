@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
-import edu.iu.uis.eden.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Field;
+
 import edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues;
 
 /**

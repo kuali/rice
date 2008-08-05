@@ -33,12 +33,12 @@ import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.w3c.dom.Document;
 
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routetemplate.xmlrouting.WorkflowFunctionResolver;
 import edu.iu.uis.eden.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import edu.iu.uis.eden.util.KeyLabelPair;
@@ -129,7 +129,7 @@ public class WorkflowUtils {
 
     /**
      * This method is for use by WorkflowLookupableImpl and WorkflowAttribute implementations to derive the fieldHelpUrl for use on
-     * edu.iu.uis.eden.lookupable.Fields.
+     * org.kuali.rice.kew.lookupable.Fields.
      * 
      * @param field The kuali field that we need to derive a help url for. @ return Returns the help url for the field.
      */
@@ -154,9 +154,9 @@ public class WorkflowUtils {
 
     /**
      * This is for use by xml WorkflowAttribute implementations. It overrides the label and help url of the test fields on the
-     * edu.iu.uis.eden.lookupable.Rows obtained from the workflow parent class with the appropriate values from the data dictionary.
+     * org.kuali.rice.kew.lookupable.Rows obtained from the workflow parent class with the appropriate values from the data dictionary.
      * 
-     * @param workflowRows A list of edu.iu.uis.eden.lookupable.Row objects provided by the workflow superclass, based on the XML
+     * @param workflowRows A list of org.kuali.rice.kew.lookupable.Row objects provided by the workflow superclass, based on the XML
      *        attribute definition.
      * @param businessObjectClass The BusinessObject Class extracted from the meta data specified in the XML attribute definition,
      *        which is used in querying the data dictionary for the field definition.
@@ -164,11 +164,11 @@ public class WorkflowUtils {
     public static List setKualiFieldValues(List workflowRows, String businessObjectClassName) {
         Iterator workflowRowsItr = workflowRows.iterator();
         while (workflowRowsItr.hasNext()) {
-            edu.iu.uis.eden.lookupable.Row row = (edu.iu.uis.eden.lookupable.Row) workflowRowsItr.next();
+            org.kuali.rice.kew.lookupable.Row row = (org.kuali.rice.kew.lookupable.Row) workflowRowsItr.next();
             Iterator fieldItr = row.getFields().iterator();
             while (fieldItr.hasNext()) {
-                edu.iu.uis.eden.lookupable.Field field = row.getField(0);
-                if (edu.iu.uis.eden.lookupable.Field.TEXT.equals(field.getFieldType())) {
+                org.kuali.rice.kew.lookupable.Field field = row.getField(0);
+                if (org.kuali.rice.kew.lookupable.Field.TEXT.equals(field.getFieldType())) {
                     try {
                         org.kuali.core.web.ui.Field kualiField = FieldUtils.getPropertyField(Class.forName(businessObjectClassName), field.getPropertyName(), false);
                         field.setFieldLabel(kualiField.getFieldLabel());
@@ -194,7 +194,7 @@ public class WorkflowUtils {
      *        everything links up correctly.
      * @return A populated and ready-to-use workflow lookupable.Row.
      */
-    public static edu.iu.uis.eden.lookupable.Row buildTextRow(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
+    public static org.kuali.rice.kew.lookupable.Row buildTextRow(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }
@@ -222,7 +222,7 @@ public class WorkflowUtils {
      *        everything links up correctly.
      * @return A populated and ready-to-use workflow lookupable.Row, which includes both the property field and the lookup icon.
      */
-    public static edu.iu.uis.eden.lookupable.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
+    public static org.kuali.rice.kew.lookupable.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
         return buildTextRowWithLookup(propertyClass, boPropertyName, workflowPropertyKey, null);
     }
 
@@ -239,7 +239,7 @@ public class WorkflowUtils {
      *        and the value is the workflow property key
      * @return A populated and ready-to-use workflow lookupable.Row, which includes both the property field and the lookup icon.
      */
-    public static edu.iu.uis.eden.lookupable.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map fieldConversionsByBoPropertyName) {
+    public static org.kuali.rice.kew.lookupable.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map fieldConversionsByBoPropertyName) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }
@@ -282,7 +282,7 @@ public class WorkflowUtils {
      * @param optionMap The map of value, text pairs that will be used to constuct the dropdown list.
      * @return A populated and ready-to-use workflow lookupable.Row.
      */
-    public static edu.iu.uis.eden.lookupable.Row buildDropdownRow(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map<String, String> optionMap, boolean addBlankRow) {
+    public static org.kuali.rice.kew.lookupable.Row buildDropdownRow(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map<String, String> optionMap, boolean addBlankRow) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }

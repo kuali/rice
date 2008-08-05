@@ -20,7 +20,7 @@
 			<name>FutureRequestsDoc</name>
 			<description>FutureRequestsDoc</description>
 			<label>FutureRequestsDoc</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>NonSIT</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

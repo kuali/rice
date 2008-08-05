@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_DupPolicyName</name>
       <description>This document has a duplicate policy specified</description>
       <label>DocumentTypeXmlParserTestDoc_DupPolicyName</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

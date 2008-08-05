@@ -23,6 +23,9 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.kew.notes.NoteService;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;

@@ -141,7 +141,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong name", "DocumentType", parsedDocument.getName());
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());
         assertEquals("Wrong label", "TestDocumentType", parsedDocument.getLabel());
-        assertEquals("Wrong postprocessor", "edu.iu.uis.eden.postprocessor.DefaultPostProcessor", parsedDocument.getPostProcessorName());
+        assertEquals("Wrong postprocessor", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", parsedDocument.getPostProcessorName());
         assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getDisplayName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();

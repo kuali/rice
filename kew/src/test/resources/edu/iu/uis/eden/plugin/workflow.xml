@@ -3,11 +3,11 @@
   <resourceLoader class="org.kuali.rice.core.resourceloader.BaseResourceLoader"/>
 
   <listener>
-  	<listener-class>edu.iu.uis.eden.plugin.TestPluginListener</listener-class>
+  	<listener-class>org.kuali.rice.kew.plugin.TestPluginListener</listener-class>
   </listener>
   
   <listener>
-  	<listener-class>edu.iu.uis.eden.plugin.TestPluginListener2</listener-class>
+  	<listener-class>org.kuali.rice.kew.plugin.TestPluginListener2</listener-class>
   </listener>
   
 </plugin>

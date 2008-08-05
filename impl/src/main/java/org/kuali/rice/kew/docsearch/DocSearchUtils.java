@@ -37,11 +37,11 @@ import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.session.UserSession;

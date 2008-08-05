@@ -4,7 +4,7 @@
     <documentType>
       <name>ReportingWorkgroupName1</name>
       <label>ReportingWorkgroupName1</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
@@ -25,7 +25,7 @@
     <documentType>
       <name>ReportingWorkgroupName2</name>
       <label>ReportingWorkgroupName2</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>

@@ -3,7 +3,7 @@
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
         <ruleAttribute>
             <name>EmailMessageTestCaseEmailAttribute</name>
-            <className>edu.iu.uis.eden.mail.EmailMessageTestCaseCustomEmailAttribute</className>
+            <className>org.kuali.rice.kew.mail.EmailMessageTestCaseCustomEmailAttribute</className>
             <label>EmailMessageTestCaseEmailAttribute</label>
             <description>EmailMessageTestCaseEmailAttribute</description>
             <type>EmailAttribute</type>
@@ -22,7 +22,7 @@
     		<name>PingDocument</name>
     		<description>PingDocument</description>
     		<label>PingDocument</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -47,7 +47,7 @@
             <name>PingDocument2</name>
             <description>PingDocument2</description>
             <label>PingDocument2</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -97,7 +97,7 @@
             <name>PingDocumentWithEmailAttrib</name>
             <description>PingDocumentWithEmailAttrib</description>
             <label>PingDocumentWithEmailAttrib</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

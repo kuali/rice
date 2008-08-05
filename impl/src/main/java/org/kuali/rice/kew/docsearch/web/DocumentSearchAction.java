@@ -59,11 +59,11 @@ import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.lookupable.Column;
+import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.lookupable.Column;
-import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
-import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.KeyValue;

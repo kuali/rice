@@ -35,10 +35,10 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.ActionListService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.preferences.PreferencesService;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.preferences.Preferences;
-import edu.iu.uis.eden.preferences.PreferencesService;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.KeyValue;

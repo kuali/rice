@@ -16,12 +16,12 @@
 package mocks;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.mail.DefaultEmailService;
+import org.kuali.rice.kew.mail.EmailBody;
+import org.kuali.rice.kew.mail.EmailFrom;
+import org.kuali.rice.kew.mail.EmailSubject;
+import org.kuali.rice.kew.mail.EmailTo;
 
-import edu.iu.uis.eden.mail.DefaultEmailService;
-import edu.iu.uis.eden.mail.EmailBody;
-import edu.iu.uis.eden.mail.EmailFrom;
-import edu.iu.uis.eden.mail.EmailSubject;
-import edu.iu.uis.eden.mail.EmailTo;
 
 /**
  * This class is used to disallow email sending for KEW tests 

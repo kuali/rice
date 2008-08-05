@@ -21,11 +21,11 @@ import java.util.Date;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.feedback.web.FeedbackForm;
+import org.kuali.rice.kew.mail.EmailContent;
+import org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.feedback.web.FeedbackForm;
-import edu.iu.uis.eden.mail.EmailContent;
-import edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
@@ -66,7 +66,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     /**
      * This overridden method is used in case the action item has an null route header attached
      * 
-     * @see edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {

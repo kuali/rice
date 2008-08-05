@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routetemplate.web.RoutingReportAction;
 
 /**

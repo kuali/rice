@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_OrphanedNodes</name>
       <description>This document has orphaned nodes</description>
       <label>DocumentTypeXmlParserTestDoc_OrphanedNodese</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

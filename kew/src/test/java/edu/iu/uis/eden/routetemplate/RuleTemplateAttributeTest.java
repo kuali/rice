@@ -19,10 +19,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 
 /**
  * Tests the RuleTemplateAttribute class.

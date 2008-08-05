@@ -34,10 +34,10 @@ import org.jdom.Namespace;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.help.HelpEntry;
+import org.kuali.rice.kew.help.HelpService;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.help.HelpEntry;
-import edu.iu.uis.eden.help.HelpService;
 
 /*
  * A parser for help entry data.  The underlying xml file format is:

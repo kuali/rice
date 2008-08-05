@@ -6,7 +6,7 @@
       <parent>BOGUS_PARENT_DOCTYPE</parent>
       <description>This document has valid policies</description>
       <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

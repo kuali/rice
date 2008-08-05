@@ -18,7 +18,8 @@ package edu.iu.uis.eden.routetemplate;
 
 import java.util.List;
 
-import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
+
 import edu.iu.uis.eden.routeheader.DocumentContent;
 
 /**

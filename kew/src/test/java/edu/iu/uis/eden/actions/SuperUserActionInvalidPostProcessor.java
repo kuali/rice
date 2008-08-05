@@ -29,9 +29,9 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
+import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 
-import edu.iu.uis.eden.postprocessor.PostProcessor;
-import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
 /**
  * This is a post processor class used for a Super User Test 

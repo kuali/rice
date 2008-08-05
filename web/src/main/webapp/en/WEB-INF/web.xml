@@ -144,7 +144,7 @@
 
   <servlet>
   	<servlet-name>attachment</servlet-name>
-  	<servlet-class>edu.iu.uis.eden.notes.AttachmentServlet</servlet-class>
+  	<servlet-class>org.kuali.rice.kew.notes.AttachmentServlet</servlet-class>
   </servlet>
 
   <servlet>

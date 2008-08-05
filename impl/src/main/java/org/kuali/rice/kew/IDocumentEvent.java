@@ -17,7 +17,8 @@ package org.kuali.rice.kew;
 
 import java.io.Serializable;
 
-import edu.iu.uis.eden.postprocessor.PostProcessor;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
+
 
 /**
  * Base event interface for events emitted from the workflow engine

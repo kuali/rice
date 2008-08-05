@@ -103,7 +103,7 @@
 			<name>DRDocType</name>
 			<description>DRDocType</description>
 			<label>DRDocType</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -125,7 +125,7 @@
 			<parent>DRDocType</parent>
 			<description>DRSeqDocType</description>
 			<label>SeqDocType</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -168,7 +168,7 @@
 			<name>testIgnorePreviousWithDelegation</name>
 			<description>DocType for testIgnorePreviousWithDelegation</description>
 			<label>DocType for testIgnorePreviousWithDelegation</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -204,7 +204,7 @@
 			<name>testRoleToRoleDelegation</name>
 			<description>DocType for testRoleToRoleDelegation</description>
 			<label>DocType for testRoleToRoleDelegation</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -241,7 +241,7 @@
 			<name>testMixedbagRoleToRoleDelegation</name>
 			<description>DocType for testRoleToRoleDelegation</description>
 			<label>DocType for testRoleToRoleDelegation</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -276,7 +276,7 @@
             <name>InlineRequestsDocumentType</name>
             <description>InlineRequestsDocumentType</description>
             <label>InlineRequestsDocumentType</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>_blank</docHandler>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -336,7 +336,7 @@
             <name>InlineRequestsDocumentType_UsingAttributes</name>
             <description>InlineRequestsDocumentType_UsingAttributes</description>
             <label>InlineRequestsDocumentType_UsingAttributes</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>_blank</docHandler>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -403,7 +403,7 @@
             <name>UnresolvableRoleRecipsDocType</name>
             <description>UnresolvableRoleRecipsDocType</description>
             <label>DocType for testUnresolvableRoleAttributeRecipients</label>
-            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>about:blank</docHandler>
             <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

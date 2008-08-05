@@ -21,9 +21,9 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.SpringLoader;
+import org.kuali.rice.kew.plugin.PluginRegistry;
+import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 
-import edu.iu.uis.eden.plugin.PluginRegistry;
-import edu.iu.uis.eden.plugin.PluginRegistryFactory;
 
 /**
  * Start the GlobalResourceLoader from the AppliationInitializeListener.  When the KEW webapp starts up

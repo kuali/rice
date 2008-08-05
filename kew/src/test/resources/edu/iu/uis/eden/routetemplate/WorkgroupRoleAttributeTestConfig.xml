@@ -10,7 +10,7 @@
       <name>WorkgroupRoleAttributeDocument</name>
       <label>Workgroup Role Attribute Document</label>
       <description>Workgroup Role Attribute Document</description>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

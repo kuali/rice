@@ -5,7 +5,7 @@
 			<name>DocTypeWithSecurity</name>
 			<description>Test Security on Doc Type</description>
 			<label>Doc Type with Security</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -22,7 +22,7 @@
 			<name>NoDocHandlerDocType</name>
 			<description>Chart/Org</description>
 			<label>Chart/Org</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>now mandatory</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -33,7 +33,7 @@
 			<name>ChartOrgDocType</name>
 			<description>Chart/Org</description>
 			<label>Chart/Org</label>
-			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<notificationFromAddress>notifyme@indiana.edu</notificationFromAddress>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>

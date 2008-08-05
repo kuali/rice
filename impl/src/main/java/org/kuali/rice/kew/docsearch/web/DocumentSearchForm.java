@@ -34,11 +34,11 @@ import org.kuali.rice.kew.docsearch.StandardDocSearchCriteriaManager;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.lookupable.Column;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.lookupable.Column;
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

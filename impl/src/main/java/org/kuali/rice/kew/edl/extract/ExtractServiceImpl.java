@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.edl.extract.dao.ExtractDAO;
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.kew.notes.dao.NoteDAO;
 
-import edu.iu.uis.eden.notes.Attachment;
-import edu.iu.uis.eden.notes.Note;
-import edu.iu.uis.eden.notes.dao.NoteDAO;
 import edu.iu.uis.eden.routetemplate.RuleServiceImpl;
 import edu.iu.uis.eden.routetemplate.dao.RuleDAO;
 

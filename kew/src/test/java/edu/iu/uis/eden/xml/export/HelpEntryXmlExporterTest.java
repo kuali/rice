@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.help.HelpEntry;
 
-import edu.iu.uis.eden.help.HelpEntry;
 
 
 public class HelpEntryXmlExporterTest extends XmlExporterTestCase {

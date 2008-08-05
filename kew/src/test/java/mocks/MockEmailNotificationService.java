@@ -18,8 +18,8 @@ package mocks;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.mail.ActionListEmailService;
 
-import edu.iu.uis.eden.mail.ActionListEmailService;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

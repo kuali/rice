@@ -4,7 +4,7 @@
     <documentType>
       <name>VersionCheckDocument</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy1</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>

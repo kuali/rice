@@ -6,7 +6,7 @@
       <name>DocumentTypeXmlParserTestDoc_ValidPolicyNames_UpperCase</name>
       <description>This document has valid policies (upper case)</description>
       <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_UpperCase</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -54,7 +54,7 @@
       <name>DocumentTypeXmlParserTestDoc_ValidPolicyNames_LowerCase</name>
       <description>This document has valid policies (lower case)</description>
       <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_LowerCase</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

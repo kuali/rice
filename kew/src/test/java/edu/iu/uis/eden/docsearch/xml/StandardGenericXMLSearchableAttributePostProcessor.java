@@ -19,9 +19,9 @@ package edu.iu.uis.eden.docsearch.xml;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 
-import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
-import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
 public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultPostProcessor {
     

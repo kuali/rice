@@ -24,10 +24,10 @@ import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.plugin.Plugin;
+import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.plugin.Plugin;
-import edu.iu.uis.eden.plugin.PluginRegistry;
 
 /**
  * A resource loader which is responsible for loading resources from the Workflow Core.  It is responsible for

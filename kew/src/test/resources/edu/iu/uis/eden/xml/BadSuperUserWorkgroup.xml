@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc_BadSuperUserWG</name>
       <description>This document has an invalid super user workgroup</description>
       <label>DocumentTypeXmlParserTestDoc_BadSuperUserWG</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>BOGUS_WORKGROUP</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

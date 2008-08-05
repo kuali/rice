@@ -175,12 +175,12 @@
 	</bean>
 
 	<!--  ResponsibilityIdService -->
-	<bean id="enResponsibilityIdService" class="edu.iu.uis.eden.responsibility.ResponsibilityIdServiceImpl" lazy-init="true">
+	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.ResponsibilityIdServiceImpl" lazy-init="true">
 		<property name="responsibilityIdDAO">
 			<ref bean="enResponsibilityIdDAO" />
 		</property>
 	</bean>
-	<bean id="enResponsibilityIdDAO" class="edu.iu.uis.eden.responsibility.dao.ResponsibilityIdDAOOjbImpl" lazy-init="true">
+	<bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  ActionRequestService -->
@@ -322,7 +322,7 @@
 	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
 
 	<!--  PreferencesService -->
-	<bean id="enPreferencesService" class="edu.iu.uis.eden.preferences.PreferencesServiceImpl" lazy-init="true" />
+	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.PreferencesServiceImpl" lazy-init="true" />
 	<!--  UserOptionsService -->
 	<bean id="enUserOptionsService" class="edu.iu.uis.eden.useroptions.UserOptionsServiceImpl" lazy-init="true">
 		<property name="userOptionsDAO">
@@ -375,38 +375,38 @@
 	</bean>
 
 	<!-- Workflow Internal Lookups -->
-	<bean id="DocumentTypeLookupableImplService" class="edu.iu.uis.eden.lookupable.DocumentTypeLookupableImpl" scope="prototype" />
-	<bean id="RoleLookupableImplService" class="edu.iu.uis.eden.lookupable.RoleLookupableImpl" scope="prototype" />
-	<bean id="RuleAttributeLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleAttributeLookupableImpl" scope="prototype" />
-	<bean id="RuleBaseValuesLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleBaseValuesLookupableImpl" scope="prototype" />
-	<bean id="RuleTemplateLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
-	<bean id="EDocLiteLookupableService" class="edu.iu.uis.eden.lookupable.EDocLiteLookupable" scope="prototype" />
+	<bean id="DocumentTypeLookupableImplService" class="org.kuali.rice.kew.lookupable.DocumentTypeLookupableImpl" scope="prototype" />
+	<bean id="RoleLookupableImplService" class="org.kuali.rice.kew.lookupable.RoleLookupableImpl" scope="prototype" />
+	<bean id="RuleAttributeLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleAttributeLookupableImpl" scope="prototype" />
+	<bean id="RuleBaseValuesLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableImpl" scope="prototype" />
+	<bean id="RuleTemplateLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
+	<bean id="EDocLiteLookupableService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupable" scope="prototype" />
 	<bean id="UserLookupableImplService" class="edu.iu.uis.eden.user.UserLookupableImpl" scope="prototype" />
 	<bean id="WorkGroupLookupableImplService" class="edu.iu.uis.eden.workgroup.WorkGroupLookupableImpl" scope="prototype" />
     <bean id="WorkgroupTypeLookup" class="org.kuali.workflow.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
-	<bean id="enEmailService" class="edu.iu.uis.eden.mail.DefaultEmailService"  lazy-init="true"/>
+	<bean id="enEmailService" class="org.kuali.rice.kew.mail.DefaultEmailService"  lazy-init="true"/>
 
 <!--
-    <bean id="enEmailContentService" class="edu.iu.uis.eden.mail.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
-    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.ActionListEmailServiceImpl">
+    <bean id="enEmailContentService" class="org.kuali.rice.kew.mail.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
+    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.ActionListEmailServiceImpl">
       <property name="deploymentEnvironment">
         <value>${environment}</value>
       </property>
     </bean>
 -->
-	<bean id="enEmailContentService" class="edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl" lazy-init="true">
+	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl" lazy-init="true">
         <property name="styleService" ref="enStyleService"/>
     </bean>
-    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl">
+    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.CustomizableActionListEmailServiceImpl">
         <property name="deploymentEnvironment">
             <value>${environment}</value>
         </property>
         <property name="emailContentGenerator" ref="enEmailContentService"/>
     </bean>
 
-<!--	<bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/> -->
-    <bean id="enNotificationService" class="edu.iu.uis.eden.notification.DefaultNotificationService"  lazy-init="true"/>
+<!--	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.KCBNotificationService"  lazy-init="true"/> -->
+    <bean id="enNotificationService" class="org.kuali.rice.kew.notification.DefaultNotificationService"  lazy-init="true"/>
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.config.BeanHolder">
@@ -466,16 +466,16 @@
         </property>
     </bean>
 
-    <bean id="enHelpService" class="edu.iu.uis.eden.help.HelpServiceImpl" lazy-init="true">
+    <bean id="enHelpService" class="org.kuali.rice.kew.help.HelpServiceImpl" lazy-init="true">
         <property name="helpDAO">
             <!-- <ref bean="enHelpDAO" /> -->
             <ref bean="enHelpOJBDAO" />
         </property>
     </bean>
 
-    <bean id="enHelpDAO" class="edu.iu.uis.eden.help.dao.HelpDaoJpaImpl" lazy-init="true"/>
+    <bean id="enHelpDAO" class="org.kuali.rice.kew.help.dao.HelpDaoJpaImpl" lazy-init="true"/>
      
-    <bean id="enHelpOJBDAO" class="edu.iu.uis.eden.help.dao.HelpDAOOjbImpl" lazy-init="true">
+    <bean id="enHelpOJBDAO" class="org.kuali.rice.kew.help.dao.HelpDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
@@ -562,26 +562,26 @@
   </bean>
 
   <!--  NoteService -->
-  <bean id="enNoteService" class="edu.iu.uis.eden.notes.NoteServiceImpl">
+  <bean id="enNoteService" class="org.kuali.rice.kew.notes.NoteServiceImpl">
     <property name="noteDAO">
-      <bean class="edu.iu.uis.eden.notes.dao.NoteDAOOjbImpl">
+      <bean class="org.kuali.rice.kew.notes.dao.NoteDAOOjbImpl">
 				<property name="jcdAlias" value="enWorkflowDataSource" />
       </bean>
     </property>
     <property name="attachmentService">
-      <bean class="edu.iu.uis.eden.notes.AttachmentServiceImpl">
+      <bean class="org.kuali.rice.kew.notes.AttachmentServiceImpl">
         <property name="attachmentDir" value="${attachment.dir.location}" />
       </bean>
     </property>
   </bean>
 
   <!--  QuickLinksService -->
-  <bean id="enQuickLinksService" class="edu.iu.uis.eden.quicklinks.QuickLinksServiceImpl">
+  <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.QuickLinksServiceImpl">
     <property name="quickLinksDAO">
       <ref bean="enQuickLinksDAO" />
     </property>
   </bean>
-  <bean id="enQuickLinksDAO" class="edu.iu.uis.eden.quicklinks.dao.QuickLinksDAOOjbImpl">
+  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.QuickLinksDAOOjbImpl">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
@@ -630,9 +630,9 @@
       <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
     </bean>
 
-    <bean id="enRemoveReplaceDocumentService" class="edu.iu.uis.eden.removereplace.RemoveReplaceDocumentServiceImpl">
+    <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.RemoveReplaceDocumentServiceImpl">
       <property name="removeReplaceDocumentDAO">
-        <bean class="edu.iu.uis.eden.removereplace.dao.RemoveReplaceDocumentDAOOjbImpl">
+        <bean class="org.kuali.rice.kew.removereplace.dao.RemoveReplaceDocumentDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource"/>
         </bean>
       </property>
@@ -645,7 +645,7 @@
     <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
-    <bean id="enImmediateEmailReminderService" class="edu.iu.uis.eden.mail.ActionListImmediateProcessorImpl" />
+    <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.ActionListImmediateProcessorImpl" />
     <bean id="simpleDocumentActionsService" class="edu.iu.uis.eden.server.SimpleDocumentActionsWebServiceImpl"/>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -698,7 +698,7 @@
             <ref bean="enActionListEmailService" />
           </property>
           <property name="localServiceName" value="enActionListEmailService" />
-          <property name="serviceInterface" value="edu.iu.uis.eden.mail.ActionListEmailService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.mail.ActionListEmailService" />
           <property name="priority" value="30"/>
           <property name="retryAttempts" value="3" />
         </bean>

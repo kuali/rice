@@ -17,7 +17,8 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-import edu.iu.uis.eden.lookupable.Row;
+import org.kuali.rice.kew.lookupable.Row;
+
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

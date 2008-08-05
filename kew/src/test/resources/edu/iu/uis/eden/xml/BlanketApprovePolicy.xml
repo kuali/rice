@@ -4,7 +4,7 @@
     <documentType>
       <name>BlanketApprovePolicy1</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy1</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
@@ -24,7 +24,7 @@
     <documentType>
       <name>BlanketApprovePolicy2</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy2</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>BlanketApproveWorkgroup</superUserWorkgroupName>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
@@ -44,7 +44,7 @@
     <documentType>
       <name>BlanketApprovePolicy3</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy3</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -63,7 +63,7 @@
     <documentType>
       <name>BlanketApprovePolicy4</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy4</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApproveWorkgroupName>BlanketApproveWorkgroup</blanketApproveWorkgroupName>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -84,7 +84,7 @@
       <name>BlanketApprovePolicy5</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy5</label>
       <parent>BlanketApprovePolicy4</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
@@ -104,7 +104,7 @@
       <name>BlanketApprovePolicy6</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy6</label>
       <parent>BlanketApprovePolicy5</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -125,7 +125,7 @@
       <name>BlanketApprovePolicy7</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy7</label>
       <parent>BlanketApprovePolicy5</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -151,7 +151,7 @@
     <documentType>
       <name>BlanketApprovePolicy_OverridedParent</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_OverridedParent</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>BlanketApproveWorkgroup</blanketApproveWorkgroupName>
@@ -178,7 +178,7 @@
       <name>BlanketApprovePolicy_Override_NONE</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_Override_NONE</label>
       <parent>BlanketApprovePolicy_OverridedParent</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -199,7 +199,7 @@
       <name>BlanketApprovePolicy_Override_ANY</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_Override_ANY</label>
       <parent>BlanketApprovePolicy_OverridedParent</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
@@ -220,7 +220,7 @@
       <name>BlanketApprovePolicy_NoOverride</name>
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_NoOverride</label>
       <parent>BlanketApprovePolicy_OverridedParent</parent>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

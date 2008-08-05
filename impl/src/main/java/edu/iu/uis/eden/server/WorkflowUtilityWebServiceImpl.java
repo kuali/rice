@@ -70,11 +70,11 @@ import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.FlexRM;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;

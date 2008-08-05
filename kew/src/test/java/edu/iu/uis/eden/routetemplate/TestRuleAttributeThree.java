@@ -24,10 +24,10 @@ import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
 
-import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 
 /**

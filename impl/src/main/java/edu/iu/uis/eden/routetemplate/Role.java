@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
-import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
 
 /**
  * A defined role on a {@link RoleAttribute}.

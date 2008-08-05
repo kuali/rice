@@ -48,7 +48,7 @@
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
     <collection-descriptor auto-retrieve="true" auto-update="false" auto-delete="true"
-        element-class-ref="edu.iu.uis.eden.notes.Note"
+        element-class-ref="org.kuali.rice.kew.notes.Note"
         name="notes"
         orderby="noteId"
         sort="ASC"
@@ -79,7 +79,7 @@
     conversion="edu.iu.uis.eden.security.OjbEncryptDecryptFieldConversion"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.notes.Note" table="EN_DOC_NTE_T">
+  <class-descriptor class="org.kuali.rice.kew.notes.Note" table="EN_DOC_NTE_T">
     <field-descriptor column="DOC_NTE_ID" name="noteId" jdbc-type="BIGINT" primarykey="true"
          autoincrement="true" sequence-name="SEQ_DOC_NTE" />
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
@@ -87,19 +87,19 @@
     <field-descriptor column="DOC_NTE_CRT_DT" name="noteCreateDate"  jdbc-type="TIMESTAMP" />
     <field-descriptor column="DOC_NTE_TXT" name="noteText" jdbc-type="VARCHAR"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr"  jdbc-type="INTEGER" locking="true"/>
-	<collection-descriptor element-class-ref="edu.iu.uis.eden.notes.Attachment" name="attachments" auto-retrieve="true" auto-delete="true" auto-update="true">
+	<collection-descriptor element-class-ref="org.kuali.rice.kew.notes.Attachment" name="attachments" auto-retrieve="true" auto-delete="true" auto-update="true">
 		<inverse-foreignkey field-ref="noteId"></inverse-foreignkey>
 	</collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.notes.Attachment" table="EN_ATTACHMENT_T">
+  <class-descriptor class="org.kuali.rice.kew.notes.Attachment" table="EN_ATTACHMENT_T">
   	<field-descriptor column="ATTACHMENT_ID" name="attachmentId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_DOC_NTE" />
   	<field-descriptor column="NTE_ID" name="noteId" jdbc-type="BIGINT" />
   	<field-descriptor column="FILE_NM" name="fileName" jdbc-type="VARCHAR" />
   	<field-descriptor column="FILE_LOC" name="fileLoc" jdbc-type="VARCHAR" />
   	<field-descriptor column="MIME_TYP" name="mimeType" jdbc-type="VARCHAR" />
   	<field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="note" class-ref="edu.iu.uis.eden.notes.Note" auto-retrieve="true" auto-delete="false" auto-update="false">
+    <reference-descriptor name="note" class-ref="org.kuali.rice.kew.notes.Note" auto-retrieve="true" auto-delete="false" auto-update="false">
     	<foreignkey field-ref="noteId"></foreignkey>
     </reference-descriptor>
   </class-descriptor>
@@ -612,7 +612,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.help.HelpEntry" table="EN_HLP_T">
+  <class-descriptor class="org.kuali.rice.kew.help.HelpEntry" table="EN_HLP_T">
     <field-descriptor column="EN_HLP_ID" name="helpId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_HELP_ENTRY" />
     <field-descriptor column="EN_HLP_NM" name="helpName" jdbc-type="VARCHAR" />
@@ -1058,28 +1058,28 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.removereplace.RemoveReplaceDocument" table="EN_RMV_RPLC_DOC_T">
+  <class-descriptor class="org.kuali.rice.kew.removereplace.RemoveReplaceDocument" table="EN_RMV_RPLC_DOC_T">
     <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor column="OPRN" name="operation" jdbc-type="VARCHAR"/>
     <field-descriptor column="PRSN_EN_ID" name="userWorkflowId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RPLC_PRSN_EN_ID" name="replacementUserWorkflowId" jdbc-type="VARCHAR"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <collection-descriptor name="ruleTargets" element-class-ref="edu.iu.uis.eden.removereplace.RuleTarget"
+    <collection-descriptor name="ruleTargets" element-class-ref="org.kuali.rice.kew.removereplace.RuleTarget"
       auto-delete="true" auto-retrieve="true" auto-update="object">
       <inverse-foreignkey field-ref="documentId"/>
     </collection-descriptor>
-    <collection-descriptor name="workgroupTargets" element-class-ref="edu.iu.uis.eden.removereplace.WorkgroupTarget"
+    <collection-descriptor name="workgroupTargets" element-class-ref="org.kuali.rice.kew.removereplace.WorkgroupTarget"
       auto-delete="true" auto-retrieve="true" auto-update="object">
       <inverse-foreignkey field-ref="documentId"/>
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.removereplace.RuleTarget" table="EN_RMV_RPLC_RULE_T">
+  <class-descriptor class="org.kuali.rice.kew.removereplace.RuleTarget" table="EN_RMV_RPLC_RULE_T">
     <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor column="RULE_ID" name="ruleId" jdbc-type="BIGINT" primarykey="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.removereplace.WorkgroupTarget" table="EN_RMV_RPLC_WRKGRP_T">
+  <class-descriptor class="org.kuali.rice.kew.removereplace.WorkgroupTarget" table="EN_RMV_RPLC_WRKGRP_T">
     <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor column="WRKGRP_ID" name="workgroupId" jdbc-type="BIGINT" primarykey="true"/>
   </class-descriptor>

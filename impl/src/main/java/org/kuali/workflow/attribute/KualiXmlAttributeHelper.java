@@ -105,7 +105,7 @@ public class KualiXmlAttributeHelper {
          * element for each term in the XPath expression. When this doesn't apply XML can be coded in the configXML for the
          * ruleAttribute.
          * 
-         * @see edu.iu.uis.eden.plugin.attributes.WorkflowAttribute#getDocContent()
+         * @see org.kuali.rice.kew.plugin.attributes.WorkflowAttribute#getDocContent()
          */
 
 

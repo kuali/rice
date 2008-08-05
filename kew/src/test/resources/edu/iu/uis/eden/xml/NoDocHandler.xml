@@ -5,7 +5,7 @@
       <name>DocumentTypeXmlParserTestDoc1</name>
       <description>This document has an invalid activation type</description>
       <label>DocumentTypeXmlParserTestDoc1</label>
-      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>

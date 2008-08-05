@@ -25,8 +25,8 @@ import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.core.dependencylifecycles.SpringLifeCycle;
 import org.kuali.rice.kew.core.dependencylifecycles.XmlPipelineLifeCycle;
+import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 
-import edu.iu.uis.eden.mail.EmailReminderLifecycle;
 
 /**
  * A temporary lifecycle that lives in embedded space.  Will be removed when the embedded plugin is factored out.

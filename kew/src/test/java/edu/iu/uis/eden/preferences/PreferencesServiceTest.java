@@ -22,6 +22,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.preferences.PreferencesService;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;

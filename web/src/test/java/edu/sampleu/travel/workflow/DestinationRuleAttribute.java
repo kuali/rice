@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
+import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Row;
+
 import edu.iu.uis.eden.routetemplate.GenericWorkflowAttribute;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 

@@ -9,8 +9,8 @@
     <mapping-file>META-INF/kew-orm.xml</mapping-file>
     <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue</class>
     <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueContent</class>
-    <class>edu.iu.uis.eden.notes.Note</class>
-    <class>edu.iu.uis.eden.notes.Attachment</class>
+    <class>org.kuali.rice.kew.notes.Note</class>
+    <class>org.kuali.rice.kew.notes.Attachment</class>
     <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension</class>
     <class>org.kuali.rice.kew.actionitem.ActionItem</class>
     <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
@@ -36,7 +36,7 @@
     <class>edu.iu.uis.eden.routetemplate.RuleResponsibility</class>
     <class>edu.iu.uis.eden.routetemplate.RuleExtension</class>
     <class>edu.iu.uis.eden.routetemplate.RuleExtensionValue</class>
-    <class>edu.iu.uis.eden.help.HelpEntry</class>
+    <class>org.kuali.rice.kew.help.HelpEntry</class>
     <class>org.kuali.rice.kew.engine.node.RouteNode</class>
     <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>
     <class>org.kuali.rice.kew.engine.node.BranchPrototype</class>
@@ -62,9 +62,9 @@
     <class>org.kuali.workflow.role.QualifiedRoleExtensionValue</class>
     <class>org.kuali.workflow.role.Role</class>
     <class>org.kuali.workflow.role.RoleAttribute</class>
-    <class>edu.iu.uis.eden.removereplace.RemoveReplaceDocument</class>
-    <class>edu.iu.uis.eden.removereplace.RuleTarget</class>
-    <class>edu.iu.uis.eden.removereplace.WorkgroupTarget</class>
+    <class>org.kuali.rice.kew.removereplace.RemoveReplaceDocument</class>
+    <class>org.kuali.rice.kew.removereplace.RuleTarget</class>
+    <class>org.kuali.rice.kew.removereplace.WorkgroupTarget</class>
     <class>org.kuali.rice.kew.edl.extract.Dump</class>
     <class>org.kuali.rice.kew.edl.extract.Fields</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>

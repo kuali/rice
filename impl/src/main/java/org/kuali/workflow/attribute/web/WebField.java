@@ -16,7 +16,7 @@
  */
 package org.kuali.workflow.attribute.web;
 
-import edu.iu.uis.eden.lookupable.Field;
+import org.kuali.rice.kew.lookupable.Field;
 
 /**
  * Represents a Field that's rendered on a web form and can be used to store the value

@@ -18,7 +18,8 @@ package edu.iu.uis.eden.routetemplate.xmlrouting;
 
 import java.util.Map;
 
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**

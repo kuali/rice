@@ -40,7 +40,7 @@
 		</property>
 	</bean>
 
-	<bean id="cache" class="org.kuali.rice.kew.cache.RiceCacheAdministratorImpl" />
+	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl" />
 
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />
@@ -190,6 +190,6 @@
 	</bean>
 
 	<bean id="testExceptionHandlerService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
-	<bean id="testJavaSecurityManagementService" class="org.kuali.rice.kew.security.admin.MockJavaSecurityManagementServiceImpl" />
+	<bean id="testJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.MockJavaSecurityManagementServiceImpl" />
 
 </beans>

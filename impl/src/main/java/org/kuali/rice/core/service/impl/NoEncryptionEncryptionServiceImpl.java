@@ -29,7 +29,7 @@ import org.kuali.rice.core.service.EncryptionService;
 public class NoEncryptionEncryptionServiceImpl implements EncryptionService, Demonstration {
 
     /**
-     * @see org.kuali.rice.kew.security.EncryptionService#isEnabled()
+     * @see org.kuali.rice.ksb.security.EncryptionService#isEnabled()
      */
     public boolean isEnabled() {
         return false;

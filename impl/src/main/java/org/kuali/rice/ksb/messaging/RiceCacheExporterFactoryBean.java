@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.kuali.rice.kew.cache.RiceCacheAdministrator;
-import org.kuali.rice.kew.cache.RiceCacheAdministratorImpl;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 

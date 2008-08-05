@@ -314,7 +314,7 @@ public class RuleServiceImpl implements RuleService {
 //      ruleCache.setQueueStatus(KEWConstants.ROUTE_QUEUE_QUEUED);
 //      ruleCache.setRetryCount(new Integer(0));
 //      ruleCache.setPayload("" + ruleId);
-//      ruleCache.setProcessorClassName("org.kuali.rice.kew.cache.RuleCacheProcessor");
+//      ruleCache.setProcessorClassName("org.kuali.rice.ksb.cache.RuleCacheProcessor");
 //      getRouteQueueService().requeueDocument(ruleCache);
 
 

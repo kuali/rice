@@ -195,7 +195,7 @@
 
 	<servlet>
 		<servlet-name>exportsecurity</servlet-name>
-		<servlet-class>org.kuali.rice.kew.security.admin.ExportServlet</servlet-class>
+		<servlet-class>org.kuali.rice.ksb.security.admin.ExportServlet</servlet-class>
 	</servlet>
 
 	<servlet>

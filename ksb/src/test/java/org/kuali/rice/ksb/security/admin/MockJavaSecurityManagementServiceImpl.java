@@ -23,7 +23,7 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-import org.kuali.rice.kew.security.admin.JavaSecurityManagementServiceImpl;
+import org.kuali.rice.ksb.security.admin.JavaSecurityManagementServiceImpl;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 

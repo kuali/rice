@@ -27,7 +27,7 @@ import org.kuali.rice.kew.XmlLoader;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ApplicationConstantsService extends XmlLoader {
-	public static final String APPLICATION_CONSTANTS_CACHE_ID = "org.kuali.rice.kew.cache.ApplicationConstantsCache";
+	public static final String APPLICATION_CONSTANTS_CACHE_ID = "org.kuali.rice.ksb.cache.ApplicationConstantsCache";
 	
     public void save(ApplicationConstant applicationConstant);
     public void delete(ApplicationConstant applicationConstant);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.security.admin;
+package org.kuali.rice.ksb.security.admin;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;

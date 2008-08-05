@@ -3,5 +3,5 @@
 
 <beans>
  	<bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
-	<bean id="digitalSignatureService" class="org.kuali.rice.kew.security.DigitalSignatureServiceImpl" lazy-init="true"/>
+	<bean id="digitalSignatureService" class="org.kuali.rice.ksb.security.DigitalSignatureServiceImpl" lazy-init="true"/>
 </beans>

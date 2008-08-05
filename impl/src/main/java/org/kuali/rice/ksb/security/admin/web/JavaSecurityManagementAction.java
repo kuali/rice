@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.security.admin.web;
+package org.kuali.rice.ksb.security.admin.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,9 +30,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.security.admin.ExportServlet;
-import org.kuali.rice.kew.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.messaging.web.KSBAction;
+import org.kuali.rice.ksb.security.admin.ExportServlet;
+import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.RiceConstants;
 

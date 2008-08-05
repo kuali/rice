@@ -25,11 +25,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.exceptions.RiceRuntimeException;
-import org.kuali.rice.kew.security.SignatureSigningResponseWrapper;
-import org.kuali.rice.kew.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.security.SignatureSigningResponseWrapper;
+import org.kuali.rice.ksb.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.web.HttpRequestHandler;

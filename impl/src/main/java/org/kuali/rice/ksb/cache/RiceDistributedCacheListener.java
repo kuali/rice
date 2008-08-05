@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.cache;
+package org.kuali.rice.ksb.cache;
 
 import java.io.Serializable;
 

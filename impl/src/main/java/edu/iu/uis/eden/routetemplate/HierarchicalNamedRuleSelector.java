@@ -19,11 +19,11 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyRoutingNode;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyRoutingNode;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -32,12 +32,12 @@ import edu.iu.uis.eden.util.Utilities;
  * HierarchyRoutingNode and the HierarchyRoutingNode name.  E.g.:
  * <pre>
  * &lt;dynamic name="hierarchy"&gt;
- *   &lt;type&gt;edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyRoutingNode&lt;/type&gt;
- *   &lt;hierarchyProvider&gt;edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyProvider&lt;/hierarchyProvider&gt;
+ *   &lt;type&gt;org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyRoutingNode&lt;/type&gt;
+ *   &lt;hierarchyProvider&gt;org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider&lt;/hierarchyProvider&gt;
  *   &lt;ruleSelector&gt;HierarchicalNamed&lt;/ruleSelector&gt;
  * &lt;/dynamic&gt;
  * </pre>
- * If <code>edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyProvider</code> supplied stops named 'a', 'b', and 'c', the rules
+ * If <code>org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider</code> supplied stops named 'a', 'b', and 'c', the rules
  * selected would be 'hierarchy-a', 'hierarchy-b', and 'hierarchy-c', respectively.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

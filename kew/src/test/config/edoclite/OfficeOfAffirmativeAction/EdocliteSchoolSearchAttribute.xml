@@ -3,7 +3,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
     <ruleAttribute>
       <name>EDLSchoolSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>Department Search Attribute</label>
       <description>Department Search Attribute</description>
       <type>SearchableXmlAttribute</type>

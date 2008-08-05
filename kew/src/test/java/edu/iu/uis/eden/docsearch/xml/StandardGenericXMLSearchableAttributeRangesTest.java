@@ -26,27 +26,28 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
-import edu.iu.uis.eden.docsearch.DocSearchUtils;
-import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
-import edu.iu.uis.eden.docsearch.DocumentSearchService;
 import edu.iu.uis.eden.docsearch.DocumentSearchTestBase;
-import edu.iu.uis.eden.docsearch.SearchableAttribute;
-import edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeLongValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeStringValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -115,7 +116,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 //    }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
@@ -232,7 +233,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
      */
     @Test  public void testValidateUserSearchRangeInputs() {
     	// upper bound and lower bound fields should be using same validation... we just altername which formKey we use here

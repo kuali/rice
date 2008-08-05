@@ -26,8 +26,8 @@ import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationContentType;
 import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.kew.doctype.DocumentType;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.

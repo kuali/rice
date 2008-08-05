@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.web.DocumentSearchForm;
 import org.kuali.workflow.test.KEWHtmlUnitTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
@@ -30,7 +32,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
-import edu.iu.uis.eden.docsearch.web.DocumentSearchForm;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.util.Utilities;

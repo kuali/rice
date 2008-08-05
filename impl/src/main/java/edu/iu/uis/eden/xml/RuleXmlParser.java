@@ -32,12 +32,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleDelegation;
 import edu.iu.uis.eden.routetemplate.RuleExpressionDef;

@@ -34,6 +34,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.springframework.validation.BindException;
@@ -42,7 +43,6 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * Implements reviewer Approve/Disapprove and initiator Acknowledge of a Notification requests

@@ -31,10 +31,10 @@ import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.dao.BaseWorkgroupDAO;
 import edu.iu.uis.eden.workgroup.dao.BaseWorkgroupMemberDAO;

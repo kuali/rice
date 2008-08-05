@@ -37,6 +37,7 @@ import org.codehaus.xfire.util.LoggingHandler;
 import org.codehaus.xfire.util.dom.DOMInHandler;
 import org.codehaus.xfire.util.dom.DOMOutHandler;
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -47,7 +48,6 @@ import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.DocumentResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.ErrorResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.NoteDetail;

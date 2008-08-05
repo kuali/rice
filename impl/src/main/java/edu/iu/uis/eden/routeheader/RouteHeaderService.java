@@ -19,7 +19,8 @@ package edu.iu.uis.eden.routeheader;
 import java.util.Collection;
 import java.util.Set;
 
-import edu.iu.uis.eden.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentType;
+
 
 /**
  * A service providing data access for documents (a.k.a route headers).

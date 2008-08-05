@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -149,19 +149,19 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         return null;
     }
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.Long)
+     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.Long)
      */
     public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
         return null;
     }
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.String)
+     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.String)
      */
     public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
         return null;
     }
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.doctype.DocumentTypeService#getRootDocumentType(edu.iu.uis.eden.doctype.DocumentType)
+     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getRootDocumentType(org.kuali.rice.kew.doctype.DocumentType)
      */
     public DocumentType findRootDocumentType(DocumentType docType) {
         return null;

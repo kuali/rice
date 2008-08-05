@@ -4,7 +4,7 @@
 		<!--  this is for the ChartOrgDynamicNodeTest  -->
 		<ruleAttribute>
 			<name>XMLSearchableAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -32,7 +32,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>BlankDropDownSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>DepartmentSearchAttribute</label>
 			<description>DepartmentSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>

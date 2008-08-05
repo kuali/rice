@@ -19,15 +19,15 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.engine.node.Branch;
-import edu.iu.uis.eden.engine.node.BranchState;
 
 /**
  * Test case that tests setting and getting variables, both programmatically

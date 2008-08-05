@@ -32,8 +32,8 @@ import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderUtil;
+import org.kuali.rice.kew.core.CoreResourceLoader;
 
-import edu.iu.uis.eden.core.CoreResourceLoader;
 import edu.iu.uis.eden.plugin.client.PluginListener;
 import edu.iu.uis.eden.plugin.manifest.PluginManifest;
 

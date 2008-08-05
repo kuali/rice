@@ -24,12 +24,12 @@ import org.kuali.rice.kew.AfterProcessEvent;
 import org.kuali.rice.kew.BeforeProcessEvent;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
+import org.kuali.rice.kew.clientapp.DeleteEvent;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.clientapp.DeleteEvent;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 

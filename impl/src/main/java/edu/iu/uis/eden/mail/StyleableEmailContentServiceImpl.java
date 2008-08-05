@@ -36,6 +36,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.edl.StyleService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -45,8 +47,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.edl.StyleService;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

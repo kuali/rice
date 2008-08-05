@@ -27,9 +27,9 @@ import mocks.elements.UniversityOrganizationElement;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 
-import edu.iu.uis.eden.docsearch.SearchableAttributeStringValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
@@ -264,14 +264,14 @@ public class MockChartOrgAttribute implements WorkflowAttribute {
     }
 
 	/* (non-Javadoc)
-	 * @see edu.iu.uis.eden.docsearch.SearchableAttribute#getSearchContent()
+	 * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchContent()
 	 */
 	public String getSearchContent() {
 		return getDocContent();
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.iu.uis.eden.docsearch.SearchableAttribute#getSearchStorageValues()
+	 * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchStorageValues()
 	 */
 	public List getSearchStorageValues(String docContent) {
         List searchStorageValues = new ArrayList();

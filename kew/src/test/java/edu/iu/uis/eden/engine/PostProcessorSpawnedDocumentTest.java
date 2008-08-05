@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.engine;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * Tests a new document being spawned from the post processing of an existing document

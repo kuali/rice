@@ -22,6 +22,10 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.edl.EDLContext;
+import org.kuali.rice.kew.edl.EDLController;
+import org.kuali.rice.kew.edl.EDocLiteService;
+import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Element;
@@ -51,13 +55,13 @@ public class EDLControllerTest extends KEWTestCase {
 
 		//make sure they all have the correct config element passed in
 		Element preProcessorConfigElement = (Element) ((Map.Entry)edlController.getEdlGlobalConfig().getPreProcessors().entrySet().iterator().next()).getKey();
-		assertEquals("PreProcessor config element is of the wrong class", "edu.iu.uis.eden.edl.TestPreProcessor", preProcessorConfigElement.getFirstChild().getNodeValue());
+		assertEquals("PreProcessor config element is of the wrong class", "org.kuali.rice.kew.edl.TestPreProcessor", preProcessorConfigElement.getFirstChild().getNodeValue());
 
 		Element postProcessorConfigElement = (Element) ((Map.Entry)edlController.getEdlGlobalConfig().getPostProcessors().entrySet().iterator().next()).getKey();
-		assertEquals("PostProcessor config element is of the wrong class", "edu.iu.uis.eden.edl.TestPostProcessor", postProcessorConfigElement.getFirstChild().getNodeValue());
+		assertEquals("PostProcessor config element is of the wrong class", "org.kuali.rice.kew.edl.TestPostProcessor", postProcessorConfigElement.getFirstChild().getNodeValue());
 
 		Element stateConfigElement = (Element) ((Map.Entry)edlController.getEdlGlobalConfig().getStateComponents().entrySet().iterator().next()).getKey();
-		assertEquals("State config element is of the wrong class", "edu.iu.uis.eden.edl.TestStateComponent", stateConfigElement.getFirstChild().getNodeValue());
+		assertEquals("State config element is of the wrong class", "org.kuali.rice.kew.edl.TestStateComponent", stateConfigElement.getFirstChild().getNodeValue());
 
 		Element configProcessorConfigElement = (Element) ((Map.Entry)edlController.getConfigProcessors().entrySet().iterator().next()).getKey();
 		assertEquals("Config processor element should be fielDef", "fieldDef", configProcessorConfigElement.getNodeName());

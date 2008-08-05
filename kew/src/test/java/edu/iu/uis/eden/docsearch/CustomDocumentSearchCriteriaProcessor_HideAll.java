@@ -15,6 +15,8 @@
  */
 package edu.iu.uis.eden.docsearch;
 
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
+
 
 /**
  * Class to test custom search criteria processor implementation

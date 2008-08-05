@@ -20,6 +20,7 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.kuali.rice.kew.edl.EDocLitePostProcessor;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

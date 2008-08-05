@@ -26,9 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kew.clientapp.WorkflowInfo;
+import org.kuali.rice.kew.doctype.DocumentType;
 
-import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.web.KeyValue;
 import edu.iu.uis.eden.web.WorkflowRoutingForm;

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.engine.RouteContext;
 
 /**
  * RoleAttribute that exposes a document's user who routed the document

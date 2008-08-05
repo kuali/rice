@@ -1,17 +1,17 @@
 <edlConfig>
 	<preProcessors>
-		<preProcessor>edu.iu.uis.eden.edl.TestPreProcessor</preProcessor>
+		<preProcessor>org.kuali.rice.kew.edl.TestPreProcessor</preProcessor>
 	</preProcessors>
 	<postProcessors>
-		<postProcessor>edu.iu.uis.eden.edl.TestPostProcessor</postProcessor>
+		<postProcessor>org.kuali.rice.kew.edl.TestPostProcessor</postProcessor>
 	</postProcessors>
 	<configProcessors>
 		<configProcessor>
 			<xpathExp>display/type = 'select'</xpathExp>
-			<className>edu.iu.uis.eden.edl.TestConfigProcessor</className>
+			<className>org.kuali.rice.kew.edl.TestConfigProcessor</className>
 		</configProcessor>
 	</configProcessors>
 	<stateComponents>
-		<stateComponent>edu.iu.uis.eden.edl.TestStateComponent</stateComponent>
+		<stateComponent>org.kuali.rice.kew.edl.TestStateComponent</stateComponent>
 	</stateComponents>
 </edlConfig>

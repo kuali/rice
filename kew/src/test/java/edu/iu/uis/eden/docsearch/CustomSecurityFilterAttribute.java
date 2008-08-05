@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
+import org.kuali.rice.kew.doctype.SecurityAttribute;
+import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.doctype.DocumentTypeSecurity;
-import edu.iu.uis.eden.doctype.SecurityAttribute;
-import edu.iu.uis.eden.doctype.SecuritySession;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.session.Authentication;
 
@@ -49,14 +49,14 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
     }
 
     /**
-     * @see edu.iu.uis.eden.doctype.SecurityAttribute#docSearchAuthorized(edu.iu.uis.eden.doctype.DocumentTypeSecurity, edu.iu.uis.eden.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, edu.iu.uis.eden.doctype.SecuritySession)
+     * @see org.kuali.rice.kew.doctype.SecurityAttribute#docSearchAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, edu.iu.uis.eden.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
     public Boolean docSearchAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         return checkAuthorizations(security, currentUser, authentications, docTypeName, documentId, initiatorWorkflowId, session);
     }
 
     /**
-     * @see edu.iu.uis.eden.doctype.SecurityAttribute#routeLogAuthorized(edu.iu.uis.eden.doctype.DocumentTypeSecurity, edu.iu.uis.eden.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, edu.iu.uis.eden.doctype.SecuritySession)
+     * @see org.kuali.rice.kew.doctype.SecurityAttribute#routeLogAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, edu.iu.uis.eden.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
     public Boolean routeLogAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         return checkAuthorizations(security, currentUser, authentications, docTypeName, documentId, initiatorWorkflowId, session);

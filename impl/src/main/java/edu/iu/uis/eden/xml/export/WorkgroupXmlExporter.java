@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionData;
 
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;

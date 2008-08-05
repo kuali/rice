@@ -20,11 +20,11 @@ import org.junit.Test;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 public class PostProcessorTest extends KEWTestCase {
 

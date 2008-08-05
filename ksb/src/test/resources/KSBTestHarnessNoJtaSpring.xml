@@ -40,7 +40,7 @@
 		</property>
 	</bean>
 
-	<bean id="cache" class="edu.iu.uis.eden.cache.RiceCacheAdministratorImpl" />
+	<bean id="cache" class="org.kuali.rice.kew.cache.RiceCacheAdministratorImpl" />
 
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />

@@ -34,10 +34,10 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceError;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.RoleAttribute;

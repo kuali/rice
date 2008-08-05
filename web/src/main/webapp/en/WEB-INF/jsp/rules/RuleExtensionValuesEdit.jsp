@@ -26,24 +26,23 @@
 
   <c:set var="ruleRowsToParse" value="${rule.rows}" />
 
-  <% int fieldIndex = 0;
-     java.util.Collection ruleRows = (java.util.Collection) pageContext.getAttribute("ruleRowsToParse");
-     java.util.Collection fullConversionFields = new java.util.ArrayList();
-     for (java.util.Iterator iter = ruleRows.iterator(); iter.hasNext();) {
-         edu.iu.uis.eden.lookupable.Row row = (edu.iu.uis.eden.lookupable.Row) iter.next();
-         for (java.util.Iterator iter2 = row.getFields().iterator(); iter2.hasNext();) {
-             edu.iu.uis.eden.lookupable.Field field = (edu.iu.uis.eden.lookupable.Field) iter2.next();
-             String fieldValue = ((java.lang.String)pageContext.getAttribute("ruleProperty")) + ".field[" + fieldIndex + "].value";
-             if (field.isHasLookupable() && (!edu.iu.uis.eden.util.Utilities.isEmpty(field.getDefaultLookupableName()))) {
-                 fullConversionFields.add(new edu.iu.uis.eden.engine.node.KeyValuePair(field.getDefaultLookupableName(), fieldValue));
-             }
-             fieldIndex++;
-         }
-     }
-     pageContext.setAttribute("fullConversionFields", fullConversionFields);
-  %>
-
-  <c:set var="fieldIndex" value="${0}"/>
+  <%
+  	int fieldIndex = 0;
+       java.util.Collection ruleRows = (java.util.Collection) pageContext.getAttribute("ruleRowsToParse");
+       java.util.Collection fullConversionFields = new java.util.ArrayList();
+       for (java.util.Iterator iter = ruleRows.iterator(); iter.hasNext();) {
+           edu.iu.uis.eden.lookupable.Row row = (edu.iu.uis.eden.lookupable.Row) iter.next();
+           for (java.util.Iterator iter2 = row.getFields().iterator(); iter2.hasNext();) {
+               edu.iu.uis.eden.lookupable.Field field = (edu.iu.uis.eden.lookupable.Field) iter2.next();
+               String fieldValue = ((java.lang.String)pageContext.getAttribute("ruleProperty")) + ".field[" + fieldIndex + "].value";
+               if (field.isHasLookupable() && (!edu.iu.uis.eden.util.Utilities.isEmpty(field.getDefaultLookupableName()))) {
+                   fullConversionFields.add(new org.kuali.rice.kew.engine.node.KeyValuePair(field.getDefaultLookupableName(), fieldValue));
+               }
+               fieldIndex++;
+           }
+       }
+       pageContext.setAttribute("fullConversionFields", fullConversionFields);
+  e="${0}"/>
   <c:set var="conversionFields" value=""/>
   <c:set var="isRowLabel" value="" />	
   <c:set var="previousRow" value="NoPrevious" />

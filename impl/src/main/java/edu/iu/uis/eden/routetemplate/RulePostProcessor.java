@@ -19,9 +19,9 @@ package edu.iu.uis.eden.routetemplate;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.DeleteEvent;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;

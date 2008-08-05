@@ -157,7 +157,7 @@
     <!-- Embedded KEW export servlet -->
     <servlet>
         <servlet-name>export</servlet-name>
-        <servlet-class>edu.iu.uis.eden.export.web.ExportServlet</servlet-class>
+        <servlet-class>org.kuali.rice.kew.export.web.ExportServlet</servlet-class>
     </servlet>
     <!-- Embedded KEW attachment servlet -->
     <servlet>
@@ -167,7 +167,7 @@
     <!-- Embedded KEW EDocLite servlet -->
     <servlet>
         <servlet-name>edoclite</servlet-name>
-        <servlet-class>edu.iu.uis.eden.edl.EDLServlet</servlet-class>
+        <servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
     </servlet>
 
     <!-- Notification system servlets -->

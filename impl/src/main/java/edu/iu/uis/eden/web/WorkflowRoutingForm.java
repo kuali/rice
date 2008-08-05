@@ -23,10 +23,10 @@ import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.CodeTranslator;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;

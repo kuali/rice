@@ -15,7 +15,7 @@
  */
 package org.kuali.core.service;
 
-import edu.iu.uis.eden.clientapp.PostProcessorRemote;
+import org.kuali.rice.kew.clientapp.PostProcessorRemote;
 
 /**
  * This interface is a KFS-local wrapper for the Workflow postprocessor interface.

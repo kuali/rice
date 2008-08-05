@@ -34,6 +34,9 @@ import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.StyleService;
+import org.kuali.rice.kew.edl.StyleServiceImpl;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;

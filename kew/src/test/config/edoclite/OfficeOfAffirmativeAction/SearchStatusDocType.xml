@@ -6,7 +6,7 @@
       <parent>OfficeOfAffirmativeAction</parent>
       <description>Search Status</description>
       <label>Search Status</label>
-      <postProcessorName>edu.iu.uis.eden.edl.EDocLitePostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <docHandler>https://onestart.iu.edu/en-prd/EDocLite</docHandler>

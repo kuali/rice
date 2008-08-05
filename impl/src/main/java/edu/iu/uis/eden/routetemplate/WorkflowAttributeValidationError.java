@@ -19,7 +19,8 @@ package edu.iu.uis.eden.routetemplate;
 import java.io.Serializable;
 import java.util.Map;
 
-import edu.iu.uis.eden.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
 

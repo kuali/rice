@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.edl.EDLGlobalConfig;
+import org.kuali.rice.kew.edl.EDLGlobalConfigFactory;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

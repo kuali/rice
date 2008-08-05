@@ -62,7 +62,7 @@
       </ruleAttribute>
       <ruleAttribute>
            <name>NotificationChannelSearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Channel</label>
            <description>The associated channel that this message was sent on.</description>
            <type>SearchableXmlAttribute</type>
@@ -80,7 +80,7 @@
        </ruleAttribute>
        <ruleAttribute>
            <name>NotificationPrioritySearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Priority</label>
            <description>The priority of this notification.</description>
            <type>SearchableXmlAttribute</type>
@@ -98,7 +98,7 @@
        </ruleAttribute>
        <ruleAttribute>
            <name>NotificationContentTypeSearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Content Type</label>
            <description>The content type of this notification.</description>
            <type>SearchableXmlAttribute</type>
@@ -116,7 +116,7 @@
        </ruleAttribute>
        <ruleAttribute>
            <name>NotificationProducerSearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Producer</label>
            <description>The producer of this notification.</description>
            <type>SearchableXmlAttribute</type>
@@ -134,7 +134,7 @@
        </ruleAttribute>
        <ruleAttribute>
            <name>NotificationRecipientsSearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Recipient</label>
            <description>Those who are receiving this notification.</description>
            <type>SearchableXmlAttribute</type>
@@ -152,7 +152,7 @@
        </ruleAttribute>
        <ruleAttribute>
            <name>NotificationSendersSearchableAttribute</name>
-           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
            <label>Notification Senders</label>
            <description>Those who this notification is being sent on behalf of.</description>
            <type>SearchableXmlAttribute</type>

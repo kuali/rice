@@ -27,15 +27,21 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.SavedSearchResult;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.lookupable.DocumentTypeLookupableImpl;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;

@@ -25,7 +25,7 @@
 			<name>SpawnNewDocumentType</name>
 			<description>SpawnNewDocumentType</description>
 			<label>SpawnNewDocumentType</label>
-			<postProcessorName>edu.iu.uis.eden.engine.PostProcessorSpawnDocument</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.engine.PostProcessorSpawnDocument</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

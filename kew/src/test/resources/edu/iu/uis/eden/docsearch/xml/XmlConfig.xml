@@ -3,7 +3,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>XMLSearchableAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -32,7 +32,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttribute_CaseInsensitive</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -61,7 +61,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdLong</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -86,7 +86,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdFloat</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -111,7 +111,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdCurrency</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -137,7 +137,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdDateTime</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -163,7 +163,7 @@
 <!--  Following are for range search testing -->
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStringRange</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -192,7 +192,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdLongRange</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -217,7 +217,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdFloatRange</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -247,7 +247,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeStdDateTimeRange</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -278,7 +278,7 @@
 <!--  Ends attributes for range search testing -->
 		<ruleAttribute>
 			<name>BlankDropDownSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>DepartmentSearchAttribute</label>
 			<description>DepartmentSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -301,7 +301,7 @@
 		<!-- Test the XStreamSafeEvaluator against searchable attributes to resolve EN-63 and KULWF-723 -->
 		<ruleAttribute>
 			<name>XMLXStreamSearchableAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML XStream Searchable attribute</label>
 			<description>XML XStream Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -339,7 +339,7 @@
 		<!-- Test the use of a quickfinder to resolve EN-95 -->
 		<ruleAttribute>
 			<name>SearchableAttributeWithQuickfinder</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>Searchable attribute wth Quickfinder</label>
 			<description>Searchable attribute wth Quickfinder</description>
 			<type>SearchableXmlAttribute</type>
@@ -362,7 +362,7 @@
 		<!-- Test the hiding of columns and the use of hidden fields -->
 		<ruleAttribute>
 			<name>SearchableAttributeWithHiddens</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>Searchable attribute wth Hidden fields and columns</label>
 			<description>Searchable attribute wth Hidden fields and columns</description>
 			<type>SearchableXmlAttribute</type>
@@ -469,7 +469,7 @@
 			<name>SearchDocType2</name>
 			<description>SearchDocType2</description>
 			<label>SearchDocType2</label>
-			<postProcessorName>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -666,7 +666,7 @@
 			<name>SearchDocTypeXStream</name>
 			<description>SearchDocTypeXStream</description>
 			<label>SearchDocTypeXStream</label>
-			<postProcessorName>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

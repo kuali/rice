@@ -55,13 +55,13 @@
         proxy="true">
         <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeValue" auto-retrieve="true" auto-update="true"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeValue" auto-retrieve="true" auto-update="true"
       auto-delete="true" name="searchableAttributeValues">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
     <collection-descriptor name="initialRouteNodeInstances"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
-     	element-class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance"
+     	element-class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance"
      	auto-retrieve="true"
      	auto-update="false"
         auto-delete="true"
@@ -257,7 +257,7 @@
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-    	class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="nodeInstance">
+    	class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="nodeInstance">
     	<foreignkey field-ref="nodeInstanceId"/>
     </reference-descriptor>
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
@@ -270,14 +270,14 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeValue">
-  	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeStringValue" />
-  	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue" />
-  	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeLongValue" />
-  	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue" />
+  <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeValue">
+  	<extent-class class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeStringValue" />
+  	<extent-class class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue" />
+  	<extent-class class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeLongValue" />
+  	<extent-class class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue" />
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeStringValue" table="EN_DOC_HDR_EXT_T">
+  <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeStringValue" table="EN_DOC_HDR_EXT_T">
     <field-descriptor column="DOC_HDR_EXT_ID" name="searchableAttributeValueId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
@@ -291,7 +291,7 @@
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue" table="EN_DOC_HDR_EXT_FLT_T">
+  <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue" table="EN_DOC_HDR_EXT_FLT_T">
     <field-descriptor column="DOC_HDR_EXT_ID" name="searchableAttributeValueId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
@@ -305,7 +305,7 @@
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeLongValue" table="EN_DOC_HDR_EXT_LONG_T">
+  <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeLongValue" table="EN_DOC_HDR_EXT_LONG_T">
     <field-descriptor column="DOC_HDR_EXT_ID" name="searchableAttributeValueId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
@@ -319,7 +319,7 @@
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue" table="EN_DOC_HDR_EXT_DT_T">
+  <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue" table="EN_DOC_HDR_EXT_DT_T">
     <field-descriptor column="DOC_HDR_EXT_ID" name="searchableAttributeValueId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
@@ -333,7 +333,7 @@
 
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.doctype.DocumentType" table="EN_DOC_TYP_T">
+  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentType" table="EN_DOC_TYP_T">
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"
          autoincrement="true" sequence-name="SEQ_DOCUMENT_ROUTE_HEADER" />
     <field-descriptor column="DOC_TYP_PARNT_ID" name="docTypeParentId" jdbc-type="BIGINT" />
@@ -358,34 +358,34 @@
     <field-descriptor column="MESSAGE_ENTITY_NM" name="messageEntity" jdbc-type="VARCHAR"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
-      element-class-ref="edu.iu.uis.eden.doctype.DocumentTypePolicy"
+      element-class-ref="org.kuali.rice.kew.doctype.DocumentTypePolicy"
       name="policies"
       proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"  />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.doctype.DocumentTypeAttribute" name="documentTypeAttributes"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.doctype.DocumentTypeAttribute" name="documentTypeAttributes"
 	    auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
 	  <orderby name="orderIndex" sort="ASC"/>
       <inverse-foreignkey field-ref="documentTypeId" />
     </collection-descriptor>
-    <collection-descriptor name="processes"	element-class-ref="edu.iu.uis.eden.engine.node.Process"
+    <collection-descriptor name="processes"	element-class-ref="org.kuali.rice.kew.engine.node.Process"
      	auto-retrieve="true" auto-update="true"	proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"/>
     </collection-descriptor>
   </class-descriptor>
 
 
-  <class-descriptor class="edu.iu.uis.eden.doctype.DocumentTypePolicy" table="EN_DOC_TYP_PLCY_RELN_T">
+  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypePolicy" table="EN_DOC_TYP_PLCY_RELN_T">
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor column="DOC_PLCY_NM" name="policyName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_PLCY_VAL" name="policyValue" jdbc-type="BIT"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.doctype.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.doctype.DocumentTypeAttribute" table="EN_DOC_TYP_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttribute" table="EN_DOC_TYP_ATTRIB_T">
     <field-descriptor column="DOC_TYP_ATTRIB_ID" name="documentTypeAttributeId" jdbc-type="BIGINT"
       primarykey="true" autoincrement="true" sequence-name="SEQ_DOCUMENT_TYPE_ATTRIBUTE"/>
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
@@ -394,7 +394,7 @@
     <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.doctype.DocumentType" name="documentType"
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
@@ -621,7 +621,7 @@
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.RouteNode" table="EN_RTE_NODE_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.RouteNode" table="EN_RTE_NODE_T">
     <field-descriptor column="RTE_NODE_ID" name="routeNodeId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" />
     <field-descriptor column="RTE_NODE_NM" name="routeNodeName" jdbc-type="VARCHAR" />
@@ -635,20 +635,20 @@
     <field-descriptor column="BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>
 
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.BranchPrototype" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.BranchPrototype" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="branchId" />
     </reference-descriptor>
 
-    <collection-descriptor name="configParams" auto-update="true" auto-retrieve="true" auto-delete="true" element-class-ref="edu.iu.uis.eden.engine.node.RouteNodeConfigParam">
+    <collection-descriptor name="configParams" auto-update="true" auto-retrieve="true" auto-delete="true" element-class-ref="org.kuali.rice.kew.engine.node.RouteNodeConfigParam">
        <inverse-foreignkey field-ref="routeNodeId"/>
     </collection-descriptor>
     
     <collection-descriptor name="previousNodes"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
-     	element-class-ref="edu.iu.uis.eden.engine.node.RouteNode"
+     	element-class-ref="org.kuali.rice.kew.engine.node.RouteNode"
      	auto-retrieve="true"
      	auto-update="true"
      	proxy="true"
@@ -658,7 +658,7 @@
     </collection-descriptor>
     <collection-descriptor name="nextNodes"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
-     	element-class-ref="edu.iu.uis.eden.engine.node.RouteNode"
+     	element-class-ref="org.kuali.rice.kew.engine.node.RouteNode"
      	auto-retrieve="true"
      	auto-update="true"
      	proxy="true"
@@ -668,11 +668,11 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.RouteNodeConfigParam" table="EN_RTE_NODE_CFG_PARM_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.RouteNodeConfigParam" table="EN_RTE_NODE_CFG_PARM_T">
     <field-descriptor column="RTE_NODE_CFG_PARM_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE_CFG_PARM"/>
 
     <field-descriptor column="RTE_NODE_CFG_PARM_ND" name="routeNodeId" jdbc-type="BIGINT" access="anonymous"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNode" name="routeNode" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNode" name="routeNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeNodeId" />
     </reference-descriptor>
 
@@ -680,13 +680,13 @@
     <field-descriptor column="RTE_NODE_CFG_PARM_VAL" name="value" jdbc-type="VARCHAR"/>
   </class-descriptor>
   
-  <class-descriptor class="edu.iu.uis.eden.engine.node.BranchPrototype" table="EN_RTE_BRCH_PROTO_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.BranchPrototype" table="EN_RTE_BRCH_PROTO_T">
     <field-descriptor column="RTE_BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
     <field-descriptor column="RTE_BRCH_PROTO_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.RouteNodeInstance" table="EN_RTE_NODE_INSTN_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.RouteNodeInstance" table="EN_RTE_NODE_INSTN_T">
     <field-descriptor column="RTE_NODE_INSTN_ID" name="routeNodeInstanceId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
     <field-descriptor column="DOC_ID" name="documentId" jdbc-type="BIGINT"/>
     <field-descriptor column="RTE_NODE_ID" name="routeNodeId" jdbc-type="BIGINT" access="anonymous"/>
@@ -696,17 +696,17 @@
     <field-descriptor column="CMPLT_IND" name="complete" jdbc-type="BIT"/>
     <field-descriptor column="INIT_IND" name="initial" jdbc-type="BIT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNode" name="routeNode" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNode" name="routeNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="routeNodeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.Branch" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.Branch" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="branchId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="process" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="process" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="processId"/>
     </reference-descriptor>
     <collection-descriptor name="state"
-    	element-class-ref="edu.iu.uis.eden.engine.node.NodeState"
+    	element-class-ref="org.kuali.rice.kew.engine.node.NodeState"
     	auto-retrieve="true"
     	auto-update="true"
     	auto-delete="true"
@@ -715,7 +715,7 @@
     </collection-descriptor>
     <collection-descriptor name="previousNodeInstances"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
-     	element-class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance"
+     	element-class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance"
      	auto-retrieve="true"
      	auto-update="false"
      	proxy="false"
@@ -725,7 +725,7 @@
     </collection-descriptor>
     <collection-descriptor name="nextNodeInstances"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
-     	element-class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance"
+     	element-class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance"
      	auto-retrieve="true"
      	auto-update="true"
      	auto-delete="true"
@@ -736,7 +736,7 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.Branch" table="EN_RTE_BRCH_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.Branch" table="EN_RTE_BRCH_T">
     <field-descriptor column="RTE_BRCH_ID" name="branchId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
     <field-descriptor column="BRCH_NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="PARNT_RTE_BRCH_ID" name="parentBranchId" jdbc-type="BIGINT" access="anonymous"/>
@@ -744,20 +744,20 @@
     <field-descriptor column="JOIN_RTE_NODE_INSTN_ID" name="joinNodeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="SPLT_RTE_NODE_INSTN_ID" name="splitNodeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.Branch" name="parentBranch" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.Branch" name="parentBranch" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="parentBranchId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="initialNode" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="initialNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="initialNodeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="joinNode" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="joinNode" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="joinNodeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="splitNode" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="splitNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="splitNodeId"/>
     </reference-descriptor>
     <collection-descriptor name="branchState"
-    	element-class-ref="edu.iu.uis.eden.engine.node.BranchState"
+    	element-class-ref="org.kuali.rice.kew.engine.node.BranchState"
     	auto-retrieve="true"
     	auto-update="true"
     	proxy="false">
@@ -765,45 +765,45 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.BranchState" table="EN_RTE_BRCH_ST_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.BranchState" table="EN_RTE_BRCH_ST_T">
     <field-descriptor column="RTE_BRCH_ST_ID" name="stateId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
   	<field-descriptor column="RTE_BRCH_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>
   	<field-descriptor column="ST_KEY" name="key" jdbc-type="VARCHAR"/>
   	<field-descriptor column="ST_VAL_TXT" name="value" jdbc-type="VARCHAR"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.Branch" name="branch" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.Branch" name="branch" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="branchId"/>
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.NodeState" table="EN_RTE_NODE_INSTN_ST_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.NodeState" table="EN_RTE_NODE_INSTN_ST_T">
     <field-descriptor column="RTE_NODE_INSTN_ST_ID" name="stateId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
   	<field-descriptor column="RTE_NODE_INSTN_ID" name="nodeInstanceId" jdbc-type="BIGINT" access="anonymous"/>
   	<field-descriptor column="ST_KEY" name="key" jdbc-type="VARCHAR"/>
   	<field-descriptor column="ST_VAL_TXT" name="value" jdbc-type="VARCHAR"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNodeInstance" name="nodeInstance" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="nodeInstance" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="nodeInstanceId"/>
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.engine.node.Process" table="EN_DOC_TYP_PROC_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.Process" table="EN_DOC_TYP_PROC_T">
     <field-descriptor column="DOC_TYP_PROC_ID" name="processId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
   	<field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
   	<field-descriptor column="INIT_RTE_NODE_ID" name="initialRouteNodeId" jdbc-type="BIGINT" access="anonymous"/>
   	<field-descriptor column="PROC_NM" name="name" jdbc-type="VARCHAR"/>
   	<field-descriptor column="INIT_IND" name="initial" jdbc-type="BIT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="edu.iu.uis.eden.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNode" name="initialRouteNode" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNode" name="initialRouteNode" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="initialRouteNodeId"/>
     </reference-descriptor>
   </class-descriptor>
 
 
-  <class-descriptor class="edu.iu.uis.eden.edl.EDocLiteStyle" table="en_edoclt_style_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteStyle" table="en_edoclt_style_t">
     <field-descriptor column="edoclt_style_id" name="eDocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_style_nm" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_style_xml" name="xmlContent" jdbc-type="CLOB"/>
@@ -811,7 +811,7 @@
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.edl.EDocLiteDefinition" table="en_edoclt_def_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteDefinition" table="en_edoclt_def_t">
     <field-descriptor column="edoclt_def_id" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_def_nm" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_def_xml" name="xmlContent" jdbc-type="CLOB"/>
@@ -819,7 +819,7 @@
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.edl.EDocLiteAssociation" table="en_edoclt_assoc_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteAssociation" table="en_edoclt_assoc_t">
     <field-descriptor column="edoclt_assoc_id" name="eDocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_assoc_doctype_nm" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_assoc_def_nm" name="definition" jdbc-type="VARCHAR"/>
@@ -1084,7 +1084,7 @@
     <field-descriptor column="WRKGRP_ID" name="workgroupId" jdbc-type="BIGINT" primarykey="true"/>
   </class-descriptor>
 
-    <class-descriptor class="edu.iu.uis.eden.edl.extract.Dump" table="EN_EDL_DMP_T">
+    <class-descriptor class="org.kuali.rice.kew.edl.extract.Dump" table="EN_EDL_DMP_T">
     <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT" primarykey="true" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_RTE_STAT_CD" name="docRouteStatusCode" jdbc-type="VARCHAR" />
@@ -1094,18 +1094,18 @@
     <field-descriptor column="DOC_INITR_ID" name="docInitiatorId" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_CRNT_NODE_NM" name="docCurrentNodeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr"  jdbc-type="INTEGER" locking="true" />
-  <collection-descriptor name="fields" element-class-ref="edu.iu.uis.eden.edl.extract.Fields" auto-retrieve="true" auto-delete="true" auto-update="true">
+  <collection-descriptor name="fields" element-class-ref="org.kuali.rice.kew.edl.extract.Fields" auto-retrieve="true" auto-delete="true" auto-update="true">
     <inverse-foreignkey field-ref="docId"></inverse-foreignkey>
   </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.iu.uis.eden.edl.extract.Fields" table="EN_EDL_FIELD_DMP_T">
+  <class-descriptor class="org.kuali.rice.kew.edl.extract.Fields" table="EN_EDL_FIELD_DMP_T">
     <field-descriptor column="EDL_FIELD_DMP_ID" name="fieldId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_EDL_FIELD_DMP" />
     <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT"/>
     <field-descriptor column="FLD_NM" name="fieldName" jdbc-type="VARCHAR"/>
     <field-descriptor column="FLD_VAL" name="fieldValue" jdbc-type="VARCHAR"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="dump" class-ref="edu.iu.uis.eden.edl.extract.Dump" auto-retrieve="true" auto-delete="false" auto-update="false">
+    <reference-descriptor name="dump" class-ref="org.kuali.rice.kew.edl.extract.Dump" auto-retrieve="true" auto-delete="false" auto-update="false">
       <foreignkey field-ref="docId"></foreignkey>
     </reference-descriptor>
   </class-descriptor>

@@ -24,10 +24,10 @@ import java.util.Map;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.GroupId;

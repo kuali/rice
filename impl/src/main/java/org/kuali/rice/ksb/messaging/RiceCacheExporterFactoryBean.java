@@ -16,11 +16,11 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.kew.cache.RiceCacheAdministrator;
+import org.kuali.rice.kew.cache.RiceCacheAdministratorImpl;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import edu.iu.uis.eden.cache.RiceCacheAdministrator;
-import edu.iu.uis.eden.cache.RiceCacheAdministratorImpl;
 
 /**
  * Returns a {@link RiceCacheAdministrator}.  Starts and registers this 

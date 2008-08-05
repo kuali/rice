@@ -18,10 +18,10 @@ package org.kuali.workflow.workgroup;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 
 /**
  *

@@ -21,7 +21,7 @@
 
   <filter>
     <filter-name>BootstrapFilter</filter-name>
-    <filter-class>edu.iu.uis.eden.core.BootstrapFilter</filter-class>
+    <filter-class>org.kuali.rice.kew.core.BootstrapFilter</filter-class>
   </filter>
 
 	<filter>
@@ -190,7 +190,7 @@
 
 	<servlet>
 		<servlet-name>export</servlet-name>
-		<servlet-class>edu.iu.uis.eden.export.web.ExportServlet</servlet-class>
+		<servlet-class>org.kuali.rice.kew.export.web.ExportServlet</servlet-class>
 	</servlet>
 
 	<servlet>
@@ -205,7 +205,7 @@
 
 	<servlet>
 		<servlet-name>edoclite</servlet-name>
-		<servlet-class>edu.iu.uis.eden.edl.EDLServlet</servlet-class>
+		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

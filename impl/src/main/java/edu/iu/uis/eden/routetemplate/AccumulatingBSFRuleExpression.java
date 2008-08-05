@@ -23,10 +23,10 @@ import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.engine.RouteContext;
 
 /**
  * An extension of BSFRuleExpression that makes it easier to accumulate a list of responsibilities

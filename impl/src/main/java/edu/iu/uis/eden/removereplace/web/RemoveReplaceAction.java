@@ -30,14 +30,14 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.removereplace.RemoveReplaceDocument;
 import edu.iu.uis.eden.removereplace.RuleTarget;
 import edu.iu.uis.eden.removereplace.WorkgroupTarget;

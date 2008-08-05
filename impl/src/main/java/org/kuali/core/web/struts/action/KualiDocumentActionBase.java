@@ -76,6 +76,7 @@ import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
@@ -86,7 +87,6 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
 
 /**
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the

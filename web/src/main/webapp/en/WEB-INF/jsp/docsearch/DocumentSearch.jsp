@@ -131,7 +131,7 @@
   <%-- TODO delyea - add in pagesize? --%>
   <%-- Table layout of the search results --%>
   <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${reqSearchResults}" export="true" sort="external" id="result" requestURI="DocumentSearch.do?methodToCall=viewResults&searchStateKey=${searchStateKey}&superUserSearch=${DocumentSearchForm.superUserSearch}&isAdvancedSearch=${DocumentSearchForm.isAdvancedSearch}" pagesize="${preferences.pageSize}" defaultsort="1" defaultorder="descending"
-		decorator="edu.iu.uis.eden.docsearch.web.DocumentSearchDecorator">
+		decorator="org.kuali.rice.kew.docsearch.web.DocumentSearchDecorator">
     <display-el:setProperty name="paging.banner.placement" value="both" />
     <display-el:setProperty name="export.banner" value="" />
 		<c:forEach items="${reqSearchResultColumns}" var="column">
@@ -140,7 +140,7 @@
 				sortName="${column.sortName}"
 				title="${column.columnTitle}"
 				property="${column.propertyName}"
-				decorator="edu.iu.uis.eden.docsearch.web.DocumentSearchColumnDecorator">
+				decorator="org.kuali.rice.kew.docsearch.web.DocumentSearchColumnDecorator">
 			<%--<display-el:column class="datacell" sortable="${column.sortable}" sortName="${column.propertyName}" title="${column.columnTitle}" >
 			    <%
 			     Object objectName =  (Object)pageContext.getAttribute("result");

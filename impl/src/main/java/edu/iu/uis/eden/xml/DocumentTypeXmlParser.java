@@ -35,6 +35,15 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
+import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
+import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -47,15 +56,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
-import edu.iu.uis.eden.doctype.DocumentTypePolicy;
-import edu.iu.uis.eden.doctype.DocumentTypePolicyEnum;
-import edu.iu.uis.eden.engine.node.ActivationTypeEnum;
-import edu.iu.uis.eden.engine.node.BranchPrototype;
-import edu.iu.uis.eden.engine.node.Process;
-import edu.iu.uis.eden.engine.node.RouteNode;
-import edu.iu.uis.eden.engine.node.RouteNodeConfigParam;
 import edu.iu.uis.eden.routetemplate.FlexRM;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
@@ -742,15 +742,15 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else {
             String localName = (String) xpath.evaluate("local-name(.)", node, XPathConstants.STRING);
             if ("start".equalsIgnoreCase(localName)) {
-                nodeType = "edu.iu.uis.eden.engine.node.InitialNode";
+                nodeType = "org.kuali.rice.kew.engine.node.InitialNode";
             } else if ("split".equalsIgnoreCase(localName)) {
-                nodeType = "edu.iu.uis.eden.engine.node.SimpleSplitNode";
+                nodeType = "org.kuali.rice.kew.engine.node.SimpleSplitNode";
             } else if ("join".equalsIgnoreCase(localName)) {
-                nodeType = "edu.iu.uis.eden.engine.node.SimpleJoinNode";
+                nodeType = "org.kuali.rice.kew.engine.node.SimpleJoinNode";
             } else if ("requests".equalsIgnoreCase(localName)) {
-                nodeType = "edu.iu.uis.eden.engine.node.RequestsNode";
+                nodeType = "org.kuali.rice.kew.engine.node.RequestsNode";
             } else if ("process".equalsIgnoreCase(localName)) {
-                nodeType = "edu.iu.uis.eden.engine.node.SimpleSubProcessNode";
+                nodeType = "org.kuali.rice.kew.engine.node.SimpleSubProcessNode";
             }
         }
         if (Utilities.isEmpty(nodeType)) {

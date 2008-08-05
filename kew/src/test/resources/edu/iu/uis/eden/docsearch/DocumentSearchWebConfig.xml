@@ -3,21 +3,21 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>CustomDocumentSearchCriteriaProcessor</name>
-			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchCriteriaProcessor</className>
+			<className>org.kuali.rice.kew.docsearch.CustomDocumentSearchCriteriaProcessor</className>
 			<label>CustomDocumentSearchCriteriaProcessor</label>
 			<description>CustomDocumentSearchCriteriaProcessor</description>
 			<type>DocumentSearchCriteriaProcessorAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>CustomDocumentSearchCriteriaProcessor_HideAll</name>
-			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchCriteriaProcessor_HideAll</className>
+			<className>org.kuali.rice.kew.docsearch.CustomDocumentSearchCriteriaProcessor_HideAll</className>
 			<label>CustomDocumentSearchCriteriaProcessor_HideAll</label>
 			<description>CustomDocumentSearchCriteriaProcessor_HideAll</description>
 			<type>DocumentSearchCriteriaProcessorAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>TestSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableXmlAttribute</type>

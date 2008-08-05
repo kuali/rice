@@ -19,6 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.kew.cache.RiceCacheAdministrator;
 
 public class RiceCacheAdministratorTest extends KSBTestCase {
 	

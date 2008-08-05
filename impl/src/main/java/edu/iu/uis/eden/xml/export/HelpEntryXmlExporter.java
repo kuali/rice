@@ -19,8 +19,8 @@ package edu.iu.uis.eden.xml.export;
 import java.util.Iterator;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.export.ExportDataSet;
 
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.help.HelpEntry;
 import edu.iu.uis.eden.xml.XmlConstants;
 import edu.iu.uis.eden.xml.XmlRenderer;

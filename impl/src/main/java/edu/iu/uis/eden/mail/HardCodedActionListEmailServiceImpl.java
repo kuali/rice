@@ -7,12 +7,12 @@ import java.util.Iterator;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.server.BeanConverter;

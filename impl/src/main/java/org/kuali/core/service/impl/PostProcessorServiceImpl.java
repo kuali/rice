@@ -53,7 +53,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     private DateTimeService dateTimeService;
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
         try {
@@ -89,7 +89,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
     public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
         // on route level change we'll serialize the XML for the document. we
@@ -114,14 +114,14 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
     public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         return true;
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         try {
@@ -150,7 +150,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#afterWorkflowEngineProcess(boolean)} method will be invoked on it
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
     public boolean afterProcess(AfterProcessEventDTO event) throws Exception {
         try {
@@ -175,7 +175,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
     public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception {
         try {

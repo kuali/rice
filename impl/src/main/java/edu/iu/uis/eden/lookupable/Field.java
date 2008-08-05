@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.engine.node.KeyValuePair;
 
-import edu.iu.uis.eden.docsearch.SearchableAttribute;
-import edu.iu.uis.eden.engine.node.KeyValuePair;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 
 /**

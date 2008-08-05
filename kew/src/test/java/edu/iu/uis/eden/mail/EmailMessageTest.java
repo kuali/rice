@@ -24,12 +24,12 @@ import java.util.Date;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;

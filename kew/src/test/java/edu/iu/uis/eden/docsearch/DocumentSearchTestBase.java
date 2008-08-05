@@ -17,10 +17,13 @@ package edu.iu.uis.eden.docsearch;
 
 import org.junit.Ignore;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;

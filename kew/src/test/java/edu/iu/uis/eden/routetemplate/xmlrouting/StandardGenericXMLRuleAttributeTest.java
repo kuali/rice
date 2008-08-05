@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -37,7 +38,6 @@ import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentContent;

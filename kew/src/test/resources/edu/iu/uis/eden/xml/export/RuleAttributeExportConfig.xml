@@ -59,7 +59,7 @@
 		
 		<ruleAttribute>
       <name>EraTrackingNumberSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>EraTrackingNumberSearchAttribute</label>
       <description>EraTrackingNumberSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -76,7 +76,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>AgencyFullNameSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>AgencyFullNameSearchAttribute</label>
       <description>AgencyFullNameSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -96,7 +96,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>ProjectDirectorFirstNameSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>ProjectDirectorFirstNameSearchAttribute</label>
       <description>ProjectDirectorFirstNameSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -116,7 +116,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>ProjectDirectorLastNameSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>ProjectDirectorLastNameSearchAttribute</label>
       <description>ProjectDirectorLastNameSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -136,7 +136,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>SubmittingChartSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>SubmittingChartSearchAttribute</label>
       <description>SubmittingChartSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -153,7 +153,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>SubmittingOrgCodeSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>SubmittingOrgCodeSearchAttribute</label>
       <description>SubmittingOrgCodeSearchAttribute</description>
       <type>SearchableXmlAttribute</type>
@@ -170,7 +170,7 @@
     </ruleAttribute>
     <ruleAttribute>
       <name>SubmittingOrgNameSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>SubmittingOrgNameSearchAttribute</label>
       <description>SubmittingOrgNameSearchAttribute</description>
       <type>SearchableXmlAttribute</type>

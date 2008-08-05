@@ -60,7 +60,7 @@
 	<bean id="testLocalServiceFavoriteCall" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="edu.iu.uis.eden.testclient1.Client1SOAPService" />
 
-	<bean id="cache" class="edu.iu.uis.eden.cache.RiceCacheAdministratorImpl">
+	<bean id="cache" class="org.kuali.rice.kew.cache.RiceCacheAdministratorImpl">
 <!--
 		<property name="messageEntity" value="KEW" />
 -->

@@ -19,9 +19,9 @@ package org.kuali.workflow.role;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**

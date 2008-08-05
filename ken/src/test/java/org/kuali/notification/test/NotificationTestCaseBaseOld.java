@@ -25,15 +25,15 @@ import org.apache.log4j.Logger;
 import org.kuali.notification.core.NotificationServiceLocator;
 import org.kuali.notification.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.batch.DirectoryXmlDocCollection;
+import org.kuali.rice.kew.batch.XmlDocCollection;
+import org.kuali.rice.kew.batch.XmlIngesterService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.SchedulerRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
-import edu.iu.uis.eden.batch.DirectoryXmlDocCollection;
-import edu.iu.uis.eden.batch.XmlDocCollection;
-import edu.iu.uis.eden.batch.XmlIngesterService;
 
 /**
  * Base test case that loads the unit test Spring context and wraps unit tests with a

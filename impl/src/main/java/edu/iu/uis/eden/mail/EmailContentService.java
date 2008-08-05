@@ -21,8 +21,8 @@ package edu.iu.uis.eden.mail;
 import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.doctype.DocumentType;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.user.WorkflowUser;
 

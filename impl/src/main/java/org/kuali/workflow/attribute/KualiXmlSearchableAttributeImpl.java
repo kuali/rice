@@ -15,9 +15,9 @@
  */
 package org.kuali.workflow.attribute;
 
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.w3c.dom.Element;
 
-import edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute;
 
 /**
  * This class is used to define Kuali searchable attributes

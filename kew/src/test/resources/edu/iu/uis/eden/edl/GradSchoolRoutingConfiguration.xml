@@ -48,7 +48,7 @@
 
 		<ruleAttribute>
 			<name>DepartmentSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>DepartmentSearchAttribute</label>
 			<description>DepartmentSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -96,7 +96,7 @@
 
 		<ruleAttribute>
 			<name>SchoolSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>SchoolSearchAttribute</label>
 			<description>SchoolSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>

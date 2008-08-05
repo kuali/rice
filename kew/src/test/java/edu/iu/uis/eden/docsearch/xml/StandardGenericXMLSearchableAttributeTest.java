@@ -33,30 +33,31 @@ import javax.xml.xpath.XPathFactory;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
-import edu.iu.uis.eden.docsearch.DocSearchUtils;
-import edu.iu.uis.eden.docsearch.DocumentSearchResult;
-import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
-import edu.iu.uis.eden.docsearch.DocumentSearchService;
 import edu.iu.uis.eden.docsearch.DocumentSearchTestBase;
-import edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeLongValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeStringValue;
-import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
 import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -860,7 +861,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchContent()'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchContent()'
      */
     @Test public void testGetSearchContent() throws Exception {
         StandardGenericXMLSearchableAttribute attribute = getAttribute("XMLSearchableAttribute");
@@ -930,7 +931,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchStorageValues(String)'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchStorageValues(String)'
      */
     @Test public void testGetSearchStorageValues() {
     	String attributeName = "XMLSearchableAttribute";
@@ -1064,7 +1065,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
     @Test public void testGetSearchingRows() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute(null);
@@ -1081,7 +1082,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /*
-     * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
+     * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
      */
     @Test  public void testValidateUserSearchInputs() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttribute");

@@ -16,6 +16,8 @@
 package edu.iu.uis.eden.clientapp;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;

@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.test.services;
 
-import edu.iu.uis.eden.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentType;
 
 /**
  * Defines an interface with methods that help us test distributed caching.

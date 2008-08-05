@@ -26,10 +26,10 @@ import java.util.LinkedHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;

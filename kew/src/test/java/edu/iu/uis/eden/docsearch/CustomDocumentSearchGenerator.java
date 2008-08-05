@@ -16,7 +16,9 @@
  */
 package edu.iu.uis.eden.docsearch;
 
-import edu.iu.uis.eden.doctype.DocumentType;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
+import org.kuali.rice.kew.doctype.DocumentType;
+
 
 /**
  *
@@ -27,7 +29,7 @@ public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerat
 	public static final int RESULT_SET_LIMIT = 5000;
 
 	/* (non-Javadoc)
-	 * @see edu.iu.uis.eden.docsearch.StandardDocumentSearchGenerator#addExtraDocumentTypesToSearch(java.lang.StringBuffer, edu.iu.uis.eden.doctype.DocumentType)
+	 * @see org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator#addExtraDocumentTypesToSearch(java.lang.StringBuffer, org.kuali.rice.kew.doctype.DocumentType)
 	 */
 	@Override
 	protected void addExtraDocumentTypesToSearch(StringBuffer whereSql, DocumentType docType) {

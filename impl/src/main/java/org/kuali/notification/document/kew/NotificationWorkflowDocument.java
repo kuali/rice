@@ -16,10 +16,10 @@
 package org.kuali.notification.document.kew;
 
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * This class extends the KEW WorkflowDocument object and becomes our gateway for 

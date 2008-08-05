@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.xml.export;
 
-import edu.iu.uis.eden.export.Exporter;
+import org.kuali.rice.kew.export.Exporter;
 
 /**
  * A service which can export data to XML.

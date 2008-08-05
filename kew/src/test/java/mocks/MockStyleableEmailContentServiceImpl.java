@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.mail.EmailContent;
 import edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl;

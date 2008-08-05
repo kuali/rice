@@ -21,13 +21,13 @@ import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that leverages the KEW client API.
@@ -134,7 +134,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     }
     
     /**
-     * @see org.kuali.notification.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(edu.iu.uis.eden.clientapp.WorkflowDocument)
+     * @see org.kuali.notification.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.clientapp.WorkflowDocument)
      */
     public void terminateWorkflowDocument(WorkflowDocument document) throws WorkflowException {
         document.superUserCancel("terminating document: routeHeaderId=" + document.getRouteHeaderId() + ", appDocId=" + document.getAppDocId());

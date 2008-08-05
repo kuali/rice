@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.export.ExportDataSet;
 
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.xml.XmlConstants;
 import edu.iu.uis.eden.xml.XmlRenderer;
 import edu.iu.uis.eden.xml.export.XmlExporter;

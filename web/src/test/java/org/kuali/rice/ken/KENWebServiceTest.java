@@ -34,6 +34,7 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;
@@ -45,7 +46,6 @@ import org.kuali.rice.testharness.HtmlUnitUtil;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * This is a description of what this class does - arh14 don't forget to fill this in. 

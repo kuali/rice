@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -32,7 +33,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.batch.KEWXmlDataLoader;
 import edu.iu.uis.eden.test.KEWTransactionalTest;
 import edu.iu.uis.eden.test.SQLDataLoader;
 import edu.iu.uis.eden.test.TestUtilities;

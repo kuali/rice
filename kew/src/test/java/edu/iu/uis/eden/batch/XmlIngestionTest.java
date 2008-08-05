@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
+import org.kuali.rice.kew.batch.XmlPollerServiceImpl;
 import org.kuali.workflow.test.KEWTestCase;
 import org.kuali.workflow.test.TestUtils;
 import org.springframework.core.io.Resource;

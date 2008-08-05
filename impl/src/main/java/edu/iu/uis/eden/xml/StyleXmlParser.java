@@ -14,14 +14,14 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.StyleService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.edl.EDocLiteStyle;
-import edu.iu.uis.eden.edl.StyleService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 

@@ -17,12 +17,12 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowInfo;
 
 /**
  * Tests that an attribute implementing WorkflowAttributeXmlValidator interface can be validated from the 

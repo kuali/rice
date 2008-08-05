@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * Tests the generation of Action Requests from RoleAttributes

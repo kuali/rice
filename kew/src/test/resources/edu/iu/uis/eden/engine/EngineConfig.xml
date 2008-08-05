@@ -3,7 +3,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>DynamicSubRoleAttribute</name>
-			<className>edu.iu.uis.eden.engine.DynamicSubRoleAttribute</className>
+			<className>org.kuali.rice.kew.engine.DynamicSubRoleAttribute</className>
 			<label>Dynamic Sub Role Attribute</label>
 			<description>Dynamic Sub Role Attribute</description>
 			<type>RuleAttribute</type>
@@ -41,7 +41,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>ChartOrgDispatchAttribute</name>
-			<className>edu.iu.uis.eden.engine.ChartOrgDispatchAttribute</className>
+			<className>org.kuali.rice.kew.engine.ChartOrgDispatchAttribute</className>
 			<label>Organization Routing</label>
 			<description>Organization Routing</description>
 			<type>RuleAttribute</type>
@@ -210,11 +210,11 @@
 				<split name="Split" />
 				<simple name="EmptyNode1">
 					<activationType>P</activationType>
-					<type>edu.iu.uis.eden.engine.node.InitialNode</type>
+					<type>org.kuali.rice.kew.engine.node.InitialNode</type>
 				</simple>
 				<simple name="EmptyNode2">
 					<activationType>P</activationType>
-					<type>edu.iu.uis.eden.engine.AdHocApproversNode</type>
+					<type>org.kuali.rice.kew.engine.AdHocApproversNode</type>
 				</simple>
 				<join name="Join" />
 				<requests name="WorkflowDocumentFinal">
@@ -275,12 +275,12 @@
 				</requests>
 				<simple name="AdHocJoinPoint">
 					<activationType>P</activationType>
-					<type>edu.iu.uis.eden.engine.node.NoOpNode</type>
+					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
 				</simple>
 				<join name="AdHocApproversJoin">
 					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
-					<type>edu.iu.uis.eden.engine.AdHocApproversJoinNode</type>
+					<type>org.kuali.rice.kew.engine.AdHocApproversJoinNode</type>
 				</join>
 				<requests name="WorkflowDocumentFinal">
 					<activationType>P</activationType>
@@ -340,7 +340,7 @@
 					<ruleTemplate>First</ruleTemplate>
 				</requests>
 				<dynamic name="DynSeq">
-					<type>edu.iu.uis.eden.engine.DynamicRoutingTest$MockSequentialDynamicNode</type>
+					<type>org.kuali.rice.kew.engine.DynamicRoutingTest$MockSequentialDynamicNode</type>
 				</dynamic>
 				<requests name="SubRequests">
 					<activationType>P</activationType>
@@ -430,7 +430,7 @@
 				</start>
 				<dynamic name="ChartOrg">
           <ruleTemplate>OrgRouting</ruleTemplate>
-					<type>edu.iu.uis.eden.engine.ChartOrgDynamicDispatchNode</type>
+					<type>org.kuali.rice.kew.engine.ChartOrgDynamicDispatchNode</type>
 				</dynamic>
 				<process name="DispatchWorkarea"/>
 			    <requests name="Dispatch Organization Request">
@@ -497,7 +497,7 @@
 		<documentType>
 			<name>SimpleDocType</name>
 			<label>Simple Document Type</label>
-			<postProcessorName>edu.iu.uis.eden.engine.StandardWorkflowEngineTest$TestPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.engine.StandardWorkflowEngineTest$TestPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -780,7 +780,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.engine.DynamicSubRoleAttribute!DynamicSub</role>
+					<role>org.kuali.rice.kew.engine.DynamicSubRoleAttribute!DynamicSub</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
@@ -1012,7 +1012,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<role>edu.iu.uis.eden.engine.ChartOrgDispatchAttribute!DISPATCH</role>
+					<role>org.kuali.rice.kew.engine.ChartOrgDispatchAttribute!DISPATCH</role>
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>

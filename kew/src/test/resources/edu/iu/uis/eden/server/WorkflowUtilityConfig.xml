@@ -292,28 +292,28 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>XMLSearchableAttributeString</name>
-			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString</className>
+			<className>org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeLong</name>
-			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong</className>
+			<className>org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeFloat</name>
-			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat</className>
+			<className>org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>XMLSearchableAttributeDateTime</name>
-			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime</className>
+			<className>org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableAttribute</type>

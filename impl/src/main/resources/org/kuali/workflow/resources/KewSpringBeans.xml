@@ -149,9 +149,9 @@
 	<bean id="enRouteModuleService" class="edu.iu.uis.eden.routemodule.RouteModuleServiceImpl"  lazy-init="true"/>
 
 	<!-- 2.1 Workflow Engine -->
-	<bean id="workflowEngine" class="edu.iu.uis.eden.engine.StandardWorkflowEngine"  lazy-init="true"/>
+	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine"  lazy-init="true"/>
 
-	<bean id="enRouteNodeService" class="edu.iu.uis.eden.engine.node.RouteNodeServiceImpl" lazy-init="true">
+	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.RouteNodeServiceImpl" lazy-init="true">
 		<property name="routeNodeDAO">
 			<ref bean="enRouteNodeDAO" />
 		</property>
@@ -159,18 +159,18 @@
 
 
 
-	<bean id="enRouteNodeDAO" class="edu.iu.uis.eden.engine.node.dao.RouteNodeDAOOjbImpl" lazy-init="true">
+	<bean id="enRouteNodeDAO" class="org.kuali.rice.kew.engine.node.dao.RouteNodeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 
-	<bean id="enBranchService" class="edu.iu.uis.eden.engine.node.BranchServiceImpl" lazy-init="true">
+	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.BranchServiceImpl" lazy-init="true">
 		<property name="branchDAO">
 			<ref bean="enBranchDAO"/>
 		</property>
 	</bean>
 
-	<bean id="enBranchDAO" class="edu.iu.uis.eden.engine.node.dao.BranchDAOOjbImpl" lazy-init="true">
+	<bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.BranchDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
@@ -266,9 +266,9 @@
 	</bean>
 
   <!--  EDL Extract Service -->
-  <bean id="enExtractService" class="edu.iu.uis.eden.edl.extract.ExtractServiceImpl">
+  <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
     <property name="extractDAO">
-      <bean class="edu.iu.uis.eden.edl.extract.dao.ExtractDAOOjbImpl">
+      <bean class="org.kuali.rice.kew.edl.extract.dao.ExtractDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource" />
       </bean>
     </property>
@@ -293,7 +293,7 @@
 	</bean>
 
 	<!--  DocumentSearchService -->
-	<bean id="enDocumentSearchService" class="edu.iu.uis.eden.docsearch.DocumentSearchServiceImpl" lazy-init="true">
+	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.DocumentSearchServiceImpl" lazy-init="true">
 		<property name="documentSearchDAO">
 			<ref bean="enDocumentSearchDAO" />
 		</property>
@@ -301,22 +301,22 @@
 			<ref bean="enUserOptionsService" />
 		</property>
 	</bean>
-	<bean id="enDocumentSearchDAO" class="edu.iu.uis.eden.docsearch.dao.DocumentSearchDAOOjbImpl" lazy-init="true">
+	<bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.DocumentSearchDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 	<!--  DocumentTypeService -->
-	<bean id="enDocumentTypeService" class="edu.iu.uis.eden.doctype.DocumentTypeServiceImpl" lazy-init="true">
+	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.DocumentTypeServiceImpl" lazy-init="true">
 		<property name="documentTypeDAO">
 			<ref bean="enDocumentTypeDAO" />
 		</property>
 	</bean>
-	<bean id="enDocumentTypeDAO" class="edu.iu.uis.eden.doctype.dao.DocumentTypeDAOOjbImpl" lazy-init="true">
+	<bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.DocumentTypeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
     <!--  DocumentSecurityService -->
-    <bean id="enDocumentSecurityService" class="edu.iu.uis.eden.doctype.DocumentSecurityServiceImpl"/>
+    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.DocumentSecurityServiceImpl"/>
 
 	<!-- Exception routing service -->
 	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
@@ -420,7 +420,7 @@
 
     <!-- some beans shared by client and server -->
 
-    <bean id="enXmlIngesterService" class="edu.iu.uis.eden.batch.XmlIngesterServiceImpl" lazy-init="true">
+    <bean id="enXmlIngesterService" class="org.kuali.rice.kew.batch.XmlIngesterServiceImpl" lazy-init="true">
         <property name="xmlDigesterService">
           <ref bean="enXmlDigesterService"/>
         </property>
@@ -444,14 +444,14 @@
         </property>
     </bean>
 
-    <bean id="enXmlDigesterService" class="edu.iu.uis.eden.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
+    <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
 
 
-    <bean id="enEDocLiteDAO" class="edu.iu.uis.eden.edl.dao.EDocLiteDAOOjbImpl" lazy-init="true">
+    <bean id="enEDocLiteDAO" class="org.kuali.rice.kew.edl.dao.EDocLiteDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
-    <bean id="enEDocLiteService" class="edu.iu.uis.eden.edl.EDocLiteServiceImpl" lazy-init="true">
+    <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO">
             <ref local="enEDocLiteDAO"/>
         </property>
@@ -460,7 +460,7 @@
         </property>
     </bean>
 
-    <bean id="enStyleService" class="edu.iu.uis.eden.edl.StyleServiceImpl" lazy-init="true">
+    <bean id="enStyleService" class="org.kuali.rice.kew.edl.StyleServiceImpl" lazy-init="true">
         <property name="styleDAO">
             <ref local="enEDocLiteDAO"/>
         </property>
@@ -512,7 +512,7 @@
   <bean id="enWorkflowDocumentActionsService" class="edu.iu.uis.eden.server.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
 
 
-  <bean id="enXmlPollerService" class="edu.iu.uis.eden.batch.XmlPollerServiceImpl">
+  <bean id="enXmlPollerService" class="org.kuali.rice.kew.batch.XmlPollerServiceImpl">
     <property name="xmlPendingLocation">
       <value>${data.xml.pending.location}</value>
     </property>
@@ -642,7 +642,7 @@
 	<bean id="enWorkflowUtilityService" class="edu.iu.uis.eden.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.ksb.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
-    <bean id="enSearchableAttributeProcessor" class="edu.iu.uis.eden.docsearch.SearchableAttributeProcessor"/>
+    <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="edu.iu.uis.eden.mail.ActionListImmediateProcessorImpl" />

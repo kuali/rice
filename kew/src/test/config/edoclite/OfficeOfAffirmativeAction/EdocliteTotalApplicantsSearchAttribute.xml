@@ -3,7 +3,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
     <ruleAttribute>
       <name>EDLTotalApplicantsSearchAttribute</name>
-      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
       <label>EDL Total Applicants Search Attribute</label>
       <description>EDL Total Applicants Search Attribute</description>
       <type>SearchableXmlAttribute</type>

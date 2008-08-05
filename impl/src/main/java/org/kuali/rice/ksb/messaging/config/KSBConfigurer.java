@@ -35,6 +35,7 @@ import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
+import org.kuali.rice.kew.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.auth.AuthorizationService;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
@@ -48,7 +49,6 @@ import org.kuali.rice.util.RiceConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import edu.iu.uis.eden.cache.RiceCacheAdministrator;
 
 /**
  * Used to configure the embedded workflow. This could be used to configure

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.SimpleWebAuthenticationService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;

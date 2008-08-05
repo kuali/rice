@@ -34,11 +34,11 @@ import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import edu.iu.uis.eden.clientapp.IDocHandler;
 
 /**
  * This class is the controller for the basic notification related actions - viewing, etc.

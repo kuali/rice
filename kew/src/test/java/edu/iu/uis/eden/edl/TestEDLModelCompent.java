@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.edl;
 
+import org.kuali.rice.kew.edl.EDLContext;
+import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

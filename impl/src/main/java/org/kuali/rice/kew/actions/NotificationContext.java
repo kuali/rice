@@ -16,7 +16,8 @@
  */
 package org.kuali.rice.kew.actions;
 
-import edu.iu.uis.eden.engine.BlanketApproveEngine;
+import org.kuali.rice.kew.engine.BlanketApproveEngine;
+
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

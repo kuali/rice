@@ -86,7 +86,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	 * measure to load these without having to deal with the removal of the embedded plugin right away.
 	 */
 	protected Lifecycle createTempEmbeddedLifeCycle() throws Exception {
-		return (Lifecycle)Class.forName("edu.iu.uis.eden.core.TempEmbeddedLifeCycle").newInstance();
+		return (Lifecycle)Class.forName("org.kuali.rice.kew.core.TempEmbeddedLifeCycle").newInstance();
 	}
 
 	protected Lifecycle createThinClientLifecycle() throws Exception {

@@ -33,11 +33,11 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.routetemplate.MyRules2;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;

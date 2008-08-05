@@ -18,7 +18,8 @@ package org.kuali.workflow.role;
 
 import java.util.List;
 
-import edu.iu.uis.eden.engine.RouteContext;
+import org.kuali.rice.kew.engine.RouteContext;
+
 
 /**
  * A component which resolves a List of QualifiedRoles into a resolved List for which Action Requests should get generated.

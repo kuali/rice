@@ -26,13 +26,13 @@ import org.junit.Test;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.test.TestUtilities;

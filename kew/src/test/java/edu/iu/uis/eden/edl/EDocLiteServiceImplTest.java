@@ -31,6 +31,12 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.edl.EDLController;
+import org.kuali.rice.kew.edl.EDLControllerFactory;
+import org.kuali.rice.kew.edl.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.EDocLiteDefinition;
+import org.kuali.rice.kew.edl.EDocLiteService;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 

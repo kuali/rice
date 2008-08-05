@@ -20,6 +20,7 @@ import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.clientapp.PostProcessorRemote;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -27,7 +28,6 @@ import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 
-import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class KualiPostProcessor implements PostProcessorRemote {
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doRouteStatusChange(statusChangeEvent);
@@ -58,7 +58,7 @@ public class KualiPostProcessor implements PostProcessorRemote {
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doActionTaken(event);
@@ -66,7 +66,7 @@ public class KualiPostProcessor implements PostProcessorRemote {
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
     public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doDeleteRouteHeader(event);
@@ -74,21 +74,21 @@ public class KualiPostProcessor implements PostProcessorRemote {
 
     /**
      * 
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
     public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
         return KNSServiceLocator.getPostProcessorService().doRouteLevelChange(levelChangeEvent);
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
     public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
         return KNSServiceLocator.getPostProcessorService().beforeProcess(beforeProcessEvent);
     }
 
     /**
-     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
     public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return KNSServiceLocator.getPostProcessorService().afterProcess(afterProcessEvent);

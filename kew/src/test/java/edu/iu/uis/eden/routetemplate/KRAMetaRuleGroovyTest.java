@@ -16,11 +16,11 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 /**
  * Tests KRA meta-rule functionality KULRICE-1045

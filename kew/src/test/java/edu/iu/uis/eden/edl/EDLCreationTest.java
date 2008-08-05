@@ -26,6 +26,10 @@ import javax.xml.transform.stream.StreamResult;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.edl.EDLContext;
+import org.kuali.rice.kew.edl.EDLController;
+import org.kuali.rice.kew.edl.EDocLiteService;
+import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 

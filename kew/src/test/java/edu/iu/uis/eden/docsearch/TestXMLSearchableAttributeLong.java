@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;

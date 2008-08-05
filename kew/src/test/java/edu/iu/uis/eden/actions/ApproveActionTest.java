@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.workflow.test.KEWTestCase;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 
 public class ApproveActionTest extends KEWTestCase {
 

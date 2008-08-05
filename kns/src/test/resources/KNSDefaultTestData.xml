@@ -412,7 +412,7 @@
 			<parent>EDENSERVICE-DOCS</parent>
 			<description>Workflow Maintenance Document Type Document</description>
 			<label>Workflow Maintenance Document Type Document</label>
-			<postProcessorName>edu.iu.uis.eden.doctype.DocumentTypePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/en/DocumentType.do?methodToCall=docHandler</docHandler>

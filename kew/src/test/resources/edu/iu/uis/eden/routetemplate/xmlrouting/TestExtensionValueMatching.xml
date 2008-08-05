@@ -4,7 +4,7 @@
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
         <ruleAttribute>
             <name>SearchAttribute</name>
-            <className>edu.iu.uis.eden.docsearch.MockSearchableAttribute</className>
+            <className>org.kuali.rice.kew.docsearch.MockSearchableAttribute</className>
             <label>SearchAttribute</label>
             <description>SearchAttribute</description>
             <type>SearchableAttribute</type>

@@ -18,9 +18,9 @@ package org.kuali.rice.ksb.messaging;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.engine.WorkflowEngine;
 
 /**
  * An XML services which is used to submit documents to the engine.

@@ -18,7 +18,8 @@ package edu.iu.uis.eden.plugin.attributes;
 
 import java.util.List;
 
-import edu.iu.uis.eden.engine.RouteContext;
+import org.kuali.rice.kew.engine.RouteContext;
+
 import edu.iu.uis.eden.routetemplate.FlexRM;
 
 /**

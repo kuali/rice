@@ -27,15 +27,15 @@ import java.util.StringTokenizer;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.docsearch.DocumentSearchService;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.docsearch.DocumentSearchService;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypePolicy;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.quicklinks.ActionListStats;
 import edu.iu.uis.eden.quicklinks.InitiatedDocumentType;
 import edu.iu.uis.eden.quicklinks.WatchedDocument;

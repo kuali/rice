@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.quicklinks;
 
-import edu.iu.uis.eden.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.DocumentType;
 
 /**
  * Stores statistics about the number of times a particular {@link DocumentType}

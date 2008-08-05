@@ -17,8 +17,8 @@
 package edu.iu.uis.eden.xml.export;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.export.ExportDataSet;
 
-import edu.iu.uis.eden.export.ExportDataSet;
 
 /**
  * Interface for a an object which can export a data set to XML.

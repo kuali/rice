@@ -48,6 +48,16 @@ import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.clientapp.DeleteEvent;
+import org.kuali.rice.kew.definition.AttributeDefinition;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
+import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
@@ -96,6 +106,15 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.engine.CompatUtils;
+import org.kuali.rice.kew.engine.node.BranchState;
+import org.kuali.rice.kew.engine.node.KeyValuePair;
+import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.State;
+import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
+import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -105,25 +124,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.iu.uis.eden.clientapp.DeleteEvent;
-import edu.iu.uis.eden.definition.AttributeDefinition;
-import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
-import edu.iu.uis.eden.docsearch.DocSearchUtils;
-import edu.iu.uis.eden.docsearch.DocumentSearchResult;
-import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
-import edu.iu.uis.eden.docsearch.SearchableAttribute;
-import edu.iu.uis.eden.docsearch.web.SearchAttributeFormContainer;
-import edu.iu.uis.eden.docsearch.xml.GenericXMLSearchableAttribute;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.engine.CompatUtils;
-import edu.iu.uis.eden.engine.node.BranchState;
-import edu.iu.uis.eden.engine.node.KeyValuePair;
-import edu.iu.uis.eden.engine.node.Process;
-import edu.iu.uis.eden.engine.node.RouteNode;
-import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.engine.node.State;
-import edu.iu.uis.eden.engine.simulation.SimulationActionToTake;
-import edu.iu.uis.eden.engine.simulation.SimulationCriteria;
 import edu.iu.uis.eden.lookupable.Column;
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.notes.NoteService;
@@ -1137,7 +1137,7 @@ public class BeanConverter {
         return afterProcessEvent;
     }
 
-    public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO, edu.iu.uis.eden.doctype.DocumentType documentType) {
+    public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO, org.kuali.rice.kew.doctype.DocumentType documentType) {
         if (definitionVO == null) {
             return null;
         }

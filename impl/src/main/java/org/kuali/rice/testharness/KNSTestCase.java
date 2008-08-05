@@ -15,11 +15,11 @@ package org.kuali.rice.testharness;
 import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 
-import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * Default test base for a full KNS enabled unit test.

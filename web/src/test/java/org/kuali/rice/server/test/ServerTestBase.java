@@ -20,13 +20,13 @@ import java.util.List;
 
 import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.testharness.HtmlUnitUtil;
 
-import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

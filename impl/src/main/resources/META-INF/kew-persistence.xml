@@ -17,13 +17,13 @@
     <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
     <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
     <class>org.kuali.rice.kew.actionrequests.ActionRequestValue</class>
-    <class>edu.iu.uis.eden.docsearch.SearchableAttributeStringValue</class>
-    <class>edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue</class>
-    <class>edu.iu.uis.eden.docsearch.SearchableAttributeLongValue</class>
-    <class>edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue</class>
-    <class>edu.iu.uis.eden.doctype.DocumentType</class>
-    <class>edu.iu.uis.eden.doctype.DocumentTypePolicy</class>
-    <class>edu.iu.uis.eden.doctype.DocumentTypeAttribute</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeLongValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>
+    <class>org.kuali.rice.kew.doctype.DocumentType</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>edu.iu.uis.eden.useroptions.UserOptions</class>
     <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
     <class>edu.iu.uis.eden.routetemplate.RuleTemplate</class>
@@ -37,17 +37,17 @@
     <class>edu.iu.uis.eden.routetemplate.RuleExtension</class>
     <class>edu.iu.uis.eden.routetemplate.RuleExtensionValue</class>
     <class>edu.iu.uis.eden.help.HelpEntry</class>
-    <class>edu.iu.uis.eden.engine.node.RouteNode</class>
-    <class>edu.iu.uis.eden.engine.node.RouteNodeConfigParam</class>
-    <class>edu.iu.uis.eden.engine.node.BranchPrototype</class>
-    <class>edu.iu.uis.eden.engine.node.RouteNodeInstance</class>
-    <class>edu.iu.uis.eden.engine.node.Branch</class>
-    <class>edu.iu.uis.eden.engine.node.BranchState</class>
-    <class>edu.iu.uis.eden.engine.node.NodeState</class>
-    <class>edu.iu.uis.eden.engine.node.Process</class>
-    <class>edu.iu.uis.eden.edl.EDocLiteStyle</class>
-    <class>edu.iu.uis.eden.edl.EDocLiteDefinition</class>
-    <class>edu.iu.uis.eden.edl.EDocLiteAssociation</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNode</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>
+    <class>org.kuali.rice.kew.engine.node.BranchPrototype</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeInstance</class>
+    <class>org.kuali.rice.kew.engine.node.Branch</class>
+    <class>org.kuali.rice.kew.engine.node.BranchState</class>
+    <class>org.kuali.rice.kew.engine.node.NodeState</class>
+    <class>org.kuali.rice.kew.engine.node.Process</class>
+    <class>org.kuali.rice.kew.edl.EDocLiteStyle</class>
+    <class>org.kuali.rice.kew.edl.EDocLiteDefinition</class>
+    <class>org.kuali.rice.kew.edl.EDocLiteAssociation</class>
     <class>edu.iu.uis.eden.user.BaseWorkflowUser</class>
     <class>edu.iu.uis.eden.workgroup.BaseWorkgroup</class>
     <class>edu.iu.uis.eden.workgroup.BaseWorkgroupMember</class>
@@ -65,8 +65,8 @@
     <class>edu.iu.uis.eden.removereplace.RemoveReplaceDocument</class>
     <class>edu.iu.uis.eden.removereplace.RuleTarget</class>
     <class>edu.iu.uis.eden.removereplace.WorkgroupTarget</class>
-    <class>edu.iu.uis.eden.edl.extract.Dump</class>
-    <class>edu.iu.uis.eden.edl.extract.Fields</class>
+    <class>org.kuali.rice.kew.edl.extract.Dump</class>
+    <class>org.kuali.rice.kew.edl.extract.Fields</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

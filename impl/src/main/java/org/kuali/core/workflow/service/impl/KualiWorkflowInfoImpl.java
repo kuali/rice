@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -46,7 +47,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.clientapp.WorkflowInfo;
 
 @SuppressWarnings("deprecation")
 @Transactional

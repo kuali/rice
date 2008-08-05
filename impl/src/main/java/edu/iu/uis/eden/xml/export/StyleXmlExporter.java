@@ -21,10 +21,10 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.export.ExportDataSet;
 
-import edu.iu.uis.eden.edl.EDocLiteStyle;
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;
 import edu.iu.uis.eden.xml.XmlRenderer;
@@ -32,7 +32,7 @@ import edu.iu.uis.eden.xml.XmlRenderer;
 /**
  * Exports Style definitions to XML.
  *
- * @see edu.iu.uis.eden.edl.StyleService
+ * @see org.kuali.rice.kew.edl.StyleService
  * @see edu.iu.uis.eden.xml.StyleXmlParser
  * @see EDocLiteStyle
  *

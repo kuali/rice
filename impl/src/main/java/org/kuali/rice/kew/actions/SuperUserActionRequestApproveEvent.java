@@ -26,12 +26,12 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;

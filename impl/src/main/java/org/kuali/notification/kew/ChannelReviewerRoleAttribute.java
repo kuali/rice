@@ -24,10 +24,10 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.GenericRoleAttribute;
 import edu.iu.uis.eden.routetemplate.QualifiedRoleName;
@@ -101,7 +101,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     /**
      * This looks at the reviewers list passed through from KEN and then resolves the individuals that need to actually approve 
      * the message.
-     * @see edu.iu.uis.eden.routetemplate.GenericRoleAttribute#resolveRecipients(edu.iu.uis.eden.engine.RouteContext, edu.iu.uis.eden.routetemplate.QualifiedRoleName)
+     * @see edu.iu.uis.eden.routetemplate.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, edu.iu.uis.eden.routetemplate.QualifiedRoleName)
      */
     @Override
     protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws EdenUserNotFoundException {

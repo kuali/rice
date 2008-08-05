@@ -32,10 +32,10 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
@@ -59,7 +59,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
      * This overridden method is used to decipher the inline xpath and responsibilities of a route node definition and use
      * them to create action reqeusts
      * 
-     * @see edu.iu.uis.eden.routemodule.FlexRMAdapter#findActionRequests(edu.iu.uis.eden.engine.RouteContext)
+     * @see edu.iu.uis.eden.routemodule.FlexRMAdapter#findActionRequests(org.kuali.rice.kew.engine.RouteContext)
      */
     @Override
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {

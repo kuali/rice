@@ -28,6 +28,7 @@ import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
@@ -42,7 +43,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import java.io.Serializable;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {

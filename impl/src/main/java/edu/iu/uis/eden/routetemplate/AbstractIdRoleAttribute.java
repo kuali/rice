@@ -27,13 +27,13 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
@@ -87,7 +87,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
     /**
      * Takes the given qualified role which contains an ID and returns a resolved role for the entity with that id.
      * 
-     * @see edu.iu.uis.eden.plugin.attributes.RoleAttribute#resolveQualifiedRole(edu.iu.uis.eden.engine.RouteContext, java.lang.String, java.lang.String)
+     * @see edu.iu.uis.eden.plugin.attributes.RoleAttribute#resolveQualifiedRole(org.kuali.rice.kew.engine.RouteContext, java.lang.String, java.lang.String)
      */
     public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole)
 	    throws EdenUserNotFoundException {

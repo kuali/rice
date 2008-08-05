@@ -30,7 +30,7 @@ version of the parent document type.  Taken from real life UGS edoclite document
 		
 		<ruleAttribute>
 			<name>DepartmentSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>DepartmentSearchAttribute</label>
 			<description>DepartmentSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>
@@ -69,7 +69,7 @@ version of the parent document type.  Taken from real life UGS edoclite document
 		
 		<ruleAttribute>
 			<name>SchoolSearchAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>SchoolSearchAttribute</label>
 			<description>SchoolSearchAttribute</description>
 			<type>SearchableXmlAttribute</type>

@@ -21,6 +21,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.junit.Test;
+import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
@@ -28,7 +29,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**

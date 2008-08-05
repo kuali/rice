@@ -772,12 +772,12 @@
 					<activationType>P</activationType>
 				</start>
 				<simple name="setStartedVar">
-				  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+				  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
 				  <name>started</name>
 				  <value>startedVariableValue</value>
 				</simple>
 				<simple name="setCopiedVar">
-				  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+				  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
 				  <name>copiedVar</name>
 				  <value>var:started</value>
 				</simple>
@@ -786,31 +786,31 @@
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<simple name="setEndedVar">
-				    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
 				    <name>ended</name>
 					<value>endedVariableValue</value>
 				</simple>
 				<simple name="setGoogleVar">
-				    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
 				    <name>google</name>
 					<value>url:http://google.com</value>
 				</simple>
 				<simple name="setXPathVar">
-				    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
 				    <name>xpath</name>
 					<value>xpath:concat(local-name(//documentContent),$ended)</value>
 				</simple>
                 <simple name="resetStartedVar">
-                  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
                   <name>started</name>
                   <value>aNewStartedVariableValue</value>
                 </simple>
 				<simple name="logNode">
-				    <type>edu.iu.uis.eden.engine.node.LogNode</type>
+				    <type>org.kuali.rice.kew.engine.node.LogNode</type>
 					<message>var:xpath</message>
 				</simple>
 				<simple name="logNode2">
-				    <type>edu.iu.uis.eden.engine.node.LogNode</type>
+				    <type>org.kuali.rice.kew.engine.node.LogNode</type>
 				    <level>ErRoR</level>
 				    <log>Custom.Logger.Name</log>
 					<message>THAT'S ALL FOLKS</message>

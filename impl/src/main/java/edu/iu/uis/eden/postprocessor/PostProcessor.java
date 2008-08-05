@@ -21,8 +21,8 @@ import org.kuali.rice.kew.AfterProcessEvent;
 import org.kuali.rice.kew.BeforeProcessEvent;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
+import org.kuali.rice.kew.clientapp.DeleteEvent;
 
-import edu.iu.uis.eden.clientapp.DeleteEvent;
 
 /**
  * Hook for applications to perform logic due to workflow events from the engine.

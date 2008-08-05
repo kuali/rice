@@ -29,6 +29,7 @@ import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -41,7 +42,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.clientapp.WorkflowInfo;
 
 /**
  * This class is the implementation of the WorkflowDocumentService, which makes use of OneStart Workflow.

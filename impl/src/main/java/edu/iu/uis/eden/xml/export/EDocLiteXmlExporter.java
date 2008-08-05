@@ -23,12 +23,12 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.edl.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.EDocLiteDefinition;
+import org.kuali.rice.kew.edl.EDocLiteService;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.export.ExportDataSet;
 
-import edu.iu.uis.eden.edl.EDocLiteAssociation;
-import edu.iu.uis.eden.edl.EDocLiteDefinition;
-import edu.iu.uis.eden.edl.EDocLiteService;
-import edu.iu.uis.eden.edl.EDocLiteStyle;
-import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;
 import edu.iu.uis.eden.xml.XmlRenderer;

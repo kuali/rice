@@ -35,9 +35,9 @@ import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.quartz.SchedulerException;
 
-import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  * This class tests the notification service impl.

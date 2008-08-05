@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.docsearch;
 
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
+
 
 /**
  *

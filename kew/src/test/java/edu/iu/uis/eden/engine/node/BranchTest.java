@@ -22,6 +22,8 @@ package edu.iu.uis.eden.engine.node;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.workflow.test.KEWTestCase;
 
 /**

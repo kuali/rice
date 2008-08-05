@@ -3,21 +3,21 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>XMLSearchableAttributeString</name>
-			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString</className>
+			<className>org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString</className>
 			<label>XML Searchable attribute</label>
 			<description>XML Searchable attribute</description>
 			<type>SearchableAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>CustomSecurityFilterAttribute</name>
-			<className>edu.iu.uis.eden.docsearch.CustomSecurityFilterAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.CustomSecurityFilterAttribute</className>
 			<label>CustomSecurityFilterAttribute</label>
 			<description>CustomSecurityFilterAttribute</description>
 			<type>DocumentSearchSecurityFilterAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>UserEmployeeId</name>
-			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
 			<label>Visible Search Attribute</label>
 			<description>Searchable attribute is visible</description>
 			<type>SearchableXmlAttribute</type>
@@ -139,7 +139,7 @@
 			<label>SecurityDoc_SecurityAttributeOnly_Class</label>
 			<docHandler>_blank</docHandler>
 			<security>
-			    <securityAttribute class="edu.iu.uis.eden.docsearch.CustomSecurityFilterAttribute" />
+			    <securityAttribute class="org.kuali.rice.kew.docsearch.CustomSecurityFilterAttribute" />
 			</security>
 		</documentType>
 		<documentType>

@@ -14,34 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
- * The exception used from the Simulation Engine when it has problems routing a
- * document
- * 
+ * Thrown whenever a problem with a workgroup exists, like one is execpected but not found.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentSimulatedRouteException extends WorkflowException {
+public class InvalidWorkgroupException extends WorkflowException {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2670612945753672923L;
 
-    private static final long serialVersionUID = 8521549957308984549L;
+public InvalidWorkgroupException() {
+    super();
+  }
 
-    public DocumentSimulatedRouteException() {
-        super();
-    }
-
-    public DocumentSimulatedRouteException(String s) {
-        super(s);
-    }
-
-    public DocumentSimulatedRouteException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
-    public DocumentSimulatedRouteException(Throwable throwable) {
-        super(throwable);
-    }
-
+  public InvalidWorkgroupException(String s) {
+    super(s);
+  }
 }
+
+
+
+
+
+/*
+ * Copyright 2003 The Trustees of Indiana University.  All rights reserved.
+ *
+ * This file is part of the EDEN software package.
+ * For license information, see the LICENSE file in the top level directory
+ * of the EDEN source distribution.
+ */

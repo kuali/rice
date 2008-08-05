@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.kuali.rice.util.RiceConstants;
 
@@ -39,7 +40,6 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.web.SearchAttributeFormContainer;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.user.UserUtils;

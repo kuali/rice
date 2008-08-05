@@ -16,7 +16,7 @@
  */
 package org.kuali.workflow.routemodule;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 /**
  *

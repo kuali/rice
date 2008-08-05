@@ -24,9 +24,9 @@ import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 
 /**

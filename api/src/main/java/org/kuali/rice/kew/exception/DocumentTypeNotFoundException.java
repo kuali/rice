@@ -14,33 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
- * An exception which is thrown when a user cannot be found.
- *
+ * An exception which is thrown when a DocumentType cannot be found.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EdenUserNotFoundException extends WorkflowException {
-	
-	private static final long serialVersionUID = -7171012642086191459L;
+public class DocumentTypeNotFoundException extends WorkflowException {
 
-	public EdenUserNotFoundException() {
+	private static final long serialVersionUID = -3077097373541610208L;
+
+	public DocumentTypeNotFoundException(String s) {
+		super(s);
+	}
+
+	public DocumentTypeNotFoundException() {
 		super();
 	}
 
-	public EdenUserNotFoundException(Throwable cause) {
-		super(cause);
-	}
-
-	public EdenUserNotFoundException(String s) {
-		super(s);
-	}
-  
-	public EdenUserNotFoundException(String s, Throwable cause) {
-		super(s, cause);
-	}
-  
 }

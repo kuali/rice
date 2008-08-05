@@ -17,9 +17,9 @@
 package edu.iu.uis.eden.actions;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.Workgroup;
 

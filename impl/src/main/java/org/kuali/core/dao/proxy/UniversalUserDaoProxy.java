@@ -20,9 +20,9 @@ import java.util.List;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.util.OrmUtils;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.BaseWorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUser;
 

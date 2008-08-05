@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -49,7 +50,6 @@ import edu.iu.uis.eden.engine.node.SimpleJoinNode;
 import edu.iu.uis.eden.engine.node.SimpleSplitNode;
 import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import edu.iu.uis.eden.engine.transition.SplitTransitionEngine;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.Utilities;
 
 /**

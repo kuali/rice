@@ -25,9 +25,9 @@ import javax.xml.xpath.XPathFunction;
 import javax.xml.xpath.XPathFunctionResolver;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
 import edu.iu.uis.eden.support.xstream.XStreamSafeSearchFunction;

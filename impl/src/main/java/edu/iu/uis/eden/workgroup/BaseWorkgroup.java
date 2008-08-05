@@ -30,11 +30,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.attribute.Extension;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

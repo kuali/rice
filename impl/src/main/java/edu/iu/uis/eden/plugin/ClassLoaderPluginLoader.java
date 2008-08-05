@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 
-import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.plugin.manifest.PluginManifest;
 import edu.iu.uis.eden.plugin.manifest.PluginManifestParser;
 

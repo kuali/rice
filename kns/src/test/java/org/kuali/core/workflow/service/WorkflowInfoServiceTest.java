@@ -21,10 +21,10 @@ import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.testharness.KNSTestCase;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 
 /**
  * This class tests the WorkflowUser service.

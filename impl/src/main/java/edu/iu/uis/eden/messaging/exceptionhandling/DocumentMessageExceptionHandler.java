@@ -15,9 +15,9 @@ package edu.iu.uis.eden.messaging.exceptionhandling;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.PersistedMessage;
 
 /**

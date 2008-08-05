@@ -21,9 +21,9 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 
 import edu.iu.uis.eden.edl.EDocLiteStyle;
-import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;

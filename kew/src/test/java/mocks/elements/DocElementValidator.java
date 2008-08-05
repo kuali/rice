@@ -17,8 +17,8 @@
 package mocks.elements;
 
 import org.jdom.Element;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 
-import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.services.InconsistentDocElementStateException;
 
 

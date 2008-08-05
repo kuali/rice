@@ -24,9 +24,9 @@ import java.util.List;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 /**
  * A typesafe enumeration defining the various types of Nodes in the Workflow Engine.

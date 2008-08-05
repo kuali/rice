@@ -14,33 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
-
-import org.kuali.rice.kew.exception.WorkflowException;
+package org.kuali.rice.kew.exception;
 
 /**
- * Thrown whenever there is a problem with XML in an XML document.
+ * A generic runtime exception thrown from KEW.  Acts as the superclass for all runtime
+ * exceptions in KEW.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class InvalidXmlException extends WorkflowException {
+public class WorkflowRuntimeException extends RuntimeException {
+    
+    private static final long serialVersionUID = 2012770642382150523L;
+    
+    public WorkflowRuntimeException(String message) {
+        super(message);
+    }
 
-	private static final long serialVersionUID = 2155290439712478294L;
+    public WorkflowRuntimeException() {
+        super();
+    }
 
-	public InvalidXmlException() {
-		super();
-	}
+    public WorkflowRuntimeException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public InvalidXmlException(String s) {
-		super(s);
-	}
-
-	public InvalidXmlException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
-
-	public InvalidXmlException(Throwable throwable) {
-		super(throwable);
-	}
-
+    public WorkflowRuntimeException(Throwable cause) {
+        super(cause);
+    }
 }

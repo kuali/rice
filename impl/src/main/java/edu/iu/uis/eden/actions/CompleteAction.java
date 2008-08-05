@@ -20,14 +20,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
@@ -130,7 +130,7 @@ public class CompleteAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws ResourceUnavailableException
      */
-    public void recordAction() throws edu.iu.uis.eden.exception.InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
    //     checkLocking();
         updateSearchableAttributesIfPossible();

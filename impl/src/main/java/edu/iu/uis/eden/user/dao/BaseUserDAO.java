@@ -18,7 +18,8 @@ package edu.iu.uis.eden.user.dao;
 
 import java.util.List;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.user.BaseWorkflowUser;
 import edu.iu.uis.eden.user.UserId;
 

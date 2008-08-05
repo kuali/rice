@@ -20,10 +20,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

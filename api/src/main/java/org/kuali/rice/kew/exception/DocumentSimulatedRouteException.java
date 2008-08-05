@@ -14,31 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
+
 
 /**
- * A generic runtime exception thrown from KEW.  Acts as the superclass for all runtime
- * exceptions in KEW.
- *
+ * The exception used from the Simulation Engine when it has problems routing a
+ * document
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class WorkflowRuntimeException extends RuntimeException {
-    
-    private static final long serialVersionUID = 2012770642382150523L;
-    
-    public WorkflowRuntimeException(String message) {
-        super(message);
-    }
+public class DocumentSimulatedRouteException extends WorkflowException {
 
-    public WorkflowRuntimeException() {
+    private static final long serialVersionUID = 8521549957308984549L;
+
+    public DocumentSimulatedRouteException() {
         super();
     }
 
-    public WorkflowRuntimeException(String message, Throwable cause) {
-        super(message, cause);
+    public DocumentSimulatedRouteException(String s) {
+        super(s);
     }
 
-    public WorkflowRuntimeException(Throwable cause) {
-        super(cause);
+    public DocumentSimulatedRouteException(String message, Throwable throwable) {
+        super(message, throwable);
     }
+
+    public DocumentSimulatedRouteException(Throwable throwable) {
+        super(throwable);
+    }
+
 }

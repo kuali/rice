@@ -26,8 +26,8 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.lookup.LookupUtils;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
 

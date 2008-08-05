@@ -18,9 +18,10 @@ package edu.iu.uis.eden.docsearch.dao;
 
 import java.util.List;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 public interface DocumentSearchDAO {

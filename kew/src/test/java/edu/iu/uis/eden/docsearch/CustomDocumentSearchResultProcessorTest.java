@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.iu.uis.eden.KEWPropertyConstants;
@@ -29,7 +30,6 @@ import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.lookupable.Column;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;

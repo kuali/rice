@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -31,7 +32,6 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
 import edu.iu.uis.eden.messaging.KEWJavaService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;

@@ -20,9 +20,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFunctionResolver;
 
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Provides utilities for obtaining XPath instances which are "good-to-go" with access to the Workflow

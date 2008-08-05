@@ -25,9 +25,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;

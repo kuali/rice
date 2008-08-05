@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.plugin.client.PluginListener;
 
 /**

@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -19,7 +20,6 @@ import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**

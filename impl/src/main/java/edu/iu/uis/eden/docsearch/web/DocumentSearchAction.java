@@ -46,6 +46,7 @@ import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWPropertyConstants;
@@ -60,7 +61,6 @@ import edu.iu.uis.eden.docsearch.SearchAttributeCriteriaComponent;
 import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.lookupable.Column;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.preferences.Preferences;

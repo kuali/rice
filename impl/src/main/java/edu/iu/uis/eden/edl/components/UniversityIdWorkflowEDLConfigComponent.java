@@ -16,13 +16,13 @@
  */
 package edu.iu.uis.eden.edl.components;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.EmplId;
 
 /**

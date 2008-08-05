@@ -27,10 +27,10 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 import edu.iu.uis.eden.clientapp.RouteModuleRemote;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.util.ResponsibleParty;

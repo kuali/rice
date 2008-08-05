@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.AbstractRoleAttribute;
 import edu.iu.uis.eden.routetemplate.ResolvedQualifiedRole;

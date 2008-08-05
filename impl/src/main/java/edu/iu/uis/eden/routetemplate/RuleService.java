@@ -21,13 +21,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.GroupId;

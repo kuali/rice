@@ -31,8 +31,8 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Loads a plugin from a zip file on the file system.

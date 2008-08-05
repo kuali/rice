@@ -14,33 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
- * Thrown when a resource is not available.
+ * An exception which is thrown when a user cannot be found.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ResourceUnavailableException extends WorkflowException {
+public class EdenUserNotFoundException extends WorkflowException {
+	
+	private static final long serialVersionUID = -7171012642086191459L;
 
-	private static final long serialVersionUID = -6217074085963406965L;
+	public EdenUserNotFoundException() {
+		super();
+	}
 
-	public ResourceUnavailableException() {
-        super();
-    }
+	public EdenUserNotFoundException(Throwable cause) {
+		super(cause);
+	}
 
-    public ResourceUnavailableException(String message) {
-        super(message);
-    }
-
-    public ResourceUnavailableException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
-    public ResourceUnavailableException(Throwable throwable) {
-        super(throwable);
-    }
-
+	public EdenUserNotFoundException(String s) {
+		super(s);
+	}
+  
+	public EdenUserNotFoundException(String s, Throwable cause) {
+		super(s, cause);
+	}
+  
 }

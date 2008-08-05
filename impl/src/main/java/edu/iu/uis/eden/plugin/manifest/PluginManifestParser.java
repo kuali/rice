@@ -30,8 +30,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.config.Config;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 
-import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.plugin.PluginException;
 import edu.iu.uis.eden.util.Utilities;
 

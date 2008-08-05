@@ -14,29 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
-
-import org.kuali.rice.kew.exception.WorkflowException;
-
-import edu.iu.uis.eden.doctype.DocumentType;
+package org.kuali.rice.kew.exception;
 
 /**
- * An exception which is thrown when a {@link DocumentType} cannot be found.
- * 
- * @see DocumentType
+ * An exception which is thrown when a pessimistic lock fails to be aquired.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentTypeNotFoundException extends WorkflowException {
+public class LockingException extends WorkflowRuntimeException {
 
-	private static final long serialVersionUID = -3077097373541610208L;
-
-	public DocumentTypeNotFoundException(String s) {
-		super(s);
-	}
-
-	public DocumentTypeNotFoundException() {
-		super();
-	}
-
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8604582895083027695L;
+	public LockingException() {
+        super();
+   }
+    public LockingException(String message) {
+        super(message);
+    }
+    public LockingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    public LockingException(Throwable cause) {
+        super(cause);
+    }
+    
 }

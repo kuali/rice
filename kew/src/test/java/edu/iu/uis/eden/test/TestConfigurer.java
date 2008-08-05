@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.kuali.rice.config.BaseConfig;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.springframework.util.ResourceUtils;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * BaseConfig implementation that is the entry point for workflow configuration

@@ -39,6 +39,8 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -52,8 +54,6 @@ import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.GenericXMLSearchableAttribute;
 import edu.iu.uis.eden.engine.node.Process;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;

@@ -23,9 +23,9 @@ import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 

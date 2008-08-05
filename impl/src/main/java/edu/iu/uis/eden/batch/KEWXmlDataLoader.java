@@ -25,11 +25,11 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * This is a description of what this class does - arh14 don't forget to fill this in. 

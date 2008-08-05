@@ -18,8 +18,8 @@ package edu.iu.uis.eden.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * A resolver for URLs for the user, user report, workgroup and workgroup

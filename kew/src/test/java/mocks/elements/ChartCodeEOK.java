@@ -18,8 +18,8 @@ package mocks.elements;
 
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 
 /**

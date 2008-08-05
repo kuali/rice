@@ -19,11 +19,11 @@ import java.util.Collection;
 
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.InvalidWorkgroupException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 
 /**

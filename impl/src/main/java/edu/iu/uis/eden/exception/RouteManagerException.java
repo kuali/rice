@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.exception;
 
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+
 import edu.iu.uis.eden.engine.RouteContext;
 
 /**

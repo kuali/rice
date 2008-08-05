@@ -24,13 +24,13 @@ import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.edl.EDLContext;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Populates workflow rule attributes associated with the current configElement.

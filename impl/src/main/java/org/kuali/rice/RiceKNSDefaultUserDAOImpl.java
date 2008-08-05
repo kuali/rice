@@ -25,9 +25,9 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

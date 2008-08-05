@@ -19,7 +19,8 @@ package edu.iu.uis.eden.docsearch;
 import java.sql.SQLException;
 import java.util.List;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

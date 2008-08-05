@@ -24,6 +24,7 @@ import java.util.List;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -33,7 +34,6 @@ import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;

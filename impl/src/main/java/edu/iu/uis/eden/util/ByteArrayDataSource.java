@@ -26,7 +26,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.activation.DataSource;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+
 
 /**
  * A simple DataSource for demonstration purposes. This class implements a

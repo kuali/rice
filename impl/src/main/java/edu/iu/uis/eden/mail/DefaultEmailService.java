@@ -20,9 +20,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.springframework.beans.factory.InitializingBean;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 public class DefaultEmailService implements EmailService, InitializingBean {
     private static final Logger LOG = Logger.getLogger(DefaultEmailService.class);

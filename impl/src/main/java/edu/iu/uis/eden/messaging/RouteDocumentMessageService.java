@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.messaging;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.WorkflowEngine;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * An XML services which is used to submit documents to the engine.

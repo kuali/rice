@@ -33,6 +33,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -43,8 +45,6 @@ import org.xml.sax.InputSource;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;

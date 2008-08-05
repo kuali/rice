@@ -55,6 +55,8 @@ import org.jdom.input.DOMBuilder;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -65,8 +67,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import edu.iu.uis.eden.exception.InvalidXmlException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
 import edu.iu.uis.eden.xml.XmlConstants;
 

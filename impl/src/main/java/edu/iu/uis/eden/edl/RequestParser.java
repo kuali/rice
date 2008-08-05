@@ -30,8 +30,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * An abstraction that allows for switching between multipart form requests and normal requests when getting

@@ -17,8 +17,8 @@ package org.kuali.notification.service.impl;
 
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.service.NotificationService;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
 
 /**

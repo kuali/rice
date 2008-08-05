@@ -18,9 +18,9 @@ package edu.iu.uis.eden.test.web.framework;
 
 import javax.servlet.Servlet;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.test.web.WorkflowServletRequest;
 
 /**

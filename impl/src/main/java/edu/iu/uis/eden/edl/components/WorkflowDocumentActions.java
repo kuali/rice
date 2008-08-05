@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -29,7 +30,6 @@ import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
 import edu.iu.uis.eden.edl.UserAction;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**

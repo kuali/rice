@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.InvalidWorkgroupException;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -30,8 +32,6 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
-import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.InvalidXmlException;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {

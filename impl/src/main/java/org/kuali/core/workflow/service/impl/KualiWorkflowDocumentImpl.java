@@ -36,13 +36,13 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import java.io.Serializable;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {

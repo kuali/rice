@@ -28,8 +28,8 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.rice.jpa.criteria.Criteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
 

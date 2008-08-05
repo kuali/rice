@@ -23,11 +23,11 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.node.BranchState;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.Workgroup;

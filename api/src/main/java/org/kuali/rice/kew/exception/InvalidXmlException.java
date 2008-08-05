@@ -14,30 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
+
 
 /**
- * An exception which is thrown when a pessimistic lock fails to be aquired.
- * 
+ * Thrown whenever there is a problem with XML in an XML document.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class LockingException extends WorkflowRuntimeException {
+public class InvalidXmlException extends WorkflowException {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8604582895083027695L;
-	public LockingException() {
-        super();
-   }
-    public LockingException(String message) {
-        super(message);
-    }
-    public LockingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public LockingException(Throwable cause) {
-        super(cause);
-    }
-    
+	private static final long serialVersionUID = 2155290439712478294L;
+
+	public InvalidXmlException() {
+		super();
+	}
+
+	public InvalidXmlException(String s) {
+		super(s);
+	}
+
+	public InvalidXmlException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
+
+	public InvalidXmlException(Throwable throwable) {
+		super(throwable);
+	}
+
 }

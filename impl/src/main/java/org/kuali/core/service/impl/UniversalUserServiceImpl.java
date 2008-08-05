@@ -57,10 +57,10 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.BaseUserService;
 import edu.iu.uis.eden.user.BaseWorkflowUser;
 import edu.iu.uis.eden.user.UserCapabilities;

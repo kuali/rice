@@ -39,14 +39,14 @@ import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
-import edu.iu.uis.eden.exception.InvalidWorkgroupException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 @SuppressWarnings("deprecation")
 @Transactional

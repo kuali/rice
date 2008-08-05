@@ -21,8 +21,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.WorkflowServiceError;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

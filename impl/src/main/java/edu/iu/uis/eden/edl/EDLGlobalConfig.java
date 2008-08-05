@@ -26,10 +26,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Store global EDL config information parsed from config file.

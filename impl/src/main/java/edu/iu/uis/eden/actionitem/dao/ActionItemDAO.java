@@ -18,8 +18,9 @@ package edu.iu.uis.eden.actionitem.dao;
 
 import java.util.Collection;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 

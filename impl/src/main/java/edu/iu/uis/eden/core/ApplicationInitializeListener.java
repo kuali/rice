@@ -30,12 +30,12 @@ import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.JSTLConstants;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.MessageFetcher;
 
 /**

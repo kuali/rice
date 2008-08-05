@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.w3c.dom.Document;
@@ -36,7 +37,6 @@ import edu.iu.uis.eden.edl.EDLModelComponent;
 import edu.iu.uis.eden.edl.EDLXmlUtils;
 import edu.iu.uis.eden.edl.RequestParser;
 import edu.iu.uis.eden.edl.UserAction;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 

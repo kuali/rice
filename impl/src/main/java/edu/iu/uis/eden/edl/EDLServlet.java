@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Takes edl web requests.

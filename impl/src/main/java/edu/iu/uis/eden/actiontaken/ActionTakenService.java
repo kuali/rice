@@ -20,8 +20,9 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**

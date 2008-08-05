@@ -26,6 +26,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -39,7 +40,6 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.FutureRequestDocumentStateManager;
 import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;

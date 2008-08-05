@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -33,7 +34,6 @@ import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.PropertiesUtil;
 import edu.iu.uis.eden.engine.node.SimpleNode;
 import edu.iu.uis.eden.engine.node.SimpleResult;
-import edu.iu.uis.eden.exception.InvalidXmlException;
 
 /**
  * A simple node that allows setting of document variables.

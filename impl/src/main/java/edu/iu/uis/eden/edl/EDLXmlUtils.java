@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,7 +34,6 @@ import org.w3c.dom.NodeList;
 
 import edu.iu.uis.eden.edl.components.MatchingParam;
 import edu.iu.uis.eden.edl.components.WorkflowDocumentActions;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Contains a bunch of dom utility methods.

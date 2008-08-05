@@ -14,28 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.exception;
+package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
- * Thrown whenever a problem with a workgroup exists, like one is execpected but not found.
- *
+ * The exception thrown whenever an ActionTaken can not be procesed for some reason.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class InvalidWorkgroupException extends WorkflowException {
+public class InvalidActionTakenException extends WorkflowException {
   /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2670612945753672923L;
+	private static final long serialVersionUID = 1138782665042887434L;
 
-public InvalidWorkgroupException() {
+public InvalidActionTakenException() {
     super();
   }
 
-  public InvalidWorkgroupException(String s) {
+  public InvalidActionTakenException(String s) {
     super(s);
   }
+  
+  public InvalidActionTakenException(String message, Throwable throwable) {
+      super(message, throwable);
+  }
+  
+  public InvalidActionTakenException(Throwable throwable) {
+      super(throwable);
+  }
+  
 }
 
 

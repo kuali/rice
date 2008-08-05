@@ -27,6 +27,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -38,7 +39,6 @@ import edu.iu.uis.eden.doctype.SecuritySession;
 import edu.iu.uis.eden.engine.simulation.SimulationCriteria;
 import edu.iu.uis.eden.engine.simulation.SimulationEngine;
 import edu.iu.uis.eden.engine.simulation.SimulationResults;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.WorkflowAction;

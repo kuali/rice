@@ -24,11 +24,11 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 
-import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 public interface KualiWorkflowDocument {

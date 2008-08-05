@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
@@ -31,7 +32,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.exception.LockingException;
 
 public class RouteHeaderServiceTest extends KEWTestCase {
 

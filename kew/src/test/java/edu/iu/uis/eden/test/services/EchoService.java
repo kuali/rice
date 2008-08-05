@@ -16,7 +16,8 @@
  */
 package edu.iu.uis.eden.test.services;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 

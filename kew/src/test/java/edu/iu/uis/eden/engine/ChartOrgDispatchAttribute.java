@@ -24,8 +24,8 @@ import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routetemplate.AbstractRoleAttribute;
 import edu.iu.uis.eden.routetemplate.ResolvedQualifiedRole;

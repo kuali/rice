@@ -23,9 +23,9 @@ import java.util.Vector;
 
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleExtension;

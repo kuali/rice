@@ -18,9 +18,9 @@ package edu.sampleu.travel.rice;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.bus.auth.AuthorizationService;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 

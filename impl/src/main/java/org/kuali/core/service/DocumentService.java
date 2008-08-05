@@ -21,9 +21,9 @@ import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.document.Document;
 import org.kuali.core.rule.event.SaveEvent;
+import org.kuali.rice.kew.exception.EdenUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
-import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 
 
 /**

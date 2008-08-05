@@ -14,33 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.export;
+package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 /**
- * Exception thrown when an invalid export is attempted.
+ * Thrown when a resource is not available.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ExportNotSupportedException extends WorkflowRuntimeException {
+public class ResourceUnavailableException extends WorkflowException {
 
-	private static final long serialVersionUID = 1450235230768995894L;
+	private static final long serialVersionUID = -6217074085963406965L;
 
-	public ExportNotSupportedException(String message) {
-        super(message);
-    }
-
-    public ExportNotSupportedException() {
+	public ResourceUnavailableException() {
         super();
     }
 
-    public ExportNotSupportedException(String message, Throwable cause) {
-        super(message, cause);
+    public ResourceUnavailableException(String message) {
+        super(message);
     }
 
-    public ExportNotSupportedException(Throwable cause) {
-        super(cause);
+    public ResourceUnavailableException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public ResourceUnavailableException(Throwable throwable) {
+        super(throwable);
     }
 
 }

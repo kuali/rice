@@ -17,8 +17,8 @@ import java.sql.Timestamp;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 import edu.iu.uis.eden.messaging.PersistedMessage;

@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.messaging.serviceconnectors;
 
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.messaging.bam.BAMClientProxy;

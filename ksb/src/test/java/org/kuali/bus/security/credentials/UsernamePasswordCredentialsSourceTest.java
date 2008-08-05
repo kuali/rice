@@ -17,6 +17,8 @@ package org.kuali.bus.security.credentials;
 
 import junit.framework.TestCase;
 
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentialsSource;
 import org.kuali.rice.security.credentials.Credentials;
 import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 

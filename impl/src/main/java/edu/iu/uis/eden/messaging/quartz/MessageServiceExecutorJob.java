@@ -15,7 +15,7 @@ package edu.iu.uis.eden.messaging.quartz;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

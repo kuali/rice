@@ -18,11 +18,11 @@ package edu.iu.uis.eden.messaging.objectremoting;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;

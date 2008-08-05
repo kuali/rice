@@ -19,7 +19,7 @@ package edu.iu.uis.eden.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.actionrequests.DocumentRequeuerService;
 import edu.iu.uis.eden.actions.asyncservices.ActionInvocationService;

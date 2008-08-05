@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import org.codehaus.xfire.spring.remoting.XFireExporter;
 import org.codehaus.xfire.util.dom.DOMInHandler;
 import org.codehaus.xfire.util.dom.DOMOutHandler;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.xfire.WorkflowXFireWSS4JInHandler;
 import org.kuali.rice.config.xfire.WorkflowXFireWSS4JOutHandler;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
 import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;

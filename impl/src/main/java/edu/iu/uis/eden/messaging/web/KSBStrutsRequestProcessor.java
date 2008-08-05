@@ -27,8 +27,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
-import org.kuali.bus.auth.AuthorizationService;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.auth.AuthorizationService;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 /**

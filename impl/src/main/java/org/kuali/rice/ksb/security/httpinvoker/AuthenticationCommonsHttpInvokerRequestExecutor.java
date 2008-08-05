@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.bus.security.httpinvoker;
+package org.kuali.rice.ksb.security.httpinvoker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.kuali.bus.security.credentials.UsernamePasswordCredentials;
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.kuali.rice.security.credentials.CredentialsSource;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 import org.springframework.util.Assert;

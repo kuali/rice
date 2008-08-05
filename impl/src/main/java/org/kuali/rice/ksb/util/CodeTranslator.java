@@ -14,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.bus.util;
+package org.kuali.rice.ksb.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * Utility class to translate the various codes used in Eden into labels and vice versa.

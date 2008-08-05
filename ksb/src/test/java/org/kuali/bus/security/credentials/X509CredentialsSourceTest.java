@@ -30,6 +30,9 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Set;
 
+import org.kuali.rice.ksb.security.credentials.X509Credentials;
+import org.kuali.rice.ksb.security.credentials.X509CredentialsSource;
+
 import junit.framework.TestCase;
 
 /**

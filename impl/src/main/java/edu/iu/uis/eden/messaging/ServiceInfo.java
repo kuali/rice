@@ -32,8 +32,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Type;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.RiceUtilities;
 
 /**

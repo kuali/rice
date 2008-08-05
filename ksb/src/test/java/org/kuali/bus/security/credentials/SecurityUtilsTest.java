@@ -20,6 +20,9 @@ import junit.framework.TestCase;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.x509.X509AuthenticationToken;
 import org.kuali.bus.security.credentials.X509CredentialsSourceTest.KualiX509Certificate;
+import org.kuali.rice.ksb.security.credentials.SecurityUtils;
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
+import org.kuali.rice.ksb.security.credentials.X509Credentials;
 
 /**
  * 

@@ -24,12 +24,12 @@ import junit.framework.Assert;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
 import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.vo.MessageVO;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.quartz.JobExecutionContext;

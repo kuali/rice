@@ -15,7 +15,7 @@
  */
 package edu.iu.uis.eden.messaging.quartz;
 
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

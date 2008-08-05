@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.messaging.serviceproxies;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.transaction.support.TransactionSynchronization;
 
 import edu.iu.uis.eden.messaging.MessageServiceInvoker;

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -29,6 +28,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ojb.BaseOjbConfigurer;
 import org.kuali.rice.test.RiceTestCase;
 import org.mortbay.jetty.webapp.WebAppClassLoader;

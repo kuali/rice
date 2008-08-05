@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.bus.util.CodeTranslator;
+import org.kuali.rice.ksb.util.CodeTranslator;
 import org.kuali.rice.util.SqlTimestampConverter;
 
 import edu.iu.uis.eden.messaging.PersistedMessage;

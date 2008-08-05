@@ -31,8 +31,8 @@ import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.log4j.Logger;
-import org.kuali.bus.security.httpinvoker.AuthenticationCommonsHttpInvokerRequestExecutor;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.security.httpinvoker.AuthenticationCommonsHttpInvokerRequestExecutor;
 
 import edu.iu.uis.eden.messaging.HttpClientHelper;
 import edu.iu.uis.eden.messaging.KEWHttpInvokerProxyFactoryBean;

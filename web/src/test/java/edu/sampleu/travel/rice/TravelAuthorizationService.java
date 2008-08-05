@@ -17,8 +17,8 @@ package edu.sampleu.travel.rice;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.bus.auth.AuthorizationService;
 import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.ksb.auth.AuthorizationService;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.web.session.UserSession;
@@ -36,7 +36,7 @@ public class TravelAuthorizationService implements AuthorizationService {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.bus.auth.AuthorizationService#isAdministrator()
+     * @see org.kuali.rice.ksb.auth.AuthorizationService#isAdministrator()
      */
     public boolean isAdministrator(HttpServletRequest request) {
 	UserSession userSession = UserSession.getAuthenticatedUser();

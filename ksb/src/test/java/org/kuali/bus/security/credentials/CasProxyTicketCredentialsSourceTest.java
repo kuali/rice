@@ -28,6 +28,8 @@ import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.cas.CasAuthenticationToken;
 import org.acegisecurity.ui.cas.CasProcessingFilter;
 import org.acegisecurity.userdetails.User;
+import org.kuali.rice.ksb.security.credentials.CasProxyTicketCredentialsSource;
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.kuali.rice.security.credentials.Credentials;
 import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 import org.springframework.mock.web.MockHttpServletRequest;

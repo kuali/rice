@@ -18,7 +18,6 @@ package org.kuali.rice.kns.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.KualiModuleAuthorizerBase;
 import org.kuali.core.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
@@ -29,6 +28,7 @@ import org.kuali.rice.config.event.AfterStartEvent;
 import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

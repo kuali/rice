@@ -14,9 +14,9 @@ package edu.iu.uis.eden.messaging.quartz;
 
 import javax.sql.DataSource;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

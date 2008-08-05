@@ -20,12 +20,12 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;

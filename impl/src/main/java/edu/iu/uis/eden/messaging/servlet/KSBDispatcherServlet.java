@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;

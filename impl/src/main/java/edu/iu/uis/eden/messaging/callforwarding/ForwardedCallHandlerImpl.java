@@ -19,7 +19,7 @@ package edu.iu.uis.eden.messaging.callforwarding;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.util.RiceUtilities;
 

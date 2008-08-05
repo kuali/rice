@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.bus.auth;
+package org.kuali.rice.ksb.auth;
 
 import javax.servlet.http.HttpServletRequest;
 

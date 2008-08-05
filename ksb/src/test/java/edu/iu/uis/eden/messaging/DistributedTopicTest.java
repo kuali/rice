@@ -18,8 +18,8 @@ package edu.iu.uis.eden.messaging;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 import edu.iu.uis.eden.messaging.remotedservices.ServiceCallInformationHolder;

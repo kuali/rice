@@ -12,9 +12,9 @@
  */
 package edu.iu.uis.eden.messaging.serviceproxies;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;

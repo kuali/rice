@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.messaging;
 
-import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

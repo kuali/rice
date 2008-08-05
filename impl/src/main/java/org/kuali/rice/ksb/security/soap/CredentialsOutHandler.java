@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.bus.security.soap;
+package org.kuali.rice.ksb.security.soap;
 
 import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
-import org.kuali.bus.security.credentials.UsernamePasswordCredentials;
+import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.kuali.rice.security.credentials.Credentials;
 import org.kuali.rice.security.credentials.CredentialsSource;
 import org.springframework.util.Assert;

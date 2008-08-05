@@ -23,9 +23,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.proxy.BaseInvocationHandler;
 import org.kuali.rice.proxy.TargetedInvocationHandler;
 import org.kuali.rice.util.ClassLoaderUtils;

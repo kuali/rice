@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.base.Config;

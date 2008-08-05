@@ -19,8 +19,8 @@ package edu.iu.uis.eden.messaging.bam;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.proxy.BaseTargetedInvocationHandler;
 import org.kuali.rice.util.ExceptionUtils;
 

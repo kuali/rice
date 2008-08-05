@@ -13,7 +13,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>ExplodingRuleAttribute</name>
-			<className>edu.iu.uis.eden.routemanager.ExplodingRuleAttribute</className>
+			<className>org.kuali.rice.kew.routemanager.ExplodingRuleAttribute</className>
 			<label>ExplodingRuleAttribute</label>
 			<description>ExplodingRuleAttribute</description>
 			<type>RuleAttribute</type>
@@ -133,7 +133,7 @@
 			<name>AdhocTransitionTestDocument</name>
 			<description>AdhocTransitionTestDocument</description>
 			<label>AdhocTransitionTestDocument</label>
-			<postProcessorName>edu.iu.uis.eden.routemanager.ExceptionRoutingTestPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.routemanager.ExceptionRoutingTestPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

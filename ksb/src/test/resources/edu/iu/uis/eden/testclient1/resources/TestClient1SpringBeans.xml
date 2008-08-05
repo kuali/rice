@@ -52,7 +52,7 @@
 	<bean id="testJavaAsyncService" class="edu.iu.uis.eden.testclient1.JavaAsyncTestServiceImpl" />
 	<bean id="testXmlAsyncService" class="edu.iu.uis.eden.testclient1.XmlAsyncTestServiceImpl" />
 	<!-- 
-		<bean id="distributedCachingTestHelperService" class="edu.iu.uis.eden.test.services.DistributedCachingTestHelperServiceImpl" />
+		<bean id="distributedCachingTestHelperService" class="org.kuali.rice.kew.test.services.DistributedCachingTestHelperServiceImpl" />
 	-->
 	<bean id="sharedQueue" class="edu.iu.uis.eden.testclient1.ClientApp1SharedQueue" />
 	<bean id="sharedTopic" class="edu.iu.uis.eden.testclient1.Client1SharedTopic" />

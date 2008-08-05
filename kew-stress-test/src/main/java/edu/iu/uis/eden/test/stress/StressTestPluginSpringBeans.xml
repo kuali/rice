@@ -7,9 +7,9 @@
 			<list>		
 				<bean class="org.kuali.rice.ksb.messaging.ServiceDefinition">
 					<property name="service">
-						<bean class="edu.iu.uis.eden.test.stress.StressTestEchoServiceImpl"/>
+						<bean class="org.kuali.rice.kew.test.stress.StressTestEchoServiceImpl"/>
 					</property>
-					<property name="serviceInterface" value="edu.iu.uis.eden.test.stress.StressTestEchoService" />
+					<property name="serviceInterface" value="org.kuali.rice.kew.test.stress.StressTestEchoService" />
 					<property name="serviceName" value="StressTestEchoService" />
 				</bean>
 			</list>

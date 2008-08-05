@@ -3,7 +3,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>Client1AlwaysRouteAttribute</name>
-			<className>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
+			<className>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
 			<label>Client1AlwaysRouteAttribute</label>
 			<description>Client1AlwaysRouteAttribute</description>
 			<type>RuleAttribute</type>
@@ -11,7 +11,7 @@
 		</ruleAttribute>
 	    <ruleAttribute>
 	      <name>ActionListAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1ActionListAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1ActionListAttribute</className>
 	      <label>ActionListAttribute</label>
 	      <description>ActionListAttribute</description>
 	      <type>ActionListAttribute</type>
@@ -19,7 +19,7 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>DocumentSearchGeneratorAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.ClientDocumentSearchGenerator</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.ClientDocumentSearchGenerator</className>
 	      <label>DocumentSearchGeneratorAttribute</label>
 	      <description>DocumentSearchGeneratorAttribute</description>
 	      <type>DocumentSearchGeneratorAttribute</type>
@@ -27,7 +27,7 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1NoteAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1NoteAttribute</className>
 	      <label>NoteAttribute</label>
 	      <description>NoteAttribute</description>
 	      <type>NoteAttribute</type>
@@ -35,7 +35,7 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>EmailAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1EmailAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1EmailAttribute</className>
 	      <label>EmailAttribute</label>
 	      <description>EmailAttribute</description>
 	      <type>EmailAttribute</type>
@@ -43,7 +43,7 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchableAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchableAttribute</className>
 	      <label>SearchAttribute</label>
 	      <description>SearchAttribute</description>
 	      <type>SearchableAttribute</type>
@@ -51,7 +51,7 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute2</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchAttribute2</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchAttribute2</className>
 	      <label>SearchAttribute2</label>
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
@@ -60,21 +60,21 @@
 	    <!-- attribute with no M.E. -->
 		<ruleAttribute>
 			<name>Client1AlwaysRouteAttributeNoME</name>
-			<className>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
+			<className>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
 			<label>Client1AlwaysRouteAttribute</label>
 			<description>Client1AlwaysRouteAttribute</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
 	    <ruleAttribute>
 	      <name>ActionListAttributeNoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1ActionListAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1ActionListAttribute</className>
 	      <label>ActionListAttribute</label>
 	      <description>ActionListAttribute</description>
 	      <type>ActionListAttribute</type>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>DocumentSearchGeneratorAttributeNoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.ClientDocumentSearchGenerator</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.ClientDocumentSearchGenerator</className>
 	      <label>DocumentSearchGeneratorAttribute</label>
 	      <description>DocumentSearchGeneratorAttribute</description>
 	      <type>DocumentSearchGeneratorAttribute</type>
@@ -82,28 +82,28 @@
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttributeNoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1NoteAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1NoteAttribute</className>
 	      <label>NoteAttribute</label>
 	      <description>NoteAttribute</description>
 	      <type>NoteAttribute</type>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>EmailAttributeNoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1EmailAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1EmailAttribute</className>
 	      <label>EmailAttribute</label>
 	      <description>EmailAttribute</description>
 	      <type>EmailAttribute</type>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttributeNoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchableAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchableAttribute</className>
 	      <label>SearchAttribute</label>
 	      <description>SearchAttribute</description>
 	      <type>SearchableAttribute</type>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute2NoME</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchAttribute2</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchAttribute2</className>
 	      <label>SearchAttribute2</label>
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
@@ -141,7 +141,7 @@
 			<description>AttributeTestDocumentNoME</description>
 			<label>AttributeTestDocumentNoME</label>
 			<messageEntity>TestCl1</messageEntity>
-			<postProcessorName>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

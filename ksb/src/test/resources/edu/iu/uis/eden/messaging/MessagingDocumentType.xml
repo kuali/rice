@@ -5,7 +5,7 @@ test that the remoting of component functionality is working properly -->
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>Client1AlwaysRouteAttribute</name>
-			<className>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
+			<className>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1WorkflowAttribute</className>
 			<label>Client1AlwaysRouteAttribute</label>
 			<description>Client1AlwaysRouteAttribute</description>
 			<type>RuleAttribute</type>
@@ -13,7 +13,7 @@ test that the remoting of component functionality is working properly -->
 		</ruleAttribute>
 	    <ruleAttribute>
 	      <name>ActionListAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1ActionListAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1ActionListAttribute</className>
 	      <label>ActionListAttribute</label>
 	      <description>ActionListAttribute</description>
 	      <type>ActionListAttribute</type>
@@ -21,7 +21,7 @@ test that the remoting of component functionality is working properly -->
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1NoteAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1NoteAttribute</className>
 	      <label>NoteAttribute</label>
 	      <description>NoteAttribute</description>
 	      <type>NoteAttribute</type>
@@ -29,7 +29,7 @@ test that the remoting of component functionality is working properly -->
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>EmailAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1EmailAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1EmailAttribute</className>
 	      <label>EmailAttribute</label>
 	      <description>EmailAttribute</description>
 	      <type>EmailAttribute</type>
@@ -37,7 +37,7 @@ test that the remoting of component functionality is working properly -->
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchableAttribute</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchableAttribute</className>
 	      <label>SearchAttribute</label>
 	      <description>SearchAttribute</description>
 	      <type>SearchableAttribute</type>
@@ -45,7 +45,7 @@ test that the remoting of component functionality is working properly -->
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute2</name>
-	      <className>edu.iu.uis.eden.test.services.remotedcomponents.Client1SearchAttribute2</className>
+	      <className>org.kuali.rice.kew.test.services.remotedcomponents.Client1SearchAttribute2</className>
 	      <label>SearchAttribute2</label>
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
@@ -74,7 +74,7 @@ test that the remoting of component functionality is working properly -->
 			<description>RemoteTestDocumentType</description>
 			<label>RemoteTestDocumentType</label>
 			<messageEntity>TestCl1</messageEntity>
-			<postProcessorName>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -114,7 +114,7 @@ test that the remoting of component functionality is working properly -->
 			<description>ExceptionRemoteTestDocumentType</description>
 			<label>ExceptionRemoteTestDocumentType</label>
 			<messageEntity>TestCl1</messageEntity>
-			<postProcessorName>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -149,7 +149,7 @@ test that the remoting of component functionality is working properly -->
 			<description>AlwaysRouteAttributeTestDocument</description>
 			<label>AlwaysRouteAttributeTestDocument</label>
 			<messageEntity>TestCl1</messageEntity>
-			<postProcessorName>edu.iu.uis.eden.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>

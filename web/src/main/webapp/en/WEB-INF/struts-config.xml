@@ -23,7 +23,7 @@
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
       <form-bean name="DocumentTypeForm" type="org.kuali.rice.kew.doctype.web.DocumentTypeForm" />
       <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
-      <form-bean name="RouteManagerDriverForm" type="edu.iu.uis.eden.routemanager.web.RouteManagerDriverForm"/>
+      <form-bean name="RouteManagerDriverForm" type="org.kuali.rice.kew.routemanager.web.RouteManagerDriverForm"/>
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
       <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.routetemplate.web.RuleQuickLinksForm" />
       <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
@@ -273,7 +273,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/Feedback.jsp"/>
       </action>
 
-      <action path="/RouteManagerDriver" name="RouteManagerDriverForm" scope="request" validate="false" type="edu.iu.uis.eden.routemanager.web.RouteManagerDriverAction" parameter="methodToCall">
+      <action path="/RouteManagerDriver" name="RouteManagerDriverForm" scope="request" validate="false" type="org.kuali.rice.kew.routemanager.web.RouteManagerDriverAction" parameter="methodToCall">
 	      <forward name="basic" path="/WEB-INF/jsp/routemanager/RouteManagerDriver.jsp"/>
 	      <forward name="requiredStateError" path="/WEB-INF/jsp/routemanager/RouteManagerDriver.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/routemanager/RouteManagerDriver.jsp"/>

@@ -4,7 +4,7 @@
 <!-- 
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl" />
 -->
-  <bean id="enExceptionRoutingService" class="edu.iu.uis.eden.routemanager.TestExceptionRoutingServiceImpl"/>
+  <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
   <bean id="enEmailService" class="mocks.MockDefaultEmailServiceImpl" />
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
     <property name="deploymentEnvironment">

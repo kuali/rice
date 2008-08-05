@@ -3,13 +3,13 @@
 <web-app>
     
   <listener>
-    <listener-class>edu.iu.uis.eden.test.stress.StressTestInitializer</listener-class>
+    <listener-class>org.kuali.rice.kew.test.stress.StressTestInitializer</listener-class>
   </listener>  
   
   <servlet>
     <servlet-name>StressTestServlet</servlet-name>
     <display-name>Stress Test Servlet</display-name>
-    <servlet-class>edu.iu.uis.eden.test.stress.StressTestServlet</servlet-class>
+    <servlet-class>org.kuali.rice.kew.test.stress.StressTestServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>

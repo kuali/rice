@@ -24,6 +24,9 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.test.KEWTransactionalTest;
+import org.kuali.rice.kew.test.SQLDataLoader;
+import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
@@ -33,9 +36,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.iu.uis.eden.test.KEWTransactionalTest;
-import edu.iu.uis.eden.test.SQLDataLoader;
-import edu.iu.uis.eden.test.TestUtilities;
 
 /**
  * Useful superclass for all Workflow test cases. Handles setup of test utilities and a test environment. Configures the

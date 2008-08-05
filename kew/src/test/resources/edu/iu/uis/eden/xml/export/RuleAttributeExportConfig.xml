@@ -8,7 +8,7 @@
 
 		<ruleAttribute>
 			<name>OrgRouting</name>
-			<className>edu.iu.uis.eden.routing.chartorgnode.OrganizationRoutingAttribute</className>
+			<className>org.kuali.rice.kew.routing.chartorgnode.OrganizationRoutingAttribute</className>
 			<label>Organization Routing</label>
 			<description>Organization Routing</description>
 			<type>RuleAttribute</type>

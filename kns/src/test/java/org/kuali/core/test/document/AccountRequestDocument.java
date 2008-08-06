@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.test.document;
+package org.kuali.core.test.document;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.kuali.core.test.document.bo.Account;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
-import org.kuali.rice.kns.test.document.bo.Account;
 
 
 

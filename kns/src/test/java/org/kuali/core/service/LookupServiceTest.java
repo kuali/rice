@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.core.test.document.bo.Account;
+import org.kuali.core.test.document.bo.AccountManager;
 import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.test.document.bo.Account;
-import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;

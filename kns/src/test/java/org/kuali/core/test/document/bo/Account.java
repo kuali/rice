@@ -15,7 +15,7 @@
  */
 // Created on Oct 18, 2006
 
-package org.kuali.rice.kns.test.document.bo;
+package org.kuali.core.test.document.bo;
 
 import java.util.LinkedHashMap;
 

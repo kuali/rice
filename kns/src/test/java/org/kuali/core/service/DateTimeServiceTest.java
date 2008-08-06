@@ -21,8 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
+import org.kuali.core.test.KualiTestAssertionUtils;
 import org.kuali.rice.kns.KNSServiceLocator;
-import org.kuali.rice.kns.test.KualiTestAssertionUtils;
 import org.kuali.test.KNSTestBase;
 
 /**

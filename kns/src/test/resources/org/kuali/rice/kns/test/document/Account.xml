@@ -7,7 +7,7 @@
   <bean id="Account" parent="Account-parentBean" />
 
   <bean id="Account-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.test.document.bo.Account" />
+    <property name="businessObjectClass" value="org.kuali.core.test.document.bo.Account" />
     <property name="inquiryDefinition" >
       <ref bean="Account-inquiryDefinition" />
     </property>
@@ -94,7 +94,7 @@
   <bean id="Account-extension.accountTypeCode-parentBean" abstract="true" parent="AccountType-accountTypeCode">
     <property name="control" >
       <bean parent="SelectControlDefinition"
-            p:businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountType"
+            p:businessObjectClass="org.kuali.core.test.document.bo.AccountType"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
             p:includeKeyInLabel="true"
             p:keyAttribute="accountTypeCode"

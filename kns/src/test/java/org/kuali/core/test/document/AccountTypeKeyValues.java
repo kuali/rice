@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.test.document;
+package org.kuali.core.test.document;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.core.test.document.bo.AccountType;
 import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public class AccountTypeKeyValues extends KeyValuesBase {

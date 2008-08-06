@@ -16,8 +16,8 @@
 package org.kuali.core.service;
 
 import org.junit.Test;
+import org.kuali.core.test.document.bo.AccountManager;
 import org.kuali.rice.kns.KNSServiceLocator;
-import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestBase;
 
 public class MaintenanceDocumentDictionaryServiceTest extends KNSTestBase {

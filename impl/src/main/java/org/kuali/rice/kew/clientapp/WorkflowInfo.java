@@ -22,7 +22,6 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.config.RiceConfigurer;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -35,16 +34,16 @@ import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
-import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -70,9 +69,13 @@ public class WorkflowInfo implements java.io.Serializable {
 	/**
      * Retrieves the WorkflowUtility proxy from the locator.  The locator will cache this for us.
      */
-    private WorkflowUtility getWorkflowUtility() throws WorkflowException {
-    	initializeBus();
-    	return (WorkflowUtility)GlobalResourceLoader.getService(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE);
+	private WorkflowUtility getWorkflowUtility() throws WorkflowException {
+        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_UTILITY_SERVICE);
+    	if (workflowUtility == null) {
+    		throw new WorkflowException("Could not locate the WorkflowUtility service.  Please ensure that KEW client is configured properly!");
+    	}
+    	return workflowUtility;
+
     }
 
     /**

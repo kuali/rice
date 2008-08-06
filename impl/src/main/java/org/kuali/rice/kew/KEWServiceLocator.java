@@ -48,6 +48,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WebAuthenticationService;
 import org.kuali.rice.kew.web.WebAuthorizationService;
 import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
@@ -73,10 +74,6 @@ public final class KEWServiceLocator {
 	private static final Logger LOG = Logger.getLogger(KEWServiceLocator.class);
 
 	public static final String DATASOURCE = "enWorkflowDataSource";
-
-	public static final String WORKFLOW_UTILITY_SERVICE = "enWorkflowUtilityService";
-
-	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "enWorkflowDocumentActionsService";
 
 	public static final String QUICK_LINKS_SERVICE = "enQuickLinksService";
 
@@ -247,11 +244,11 @@ public final class KEWServiceLocator {
 	}
 
 	public static WorkflowUtility getWorkflowUtilityService() {
-		return (WorkflowUtility) getBean(WORKFLOW_UTILITY_SERVICE);
+		return (WorkflowUtility) getBean(KEWConstants.WORKFLOW_UTILITY_SERVICE);
 	}
 
 	public static WorkflowDocumentActions getWorkflowDocumentActionsService() {
-		return (WorkflowDocumentActions) getBean(WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+		return (WorkflowDocumentActions) getBean(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
 	}
 
 	public static DocumentTypeService getDocumentTypeService() {

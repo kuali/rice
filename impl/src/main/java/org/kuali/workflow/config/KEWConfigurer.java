@@ -30,6 +30,7 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kew.core.EmbeddedLifeCycle;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
@@ -72,7 +73,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 				lifecycles.add(new Log4jLifeCycle());
 			}
 			lifecycles.add(new OjbConfigurer());
-			lifecycles.add(createTempEmbeddedLifeCycle());
+			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
 	}
@@ -85,12 +86,12 @@ public class KEWConfigurer extends ModuleConfigurer {
 	 * TODO Because a lot of our lifecycles live behind the embedded plugin and the KEWConfigurer does not, this is a simple
 	 * measure to load these without having to deal with the removal of the embedded plugin right away.
 	 */
-	protected Lifecycle createTempEmbeddedLifeCycle() throws Exception {
-		return (Lifecycle)Class.forName("org.kuali.rice.kew.core.TempEmbeddedLifeCycle").newInstance();
+	protected Lifecycle createEmbeddedLifeCycle() throws Exception {
+		return new EmbeddedLifeCycle();
 	}
 
 	protected Lifecycle createThinClientLifecycle() throws Exception {
-		return (Lifecycle)Class.forName("org.kuali.workflow.config.ThinClientLifecycle").newInstance();
+		return new ThinClientLifecycle();
 	}
 
 	public Config loadConfig(Config parentConfig) throws Exception {

@@ -65,15 +65,6 @@ public class GlobalResourceLoader {
 		return rootResourceLoaders.get(classloader);
 	}
 
-//	public static ResourceLoader getResourceLoader() {
-//		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
-//		ResourceLoader resourceLoader = getResourceLoader(classLoader);
-//		if (resourceLoader == null && classLoader.getParent() != null) {
-//			resourceLoader = getResourceLoader(classLoader.getParent());
-//		}
-//		return resourceLoader;
-//	}
-
 	public synchronized static void start() throws Exception {
 		try {
 			initializing = true;

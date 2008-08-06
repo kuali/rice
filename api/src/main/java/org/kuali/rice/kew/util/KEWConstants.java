@@ -794,4 +794,11 @@ public class KEWConstants {
         DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE, "Before");
         DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER, "After");
     }
+    
+    // service name constants
+    
+	public static final String WORKFLOW_UTILITY_SERVICE = "enWorkflowUtilityService";
+
+	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "enWorkflowDocumentActionsService";
+
 }

@@ -16,17 +16,12 @@
  */
 package org.kuali.rice.kew.clientapp;
 
-import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.RiceConfigurer;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
@@ -50,9 +45,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
-import org.kuali.workflow.config.KEWConfigurer;
 
 
 /**
@@ -145,49 +137,23 @@ public class WorkflowDocument implements java.io.Serializable {
      * Retrieves the WorkflowUtility proxy from the locator.  The locator will cache this for us.
      */
     private WorkflowUtility getWorkflowUtility() throws WorkflowException {
-    	initializeBus();
-        return (WorkflowUtility)GlobalResourceLoader.getService(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE);
+        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_UTILITY_SERVICE);
+    	if (workflowUtility == null) {
+    		throw new WorkflowException("Could not locate the WorkflowUtility service.  Please ensure that KEW client is configured properly!");
+    	}
+    	return workflowUtility;
+
     }
 
     /**
      * Retrieves the WorkflowDocumentActions proxy from the locator.  The locator will cache this for us.
      */
     private WorkflowDocumentActions getWorkflowDocumentActions() throws WorkflowException {
-    	initializeBus();
-    	return (WorkflowDocumentActions)GlobalResourceLoader.getService(KEWServiceLocator.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
-    }
-
-    /**
-     * Initializes the KSB configuration if it has not already been initialized by the application;
-     * in that case only the KEW configurer is added.
-     * @throws WorkflowException if there is an error starting the RiceConfigurer
-     */
-    private synchronized void initializeBus() throws WorkflowException {
-    	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
-    		RiceConfigurer configurer = new RiceConfigurer();
-    		configurer.setMessageEntity(KEWConstants.KEW_MESSAGING_ENTITY);
-    		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
-    		configurer.getModules().add(new KSBThinClientConfigurer());
-    		configurer.getModules().add(new KEWConfigurer());
-    		try {
-    			configurer.start();
-    		} catch (Exception e) {
-    			if (e instanceof WorkflowException) {
-    				throw (WorkflowException)e;
-    			} else if (e instanceof RuntimeException) {
-    				throw (RuntimeException)e;
-    			}
-    			throw new WorkflowException(e);
-    		}
+    	WorkflowDocumentActions workflowDocumentActions = (WorkflowDocumentActions)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+    	if (workflowDocumentActions == null) {
+    		throw new WorkflowException("Could not locate the WorkflowDocumentActions service.  Please ensure that KEW client is configured properly!");
     	}
-    }
-
-    private boolean isLocal() {
-	Config config = Core.getCurrentContextConfig();
-	if (config != null) {
-	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(KEWConstants.LOCAL_CLIENT_PROTOCOL);
-	}
-	return false;
+    	return workflowDocumentActions;
     }
 
     // ########################
@@ -458,7 +424,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return the date/time the document was created, or null if the document has not yet been created
      */
     public Timestamp getDateCreated() {
-        return Utilities.convertCalendar(routeHeader.getDateCreated());
+    	if (routeHeader.getDateCreated() == null) {
+    		return null;
+    	}
+    	return new Timestamp(routeHeader.getDateCreated().getTime().getTime());
     }
 
     /**
@@ -1081,7 +1050,7 @@ public class WorkflowDocument implements java.io.Serializable {
      *
      * Also checks if the document content has been updated and saves it if it has.
      */
-    private void createDocumentIfNeccessary() throws RemoteException, WorkflowException {
+    private void createDocumentIfNeccessary() throws WorkflowException {
     	if (getRouteHeader().getRouteHeaderId() == null) {
     		routeHeader = getWorkflowDocumentActions().createDocument(userId, getRouteHeader());
     	}

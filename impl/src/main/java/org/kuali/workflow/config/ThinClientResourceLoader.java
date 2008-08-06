@@ -35,9 +35,9 @@ import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
@@ -93,11 +93,11 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    	if (cachedService != null) {
 	    	    return cachedService;
 	    	}
-		if (serviceName.equals(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE)) {
+		if (serviceName.equals(KEWConstants.WORKFLOW_UTILITY_SERVICE)) {
 			WorkflowUtility utility = getWorkflowUtility();
 			services.put(serviceName, utility);
 			return utility;
-		} else if (serviceName.equals(KEWServiceLocator.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
+		} else if (serviceName.equals(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
 			WorkflowDocumentActions documentActions = getWorkflowDocument();
 			services.put(serviceName, documentActions);
 			return documentActions;

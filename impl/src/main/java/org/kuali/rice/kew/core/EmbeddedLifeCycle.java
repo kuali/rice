@@ -32,7 +32,7 @@ import org.kuali.rice.kew.mail.EmailReminderLifecycle;
  * A temporary lifecycle that lives in embedded space.  Will be removed when the embedded plugin is factored out.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class TempEmbeddedLifeCycle extends BaseCompositeLifecycle {
+public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
 
     private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
 

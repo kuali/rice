@@ -17,7 +17,7 @@ package org.kuali.rice.ken.core;
 
 import java.util.Properties;
 
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.service.NotificationChannelService;

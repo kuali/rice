@@ -231,7 +231,7 @@
 
     <!-- DAOS -->
     
-    <bean id="genericDao" class="org.kuali.rice.dao.ojb.GenericDaoOjb">
+    <bean id="genericDao" class="org.kuali.rice.core.dao.ojb.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
         </property>

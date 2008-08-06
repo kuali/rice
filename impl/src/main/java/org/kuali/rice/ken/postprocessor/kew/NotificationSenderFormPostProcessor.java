@@ -18,7 +18,7 @@ package org.kuali.rice.ken.postprocessor.kew;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;

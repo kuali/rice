@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.UserChannelSubscription;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.ken.service.UserPreferenceService;

@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;

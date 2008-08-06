@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.dao.ojb;
+package org.kuali.rice.core.dao.ojb;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,7 +27,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.ojb.SuffixableQueryByCriteria;
 import org.springframework.dao.DataAccessException;
@@ -53,14 +53,14 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findById(Class, Object)
+     * @see org.kuali.rice.core.dao.GenericDao#findById(Class, Object)
      */
     public Object findById(Class clazz, Object id) {
         return getPersistenceBrokerTemplate().getObjectById(clazz, id);
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findByPrimaryKey(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
     public Object findByPrimaryKey(Class clazz, Map primaryKeys) {
         Criteria criteria = buildCriteria(primaryKeys);
@@ -69,7 +69,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findByUniqueKey(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#findByUniqueKey(java.lang.Class, java.util.Map)
      */
     public Object findByUniqueKey(Class clazz, Map uniqueKeys) {
         Criteria criteria = buildCriteria(uniqueKeys);
@@ -78,14 +78,14 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findAll(java.lang.Class)
+     * @see org.kuali.rice.core.dao.GenericDao#findAll(java.lang.Class)
      */
     public Collection findAll(Class clazz) {
         return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(clazz, (Criteria) null));
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
+     * @see org.kuali.rice.core.dao.GenericDao#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
      */
     public Collection findAllOrderBy(Class clazz, String sortField,
             boolean sortAscending) {
@@ -102,7 +102,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findMatching(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#findMatching(java.lang.Class, java.util.Map)
      */
     public Collection findMatching(Class clazz, Map fieldValues) {
         Criteria criteria = buildCriteria(fieldValues);
@@ -111,7 +111,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#countMatching(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#countMatching(java.lang.Class, java.util.Map)
      */
     public int countMatching(Class clazz, Map fieldValues) {
         Criteria criteria = buildCriteria(fieldValues);
@@ -120,7 +120,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#countMatching(java.lang.Class, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#countMatching(java.lang.Class, java.util.Map, java.util.Map)
      */
     public int countMatching(Class clazz, Map positiveFieldValues,
             Map negativeFieldValues) {
@@ -131,7 +131,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
+     * @see org.kuali.rice.core.dao.GenericDao#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
      */
     public Collection findMatchingOrderBy(Class clazz, Map fieldValues,
             String sortField, boolean sortAscending) {
@@ -148,14 +148,14 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#save(java.lang.Object)
+     * @see org.kuali.rice.core.dao.GenericDao#save(java.lang.Object)
      */
     public void save(Object bo) throws DataAccessException {
         getPersistenceBrokerTemplate().store(bo);
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#save(java.util.List)
+     * @see org.kuali.rice.core.dao.GenericDao#save(java.util.List)
      */
     public void save(List businessObjects) throws DataAccessException {
         for (Iterator i = businessObjects.iterator(); i.hasNext();) {
@@ -165,14 +165,14 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#delete(java.lang.Object)
+     * @see org.kuali.rice.core.dao.GenericDao#delete(java.lang.Object)
      */
     public void delete(Object bo) {
         getPersistenceBrokerTemplate().delete(bo);
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#delete(java.util.List)
+     * @see org.kuali.rice.core.dao.GenericDao#delete(java.util.List)
      */
     public void delete(List<Object> boList) {
         for (Object bo : boList) {
@@ -181,7 +181,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#deleteMatching(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.core.dao.GenericDao#deleteMatching(java.lang.Class, java.util.Map)
      */
     public void deleteMatching(Class clazz, Map fieldValues) {
         Criteria criteria = buildCriteria(fieldValues);
@@ -195,21 +195,21 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#retrieve(java.lang.Object)
+     * @see org.kuali.rice.core.dao.GenericDao#retrieve(java.lang.Object)
      */
     public Object retrieve(Object object) {
         return getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQueryByIdentity(object));
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findMatchingByExample(java.lang.Object)
+     * @see org.kuali.rice.core.dao.GenericDao#findMatchingByExample(java.lang.Object)
      */
     public Collection findMatchingByExample(Object object) {
         return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQueryByExample(object));
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findMatching(java.lang.Class, org.apache.ojb.broker.query.Criteria)
+     * @see org.kuali.rice.core.dao.GenericDao#findMatching(java.lang.Class, org.apache.ojb.broker.query.Criteria)
      */
     public Collection findMatching(Class clazz, Criteria criteria) {
         return findMatching(clazz, criteria, false, Platform.NO_WAIT);
@@ -218,7 +218,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
     }
 
     /**
-     * @see org.kuali.rice.dao.GenericDao#findMatching(Class, Criteria, boolean)
+     * @see org.kuali.rice.core.dao.GenericDao#findMatching(Class, Criteria, boolean)
      */
     public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate, long wait) {
         Query query;

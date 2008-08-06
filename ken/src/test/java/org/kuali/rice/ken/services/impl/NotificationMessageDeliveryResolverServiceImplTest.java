@@ -21,7 +21,7 @@ import java.util.HashMap;
 import org.apache.ojb.broker.query.Criteria;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.MessageService;

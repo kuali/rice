@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ken.dao;
 
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;

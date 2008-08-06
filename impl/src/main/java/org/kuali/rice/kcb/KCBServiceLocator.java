@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb;
 
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.kcb.service.EmailService;
 import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;

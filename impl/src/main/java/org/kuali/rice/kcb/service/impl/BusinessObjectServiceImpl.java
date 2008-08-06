@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Required;
 
 /**

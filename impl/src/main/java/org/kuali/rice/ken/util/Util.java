@@ -46,7 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationContentType;

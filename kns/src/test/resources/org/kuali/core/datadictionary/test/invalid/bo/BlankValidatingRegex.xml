@@ -147,7 +147,7 @@
 
                 <summary>Active Indicator</summary>
                 <description>Indicates if code is active or inactive.</description>
-                <formatterClass>org.kuali.core.web.format.BooleanFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.BooleanFormatter</formatterClass>
             </attribute>
 
         </attributes>

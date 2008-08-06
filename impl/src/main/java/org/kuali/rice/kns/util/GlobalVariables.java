@@ -18,8 +18,8 @@ package org.kuali.rice.kns.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * This class will hold all of our thread local variables and accessors for those

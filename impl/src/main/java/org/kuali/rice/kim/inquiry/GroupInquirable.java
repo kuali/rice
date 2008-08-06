@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
@@ -29,6 +28,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class essentially intercepts the request and handles transforming data coming in from the persistence 

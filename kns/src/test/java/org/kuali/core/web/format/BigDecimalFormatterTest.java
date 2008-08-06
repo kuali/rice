@@ -18,6 +18,8 @@ package org.kuali.core.web.format;
 import java.math.BigDecimal;
 
 import org.junit.Test;
+import org.kuali.rice.kns.web.format.BigDecimalFormatter;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.test.KNSTestBase;
 
 public class BigDecimalFormatterTest extends KNSTestBase {

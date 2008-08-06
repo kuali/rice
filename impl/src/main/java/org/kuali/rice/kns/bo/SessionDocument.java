@@ -18,7 +18,7 @@ package org.kuali.rice.kns.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 
 /*

@@ -25,9 +25,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
@@ -42,6 +39,9 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 
 /**

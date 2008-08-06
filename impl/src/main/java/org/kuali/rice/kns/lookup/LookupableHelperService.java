@@ -20,11 +20,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.struts.form.LookupForm;
-import org.kuali.core.web.ui.Row;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Row;
 
 public interface LookupableHelperService extends Serializable{
     

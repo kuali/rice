@@ -108,7 +108,7 @@
 
                 <summary>A generic date style of attribute.</summary>
                 <description>This attribute should always be overriden on the descriptive elements.</description>
-                <formatterClass>org.kuali.core.web.format.DateFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.DateFormatter</formatterClass>
             </attribute>
 
             <!--  This should be used/overridden anytime a standard 
@@ -129,7 +129,7 @@
 
                 <summary>A generic timestamp style of attribute.</summary>
                 <description>This attribute should always be overriden on the descriptive elements.</description>
-                <formatterClass>org.kuali.core.web.format.DateFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.DateFormatter</formatterClass>
             </attribute>
 
             <!--  This should be used/overridden anytime a standard 
@@ -148,7 +148,7 @@
                 <summary>A generic boolean (checkbox, yes/no, true/false, 0/1) style of attribute.</summary>
                 <description>This attribute should always be overriden on the descriptive elements.</description>
 
-                <formatterClass>org.kuali.core.web.format.BooleanFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.BooleanFormatter</formatterClass>
             </attribute>
 
             <attribute name="activeIndicator" forceUppercase="false">
@@ -164,7 +164,7 @@
                 <summary>Active Indicator indicates whether an object is active or inactive.</summary>
                 <description>This attribute is used to describe whether the associated object is active or inactive.</description>
 
-                <formatterClass>org.kuali.core.web.format.BooleanFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.BooleanFormatter</formatterClass>
             </attribute>
 
             <!--  This should be used/overridden anytime a standard 

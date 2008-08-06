@@ -17,11 +17,11 @@ package org.kuali.rice.kns.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.core.web.filter.KualiCasFilter;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.service.WebAuthenticationService;
+import org.kuali.rice.kns.web.filter.KualiCasFilter;
 
 
 /**

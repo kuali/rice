@@ -21,7 +21,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.core.web.ui.Field;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -41,6 +40,7 @@ import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.test.KNSTestBase;
 
 public class ExtensionAttributeTest extends KNSTestBase {

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.kuali.core.web.ui.Field;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.web.ui.Field;
 
 /**
  * 

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
@@ -36,6 +35,7 @@ import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Group maintenance screen.  

@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.struts.form.LookupForm;
-import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.ResultRow;
 
 /**
  * This class defines an interface for lookupables.

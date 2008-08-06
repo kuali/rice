@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.authorization;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Field;
 
 /**
  * This class represents the authorization restrictions (or lack of) for a given field.

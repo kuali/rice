@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.test.document.bo.AccountType;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public class AccountTypeKeyValues extends KeyValuesBase {
 	

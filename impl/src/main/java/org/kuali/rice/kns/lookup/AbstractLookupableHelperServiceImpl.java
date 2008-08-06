@@ -26,15 +26,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.comparator.CellComparatorHelper;
-import org.kuali.core.web.format.BooleanFormatter;
-import org.kuali.core.web.format.CollectionFormatter;
-import org.kuali.core.web.format.DateFormatter;
-import org.kuali.core.web.format.Formatter;
-import org.kuali.core.web.struts.form.LookupForm;
-import org.kuali.core.web.ui.Column;
-import org.kuali.core.web.ui.ResultRow;
-import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -60,6 +51,15 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.CollectionFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,

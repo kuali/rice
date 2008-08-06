@@ -105,7 +105,7 @@
             p:size="10" />
     </property>
     <property name="summary" value="&amp;nbsp;" />
-    <property name="formatterClass" value="org.kuali.core.web.format.DateFormatter" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter" />
     <property name="name" value="genericDate" />
     <property name="label" value="Generic Date Style Attribute" />
     <property name="description" value="This attribute should always be overriden on the descriptive elements." />
@@ -122,7 +122,7 @@
             p:size="10" />
     </property>
     <property name="summary" value="&amp;nbsp;" />
-    <property name="formatterClass" value="org.kuali.core.web.format.DateFormatter" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter" />
     <property name="name" value="genericTimestamp" />
     <property name="label" value="Generic Timestamp Style Attribute" />
     <property name="description" value="This attribute should always be overriden on the descriptive elements." />
@@ -137,7 +137,7 @@
       <bean parent="CheckboxControlDefinition" />
     </property>
     <property name="summary" value="&amp;nbsp;" />
-    <property name="formatterClass" value="org.kuali.core.web.format.BooleanFormatter" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
     <property name="name" value="genericBoolean" />
     <property name="label" value="Generic Boolean Attribute" />
     <property name="description" value="This attribute should always be overriden on the descriptive elements." />
@@ -155,7 +155,7 @@
       <bean parent="CheckboxControlDefinition" />
     </property>
     <property name="summary" value="Active Indicator" />
-    <property name="formatterClass" value="org.kuali.core.web.format.BooleanFormatter" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
     <property name="name" value="activeIndicator" />
     <property name="label" value="Active Indicator" />
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive." />
@@ -307,7 +307,7 @@
       <bean parent="HiddenControlDefinition" />
     </property>
     <property name="summary" value="&amp;nbsp;" />
-    <property name="formatterClass" value="org.kuali.core.web.format.BooleanFormatter" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
     <property name="name" value="newCollectionRecord" />
     <property name="label" value="New Collection Record Indicator" />
     <property name="description" value="This attribute indicates whether the object is a new record for a collection." />

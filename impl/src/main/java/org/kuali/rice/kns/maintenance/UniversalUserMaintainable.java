@@ -21,10 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
-import org.kuali.core.web.ui.Section;
-import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.KualiModule;
@@ -45,6 +41,10 @@ import org.kuali.rice.kns.service.KualiModuleUserPropertyService;
 import org.kuali.rice.kns.service.UniversalUserService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.kns.web.ui.SectionBridge;
 
 
 public class UniversalUserMaintainable extends KualiMaintainableImpl {

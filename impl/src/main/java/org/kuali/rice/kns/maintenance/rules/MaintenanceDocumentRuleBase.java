@@ -25,7 +25,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.format.Formatter;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.KNSServiceLocator;
@@ -71,6 +70,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.format.Formatter;
 
 
 /**

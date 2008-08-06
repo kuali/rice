@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -54,6 +53,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiGroupService;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and

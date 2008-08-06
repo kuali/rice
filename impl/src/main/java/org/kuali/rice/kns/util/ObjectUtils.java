@@ -35,15 +35,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
-import org.kuali.core.web.format.FormatException;
-import org.kuali.core.web.format.Formatter;
-import org.kuali.core.web.struts.pojo.PojoPropertyUtilsBean;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
+import org.kuali.rice.kns.web.format.FormatException;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.struts.pojo.PojoPropertyUtilsBean;
 
 /**
  * This class contains various Object, Proxy, and serialization utilities.

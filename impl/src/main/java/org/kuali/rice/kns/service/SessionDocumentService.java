@@ -18,8 +18,8 @@ package org.kuali.rice.kns.service;
 import java.sql.Timestamp;
 
 
-import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 
 

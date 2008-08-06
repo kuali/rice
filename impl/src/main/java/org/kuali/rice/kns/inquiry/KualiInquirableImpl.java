@@ -25,9 +25,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.format.Formatter;
-import org.kuali.core.web.ui.Section;
-import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -46,6 +43,9 @@ import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.kns.web.ui.SectionBridge;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.

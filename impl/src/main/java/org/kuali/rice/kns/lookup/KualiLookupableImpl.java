@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.core.web.struts.form.LookupForm;
-import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.ResultRow;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -310,7 +310,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Performs a lookup that can only return one row.
-     * @see org.kuali.rice.kns.lookup.Lookupable#performLookup(org.kuali.core.web.struts.form.LookupForm, java.util.List, boolean)
+     * @see org.kuali.rice.kns.lookup.Lookupable#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.List, boolean)
      */
     public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
         return getLookupableHelperService().performLookup(lookupForm, resultTable, bounded);

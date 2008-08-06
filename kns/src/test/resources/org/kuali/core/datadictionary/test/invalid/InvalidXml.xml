@@ -106,7 +106,7 @@
                 <summary>create date</summary>
                 <description>date on which this account was created</description>
 
-                <formatterClass>org.kuali.core.web.format.DateFormatter</formatterClass>
+                <formatterClass>org.kuali.rice.kns.web.format.DateFormatter</formatterClass>
             </attribute>
         </attributes>
 

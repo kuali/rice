@@ -13,7 +13,7 @@
     </listener>
     
     <listener>
-		<listener-class>org.kuali.core.web.listener.KualiHttpSessionListener</listener-class>
+		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
 
 </web-app>

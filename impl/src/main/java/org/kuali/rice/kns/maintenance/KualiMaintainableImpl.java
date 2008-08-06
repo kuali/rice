@@ -29,8 +29,6 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.ui.Section;
-import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -58,6 +56,8 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.kns.web.ui.SectionBridge;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.

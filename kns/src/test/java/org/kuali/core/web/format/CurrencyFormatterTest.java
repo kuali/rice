@@ -20,6 +20,8 @@ import java.text.NumberFormat;
 import org.junit.Test;
 import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.format.CurrencyFormatter;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.test.KNSTestBase;
 
 public class CurrencyFormatterTest extends KNSTestBase {

@@ -102,7 +102,7 @@
          <c:when test="${encryptValue}">
             <%-- mask and encrypt --%>
             <%
-              ((org.kuali.core.web.struts.form.KualiForm) request.getAttribute("KualiForm")).setFormatterType((String) property, org.kuali.core.web.format.EncryptionFormatter.class);
+              ((org.kuali.rice.kns.web.struts.form.KualiForm) request.getAttribute("KualiForm")).setFormatterType((String) property, org.kuali.rice.kns.web.format.EncryptionFormatter.class);
             %>
             <html:hidden property="encryptedProperties('${fn:replace(property,'.','_')}')" value="true"/>
             <html:hidden write="false" property="${property}" style="${textStyle}"/>

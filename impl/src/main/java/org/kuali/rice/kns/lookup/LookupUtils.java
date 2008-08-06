@@ -28,9 +28,6 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.core.web.comparator.NullValueComparator;
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -47,6 +44,9 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.comparator.NullValueComparator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.ResultRow;
 
 /**
  * This is a static utility class for Lookup related utilities and helper methods.

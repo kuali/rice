@@ -17,6 +17,7 @@ package org.kuali.core.web.comparator;
 
 import org.displaytag.model.Cell;
 import org.junit.Test;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.test.KNSTestCase;
 
 public class CellComparatorHelperTest extends KNSTestCase {

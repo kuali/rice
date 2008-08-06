@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.core.web.struts.action.KualiDocumentActionBase;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;

@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PreRulesCheck;
 import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * 

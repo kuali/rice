@@ -20,11 +20,11 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
+import org.kuali.rice.kns.web.format.Formatter;
 
 
 /**

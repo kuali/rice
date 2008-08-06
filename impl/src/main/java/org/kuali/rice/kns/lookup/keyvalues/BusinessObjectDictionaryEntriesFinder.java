@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This class returns list of business objects defined in the data dictionary.

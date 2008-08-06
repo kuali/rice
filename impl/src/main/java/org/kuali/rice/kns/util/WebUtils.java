@@ -40,11 +40,11 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
-import org.kuali.core.web.struts.form.KualiForm;
-import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
  * General helper methods for handling requests.

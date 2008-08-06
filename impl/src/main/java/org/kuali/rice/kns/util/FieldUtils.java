@@ -25,11 +25,6 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.format.FormatException;
-import org.kuali.core.web.format.Formatter;
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
@@ -52,6 +47,11 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.web.format.FormatException;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 
 /**

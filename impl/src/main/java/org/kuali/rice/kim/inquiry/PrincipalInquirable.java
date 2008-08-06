@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
@@ -30,6 +27,9 @@ import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
 import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This is a description of what this class does - vrk4 don't forget to fill this in. 

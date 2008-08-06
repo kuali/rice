@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="field" required="true" type="org.kuali.core.web.ui.Field"%>
+<%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"%>
 <%@ attribute name="addHighlighting" required="false"
               description="boolean indicating if this field should be highlighted (to indicate old/new change)" %>
 

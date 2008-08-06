@@ -21,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.user.UniversalUser;
@@ -33,6 +31,8 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This class is the lookup helper for {@link org.kuali.rice.kns.document.authorization.PessimisticLock} objects 

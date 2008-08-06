@@ -133,7 +133,7 @@ public class WorkflowUtils {
      * 
      * @param field The kuali field that we need to derive a help url for. @ return Returns the help url for the field.
      */
-    public static String getHelpUrl(org.kuali.core.web.ui.Field field) {
+    public static String getHelpUrl(org.kuali.rice.kns.web.ui.Field field) {
         Properties params = new Properties();
         params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
         params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
@@ -170,7 +170,7 @@ public class WorkflowUtils {
                 org.kuali.rice.kew.lookupable.Field field = row.getField(0);
                 if (org.kuali.rice.kew.lookupable.Field.TEXT.equals(field.getFieldType())) {
                     try {
-                        org.kuali.core.web.ui.Field kualiField = FieldUtils.getPropertyField(Class.forName(businessObjectClassName), field.getPropertyName(), false);
+                        org.kuali.rice.kns.web.ui.Field kualiField = FieldUtils.getPropertyField(Class.forName(businessObjectClassName), field.getPropertyName(), false);
                         field.setFieldLabel(kualiField.getFieldLabel());
                         field.setFieldHelpUrl(getHelpUrl(kualiField));
                     }
@@ -205,7 +205,7 @@ public class WorkflowUtils {
             throw new IllegalArgumentException("Method parameter 'workflowPropertyKey' was passed a NULL or blank value.");
         }
         List chartFields = new ArrayList();
-        org.kuali.core.web.ui.Field field;
+        org.kuali.rice.kns.web.ui.Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
         chartFields.add(new Field(field.getFieldLabel(), getHelpUrl(field), Field.TEXT, false, workflowPropertyKey, field.getPropertyValue(), field.getFieldValidValues(), null, workflowPropertyKey));
         return new Row(chartFields);
@@ -249,7 +249,7 @@ public class WorkflowUtils {
         if (StringUtils.isBlank(workflowPropertyKey)) {
             throw new IllegalArgumentException("Method parameter 'workflowPropertyKey' was passed a NULL or blank value.");
         }
-        org.kuali.core.web.ui.Field field;
+        org.kuali.rice.kns.web.ui.Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
 
         // build the quickFinder/lookupableName info
@@ -296,7 +296,7 @@ public class WorkflowUtils {
             throw new IllegalArgumentException("Method parameter 'optionMap' was passed a NULL value.");
         }
         List chartFields = new ArrayList();
-        org.kuali.core.web.ui.Field field;
+        org.kuali.rice.kns.web.ui.Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
         // Fields in KEW/Rice are different from fields in KFS and there is no common ancestor.
         Field workflowField = new Field(field.getFieldLabel(), getHelpUrl(field), Field.DROPDOWN, false, workflowPropertyKey, field.getPropertyValue(), field.getFieldValidValues(), null, workflowPropertyKey);

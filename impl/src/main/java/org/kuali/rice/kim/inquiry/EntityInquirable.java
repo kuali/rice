@@ -22,9 +22,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.web.ui.Field;
-import org.kuali.core.web.ui.Row;
-import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
@@ -35,6 +32,9 @@ import org.kuali.rice.kim.web.form.EntityAttributeForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class essentially intercepts the request and handles transforming data coming in from the persistence 

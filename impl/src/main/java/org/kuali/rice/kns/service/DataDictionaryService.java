@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.kuali.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -33,6 +32,7 @@ import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.web.format.Formatter;
 
 
 /**

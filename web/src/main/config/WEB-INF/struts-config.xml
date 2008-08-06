@@ -5,7 +5,7 @@
 
 	<form-beans>
     	<!-- Begin required KNS forms -->
-        <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
+        <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
     </form-beans>
 
@@ -31,16 +31,16 @@
 
     <action-mappings>
        	<!-- Begin required KNS mappings -->       
-        <action path="/portal" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+        <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
-        <action path="/index" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+        <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
-        <action path="/authorizationException" name="KualiForm" type="org.kuali.core.web.struts.action.KualiAuthorizationExceptionAction">
+        <action path="/authorizationException" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiAuthorizationExceptionAction">
             <forward name="basic" path="/kr/WEB-INF/jsp/authorizationException.jsp" />
         </action>        
-        <action path="/initiationAuthorizationException" name="KualiForm" type="org.kuali.core.web.struts.action.KualiDocumentInitiationAuthorizationExceptionAction">
+        <action path="/initiationAuthorizationException" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentInitiationAuthorizationExceptionAction">
             <forward name="basic" path="/kr/WEB-INF/jsp/authorizationException.jsp" />
         </action>   
        	<!-- End required KNS mappings -->
@@ -48,8 +48,8 @@
 
 	
 
-	<controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
-    <message-resources factory="org.kuali.core.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" />
+	<controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
+    <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" />
     
 </struts-config>
 

@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
+import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.test.KNSTestCase;
 
 public class DateFormatterTest extends KNSTestCase {

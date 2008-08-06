@@ -17,7 +17,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.List;
 
-import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This class returns list of payment method key value pairs.

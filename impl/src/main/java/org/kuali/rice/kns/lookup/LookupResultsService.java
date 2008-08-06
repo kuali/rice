@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.web.ui.ResultRow;
 
 public interface LookupResultsService extends Serializable {
     /**

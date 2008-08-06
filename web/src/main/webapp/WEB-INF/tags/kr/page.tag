@@ -218,7 +218,7 @@
 --%>
 
 	<c:set var="KualiForm" value="${KualiForm}" /> 
-	<jsp:useBean id="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" /> 
+	<jsp:useBean id="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" /> 
 	
     <c:set var="numberOfHeaderRows" value="<%=java.lang.Math.ceil((double) KualiForm.getDocInfo().size()/KualiForm.getNumColumns())%>" />
     <c:set var="headerFieldCount" value="<%=KualiForm.getDocInfo().size()%>" />

@@ -21,9 +21,9 @@ import java.util.HashMap;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
 
-import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 /**
  * This class provides access to the properties of business objects returned as search results by the WorkflowLookupableImpl.

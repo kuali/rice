@@ -107,25 +107,25 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     private void setRows() {
         Iterator kualiRowItr = lookupable.getRows().iterator();
         while (kualiRowItr.hasNext()) {
-            org.kuali.core.web.ui.Row kualiRow = (org.kuali.core.web.ui.Row) kualiRowItr.next();
+            org.kuali.rice.kns.web.ui.Row kualiRow = (org.kuali.rice.kns.web.ui.Row) kualiRowItr.next();
             List workflowFields = new ArrayList();
             Iterator kualiFieldItr = kualiRow.getFields().iterator();
             while (kualiFieldItr.hasNext()) {
-                org.kuali.core.web.ui.Field kualiField = (org.kuali.core.web.ui.Field) kualiFieldItr.next();
+                org.kuali.rice.kns.web.ui.Field kualiField = (org.kuali.rice.kns.web.ui.Field) kualiFieldItr.next();
                 org.kuali.rice.kew.lookupable.Field workflowField = new org.kuali.rice.kew.lookupable.Field(kualiField.getFieldLabel(), WorkflowUtils.getHelpUrl(kualiField), kualiField.getFieldType(), kualiField.getQuickFinderClassNameImpl() != null, kualiField.getPropertyName(), kualiField.getPropertyValue(), kualiField.getFieldValidValues(), kualiField.getQuickFinderClassNameImpl());
                 
                 //  dont display KualiUser based fieldTypes ... they fail on the lookups for now
-                if (org.kuali.core.web.ui.Field.KUALIUSER.equals(kualiField.getFieldType())) {
+                if (org.kuali.rice.kns.web.ui.Field.KUALIUSER.equals(kualiField.getFieldType())) {
                     continue;
                 }
                 //  convert most other types to simple text
-                if (org.kuali.core.web.ui.Field.DROPDOWN.equals(kualiField.getFieldType()) || org.kuali.core.web.ui.Field.DROPDOWN_APC.equals(kualiField.getFieldType()) || org.kuali.core.web.ui.Field.DROPDOWN_REFRESH.equals(kualiField.getFieldType()) || org.kuali.core.web.ui.Field.DROPDOWN_SCRIPT.equals(kualiField.getFieldType())) {
-                    workflowField.setFieldType(org.kuali.core.web.ui.Field.TEXT);
+                if (org.kuali.rice.kns.web.ui.Field.DROPDOWN.equals(kualiField.getFieldType()) || org.kuali.rice.kns.web.ui.Field.DROPDOWN_APC.equals(kualiField.getFieldType()) || org.kuali.rice.kns.web.ui.Field.DROPDOWN_REFRESH.equals(kualiField.getFieldType()) || org.kuali.rice.kns.web.ui.Field.DROPDOWN_SCRIPT.equals(kualiField.getFieldType())) {
+                    workflowField.setFieldType(org.kuali.rice.kns.web.ui.Field.TEXT);
                 }
                 
                 //  add a quickfinder icon if one is indicated
                 workflowFields.add(workflowField);
-                if (kualiField.getQuickFinderClassNameImpl() != null && !org.kuali.core.web.ui.Field.HIDDEN.equals(kualiField.getFieldType())) {
+                if (kualiField.getQuickFinderClassNameImpl() != null && !org.kuali.rice.kns.web.ui.Field.HIDDEN.equals(kualiField.getFieldType())) {
                     org.kuali.rice.kew.lookupable.Field workflowLookupField = new org.kuali.rice.kew.lookupable.Field("", "", org.kuali.rice.kew.lookupable.Field.QUICKFINDER, false, "", "", null, getLookupableName(new StringBuffer(LOOKUPABLE_IMPL_NAME_PREFIX).append(workflowField.getQuickFinderClassNameImpl()).append(LOOKUPABLE_IMPL_NAME_SUFFIX).toString(), kualiField.getFieldConversions(), kualiField.getLookupParameters()));
                     workflowFields.add(workflowLookupField);
                 }
@@ -138,7 +138,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     private void setColumns() {
         Iterator kualiColumnItr = lookupable.getColumns().iterator();
         while (kualiColumnItr.hasNext()) {
-            org.kuali.core.web.ui.Column kualiColumn = (org.kuali.core.web.ui.Column) kualiColumnItr.next();
+            org.kuali.rice.kns.web.ui.Column kualiColumn = (org.kuali.rice.kns.web.ui.Column) kualiColumnItr.next();
             workflowColumns.add(new org.kuali.rice.kew.lookupable.Column(kualiColumn.getColumnTitle(), kualiColumn.getSortable(), "workflowLookupableResult(" + kualiColumn.getPropertyName() + ")"));
         }
     }

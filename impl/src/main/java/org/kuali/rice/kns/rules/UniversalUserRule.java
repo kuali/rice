@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.web.format.PhoneNumberFormatter;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.user.UniversalUser;
@@ -30,6 +29,7 @@ import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.format.PhoneNumberFormatter;
 
 public class UniversalUserRule extends MaintenanceDocumentRuleBase {
 

@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.server.test.WebTestBase;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;

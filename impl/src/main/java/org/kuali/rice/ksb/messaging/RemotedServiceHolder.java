@@ -25,7 +25,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 
 

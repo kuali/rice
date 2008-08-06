@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;

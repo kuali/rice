@@ -25,11 +25,11 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
+	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
 
-	<bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
+	<bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
 
-	<bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
+	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
 		<property name="transactionManager" ref="jtaTransactionManager" />
 	</bean>
 
@@ -274,7 +274,7 @@
   <!-- Used for @PersistenceContext auto-injection -->
   <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-  <bean id="entityManagerFactory" class="org.kuali.rice.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
     <constructor-arg value="rice.ksb"/>
     <constructor-arg ref="ksbMessageDataSource"/>
   </bean>
@@ -282,7 +282,7 @@
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
   
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.jpa.spring.NoResultExceptionInterceptor" />
+  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
 
   <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">

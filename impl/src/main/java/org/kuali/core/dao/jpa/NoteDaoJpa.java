@@ -24,8 +24,8 @@ import org.apache.log4j.Logger;
 import org.kuali.core.bo.Attachment;
 import org.kuali.core.bo.Note;
 import org.kuali.core.dao.NoteDao;
-import org.kuali.rice.jpa.criteria.Criteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.springframework.dao.DataAccessException;
 
 /**

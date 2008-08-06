@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 
 
 public class QNameSerializationTest extends TestCase {

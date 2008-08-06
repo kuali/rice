@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
-import org.kuali.rice.proxy.TargetedInvocationHandler;
+import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 
 /**
  * Provides common utility methods for dealing with Classloaders.

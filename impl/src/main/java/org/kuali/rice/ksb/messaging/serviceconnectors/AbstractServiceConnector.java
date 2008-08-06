@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
+import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
-import org.kuali.rice.security.credentials.CredentialsSource;
 import org.springframework.util.Assert;
 
 

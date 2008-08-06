@@ -18,8 +18,8 @@ package org.kuali.rice.ksb.security.credentials;
 
 import java.security.cert.X509Certificate;
 
-import org.kuali.rice.security.credentials.Credentials;
-import org.kuali.rice.security.credentials.CredentialsSource;
+import org.kuali.rice.core.security.credentials.Credentials;
+import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.springframework.util.Assert;
 
 /**

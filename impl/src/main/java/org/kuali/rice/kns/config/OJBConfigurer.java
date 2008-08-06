@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.config;
 
-import org.kuali.rice.ojb.BaseOjbConfigurer;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 public class OJBConfigurer extends BaseOjbConfigurer {
 

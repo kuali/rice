@@ -21,7 +21,7 @@ import javax.transaction.TransactionManager;
 
 import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
 import org.enhydra.jdbc.standard.StandardXADataSource;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 

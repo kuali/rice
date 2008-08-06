@@ -93,11 +93,11 @@ public class DocumentDaoJpa implements DocumentDao {
      * @return List
      */
     public List findByDocumentHeaderIds(Class clazz, List idList) throws DataAccessException {
-		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(clazz.getName());
+		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
 		criteria.in(KNSPropertyConstants.DOCUMENT_NUMBER, (List) idList);
 		List<Document> list = new ArrayList<Document>();
 		try {
-			list = new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+			list = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 		}

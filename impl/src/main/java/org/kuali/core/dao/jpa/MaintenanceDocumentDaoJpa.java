@@ -26,9 +26,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.dao.MaintenanceDocumentDao;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.MaintenanceLock;
-import org.kuali.rice.jpa.criteria.Criteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**

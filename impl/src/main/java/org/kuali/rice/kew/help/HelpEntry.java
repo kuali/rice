@@ -24,7 +24,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.jpa.annotations.Sequence;
+import org.kuali.rice.core.jpa.annotations.Sequence;
 
 /**
  * Model bean representing a piece of help information which adds extra information about fields and

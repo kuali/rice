@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.resourceloader;
 
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 
 public class ResourceLoaderException extends RiceRuntimeException {
 

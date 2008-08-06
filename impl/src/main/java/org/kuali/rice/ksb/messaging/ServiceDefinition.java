@@ -26,9 +26,9 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
-import org.kuali.rice.security.credentials.CredentialsSource;
-import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.util.Assert;
 

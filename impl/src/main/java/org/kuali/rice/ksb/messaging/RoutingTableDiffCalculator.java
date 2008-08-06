@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 
 /**
  * Takes two lists of ServiceInfo objects.  One from the service def table and one from a piece 

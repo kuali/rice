@@ -20,10 +20,10 @@ import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
+import org.kuali.rice.core.security.credentials.Credentials;
+import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
-import org.kuali.rice.security.credentials.Credentials;
-import org.kuali.rice.security.credentials.CredentialsSource;
 import org.springframework.util.Assert;
 
 

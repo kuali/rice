@@ -67,7 +67,7 @@
 		<property name="forceRegistryRefresh" value="false"></property>
 	</bean>
 	
-	<bean id="credentialsSourceFactory" class="org.kuali.rice.security.credentials.CredentialsSourceFactory" />
+	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />

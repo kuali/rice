@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.config;
 
-import org.kuali.rice.ojb.BaseOjbConfigurer;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 /**
  * This class defines information specific to the KIM OJB setup.
@@ -30,7 +30,7 @@ public class KIMOjbConfigurer extends BaseOjbConfigurer {
 	/**
 	 * This overridden method adds in the KIM jcdAlias data source. 
 	 * 
-	 * @see org.kuali.rice.ojb.BaseOjbConfigurer#getJcdAliases()
+	 * @see org.kuali.rice.core.ojb.BaseOjbConfigurer#getJcdAliases()
 	 */
 	@Override
 	protected String[] getJcdAliases() {
@@ -40,7 +40,7 @@ public class KIMOjbConfigurer extends BaseOjbConfigurer {
 	/**
 	 * This overridden method returns the KIM OJB file.
 	 * 
-	 * @see org.kuali.rice.ojb.BaseOjbConfigurer#getMetadataLocation()
+	 * @see org.kuali.rice.core.ojb.BaseOjbConfigurer#getMetadataLocation()
 	 */
 	@Override
 	protected String getMetadataLocation() {

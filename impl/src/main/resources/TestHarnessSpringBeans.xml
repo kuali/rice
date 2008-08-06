@@ -7,7 +7,7 @@
   <!-- This PropertyPlaceholderConfigurer subclass automagically takes properties from the workflow Config system -->
   <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
-  <bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
+  <bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
     <property name="transactionManager" ref="jtaTransactionManager"/>
   </bean>
 
@@ -15,10 +15,10 @@
     <property name="defaultTimeout" value="${transaction.timeout}"/>
   </bean>
 
-  <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean">
+  <bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean">
   	<property name="defaultUserTransaction"><ref local="jotm"/></property>
   </bean>
-  <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean">
+  <bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean">
   	<property name="defaultTransactionManager"><ref local="jotm"/></property>
   </bean>
 

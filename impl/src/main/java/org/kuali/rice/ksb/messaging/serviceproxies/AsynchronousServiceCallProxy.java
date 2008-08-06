@@ -21,8 +21,10 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.proxy.BaseInvocationHandler;
+import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -31,8 +33,6 @@ import org.kuali.rice.ksb.messaging.ServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.proxy.BaseInvocationHandler;
-import org.kuali.rice.proxy.TargetedInvocationHandler;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 

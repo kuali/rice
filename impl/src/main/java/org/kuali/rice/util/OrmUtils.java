@@ -27,8 +27,8 @@ import javax.persistence.EntityManager;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.jpa.annotations.Sequence;
 
 /**
  * A utility for common ORM related functions.

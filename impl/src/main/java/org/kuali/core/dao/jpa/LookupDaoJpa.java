@@ -42,11 +42,11 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypeUtils;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.jpa.criteria.Criteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.jpa.metadata.FieldDescriptor;
-import org.kuali.rice.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
+import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -137,7 +137,7 @@ public class LookupDaoJpa implements LookupDao {
 		}
 
 		// execute query and return result list
-		return (Long) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
+		return (Long) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
 	}
 
 	public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
@@ -232,10 +232,10 @@ public class LookupDaoJpa implements LookupDao {
 		try {
 			Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
 			if (!unbounded && (searchResultsLimit != null)) {
-				matchingResultsCount = (Long) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
-				searchResults = new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
+				matchingResultsCount = (Long) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
+				searchResults = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
 			} else {
-				searchResults = new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+				searchResults = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 			}
 			if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
 				matchingResultsCount = new Long(0);
@@ -259,7 +259,7 @@ public class LookupDaoJpa implements LookupDao {
 						}
 					}
 					try {
-						boe = (PersistableBusinessObjectExtension) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
+						boe = (PersistableBusinessObjectExtension) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
 					} catch (PersistenceException e) {}
 					bo.setExtension(boe);
 				}

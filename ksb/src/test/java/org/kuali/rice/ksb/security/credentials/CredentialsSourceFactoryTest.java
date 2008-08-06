@@ -20,11 +20,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
 import org.kuali.rice.ksb.security.credentials.CasProxyTicketCredentialsSource;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentialsSource;
-import org.kuali.rice.security.credentials.CredentialsSource;
-import org.kuali.rice.security.credentials.CredentialsSourceFactory;
-import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 
 /**
  * 

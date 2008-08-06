@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.security.credentials.CredentialsSource;
+import org.kuali.rice.core.security.credentials.CredentialsSource;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

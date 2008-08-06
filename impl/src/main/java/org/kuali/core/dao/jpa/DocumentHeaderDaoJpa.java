@@ -43,9 +43,9 @@ public class DocumentHeaderDaoJpa implements DocumentHeaderDao {
      * @see org.kuali.dao.DocumentHeaderDao#getByDocumentHeaderId(java.lang.Long)
      */
     public DocumentHeader getByDocumentHeaderId(String id) {
-		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(DocumentHeader.class.getName());
+		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(DocumentHeader.class.getName());
 		criteria.eq("FDOC_NBR", id);		
-		return (DocumentHeader) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
+		return (DocumentHeader) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
     }
 
 }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.ojb;
 
-import org.kuali.rice.ojb.BaseOjbConfigurer;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 public class OjbConfigurer extends BaseOjbConfigurer {
 

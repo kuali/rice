@@ -16,7 +16,7 @@
  */
 package org.kuali.workflow.ojb;
 
-import org.kuali.rice.ojb.BaseOjbConfigurer;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 /**
  * KEW implementation of the OjbConfigurer.

@@ -22,9 +22,9 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.core.bo.SessionDocument;
 import org.kuali.core.dao.SessionDocumentDao;
-import org.kuali.rice.jpa.criteria.Criteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class SessionDocumentDaoJpa implements SessionDocumentDao {

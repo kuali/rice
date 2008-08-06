@@ -27,9 +27,9 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.exceptions.ClassNotPersistableException;
 import org.kuali.core.exceptions.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.core.util.spring.CacheNoCopy;
-import org.kuali.rice.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.jpa.metadata.MetadataManager;
-import org.kuali.rice.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.util.OrmUtils;
 
 public class PersistenceServiceStructureImplBase {
@@ -75,7 +75,7 @@ public class PersistenceServiceStructureImplBase {
 		if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
 			List fieldNames = new ArrayList();
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-	    	for (org.kuali.rice.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
+	    	for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
 	    		fieldNames.add(field.getName());
 	    	}
 	    	return fieldNames;

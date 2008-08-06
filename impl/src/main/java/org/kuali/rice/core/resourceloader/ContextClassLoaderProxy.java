@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.kuali.rice.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 /**

@@ -15,13 +15,13 @@ package org.kuali.rice.ksb.messaging.serviceconnectors;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.security.credentials.CredentialsSource;
-import org.kuali.rice.security.credentials.CredentialsSourceFactory;
 
 
 /**

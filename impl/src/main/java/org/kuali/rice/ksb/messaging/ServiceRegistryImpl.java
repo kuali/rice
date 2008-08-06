@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.util.DataAccessUtils;

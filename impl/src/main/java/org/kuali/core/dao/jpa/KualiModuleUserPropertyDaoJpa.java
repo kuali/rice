@@ -24,8 +24,8 @@ import javax.persistence.PersistenceContext;
 import org.kuali.core.bo.user.KualiModuleUserProperty;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.KualiModuleUserPropertyDao;
-import org.kuali.rice.jpa.criteria.Criteria;
-import org.kuali.rice.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 
 public class KualiModuleUserPropertyDaoJpa implements KualiModuleUserPropertyDao {
 

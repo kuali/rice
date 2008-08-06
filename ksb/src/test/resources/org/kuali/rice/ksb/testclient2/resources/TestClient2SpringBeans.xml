@@ -53,7 +53,7 @@
 	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="org.kuali.rice.kew.testclient2.Client2SOAPService" />
 
-	<bean id="credentialsSourceFactory" class="org.kuali.rice.security.credentials.CredentialsSourceFactory" />
+	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />

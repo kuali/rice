@@ -18,10 +18,10 @@
         </property>
     </bean>
 
-    <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
-    <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
+    <bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
+    <bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
 
-    <bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
+    <bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
         <property name="transactionManager" ref="jtaTransactionManager" />
     </bean>
 

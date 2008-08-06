@@ -65,10 +65,10 @@ import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
+import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.jpa.metadata.FieldDescriptor;
-import org.kuali.rice.jpa.metadata.MetadataManager;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -214,7 +214,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	            if (oldBusinessObject.getExtension() != null) {
 	            	PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
 	            	EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
-	            	org.kuali.rice.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.jpa.criteria.Criteria(boe.getClass().getName());
+	            	org.kuali.rice.core.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.core.jpa.criteria.Criteria(boe.getClass().getName());
 	            	for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
 	            		try {
 	            			Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
@@ -225,7 +225,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	            		}
 	            	}				
 	            	try {
-	            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+	            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
 	            	} catch (PersistenceException e) {}
 	            	oldBusinessObject.setExtension(boe);
 	            }

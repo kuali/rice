@@ -36,9 +36,9 @@ import org.kuali.core.exceptions.ReferenceAttributeDoesntExistException;
 import org.kuali.core.exceptions.ReferenceAttributeNotAnOjbReferenceException;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.util.ObjectUtils;
-import org.kuali.rice.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.jpa.metadata.MetadataManager;
-import org.kuali.rice.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -310,7 +310,7 @@ public class PersistenceServiceJpaImpl extends PersistenceServiceImplBase implem
 				// iterate through the keys for the reference object and set value
                 List<String> refFkNames = od.getForeignKeyFields();
                 EntityDescriptor refCld = MetadataManager.getEntityDescriptor(od.getTargetEntity());
-                Set<org.kuali.rice.jpa.metadata.FieldDescriptor> refPkNames = refCld.getPrimaryKeys();
+                Set<org.kuali.rice.core.jpa.metadata.FieldDescriptor> refPkNames = refCld.getPrimaryKeys();
 
                 try {
 	                for (String fk : refFkNames) {

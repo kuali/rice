@@ -29,7 +29,7 @@ import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
 import org.kuali.rice.kew.test.OldClearDatabaseLifecycle;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
+import org.kuali.rice.testharness.ClearDatabaseLifecycle;
 
 
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {

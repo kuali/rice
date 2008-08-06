@@ -20,8 +20,8 @@ import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.TestBase;
 import org.kuali.rice.kns.test.document.AccountRequestDocument;
+import org.kuali.test.TestBase;
 
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).

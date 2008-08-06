@@ -34,8 +34,8 @@ import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.dao.BusinessObjectDaoTestCaseBase;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.test.BaselineTestCase.BaselineMode;
-import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
+import org.kuali.rice.testharness.BaselineTestCase.Mode;
 
 /**
  * Scratch test case for testing aspects of OJB under test harness

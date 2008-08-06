@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.testharness.RiceTestCase;
 
 /**
  * This is test base that should be used for all KOM unit tests. All non-web unit tests for KOM should extend this base
@@ -35,7 +35,7 @@ public abstract class KOMTestCase extends RiceTestCase {
 	/**
      * This overridden method just returns an empty array.
      * 
-     * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
+     * @see org.kuali.rice.testharness.RiceTestCase#getPerTestLifecycles()
      */
 	@Override
 	public List<Lifecycle> getPerTestLifecycles() {
@@ -45,7 +45,7 @@ public abstract class KOMTestCase extends RiceTestCase {
 	/**
      * This overridden method is responsible for loading up the komtestharness from Spring.
      * 
-     * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
+     * @see org.kuali.rice.testharness.RiceTestCase#getSuiteLifecycles()
      */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
@@ -56,7 +56,7 @@ public abstract class KOMTestCase extends RiceTestCase {
 	}
 
 	/**
-     * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
+     * @see org.kuali.rice.testharness.RiceTestCase#getTablesNotToClear()
      */
 	@Override
 	protected List<String> getTablesNotToClear() {
@@ -71,7 +71,7 @@ public abstract class KOMTestCase extends RiceTestCase {
 	/**
      * At this time Derby for KOM is not supported.
      * 
-     * @see org.kuali.rice.test.RiceTestCase#getDerbySQLFileLocation()
+     * @see org.kuali.rice.testharness.RiceTestCase#getDerbySQLFileLocation()
      */
 	@Override
 	protected String getDerbySQLFileLocation() {
@@ -79,7 +79,7 @@ public abstract class KOMTestCase extends RiceTestCase {
 	}
 
 	/**
-     * @see org.kuali.rice.test.RiceTestCase#getModuleName()
+     * @see org.kuali.rice.testharness.RiceTestCase#getModuleName()
      */
 	@Override
 	protected String getModuleName() {

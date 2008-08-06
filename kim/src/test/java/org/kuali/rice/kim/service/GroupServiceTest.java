@@ -28,9 +28,9 @@ import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestSql;
+import org.kuali.rice.testharness.data.PerTestUnitTestData;
+import org.kuali.rice.testharness.data.UnitTestData;
+import org.kuali.rice.testharness.data.UnitTestSql;
 
 /**
  * Basic test to verify we can access the GroupService through the GRL.

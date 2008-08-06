@@ -18,7 +18,7 @@ package org.kuali.core.util;
 import java.util.IllegalFormatException;
 
 import org.junit.Test;
-import org.kuali.rice.test.KNSTestCase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests {@link AssertionUtils}.

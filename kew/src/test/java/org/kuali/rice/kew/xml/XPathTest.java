@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
-import org.kuali.rice.test.BaseRiceTestCase;
+import org.kuali.rice.testharness.BaseRiceTestCase;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;

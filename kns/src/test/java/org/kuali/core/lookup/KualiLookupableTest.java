@@ -20,9 +20,9 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.TestBase;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.test.TestBase;
 import org.kuali.test.KNSTestConstants.TestConstants;
 
 /**

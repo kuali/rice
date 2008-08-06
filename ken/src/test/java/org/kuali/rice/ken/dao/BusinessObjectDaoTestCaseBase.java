@@ -17,8 +17,8 @@ package org.kuali.rice.ken.dao;
 
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
-import org.kuali.rice.test.BaselineTestCase.BaselineMode;
-import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
+import org.kuali.rice.testharness.BaselineTestCase.Mode;
 
 /**
  * Convenience test case implementation that just stores the BusinessObjectDao bean
@@ -30,7 +30,7 @@ public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCase
     protected GenericDao businessObjectDao;
 
     /**
-     * @see org.kuali.rice.test.BaselineTestCase#setUp()
+     * @see org.kuali.rice.testharness.BaselineTestCase#setUp()
      */
     @Override
     public void setUp() throws Exception {

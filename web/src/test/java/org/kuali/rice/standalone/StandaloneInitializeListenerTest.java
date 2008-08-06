@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.test.BaseRiceTestCase;
+import org.kuali.rice.testharness.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 
 

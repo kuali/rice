@@ -17,10 +17,10 @@ package org.kuali.rice.server.lookup;
 
 import org.junit.Test;
 import org.kuali.rice.server.test.WebTestBase;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.rice.test.data.UnitTestSql;
+import org.kuali.rice.testharness.data.PerTestUnitTestData;
+import org.kuali.rice.testharness.data.UnitTestData;
+import org.kuali.rice.testharness.data.UnitTestFile;
+import org.kuali.rice.testharness.data.UnitTestSql;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 

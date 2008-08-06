@@ -29,9 +29,9 @@ import org.kuali.rice.kew.test.KEWTransactionalTest;
 import org.kuali.rice.kew.test.SQLDataLoader;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
+import org.kuali.rice.testharness.ClearDatabaseLifecycle;
+import org.kuali.rice.testharness.RiceTestCase;
+import org.kuali.rice.testharness.lifecycles.TransactionalLifecycle;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -119,7 +119,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	/**
 	 * Override the RiceTestCase setUpInternal in order to set a system property beforehand,
 	 * and load test data afterwards
-	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
+	 * @see org.kuali.rice.testharness.RiceTestCase#setUpInternal()
 	 */
 	@Override
 	public void setUpInternal() throws Exception {
@@ -144,7 +144,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	/**
 	 * Override the standard per-test lifecycles to prepend ClearDatabaseLifecycle and ClearCacheLifecycle
-	 * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
+	 * @see org.kuali.rice.testharness.RiceTestCase#getPerTestLifecycles()
 	 */
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
@@ -158,7 +158,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	/**
 	 * Override the suite lifecycles to avoid the ClearDatabaseLifecycle (which we do on a per-test basis, as above)
 	 * and to add on a JettyServer lifecycle
-	 * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
+	 * @see org.kuali.rice.testharness.RiceTestCase#getSuiteLifecycles()
 	 */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
@@ -187,7 +187,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	private class InitializeGRL extends BaseLifecycle {
 		@Override
 		public void start() throws Exception {
-		    org.kuali.rice.test.TestUtilities.addWebappsToContext();
+		    org.kuali.rice.testharness.TestUtilities.addWebappsToContext();
 			super.start();
 		}
 

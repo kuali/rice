@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.TestBase;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.test.TestBase;
 
 /**
  * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper

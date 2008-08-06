@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 import org.apache.derby.drda.NetworkServerControl;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.test.BaseRiceTestCase;
+import org.kuali.rice.testharness.BaseRiceTestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;

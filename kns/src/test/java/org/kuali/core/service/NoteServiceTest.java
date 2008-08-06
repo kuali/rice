@@ -20,8 +20,8 @@ import org.kuali.core.bo.Note;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.RiceKNSDefaultUserDAOImpl;
-import org.kuali.rice.TestBase;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.test.TestBase;
 
 /**
  * This class is used to test the {@link NoteService} implementation 

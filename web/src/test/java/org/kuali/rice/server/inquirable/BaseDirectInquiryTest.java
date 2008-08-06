@@ -4,7 +4,7 @@ import java.net.URL;
 
 import org.junit.Test;
 import org.kuali.rice.server.test.ServerTestBase;
-import org.kuali.rice.test.HtmlUnitUtil;
+import org.kuali.rice.web.test.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;

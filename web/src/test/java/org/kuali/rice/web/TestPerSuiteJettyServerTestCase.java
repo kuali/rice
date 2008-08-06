@@ -23,9 +23,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.test.JettyServerTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle.ConfigMode;
-import org.kuali.rice.test.server.JettyServer;
+import org.kuali.rice.testharness.JettyServerTestCase;
+import org.kuali.rice.testharness.lifecycles.JettyServerLifecycle.ConfigMode;
+import org.kuali.rice.testharness.server.JettyServer;
 import org.springframework.test.AssertThrows;
 
 

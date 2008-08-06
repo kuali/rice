@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
-import org.kuali.rice.test.KNSTestCase;
+import org.kuali.test.KNSTestCase;
 
 public class DateUtilsTest extends KNSTestCase {
     Calendar nowCal;

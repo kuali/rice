@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.core.maintenance.Maintainable;
-import org.kuali.rice.TestBase;
+import org.kuali.test.TestBase;
 
 /**
  * Test methods for default Kuali maintainable implementation.
@@ -28,7 +28,7 @@ public class KualiMaintainableTest extends TestBase {
     Maintainable maintainable = null;
 
     /**
-     * @see org.kuali.rice.test.RiceTestCase#setUp()
+     * @see org.kuali.rice.testharness.RiceTestCase#setUp()
      */
     @Before
     public void setUp() throws Exception {

@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.server;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.test.BaseTestServer;
+import org.kuali.rice.testharness.BaseTestServer;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 

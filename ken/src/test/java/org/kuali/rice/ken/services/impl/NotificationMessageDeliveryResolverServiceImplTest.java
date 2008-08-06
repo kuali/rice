@@ -35,8 +35,8 @@ import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.testharness.data.PerTestUnitTestData;
+import org.kuali.rice.testharness.data.UnitTestData;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;

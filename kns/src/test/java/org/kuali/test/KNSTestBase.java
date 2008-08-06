@@ -26,11 +26,10 @@ import org.junit.Before;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.test.KNSTestCase;
-import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.testharness.data.PerTestUnitTestData;
+import org.kuali.rice.testharness.data.UnitTestData;
+import org.kuali.rice.testharness.data.UnitTestFile;
+import org.kuali.rice.testharness.lifecycles.TransactionalLifecycle;
 
 /**
  * This class is the superclass for all test cases which may require the use of

@@ -24,8 +24,8 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
-import org.kuali.rice.test.BaselineTestCase.BaselineMode;
-import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
+import org.kuali.rice.testharness.BaselineTestCase.Mode;
 
 
 /**

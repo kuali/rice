@@ -29,7 +29,7 @@ import org.kuali.core.UserSession;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.test.HtmlUnitUtil;
+import org.kuali.rice.web.test.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.Page;

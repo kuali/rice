@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.exceptionhandling;
 
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl;
-import org.kuali.rice.test.TestUtilities;
+import org.kuali.rice.testharness.TestUtilities;
 
 
 public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl {

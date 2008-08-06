@@ -18,8 +18,8 @@ package org.kuali.rice.ken.services.impl;
 import org.junit.Test;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.test.TestConstants;
-import org.kuali.rice.test.BaselineTestCase.BaselineMode;
-import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
+import org.kuali.rice.testharness.BaselineTestCase.Mode;
 
 /**
  * This class tests the recipient service.

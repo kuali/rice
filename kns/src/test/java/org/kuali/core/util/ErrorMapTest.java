@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.kuali.RiceKeyConstants;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.test.KNSTestCase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the ErrorMap methods.

@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the GUID (Globally Unique Id) methods.

@@ -16,7 +16,7 @@
 package org.kuali.core.util;
 
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the OjbKualiIntegerPercentageFieldConversionTest methods.

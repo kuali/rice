@@ -39,10 +39,10 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
+import org.kuali.rice.test.HtmlUnitUtil;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
-import org.kuali.rice.testharness.HtmlUnitUtil;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 

@@ -24,7 +24,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 import org.springframework.beans.BeanUtils;
 
 /**

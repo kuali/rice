@@ -15,8 +15,8 @@ package org.kuali.rice;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.kuali.rice.test.KNSTestCase;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
-import org.kuali.rice.testharness.KNSTestCase;
 
 @Ignore
 public class TestBase extends KNSTestCase {

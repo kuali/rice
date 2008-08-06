@@ -17,7 +17,7 @@ package org.kuali.rice.server.maintainable;
 
 import org.junit.Test;
 import org.kuali.rice.server.test.ServerTestBase;
-import org.kuali.rice.testharness.HtmlUnitUtil;
+import org.kuali.rice.test.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;

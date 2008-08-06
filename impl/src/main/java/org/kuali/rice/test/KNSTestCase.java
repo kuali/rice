@@ -10,13 +10,12 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.testharness;
+package org.kuali.rice.test;
 
 import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 

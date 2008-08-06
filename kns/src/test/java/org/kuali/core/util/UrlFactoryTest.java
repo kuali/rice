@@ -20,7 +20,7 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the UrlFactory methods.

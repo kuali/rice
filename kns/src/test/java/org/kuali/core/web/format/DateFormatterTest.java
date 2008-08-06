@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 public class DateFormatterTest extends KNSTestCase {
 

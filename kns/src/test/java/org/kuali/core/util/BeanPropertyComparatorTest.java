@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.core.exceptions.BeanComparisonException;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the BeanPropertyComparator methods.

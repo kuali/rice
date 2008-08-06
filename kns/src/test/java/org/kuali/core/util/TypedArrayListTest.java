@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the TypedArrayList methods.

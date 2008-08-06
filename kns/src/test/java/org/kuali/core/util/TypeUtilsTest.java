@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.test.KNSTestCase;
 
 /**
  * This class tests the TypeUtils methods.

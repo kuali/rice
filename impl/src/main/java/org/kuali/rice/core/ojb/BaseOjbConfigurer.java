@@ -43,7 +43,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

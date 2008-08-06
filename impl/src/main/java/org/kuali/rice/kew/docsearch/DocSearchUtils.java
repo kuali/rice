@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.DocumentType;
@@ -42,8 +44,6 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

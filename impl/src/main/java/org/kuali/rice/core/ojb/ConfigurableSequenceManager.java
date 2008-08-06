@@ -31,7 +31,7 @@ import org.apache.ojb.broker.util.sequence.SequenceManagerException;
 import org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 
 /**

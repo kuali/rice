@@ -21,10 +21,10 @@ import java.lang.reflect.Proxy;
 
 import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ExceptionUtils;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.ExceptionUtils;
 
 
 /**

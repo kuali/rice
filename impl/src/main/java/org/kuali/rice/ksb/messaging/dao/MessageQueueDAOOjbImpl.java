@@ -24,10 +24,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.RiceUtilities;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 

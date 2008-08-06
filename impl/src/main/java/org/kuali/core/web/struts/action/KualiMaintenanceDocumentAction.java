@@ -69,11 +69,11 @@ import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.util.OrmUtils;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

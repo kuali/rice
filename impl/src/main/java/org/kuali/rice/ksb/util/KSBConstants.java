@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.util;
 
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in.

@@ -25,6 +25,7 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.proxy.BaseInvocationHandler;
 import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -33,7 +34,6 @@ import org.kuali.rice.ksb.messaging.ServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

@@ -28,8 +28,8 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.struts.form.QuestionPromptForm;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class handles Actions for QuestionPromp.

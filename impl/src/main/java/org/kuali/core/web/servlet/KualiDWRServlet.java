@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.KualiModule;
 import org.kuali.core.util.spring.NamedOrderedListBean;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import uk.ltd.getahead.dwr.Configuration;

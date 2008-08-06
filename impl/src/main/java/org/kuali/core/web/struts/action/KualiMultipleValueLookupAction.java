@@ -46,8 +46,8 @@ import org.kuali.core.web.struts.form.MultipleValueLookupForm;
 import org.kuali.core.web.ui.Column;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class serves as the struts action for implementing multiple value lookups

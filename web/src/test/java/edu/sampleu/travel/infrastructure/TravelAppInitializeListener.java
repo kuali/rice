@@ -21,7 +21,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.web.jetty.JettyServer;
+import org.kuali.rice.core.web.jetty.JettyServer;
 import org.springframework.util.Log4jConfigurer;
 
 import uk.ltd.getahead.dwr.util.LoggingOutput;

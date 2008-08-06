@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.util.RiceUtilities;
+import org.kuali.rice.core.util.RiceUtilities;
 
 /**
  * Abstract base hierarchical config implementation. Loads a hierarchy configs,

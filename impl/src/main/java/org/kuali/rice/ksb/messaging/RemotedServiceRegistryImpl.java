@@ -31,11 +31,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.util.RiceUtilities;
 import org.springframework.web.servlet.mvc.Controller;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;

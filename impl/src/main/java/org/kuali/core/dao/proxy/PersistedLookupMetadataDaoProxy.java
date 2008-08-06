@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.SelectedObjectIds;
 import org.kuali.core.dao.PersistedLookupMetadataDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 public class PersistedLookupMetadataDaoProxy implements PersistedLookupMetadataDao {
 

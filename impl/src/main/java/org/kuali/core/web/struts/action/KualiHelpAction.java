@@ -36,8 +36,8 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.web.struts.form.KualiHelpForm;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class handles requests for help text.

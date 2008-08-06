@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.util.ExceptionUtils;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -38,7 +39,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.util.ExceptionUtils;
 
 
 public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRoutingService {

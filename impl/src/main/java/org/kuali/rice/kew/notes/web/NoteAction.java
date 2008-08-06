@@ -33,6 +33,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
@@ -46,7 +47,6 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

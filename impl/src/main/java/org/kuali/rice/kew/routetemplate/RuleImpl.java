@@ -16,10 +16,10 @@
 package org.kuali.rice.kew.routetemplate;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

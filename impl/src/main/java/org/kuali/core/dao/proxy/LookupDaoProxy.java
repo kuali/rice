@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.kuali.core.dao.LookupDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

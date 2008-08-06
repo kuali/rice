@@ -35,6 +35,8 @@ import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.auth.AuthorizationService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
@@ -44,8 +46,6 @@ import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.ojb.OjbConfigurer;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.RiceConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 

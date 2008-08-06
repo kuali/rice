@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

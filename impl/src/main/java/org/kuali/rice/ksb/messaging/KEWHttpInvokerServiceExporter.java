@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
-import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.remoting.support.RemoteInvocationTraceInterceptor;

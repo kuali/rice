@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigHolder;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * Singleton that holds references to global engine objects.

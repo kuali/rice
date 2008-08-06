@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * This class is used to define global constants.

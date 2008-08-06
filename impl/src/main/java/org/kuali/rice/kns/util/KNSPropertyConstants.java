@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * Constants for the KNS module that describer object property fields

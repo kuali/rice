@@ -16,7 +16,7 @@
 package org.kuali.core.authorization;
 
 import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * This is an authorization contstants class for the {@link UniversalUser} object

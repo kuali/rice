@@ -14,11 +14,11 @@ package org.kuali.rice.ksb.messaging.serviceproxies;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.RiceConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 

@@ -25,7 +25,7 @@ import org.kuali.core.document.Copyable;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.web.struts.form.KualiTransactionalDocumentFormBase;
-import org.kuali.rice.util.RiceConstants;
+import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * This class handles UI actions for all shared methods of transactional documents.

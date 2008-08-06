@@ -33,6 +33,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.actionrequests.ActionRequestService;
@@ -50,7 +51,6 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.service.PersistenceService;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

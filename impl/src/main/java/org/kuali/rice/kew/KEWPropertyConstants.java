@@ -18,7 +18,7 @@ package org.kuali.rice.kew;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * This is a constants file used to describe KEW properties

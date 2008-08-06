@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.dao.DocumentDao;
 import org.kuali.core.document.Document;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

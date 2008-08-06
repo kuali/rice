@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.web.jetty;
+package org.kuali.rice.core.web.jetty;
 
 import java.io.File;
 import java.lang.reflect.Field;

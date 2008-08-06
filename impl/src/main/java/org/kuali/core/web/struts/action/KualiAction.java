@@ -41,8 +41,8 @@ import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.Demonstration;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup

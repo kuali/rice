@@ -24,8 +24,8 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.util.RiceUtilities;
-import org.kuali.rice.web.jetty.JettyServer;
+import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.web.jetty.JettyServer;
 
 /**
  * A lifecycle for running a jetty web server.

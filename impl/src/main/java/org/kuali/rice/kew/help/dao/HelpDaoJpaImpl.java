@@ -23,8 +23,8 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.util.OrmUtils;
 
 
 public class HelpDaoJpaImpl implements HelpDAO {

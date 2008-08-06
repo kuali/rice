@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.KEWPropertyConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
@@ -37,7 +38,6 @@ import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

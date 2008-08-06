@@ -15,7 +15,7 @@
  */
 package org.kuali.core.authorization;
 
-import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * Defines constants used in authorization-related code.

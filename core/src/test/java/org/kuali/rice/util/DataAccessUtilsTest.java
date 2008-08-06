@@ -20,6 +20,7 @@ import java.util.Set;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.core.util.DataAccessUtils;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**

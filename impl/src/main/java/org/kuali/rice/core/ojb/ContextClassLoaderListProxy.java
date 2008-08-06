@@ -21,8 +21,8 @@ import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.query.Query;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 
 
 /**

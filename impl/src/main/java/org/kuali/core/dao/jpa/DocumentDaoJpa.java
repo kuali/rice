@@ -31,8 +31,8 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.dao.DocumentDao;
 import org.kuali.core.document.Document;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.util.OrmUtils;
 import org.springframework.dao.DataAccessException;
 
 /**

@@ -25,8 +25,8 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.util.JSTLConstants;
 
 
 public class RiceConfigurationListener implements ServletContextListener {

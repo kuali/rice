@@ -48,7 +48,7 @@ import org.kuali.core.service.KualiModuleService;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 

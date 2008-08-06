@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
 import org.kuali.rice.kim.bo.Group;
@@ -28,7 +29,6 @@ import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
-import org.kuali.rice.util.OrmUtils;
 
 public class KIMServicesDaoProxy implements KIMServicesDao {
 

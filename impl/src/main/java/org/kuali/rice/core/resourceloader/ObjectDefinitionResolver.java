@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * Resolves object definitions into java Objects that are wrapped in a proxy whose classloader is the current

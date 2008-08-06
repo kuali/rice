@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * A Proxy that sets the thread Context ClassLoader before invocation of the

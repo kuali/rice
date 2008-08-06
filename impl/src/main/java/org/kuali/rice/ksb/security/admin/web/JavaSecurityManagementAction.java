@@ -30,11 +30,11 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.web.KSBAction;
 import org.kuali.rice.ksb.security.admin.ExportServlet;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

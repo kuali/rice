@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 import org.kuali.core.bo.SessionDocument;
 import org.kuali.core.dao.SessionDocumentDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

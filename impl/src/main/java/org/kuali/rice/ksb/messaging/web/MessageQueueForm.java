@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.util.SqlTimestampConverter;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.util.CodeTranslator;
-import org.kuali.rice.util.SqlTimestampConverter;
 
 
 /**

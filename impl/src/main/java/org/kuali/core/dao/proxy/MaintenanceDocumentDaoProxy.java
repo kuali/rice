@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.core.dao.MaintenanceDocumentDao;
 import org.kuali.core.document.MaintenanceLock;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 public class MaintenanceDocumentDaoProxy implements MaintenanceDocumentDao {
 

@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
-import org.kuali.rice.util.RiceUtilities;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.PlatformTransactionManager;

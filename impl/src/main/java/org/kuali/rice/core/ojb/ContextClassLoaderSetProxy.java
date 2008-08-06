@@ -21,8 +21,8 @@ import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.ojb.broker.core.proxy.SetProxyDefaultImpl;
 import org.apache.ojb.broker.query.Query;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 
 /**
  * Sets up the context classloader properly for OJB proxies.  The sequence of events in the super class is as

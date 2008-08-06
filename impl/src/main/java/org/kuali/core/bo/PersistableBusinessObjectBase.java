@@ -33,7 +33,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.core.util.Guid;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 /**
  * Business Object Base Business Object

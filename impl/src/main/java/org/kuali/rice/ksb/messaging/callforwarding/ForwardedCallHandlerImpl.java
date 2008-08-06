@@ -19,13 +19,13 @@ package org.kuali.rice.ksb.messaging.callforwarding;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSender;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.RiceUtilities;
 
 
 /**

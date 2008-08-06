@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceError;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
@@ -50,7 +51,6 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

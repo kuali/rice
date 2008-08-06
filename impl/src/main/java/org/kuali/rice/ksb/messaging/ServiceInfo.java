@@ -33,8 +33,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.util.RiceUtilities;
 
 /**
  * Model bean that represents the definition of a service on the bus.

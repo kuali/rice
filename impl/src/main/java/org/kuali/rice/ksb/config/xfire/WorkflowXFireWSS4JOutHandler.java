@@ -27,9 +27,9 @@ import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

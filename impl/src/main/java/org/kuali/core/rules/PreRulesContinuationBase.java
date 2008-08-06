@@ -28,8 +28,8 @@ import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.rule.event.PreRulesCheckEvent;
 import org.kuali.core.web.struts.form.KualiForm;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.util;
+package org.kuali.rice.core.util;
 
 /**
  * This class converts the "T" or "F" value from the database into a true or false in Java.

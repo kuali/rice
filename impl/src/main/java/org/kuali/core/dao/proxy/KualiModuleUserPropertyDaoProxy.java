@@ -20,7 +20,7 @@ import java.util.Collection;
 import org.kuali.core.bo.user.KualiModuleUserProperty;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.KualiModuleUserPropertyDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 public class KualiModuleUserPropertyDaoProxy implements KualiModuleUserPropertyDao {
 

@@ -36,10 +36,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

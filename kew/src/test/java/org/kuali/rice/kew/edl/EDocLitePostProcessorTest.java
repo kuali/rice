@@ -18,6 +18,7 @@ package org.kuali.rice.kew.edl;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.kew.ActionTakenEvent;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
@@ -27,7 +28,6 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.edl.EDocLitePostProcessor;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.web.jetty.JettyServer;
 import org.kuali.workflow.test.KEWTestCase;
 
 

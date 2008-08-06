@@ -41,8 +41,8 @@ import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class handles Actions for lookup flow

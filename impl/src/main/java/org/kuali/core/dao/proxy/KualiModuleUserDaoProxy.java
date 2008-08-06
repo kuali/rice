@@ -17,7 +17,7 @@ package org.kuali.core.dao.proxy;
 
 import org.kuali.core.bo.user.KualiModuleUserBase;
 import org.kuali.core.dao.KualiModuleUserDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 public class KualiModuleUserDaoProxy implements KualiModuleUserDao {
 

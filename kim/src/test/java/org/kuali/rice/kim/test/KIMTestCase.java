@@ -22,10 +22,10 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 /**

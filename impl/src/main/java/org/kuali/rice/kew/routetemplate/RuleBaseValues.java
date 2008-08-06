@@ -37,6 +37,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.lookupable.Field;
@@ -48,7 +49,6 @@ import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

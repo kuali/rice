@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import org.kuali.core.bo.Note;
 import org.kuali.core.dao.NoteDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.dao.DataAccessException;
 
 public class NoteDaoProxy implements NoteDao {

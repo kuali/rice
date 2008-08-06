@@ -23,7 +23,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * A simple ResourceLoader implementation which will load objects from the

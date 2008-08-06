@@ -24,8 +24,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

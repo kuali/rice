@@ -24,7 +24,7 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ForeignKeyFieldsPopulationState;
 import org.kuali.core.util.spring.CacheNoCopy;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 /**
  * This class is now a proxy, which uses the @Entity annotation to decide whether to use the JPA or OJB underlying services to perform an action.

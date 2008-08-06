@@ -19,7 +19,7 @@ package org.kuali.rice.core.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import org.kuali.rice.util.ExceptionUtils;
+import org.kuali.rice.core.util.ExceptionUtils;
 
 /**
  * An abstract base class for InvocationHanlders which can be used to implement

@@ -17,7 +17,7 @@ package org.kuali.core.dao.proxy;
 
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.dao.DocumentHeaderDao;
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 
 public class DocumentHeaderDaoProxy implements DocumentHeaderDao {
     private DocumentHeaderDao documentHeaderDaoJpa;

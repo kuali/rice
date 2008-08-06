@@ -29,8 +29,8 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;

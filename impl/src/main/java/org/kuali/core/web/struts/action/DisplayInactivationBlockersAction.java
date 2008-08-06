@@ -34,7 +34,7 @@ import org.kuali.core.service.InactivationBlockingDisplayService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.struts.form.DisplayInactivationBlockersForm;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.util.RiceConstants;
+import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 

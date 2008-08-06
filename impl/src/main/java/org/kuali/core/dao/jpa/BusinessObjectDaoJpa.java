@@ -33,8 +33,8 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionHelper;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.util.OrmUtils;
 import org.springframework.dao.DataAccessException;
 
 /**

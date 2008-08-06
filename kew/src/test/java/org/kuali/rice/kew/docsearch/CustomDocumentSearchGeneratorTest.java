@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstantsService;
@@ -34,7 +35,6 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

@@ -28,11 +28,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.plugin.manifest.PluginManifest;
 import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.util.ClassLoaderUtils;
 
 
 /**

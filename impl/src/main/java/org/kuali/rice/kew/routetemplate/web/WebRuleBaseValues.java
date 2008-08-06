@@ -32,6 +32,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceError;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -54,7 +55,6 @@ import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

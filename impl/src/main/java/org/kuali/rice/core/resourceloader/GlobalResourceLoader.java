@@ -26,7 +26,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading

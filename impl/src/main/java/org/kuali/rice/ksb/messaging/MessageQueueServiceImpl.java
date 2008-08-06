@@ -23,9 +23,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.util.RiceUtilities;
 
 
 public class MessageQueueServiceImpl implements MessageQueueService {

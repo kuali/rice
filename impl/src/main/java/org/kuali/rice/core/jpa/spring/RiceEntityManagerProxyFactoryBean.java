@@ -18,7 +18,7 @@ package org.kuali.rice.core.jpa.spring;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.kuali.rice.util.OrmUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 

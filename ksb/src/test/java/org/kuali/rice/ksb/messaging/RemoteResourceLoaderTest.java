@@ -24,6 +24,8 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.DataAccessUtils;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
@@ -38,8 +40,6 @@ import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
-import org.kuali.rice.util.ClassLoaderUtils;
-import org.kuali.rice.util.DataAccessUtils;
 
 
 /**

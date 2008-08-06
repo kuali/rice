@@ -17,10 +17,10 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.util.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.util.RiceConstants;
 
 public class RootResourceLoaderLifecycle extends BaseLifecycle {
 

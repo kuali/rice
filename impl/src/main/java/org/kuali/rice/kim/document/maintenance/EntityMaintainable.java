@@ -33,6 +33,7 @@ import org.kuali.core.util.FieldUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
@@ -41,7 +42,6 @@ import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.lookup.valuefinder.NextEntityAttributeIdFinder;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.EntityAttributeForm;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

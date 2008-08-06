@@ -76,6 +76,7 @@ import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
@@ -84,7 +85,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 

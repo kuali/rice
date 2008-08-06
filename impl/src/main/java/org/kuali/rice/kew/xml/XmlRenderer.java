@@ -21,7 +21,7 @@ import java.util.Date;
 import org.jdom.CDATA;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.kuali.rice.util.RiceConstants;
+import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * A helper class which helps with building the XML for objects.

@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.util.RiceConstants;
 
 
 /**

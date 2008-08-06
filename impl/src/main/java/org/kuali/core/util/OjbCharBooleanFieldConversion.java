@@ -15,7 +15,7 @@
  */
 package org.kuali.core.util;
 
-import org.kuali.rice.util.OjbCharBooleanFieldConversionBase;
+import org.kuali.rice.core.util.OjbCharBooleanFieldConversionBase;
 
 /**
  * This class converts the "Y" or "N" value from the database into a true or false in Java.

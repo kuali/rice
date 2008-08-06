@@ -27,7 +27,7 @@
                 <bean class="org.kuali.workflow.config.KEWConfigurer">
                     <property name="clientProtocol" value="local" />
                 </bean>
-                <bean class="org.kuali.notification.config.KENConfigurer">
+                <bean class="org.kuali.rice.ken.config.KENConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
             </list>

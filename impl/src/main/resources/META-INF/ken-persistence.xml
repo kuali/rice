@@ -7,17 +7,17 @@
   
   <persistence-unit name="ken-unit" transaction-type="JTA">
     <mapping-file>META-INF/ken-orm.xml</mapping-file>
-    <class>org.kuali.notification.bo.Notification</class>
-    <class>org.kuali.notification.bo.NotificationChannel</class>
-    <class>org.kuali.notification.bo.NotificationContentType</class>
-    <class>org.kuali.notification.bo.NotificationPriority</class>
-    <class>org.kuali.notification.bo.NotificationProducer</class>
-    <class>org.kuali.notification.bo.NotificationChannelReviewer</class>
-    <class>org.kuali.notification.bo.NotificationRecipient</class>
-    <class>org.kuali.notification.bo.NotificationRecipientList</class>
-    <class>org.kuali.notification.bo.NotificationSender</class>
-    <class>org.kuali.notification.bo.UserChannelSubscription</class>
-    <class>org.kuali.notification.bo.NotificationMessageDelivery</class>
+    <class>org.kuali.rice.ken.bo.Notification</class>
+    <class>org.kuali.rice.ken.bo.NotificationChannel</class>
+    <class>org.kuali.rice.ken.bo.NotificationContentType</class>
+    <class>org.kuali.rice.ken.bo.NotificationPriority</class>
+    <class>org.kuali.rice.ken.bo.NotificationProducer</class>
+    <class>org.kuali.rice.ken.bo.NotificationChannelReviewer</class>
+    <class>org.kuali.rice.ken.bo.NotificationRecipient</class>
+    <class>org.kuali.rice.ken.bo.NotificationRecipientList</class>
+    <class>org.kuali.rice.ken.bo.NotificationSender</class>
+    <class>org.kuali.rice.ken.bo.UserChannelSubscription</class>
+    <class>org.kuali.rice.ken.bo.NotificationMessageDelivery</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

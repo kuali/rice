@@ -49,7 +49,7 @@ public class SMSMessageDeliverer implements MessageDeliverer {
     }
 
     /**
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#autoRemoveMessageDelivery(org.kuali.notification.bo.NotificationMessageDelivery)
+     * @see org.kuali.rice.ken.deliverer.NotificationMessageDeliverer#autoRemoveMessageDelivery(org.kuali.rice.ken.bo.NotificationMessageDelivery)
      */
     /*public void autoRemoveMessageDelivery(NotificationMessageDelivery messageDelivery) throws NotificationAutoRemoveException {
 	// we can't remove an sms message once it has been sent

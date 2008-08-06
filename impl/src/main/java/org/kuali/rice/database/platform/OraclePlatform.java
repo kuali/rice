@@ -102,7 +102,7 @@ public class OraclePlatform extends ANSISqlPlatform {
     }
     
     /**
-     * @see org.kuali.notification.database.Platform#getSelectForUpdateSuffix(long)
+     * @see org.kuali.rice.ken.database.Platform#getSelectForUpdateSuffix(long)
      */
     public String getSelectForUpdateSuffix(long waitMillis) {
         String sql = "for update";

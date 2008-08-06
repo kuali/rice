@@ -148,7 +148,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     /**
      * Group work items by deliverer and notification, so that deliveries to bulk deliverers are grouped
      * by notification
-     * @see org.kuali.notification.service.impl.ConcurrentJob#groupWorkItems(java.util.Collection)
+     * @see org.kuali.rice.ken.service.impl.ConcurrentJob#groupWorkItems(java.util.Collection)
      */
     @Override
     protected Collection<Collection<MessageDelivery>> groupWorkItems(Collection<MessageDelivery> workItems, ProcessingResult<MessageDelivery> result) {

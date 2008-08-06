@@ -133,17 +133,17 @@
         <property name="smtpHost" value="${kcb.smtp.host}"/>
     </bean>
 <!-- 
-    <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
+    <bean id="sendNotificationKewXmlService" class="org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
     </bean>
     
-    <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
+    <bean id="notificationMessageDeliveryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
     
-    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.notification.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
+    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
 
-    <bean id="notificationEmailService" class="org.kuali.notification.service.impl.NotificationEmailServiceImpl" >
+    <bean id="notificationEmailService" class="org.kuali.rice.ken.service.impl.NotificationEmailServiceImpl" >
        <property name="weburl"><value>${notification.basewebappurl}</value></property>
        <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
     </bean>

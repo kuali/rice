@@ -483,7 +483,7 @@
 
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
-        <className>org.kuali.notification.kew.NotificationCustomActionListAttribute</className>
+        <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
         <label>Notification Action List Attribute</label>
         <description>Notification Action List Attribute</description>
         <type>ActionListAttribute</type>
@@ -603,7 +603,7 @@
        <!-- attributes for notification request -->       
        <ruleAttribute>
             <name>NotificationCustomActionListAttribute</name>
-            <className>org.kuali.notification.kew.NotificationCustomActionListAttribute</className>
+            <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
             <label>Notification  Action List Attribute</label>
             <description>Notification Action List Attribute</description>
             <type>ActionListAttribute</type>
@@ -613,7 +613,7 @@
         </ruleAttribute>
         <ruleAttribute>
             <name>ChannelReviewerRoleAttribute</name>
-            <className>org.kuali.notification.kew.ChannelReviewerRoleAttribute</className>
+            <className>org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute</className>
             <label>Channel Reviewer Role Attribute</label>
             <description>Channel Reviewer Role Attribute</description>
             <type>RuleAttribute</type>
@@ -1125,7 +1125,7 @@
           <!--
           <messageEntity>KEN</messageEntity>
           -->
-          <postProcessorName>org.kuali.notification.postprocessor.kew.NotificationPostProcessor</postProcessorName>
+          <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
           <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
           <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
           <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -1177,7 +1177,7 @@
             <!--
             <messageEntity>KEN</messageEntity>
             -->
-            <postProcessorName>org.kuali.notification.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -1466,7 +1466,7 @@
           </ruleExtensions>
           <responsibilities>
             <responsibility>
-              <role>org.kuali.notification.kew.ChannelReviewerRoleAttribute!reviewers</role>
+              <role>org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute!reviewers</role>
               <actionRequested>A</actionRequested>
               <priority>1</priority>
             </responsibility>

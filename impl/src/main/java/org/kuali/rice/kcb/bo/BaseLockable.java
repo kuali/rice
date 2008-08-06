@@ -36,14 +36,14 @@ public class BaseLockable implements Lockable {
     protected Timestamp lockedDate;
 
     /**
-     * @see org.kuali.notification.bo.Lockable#getLockedDate()
+     * @see org.kuali.rice.ken.bo.Lockable#getLockedDate()
      */
     public Timestamp getLockedDate() {
         return lockedDate;
     }
 
     /**
-     * @see org.kuali.notification.bo.Lockable#setLockedDate(java.sql.Timestamp)
+     * @see org.kuali.rice.ken.bo.Lockable#setLockedDate(java.sql.Timestamp)
      */
     public void setLockedDate(Timestamp lockedDate) {
         this.lockedDate = lockedDate;

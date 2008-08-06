@@ -26,7 +26,7 @@
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
 				<!-- <bean class="org.kuali.rice.kom.config.KOMConfigurer" /> -->
-        <bean class="org.kuali.notification.config.KENConfigurer" />
+        <bean class="org.kuali.rice.ken.config.KENConfigurer" />
 			</list>
 		</property>
 	</bean>

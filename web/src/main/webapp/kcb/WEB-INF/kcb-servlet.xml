@@ -24,7 +24,7 @@
 
     <!-- Implement better strategy later -->
     <!-- 
-        <bean class="org.kuali.notification.web.spring.ServletConfigPropertyPlaceholderConfigurer"/>
+        <bean class="org.kuali.rice.ken.web.spring.ServletConfigPropertyPlaceholderConfigurer"/>
     -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="properties">

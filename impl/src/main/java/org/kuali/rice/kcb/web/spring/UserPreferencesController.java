@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.notification.service.KENAPIService;
-import org.kuali.notification.service.KENServiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
@@ -37,6 +35,8 @@ import org.kuali.rice.kcb.exception.ErrorList;
 import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
+import org.kuali.rice.ken.service.KENAPIService;
+import org.kuali.rice.ken.service.KENServiceConstants;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;

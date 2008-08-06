@@ -86,7 +86,7 @@ public class EmailMessageDeliverer implements MessageDeliverer {
     /**
      * This implementation does an auto-remove by "canceling" the workflow email with the message delivery record. 
      * In the case of email, it's a noop 
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#autoRemoveMessageDelivery(org.kuali.notification.bo.NotificationMessageDelivery)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#autoRemoveMessageDelivery(org.kuali.rice.ken.bo.NotificationMessageDelivery)
      */
     public void autoRemoveMessageDelivery(MessageDelivery messageDelivery) /*throws NotificationAutoRemoveException*/ {
         // we can't remove an email message once it has been sent

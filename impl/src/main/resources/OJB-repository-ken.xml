@@ -11,7 +11,7 @@
 
   <!-- Class/table mappings -->
   <!-- NOTIFICATIONS -->
-  <class-descriptor class="org.kuali.notification.bo.Notification" table="NOTIFICATIONS">
+  <class-descriptor class="org.kuali.rice.ken.bo.Notification" table="NOTIFICATIONS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATIONS_SEQ" />
     <field-descriptor name="deliveryType" column="DELIVERY_TYPE" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="creationDateTime" column="CREATED_DATETIME" jdbc-type="TIMESTAMP" nullable="false" />
@@ -30,63 +30,63 @@
     <field-descriptor name="priorityId" column="PRIORITY_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
     
     <!-- Object references -->
-    <reference-descriptor name="priority" class-ref="org.kuali.notification.bo.NotificationPriority" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="priority" class-ref="org.kuali.rice.ken.bo.NotificationPriority" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="priorityId" />
     </reference-descriptor>
-    <reference-descriptor name="contentType" class-ref="org.kuali.notification.bo.NotificationContentType" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="contentType" class-ref="org.kuali.rice.ken.bo.NotificationContentType" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="contentTypeId" />
     </reference-descriptor>
-    <reference-descriptor name="channel" class-ref="org.kuali.notification.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="channel" class-ref="org.kuali.rice.ken.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="notificationChannelId" />
     </reference-descriptor>
-    <reference-descriptor name="producer" class-ref="org.kuali.notification.bo.NotificationProducer" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="producer" class-ref="org.kuali.rice.ken.bo.NotificationProducer" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="producerId" />
     </reference-descriptor>
     
     <!-- List references -->
-    <collection-descriptor name="recipients" element-class-ref="org.kuali.notification.bo.NotificationRecipient" auto-retrieve="true" auto-update="object" auto-delete="object">
+    <collection-descriptor name="recipients" element-class-ref="org.kuali.rice.ken.bo.NotificationRecipient" auto-retrieve="true" auto-update="object" auto-delete="object">
         <orderby name="id" sort="ASC" />
         <inverse-foreignkey field-ref="notificationId" />
     </collection-descriptor>
-    <collection-descriptor name="senders" element-class-ref="org.kuali.notification.bo.NotificationSender" auto-retrieve="true" auto-update="object" auto-delete="object">
+    <collection-descriptor name="senders" element-class-ref="org.kuali.rice.ken.bo.NotificationSender" auto-retrieve="true" auto-update="object" auto-delete="object">
         <orderby name="id" sort="ASC" />
         <inverse-foreignkey field-ref="notificationId" />
     </collection-descriptor>
   </class-descriptor>
   
   <!-- NOTIFICATION_CHANNELS -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationChannel" table="NOTIFICATION_CHANNELS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationChannel" table="NOTIFICATION_CHANNELS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" indexed="true" autoincrement="true" sequence-name="NOTIFICATION_CHANNELS_SEQ" />
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" nullable="false" />
-    <field-descriptor name="subscribable" column="SUBSCRIBABLE" conversion="org.kuali.notification.util.OjbCharBooleanConversion" jdbc-type="CHAR" nullable="false" />
+    <field-descriptor name="subscribable" column="SUBSCRIBABLE" conversion="org.kuali.rice.ken.util.OjbCharBooleanConversion" jdbc-type="CHAR" nullable="false" />
     
     <!-- List references -->
     <!-- This class uses the specified collection descriptor b/c it is an M:N mapping -->
     <!-- Deletes must be done directly on the join object -->
-    <collection-descriptor name="producers" element-class-ref="org.kuali.notification.bo.NotificationProducer" 
+    <collection-descriptor name="producers" element-class-ref="org.kuali.rice.ken.bo.NotificationProducer" 
         auto-retrieve="true" auto-update="true" auto-delete="false" indirection-table="NOTIFICATION_CHANNEL_PRODUCERS"
         collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
         <orderby name="id" sort="ASC" />
         <fk-pointing-to-this-class column="CHANNEL_ID"/>
         <fk-pointing-to-element-class column="PRODUCER_ID"/>
     </collection-descriptor>
-    <collection-descriptor name="recipientLists" element-class-ref="org.kuali.notification.bo.NotificationRecipientList" auto-retrieve="true" auto-update="object" auto-delete="object">
+    <collection-descriptor name="recipientLists" element-class-ref="org.kuali.rice.ken.bo.NotificationRecipientList" auto-retrieve="true" auto-update="object" auto-delete="object">
         <orderby name="id" sort="ASC" />
         <inverse-foreignkey field-ref="channelId" />
     </collection-descriptor>
-    <collection-descriptor name="reviewers" element-class-ref="org.kuali.notification.bo.NotificationChannelReviewer" auto-retrieve="true" auto-update="object" auto-delete="object">
+    <collection-descriptor name="reviewers" element-class-ref="org.kuali.rice.ken.bo.NotificationChannelReviewer" auto-retrieve="true" auto-update="object" auto-delete="object">
         <orderby name="id" sort="ASC" />
         <inverse-foreignkey field-ref="channelId" />
     </collection-descriptor>
-    <collection-descriptor name="subscriptions" element-class-ref="org.kuali.notification.bo.UserChannelSubscription" auto-retrieve="true" auto-update="object" auto-delete="object">
+    <collection-descriptor name="subscriptions" element-class-ref="org.kuali.rice.ken.bo.UserChannelSubscription" auto-retrieve="true" auto-update="object" auto-delete="object">
         <orderby name="id" sort="ASC" />
         <inverse-foreignkey field-ref="channelId" />
     </collection-descriptor>
   </class-descriptor>
   
   <!-- NOTIFICATION_CONTENT_TYPES -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationContentType" table="NOTIFICATION_CONTENT_TYPES">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationContentType" table="NOTIFICATION_CONTENT_TYPES">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_CONTENT_TYPES_SEQ" />
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="version" column="VERSION" jdbc-type="INTEGER" nullable="false" />
@@ -98,7 +98,7 @@
   </class-descriptor>
   
   <!-- NOTIFICATION_PRIORITIES -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationPriority" table="NOTIFICATION_PRIORITIES">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationPriority" table="NOTIFICATION_PRIORITIES">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_PRIORITIES_SEQ" />
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" nullable="false" />
@@ -106,7 +106,7 @@
   </class-descriptor>
   
   <!-- NOTIFICATION_PRODUCERS -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationProducer" table="NOTIFICATION_PRODUCERS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationProducer" table="NOTIFICATION_PRODUCERS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_PRODUCERS_SEQ" />
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" nullable="false" />
@@ -115,7 +115,7 @@
     <!-- List references -->
     <!-- This class uses the specified collection descriptor b/c it is an M:N mapping -->
     <!-- Deletes must be done directly on the join object -->
-    <collection-descriptor name="channels" element-class-ref="org.kuali.notification.bo.NotificationChannel" 
+    <collection-descriptor name="channels" element-class-ref="org.kuali.rice.ken.bo.NotificationChannel" 
         auto-retrieve="true" auto-update="true" auto-delete="false" indirection-table="NOTIFICATION_CHANNEL_PRODUCERS"
         collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
         <orderby name="id" sort="ASC" />
@@ -125,19 +125,19 @@
   </class-descriptor>
   
   <!-- NOTIFICATION_REVIEWERS  -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationChannelReviewer" table="NOTIFICATION_REVIEWERS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationChannelReviewer" table="NOTIFICATION_REVIEWERS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_REVIEWERS_SEQ" />
     <field-descriptor name="reviewerId" column="REVIEWER_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="reviewerType" column="REVIEWER_TYPE" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     
     <field-descriptor name="channelId" column="CHANNEL_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
-    <reference-descriptor name="channel" class-ref="org.kuali.notification.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="channel" class-ref="org.kuali.rice.ken.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="channelId" />
     </reference-descriptor>
   </class-descriptor>
   
   <!-- NOTIFICATION_RECIPIENTS -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationRecipient" table="NOTIFICATION_RECIPIENTS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationRecipient" table="NOTIFICATION_RECIPIENTS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_RECIPIENTS_SEQ" />
     <field-descriptor name="notificationId" column="NOTIFICATION_ID" jdbc-type="BIGINT" indexed="true" nullable="false" />
     <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
@@ -145,7 +145,7 @@
   </class-descriptor>
   
   <!-- NOTIFICATION_RECIPIENTS_LISTS -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationRecipientList" table="NOTIFICATION_RECIPIENTS_LISTS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationRecipientList" table="NOTIFICATION_RECIPIENTS_LISTS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_RECIPS_LISTS_SEQ" />
     <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="recipientType" column="RECIPIENT_TYPE" jdbc-type="VARCHAR" indexed="true" nullable="false" />
@@ -154,20 +154,20 @@
     <field-descriptor name="channelId" column="CHANNEL_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
     
     <!-- Object references -->
-    <reference-descriptor name="channel" class-ref="org.kuali.notification.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="channel" class-ref="org.kuali.rice.ken.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="channelId" />
     </reference-descriptor>
   </class-descriptor>
   
   <!-- NOTIFICATION_SENDERS -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationSender" table="NOTIFICATION_SENDERS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationSender" table="NOTIFICATION_SENDERS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_SENDERS_SEQ" />
     <field-descriptor name="notificationId" column="NOTIFICATION_ID" jdbc-type="BIGINT" indexed="true" nullable="false" />
     <field-descriptor name="senderName" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
   </class-descriptor>
   
   <!-- USER_CHANNEL_SUBSCRIPTIONS -->
-  <class-descriptor class="org.kuali.notification.bo.UserChannelSubscription" table="USER_CHANNEL_SUBSCRIPTIONS">
+  <class-descriptor class="org.kuali.rice.ken.bo.UserChannelSubscription" table="USER_CHANNEL_SUBSCRIPTIONS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="USER_CHANNEL_SUBSCRIPTIONS_SEQ" />
     <field-descriptor name="userId" column="USER_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
   
@@ -175,13 +175,13 @@
     <field-descriptor name="channelId" column="CHANNEL_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
     
     <!-- Object references -->
-    <reference-descriptor name="channel" class-ref="org.kuali.notification.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="channel" class-ref="org.kuali.rice.ken.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="channelId" />
     </reference-descriptor>
   </class-descriptor>
   
   <!-- NOTIFICATION_MESSAGE_DELIVERIES -->
-  <class-descriptor class="org.kuali.notification.bo.NotificationMessageDelivery" table="NOTIFICATION_MSG_DELIVS">
+  <class-descriptor class="org.kuali.rice.ken.bo.NotificationMessageDelivery" table="NOTIFICATION_MSG_DELIVS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_MSG_DELIVS_SEQ" />
     <field-descriptor name="messageDeliveryStatus" column="MESSAGE_DELIVERY_STATUS" jdbc-type="VARCHAR" indexed="false" nullable="false" />
     <field-descriptor name="userRecipientId" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
@@ -193,7 +193,7 @@
     <field-descriptor name="notificationId" column="NOTIFICATION_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
     
     <!-- Object references -->
-    <reference-descriptor name="notification" class-ref="org.kuali.notification.bo.Notification" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor name="notification" class-ref="org.kuali.rice.ken.bo.Notification" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="notificationId" />
     </reference-descriptor>
   </class-descriptor>

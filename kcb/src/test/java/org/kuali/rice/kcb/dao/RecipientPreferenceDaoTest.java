@@ -38,7 +38,7 @@ public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
     private String[] updatedValues = {"Value C", "Value D"};
     
     /**
-     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#delete()
+     * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#delete()
      */
     @Test
     @Override
@@ -49,7 +49,7 @@ public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
     }
     
     /**
-     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#retrieve()
+     * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#retrieve()
      */
     @Test
     @Override
@@ -77,7 +77,7 @@ public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
     }
     
     /**
-     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#insert()
+     * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#insert()
      */
     @Test
     @Override
@@ -95,7 +95,7 @@ public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
     }
     
     /**
-     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#update()
+     * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#update()
      */
     @Test
     @Ignore // until I fix how this test uses test data

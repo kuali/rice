@@ -99,7 +99,7 @@
     </bean>
 
     <!-- Eager-init notification lifecycle -->
-    <bean id="lifecycle" class="org.kuali.notification.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer"/>
+    <bean id="lifecycle" class="org.kuali.rice.ken.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer"/>
 
     <!-- Applys a transaction template to the actual transaction manager bean -->
     <!-- This is needed to recognize services as transactions -->
@@ -159,18 +159,18 @@
     <!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
 
     <!-- SERVICES -->
-    <bean id="messageContentService" class="org.kuali.notification.service.impl.NotificationMessageContentServiceImpl">
+    <bean id="messageContentService" class="org.kuali.rice.ken.service.impl.NotificationMessageContentServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
       <constructor-arg><ref local="notificationContentTypeService"/></constructor-arg>
     </bean>
 
-    <bean id="kenApiService" class="org.kuali.notification.service.impl.KENAPIServiceImpl">
+    <bean id="kenApiService" class="org.kuali.rice.ken.service.impl.KENAPIServiceImpl">
       <property name="notificationChannelService" ref="notificationChannelService"/>
       <property name="userPreferenceService" ref="userPreferenceService"/>
       
     </bean>
 
-    <bean id="notificationService" class="org.kuali.notification.service.impl.NotificationServiceImpl">
+    <bean id="notificationService" class="org.kuali.rice.ken.service.impl.NotificationServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
       <constructor-arg><ref local="messageContentService"/></constructor-arg>
       <constructor-arg><ref local="notificationAuthorizationService"/></constructor-arg>
@@ -179,30 +179,30 @@
       <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
     </bean>
 
-    <bean id="notificationContentTypeService" class="org.kuali.notification.service.impl.NotificationContentTypeServiceImpl">
+    <bean id="notificationContentTypeService" class="org.kuali.rice.ken.service.impl.NotificationContentTypeServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
     
-    <bean id="notificationChannelService" class="org.kuali.notification.service.impl.NotificationChannelServiceImpl">
+    <bean id="notificationChannelService" class="org.kuali.rice.ken.service.impl.NotificationChannelServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
     
-    <bean id="userPreferenceService" class="org.kuali.notification.service.impl.UserPreferenceServiceImpl">
+    <bean id="userPreferenceService" class="org.kuali.rice.ken.service.impl.UserPreferenceServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
       <constructor-arg><ref local="notificationChannelService"/></constructor-arg>
     </bean>
     
-    <bean id="notificationAuthorizationService" class="org.kuali.notification.service.impl.NotificationAuthorizationServiceImpl">
+    <bean id="notificationAuthorizationService" class="org.kuali.rice.ken.service.impl.NotificationAuthorizationServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
 
-    <bean id="notificationRecipientService" class="org.kuali.notification.service.impl.NotificationRecipientServiceKewImpl" />
+    <bean id="notificationRecipientService" class="org.kuali.rice.ken.service.impl.NotificationRecipientServiceKewImpl" />
     
-    <bean id="notificationWorkflowDocumentService" class="org.kuali.notification.service.impl.NotificationWorkflowDocumentServiceImpl">
+    <bean id="notificationWorkflowDocumentService" class="org.kuali.rice.ken.service.impl.NotificationWorkflowDocumentServiceImpl">
       <constructor-arg><ref local="messageContentService"/></constructor-arg>
     </bean>
     
-    <bean id="notificationMessageDeliveryResolverService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryResolverServiceImpl">
+    <bean id="notificationMessageDeliveryResolverService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
       <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
       <constructor-arg><ref local="genericDao"/></constructor-arg>
@@ -211,18 +211,18 @@
       <constructor-arg><ref local="userPreferenceService"/></constructor-arg>
     </bean>
 
-    <bean id="notificationMessageDeliveryAutoRemovalService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryAutoRemovalServiceImpl">
+    <bean id="notificationMessageDeliveryAutoRemovalService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryAutoRemovalServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
       <constructor-arg><ref bean="transactionManager"/></constructor-arg>
       <constructor-arg><ref bean="autoRemovalExecutor"/></constructor-arg>
       <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
     </bean>
 
-    <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
+    <bean id="sendNotificationKewXmlService" class="org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
     </bean>
     
-    <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
+    <bean id="notificationMessageDeliveryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryServiceImpl">
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
     

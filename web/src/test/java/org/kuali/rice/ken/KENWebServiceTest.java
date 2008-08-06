@@ -42,7 +42,7 @@ import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
-import org.kuali.rice.web.test.HtmlUnitUtil;
+import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 

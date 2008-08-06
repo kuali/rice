@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.kuali.rice.web.test.HtmlUnitUtil;
+import org.kuali.rice.test.web.HtmlUnitUtil;
 
 
 /**

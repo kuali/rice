@@ -14,7 +14,7 @@ package org.kuali.rice.server.inquirable;
 
 import org.junit.Test;
 import org.kuali.rice.server.test.ServerTestBase;
-import org.kuali.rice.web.test.HtmlUnitUtil;
+import org.kuali.rice.test.web.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 

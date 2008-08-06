@@ -29,7 +29,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.kuali.rice.config.Config;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.plugin.PluginException;
 import org.kuali.rice.kew.util.Utilities;

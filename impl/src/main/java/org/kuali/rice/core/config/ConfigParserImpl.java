@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,7 +89,7 @@ public class ConfigParserImpl implements ConfigParser {
     }
 
     /**
-     * @see org.kuali.rice.config.ConfigParser#parse(java.lang.String[])
+     * @see org.kuali.rice.core.config.ConfigParser#parse(java.lang.String[])
      */
     public void parse(Map props, String[] locations) throws IOException {
         LinkedHashMap params = new LinkedHashMap();

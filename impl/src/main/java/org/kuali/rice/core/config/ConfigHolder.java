@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
-import org.kuali.rice.config.event.RiceConfigEvent;
-import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
+public interface ConfigHolder {
 
-public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer {
-
-	public abstract Config loadConfig(Config parentConfig) throws Exception;
-	
-	public void onEvent(RiceConfigEvent event) throws Exception {
-	}
+	public Config getConfig();
 
 }

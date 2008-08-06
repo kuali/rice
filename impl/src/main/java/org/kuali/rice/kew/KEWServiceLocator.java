@@ -6,7 +6,7 @@ import javax.transaction.UserTransaction;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.NodeSettings;
+import org.kuali.rice.core.config.NodeSettings;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kew.actionlist.ActionListService;

@@ -17,8 +17,8 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

@@ -5,7 +5,7 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/sample-app-config.xml</value>

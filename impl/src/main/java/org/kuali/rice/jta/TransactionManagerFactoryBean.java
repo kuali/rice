@@ -19,9 +19,9 @@ import javax.naming.NamingException;
 import javax.transaction.TransactionManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.jndi.JndiTemplate;

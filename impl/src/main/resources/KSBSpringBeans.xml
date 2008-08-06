@@ -33,7 +33,7 @@
 		<property name="transactionManager" ref="jtaTransactionManager" />
 	</bean>
 
-	<bean id="transactionManager" class="org.kuali.rice.config.spring.PlatformTransactionManagerFactoryBean" lazy-init="true">
+	<bean id="transactionManager" class="org.kuali.rice.core.config.spring.PlatformTransactionManagerFactoryBean" lazy-init="true">
 		<property name="userTransaction">
 			<ref local="userTransaction" />
 		</property>

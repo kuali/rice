@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.event;
+package org.kuali.rice.core.config;
 
-/**
- * An event which occurs prior to Rice startup.
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
- */
-public class BeforeStartEvent implements RiceConfigEvent {
+import org.kuali.rice.core.config.event.RiceConfigEvent;
+import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
+
+public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer {
+
+	public abstract Config loadConfig(Config parentConfig) throws Exception;
+	
+	public void onEvent(RiceConfigEvent event) throws Exception {
+	}
 
 }

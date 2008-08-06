@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 
@@ -109,7 +109,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     /**
      * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
      * resource loader name (and current context config message entity)
-     * @see org.kuali.rice.config.BaseModuleConfigurer#createResourceLoader()
+     * @see org.kuali.rice.core.config.BaseModuleConfigurer#createResourceLoader()
      */
     @Override
     protected ResourceLoader createResourceLoader() {

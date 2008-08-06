@@ -25,7 +25,7 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer" />
+    <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
 	<bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
 

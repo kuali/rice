@@ -20,8 +20,8 @@ package org.kuali.rice.kew.routeheader;
 import java.sql.Timestamp;
 
 import org.junit.Test;
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;

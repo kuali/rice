@@ -19,8 +19,8 @@ package org.kuali.rice.kew.edl;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLController;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.io.IOException;
 import java.util.Map;

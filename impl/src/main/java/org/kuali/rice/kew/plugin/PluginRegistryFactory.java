@@ -19,8 +19,8 @@ package org.kuali.rice.kew.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.util.Utilities;
 
 

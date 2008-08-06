@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.event;
+package org.kuali.rice.core.config.event;
 
 /**
  * An event which occurs after Rice startup.
@@ -21,6 +21,6 @@ package org.kuali.rice.config.event;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class AfterStartEvent implements RiceConfigEvent {
+public class AfterStopEvent implements RiceConfigEvent {
 
 }

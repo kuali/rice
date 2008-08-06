@@ -16,8 +16,8 @@
 package org.kuali.rice.ksb.messaging.threadpool;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;

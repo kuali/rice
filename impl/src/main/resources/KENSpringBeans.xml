@@ -29,7 +29,7 @@
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
+    <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
         <!-- all our lovely defaults -->
         <property name="properties">
             <props>

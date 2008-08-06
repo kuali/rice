@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.event;
+package org.kuali.rice.core.config.event;
 
 /**
- * An event which occurs after Rice startup.
+ * A simple marker interface to define events that might occur during RiceConfigurer initialization and shutdown
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public class BeforeStopEvent implements RiceConfigEvent {
+public interface RiceConfigEvent {
 
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
 
     /**
      * Simply returns the config unchanged
-     * @see org.kuali.rice.config.ModuleConfigurer#loadConfig(org.kuali.rice.config.Config)
+     * @see org.kuali.rice.core.config.ModuleConfigurer#loadConfig(org.kuali.rice.core.config.Config)
      */
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {

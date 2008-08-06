@@ -15,7 +15,7 @@
  */
 // Created on Aug 29, 2006
 
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.io.File;
 import java.io.FileInputStream;

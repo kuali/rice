@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-    <bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+    <bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
         <property name="configLocations">
             <list>
                 <value>classpath:META-INF/ken-test-config.xml</value>
@@ -10,7 +10,7 @@
         </property>
     </bean>
 
-    <bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+    <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
         <property name="messageEntity" value="KEN" />
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="jotm" />

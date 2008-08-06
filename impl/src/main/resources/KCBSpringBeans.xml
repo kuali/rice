@@ -3,7 +3,7 @@
 <beans>
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean name="properties" class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
+    <bean name="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
         <property name="properties">
             <props>
                 <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>

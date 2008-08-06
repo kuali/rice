@@ -20,6 +20,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+import org.kuali.rice.core.config.SimpleConfig;
 
 public class HierarchicalConfigParserTest extends TestCase {
 

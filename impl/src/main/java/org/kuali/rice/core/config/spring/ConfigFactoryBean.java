@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.spring;
+package org.kuali.rice.core.config.spring;
 
 import java.util.List;
 import java.util.Properties;
 
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
-import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.SimpleConfig;
 import org.springframework.beans.factory.FactoryBean;
 
 public class ConfigFactoryBean implements FactoryBean {

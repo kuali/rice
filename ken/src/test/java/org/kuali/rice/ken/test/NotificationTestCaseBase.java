@@ -18,7 +18,7 @@ package org.kuali.rice.ken.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.config.SpringModuleConfigurer;
+import org.kuali.rice.core.config.SpringModuleConfigurer;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;

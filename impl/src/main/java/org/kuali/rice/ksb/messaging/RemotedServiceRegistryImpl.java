@@ -28,9 +28,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;

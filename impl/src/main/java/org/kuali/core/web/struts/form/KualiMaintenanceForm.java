@@ -45,7 +45,7 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.kns.util.KNSConstants;
 
 

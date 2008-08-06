@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/ksb-test-config.xml</value>
@@ -69,7 +69,7 @@
 	
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.security.credentials.CredentialsSourceFactory" />
 
-	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="client1NonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />

@@ -19,9 +19,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
 /**
@@ -36,7 +36,7 @@ public class KOMConfigurer extends ModuleConfigurer {
 	/**
 	 * This overridden method handles setting up the KIM specific configuration.
 	 * 
-	 * @see org.kuali.rice.config.ModuleConfigurer#loadConfig(org.kuali.rice.config.Config)
+	 * @see org.kuali.rice.core.config.ModuleConfigurer#loadConfig(org.kuali.rice.core.config.Config)
 	 */
 	@Override
     	public Config loadConfig(Config parentConfig) throws Exception {

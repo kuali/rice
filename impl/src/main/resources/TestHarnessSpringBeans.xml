@@ -5,7 +5,7 @@
      to allow independent replacement of the data source configuration (for example for unit tests) -->
 <beans>
   <!-- This PropertyPlaceholderConfigurer subclass automagically takes properties from the workflow Config system -->
-  <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer" />
+  <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
   <bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
     <property name="transactionManager" ref="jtaTransactionManager"/>

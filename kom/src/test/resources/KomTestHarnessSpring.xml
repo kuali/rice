@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/kom-test-config.xml</value>
@@ -47,7 +47,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="messageEntity" value="KOM" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="komNonTransactionalDataSource" />

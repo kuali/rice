@@ -15,7 +15,7 @@
  */
 package org.kuali.core.web.servlet;
 
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.springframework.beans.factory.InitializingBean;
 
 public class DWRConfigFileConfigurer implements InitializingBean {

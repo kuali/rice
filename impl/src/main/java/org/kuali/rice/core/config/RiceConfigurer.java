@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,12 +26,12 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.event.AfterStartEvent;
-import org.kuali.rice.config.event.AfterStopEvent;
-import org.kuali.rice.config.event.BeforeStartEvent;
-import org.kuali.rice.config.event.BeforeStopEvent;
-import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.event.AfterStartEvent;
+import org.kuali.rice.core.config.event.AfterStopEvent;
+import org.kuali.rice.core.config.event.BeforeStartEvent;
+import org.kuali.rice.core.config.event.BeforeStopEvent;
+import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;

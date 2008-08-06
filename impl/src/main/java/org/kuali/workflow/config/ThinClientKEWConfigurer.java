@@ -15,7 +15,7 @@
  */
 package org.kuali.workflow.config;
 
-import org.kuali.rice.config.RiceConfigurer;
+import org.kuali.rice.core.config.RiceConfigurer;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
 

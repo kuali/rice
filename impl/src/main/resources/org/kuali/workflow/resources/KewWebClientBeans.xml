@@ -2,6 +2,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
- 	<bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
+ 	<bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer"/>
 	<bean id="digitalSignatureService" class="org.kuali.rice.ksb.security.DigitalSignatureServiceImpl" lazy-init="true"/>
 </beans>

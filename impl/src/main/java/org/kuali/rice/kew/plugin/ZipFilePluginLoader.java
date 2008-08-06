@@ -30,7 +30,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 

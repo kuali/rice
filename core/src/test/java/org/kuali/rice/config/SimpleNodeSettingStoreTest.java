@@ -25,6 +25,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+import org.kuali.rice.core.config.SimpleNodeSettingsStore;
 
 public class SimpleNodeSettingStoreTest extends TestCase {
     

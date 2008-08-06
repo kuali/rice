@@ -18,7 +18,7 @@ package org.kuali.rice.server.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.config.spring.ConfigFactoryBean;
+import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.util.KEWConstants;

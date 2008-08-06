@@ -1,6 +1,6 @@
 package org.kuali.rice.kns.config;
 
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;

@@ -22,9 +22,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.jndi.JndiTemplate;

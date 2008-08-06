@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.ksb.messaging.bam.dao;
 
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigDAOSupport;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigDAOSupport;
 
 public class BAMConfigDAOImpl extends ConfigDAOSupport implements BAMConfigDAO {
 

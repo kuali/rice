@@ -6,7 +6,7 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/server-workflow.xml</value>
@@ -47,7 +47,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="dataSource" ref="workflowDataSource" />
 		<property name="nonTransactionalDataSource" ref="kewNonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />

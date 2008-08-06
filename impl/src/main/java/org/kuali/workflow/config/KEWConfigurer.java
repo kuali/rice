@@ -23,12 +23,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
-import org.kuali.rice.config.ModuleConfigurer;
-import org.kuali.rice.config.SimpleConfig;
-import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.core.EmbeddedLifeCycle;
 import org.kuali.rice.kew.util.KEWConstants;

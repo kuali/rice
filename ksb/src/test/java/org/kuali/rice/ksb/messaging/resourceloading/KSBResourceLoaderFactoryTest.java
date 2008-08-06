@@ -20,10 +20,10 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigurationException;
-import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;

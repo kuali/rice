@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.logging;
+package org.kuali.rice.core.config.logging;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,8 +32,8 @@ import org.apache.log4j.helpers.FileWatchdog;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.util.Log4jConfigurer;
 import org.springframework.util.ResourceUtils;

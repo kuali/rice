@@ -18,9 +18,9 @@ package org.kuali.rice.kew.clientapp;
 
 import java.rmi.RemoteException;
 
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.RiceConfigurer;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.RiceConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;

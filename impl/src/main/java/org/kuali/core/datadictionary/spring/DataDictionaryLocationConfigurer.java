@@ -18,7 +18,7 @@ package org.kuali.core.datadictionary.spring;
 import java.util.List;
 
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb.config;
 
-import org.kuali.rice.config.SpringModuleConfigurer;
+import org.kuali.rice.core.config.SpringModuleConfigurer;
 
 /**
  * This class handles the Spring based KCB configuration that is part of the Rice Configurer that must 

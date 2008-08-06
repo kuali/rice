@@ -19,8 +19,8 @@ package org.kuali.rice.kew.clientapp;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.rice.config.BaseConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.BaseConfig;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

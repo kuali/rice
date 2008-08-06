@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config.spring;
+package org.kuali.rice.core.config.spring;
 
 import java.io.IOException;
 import java.util.Properties;
 
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigLogger;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigLogger;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 /**

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.ConfigurationException;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.rice.config.BaseConfig;
-import org.kuali.rice.config.Config;
+import org.kuali.rice.core.config.BaseConfig;
+import org.kuali.rice.core.config.Config;
 
 /**
  * Class representing a plugin's manifest, containing configuration

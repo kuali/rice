@@ -26,9 +26,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ConfigHolder;
-import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigHolder;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.util.ClassLoaderUtils;
 
 /**

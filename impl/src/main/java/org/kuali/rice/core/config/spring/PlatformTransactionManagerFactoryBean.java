@@ -1,4 +1,4 @@
-package org.kuali.rice.config.spring;
+package org.kuali.rice.core.config.spring;
 
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;

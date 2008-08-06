@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config.event;
 
-public interface ConfigHolder {
-
-	public Config getConfig();
+/**
+ * An event which occurs after Rice startup.
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+public class BeforeStopEvent implements RiceConfigEvent {
 
 }

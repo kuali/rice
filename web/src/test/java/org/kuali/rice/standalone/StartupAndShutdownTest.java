@@ -20,7 +20,7 @@ import javax.servlet.ServletContextEvent;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.testharness.BaseRiceTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 
 /**

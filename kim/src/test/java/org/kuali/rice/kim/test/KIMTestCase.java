@@ -23,9 +23,9 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.web.jetty.JettyServer;
-import org.kuali.rice.testharness.RiceTestCase;
-import org.kuali.rice.testharness.TestUtilities;
-import org.kuali.rice.testharness.lifecycles.SQLDataLoaderLifecycle;
+import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.TestUtilities;
+import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 /**
@@ -39,7 +39,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	/**
      * This overridden method is responsible for loading up the kimtestharness from Spring.
      *
-     * @see org.kuali.rice.testharness.RiceTestCase#getSuiteLifecycles()
+     * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
      */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
@@ -63,7 +63,7 @@ public abstract class KIMTestCase extends RiceTestCase {
     }
 
 	/**
-     * @see org.kuali.rice.testharness.RiceTestCase#getTablesNotToClear()
+     * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
      */
 	@Override
 	protected List<String> getTablesNotToClear() {
@@ -78,7 +78,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	/**
      * At this time Derby for KIM is not supported.
      *
-     * @see org.kuali.rice.testharness.RiceTestCase#getDerbySQLFileLocation()
+     * @see org.kuali.rice.test.RiceTestCase#getDerbySQLFileLocation()
      */
 	@Override
 	protected String getDerbySQLFileLocation() {
@@ -86,7 +86,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	}
 
 	/**
-     * @see org.kuali.rice.testharness.RiceTestCase#getModuleName()
+     * @see org.kuali.rice.test.RiceTestCase#getModuleName()
      */
 	@Override
 	protected String getModuleName() {

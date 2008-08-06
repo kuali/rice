@@ -27,7 +27,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.testharness.BaseRiceTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 

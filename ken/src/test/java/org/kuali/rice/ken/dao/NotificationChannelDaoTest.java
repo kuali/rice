@@ -22,8 +22,8 @@ import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class test basic persistence for the NotificationChannel business object.

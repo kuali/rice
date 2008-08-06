@@ -30,8 +30,8 @@ import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.util.DocumentNamespaceContext;
 import org.kuali.rice.ken.util.SimpleErrorHandler;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

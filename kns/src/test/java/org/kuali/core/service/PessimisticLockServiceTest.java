@@ -31,8 +31,8 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.testharness.data.UnitTestData;
-import org.kuali.rice.testharness.data.UnitTestSql;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.TestBase;
 
 

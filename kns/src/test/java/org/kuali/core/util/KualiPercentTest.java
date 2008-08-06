@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.kuali.core.web.format.Formatter;
-import org.kuali.rice.testharness.BaseRiceTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * This class tests the KualiDecimal methods.

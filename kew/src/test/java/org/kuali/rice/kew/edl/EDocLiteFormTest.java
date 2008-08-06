@@ -27,7 +27,7 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;*/
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.testharness.BaseRiceTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * Tests the behavior of EDocLiteForm in the presence of various types of input

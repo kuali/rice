@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.testharness.RiceTestCase;
+import org.kuali.rice.test.RiceTestCase;
 
 /**
  * Verifies that the RiceTestCase starts up cleanly.

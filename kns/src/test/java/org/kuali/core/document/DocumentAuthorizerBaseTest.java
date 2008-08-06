@@ -41,7 +41,7 @@ import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.testharness.ClearDatabaseLifecycle;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 

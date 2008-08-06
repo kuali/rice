@@ -30,8 +30,8 @@ import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests NotificationMessageContentService

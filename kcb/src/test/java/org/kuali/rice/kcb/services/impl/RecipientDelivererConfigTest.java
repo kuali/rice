@@ -22,8 +22,8 @@ import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.test.KCBTestCase;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 

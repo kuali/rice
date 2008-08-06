@@ -26,10 +26,10 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.testharness.BaselineTestCase;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
-import org.kuali.rice.testharness.lifecycles.SQLDataLoaderLifecycle;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -75,7 +75,7 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
 
     /**
      * Avoid clearing the Quartz tables because it's deadlockey
-     * @see org.kuali.rice.testharness.RiceTestCase#getTablesNotToClear()
+     * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
      */
     /*@Override
     protected List<String> getTablesNotToClear() {

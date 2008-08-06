@@ -24,10 +24,10 @@ import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.service.MockEmailService;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
-import org.kuali.rice.testharness.data.UnitTestData;
-import org.kuali.rice.testharness.data.UnitTestSql;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestSql;
 
 /**
  * This class tests the implementation of the email service.

@@ -25,8 +25,8 @@ import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the user preferences service impl.

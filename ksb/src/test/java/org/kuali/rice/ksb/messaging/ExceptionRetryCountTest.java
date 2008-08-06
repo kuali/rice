@@ -25,7 +25,7 @@ import org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.kuali.rice.testharness.TestUtilities;
+import org.kuali.rice.test.TestUtilities;
 
 
 /**

@@ -28,7 +28,7 @@ public class KualiMaintainableTest extends TestBase {
     Maintainable maintainable = null;
 
     /**
-     * @see org.kuali.rice.testharness.RiceTestCase#setUp()
+     * @see org.kuali.rice.test.RiceTestCase#setUp()
      */
     @Before
     public void setUp() throws Exception {

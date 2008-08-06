@@ -13,8 +13,8 @@
 package org.kuali.rice.kcb.test;
 
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.testharness.BaselineTestCase.BaselineMode;
-import org.kuali.rice.testharness.BaselineTestCase.Mode;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This base class for testing CRUD operations on BOs

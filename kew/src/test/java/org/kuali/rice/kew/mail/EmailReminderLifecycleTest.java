@@ -42,7 +42,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 	/**
 	 * This method used to reset email sending to false for both daily and weekly reminders 
 	 * 
-	 * @see org.kuali.rice.testharness.RiceTestCase#tearDown()
+	 * @see org.kuali.rice.test.RiceTestCase#tearDown()
 	 */
 	@Override
 	public void tearDown() throws Exception {

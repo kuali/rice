@@ -17,7 +17,7 @@ package org.kuali.core.datadictionary.validation.charlevel;
 
 import org.junit.Test;
 import org.kuali.core.datadictionary.validation.ValidationTestUtils;
-import org.kuali.rice.testharness.BaseRiceTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 public class AlphaValidationPatternTest extends BaseRiceTestCase {
     private AlphaValidationPattern pattern;

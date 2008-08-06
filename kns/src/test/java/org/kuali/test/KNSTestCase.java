@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.testharness.RiceTestCase;
-import org.kuali.rice.testharness.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.testharness.lifecycles.SQLDataLoaderLifecycle;
+import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
+import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.web.test.HtmlUnitUtil;
 
 

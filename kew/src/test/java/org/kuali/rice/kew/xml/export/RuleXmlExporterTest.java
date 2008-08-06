@@ -35,7 +35,7 @@ import org.kuali.rice.kew.routetemplate.RuleDelegation;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
 import org.kuali.rice.kew.routetemplate.RuleResponsibility;
-import org.kuali.rice.testharness.ClearDatabaseLifecycle;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 
 

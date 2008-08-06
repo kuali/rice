@@ -24,11 +24,11 @@ import java.util.Arrays;
 
 import javax.sql.DataSource;
 
-import org.kuali.rice.testharness.ClearDatabaseLifecycle;
-import org.kuali.rice.testharness.RiceTestCase;
-import org.kuali.rice.testharness.TestHarnessServiceLocator;
-import org.kuali.rice.testharness.data.PerSuiteUnitTestData;
-import org.kuali.rice.testharness.data.UnitTestData;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
+import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.TestHarnessServiceLocator;
+import org.kuali.rice.test.data.PerSuiteUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 

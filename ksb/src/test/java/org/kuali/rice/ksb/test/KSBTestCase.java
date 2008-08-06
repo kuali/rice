@@ -35,7 +35,7 @@ import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
-import org.kuali.rice.testharness.RiceTestCase;
+import org.kuali.rice.test.RiceTestCase;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.context.ApplicationContext;
 

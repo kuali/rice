@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.kuali.core.workflow.service.KualiWorkflowDocument;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -33,6 +31,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**

@@ -35,7 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
 import org.springframework.transaction.annotation.Transactional;

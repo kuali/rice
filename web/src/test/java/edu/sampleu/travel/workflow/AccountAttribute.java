@@ -24,8 +24,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.kuali.core.workflow.WorkflowUtils;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -34,6 +32,8 @@ import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -59,7 +59,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         XPath xpath = WorkflowUtils.getXPath(documentContent.getDocument());
-        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.core.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.workflow.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
+        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.workflow.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
         for (int i = 0; i < accountNums.getLength(); i++) {
             Node accountNum = accountNums.item(i);
             String accuntNumVal = accountNum.getTextContent();

@@ -69,7 +69,7 @@
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.core.workflow.bo.WorkflowUser" table="FS_UNIVERSAL_USR_T">
+	<class-descriptor class="org.kuali.rice.kns.workflow.bo.WorkflowUser" table="FS_UNIVERSAL_USR_T">
 		<field-descriptor name="uuId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="workflowUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="authenticationUserId" column="PERSON_USER_ID" jdbc-type="VARCHAR" />

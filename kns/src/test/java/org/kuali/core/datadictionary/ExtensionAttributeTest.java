@@ -21,7 +21,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;

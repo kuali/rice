@@ -18,11 +18,11 @@ package org.kuali.core.workflow.service;
 
 
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.test.KNSTestCase;
 
 

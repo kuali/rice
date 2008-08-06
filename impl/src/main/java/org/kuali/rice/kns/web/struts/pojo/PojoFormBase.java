@@ -37,7 +37,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;

@@ -13,11 +13,10 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.workflow.service.KualiWorkflowInfo;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -44,6 +43,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 
 /**

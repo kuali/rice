@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.KualiModuleAuthorizer;
 import org.kuali.rice.kns.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;

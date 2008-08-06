@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;
 
 /**

@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.EmployeeStatus;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;

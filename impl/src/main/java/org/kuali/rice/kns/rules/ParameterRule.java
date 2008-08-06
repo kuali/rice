@@ -8,7 +8,7 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.MaintenanceDocument;

@@ -16,9 +16,9 @@
 package org.kuali.core.service;
 
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.RiceKNSDefaultUserDAOImpl;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.dao.RiceKNSDefaultUserDAOImpl;
 import org.kuali.rice.kns.dao.UniversalUserDao;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.KNSConstants;

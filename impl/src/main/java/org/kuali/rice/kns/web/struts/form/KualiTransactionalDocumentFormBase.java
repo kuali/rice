@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.struts.form;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.service.DataDictionaryService;

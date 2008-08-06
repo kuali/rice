@@ -19,8 +19,8 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;

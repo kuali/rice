@@ -5,7 +5,7 @@
       <name>KualiOrganizationMaintenanceDocument</name>
       <description>Create or Update a Organization</description>
       <label>Kuali Organization Maintenance Document</label>
-      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -30,7 +30,7 @@
       <name>KualiOrganizationCategoryMaintenanceDocument</name>
       <description>Create or Update a Organization Category</description>
       <label>Kuali Organization Category Maintenance Document</label>
-      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -55,7 +55,7 @@
       <name>KualiOrganizationContextMaintenanceDocument</name>
       <description>Create or Update a Organization Context</description>
       <label>Kuali Organization Context Maintenance Document</label>
-      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

@@ -73,7 +73,7 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
         if (userId instanceof org.kuali.rice.kew.user.UuId) {
             criteria.addEqualTo("uuId", ((org.kuali.rice.kew.user.UuId) userId).getUuId().trim().toUpperCase());
         }
-        WorkflowUser user = (WorkflowUser) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(org.kuali.core.workflow.bo.WorkflowUser.class, criteria));
+        WorkflowUser user = (WorkflowUser) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(org.kuali.rice.kns.workflow.bo.WorkflowUser.class, criteria));
         if (user == null) {
             throw new KEWUserNotFoundException(new StringBuffer("Unable to locate user with ").append(userId.getClass().getName()).append(": ").append(userId.getId()).toString());
         }
@@ -112,8 +112,8 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
                 criteria.addLike("emailAddress", user.getEmailAddress().trim() + "%");
             }
         }
-        LookupUtils.applySearchResultsLimit(org.kuali.core.workflow.bo.WorkflowUser.class, criteria, getDbPlatform());
-        return new ArrayList(getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(org.kuali.core.workflow.bo.WorkflowUser.class, criteria)));
+        LookupUtils.applySearchResultsLimit(org.kuali.rice.kns.workflow.bo.WorkflowUser.class, criteria, getDbPlatform());
+        return new ArrayList(getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(org.kuali.rice.kns.workflow.bo.WorkflowUser.class, criteria)));
     }
 
 

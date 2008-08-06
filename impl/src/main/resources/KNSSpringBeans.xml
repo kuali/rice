@@ -244,9 +244,9 @@
 	  </property>
 	</bean>
 	
-	<bean id="workflowGroupService" class="org.kuali.core.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
+	<bean id="workflowGroupService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
 
-	<bean id="workflowInfoService" class="org.kuali.core.workflow.service.impl.KualiWorkflowInfoImpl" />
+	<bean id="workflowInfoService" class="org.kuali.rice.kns.workflow.service.impl.KualiWorkflowInfoImpl" />
 
 	<bean id="xmlObjectSerializerService" class="org.kuali.rice.kns.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
@@ -379,7 +379,7 @@
 		</property>
 	</bean>
 
-	<bean id="workflowDocumentService" class="org.kuali.core.workflow.service.impl.WorkflowDocumentServiceImpl">
+	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
 		<property name="workflowInfoService">
 			<ref bean="workflowInfoService" />
 		</property>
@@ -659,7 +659,7 @@
         </property>
     </bean>
 
-	<bean id="workflowLookupable" class="org.kuali.core.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
+	<bean id="workflowLookupable" class="org.kuali.rice.kns.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
 		<property name="configurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
@@ -825,7 +825,7 @@
 		<property name="dateTimeService" ref="dateTimeService" />
 	</bean>
 
-	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />
+	<bean id="universalUserDao" class="org.kuali.rice.kns.dao.RiceKNSDefaultUserDAOImpl" />
  
   <bean id="moduleUserPropertyDao" class="org.kuali.rice.kns.dao.proxy.KualiModuleUserPropertyDaoProxy">
     <property name="moduleUserPropertyDaoJpa" ref="moduleUserPropertyDaoJpa" />

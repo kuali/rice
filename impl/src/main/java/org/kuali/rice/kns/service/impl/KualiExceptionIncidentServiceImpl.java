@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.exception.ExceptionIncident;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;

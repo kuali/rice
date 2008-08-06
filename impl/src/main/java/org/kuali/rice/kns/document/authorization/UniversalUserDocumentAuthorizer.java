@@ -18,7 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.UniversalUserAuthorizationConstants;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;

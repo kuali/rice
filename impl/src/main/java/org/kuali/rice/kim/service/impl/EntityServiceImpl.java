@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
 import org.kuali.rice.kim.bo.Group;
@@ -31,6 +30,7 @@ import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.service.EntityService;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill

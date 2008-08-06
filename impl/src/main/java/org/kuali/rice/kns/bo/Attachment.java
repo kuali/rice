@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

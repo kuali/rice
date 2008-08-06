@@ -16,7 +16,7 @@
 package org.kuali.core.service;
 
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.test.KNSTestBase;

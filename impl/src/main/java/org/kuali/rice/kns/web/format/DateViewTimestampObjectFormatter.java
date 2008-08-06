@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.format;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 public class DateViewTimestampObjectFormatter extends DateFormatter {
 	protected Object convertToObject(String target) {

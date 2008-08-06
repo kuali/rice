@@ -18,13 +18,13 @@ package org.kuali.rice.kns.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.KualiModuleAuthorizerBase;
 import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;

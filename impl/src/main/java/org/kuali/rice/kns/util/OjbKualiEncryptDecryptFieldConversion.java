@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util;
 import java.security.GeneralSecurityException;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 
 /**

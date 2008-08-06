@@ -34,15 +34,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.core.workflow.DocumentInitiator;
-import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
-import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -67,6 +64,9 @@ import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
+import org.kuali.rice.kns.workflow.DocumentInitiator;
+import org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer;
+import org.kuali.rice.kns.workflow.KualiTransactionalDocumentInformation;
 
 
 /**

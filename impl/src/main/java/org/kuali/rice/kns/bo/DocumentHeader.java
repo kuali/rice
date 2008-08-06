@@ -24,8 +24,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**

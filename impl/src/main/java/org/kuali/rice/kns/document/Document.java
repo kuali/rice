@@ -17,7 +17,6 @@ package org.kuali.rice.kns.document;
 
 import java.util.List;
 
-import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -29,6 +28,7 @@ import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.service.DocumentSerializerService;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
+import org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer;
 
 
 /**

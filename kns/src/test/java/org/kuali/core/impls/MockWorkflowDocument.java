@@ -18,7 +18,6 @@ package org.kuali.core.impls;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -28,6 +27,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**
@@ -51,7 +51,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     protected MockWorkflowDocument() {}
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isStandardSaveAllowed()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isStandardSaveAllowed()
      */
     public boolean isStandardSaveAllowed() {
         LOG.debug("Using MockWorkflowDocument");
@@ -59,7 +59,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getApplicationContent()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getApplicationContent()
      */
     public String getApplicationContent() {
         LOG.debug("Using MockWorkflowDocument");
@@ -67,21 +67,21 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setApplicationContent(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setApplicationContent(java.lang.String)
      */
     public void setApplicationContent(String applicationContent) {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#clearAttributeContent()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#clearAttributeContent()
      */
     public void clearAttributeContent() {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAttributeContent()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAttributeContent()
      */
     public String getAttributeContent() {
         LOG.debug("Using MockWorkflowDocument");
@@ -89,28 +89,28 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#addAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
     public void addAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#removeAttributeDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
     public void removeAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#clearAttributeDefinitions()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#clearAttributeDefinitions()
      */
     public void clearAttributeDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAttributeDefinitions()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAttributeDefinitions()
      */
     public WorkflowAttributeDefinitionDTO[] getAttributeDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
@@ -118,7 +118,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#addSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#addSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
     public void addSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         LOG.debug("Using MockWorkflowDocument");
@@ -126,7 +126,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#removeSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#removeSearchableDefinition(org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO)
      */
     public void removeSearchableDefinition(WorkflowAttributeDefinitionDTO searchableDefinition) {
         LOG.debug("Using MockWorkflowDocument");
@@ -134,7 +134,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#clearSearchableDefinitions()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#clearSearchableDefinitions()
      */
     public void clearSearchableDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
@@ -142,7 +142,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getSearchableDefinitions()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getSearchableDefinitions()
      */
     public WorkflowAttributeDefinitionDTO[] getSearchableDefinitions() {
         LOG.debug("Using MockWorkflowDocument");
@@ -150,7 +150,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRouteHeader()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRouteHeader()
      */
     public RouteHeaderDTO getRouteHeader() {
         LOG.debug("Using MockWorkflowDocument");
@@ -158,7 +158,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRouteHeaderId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRouteHeaderId()
      */
     public Long getRouteHeaderId() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -166,7 +166,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setAppDocId(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setAppDocId(java.lang.String)
      */
     public void setAppDocId(String appDocId) {
         LOG.debug("Using MockWorkflowDocument");
@@ -174,7 +174,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAppDocId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAppDocId()
      */
     public String getAppDocId() {
         LOG.debug("Using MockWorkflowDocument");
@@ -182,7 +182,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getInitiatorNetworkId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getInitiatorNetworkId()
      */
     public String getInitiatorNetworkId() {
         LOG.debug("Using MockWorkflowDocument");
@@ -190,7 +190,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRoutedByUserNetworkId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRoutedByUserNetworkId()
      */
     public String getRoutedByUserNetworkId() {
         LOG.debug("Using MockWorkflowDocument");
@@ -198,7 +198,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getTitle()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getTitle()
      */
     public String getTitle() {
         LOG.debug("Using MockWorkflowDocument");
@@ -206,7 +206,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#saveDocument(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#saveDocument(java.lang.String)
      */
     public void saveDocument(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -214,7 +214,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#routeDocument(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#routeDocument(java.lang.String)
      */
     public void routeDocument(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -222,7 +222,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#disapprove(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#disapprove(java.lang.String)
      */
     public void disapprove(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -230,7 +230,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#approve(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#approve(java.lang.String)
      */
     public void approve(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -238,7 +238,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserApprove(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#superUserApprove(java.lang.String)
      */
     public void superUserApprove(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -246,7 +246,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserActionRequestApprove(java.lang.Long,
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#superUserActionRequestApprove(java.lang.Long,
      *      java.lang.String)
      */
     public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException {
@@ -254,7 +254,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserCancel(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#superUserCancel(java.lang.String)
      */
     public void superUserCancel(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -262,7 +262,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserDisapprove(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#superUserDisapprove(java.lang.String)
      */
     public void superUserDisapprove(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -270,7 +270,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#cancel(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#cancel(java.lang.String)
      */
     public void cancel(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -278,7 +278,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#blanketApprove(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#blanketApprove(java.lang.String)
      */
     public void blanketApprove(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -286,7 +286,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#blanketApprove(java.lang.String, java.lang.Integer)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#blanketApprove(java.lang.String, java.lang.Integer)
      */
     public void blanketApprove(String annotation, Integer routeLevel) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -294,7 +294,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#saveRoutingData()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#saveRoutingData()
      */
     public void saveRoutingData() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -302,7 +302,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#acknowledge(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#acknowledge(java.lang.String)
      */
     public void acknowledge(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -310,7 +310,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#fyi()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#fyi()
      */
     public void fyi() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -318,7 +318,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#delete()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#delete()
      */
     public void delete() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -326,7 +326,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#refreshContent()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#refreshContent()
      */
     public void refreshContent() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -334,7 +334,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToUser(java.lang.String,
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToUser(java.lang.String,
      *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.UserIdDTO, java.lang.String, boolean)
      */
     public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
@@ -343,7 +343,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToWorkgroup(java.lang.String,
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToWorkgroup(java.lang.String,
      *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.WorkgroupIdDTO, java.lang.String, boolean)
      */
     public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
@@ -352,7 +352,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setTitle(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setTitle(java.lang.String)
      */
     public void setTitle(String title) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -360,7 +360,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getDocumentType()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getDocumentType()
      */
     public String getDocumentType() {
         LOG.debug("Using MockWorkflowDocument");
@@ -368,7 +368,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isAdHocRequested()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isAdHocRequested()
      */
     public boolean isAdHocRequested() {
         LOG.debug("Using MockWorkflowDocument");
@@ -376,7 +376,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isAcknowledgeRequested()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isAcknowledgeRequested()
      */
     public boolean isAcknowledgeRequested() {
         LOG.debug("Using MockWorkflowDocument");
@@ -384,7 +384,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isApprovalRequested()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isApprovalRequested()
      */
     public boolean isApprovalRequested() {
         LOG.debug("Using MockWorkflowDocument");
@@ -392,7 +392,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isCompletionRequested()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isCompletionRequested()
      */
     public boolean isCompletionRequested() {
         LOG.debug("Using MockWorkflowDocument");
@@ -400,7 +400,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isFYIRequested()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isFYIRequested()
      */
     public boolean isFYIRequested() {
         LOG.debug("Using MockWorkflowDocument");
@@ -408,7 +408,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#isBlanketApproveCapable()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#isBlanketApproveCapable()
      */
     public boolean isBlanketApproveCapable() {
         LOG.debug("Using MockWorkflowDocument");
@@ -416,7 +416,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getDocRouteLevel()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getDocRouteLevel()
      */
     public Integer getDocRouteLevel() {
         LOG.debug("Using MockWorkflowDocument");
@@ -424,7 +424,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getDocRouteLevelName()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getDocRouteLevelName()
      */
     public String getDocRouteLevelName() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -432,7 +432,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRouteTypeName()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRouteTypeName()
      */
     public String getRouteTypeName() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -440,7 +440,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#complete(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#complete(java.lang.String)
      */
     public void complete(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -448,21 +448,21 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, java.lang.String)
      */
     public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, org.kuali.rice.kew.dto.ReturnPointDTO)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#returnToPreviousNode(java.lang.String, org.kuali.rice.kew.dto.ReturnPointDTO)
      */
     public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#returnToPreviousRouteLevel(java.lang.String,
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#returnToPreviousRouteLevel(java.lang.String,
      *      java.lang.Integer)
      */
     public void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException {
@@ -471,7 +471,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#logDocumentAction(java.lang.String)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#logDocumentAction(java.lang.String)
      */
     public void logDocumentAction(String annotation) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -479,7 +479,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsInitiated()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsInitiated()
      */
     public boolean stateIsInitiated() {
         LOG.debug("Using MockWorkflowDocument");
@@ -487,7 +487,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsSaved()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsSaved()
      */
     public boolean stateIsSaved() {
         LOG.debug("Using MockWorkflowDocument");
@@ -495,7 +495,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsEnroute()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsEnroute()
      */
     public boolean stateIsEnroute() {
         LOG.debug("Using MockWorkflowDocument");
@@ -503,7 +503,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsFinal()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsFinal()
      */
     public boolean stateIsFinal() {
         LOG.debug("Using MockWorkflowDocument");
@@ -511,7 +511,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsException()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsException()
      */
     public boolean stateIsException() {
         LOG.debug("Using MockWorkflowDocument");
@@ -519,7 +519,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsCanceled()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsCanceled()
      */
     public boolean stateIsCanceled() {
         LOG.debug("Using MockWorkflowDocument");
@@ -527,7 +527,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsDisapproved()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsDisapproved()
      */
     public boolean stateIsDisapproved() {
         LOG.debug("Using MockWorkflowDocument");
@@ -535,7 +535,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsApproved()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsApproved()
      */
     public boolean stateIsApproved() {
         LOG.debug("Using MockWorkflowDocument");
@@ -543,7 +543,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#stateIsProcessed()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#stateIsProcessed()
      */
     public boolean stateIsProcessed() {
         LOG.debug("Using MockWorkflowDocument");
@@ -551,7 +551,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getStatusDisplayValue()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getStatusDisplayValue()
      */
     public String getStatusDisplayValue() {
         LOG.debug("Using MockWorkflowDocument");
@@ -559,7 +559,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getCreateDate()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getCreateDate()
      */
     public Timestamp getCreateDate() {
         LOG.debug("Using MockWorkflowDocument");
@@ -567,7 +567,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.UniversalUser)
      */
     public boolean userIsInitiator(UniversalUser user) {
         LOG.debug("Using MockWorkflowDocument");
@@ -575,7 +575,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.UniversalUser)
      */
     public boolean userIsRoutedByUser(UniversalUser user) {
         LOG.debug("Using MockWorkflowDocument");
@@ -583,7 +583,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getNodeNames()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getNodeNames()
      */
     public String[] getNodeNames() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -591,7 +591,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getCurrentRouteNodeNames()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getCurrentRouteNodeNames()
      */
     public String getCurrentRouteNodeNames() {
         LOG.debug("Using MockWorkflowDocument");
@@ -599,7 +599,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
 }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
     public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
         return null;
@@ -608,7 +608,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setClearFutureRequests()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setClearFutureRequests()
      */
     public void setClearFutureRequests() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -617,7 +617,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setDoNotReceiveFutureRequests()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setDoNotReceiveFutureRequests()
      */
     public void setDoNotReceiveFutureRequests() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
@@ -626,7 +626,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#setReceiveFutureRequests()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#setReceiveFutureRequests()
      */
     public void setReceiveFutureRequests() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");

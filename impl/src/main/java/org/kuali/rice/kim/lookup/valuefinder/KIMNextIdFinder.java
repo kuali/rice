@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.lookup.valuefinder;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 
 /**

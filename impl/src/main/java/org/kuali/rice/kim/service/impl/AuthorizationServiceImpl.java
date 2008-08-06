@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Permission;
@@ -27,6 +26,7 @@ import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.service.AuthorizationService;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 /**
  * This implements the KIM Authorization Service

@@ -26,7 +26,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.keyvalue.DefaultMapEntry;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;

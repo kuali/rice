@@ -16,7 +16,7 @@
 package org.kuali.core.document;
 
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.test.document.bo.AccountManager;

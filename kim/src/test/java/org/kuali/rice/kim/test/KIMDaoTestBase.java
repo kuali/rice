@@ -14,7 +14,7 @@ package org.kuali.rice.kim.test;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectService;
 
 /**

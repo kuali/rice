@@ -20,10 +20,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
 import org.kuali.test.KNSTestBase;
 
 

@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.workflow.service.KualiWorkflowInfo;
-import org.kuali.core.workflow.service.WorkflowGroupService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
@@ -35,6 +33,8 @@ import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.service.KualiGroupService;
 import org.kuali.rice.kns.util.Timer;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
 
 
 /**

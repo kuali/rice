@@ -152,7 +152,7 @@ public class XPathTest extends BaseRiceTestCase {
         String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + XSTREAM_SAFE_SUFFIX;
         String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/universalUser/student" + XSTREAM_SAFE_SUFFIX;
         DocumentContent docContent = new StandardDocumentContent(
-              "<documentContent><applicationContent><org.kuali.core.workflow.KualiDocumentXmlMaterializer>" + 
+              "<documentContent><applicationContent><org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer>" + 
               "  <kualiTransactionalDocumentInformation>" + 
               "  <documentInitiator>" + 
               "     <universalUser>" +
@@ -169,7 +169,7 @@ public class XPathTest extends BaseRiceTestCase {
               "    <purchaseOrderCreateDate>11-09-2007</purchaseOrderCreateDate>" +
               "    <oldPurchaseOrderCreateDate></oldPurchaseOrderCreateDate>" +
               "  </document>" +
-              "</org.kuali.core.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>"
+              "</org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>"
               );
 //        DocumentContent docContent = KualiAttributeTestUtil.getDocumentContentFromXmlFileAndPath(KualiAttributeTestUtil.PURCHASE_ORDER_DOCUMENT, KualiAttributeTestUtil.RELATIVE_PATH_IN_PROJECT_WORKFLOW, "PurchaseOrderDocument");
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());

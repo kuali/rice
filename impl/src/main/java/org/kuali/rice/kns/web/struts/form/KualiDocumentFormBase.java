@@ -28,10 +28,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.core.workflow.service.KualiWorkflowDocument;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
@@ -53,6 +52,7 @@ import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.format.NoOpStringFormatter;
 import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kns.web.ui.HeaderField;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is

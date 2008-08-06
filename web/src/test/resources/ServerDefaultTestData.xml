@@ -550,7 +550,7 @@
 			<name>TravelRequest</name>
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
-			<postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -586,7 +586,7 @@
 			<name>TravelAccountMaintenanceDocument</name>
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
-			<postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -606,7 +606,7 @@
 			<name>FiscalOfficerMaintenanceDocument</name>
 			<description>Create a New Travel Fiscal Officer</description>
 			<label>Travel Fiscal Officer</label>
-			<postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

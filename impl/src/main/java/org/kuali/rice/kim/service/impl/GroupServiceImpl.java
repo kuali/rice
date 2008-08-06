@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
@@ -34,6 +33,7 @@ import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 /**
  * This is the default KIM GroupService implementation that is provided by Rice.  This will mature over time as the KIM

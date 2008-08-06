@@ -17,7 +17,7 @@ package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.regex.Pattern;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
 
 /**

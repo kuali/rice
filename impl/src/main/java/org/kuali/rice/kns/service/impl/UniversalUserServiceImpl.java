@@ -28,7 +28,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -40,6 +39,7 @@ import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.UserCapabilities;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -413,7 +413,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     }
 
     public WorkflowUser getBlankUser() {
-        return new org.kuali.core.workflow.bo.WorkflowUser();
+        return new org.kuali.rice.kns.workflow.bo.WorkflowUser();
     }
 
     public void loadXmlFile(File xmlFile) {

@@ -23,7 +23,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.cache.ObjectCacheInternal;
 import org.apache.ojb.broker.cache.ObjectCacheTwoLevelImpl;
 import org.apache.ojb.broker.cache.RuntimeCacheException;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.base.NeedsRefreshException;

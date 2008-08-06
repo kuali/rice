@@ -62,7 +62,7 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 		if ((userId == null) || userId.isEmpty()) {
 			throw new KEWUserNotFoundException("Attempting to lookup user with null or empty id");
 		}
-		Criteria criteria = new Criteria(org.kuali.core.workflow.bo.WorkflowUser.class.getName());
+		Criteria criteria = new Criteria(org.kuali.rice.kns.workflow.bo.WorkflowUser.class.getName());
 		if (userId instanceof org.kuali.rice.kew.user.AuthenticationUserId) {
 			criteria.eq("authenticationUserId", ((org.kuali.rice.kew.user.AuthenticationUserId) userId).getAuthenticationId().trim().toUpperCase());
 		}
@@ -87,7 +87,7 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 	}
 
 	public List search(WorkflowUser user, boolean useWildCards) {
-		Criteria criteria = new Criteria(org.kuali.core.workflow.bo.WorkflowUser.class.getName());
+		Criteria criteria = new Criteria(org.kuali.rice.kns.workflow.bo.WorkflowUser.class.getName());
 		if (user != null) {
 			if ((user.getAuthenticationUserId() != null) && StringUtils.isNotBlank(user.getAuthenticationUserId().getAuthenticationId())) {
 				criteria.like("authenticationUserId", user.getAuthenticationUserId().getAuthenticationId().trim().toUpperCase() + "%");
@@ -114,7 +114,7 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 				criteria.like("emailAddress", user.getEmailAddress().trim() + "%");
 			}
 		}
-		Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(org.kuali.core.workflow.bo.WorkflowUser.class);
+		Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(org.kuali.rice.kns.workflow.bo.WorkflowUser.class);
 		return new ArrayList(new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList());
 	}
 

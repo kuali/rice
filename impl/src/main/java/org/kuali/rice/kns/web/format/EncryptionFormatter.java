@@ -17,7 +17,7 @@ package org.kuali.rice.kns.web.format;
 
 import java.security.GeneralSecurityException;
 
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.KNSServiceLocator;
 
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.

@@ -13,7 +13,7 @@
 		</jdbc-connection-descriptor>
 	</descriptor-repository>
 	
-	<class-descriptor class="org.kuali.core.test.document.AccountRequestDocument" table="TRV_DOC_2">
+	<class-descriptor class="org.kuali.rice.kns.test.document.AccountRequestDocument" table="TRV_DOC_2">
 		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="requester" column="traveler" jdbc-type="VARCHAR" />
 		<field-descriptor name="reason1" column="org" jdbc-type="VARCHAR" />
@@ -27,46 +27,46 @@
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
-		<collection-descriptor name="accounts" element-class-ref="org.kuali.core.test.document.bo.Account" auto-retrieve="true" auto-update="false"
+		<collection-descriptor name="accounts" element-class-ref="org.kuali.rice.kns.test.document.bo.Account" auto-retrieve="true" auto-update="false"
 			auto-delete="false" indirection-table="TRAV_DOC_2_ACCOUNTS">
 			<fk-pointing-to-this-class column="FDOC_NBR" />
 			<fk-pointing-to-element-class column="ACCT_NUM" />
 		</collection-descriptor>
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.core.test.document.bo.AccountManager" table="TRV_ACCT_FO">
+	<class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
 		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_TRAVEL_FO_ID" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
 
-		<collection-descriptor name="accounts" element-class-ref="org.kuali.core.test.document.bo.Account">
+		<collection-descriptor name="accounts" element-class-ref="org.kuali.rice.kns.test.document.bo.Account">
 			<inverse-foreignkey field-ref="amId" />
 		</collection-descriptor>
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.core.test.document.bo.Account" table="TRV_ACCT">
+	<class-descriptor class="org.kuali.rice.kns.test.document.bo.Account" table="TRV_ACCT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
 
-		<reference-descriptor name="accountManager" class-ref="org.kuali.core.test.document.bo.AccountManager">
+		<reference-descriptor name="accountManager" class-ref="org.kuali.rice.kns.test.document.bo.AccountManager">
 			<foreignkey field-ref="amId" />
 		</reference-descriptor>
 		
-		<reference-descriptor name="extension" class-ref="org.kuali.core.test.document.bo.AccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
+		<reference-descriptor name="extension" class-ref="org.kuali.rice.kns.test.document.bo.AccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
 			<foreignkey field-ref="number" />
 		</reference-descriptor>
 
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.core.test.document.bo.AccountType" table="TRV_ACCT_TYPE">
+	<class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountType" table="TRV_ACCT_TYPE">
 		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_type_name" jdbc-type="VARCHAR" />
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.core.test.document.bo.AccountExtension" table="TRV_ACCT_EXT">
+	<class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountExtension" table="TRV_ACCT_EXT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" />
-		<reference-descriptor name="accountType" class-ref="org.kuali.core.test.document.bo.AccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
+		<reference-descriptor name="accountType" class-ref="org.kuali.rice.kns.test.document.bo.AccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
 			<foreignkey field-ref="accountTypeCode" />
 		</reference-descriptor>
 	</class-descriptor>

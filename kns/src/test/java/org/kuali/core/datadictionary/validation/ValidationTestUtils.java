@@ -15,6 +15,8 @@
  */
 package org.kuali.core.datadictionary.validation;
 
+import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
+
 import junit.framework.AssertionFailedError;
 
 public class ValidationTestUtils {

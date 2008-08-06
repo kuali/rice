@@ -7,7 +7,7 @@
   <bean id="PessimisticLock" parent="PessimisticLock-parentBean" />
 
   <bean id="PessimisticLock-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.core.document.authorization.PessimisticLock" />
+    <property name="businessObjectClass" value="org.kuali.rice.kns.document.authorization.PessimisticLock" />
     <property name="inquiryDefinition" >
       <ref bean="PessimisticLock-inquiryDefinition" />
     </property>

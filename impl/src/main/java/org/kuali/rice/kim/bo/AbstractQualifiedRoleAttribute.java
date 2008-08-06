@@ -22,7 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * Abstract class from which GroupQualifiedRoleAttribute and PersonQualifiedRoleAttribute extend. For simplicity, KIM interfaces may return
@@ -139,7 +139,7 @@ public abstract class AbstractQualifiedRoleAttribute extends PersistableBusiness
      *
      * This overridden method ...
      *
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();

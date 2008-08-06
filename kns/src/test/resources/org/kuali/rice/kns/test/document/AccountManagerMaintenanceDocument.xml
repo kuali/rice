@@ -8,7 +8,7 @@
 
   <bean id="AccountManagerMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kns.test.document.bo.AccountManager" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="AccountManagerMaintenanceDocument-EditAccountManager" />
@@ -22,7 +22,7 @@
     <property name="shortLabel" value="AccountManagerMaintenanceDocument" />
     <property name="summary" value="Account Manager Maintenance Document" />
     <property name="documentTypeName" value="AccountManagerMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="AMMD" />
     <property name="authorizations" >
       <list>

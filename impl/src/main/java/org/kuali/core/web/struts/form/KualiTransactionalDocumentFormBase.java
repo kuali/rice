@@ -18,10 +18,10 @@ package org.kuali.core.web.struts.form;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.core.document.TransactionalDocument;
-import org.kuali.core.document.authorization.DocumentActionFlags;
-import org.kuali.core.service.DataDictionaryService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.document.TransactionalDocument;
+import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
+import org.kuali.rice.kns.service.DataDictionaryService;
 
 
 /**

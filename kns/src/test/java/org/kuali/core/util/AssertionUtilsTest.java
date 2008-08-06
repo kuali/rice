@@ -18,6 +18,7 @@ package org.kuali.core.util;
 import java.util.IllegalFormatException;
 
 import org.junit.Test;
+import org.kuali.rice.kns.util.AssertionUtils;
 import org.kuali.test.KNSTestCase;
 
 /**

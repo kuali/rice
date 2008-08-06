@@ -36,7 +36,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * This class is the OJB implementation of the GenericDao interface. This
  * class was adapted from the Kuali Nervous System
- * (org.kuali.core.dao.ojb.GenericDaoOjb).
+ * (org.kuali.rice.kns.dao.ojb.GenericDaoOjb).
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

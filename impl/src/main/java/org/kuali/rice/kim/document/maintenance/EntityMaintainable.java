@@ -25,11 +25,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.maintenance.KualiMaintainableImpl;
-import org.kuali.core.maintenance.Maintainable;
-import org.kuali.core.util.FieldUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
@@ -42,6 +37,11 @@ import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.lookup.valuefinder.NextEntityAttributeIdFinder;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.EntityAttributeForm;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.util.FieldUtils;
 
 
 /**
@@ -67,7 +67,7 @@ public class EntityMaintainable extends KualiMaintainableImpl {
     /**
      * This overridden method handles aggregating all the sections including one section per namespace.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#getSections(org.kuali.core.maintenance.Maintainable)
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getSections(org.kuali.rice.kns.maintenance.Maintainable)
      */
     @Override
     public List getSections(Maintainable oldMaintainable) {
@@ -90,7 +90,7 @@ public class EntityMaintainable extends KualiMaintainableImpl {
     /**
 	 * This overridden method handles populating the sections correctly with the different entity attributes.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterCopy(MaintenanceDocument document,
@@ -111,7 +111,7 @@ public class EntityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method handles populating the sections correctly with the different entity attributes.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterEdit(MaintenanceDocument document,
@@ -213,7 +213,7 @@ public class EntityMaintainable extends KualiMaintainableImpl {
 	 * This overridden method takes the input in the dynamically rendered attribute sections, adds it to a temporary HashMap that hangs off of the 
 	 * BO, so that it can be maintained post to post.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterPost(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterPost(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterPost(MaintenanceDocument document,
@@ -251,7 +251,7 @@ public class EntityMaintainable extends KualiMaintainableImpl {
 	/**
      * This overridden method handles aggregating all of the entity attributes from the different sections down into a single list to persist.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
      */
     @Override
     public void saveBusinessObject() {

@@ -20,8 +20,8 @@
 
 <dictionaryEntry>
     <maintenanceDocument>
-        <businessObjectClass>org.kuali.core.bo.CampusType</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+        <businessObjectClass>org.kuali.rice.kns.bo.CampusType</businessObjectClass>
+        <maintainableClass>org.kuali.rice.kns.maintenance.KualiMaintainableImpl</maintainableClass>
 
         <documentAuthorizerClass>java.lang.Integer</documentAuthorizerClass>
         <authorizations>

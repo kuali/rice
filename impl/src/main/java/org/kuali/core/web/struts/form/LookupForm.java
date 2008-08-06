@@ -23,12 +23,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.lookup.LookupUtils;
-import org.kuali.core.lookup.Lookupable;
-import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

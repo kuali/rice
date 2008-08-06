@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.Test;
+import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.test.KNSTestCase;
 
 /**

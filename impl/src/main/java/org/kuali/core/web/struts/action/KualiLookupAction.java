@@ -30,18 +30,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.core.authorization.AuthorizationType;
-import org.kuali.core.exceptions.AuthorizationException;
-import org.kuali.core.exceptions.ModuleAuthorizationException;
-import org.kuali.core.lookup.CollectionIncomplete;
-import org.kuali.core.lookup.Lookupable;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.exception.ModuleAuthorizationException;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

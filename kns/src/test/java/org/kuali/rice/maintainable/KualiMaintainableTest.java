@@ -17,8 +17,8 @@ package org.kuali.rice.maintainable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.core.maintenance.KualiMaintainableImpl;
-import org.kuali.core.maintenance.Maintainable;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.test.TestBase;
 
 /**

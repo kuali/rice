@@ -16,11 +16,11 @@
 package org.kuali.core.rule;
 
 import org.junit.Test;
-import org.kuali.core.document.Document;
-import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.rule.event.PreRulesCheckEvent;
-import org.kuali.core.rules.PreRulesContinuationBase;
-import org.kuali.core.rules.PreRulesContinuationBase.ContextSession;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
+import org.kuali.rice.kns.rules.PreRulesContinuationBase;
+import org.kuali.rice.kns.rules.PreRulesContinuationBase.ContextSession;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 

@@ -22,8 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.PermissionDTO;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This business object represents the entity of Permission.  The ability to perform actions in a system/application
@@ -113,7 +113,7 @@ public class Permission extends PersistableBusinessObjectBase {
 	}
 
 	/**
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
@@ -124,7 +124,7 @@ public class Permission extends PersistableBusinessObjectBase {
 	}
 
 	/**
-	 * @see org.kuali.core.bo.BusinessObject#refresh()
+	 * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
 	 */
 	public void refresh() {
 		// not implementing unless necessary

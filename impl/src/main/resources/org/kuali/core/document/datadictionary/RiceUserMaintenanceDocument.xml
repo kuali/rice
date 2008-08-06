@@ -7,8 +7,8 @@
   <bean id="RiceUserMaintenanceDocument" parent="RiceUserMaintenanceDocument-parentBean" />
 
   <bean id="RiceUserMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.core.bo.user.RiceUser" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.user.RiceUser" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="RiceUserMaintenanceDocument-EditUser" />
@@ -22,7 +22,7 @@
     <property name="shortLabel" value="UserMaintDoc" />
     <property name="summary" value="User maintenance document" />
     <property name="documentTypeName" value="RiceUserMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="RUSR" />
     <property name="authorizations" >
       <list>

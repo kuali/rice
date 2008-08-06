@@ -132,7 +132,7 @@
       <name>KIMPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
       <label>KIM Principal Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -164,7 +164,7 @@
       <name>KIMGroupMaintenanceDocument</name>
       <description>Create or Update a Group</description>
       <label>KIM Group Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -195,7 +195,7 @@
       <name>KIMRoleMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
       <label>KIM Role Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -227,7 +227,7 @@
       <name>KIMAttributeTypeMaintenanceDocument</name>
       <description>Create or Update a Attribute Type</description>
       <label>KIM Attribute Type Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -259,7 +259,7 @@
       <name>KIMNamespaceMaintenanceDocument</name>
       <description>Create or Update a Namespace</description>
       <label>KIM Namespace Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -290,7 +290,7 @@
       <name>KIMEntityTypeMaintenanceDocument</name>
       <description>Create or Update a EntityType</description>
       <label>KIM EntityType Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -322,7 +322,7 @@
       <name>KIMEntityMaintenanceDocument</name>
       <description>Create or Update a Entity</description>
       <label>KIM Entity Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
@@ -353,7 +353,7 @@
       <name>KIMGroupTypeMaintenanceDocument</name>
       <description>Create or Update a Group Type</description>
       <label>KIM Group Type Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.core.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

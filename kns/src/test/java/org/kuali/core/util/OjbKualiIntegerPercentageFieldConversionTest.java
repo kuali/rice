@@ -16,6 +16,7 @@
 package org.kuali.core.util;
 
 import org.junit.Test;
+import org.kuali.rice.kns.util.OjbKualiIntegerPercentageFieldConversion;
 import org.kuali.test.KNSTestCase;
 
 /**

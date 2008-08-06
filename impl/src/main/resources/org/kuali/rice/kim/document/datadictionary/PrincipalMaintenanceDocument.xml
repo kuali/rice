@@ -24,7 +24,7 @@
     <property name="shortLabel" value="Principal" />
     <property name="summary" value="Principal Maintenance Document" />
     <property name="documentTypeName" value="KIMPrincipalMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KPMD" />
     <property name="authorizations" >
       <list>

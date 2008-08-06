@@ -15,10 +15,10 @@
  */
 package edu.sampleu.travel.document.rule;
 
-import org.kuali.core.document.Document;
-import org.kuali.core.rules.TransactionalDocumentRuleBase;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 import edu.sampleu.travel.document.TravelDocument2;
 

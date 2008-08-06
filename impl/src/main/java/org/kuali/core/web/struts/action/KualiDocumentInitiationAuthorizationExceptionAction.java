@@ -26,8 +26,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.core.exceptions.DocumentInitiationAuthorizationException;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 
 
 /**

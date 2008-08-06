@@ -8,7 +8,7 @@
 
   <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="TravelAccountMaintenanceDocument-EditTravelAccount" />
@@ -30,7 +30,7 @@
     <property name="summary" value="Travel Account Maintenance document" />
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />
     <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="TRAV" />
     <property name="authorizations" >
       <list>

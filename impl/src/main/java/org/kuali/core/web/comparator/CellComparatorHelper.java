@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.model.Cell;
-import org.kuali.core.util.TypeUtils;
+import org.kuali.rice.kns.util.TypeUtils;
 
 /**
  * This class...

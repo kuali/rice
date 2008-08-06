@@ -21,8 +21,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * A NamespaceDefaultAttribute represents a single meta-data attribute in the system that shows up on
@@ -189,7 +189,7 @@ public class GroupTypeDefaultAttribute extends PersistableBusinessObjectBase {
     /**
 	 * This method returns a string representation of a default group type attribute.
 	 *
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();

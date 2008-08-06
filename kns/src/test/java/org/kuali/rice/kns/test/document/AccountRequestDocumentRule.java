@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import org.kuali.core.document.Document;
-import org.kuali.core.rules.TransactionalDocumentRuleBase;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 public class AccountRequestDocumentRule extends TransactionalDocumentRuleBase {
 

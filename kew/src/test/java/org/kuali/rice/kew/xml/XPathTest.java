@@ -157,7 +157,7 @@ public class XPathTest extends BaseRiceTestCase {
               "  <documentInitiator>" + 
               "     <universalUser>" +
               "        <student>false</student>" +
-              "        <campus class=\"org.kuali.core.bo.Campus--EnhancerByCGLIB--4968dd25\">" +
+              "        <campus class=\"org.kuali.rice.kns.bo.Campus--EnhancerByCGLIB--4968dd25\">" +
               "          <campusType>" +
               "            <dataObjectMaintenanceCodeActiveIndicator>true</dataObjectMaintenanceCodeActiveIndicator>" +
               "          </campusType>" + 

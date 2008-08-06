@@ -23,7 +23,7 @@ public class CellComparatorHelperTest extends KNSTestCase {
 
     @Test public void testExtractFromHref() {
 
-        String href = "<a style=\"color: red;\" href=\"inquiry.do?businessObjectClassName=org.kuali.core.bo.Options&amp;universityFiscalYear=2004&amp;methodToCall=start\" target=\"blank\">needle</a>";
+        String href = "<a style=\"color: red;\" href=\"inquiry.do?businessObjectClassName=org.kuali.rice.kns.bo.Options&amp;universityFiscalYear=2004&amp;methodToCall=start\" target=\"blank\">needle</a>";
 
         Cell cell = new Cell(href);
 

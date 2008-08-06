@@ -153,7 +153,7 @@
             </attribute>
 
 
-            <attributeReference name="xxx" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="yyy">
+            <attributeReference name="xxx" sourceClassName="org.kuali.rice.kns.bo.AttributeReferenceDummy" sourceAttributeName="yyy">
                 <label>Account Closed Indicator</label>
                 <shortLabel>AcctClosed</shortLabel>
                 <summary>Account Closed Indicator</summary>

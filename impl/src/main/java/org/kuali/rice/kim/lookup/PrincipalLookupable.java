@@ -17,8 +17,8 @@ package org.kuali.rice.kim.lookup;
 
 import java.util.Map;
 
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 
 /**
  * This is a description of what this class does - ag266 don't forget to fill this in. 
@@ -31,7 +31,7 @@ public class PrincipalLookupable extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.lookup.KualiLookupableImpl#getDocFormKey()
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getDocFormKey()
 	 */
 	@Override
 	public String getDocFormKey() {
@@ -42,7 +42,7 @@ public class PrincipalLookupable extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.lookup.KualiLookupableImpl#getMaintenanceUrl(org.kuali.core.bo.BusinessObject, java.lang.String)
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getMaintenanceUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	protected String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
@@ -53,7 +53,7 @@ public class PrincipalLookupable extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.lookup.KualiLookupableImpl#getParameters()
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getParameters()
 	 */
 	@Override
 	public Map getParameters() {
@@ -64,7 +64,7 @@ public class PrincipalLookupable extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.lookup.KualiLookupableImpl#getReturnLocation()
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getReturnLocation()
 	 */
 	@Override
 	public String getReturnLocation() {
@@ -75,7 +75,7 @@ public class PrincipalLookupable extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.lookup.KualiLookupableImpl#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map, java.lang.String)
 	 */
 	@Override
 	public String getReturnUrl(BusinessObject bo, Map fieldConversions,

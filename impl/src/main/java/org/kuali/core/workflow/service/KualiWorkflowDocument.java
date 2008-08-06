@@ -18,7 +18,6 @@ package org.kuali.core.workflow.service;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -29,6 +28,7 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kns.bo.user.UniversalUser;
 
 
 public interface KualiWorkflowDocument {
@@ -354,7 +354,7 @@ public interface KualiWorkflowDocument {
      * 
      * @return a set of all approvers
      */
-    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, org.kuali.core.exceptions.UserNotFoundException;
+    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, org.kuali.rice.kns.exception.UserNotFoundException;
        
     public void setReceiveFutureRequests() throws WorkflowException;
     

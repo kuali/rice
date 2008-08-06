@@ -23,15 +23,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.datadictionary.HeaderNavigation;
-import org.kuali.core.util.ActionFormUtilMap;
-import org.kuali.core.util.TypedArrayList;
-import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.core.web.ui.ExtraButton;
 import org.kuali.core.web.ui.HeaderField;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.datadictionary.HeaderNavigation;
+import org.kuali.rice.kns.util.ActionFormUtilMap;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.TypedArrayList;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * This class common properites for all action forms.

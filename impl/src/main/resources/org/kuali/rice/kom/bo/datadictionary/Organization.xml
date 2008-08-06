@@ -155,7 +155,7 @@
     </property>
     <property name="control" >
       <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
             p:includeKeyInLabel="false" />
     </property>
     <property name="name" value="organizationsContexts.active" />
@@ -172,7 +172,7 @@
     </property>
     <property name="control" >
       <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
             p:includeKeyInLabel="false" />
     </property>
     <property name="name" value="active" />
@@ -186,7 +186,7 @@
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kom.bo.Organization"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
             p:includeKeyInLabel="false"
             p:labelAttribute="name" />
     </property>
@@ -200,7 +200,7 @@
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kom.bo.OrganizationCategory"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
             p:includeKeyInLabel="false"
             p:keyAttribute="id"
             p:labelAttribute="name" />

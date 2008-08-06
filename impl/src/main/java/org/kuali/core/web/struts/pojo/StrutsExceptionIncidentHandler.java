@@ -28,10 +28,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ExceptionHandler;
 import org.apache.struts.config.ExceptionConfig;
-import org.kuali.core.UserSession;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.KualiExceptionIncident;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

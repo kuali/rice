@@ -16,7 +16,7 @@
 
 package org.kuali.core.datadictionary.bos;
 
-import org.kuali.core.bo.KualiCodeBase;
+import org.kuali.rice.kns.bo.KualiCodeBase;
 
 /**
  * 

@@ -15,7 +15,7 @@
  */
 package org.kuali.core.web.struts.form;
 
-import org.kuali.core.datadictionary.HelpDefinition;
+import org.kuali.rice.kns.datadictionary.HelpDefinition;
 
 /**
  * Holds help parameters and found text.

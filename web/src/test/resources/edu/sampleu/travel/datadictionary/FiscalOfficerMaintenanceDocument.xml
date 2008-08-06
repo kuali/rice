@@ -8,7 +8,7 @@
 
   <bean id="FiscalOfficerMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="edu.sampleu.travel.bo.FiscalOfficer" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="FiscalOfficerMaintenanceDocument-EditTravelFiscalOfficer" />
@@ -22,7 +22,7 @@
     <property name="shortLabel" value="TravelFiscalOfficerDocument" />
     <property name="summary" value="Travel Fiscal Officer Maintenance document" />
     <property name="documentTypeName" value="FiscalOfficerMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="TRFO" />
     <property name="authorizations" >
       <list>

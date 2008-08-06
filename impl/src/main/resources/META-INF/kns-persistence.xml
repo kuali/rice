@@ -13,31 +13,31 @@
     <class>edu.sampleu.travel.bo.TravelAccountRules</class>    
     <class>edu.sampleu.travel.bo.TravelAccountType</class>    
     <class>edu.sampleu.travel.document.TravelDocument2</class>        
-    <class>org.kuali.core.bo.user.UniversalUser</class>
+    <class>org.kuali.rice.kns.bo.user.UniversalUser</class>
     <class>org.kuali.core.workflow.bo.WorkflowUser</class>
-    <class>org.kuali.core.bo.user.KualiModuleUserProperty</class>
-    <class>org.kuali.core.document.MaintenanceDocumentBase</class>
-    <class>org.kuali.core.document.MaintenanceLock</class>
-    <class>org.kuali.core.bo.DocumentHeader</class>
-    <class>org.kuali.core.bo.Note</class>
-    <class>org.kuali.core.bo.NoteType</class>
-    <class>org.kuali.core.bo.Attachment</class>
-    <class>org.kuali.core.bo.DocumentType</class>
-    <class>org.kuali.core.bo.DocumentTypeAttribute</class>
-    <class>org.kuali.core.bo.ParameterNamespace</class>
-    <class>org.kuali.core.bo.ParameterType</class>
-    <class>org.kuali.core.bo.ParameterDetailType</class>
-    <class>org.kuali.core.bo.Parameter</class>
-    <class>org.kuali.core.bo.AdHocRouteRecipient</class>
-    <class>org.kuali.core.bo.AdHocRoutePerson</class>
-    <class>org.kuali.core.bo.AdHocRouteWorkgroup</class>
-    <class>org.kuali.core.bo.LookupResults</class>
-    <class>org.kuali.core.bo.SelectedObjectIds</class>
-    <class>org.kuali.core.bo.EmployeeType</class>
-    <class>org.kuali.core.bo.EmployeeStatus</class>
-    <class>org.kuali.core.bo.Campus</class>
-    <class>org.kuali.core.bo.CampusType</class>
-    <class>org.kuali.core.bo.user.RiceUser</class>
+    <class>org.kuali.rice.kns.bo.user.KualiModuleUserProperty</class>
+    <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
+    <class>org.kuali.rice.kns.document.MaintenanceLock</class>
+    <class>org.kuali.rice.kns.bo.DocumentHeader</class>
+    <class>org.kuali.rice.kns.bo.Note</class>
+    <class>org.kuali.rice.kns.bo.NoteType</class>
+    <class>org.kuali.rice.kns.bo.Attachment</class>
+    <class>org.kuali.rice.kns.bo.DocumentType</class>
+    <class>org.kuali.rice.kns.bo.DocumentTypeAttribute</class>
+    <class>org.kuali.rice.kns.bo.ParameterNamespace</class>
+    <class>org.kuali.rice.kns.bo.ParameterType</class>
+    <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
+    <class>org.kuali.rice.kns.bo.Parameter</class>
+    <class>org.kuali.rice.kns.bo.AdHocRouteRecipient</class>
+    <class>org.kuali.rice.kns.bo.AdHocRoutePerson</class>
+    <class>org.kuali.rice.kns.bo.AdHocRouteWorkgroup</class>
+    <class>org.kuali.rice.kns.bo.LookupResults</class>
+    <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
+    <class>org.kuali.rice.kns.bo.EmployeeType</class>
+    <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
+    <class>org.kuali.rice.kns.bo.Campus</class>
+    <class>org.kuali.rice.kns.bo.CampusType</class>
+    <class>org.kuali.rice.kns.bo.user.RiceUser</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

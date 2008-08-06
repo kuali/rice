@@ -15,7 +15,7 @@
  */
 package org.kuali.core.web.struts.form;
 
-import org.kuali.core.util.TableRenderUtil;
+import org.kuali.rice.kns.util.TableRenderUtil;
 
 /**
  * This class holds the metadata necessary to render a table when displaytag is not being used.

@@ -1,7 +1,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 	 
-	<bean id="sampleAppModule" class="org.kuali.core.KualiModule">
+	<bean id="sampleAppModule" class="org.kuali.rice.kns.KualiModule">
 		<property name="moduleId" value="sa"/>
 		<property name="moduleName" value="Sample App"/>
 		<property name="moduleCode" value="sa"/>

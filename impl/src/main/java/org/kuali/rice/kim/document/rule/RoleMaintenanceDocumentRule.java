@@ -17,11 +17,11 @@ package org.kuali.rice.kim.document.rule;
 
 import java.util.HashMap;
 
-import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.util.KIMConstants;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -37,7 +37,7 @@ public class RoleMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 	/**
 	 * This overridden method checks to make sure that a number of business rules are enforced upon submit of the document.
 	 * 
-	 * @see org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.core.document.MaintenanceDocument)
+	 * @see org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.kns.document.MaintenanceDocument)
 	 */
 	@Override
 	protected boolean processCustomRouteDocumentBusinessRules(

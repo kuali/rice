@@ -19,11 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
-import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
@@ -32,6 +30,8 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.RoleAttribute;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 
 /**
  * This is a description of what this class does - vrk4 don't forget to fill this in. 
@@ -45,7 +45,7 @@ public class RoleInquirable extends KualiInquirableImpl{
 	 /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.core.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {

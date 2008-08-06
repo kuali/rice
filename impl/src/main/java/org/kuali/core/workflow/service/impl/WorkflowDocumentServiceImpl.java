@@ -20,11 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.bo.AdHocRouteRecipient;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.UnknownDocumentIdException;
-import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
@@ -40,6 +35,11 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.exception.UnknownDocumentIdException;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.Timer;
 import org.springframework.transaction.annotation.Transactional;
 
 

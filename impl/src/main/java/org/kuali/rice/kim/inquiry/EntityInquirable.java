@@ -22,9 +22,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.inquiry.KualiInquirableImpl;
-import org.kuali.core.util.FieldUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
@@ -35,6 +32,9 @@ import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.EntityAttributeForm;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.util.FieldUtils;
 
 /**
  * This class essentially intercepts the request and handles transforming data coming in from the persistence 
@@ -47,7 +47,7 @@ public class EntityInquirable extends KualiInquirableImpl {
 	 * This overridden method intercepts the request and takes the persisted values and transforms 
 	 * them into form objects for rendering.
 	 * 
-	 * @see org.kuali.core.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
@@ -90,7 +90,7 @@ public class EntityInquirable extends KualiInquirableImpl {
 	 * This overridden method handles building out appropriate sections based on namespace default attributes and any 
 	 * custom entity attributes.
 	 * 
-	 * @see org.kuali.core.inquiry.KualiInquirableImpl#getSections(org.kuali.core.bo.BusinessObject)
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getSections(org.kuali.rice.kns.bo.BusinessObject)
 	 */
 	@Override
 	public List<Section> getSections(BusinessObject bo) {

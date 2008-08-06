@@ -16,6 +16,8 @@
 package org.kuali.core.util;
 
 import org.junit.Test;
+import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.util.NumberUtils;
 import org.kuali.test.KNSTestCase;
 
 /**

@@ -37,17 +37,17 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.core.exceptions.FileUploadLimitExceededException;
-import org.kuali.core.exceptions.ValidationException;
-import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.ObjectUtils;
-import org.kuali.core.util.Timer;
 import org.kuali.core.web.format.EncryptionFormatter;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.Timer;
 
 /**
  * This class is the base form which implements the PojoForm interface.

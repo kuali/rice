@@ -22,10 +22,10 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.web.form.RoleQualificationForPrincipal;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This class represents the Principal data structure
@@ -78,7 +78,7 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
     /**
      * This overridden method ...
      *
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
     protected LinkedHashMap<String, Object> toStringMapper() {

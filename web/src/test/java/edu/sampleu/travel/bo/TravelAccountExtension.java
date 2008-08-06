@@ -27,7 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.core.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase;
 
 @Entity
 @Table(name="TRV_ACCT_EXT")

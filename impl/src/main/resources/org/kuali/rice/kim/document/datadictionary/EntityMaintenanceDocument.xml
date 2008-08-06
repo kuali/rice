@@ -26,7 +26,7 @@
     <property name="shortLabel" value="Entity" />
     <property name="summary" value="Entity Maintenance Document" />
     <property name="documentTypeName" value="KIMEntityMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KEMD" />
     <property name="authorizations" >
       <list>

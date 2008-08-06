@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.test.KNSTestCase;
 
 /**

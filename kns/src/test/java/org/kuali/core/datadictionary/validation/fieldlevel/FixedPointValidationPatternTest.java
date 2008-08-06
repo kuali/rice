@@ -16,6 +16,7 @@
 package org.kuali.core.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.fieldlevel.FixedPointValidationPattern;
 import org.kuali.test.KNSTestBase;
 
 public class FixedPointValidationPatternTest extends KNSTestBase {

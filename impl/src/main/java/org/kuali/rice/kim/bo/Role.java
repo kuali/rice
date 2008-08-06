@@ -24,8 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
@@ -33,6 +31,8 @@ import org.kuali.rice.kim.dto.RoleAttributeDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * Roles represent an aggregation of permissions.  Authorization is given to either a principal or group by attributing a role
@@ -288,7 +288,7 @@ public class Role extends PersistableBusinessObjectBase {
 	 * This overridden method retrieves a string representation of an instance
 	 * of a Role.
 	 *
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
 		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();

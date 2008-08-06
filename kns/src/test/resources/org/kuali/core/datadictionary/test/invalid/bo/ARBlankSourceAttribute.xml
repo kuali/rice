@@ -152,7 +152,7 @@
                 <formatterClass>org.kuali.core.web.format.BooleanFormatter</formatterClass>
             </attribute>
 
-            <attributeReference name="accountClosedIndicator" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="">
+            <attributeReference name="accountClosedIndicator" sourceClassName="org.kuali.rice.kns.bo.AttributeReferenceDummy" sourceAttributeName="">
                 <label>Account Closed Indicator</label>
                 <shortLabel>AcctClosed</shortLabel>
                 <summary>Account Closed Indicator</summary>

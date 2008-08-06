@@ -26,19 +26,21 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.keyvalue.DefaultMapEntry;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.core.UserSession;
-import org.kuali.core.authorization.AuthorizationConstants;
-import org.kuali.core.bo.user.AuthenticationUserId;
-import org.kuali.core.document.authorization.DocumentActionFlags;
-import org.kuali.core.document.authorization.DocumentAuthorizer;
-import org.kuali.core.document.authorization.DocumentAuthorizerBase;
-import org.kuali.core.document.authorization.PessimisticLock;
-import org.kuali.core.exceptions.PessimisticLockingException;
-import org.kuali.core.exceptions.UserNotFoundException;
-import org.kuali.core.service.PessimisticLockService;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.bo.user.AuthenticationUserId;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.DocumentBase;
+import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.PessimisticLock;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
+import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -700,18 +702,18 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
             return approvalRequested;
         }
 
-        public boolean userIsInitiator(org.kuali.core.bo.user.UniversalUser user) {
+        public boolean userIsInitiator(org.kuali.rice.kns.bo.user.UniversalUser user) {
             return initiator.getPersonUniversalIdentifier().equalsIgnoreCase(user.getPersonUniversalIdentifier());
         }
 
     }
 
-    private class UniversalUser extends org.kuali.core.bo.user.UniversalUser {
+    private class UniversalUser extends org.kuali.rice.kns.bo.user.UniversalUser {
         private boolean supervisor;
 
         private UniversalUser() {};
 
-        public UniversalUser(org.kuali.core.bo.user.UniversalUser user) {
+        public UniversalUser(org.kuali.rice.kns.bo.user.UniversalUser user) {
             this(user.getPersonUniversalIdentifier(), user.getPersonUserIdentifier(), user.isSupervisorUser());
         }
 

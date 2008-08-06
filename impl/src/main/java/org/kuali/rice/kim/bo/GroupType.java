@@ -25,11 +25,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupTypeDTO;
 import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * A GroupType represents a type of Group in the system.  This can be used to drive 
@@ -152,7 +152,7 @@ public class GroupType extends PersistableBusinessObjectBase {
     /**
 	 * This method returns a string representation of a group type instance and is used for logging.
 	 * 
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();

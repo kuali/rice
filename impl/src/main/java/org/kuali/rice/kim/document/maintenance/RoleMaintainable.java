@@ -18,8 +18,6 @@ package org.kuali.rice.kim.document.maintenance;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
@@ -27,6 +25,8 @@ import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.web.form.GroupQualifiedRole;
 import org.kuali.rice.kim.web.form.PrincipalQualifiedRole;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Role maintenance screen.  
@@ -40,7 +40,7 @@ public class RoleMaintainable extends KualiMaintainableImpl {
     /**
      * This overridden method handles populating the role qualification helper form objects for proper UI rendering. 
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
      */
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> parameters) {
@@ -58,7 +58,7 @@ public class RoleMaintainable extends KualiMaintainableImpl {
     /**
 	 * This overridden method handles populating the role qualification helper form objects for proper UI rendering.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterCopy(MaintenanceDocument document,
@@ -80,7 +80,7 @@ public class RoleMaintainable extends KualiMaintainableImpl {
      * This overridden method deals with translating the data from the maint. doc UI into the appropriate
      * persistable business objects that map down to the ORM level.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
      */
     @Override
     public void saveBusinessObject() {

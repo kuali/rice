@@ -16,10 +16,11 @@
 package org.kuali.core.service;
 
 import org.junit.Test;
-import org.kuali.core.bo.Note;
-import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.RiceKNSDefaultUserDAOImpl;
+import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.dao.UniversalUserDao;
+import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.TestBase;
 

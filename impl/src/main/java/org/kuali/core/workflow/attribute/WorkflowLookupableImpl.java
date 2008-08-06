@@ -27,24 +27,22 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.cglib.proxy.Enhancer;
 
 import org.apache.log4j.Logger;
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.lookup.LookupUtils;
-import org.kuali.core.lookup.Lookupable;
-import org.kuali.core.service.BusinessObjectDictionaryService;
-import org.kuali.core.service.KualiConfigurationService;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.lookupable.LookupForm;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.workflow.attribute.WorkflowLookupableInvocationHandler;
-import org.kuali.rice.kns.workflow.attribute.WorkflowLookupableResult;
 
 
 /**
- * This is a shim to translate from an org.kuali.core.lookup.Lookupable to org.kuali.rice.kew.plugin.attributes.WorkflowLookupable,
+ * This is a shim to translate from an org.kuali.rice.kns.lookup.Lookupable to org.kuali.rice.kew.plugin.attributes.WorkflowLookupable,
  * since quickfinders specified as part of workflow attribute field definitions have to implement the workflow lookupable interface.
  * 
  * 
@@ -146,7 +144,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getSearchResults(java.util.Map)
+     * @see org.kuali.rice.kns.lookup.Lookupable#getSearchResults(java.util.Map)
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getSearchResults(java.util.Map, java.util.Map)
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) throws Exception {
@@ -222,7 +220,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getReturnLocation()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getReturnLocation()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getReturnLocation()
      */
     public String getReturnLocation() {
@@ -230,7 +228,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getTitle()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getTitle()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getTitle()
      */
     public String getTitle() {
@@ -238,7 +236,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getHtmlMenuBar()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getHtmlMenuBar()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getHtmlMenuBar()
      */
     public String getHtmlMenuBar() {
@@ -247,7 +245,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getLookupInstructions()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getLookupInstructions()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getLookupInstructions()
      */
     public String getLookupInstructions() {
@@ -258,14 +256,14 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
      * We have hackety, hack, hacked in this method. We're getting the prior lookup form out of session, getting field values off it
      * and setting them on our rows, based on our lookupParameters attribute.
      * 
-     * @see org.kuali.core.lookup.Lookupable#checkForAdditionalFields(java.util.Map)
+     * @see org.kuali.rice.kns.lookup.Lookupable#checkForAdditionalFields(java.util.Map)
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#checkForAdditionalFields(java.util.Map,
      *      javax.servlet.http.HttpServletRequest)
      */
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
         org.kuali.rice.kew.web.session.UserSession workflowUserSession = (org.kuali.rice.kew.web.session.UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
         if (GlobalVariables.getUserSession() == null) {
-            GlobalVariables.setUserSession(new org.kuali.core.UserSession(workflowUserSession.getNetworkId()));
+            GlobalVariables.setUserSession(new org.kuali.rice.kns.UserSession(workflowUserSession.getNetworkId()));
         }
         Object priorForm = workflowUserSession.retrieveObject(request.getParameter(KNSConstants.DOC_FORM_KEY));
         if (priorForm instanceof LookupForm) {
@@ -295,7 +293,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getRows()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getRows()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getRows()
      */
     public List getRows() {
@@ -303,7 +301,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     }
 
     /**
-     * @see org.kuali.core.lookup.Lookupable#getColums()
+     * @see org.kuali.rice.kns.lookup.Lookupable#getColums()
      * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getColumns()
      */
     public List getColumns() {

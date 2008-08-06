@@ -15,7 +15,7 @@
  */
 package org.kuali.test;
 
-import org.kuali.core.util.KualiDecimal;
+import org.kuali.rice.kns.util.KualiDecimal;
 
 
 /**

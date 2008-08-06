@@ -26,8 +26,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.util.FieldUtils;
-import org.kuali.core.util.UrlFactory;
 import org.kuali.core.workflow.attribute.WorkflowLookupableImpl;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
@@ -38,8 +36,10 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.w3c.dom.Document;
 
 

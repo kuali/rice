@@ -17,10 +17,11 @@ package org.kuali.core.document;
 
 import java.util.Map;
 
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.document.authorization.DocumentAuthorizerBase;
-import org.kuali.core.document.authorization.PessimisticLock;
-import org.kuali.core.util.GlobalVariables;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.PessimisticLock;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This Document Authorizer instance is used to test the {@link PessimisticLock} object and it's
@@ -34,7 +35,7 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     public static final String USER_SESSION_OBJECT_KEY = "TEST_AUTHORIZER_OBJECT_KEY";
 
     /**
-     * @see org.kuali.core.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.core.document.Document, java.util.Map, org.kuali.core.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.kns.document.Document, java.util.Map, org.kuali.rice.kns.bo.user.UniversalUser)
      */
     @Override
     protected String getCustomLockDescriptor(Document document, Map editMode, UniversalUser user) {
@@ -42,7 +43,7 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     }
 
     /**
-     * @see org.kuali.core.document.authorization.DocumentAuthorizerBase#useCustomLockDescriptors()
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#useCustomLockDescriptors()
      */
     @Override
     protected boolean useCustomLockDescriptors() {

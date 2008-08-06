@@ -18,9 +18,9 @@ package org.kuali.rice.kim.web.form;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * Primarily a helper business object that provides a list of qualified role attributes for
@@ -73,7 +73,7 @@ public class GroupQualifiedRole extends Group {
 	/**
      * This overridden method ...
      *
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
     protected LinkedHashMap toStringMapper() {

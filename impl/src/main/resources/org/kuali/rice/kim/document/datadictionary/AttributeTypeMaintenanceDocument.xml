@@ -8,7 +8,7 @@
 
   <bean id="KIMAttributeTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.AttributeType" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="KIMAttributeTypeMaintenanceDocument-AttributeTypeInformation" />
@@ -22,7 +22,7 @@
     <property name="shortLabel" value="Attribute Type Maintenence" />
     <property name="summary" value="Attribute Type Document" />
     <property name="documentTypeName" value="KIMAttributeTypeMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KATD" />
     <property name="authorizations" >
       <list>

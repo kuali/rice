@@ -16,6 +16,7 @@
 package org.kuali.core.datadictionary.validation.charlevel;
 
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.charlevel.RegexValidationPattern;
 import org.kuali.test.KNSTestBase;
 
 /**

@@ -29,8 +29,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**

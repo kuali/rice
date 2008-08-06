@@ -19,7 +19,7 @@ package org.kuali.rice.kns.test.document.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase;
 
 
 

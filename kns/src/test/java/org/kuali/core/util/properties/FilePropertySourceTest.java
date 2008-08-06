@@ -17,7 +17,8 @@
 package org.kuali.core.util.properties;
 
 import org.junit.Test;
-import org.kuali.core.exceptions.PropertiesException;
+import org.kuali.rice.kns.exception.PropertiesException;
+import org.kuali.rice.kns.util.properties.FilePropertySource;
 import org.kuali.test.KNSTestCase;
 
 /**

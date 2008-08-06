@@ -18,12 +18,13 @@ package org.kuali.core.authorization;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.kuali.core.bo.user.AuthenticationUserId;
-import org.kuali.core.bo.user.KualiGroup;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.GroupNotFoundException;
-import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.authorization.AuthorizationStore;
+import org.kuali.rice.kns.bo.user.AuthenticationUserId;
+import org.kuali.rice.kns.bo.user.KualiGroup;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.exception.GroupNotFoundException;
+import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 

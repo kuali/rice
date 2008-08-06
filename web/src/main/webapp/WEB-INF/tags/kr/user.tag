@@ -53,7 +53,7 @@
 			title='${DataDictionary.RiceUser.attributes.personUserIdentifier.label}' size='${DataDictionary.RiceUser.attributes.personUserIdentifier.control.size}' 
 			maxlength='${DataDictionary.RiceUser.attributes.personUserIdentifier.maxLength}' style="${textStyle}"
 			onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
-			<kul:lookup boClassName="org.kuali.core.bo.user.RiceUser" 
+			<kul:lookup boClassName="org.kuali.rice.kns.bo.user.RiceUser" 
 						fieldConversions="${fieldConversions}" 
 						lookupParameters="${lookupParameters}" 
 						fieldLabel="${label}" 
@@ -66,7 +66,7 @@
 		size='${DataDictionary.UniversalUser.attributes.personUserIdentifier.control.size}' 
 		maxlength='${DataDictionary.UniversalUser.attributes.personUserIdentifier.maxLength}' style="${textStyle}"
 		onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
-		<kul:lookup boClassName="org.kuali.core.bo.user.UniversalUser" 
+		<kul:lookup boClassName="org.kuali.rice.kns.bo.user.UniversalUser" 
 					fieldConversions="${fieldConversions}" 
 					lookupParameters="${lookupParameters}" 
 					fieldLabel="${label}" 

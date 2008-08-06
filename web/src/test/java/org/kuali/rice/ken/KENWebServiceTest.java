@@ -27,7 +27,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -35,6 +34,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;

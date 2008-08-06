@@ -7,8 +7,8 @@
   <bean id="UniversalUserMaintenanceDocument" parent="UniversalUserMaintenanceDocument-parentBean" />
 
   <bean id="UniversalUserMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.core.bo.user.UniversalUser" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.UniversalUserMaintainable" />
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.user.UniversalUser" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.UniversalUserMaintainable" />
     <property name="maintainableSections" >
       <list>
         <ref bean="UniversalUserMaintenanceDocument-EditUser" />
@@ -41,9 +41,9 @@
             p:parameterDetailType="UniversalUser" />
     </property>
     <property name="documentTypeName" value="UniversalUserMaintenanceDocument" />
-    <property name="businessRulesClass" value="org.kuali.core.rules.UniversalUserRule" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.UniversalUserDocumentAuthorizer" />
-    <property name="preRulesCheckClass" value="org.kuali.core.rules.UniversalUserPreRules" />
+    <property name="businessRulesClass" value="org.kuali.rice.kns.rules.UniversalUserRule" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.UniversalUserDocumentAuthorizer" />
+    <property name="preRulesCheckClass" value="org.kuali.rice.kns.rules.UniversalUserPreRules" />
     <property name="documentTypeCode" value="UNVL" />
     <property name="workflowProperties" >
       <ref bean="UniversalUserMaintenanceDocument-workflowProperties" />

@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.maintenance.KualiMaintainableImpl;
-import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Group;
@@ -36,6 +33,9 @@ import org.kuali.rice.kim.lookup.valuefinder.NextAttributeTypeIdFinder;
 import org.kuali.rice.kim.lookup.valuefinder.NextGroupTypeDefaultAttributeIdFinder;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 
 /**
  * This maintainable class helps with the lifecycle of a maintenance document for the Group maintenance screen.  
@@ -62,7 +62,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	 * This overridden method handles setting up the group type attributes for brand new maintenance documents since 
 	 * data for group type attributes already exists.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterNew(MaintenanceDocument document,
@@ -82,7 +82,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	 * This overridden method handles hiding the group type attributes section if a group type is chosen that doesn't have 
 	 * any default attributes.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#getCoreSections(org.kuali.core.maintenance.Maintainable)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getCoreSections(org.kuali.rice.kns.maintenance.Maintainable)
 	 */
 	@Override
 	public List<Section> getCoreSections(Maintainable oldMaintainable) {
@@ -102,7 +102,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method handles the set up of the UI after a copy.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
 	 */
 	@Override
 	public void processAfterCopy(MaintenanceDocument document,
@@ -124,7 +124,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
      * This overridden method handles populating form objects for displaying in the interface on every load of a maintenance document after the initial 
      * create new action.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
      */
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> parameters) {
@@ -143,7 +143,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method handles re-rendering the attributes sections after a change of groupType.
 	 * 
-	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#refresh(java.lang.String, java.util.Map, org.kuali.core.document.MaintenanceDocument)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#refresh(java.lang.String, java.util.Map, org.kuali.rice.kns.document.MaintenanceDocument)
 	 */
 	@Override
 	public void refresh(String refreshCaller, Map fieldValues,
@@ -174,7 +174,7 @@ public class GroupMaintainable extends KualiMaintainableImpl {
      * This overridden method deals with translating the data from the maint. doc UI into the appropriate
      * persistable business objects that map down to the ORM level.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
      */
     @Override
     public void saveBusinessObject() {

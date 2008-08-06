@@ -18,9 +18,9 @@ package org.kuali.rice.kim.web.form;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * Primarily a helper business object that provides a list of qualified role attributes for
@@ -72,7 +72,7 @@ public class PrincipalQualifiedRole extends Principal {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
     protected LinkedHashMap toStringMapper() {

@@ -20,17 +20,17 @@
 		<creator id="spring" class="org.kuali.core.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
 	</init>
 	<allow>
-	   	<convert converter="bean" match="org.kuali.core.bo.user.UniversalUser">
+	   	<convert converter="bean" match="org.kuali.rice.kns.bo.user.UniversalUser">
 	   		<param name="include" value="personUniversalIdentifier,personUserIdentifier,personName,personFirstName,personLastName,primaryDepartmentCode,campusCode,personMiddleName,personEmailAddress" />
 	   	</convert>
-	   	<convert converter="bean" match="org.kuali.core.bo.user.RiceUser">
+	   	<convert converter="bean" match="org.kuali.rice.kns.bo.user.RiceUser">
 	   		<param name="include" value="personUniversalIdentifier,universityId,personUserIdentifier,personName,emailAddress" />
 	   	</convert>
 	    <create creator="spring" javascript="UserService">
 	    	<param name="beanName" value="universalUserService" />
 	    	<include method="getUniversalUserByAuthenticationUserId" />
 	    </create>
-	   	<convert converter="bean" match="org.kuali.core.bo.DocumentType">
+	   	<convert converter="bean" match="org.kuali.rice.kns.bo.DocumentType">
 	   		<param name="include" value="documentTypeCode,documentName,documentTypeActiveIndicator" />
 	   	</convert>
 	    <create creator="spring" javascript="DocumentTypeService">

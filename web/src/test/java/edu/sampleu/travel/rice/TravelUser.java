@@ -15,8 +15,8 @@
  */
 package edu.sampleu.travel.rice;
 
-import org.kuali.core.bo.user.KualiModuleUserBase;
-import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.rice.kns.bo.user.KualiModuleUserBase;
+import org.kuali.rice.kns.bo.user.UniversalUser;
 
 public class TravelUser extends KualiModuleUserBase {
 

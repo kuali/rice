@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.test.TestBase;

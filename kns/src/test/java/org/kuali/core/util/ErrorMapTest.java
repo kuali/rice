@@ -23,8 +23,11 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
+import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.test.KNSTestCase;
 
 /**

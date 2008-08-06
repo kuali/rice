@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.core.web.format.DateFormatter;
 import org.kuali.core.web.format.Formatter;
+import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

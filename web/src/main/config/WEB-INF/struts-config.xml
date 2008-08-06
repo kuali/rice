@@ -11,10 +11,10 @@
 
 	<global-exceptions>
        	<!-- Begin required KNS exceptions -->
-        <exception type="org.kuali.core.exceptions.AuthorizationException" key="meaningless" path="/authorizationException.do" />
-        <exception type="org.kuali.core.exceptions.DocumentInitiationAuthorizationException" key="meaningless" path="/initiationAuthorizationException.do" />
-        <exception type="org.kuali.core.exceptions.UnknownDocumentIdException" key="error.document.noLongerExistsInKuali" path="/kr/WEB-INF/jsp/Exception.jsp" />
-        <exception type="org.kuali.core.exceptions.FileUploadLimitExceededException" key="error.document.attachmentMaximumFileSizeExceeded" path="/kr/WEB-INF/jsp/Exception.jsp" />
+        <exception type="org.kuali.rice.kns.exception.AuthorizationException" key="meaningless" path="/authorizationException.do" />
+        <exception type="org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException" key="meaningless" path="/initiationAuthorizationException.do" />
+        <exception type="org.kuali.rice.kns.exception.UnknownDocumentIdException" key="error.document.noLongerExistsInKuali" path="/kr/WEB-INF/jsp/Exception.jsp" />
+        <exception type="org.kuali.rice.kns.exception.FileUploadLimitExceededException" key="error.document.attachmentMaximumFileSizeExceeded" path="/kr/WEB-INF/jsp/Exception.jsp" />
        	<!-- End required KNS exceptions -->
     </global-exceptions>  
 

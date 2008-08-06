@@ -15,7 +15,7 @@
  */
 package org.kuali.core.workflow;
 
-import org.kuali.core.document.Document;
+import org.kuali.rice.kns.document.Document;
 
 public class KualiDocumentXmlMaterializer {
 

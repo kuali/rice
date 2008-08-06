@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.core.web.ui.Section;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
@@ -29,6 +27,8 @@ import org.kuali.rice.kim.bo.GroupType;
 import org.kuali.rice.kim.bo.GroupTypeDefaultAttribute;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 
 /**
  * This class essentially intercepts the request and handles transforming data coming in from the persistence 
@@ -41,7 +41,7 @@ public class GroupInquirable extends KualiInquirableImpl {
 	 * This overridden method intercepts the request and takes the persisted values and transforms 
 	 * them into form objects for rendering.
 	 * 
-	 * @see org.kuali.core.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
@@ -63,7 +63,7 @@ public class GroupInquirable extends KualiInquirableImpl {
 	 * This overridden method checks to see if the assigned group type has default attributes.  If it doesn't, we remove that section 
 	 * from displaying.
 	 * 
-	 * @see org.kuali.core.inquiry.KualiInquirableImpl#getSections(org.kuali.core.bo.BusinessObject)
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getSections(org.kuali.rice.kns.bo.BusinessObject)
 	 */
 	@Override
 	public List<Section> getSections(BusinessObject bo) {

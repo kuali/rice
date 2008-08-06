@@ -18,8 +18,10 @@ package org.kuali.core.util.properties;
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.kuali.core.exceptions.DuplicateKeyException;
-import org.kuali.core.exceptions.PropertiesException;
+import org.kuali.rice.kns.exception.DuplicateKeyException;
+import org.kuali.rice.kns.exception.PropertiesException;
+import org.kuali.rice.kns.util.properties.FilePropertySource;
+import org.kuali.rice.kns.util.properties.PropertyHolder;
 import org.kuali.test.KNSTestCase;
 
 /**

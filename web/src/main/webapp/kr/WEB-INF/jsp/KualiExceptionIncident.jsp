@@ -14,7 +14,7 @@
  limitations under the License.
 --%>
 <%@ page
-	import="org.kuali.core.exceptions.KualiExceptionIncident"%>
+	import="org.kuali.rice.kns.exception.KualiExceptionIncident"%>
 <%@ include file="tldHeader.jsp"%>
 
 <c:set var="textAreaAttributes"

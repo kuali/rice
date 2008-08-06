@@ -7,8 +7,8 @@
   <bean id="KualiCampusMaintenanceDocument" parent="KualiCampusMaintenanceDocument-parentBean" />
 
   <bean id="KualiCampusMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.core.bo.Campus" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Campus" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="KualiCampusMaintenanceDocument-EditCampus" />
@@ -28,7 +28,7 @@
             p:parameterDetailType="Campus" />
     </property>
     <property name="documentTypeName" value="KualiCampusMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="CMPS" />
     <property name="authorizations" >
       <list>

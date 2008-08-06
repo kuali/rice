@@ -25,12 +25,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 @javax.persistence.Entity
 @Table(name="KIM_GROUPS_T")
@@ -163,7 +163,7 @@ public class Group extends PersistableBusinessObjectBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
@@ -177,7 +177,7 @@ public class Group extends PersistableBusinessObjectBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.core.bo.PersistableBusinessObjectBase#refresh()
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#refresh()
 	 */
 	public void refresh() {
 		// not implemented unless needed

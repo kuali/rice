@@ -22,12 +22,12 @@ import java.util.LinkedHashMap;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.util.TypedArrayList;
 import org.kuali.core.web.ui.Field;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.web.form.EntityAttributeForm;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity

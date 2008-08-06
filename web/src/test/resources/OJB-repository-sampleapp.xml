@@ -25,7 +25,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"></field-descriptor>
 		<!--  object references -->
-		<reference-descriptor name="documentHeader" class-ref="org.kuali.core.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>

@@ -46,19 +46,19 @@
 
 	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
 
-	<bean id="dbPlatformFactory" class="org.kuali.core.dbplatform.ConfigurableKualiDBPlatformFactory">
+	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
 		<property name="ojbPlatform" value="${datasource.ojb.platform}" />
 		<property name="dataSource" ref="knsDataSource" />
 	</bean>
 
 	<bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
 
-	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.core.dao.jdbc.PlatformAwareDaoBaseJdbc">
+	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
 		<property name="dataSource" ref="knsDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
 
-	<bean id="platformAwareDao" abstract="true" class="org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb">
+	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.ojb.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="knsDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
@@ -69,7 +69,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.kuali.core.util.spring.NamedOrderedListBean">
+	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="classpath:org/kuali/core/dwr-core.xml" />
 	</bean>
@@ -81,7 +81,7 @@
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
 
-	<bean id="transactionAdvisorClassFilter" class="org.kuali.core.util.spring.ClassOrMethodAnnotationFilter">
+	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.kns.util.spring.ClassOrMethodAnnotationFilter">
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
@@ -90,14 +90,14 @@
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
 
-	<bean id="transactionAttributeSource" class="org.kuali.core.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
+	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
 		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
 		<property name="transactionTimeout" value="${transaction.timeout}" />
 	</bean>
 
 	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 
-	<bean id="dataDictionaryService" class="org.kuali.core.service.impl.DataDictionaryServiceImpl">
+	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
 		<property name="authorizationService" ref="authorizationService" />
 		<property name="kualiGroupService" ref="kualiGroupService" />
@@ -146,15 +146,15 @@
 		</property>
 	</bean>
 
-	<bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.core.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
+	<bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
 
-	<bean id="postDataLoadEncryptionService" class="org.kuali.core.service.impl.PostDataLoadEncryptionServiceImpl">
+	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.kns.service.impl.PostDataLoadEncryptionServiceImpl">
 		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
 		<property name="businessObjectService" ref="businessObjectService" />
 		<property name="encryptionService" ref="encryptionService" />
 	</bean>
 
-	<bean id="businessObjectService" class="org.kuali.core.service.impl.BusinessObjectServiceImpl">
+	<bean id="businessObjectService" class="org.kuali.rice.kns.service.impl.BusinessObjectServiceImpl">
 		<property name="businessObjectDao">
 			<ref bean="businessObjectDao" />
 		</property>
@@ -172,19 +172,19 @@
 		</property>
 	</bean>
 
-	<bean id="kualiConfigurationService" class="org.kuali.core.service.impl.KualiConfigurationServiceImpl" />
+	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
 
-	<bean id="authorizationService" class="org.kuali.core.service.impl.AuthorizationServiceImpl">
+	<bean id="authorizationService" class="org.kuali.rice.kns.service.impl.AuthorizationServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
 
-	<bean id="webAuthenticationService" class="org.kuali.rice.kns.web.RiceRemoteUserWebAuthenticationServiceImpl" />
+	<bean id="webAuthenticationService" class="org.kuali.core.web.RiceRemoteUserWebAuthenticationServiceImpl" />
 
-	<bean id="kualiModuleService" class="org.kuali.core.service.impl.KualiModuleServiceImpl" />
+	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 
-	<bean id="mailService" class="org.kuali.core.service.impl.MailServiceImpl">
+	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
 		<property name="mailSender">
 			<ref bean="mailSender" />
 		</property>
@@ -195,10 +195,10 @@
 		<property name="host" value="${mail.relay.server}" />
 	</bean>
 
-	<bean id="knsExceptionIncidentService" class="org.kuali.core.service.impl.KualiExceptionIncidentServiceImpl">
+	<bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
 	  <property name="mailService"><ref bean="mailService"/></property>
 	  <property name="messageTemplate">
-        <bean class="org.kuali.core.mail.MailMessage">
+        <bean class="org.kuali.rice.kns.mail.MailMessage">
           <!-- The property place holder below must be specified in          -->
           <!-- common-config-default.xml or any other KNS configuration file -->
           <property name="fromAddress"><value>${MailMessage.from}</value></property>
@@ -248,9 +248,9 @@
 
 	<bean id="workflowInfoService" class="org.kuali.core.workflow.service.impl.KualiWorkflowInfoImpl" />
 
-	<bean id="xmlObjectSerializerService" class="org.kuali.core.service.impl.XmlObjectSerializerServiceImpl"></bean>
+	<bean id="xmlObjectSerializerService" class="org.kuali.rice.kns.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
-	<bean id="documentService" class="org.kuali.core.service.impl.DocumentServiceImpl">
+	<bean id="documentService" class="org.kuali.rice.kns.service.impl.DocumentServiceImpl">
 		<property name="documentDao">
 			<ref bean="documentDao" />
 		</property>
@@ -286,13 +286,13 @@
 		</property>
 	</bean>
 
-	<bean id="documentHeaderService" class="org.kuali.core.service.impl.DocumentHeaderServiceImpl">
+	<bean id="documentHeaderService" class="org.kuali.rice.kns.service.impl.DocumentHeaderServiceImpl">
 		<property name="documentHeaderDao">
 			<ref bean="documentHeaderDao" />
 		</property>
 	</bean>
 
-	<bean id="kualiRuleService" class="org.kuali.core.service.impl.KualiRuleServiceImpl">
+	<bean id="kualiRuleService" class="org.kuali.rice.kns.service.impl.KualiRuleServiceImpl">
 		<property name="transactionalDocumentDictionaryService">
 			<ref bean="transactionalDocumentDictionaryService" />
 		</property>
@@ -308,7 +308,7 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.core.service.impl.DateTimeServiceImpl">
+	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl">
 		<property name="sqlDateFormats">
 			<list>
 				<value>yyyy-MM-dd</value>
@@ -322,7 +322,7 @@
 		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
 	</bean>
 
-	<bean id="businessObjectDictionaryService" class="org.kuali.core.service.impl.BusinessObjectDictionaryServiceImpl">
+	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
@@ -331,19 +331,19 @@
 		</property>
 	</bean>
 
-	<bean id="maintenanceDocumentDictionaryService" class="org.kuali.core.service.impl.MaintenanceDocumentDictionaryServiceImpl">
+	<bean id="maintenanceDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentDictionaryServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
 
-	<bean id="transactionalDocumentDictionaryService" class="org.kuali.core.service.impl.TransactionalDocumentDictionaryServiceImpl">
+	<bean id="transactionalDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.TransactionalDocumentDictionaryServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
 
-	<bean id="documentTypeService" class="org.kuali.core.service.impl.DocumentTypeServiceImpl">
+	<bean id="documentTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
@@ -352,7 +352,7 @@
 		</property>
 	</bean>
 
-	<bean id="lookupService" class="org.kuali.core.service.impl.LookupServiceImpl">
+	<bean id="lookupService" class="org.kuali.rice.kns.service.impl.LookupServiceImpl">
 		<property name="lookupDao">
 			<ref bean="lookupDao" />
 		</property>
@@ -370,7 +370,7 @@
 		</property>
 	</bean>
 
-	<bean id="kualiGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl">
+	<bean id="kualiGroupService" class="org.kuali.core.web.RiceGroupServiceImpl">
 		<property name="workflowGroupService">
 			<ref bean="workflowGroupService" />
 		</property>
@@ -385,13 +385,13 @@
 		</property>
 	</bean>
 
-	<bean id="maintenanceDocumentService" class="org.kuali.core.service.impl.MaintenanceDocumentServiceImpl">
+	<bean id="maintenanceDocumentService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentServiceImpl">
 		<property name="maintenanceDocumentDao">
 			<ref bean="maintenanceDocumentDao" />
 		</property>
 	</bean>
 
-	<bean id="noteService" class="org.kuali.core.service.impl.NoteServiceImpl">
+	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
 		<property name="noteDao">
 			<ref bean="noteDao" />
 		</property>
@@ -406,45 +406,45 @@
 		</property>
 	</bean>
 
-	<bean id="attachmentService" class="org.kuali.core.service.impl.AttachmentServiceImpl">
+	<bean id="attachmentService" class="org.kuali.rice.kns.service.impl.AttachmentServiceImpl">
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
 	</bean>
 	
-	<bean id="persistenceStructureServiceJpa" class="org.kuali.core.service.impl.PersistenceStructureServiceJpaImpl" />
+	<bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
   
-  	<bean id="persistenceStructureServiceOjb" class="org.kuali.core.service.impl.PersistenceStructureServiceOjbImpl" />
+  	<bean id="persistenceStructureServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceOjbImpl" />
 
-  	<bean id="persistenceStructureService" class="org.kuali.core.service.impl.PersistenceStructureServiceImpl">
+  	<bean id="persistenceStructureService" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceImpl">
 		<property name="persistenceStructureServiceJpa" ref="persistenceStructureServiceJpa" />
     	<property name="persistenceStructureServiceOjb" ref="persistenceStructureServiceOjb" />
 	</bean>
 
-	<bean id="persistenceService" class="org.kuali.core.service.impl.PersistenceServiceImpl">
+	<bean id="persistenceService" class="org.kuali.rice.kns.service.impl.PersistenceServiceImpl">
 		<property name="persistenceServiceJpa" ref="persistenceServiceJpa" />
 		<property name="persistenceServiceOjb" ref="persistenceServiceOjb" />
 	</bean>
 
-  	<bean id="persistenceServiceJpa" class="org.kuali.core.service.impl.PersistenceServiceJpaImpl">
+  	<bean id="persistenceServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceServiceJpaImpl">
     	<property name="persistenceDao" ref="persistenceDao" />
   	</bean>
 
-  	<bean id="persistenceServiceOjb" class="org.kuali.core.service.impl.PersistenceServiceOjbImpl">
+  	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceServiceOjbImpl">
     	<property name="persistenceDao" ref="persistenceDao" />
     	<property name="moduleService" ref="kualiModuleService" />
   	</bean>
   
-	<bean id="persistenceDao" class="org.kuali.core.dao.proxy.PersistenceDaoProxy">
+	<bean id="persistenceDao" class="org.kuali.rice.kns.dao.proxy.PersistenceDaoProxy">
     	<property name="persistenceDaoJpa" ref="persistenceDaoJpa" />
     	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
 	</bean>
 
-  <bean id="persistenceDaoJpa" class="org.kuali.core.dao.jpa.PersistenceDaoJpa" />
+  <bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.jpa.PersistenceDaoJpa" />
 
-  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.PersistenceDaoOjb" />
+  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.PersistenceDaoOjb" />
 	
-	<bean id="dictionaryValidationService" class="org.kuali.core.service.impl.DictionaryValidationServiceImpl">
+	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
@@ -465,19 +465,19 @@
 		</property>
 	</bean>
 
-	<bean id="documentAuthorizationService" class="org.kuali.core.service.impl.DocumentAuthorizationServiceImpl">
+	<bean id="documentAuthorizationService" class="org.kuali.rice.kns.service.impl.DocumentAuthorizationServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
 
-	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.core.dao.jdbc.SequenceAccessorDaoJdbc" />
+	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
 
-	<bean id="sequenceAccessorService" class="org.kuali.core.service.impl.SequenceAccessorServiceImpl">
+	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
 		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />
 	</bean>
 
-	<bean id="keyValuesService" class="org.kuali.core.service.impl.KeyValuesServiceImpl">
+	<bean id="keyValuesService" class="org.kuali.rice.kns.service.impl.KeyValuesServiceImpl">
 		<property name="businessObjectDao">
 			<ref bean="businessObjectDao" />
 		</property>
@@ -492,7 +492,7 @@
 		</property>
 	</bean>
 
-	<bean id="postProcessorService" class="org.kuali.core.service.impl.PostProcessorServiceImpl">
+	<bean id="postProcessorService" class="org.kuali.rice.kns.service.impl.PostProcessorServiceImpl">
 		<property name="documentService">
 			<ref bean="documentService" />
 		</property>
@@ -501,13 +501,13 @@
 		</property>
 	</bean>
 	
-	<bean id="pessimisticLockService" class="org.kuali.core.service.impl.PessimisticLockServiceImpl">
+	<bean id="pessimisticLockService" class="org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
 	</bean>
 
-	<bean id="universalUserService" class="org.kuali.core.service.impl.UniversalUserServiceImpl">
+	<bean id="universalUserService" class="org.kuali.rice.kns.service.impl.UniversalUserServiceImpl">
 		<property name="universalUserDao">
 			<ref bean="universalUserDao" />
 		</property>
@@ -537,13 +537,13 @@
 		</property>
 	</bean>
 
-	<bean id="kualiModuleUserPropertyService" class="org.kuali.core.service.impl.KualiModuleUserPropertyServiceImpl">
+	<bean id="kualiModuleUserPropertyService" class="org.kuali.rice.kns.service.impl.KualiModuleUserPropertyServiceImpl">
 		<property name="moduleUserPropertyDao">
 			<ref bean="moduleUserPropertyDao" />
 		</property>
 	</bean>
 
-	<bean id="kualiModuleUserServiceBase" class="org.kuali.core.service.impl.KualiModuleUserServiceBaseImpl" abstract="true">
+	<bean id="kualiModuleUserServiceBase" class="org.kuali.rice.kns.service.impl.KualiModuleUserServiceBaseImpl" abstract="true">
 		<property name="universalUserService">
 			<ref bean="universalUserService" />
 		</property>
@@ -553,25 +553,25 @@
 		<property name="kualiModuleUserDao" ref="kualiModuleUserDao" />
 	</bean>
 
-  <bean id="kualiModuleUserDao" class="org.kuali.core.dao.proxy.KualiModuleUserDaoProxy">
+  <bean id="kualiModuleUserDao" class="org.kuali.rice.kns.dao.proxy.KualiModuleUserDaoProxy">
     <property name="kualiModuleUserDaoJpa" ref="kualiModuleUserDaoJpa" />
     <property name="kualiModuleUserDaoOjb" ref="kualiModuleUserDaoOjb" />
   </bean>
   
-  <bean id="kualiModuleUserDaoJpa" class="org.kuali.core.dao.jpa.KualiModuleUserDaoJpa" />
+  <bean id="kualiModuleUserDaoJpa" class="org.kuali.rice.kns.dao.jpa.KualiModuleUserDaoJpa" />
 	
-	<bean id="kualiModuleUserDaoOjb" class="org.kuali.core.dao.ojb.KualiModuleUserDaoOjb" />
+	<bean id="kualiModuleUserDaoOjb" class="org.kuali.rice.kns.dao.ojb.KualiModuleUserDaoOjb" />
 
 	<bean id="ojbCollectionHelper" class="org.kuali.core.util.OjbCollectionHelper" />
 
-	<bean id="kualiLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="lookupableHelperService" />
 		</property>
 
 	</bean>
 
-	<bean id="lookupableHelperService" class="org.kuali.core.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
+	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
@@ -604,7 +604,7 @@
 		</property>
 	</bean>
 
-	<bean id="lookupResultsService" class="org.kuali.core.lookup.LookupResultsServiceImpl">
+	<bean id="lookupResultsService" class="org.kuali.rice.kns.lookup.LookupResultsServiceImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
@@ -613,15 +613,15 @@
 		</property>
 	</bean>
 	
-  <bean id="persistedLookupMetadataDao" class="org.kuali.core.dao.proxy.PersistedLookupMetadataDaoProxy">
+  <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
     <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa" />
     <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
   </bean>
   
-	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.core.dao.jpa.PersistedLookupMetadataDaoJpa" />
+	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.jpa.PersistedLookupMetadataDaoJpa" />
   
-  <bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.PersistedLookupMetadataDaoOjb" />
-	<bean id="businessObjectMetaDataService" class="org.kuali.core.service.impl.BusinessObjectMetaDataServiceImpl">
+  <bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.PersistedLookupMetadataDaoOjb" />
+	<bean id="businessObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
 		<property name="businessObjectDictionaryService">
 			<ref bean="businessObjectDictionaryService" />
 		</property>
@@ -633,27 +633,27 @@
 		</property>
 	</bean>
 
-	<bean id="universalUserLookupable" class="org.kuali.core.lookup.UniversalUserLookupableImpl" parent="kualiLookupable">
+	<bean id="universalUserLookupable" class="org.kuali.rice.kns.lookup.UniversalUserLookupableImpl" parent="kualiLookupable">
 		<property name="lookupableHelperService">
-			<bean id="universalUserLookupableHelperService" class="org.kuali.core.lookup.UniversalUserLookupableHelperServiceImpl"
+			<bean id="universalUserLookupableHelperService" class="org.kuali.rice.kns.lookup.UniversalUserLookupableHelperServiceImpl"
 				parent="lookupableHelperService">
 				<property name="configService" ref="kualiConfigurationService" />
 			</bean>
 		</property>
 	</bean>
 
-    <bean id="parameterLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" parent="kualiLookupable">
+    <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
-            <bean id="parameterLookupableHelperService" class="org.kuali.core.lookup.ParameterLookupableHelperServiceImpl"
+            <bean id="parameterLookupableHelperService" class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
             </bean>
         </property>
     </bean>
 
     <!-- placeholder so applications can override without making DD changes -->
-    <bean id="parameterDetailTypeLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" parent="kualiLookupable">
+    <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
-            <bean id="parameterDetailTypeLookupableHelperService" class="org.kuali.core.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
+            <bean id="parameterDetailTypeLookupableHelperService" class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
             </bean>
         </property>
@@ -668,13 +668,13 @@
 		</property>
 	</bean>
 
-	<bean id="pessimisticLockLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="pessimisticLockLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="pessimisticLockLookupableHelperService" />
 		</property>
 	</bean>
     
-	<bean id="pessimisticLockLookupableHelperService" class="org.kuali.core.lookup.PessimisticLockLookupableHelperServiceImpl" scope="prototype">
+	<bean id="pessimisticLockLookupableHelperService" class="org.kuali.rice.kns.lookup.PessimisticLockLookupableHelperServiceImpl" scope="prototype">
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
@@ -707,7 +707,7 @@
 		</property>
 	</bean>
 
-		<bean id="sessionDocumentService" class="org.kuali.core.service.impl.SessionDocumentServiceImpl">
+		<bean id="sessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
@@ -727,7 +727,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="lookupUtils" class="org.kuali.core.lookup.LookupUtils">
+	<bean id="lookupUtils" class="org.kuali.rice.kns.lookup.LookupUtils">
 		<property name="businessObjectDictionaryService">
 			<ref bean="businessObjectDictionaryService" />
 		</property>
@@ -743,15 +743,15 @@
         <property name="kualiConfigurationService" ref="kualiConfigurationService" />
 	</bean>
 
-	<bean id="kualiInquirable" class="org.kuali.core.inquiry.KualiInquirableImpl" scope="prototype">
+	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype">
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
 	</bean>
 
-	<bean id="confirmationQuestion" class="org.kuali.core.question.ConfirmationQuestion" scope="prototype"/>
+	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
 
-	<bean id="maintenanceDocumentRuleBase" class="org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
+	<bean id="maintenanceDocumentRuleBase" class="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
 		<property name="configService">
 			<ref bean="kualiConfigurationService" />
 		</property>
@@ -787,96 +787,96 @@
 		</property>
 	</bean>
 
-	<bean id="documentDao" class="org.kuali.core.dao.proxy.DocumentDaoProxy">
+	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
 		<property name="businessObjectDao" ref="businessObjectDao" />
     <property name="documentDaoJpa" ref="documentDaoJpa" />
     <property name="documentDaoOjb" ref="documentDaoOjb" />
 	</bean>
 
-  <bean id="documentDaoJpa" class="org.kuali.core.dao.jpa.DocumentDaoJpa">
+  <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.jpa.DocumentDaoJpa">
     <property name="businessObjectDao" ref="businessObjectDao" />
   </bean>
 
-  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.DocumentDaoOjb">
+  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.DocumentDaoOjb">
     <property name="businessObjectDao" ref="businessObjectDao" />
   </bean>
 
-  <bean id="documentHeaderDao" class="org.kuali.core.dao.proxy.DocumentHeaderDaoProxy">
+  <bean id="documentHeaderDao" class="org.kuali.rice.kns.dao.proxy.DocumentHeaderDaoProxy">
     <property name="documentHeaderDaoJpa" ref="documentHeaderDaoJpa" />
     <property name="documentHeaderDaoOjb" ref="documentHeaderDaoOjb" />
   </bean>
   
-  <bean id="documentHeaderDaoJpa" class="org.kuali.core.dao.jpa.DocumentHeaderDaoJpa" />
+  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.kns.dao.jpa.DocumentHeaderDaoJpa" />
 	
-	<bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.DocumentHeaderDaoOjb" />
+	<bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.DocumentHeaderDaoOjb" />
 
-  <bean id="lookupDao" class="org.kuali.core.dao.proxy.LookupDaoProxy">
+  <bean id="lookupDao" class="org.kuali.rice.kns.dao.proxy.LookupDaoProxy">
     <property name="lookupDaoJpa" ref="lookupDaoJpa" />
     <property name="lookupDaoOjb" ref="lookupDaoOjb" />
   </bean>
   
-  <bean id="lookupDaoJpa" class="org.kuali.core.dao.jpa.LookupDaoJpa">
+  <bean id="lookupDaoJpa" class="org.kuali.rice.kns.dao.jpa.LookupDaoJpa">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
     <property name="dateTimeService" ref="dateTimeService" />
   </bean>
    
-  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.LookupDaoOjb">
+  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.LookupDaoOjb">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
 		<property name="dateTimeService" ref="dateTimeService" />
 	</bean>
 
 	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />
  
-  <bean id="moduleUserPropertyDao" class="org.kuali.core.dao.proxy.KualiModuleUserPropertyDaoProxy">
+  <bean id="moduleUserPropertyDao" class="org.kuali.rice.kns.dao.proxy.KualiModuleUserPropertyDaoProxy">
     <property name="moduleUserPropertyDaoJpa" ref="moduleUserPropertyDaoJpa" />
     <property name="moduleUserPropertyDaoOjb" ref="moduleUserPropertyDaoOjb" />
   </bean>
 
-	<bean id="moduleUserPropertyDaoJpa" class="org.kuali.core.dao.jpa.KualiModuleUserPropertyDaoJpa" />
+	<bean id="moduleUserPropertyDaoJpa" class="org.kuali.rice.kns.dao.jpa.KualiModuleUserPropertyDaoJpa" />
 
-  <bean id="moduleUserPropertyDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.KualiModuleUserPropertyDaoOjb" />
+  <bean id="moduleUserPropertyDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.KualiModuleUserPropertyDaoOjb" />
 
-  <bean id="maintenanceDocumentDao" class="org.kuali.core.dao.proxy.MaintenanceDocumentDaoProxy">
+  <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
     <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb" />
   </bean>
 
-	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.core.dao.jpa.MaintenanceDocumentDaoJpa" />
+	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.jpa.MaintenanceDocumentDaoJpa" />
 
-  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.MaintenanceDocumentDaoOjb" />
+  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.MaintenanceDocumentDaoOjb" />
 
-  <bean id="noteDao" class="org.kuali.core.dao.proxy.NoteDaoProxy">
+  <bean id="noteDao" class="org.kuali.rice.kns.dao.proxy.NoteDaoProxy">
     <property name="noteDaoJpa" ref="noteDaoJpa" />
     <property name="noteDaoOjb" ref="noteDaoOjb" />
   </bean>
 
-	<bean id="noteDaoJpa" class="org.kuali.core.dao.jpa.NoteDaoJpa" />
+	<bean id="noteDaoJpa" class="org.kuali.rice.kns.dao.jpa.NoteDaoJpa" />
 
-  <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.NoteDaoOjb" />
+  <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.NoteDaoOjb" />
 
-  <bean id="businessObjectDao" class="org.kuali.core.dao.proxy.BusinessObjectDaoProxy">
+  <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
     <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />
     <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb" />
   </bean>
 
-  <bean id="businessObjectDaoJpa" class="org.kuali.core.dao.jpa.BusinessObjectDaoJpa">
+  <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.jpa.BusinessObjectDaoJpa">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
   </bean>
 
-	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.BusinessObjectDaoOjb">
+	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.BusinessObjectDaoOjb">
 		<property name="persistenceStructureService" ref="persistenceStructureService" />
 	</bean>
 	
-	<bean id="sessionDocumentDao" class="org.kuali.core.dao.proxy.SessionDocumentDaoProxy">
+	<bean id="sessionDocumentDao" class="org.kuali.rice.kns.dao.proxy.SessionDocumentDaoProxy">
     	<property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa" />
     	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
   	</bean>
   
-    <bean id="sessionDocumentDaoJpa" class="org.kuali.core.dao.jpa.SessionDocumentDaoJpa" />
+    <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.kns.dao.jpa.SessionDocumentDaoJpa" />
 	
-	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.SessionDocumentDaoOjb" />
+	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.ojb.SessionDocumentDaoOjb" />
 	
-	<bean id="inactivationBlockingDetectionService" class="org.kuali.core.service.impl.InactivationBlockingDetectionServiceImpl">
+	<bean id="inactivationBlockingDetectionService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDetectionServiceImpl">
 		<property name="businessObjectMetaDataService">
 			<ref bean="businessObjectMetaDataService"/>
 		</property>
@@ -888,7 +888,7 @@
 		</property>
 	</bean>
 	
-	<bean id="inactivationBlockingDisplayService" class="org.kuali.core.service.impl.InactivationBlockingDisplayServiceImpl">
+	<bean id="inactivationBlockingDisplayService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDisplayServiceImpl">
 		<property name="persistenceService">
 			<ref bean="persistenceService"/>
 		</property>
@@ -941,7 +941,7 @@
   <!-- END JPA CONFIGURATION -->
 
 	
-	<bean id="documentSerializerService" class="org.kuali.core.service.impl.DocumentSerializerServiceImpl">
+	<bean id="documentSerializerService" class="org.kuali.rice.kns.service.impl.DocumentSerializerServiceImpl">
 		<property name="persistenceService">
 			<ref bean="persistenceService" />
 		</property>

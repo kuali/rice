@@ -23,7 +23,6 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
 import org.kuali.rice.kim.bo.Group;
@@ -31,6 +30,7 @@ import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.service.impl.ImplUtils;
+import org.kuali.rice.kns.dao.ojb.PlatformAwareDaoBaseOjb;
 
 /**
  * Implements DAO queries for KIM objects for better performance

@@ -18,9 +18,10 @@ package org.kuali.core.document;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.datadictionary.DocumentEntry;
-import org.kuali.core.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 
 /**
  * This class is used to allow a mock {@link Document} object to specify whether or not to use pessimistic locking without

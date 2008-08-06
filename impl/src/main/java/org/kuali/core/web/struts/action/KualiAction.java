@@ -28,21 +28,21 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.core.authorization.AuthorizationType;
-import org.kuali.core.document.authorization.DocumentAuthorizerBase;
-import org.kuali.core.exceptions.AuthorizationException;
-import org.kuali.core.exceptions.ModuleAuthorizationException;
-import org.kuali.core.service.KualiModuleService;
-import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.UrlFactory;
-import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.exception.ModuleAuthorizationException;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup

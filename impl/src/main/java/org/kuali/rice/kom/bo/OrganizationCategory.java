@@ -24,7 +24,7 @@ import javax.persistence.Entity;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - pberres don't forget to fill this in. 
@@ -55,7 +55,7 @@ public class OrganizationCategory extends PersistableBusinessObjectBase {
         this.name = name;
     }
     /**
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
         protected LinkedHashMap toStringMapper() {
             LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();

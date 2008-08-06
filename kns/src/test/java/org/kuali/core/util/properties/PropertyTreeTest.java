@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kns.util.properties.PropertyTree;
 import org.kuali.test.KNSTestCase;
 import org.springframework.beans.BeanUtils;
 

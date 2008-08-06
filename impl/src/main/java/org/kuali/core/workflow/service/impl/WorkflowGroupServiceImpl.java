@@ -20,13 +20,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.WorkflowGroupService;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.util.spring.Cached;
 import org.springframework.transaction.annotation.Transactional;
 
 

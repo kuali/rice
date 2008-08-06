@@ -27,8 +27,8 @@ import javax.persistence.Entity;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-import org.kuali.core.util.OjbCharBooleanConversion;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.OjbCharBooleanConversion;
 
 /**
  * This is a description of what this class does - pberres don't forget to fill this in.
@@ -115,7 +115,7 @@ public class Organization extends PersistableBusinessObjectBase {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
     protected LinkedHashMap toStringMapper() {

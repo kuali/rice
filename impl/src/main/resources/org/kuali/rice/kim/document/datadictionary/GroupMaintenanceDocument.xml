@@ -28,7 +28,7 @@
     <property name="shortLabel" value="Group" />
     <property name="summary" value="Group Maintenance Document" />
     <property name="documentTypeName" value="KIMGroupMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KGMD" />
     <property name="webScriptFiles" >
       <list>

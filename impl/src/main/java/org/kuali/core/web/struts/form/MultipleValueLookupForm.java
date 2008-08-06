@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

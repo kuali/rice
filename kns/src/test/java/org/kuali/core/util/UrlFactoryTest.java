@@ -20,6 +20,7 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.test.KNSTestCase;
 
 /**

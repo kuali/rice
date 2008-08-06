@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.document.authorizer;
 
-import org.kuali.core.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 
 public class TravelDocumentAuthorizer extends DocumentAuthorizerBase {
 

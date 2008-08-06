@@ -20,11 +20,11 @@
     <global-exceptions>
         <!-- Moved to /kualiExceptionIncidentReport.do -->
         <!--
-        <exception type="org.kuali.core.exceptions.AuthorizationException" key="meaningless" path="/authorizationException.do" />
-        <exception type="org.kuali.core.exceptions.DocumentInitiationAuthorizationException" key="meaningless" path="/initiationAuthorizationException.do" />
+        <exception type="org.kuali.rice.kns.exception.AuthorizationException" key="meaningless" path="/authorizationException.do" />
+        <exception type="org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException" key="meaningless" path="/initiationAuthorizationException.do" />
         -->
-        <exception type="org.kuali.core.exceptions.UnknownDocumentIdException" key="error.document.noLongerExistsInKuali" path="/WEB-INF/jsp/Exception.jsp" />
-        <exception type="org.kuali.core.exceptions.FileUploadLimitExceededException" key="error.document.attachmentMaximumFileSizeExceeded" path="/WEB-INF/jsp/Exception.jsp" />
+        <exception type="org.kuali.rice.kns.exception.UnknownDocumentIdException" key="error.document.noLongerExistsInKuali" path="/WEB-INF/jsp/Exception.jsp" />
+        <exception type="org.kuali.rice.kns.exception.FileUploadLimitExceededException" key="error.document.attachmentMaximumFileSizeExceeded" path="/WEB-INF/jsp/Exception.jsp" />
         <exception type="java.lang.Throwable" handler="org.kuali.core.web.struts.pojo.StrutsExceptionIncidentHandler" key="na"/>
     </global-exceptions>  
     

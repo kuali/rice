@@ -35,12 +35,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.util.AbstractKualiDecimal;
-import org.kuali.core.util.KualiDecimal;
-import org.kuali.core.util.KualiInteger;
-import org.kuali.core.util.KualiPercent;
 import org.kuali.core.web.struts.pojo.ArrayUtils;
 import org.kuali.core.web.struts.pojo.PojoPropertyUtilsBean;
+import org.kuali.rice.kns.util.AbstractKualiDecimal;
+import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.util.KualiInteger;
+import org.kuali.rice.kns.util.KualiPercent;
 
 
 // begin Kuali Foundation modification

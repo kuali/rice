@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.core.question.Question;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

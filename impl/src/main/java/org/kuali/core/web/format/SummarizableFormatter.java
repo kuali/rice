@@ -15,7 +15,7 @@
  */
 package org.kuali.core.web.format;
 
-import org.kuali.core.bo.Summarizable;
+import org.kuali.rice.kns.bo.Summarizable;
 
 public class SummarizableFormatter extends Formatter {
     

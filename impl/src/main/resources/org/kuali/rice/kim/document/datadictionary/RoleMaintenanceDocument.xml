@@ -27,7 +27,7 @@
     <property name="summary" value="Role Maintenance Document" />
     <property name="documentTypeName" value="KIMRoleMaintenanceDocument" />
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.RoleMaintenanceDocumentRule" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="KRMD" />
     <property name="authorizations" >
       <list>

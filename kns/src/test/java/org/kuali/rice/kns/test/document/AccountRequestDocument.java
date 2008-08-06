@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.kuali.core.document.SessionDocument;
-import org.kuali.core.document.TransactionalDocumentBase;
+import org.kuali.rice.kns.document.SessionDocument;
+import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.test.document.bo.Account;
 
 

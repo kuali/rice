@@ -27,14 +27,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.datadictionary.InactivationBlockingMetadata;
-import org.kuali.core.service.DataDictionaryService;
-import org.kuali.core.service.InactivationBlockingDisplayService;
-import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.struts.form.DisplayInactivationBlockersForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 

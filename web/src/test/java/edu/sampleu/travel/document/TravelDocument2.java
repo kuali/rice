@@ -28,8 +28,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.core.document.SessionDocument;
-import org.kuali.core.document.TransactionalDocumentBase;
+import org.kuali.rice.kns.document.SessionDocument;
+import org.kuali.rice.kns.document.TransactionalDocumentBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 

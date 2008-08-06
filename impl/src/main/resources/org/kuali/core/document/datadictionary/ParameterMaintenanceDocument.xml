@@ -7,8 +7,8 @@
   <bean id="ParameterMaintenanceDocument" parent="ParameterMaintenanceDocument-parentBean" />
 
   <bean id="ParameterMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.core.bo.Parameter" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter" />
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="maintainableSections" >
       <list>
         <ref bean="ParameterMaintenanceDocument-EditParameter" />
@@ -46,8 +46,8 @@
             p:parameterDetailType="N/A" />
     </property>
     <property name="documentTypeName" value="ParameterMaintenanceDocument" />
-    <property name="businessRulesClass" value="org.kuali.core.rules.ParameterRule" />
-    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.ParameterMaintenanceDocumentAuthorizer" />
+    <property name="businessRulesClass" value="org.kuali.rice.kns.rules.ParameterRule" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.ParameterMaintenanceDocumentAuthorizer" />
     <property name="documentTypeCode" value="PARM" />
     <property name="workflowProperties" >
       <ref bean="ParameterMaintenanceDocument-workflowProperties" />

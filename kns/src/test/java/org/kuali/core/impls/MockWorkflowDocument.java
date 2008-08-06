@@ -18,9 +18,6 @@ package org.kuali.core.impls;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.UserNotFoundException;
-import org.kuali.core.service.DocumentService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -28,6 +25,9 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.DocumentService;
 
 
 /**
@@ -567,7 +567,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.core.bo.user.UniversalUser)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.UniversalUser)
      */
     public boolean userIsInitiator(UniversalUser user) {
         LOG.debug("Using MockWorkflowDocument");
@@ -575,7 +575,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.core.bo.user.UniversalUser)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.UniversalUser)
      */
     public boolean userIsRoutedByUser(UniversalUser user) {
         LOG.debug("Using MockWorkflowDocument");

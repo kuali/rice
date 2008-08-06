@@ -22,9 +22,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.UserNotFoundException;
-import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
@@ -42,6 +39,9 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.UniversalUserService;
 
 import java.io.Serializable;
 
@@ -515,7 +515,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
 
     /**
      * 
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.core.bo.user.KualiUser)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.KualiUser)
      */
     public boolean userIsInitiator(UniversalUser user) {
         if (user == null) {
@@ -527,7 +527,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
 
     /**
      * 
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.core.bo.user.KualiUser)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.KualiUser)
      */
     public boolean userIsRoutedByUser(UniversalUser user) {
         if (user == null) {

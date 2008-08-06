@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 
 public class AccountRules extends MaintenanceDocumentRuleBase {
 

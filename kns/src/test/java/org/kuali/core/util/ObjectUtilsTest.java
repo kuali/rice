@@ -16,7 +16,8 @@
 package org.kuali.core.util;
 
 import org.junit.Test;
-import org.kuali.core.bo.Parameter;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.TestBase;
 
 /**

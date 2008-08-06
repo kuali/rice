@@ -20,10 +20,10 @@
 
 <dictionaryEntry>
     <maintenanceDocument>
-        <businessObjectClass>org.kuali.core.datadictionary.bos.PaymentReasonCode</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+        <businessObjectClass>org.kuali.rice.kns.datadictionary.bos.PaymentReasonCode</businessObjectClass>
+        <maintainableClass>org.kuali.rice.kns.maintenance.KualiMaintainableImpl</maintainableClass>
 		<businessRulesClass>org.kuali.core.impls.RiceTestMaintenanceDocumentRule</businessRulesClass>
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
+        <documentAuthorizerClass>org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
         <authorizations>
             <authorization action="initiate">
                 <workgroups>

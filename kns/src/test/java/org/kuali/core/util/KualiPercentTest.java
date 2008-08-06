@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.kuali.core.web.format.Formatter;
+import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.util.KualiPercent;
 import org.kuali.rice.test.BaseRiceTestCase;
 
 /**

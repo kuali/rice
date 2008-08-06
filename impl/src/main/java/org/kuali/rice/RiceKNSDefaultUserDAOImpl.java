@@ -18,16 +18,16 @@ package org.kuali.rice;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.bo.user.UserId;
-import org.kuali.core.dao.UniversalUserDao;
-import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.bo.user.UserId;
+import org.kuali.rice.kns.dao.UniversalUserDao;
+import org.kuali.rice.kns.exception.UserNotFoundException;
 
 
 /**
@@ -42,13 +42,13 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
     public UniversalUser getUser(UserId userId) throws UserNotFoundException {
 
         try {
-            if (userId instanceof org.kuali.core.bo.user.AuthenticationUserId) {
+            if (userId instanceof org.kuali.rice.kns.bo.user.AuthenticationUserId) {
                 return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(userId.toString())));
             }
-            if (userId instanceof org.kuali.core.bo.user.PersonPayrollId) {
+            if (userId instanceof org.kuali.rice.kns.bo.user.PersonPayrollId) {
                 return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new EmplIdDTO(userId.toString())));
             }
-            if (userId instanceof org.kuali.core.bo.user.UuId) {
+            if (userId instanceof org.kuali.rice.kns.bo.user.UuId) {
                 return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new UuIdDTO(userId.toString())));
             }
         } catch (KEWUserNotFoundException eunfe) {

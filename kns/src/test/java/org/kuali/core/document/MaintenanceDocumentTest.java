@@ -16,10 +16,11 @@
 package org.kuali.core.document;
 
 import org.junit.Test;
-import org.kuali.core.UserSession;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;

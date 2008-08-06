@@ -28,14 +28,14 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.core.exceptions.KualiExceptionIncident;
-import org.kuali.core.service.KualiExceptionIncidentService;
-import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.KualiExceptionIncidentForm;
 import org.kuali.core.web.struts.pojo.StrutsExceptionIncidentHandler;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.exception.KualiExceptionIncident;
+import org.kuali.rice.kns.service.KualiExceptionIncidentService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.WebUtils;
 
 
 /**

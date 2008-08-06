@@ -21,8 +21,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.EntityTypeDTO;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This class defines the concept of an entity type.  Person, process, system, or company
@@ -94,7 +94,7 @@ public class EntityType extends PersistableBusinessObjectBase {
 	}
 
 	/**
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
@@ -104,7 +104,7 @@ public class EntityType extends PersistableBusinessObjectBase {
     }
 
     /**
-     * @see org.kuali.core.bo.BusinessObject#refresh()
+     * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
      */
     public void refresh() {
         // not doing this unless needed

@@ -76,14 +76,14 @@
 	</bean>
 
 
-    <bean id="dbPlatformFactory" class="org.kuali.core.dbplatform.ConfigurableKualiDBPlatformFactory">
+    <bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
         <property name="ojbPlatform" value="${datasource.ojb.platform}" />
         <property name="dataSource" ref="kimDataSource" />
     </bean>
 
     <bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
 
-    <bean id="platformAwareDao" abstract="true" class="org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb">
+    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.ojb.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
@@ -202,7 +202,7 @@
       </property>
     </bean>
 
-    <bean id="kimModule" class="org.kuali.core.KualiModule">
+    <bean id="kimModule" class="org.kuali.rice.kns.KualiModule">
 		<property name="moduleId" value="kim"/>
 		<property name="moduleName" value="KIM"/>
 		<property name="moduleCode" value="kim"/>

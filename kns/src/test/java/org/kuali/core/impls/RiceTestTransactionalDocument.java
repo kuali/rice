@@ -15,7 +15,7 @@
  */
 package org.kuali.core.impls;
 
-import org.kuali.core.document.TransactionalDocumentBase;
+import org.kuali.rice.kns.document.TransactionalDocumentBase;
 
 public class RiceTestTransactionalDocument extends TransactionalDocumentBase {
 

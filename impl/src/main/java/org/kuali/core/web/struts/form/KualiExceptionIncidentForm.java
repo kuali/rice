@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.core.exceptions.ExceptionIncident;
+import org.kuali.rice.kns.exception.ExceptionIncident;
 
 /**
  * This class is the action form for all Question Prompts.

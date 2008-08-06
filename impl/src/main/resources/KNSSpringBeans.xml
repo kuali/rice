@@ -562,7 +562,7 @@
 	
 	<bean id="kualiModuleUserDaoOjb" class="org.kuali.rice.kns.dao.ojb.KualiModuleUserDaoOjb" />
 
-	<bean id="ojbCollectionHelper" class="org.kuali.core.util.OjbCollectionHelper" />
+	<bean id="ojbCollectionHelper" class="org.kuali.rice.kns.util.OjbCollectionHelper" />
 
 	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">

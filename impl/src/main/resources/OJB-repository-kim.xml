@@ -110,8 +110,8 @@
         <field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
         <field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT"/>
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR"/>
-        <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
-        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
+        <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 
         <!-- common fields -->
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -258,8 +258,8 @@
         <field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
         <field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT"/>
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR"/>
-        <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
-        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
+        <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 
         <!-- common fields -->
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />

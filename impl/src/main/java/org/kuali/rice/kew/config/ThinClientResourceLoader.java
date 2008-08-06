@@ -63,9 +63,6 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	public static final String UTILITY_ENDPOINT = "workflowutility.javaservice.endpoint";
     	public static final String SECURE_UTILITY_ENDPOINT = "secure.workflowutility.javaservice.endpoint";
 
-    	// TODO this really isn't needed anymore since the digital signature service is part of the bus
-	//private Lifecycle springLifecycle = new SpringLifeCycle("org/kuali/workflow/resources/KewWebClientBeans.xml");
-
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {

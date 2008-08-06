@@ -20,9 +20,9 @@
 
 <dictionaryEntry>
     <transactionalDocument>
-        <documentClass>org.kuali.core.impls.RiceTestTransactionalDocument</documentClass>
+        <documentClass>org.kuali.rice.kns.impls.RiceTestTransactionalDocument</documentClass>
 
-        <documentAuthorizerClass>org.kuali.core.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
+        <documentAuthorizerClass>org.kuali.rice.kns.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
         <authorizations>
             <authorization action="initiate"></authorization>
         </authorizations>

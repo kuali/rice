@@ -39,7 +39,7 @@ public class PersistenceServiceStructureImplBase {
 	// This is repeated in BaseOjbConfigurer
 	private static final String OJB_PROPERTIES_PROP = "OJB.properties";
 
-	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/ojb/RiceOJB.properties";
+	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
 
 	/**
 	 * Constructs a PersistenceServiceImpl instance.

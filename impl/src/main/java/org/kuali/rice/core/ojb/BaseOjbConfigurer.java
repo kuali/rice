@@ -61,7 +61,7 @@ public class BaseOjbConfigurer extends BaseLifecycle {
 
     public static final String RICE_OJB_PROPERTIES_PARAM = "rice.custom.ojb.properties";
     public static final String OJB_PROPERTIES_PROP = "OJB.properties";
-    private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/ojb/RiceOJB.properties";
+    private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
 
     /**
      * The OJB JCD aliases 

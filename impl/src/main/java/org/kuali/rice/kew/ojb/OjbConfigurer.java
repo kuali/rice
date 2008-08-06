@@ -25,7 +25,7 @@ import org.kuali.rice.core.ojb.BaseOjbConfigurer;
  */
 public class OjbConfigurer extends BaseOjbConfigurer {
 
-	private static final String DEFAULT_KEW_REPOSITORY_METADATA = "classpath:org/kuali/workflow/ojb/OJB-repository-kew.xml";
+	private static final String DEFAULT_KEW_REPOSITORY_METADATA = "classpath:org/kuali/rice/kew/ojb/OJB-repository-kew.xml";
 	private static final String KEW_JCD_ALIAS = "enWorkflowDataSource";
 
 	@Override

@@ -55,7 +55,7 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String MAX_UPLOAD_SIZE_PARM_NM = "MAX_FILE_SIZE_DEFAULT_UPLOAD";
 
-    public static final String UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY = "org.kuali.core.util.WebUtils.uploadedFiles";
+    public static final String UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY = "org.kuali.rice.kns.util.WebUtils.uploadedFiles";
 
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";

@@ -22,7 +22,7 @@
     <transactionalDocument>
         <documentClass>java.lang.String</documentClass>
 
-        <documentAuthorizerClass>org.kuali.core.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
+        <documentAuthorizerClass>org.kuali.rice.kns.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
         <authorizations>
             <authorization action="initiate">
                 <workgroups>

@@ -31,7 +31,7 @@
 		<field-descriptor name="personUserIdentifier" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="personPayrollIdentifier" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="personTaxIdentifier" column="PRSN_TAX_ID" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 		<field-descriptor name="personTaxIdentifierTypeCode" column="PRSN_TAX_ID_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="personFirstName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="personLastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
@@ -44,14 +44,14 @@
 		<field-descriptor name="personLocalPhoneNumber" column="PRSN_LOC_PHN_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="employeeTypeCode" column="EMP_TYPE_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="student" column="PRSN_STU_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="staff" column="PRSN_STAFF_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="faculty" column="PRSN_FAC_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="affiliate" column="PRSN_AFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="student" column="PRSN_STU_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="staff" column="PRSN_STAFF_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="faculty" column="PRSN_FAC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="affiliate" column="PRSN_AFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="personBaseSalaryAmount" column="PRSN_BASE_SLRY_AMT" jdbc-type="DECIMAL"
-			conversion="org.kuali.core.util.OjbKualiDecimalFieldConversion" />
+			conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" />
 		<field-descriptor name="financialSystemsEncryptedPasswordText" column="FS_ENCRPTD_PWD_TXT" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbKualiHashFieldConversion" />
+			conversion="org.kuali.rice.kns.util.OjbKualiHashFieldConversion" />
 
 		<reference-descriptor name="campus" class-ref="org.kuali.rice.kns.bo.Campus" auto-retrieve="true" auto-update="none" auto-delete="none"
 			proxy="true">
@@ -104,7 +104,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="xmlDocumentContents" column="DOCUMENT_CONTENTS" jdbc-type="CLOB"
-			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 <!-- 
 		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
 			auto-delete="object">
@@ -183,7 +183,7 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="noteTypeDescription" column="NTE_TYP_DESC" jdbc-type="VARCHAR" />
 		<field-descriptor name="noteTypeActiveIndicator" column="NTE_TYP_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.Attachment" table="SH_ATT_T">
@@ -207,7 +207,7 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="documentName" column="FDOC_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="documentTypeActiveIndicator" column="FDOC_TYP_ACTIVE_CD" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 
 		<collection-descriptor name="documentTypeAttributes" element-class-ref="org.kuali.rice.kns.bo.DocumentTypeAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
 			<inverse-foreignkey field-ref="documentTypeCode" />
@@ -222,7 +222,7 @@
 		<field-descriptor name="value" column="DOC_TYP_ATTR_VAL" jdbc-type="VARCHAR" />
 		<field-descriptor name="label" column="DOC_TYP_ATTR_LBL" jdbc-type="VARCHAR" />
 
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
@@ -231,7 +231,7 @@
 		<field-descriptor name="code" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="SH_PARM_NMSPC_NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
@@ -240,7 +240,7 @@
 		<field-descriptor name="code" column="SH_PARM_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="SH_PARM_TYP_NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
@@ -250,7 +250,7 @@
 		<field-descriptor name="parameterDetailTypeCode" column="SH_PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="parameterDetailTypeName" column="SH_PARM_DTL_TYP_NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
@@ -322,7 +322,7 @@
 		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="serializedLookupResults" column="SERIALIZED_LOOKUP_RESULTS" jdbc-type="CLOB"
-			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.SelectedObjectIds" table="FS_LOOKUP_SELECTIONS_MT">
@@ -340,7 +340,7 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="name" column="EMP_TYP_DESC" jdbc-type="VARCHAR" />
 		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.EmployeeStatus" table="SH_EMP_STAT_T">
@@ -349,7 +349,7 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="name" column="EMP_STAT_DESC" jdbc-type="VARCHAR" />
 		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="SH_CAMPUS_T">
@@ -370,7 +370,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="dataObjectMaintenanceCodeActiveIndicator" column="DOBJ_MAINT_CD_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 	

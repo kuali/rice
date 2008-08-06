@@ -20,7 +20,7 @@
 
 <dictionaryEntry>
     <transactionalDocument>
-        <documentClass>org.kuali.core.impls.RiceTestTransactionalDocument</documentClass>
+        <documentClass>org.kuali.rice.kns.impls.RiceTestTransactionalDocument</documentClass>
 
         <documentAuthorizerClass>org.kuali.Foo</documentAuthorizerClass>
         <authorizations>

@@ -25,7 +25,7 @@ import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowRoutingForm;
-import org.kuali.workflow.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
 
 
 /**

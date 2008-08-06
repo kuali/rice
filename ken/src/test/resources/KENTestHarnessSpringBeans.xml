@@ -24,7 +24,7 @@
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
-                <bean class="org.kuali.workflow.config.KEWConfigurer">
+                <bean class="org.kuali.rice.kew.config.KEWConfigurer">
                     <property name="clientProtocol" value="local" />
                 </bean>
                 <bean class="org.kuali.rice.ken.config.KENConfigurer">

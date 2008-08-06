@@ -45,14 +45,14 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.BaseWorkgroup;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupExtension;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.rice.kew.workgroup.BaseWorkgroupMember;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
-import org.kuali.workflow.workgroup.WorkgroupType;
-import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute;
 import org.xml.sax.SAXException;
 
 

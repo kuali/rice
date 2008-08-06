@@ -78,7 +78,7 @@
 		<ruleAttribute>
 			<name>KualiChartAttribute</name>
 			<className>
-				org.kuali.workflow.attribute.KualiChartAttribute
+				org.kuali.rice.kew.attribute.KualiChartAttribute
 			</className>
 			<label>Kuali Chart Attribute</label>
 			<description>Kuali Chart Attribute</description>
@@ -88,7 +88,7 @@
 		<ruleAttribute>
 			<name>KualiAccountAttribute</name>
 			<className>
-				org.kuali.workflow.attribute.KualiAccountAttribute
+				org.kuali.rice.kew.attribute.KualiAccountAttribute
 			</className>
 			<label>Kuali Account Attribute</label>
 			<description>Kuali Account Attribute</description>
@@ -98,7 +98,7 @@
 		<ruleAttribute>
 			<name>KualiOrgReviewAttribute</name>
 			<className>
-				org.kuali.workflow.attribute.KualiOrgReviewAttribute
+				org.kuali.rice.kew.attribute.KualiOrgReviewAttribute
 			</className>
 			<label>Kuali Org Review Attribute</label>
 			<description>Kuali Org Review Attribute</description>

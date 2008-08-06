@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.kew.attribute.Extension;
+import org.kuali.rice.kew.attribute.ExtensionData;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -29,8 +31,6 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.xml.WorkgroupXmlConstants;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.attribute.ExtensionData;
 
 
 /**

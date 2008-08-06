@@ -25,6 +25,7 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
@@ -44,9 +45,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupDAO;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
-import org.kuali.workflow.workgroup.WorkgroupType;
 
 
 /**

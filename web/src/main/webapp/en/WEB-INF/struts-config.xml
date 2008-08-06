@@ -17,7 +17,7 @@
       <form-bean name="ApplicationConstantsForm" type="org.kuali.rice.kew.applicationconstants.web.ApplicationConstantsForm" />
       <form-bean name="RuleAttributeReportForm" type="org.kuali.rice.kew.routetemplate.web.RuleAttributeReportForm" />
       <form-bean name="RuleTemplateForm" type="org.kuali.rice.kew.routetemplate.web.RuleTemplateForm" />
-      <form-bean name="WorkgroupTypeForm" type="org.kuali.workflow.workgroup.web.WorkgroupTypeForm" />
+      <form-bean name="WorkgroupTypeForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupTypeForm" />
       <form-bean name="Rule2Form" type="org.kuali.rice.kew.routetemplate.web.Rule2Form" />
       <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.routetemplate.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
@@ -222,7 +222,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"/>
        </action>
 
-       <action path="/WorkgroupType" type="org.kuali.workflow.workgroup.web.WorkgroupTypeAction"
+       <action path="/WorkgroupType" type="org.kuali.rice.kew.workgroup.web.WorkgroupTypeAction"
           input="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"
           name="WorkgroupTypeForm" scope="request" parameter="methodToCall">
           <forward path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp" name="report" />

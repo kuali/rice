@@ -26,6 +26,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.role.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.TestDocContent;
 import org.kuali.rice.kew.routemodule.TestRecipient;
@@ -36,7 +37,6 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.test.KEWTestCase;
 
 

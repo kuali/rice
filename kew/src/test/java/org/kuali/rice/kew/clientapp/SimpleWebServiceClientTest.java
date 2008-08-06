@@ -23,11 +23,11 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.kew.config.KEWConfigurer;
+import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.workflow.config.KEWConfigurer;
-import org.kuali.workflow.config.ThinClientResourceLoader;
 import org.kuali.workflow.test.KEWTestCase;
 
 

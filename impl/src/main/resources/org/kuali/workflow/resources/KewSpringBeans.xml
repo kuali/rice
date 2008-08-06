@@ -349,9 +349,9 @@
 
 
 	<!--  RoleService -->
-	<bean id="enRoleService" class="org.kuali.workflow.role.RoleServiceImpl"  lazy-init="true">
+	<bean id="enRoleService" class="org.kuali.rice.kew.role.RoleServiceImpl"  lazy-init="true">
       <property name="roleDAO">
-        <bean class="org.kuali.workflow.role.dao.RoleDAOOjbImpl">
+        <bean class="org.kuali.rice.kew.role.dao.RoleDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource"/>
         </bean>
       </property>
@@ -383,7 +383,7 @@
 	<bean id="EDocLiteLookupableService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupable" scope="prototype" />
 	<bean id="UserLookupableImplService" class="org.kuali.rice.kew.user.UserLookupableImpl" scope="prototype" />
 	<bean id="WorkGroupLookupableImplService" class="org.kuali.rice.kew.workgroup.WorkGroupLookupableImpl" scope="prototype" />
-    <bean id="WorkgroupTypeLookup" class="org.kuali.workflow.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
+    <bean id="WorkgroupTypeLookup" class="org.kuali.rice.kew.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.DefaultEmailService"  lazy-init="true"/>
 
@@ -622,11 +622,11 @@
     </property>
     </bean>
 
-    <bean id="workgroupTypeDAO" class="org.kuali.workflow.workgroup.dao.WorkgroupTypeDAOOjbImpl">
+    <bean id="workgroupTypeDAO" class="org.kuali.rice.kew.workgroup.dao.WorkgroupTypeDAOOjbImpl">
       <property name="jcdAlias" value="enWorkflowDataSource"/>
     </bean>
 
-    <bean id="workgroupTypeService" class="org.kuali.workflow.workgroup.WorkgroupTypeServiceImpl">
+    <bean id="workgroupTypeService" class="org.kuali.rice.kew.workgroup.WorkgroupTypeServiceImpl">
       <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
     </bean>
 

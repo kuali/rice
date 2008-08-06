@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
+import org.kuali.rice.kew.attribute.Extension;
+import org.kuali.rice.kew.attribute.ExtensionAttribute;
+import org.kuali.rice.kew.attribute.ExtensionData;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
@@ -44,11 +47,6 @@ import org.kuali.rice.kew.validation.ValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.workgroup.web.WebWorkgroup;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.attribute.ExtensionAttribute;
-import org.kuali.workflow.attribute.ExtensionData;
-import org.kuali.workflow.workgroup.WorkgroupType;
-import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 
 
 /**

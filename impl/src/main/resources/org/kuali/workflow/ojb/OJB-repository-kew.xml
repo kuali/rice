@@ -858,7 +858,7 @@
         <inverse-foreignkey field-ref="workgroupId"  />
 		<inverse-foreignkey field-ref="workgroupVersionNumber"/>
     </collection-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.workflow.workgroup.BaseWorkgroupExtension"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroupExtension"
       name="extensions" auto-retrieve="true" auto-update="true" auto-delete="true">
         <inverse-foreignkey field-ref="workgroupId"  />
         <inverse-foreignkey field-ref="workgroupVersionNumber"/>
@@ -879,7 +879,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.workgroup.BaseWorkgroupExtension" table="EN_WRKGRP_EXT_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.BaseWorkgroupExtension" table="EN_WRKGRP_EXT_T">
     <field-descriptor name="workgroupExtensionId" column="WRKGRP_EXT_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE"/>
     <field-descriptor name="workgroupId" column="WRKGRP_ID" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor name="workgroupVersionNumber" column="WRKGRP_VER_NBR" jdbc-type="INTEGER" access="anonymous" />
@@ -889,27 +889,27 @@
       <foreignkey field-ref="workgroupId"/>
       <foreignkey field-ref="workgroupVersionNumber"/>
     </reference-descriptor>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.workflow.workgroup.WorkgroupTypeAttribute" name="workgroupTypeAttribute">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute" name="workgroupTypeAttribute">
       <foreignkey field-ref="workgroupTypeAttributeId"/>
     </reference-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.workflow.workgroup.BaseWorkgroupExtensionData" name="data"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData" name="data"
       auto-retrieve="true" auto-update="true" auto-delete="true">
       <inverse-foreignkey field-ref="workgroupExtensionId"/>
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.workgroup.BaseWorkgroupExtensionData" table="EN_WRKGRP_EXT_DTA_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData" table="EN_WRKGRP_EXT_DTA_T">
     <field-descriptor name="workgroupExtensionDataId" column="WRKGRP_EXT_DTA_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE"/>
     <field-descriptor name="workgroupExtensionId" column="WRKGRP_EXT_ID" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor name="key" column="EXT_KEY" jdbc-type="VARCHAR"/>
     <field-descriptor name="value" column="EXT_VAL" jdbc-type="VARCHAR"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.workflow.workgroup.BaseWorkgroupExtension" name="workgroupExtension">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.BaseWorkgroupExtension" name="workgroupExtension">
       <foreignkey field-ref="workgroupExtensionId"/>
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.workgroup.WorkgroupType" table="EN_WRKGRP_TYP_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.WorkgroupType" table="EN_WRKGRP_TYP_T">
     <field-descriptor name="workgroupTypeId" column="WRKGRP_TYP_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE"/>
     <field-descriptor name="name" column="WRKGRP_TYP_NM" jdbc-type="VARCHAR"/>
     <field-descriptor name="label" column="WRKGRP_TYP_LBL" jdbc-type="VARCHAR"/>
@@ -917,21 +917,21 @@
     <field-descriptor name="documentTypeName" column="DOC_TYP_NM" jdbc-type="VARCHAR"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="BIT"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <collection-descriptor element-class-ref="org.kuali.workflow.workgroup.WorkgroupTypeAttribute" name="attributes"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute" name="attributes"
       auto-retrieve="true" auto-update="true" auto-delete="true">
       <orderby name="orderIndex" sort="ASC"/>
       <inverse-foreignkey field-ref="workgroupTypeId"/>
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.workgroup.WorkgroupTypeAttribute" table="EN_WRKGRP_TYP_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute" table="EN_WRKGRP_TYP_ATTRIB_T">
     <field-descriptor name="workgroupTypeAttributeId" column="WRKGRP_TYP_ATTRIB_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE"/>
     <field-descriptor name="workgroupTypeId" column="WRKGRP_TYP_ID" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor name="attributeId" column="ATTRIB_ID" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="BIT"/>
     <field-descriptor name="orderIndex" column="ORD_INDX" jdbc-type="INTEGER"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.workflow.workgroup.WorkgroupType" name="workgroupType">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.WorkgroupType" name="workgroupType">
       <foreignkey field-ref="workgroupTypeId"/>
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routetemplate.RuleAttribute" name="attribute">
@@ -956,7 +956,7 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.QualifiedRole" table="EN_QUAL_ROLE_T">
+  <class-descriptor class="org.kuali.rice.kew.role.QualifiedRole" table="EN_QUAL_ROLE_T">
     <field-descriptor column="QUAL_ROLE_ID" name="qualifiedRoleId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="ROLE_ID" name="roleId" jdbc-type="BIGINT"/>
@@ -971,84 +971,84 @@
     <field-descriptor column="CUR_IND" name="current" jdbc-type="BIT" />
     <field-descriptor column="PREV_VER_ID" name="previousVersionId" jdbc-type="BIGINT" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="role" class-ref="org.kuali.workflow.role.Role"
+    <reference-descriptor name="role" class-ref="org.kuali.rice.kew.role.Role"
         auto-retrieve="true" auto-update="link" auto-delete="false" proxy="true">
         <foreignkey field-ref="roleId" />
     </reference-descriptor>
-    <collection-descriptor name="members" element-class-ref="org.kuali.workflow.role.QualifiedRoleMember"
+    <collection-descriptor name="members" element-class-ref="org.kuali.rice.kew.role.QualifiedRoleMember"
         auto-retrieve="true" auto-update="object" auto-delete="true" proxy="false">
       <inverse-foreignkey field-ref="qualifiedRoleId" />
     </collection-descriptor>
-    <collection-descriptor name="extensions" element-class-ref="org.kuali.workflow.role.QualifiedRoleExtension"
+    <collection-descriptor name="extensions" element-class-ref="org.kuali.rice.kew.role.QualifiedRoleExtension"
          auto-retrieve="true" auto-update="object" auto-delete="true" proxy="false">
       <inverse-foreignkey field-ref="qualifiedRoleId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.QualifiedRoleMember" table="EN_QUAL_ROLE_MBR_T">
+  <class-descriptor class="org.kuali.rice.kew.role.QualifiedRoleMember" table="EN_QUAL_ROLE_MBR_T">
     <field-descriptor column="QUAL_ROLE_MBR_ID" name="qualifiedRoleMemberId" jdbc-type="BIGINT" primarykey="true" sequence-name="SEQ_RESPONSIBILITY_ID" autoincrement="true"/>
     <field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="BIGINT"/>
     <field-descriptor column="QUAL_ROLE_ID" name="qualifiedRoleId" jdbc-type="BIGINT"/>
     <field-descriptor column="MBR_ID" name="memberId" jdbc-type="VARCHAR" />
-    <field-descriptor column="MBR_TYP" name="memberType" jdbc-type="VARCHAR" conversion="org.kuali.workflow.ojb.IdentityTypeConversion"/>
+    <field-descriptor column="MBR_TYP" name="memberType" jdbc-type="VARCHAR" conversion="org.kuali.rice.kew.ojb.IdentityTypeConversion"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="org.kuali.workflow.role.QualifiedRole" name="qualifiedRole" auto-delete="false" auto-retrieve="true" auto-update="link" proxy="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.role.QualifiedRole" name="qualifiedRole" auto-delete="false" auto-retrieve="true" auto-update="link" proxy="false">
       <foreignkey field-ref="qualifiedRoleId" />
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.QualifiedRoleExtension" table="EN_QUAL_ROLE_EXT_T">
+  <class-descriptor class="org.kuali.rice.kew.role.QualifiedRoleExtension" table="EN_QUAL_ROLE_EXT_T">
     <field-descriptor column="QUAL_ROLE_EXT_ID" name="qualifiedRoleExtensionId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="QUAL_ROLE_ID" name="qualifiedRoleId" jdbc-type="BIGINT"/>
     <field-descriptor column="ROLE_ATTRIB_ID" name="roleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="org.kuali.workflow.role.QualifiedRole" name="qualifiedRole"
+    <reference-descriptor class-ref="org.kuali.rice.kew.role.QualifiedRole" name="qualifiedRole"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="qualifiedRoleId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.workflow.role.RoleAttribute" name="roleAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.role.RoleAttribute" name="roleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="roleAttributeId" />
     </reference-descriptor>
-    <collection-descriptor name="extensionValues" element-class-ref="org.kuali.workflow.role.QualifiedRoleExtensionValue"
+    <collection-descriptor name="extensionValues" element-class-ref="org.kuali.rice.kew.role.QualifiedRoleExtensionValue"
         auto-delete="true" auto-retrieve="true" auto-update="object">
       <inverse-foreignkey field-ref="qualifiedRoleExtensionId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.QualifiedRoleExtensionValue" table="EN_QUAL_ROLE_EXT_VAL_T">
+  <class-descriptor class="org.kuali.rice.kew.role.QualifiedRoleExtensionValue" table="EN_QUAL_ROLE_EXT_VAL_T">
     <field-descriptor column="QUAL_ROLE_EXT_VAL_ID" name="qualifiedRoleExtensionValueId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="QUAL_ROLE_EXT_ID" name="qualifiedRoleExtensionId" jdbc-type="BIGINT"/>
     <field-descriptor column="EXT_KEY" name="key" jdbc-type="VARCHAR" />
     <field-descriptor column="EXT_VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="org.kuali.workflow.role.QualifiedRoleExtension" name="extension"
+    <reference-descriptor class-ref="org.kuali.rice.kew.role.QualifiedRoleExtension" name="extension"
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="qualifiedRoleExtensionId" />
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.Role" table="EN_ROLE_T">
+  <class-descriptor class="org.kuali.rice.kew.role.Role" table="EN_ROLE_T">
     <field-descriptor column="ROLE_ID" name="roleId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="ROLE_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="ROLE_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <collection-descriptor name="attributes" element-class-ref="org.kuali.workflow.role.RoleAttribute"
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kew.role.RoleAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="object">
       <inverse-foreignkey field-ref="roleId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.workflow.role.RoleAttribute" table="EN_ROLE_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.role.RoleAttribute" table="EN_ROLE_ATTRIB_T">
     <field-descriptor column="ROLE_ATTRIB_ID" name="roleAttributeId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="ROLE_ID" name="roleId" jdbc-type="BIGINT"/>
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" locking="true" />
-    <reference-descriptor class-ref="org.kuali.workflow.role.Role" name="role"
+    <reference-descriptor class-ref="org.kuali.rice.kew.role.Role" name="role"
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="roleId" />
     </reference-descriptor>

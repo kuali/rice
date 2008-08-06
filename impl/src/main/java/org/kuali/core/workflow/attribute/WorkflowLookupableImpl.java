@@ -39,8 +39,8 @@ import org.kuali.rice.kew.lookupable.LookupForm;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler;
-import org.kuali.workflow.attribute.WorkflowLookupableResult;
+import org.kuali.rice.kns.workflow.attribute.WorkflowLookupableInvocationHandler;
+import org.kuali.rice.kns.workflow.attribute.WorkflowLookupableResult;
 
 
 /**

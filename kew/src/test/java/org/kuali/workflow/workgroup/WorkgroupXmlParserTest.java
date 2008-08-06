@@ -20,11 +20,14 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.attribute.Extension;
+import org.kuali.rice.kew.attribute.ExtensionData;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.attribute.ExtensionData;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute;
+import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
 import org.kuali.workflow.test.KEWTestCase;
 
 

@@ -36,6 +36,7 @@ import org.kuali.rice.kew.notification.NotificationService;
 import org.kuali.rice.kew.preferences.PreferencesService;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocumentService;
 import org.kuali.rice.kew.responsibility.ResponsibilityIdService;
+import org.kuali.rice.kew.role.RoleService;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.routeheader.WorkflowDocumentService;
 import org.kuali.rice.kew.routemodule.RouteModuleService;
@@ -53,10 +54,9 @@ import org.kuali.rice.kew.web.WebAuthenticationService;
 import org.kuali.rice.kew.web.WebAuthorizationService;
 import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
 import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
-import org.kuali.workflow.role.RoleService;
-import org.kuali.workflow.workgroup.WorkgroupTypeService;
 import org.springframework.transaction.PlatformTransactionManager;
 
 

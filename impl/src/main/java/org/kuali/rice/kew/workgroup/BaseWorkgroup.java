@@ -31,6 +31,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.user.Recipient;
@@ -38,7 +39,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.workflow.attribute.Extension;
 
 
 /**

@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
@@ -37,8 +38,6 @@ import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupDAO;
 import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupMemberDAO;
 import org.kuali.rice.kew.xml.WorkgroupXmlHandler;
 import org.kuali.rice.kew.xml.export.WorkgroupXmlExporter;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 
 
 /**

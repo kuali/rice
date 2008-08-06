@@ -22,7 +22,6 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.workflow.workgroup.WorkgroupType;
 
 
 /**

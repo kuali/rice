@@ -51,17 +51,17 @@
     <class>org.kuali.rice.kew.user.BaseWorkflowUser</class>
     <class>org.kuali.rice.kew.workgroup.BaseWorkgroup</class>
     <class>org.kuali.rice.kew.workgroup.BaseWorkgroupMember</class>
-    <class>org.kuali.workflow.workgroup.BaseWorkgroupExtension</class>
-    <class>org.kuali.workflow.workgroup.BaseWorkgroupExtensionData</class>
-    <class>org.kuali.workflow.workgroup.WorkgroupType</class>
-    <class>org.kuali.workflow.workgroup.WorkgroupTypeAttribute</class>
+    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupExtension</class>
+    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData</class>
+    <class>org.kuali.rice.kew.workgroup.WorkgroupType</class>
+    <class>org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
-    <class>org.kuali.workflow.role.QualifiedRole</class>
-    <class>org.kuali.workflow.role.QualifiedRoleMember</class>
-    <class>org.kuali.workflow.role.QualifiedRoleExtension</class>
-    <class>org.kuali.workflow.role.QualifiedRoleExtensionValue</class>
-    <class>org.kuali.workflow.role.Role</class>
-    <class>org.kuali.workflow.role.RoleAttribute</class>
+    <class>org.kuali.rice.kew.role.QualifiedRole</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleExtension</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleExtensionValue</class>
+    <class>org.kuali.rice.kew.role.Role</class>
+    <class>org.kuali.rice.kew.role.RoleAttribute</class>
     <class>org.kuali.rice.kew.removereplace.RemoveReplaceDocument</class>
     <class>org.kuali.rice.kew.removereplace.RuleTarget</class>
     <class>org.kuali.rice.kew.removereplace.WorkgroupTarget</class>

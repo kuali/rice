@@ -34,6 +34,10 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.attribute.Extension;
+import org.kuali.rice.kew.attribute.ExtensionAttribute;
+import org.kuali.rice.kew.attribute.ExtensionData;
+import org.kuali.rice.kew.attribute.web.WebExtensions;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
@@ -56,20 +60,16 @@ import org.kuali.rice.kew.validation.ValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.workgroup.BaseWorkgroup;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupExtension;
+import org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute;
 import org.kuali.rice.kew.workgroup.web.WorkgroupForm.WorkgroupMember;
-import org.kuali.workflow.attribute.Extension;
-import org.kuali.workflow.attribute.ExtensionAttribute;
-import org.kuali.workflow.attribute.ExtensionData;
-import org.kuali.workflow.attribute.web.WebExtensions;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
-import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
-import org.kuali.workflow.workgroup.WorkgroupType;
-import org.kuali.workflow.workgroup.WorkgroupTypeAttribute;
 
 
 /**

@@ -65,7 +65,7 @@
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
 				</bean>
                 <bean class="edu.kuali.rice.kcb.config.KCBConfigurer"/>
-				<bean class="org.kuali.workflow.config.KEWConfigurer">
+				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
 			</list>

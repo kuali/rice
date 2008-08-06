@@ -21,11 +21,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.export.XmlExporter;
-import org.kuali.workflow.attribute.Extension;
 
 
 /**

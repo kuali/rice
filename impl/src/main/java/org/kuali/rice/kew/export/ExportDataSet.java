@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.edl.EDocLiteStyle;
-import org.kuali.workflow.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
 
 
 /**

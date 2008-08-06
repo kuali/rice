@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.attribute.web.WebExtensions;
 import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -34,8 +35,7 @@ import org.kuali.rice.kew.web.WorkflowRoutingForm;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.workflow.attribute.web.WebExtensions;
-import org.kuali.workflow.workgroup.WorkgroupType;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
 
 
 /**

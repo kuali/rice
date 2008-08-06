@@ -19,9 +19,9 @@ package org.kuali.rice.kew.workgroup;
 import java.io.Serializable;
 import java.util.List;
 
+import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.workflow.attribute.Extension;
 
 
 /**

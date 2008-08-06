@@ -36,16 +36,14 @@ public interface RouteModuleRemote {
    * Generate action requests for the given RouteHeaderVO.
    *
    * @return ActionRequestVO[] the generated action requests
-   * @throws EdenException
    */
   public ActionRequestDTO[] findActionRequests(RouteHeaderDTO routeHeader, DocumentContentDTO documentContent) throws RemoteException;
 
   /**
    * The route module will resolve the given responsibilityId and return an object that contains the key to
-   * either a user or a Eden workgroup.
+   * either a user or a workgroup.
    * @param rId ResponsibiliyId that we need resolved.
    * @return The ResponsibleParty containing a key to a user or workgroup.
-   * @throws EdenException if any problems are found this exception can be thrown.
    */
   public ResponsiblePartyDTO resolveResponsibilityId(Long responsibilityId) throws RemoteException;
 

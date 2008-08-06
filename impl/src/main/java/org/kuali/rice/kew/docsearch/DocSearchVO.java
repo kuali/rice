@@ -37,7 +37,6 @@ public class DocSearchVO implements Serializable, RowStyleable {
 	private static final long serialVersionUID = 7850758046316186962L;
 	private static String UNKNOWN_ROUTING_STATUS = "UNKNOWN";
     private static final String URL_SUFFIX = "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=";
-    private static final String ROUTE_LOG_URL = "EdenServices/GetRouteHeader.do?docId=";
 
 	private Long routeHeaderId;
 	private String docRouteStatusCode;
@@ -202,10 +201,6 @@ public class DocSearchVO implements Serializable, RowStyleable {
 
     public boolean isUsingSuperUserSearch() {
     	return DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
-    }
-
-    public String getRouteLogUrl() {
-        return ROUTE_LOG_URL + this.routeHeaderId.toString();
     }
 
     public String getRowStyleClass() {

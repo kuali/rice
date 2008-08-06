@@ -267,7 +267,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         buffer.append("Document type: " + form.getDocumentType()).append("\n");
         buffer.append("Document id: " + (form.getRouteHeaderId() != null ? form.getRouteHeaderId() : "")).append("\n\n");
         
-        buffer.append("Category: " + form.getEdenCategory()).append("\n");
+        buffer.append("Category: " + form.getCategory()).append("\n");
         buffer.append("Comments: \n" + form.getComments()).append("\n\n");
         
         buffer.append("Exception: \n" + form.getException());

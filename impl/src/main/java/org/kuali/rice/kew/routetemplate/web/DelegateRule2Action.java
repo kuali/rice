@@ -530,8 +530,6 @@ public class DelegateRule2Action extends WorkflowAction {
 
     private void createWorkflowDocument(HttpServletRequest request, Rule2Form rule2Form, List rules) throws WorkflowException {
         if (rule2Form.getWorkflowDocument() == null) {
-            
-//            rule2Form.setWorkflowDocument(new WorkflowDocument(KEWConstants.RULE_DOCUMENT_NAME, getUserSession(request).getWorkflowUser(), KEWConstants.EDEN_APP_CODE));
         	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
             rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
             rule2Form.setDocId(rule2Form.getWorkflowDocument().getRouteHeaderId());

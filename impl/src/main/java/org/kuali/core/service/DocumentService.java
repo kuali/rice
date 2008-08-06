@@ -48,7 +48,6 @@ public interface DocumentService {
      * @param documentTypeName
      * @return
      * @throws KEWUserNotFoundException
-     * @throws EdenException
      */
     public Document getNewDocument(String documentTypeName) throws WorkflowException;
 
@@ -58,7 +57,6 @@ public interface DocumentService {
      * @param documentClass
      * @return
      * @throws KEWUserNotFoundException
-     * @throws EdenException
      */
     public Document getNewDocument(Class documentClass) throws WorkflowException;
 
@@ -68,7 +66,6 @@ public interface DocumentService {
      * @param documentHeaderId
      * @return
      * @throws KEWUserNotFoundException
-     * @throws EdenException
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
 
@@ -125,7 +122,6 @@ public interface DocumentService {
      * @param annotation
      * @param adHocRoutingRecipients
      * @return
-     * @throws EdenException
      * @throws ValidationErrorList
      */
     public Document routeDocument(Document document, String annotation, List adHocRoutingRecipients) throws WorkflowException;
@@ -138,7 +134,6 @@ public interface DocumentService {
      * @param annotation
      * @param adHocRoutingRecipients
      * @return
-     * @throws EdenException
      * @throws ValidationErrorList
      */
     public Document approveDocument(Document document, String annotation, List adHocRoutingRecipients) throws WorkflowException;
@@ -150,7 +145,6 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @return
-     * @throws EdenException
      * @throws ValidationErrorList
      */
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException;
@@ -195,7 +189,6 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @return
-     * @throws EdenException
      */
     public Document cancelDocument(Document document, String annotation) throws WorkflowException;
 
@@ -209,7 +202,6 @@ public interface DocumentService {
      * @param annotation
      * @param adHocRecipients
      * @return
-     * @throws EdenException
      */
     public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
 
@@ -225,7 +217,6 @@ public interface DocumentService {
      * @param annotation
      * @param adHocRecipients
      * @return
-     * @throws EdenException
      * @throws ValidationErrorList
      */
     public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
@@ -237,7 +228,6 @@ public interface DocumentService {
      * @param document
      * @param adHocRecipients
      * @return
-     * @throws EdenException
      */
     public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException;
 

@@ -127,7 +127,7 @@
   <tr>
     <td align="right" valign="top" nowrap class="thnormal">Category:</td>
     <td nowrap class="datacell">
-          <html-el:select name="FeedbackForm" property="edenCategory">
+          <html-el:select name="FeedbackForm" property="category">
               <html-el:option value="suggestion">Suggestion</html-el:option>
               <html-el:option value="problem">Problem or Technical Question</html-el:option>
           </html-el:select>

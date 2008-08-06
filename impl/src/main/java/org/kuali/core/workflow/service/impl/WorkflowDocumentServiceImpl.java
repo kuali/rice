@@ -314,7 +314,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @throws InvalidRouteTypeException
      * @throws KEWUserNotFoundException
      * @throws InvalidActionRequestException
-     * @throws EdenException
      * @throws InvalidWorkgroupException
      */
     private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {

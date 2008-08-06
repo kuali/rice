@@ -46,7 +46,7 @@ public interface PostProcessorRemote {
    * of the change are successful. It should return false if the application considers this an
    * incorrect change.
    *
-   * The method can throw a ResourceUnavailableException in order to get EDEN to requeue the
+   * The method can throw a ResourceUnavailableException in order to requeue the
    * document and try again later.
    * @param statusChangeEvent
    * @param msg any error message to be propagated back to users should be set here
@@ -63,13 +63,13 @@ public interface PostProcessorRemote {
    * of the change are successful. It should return false if the application considers this an
    * incorrect change.
    *
-   * The method can throw a ResourceUnavailableException in order to get EDEN to requeue the
+   * The method can throw a ResourceUnavailableException in order to requeue the
    * document and try again later.
    * @param levelChangeEvent
    * @param msg any error message to be propagated back to users should be set here
    * @return true if the status change is correct and application actions are successful
-   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
-   * @throws ResourceUnavailableException EDEN will requeue the document and try the change again
+   * @throws java.lang.Exception A general Exception will put the document into Exception routing
+   * @throws ResourceUnavailableException requeue the document and try the change again
    * later if this exception is thrown
    * @see DocumentRouteLevelChangeDTO
    */
@@ -77,14 +77,14 @@ public interface PostProcessorRemote {
   
   /**
    * KEW is signaling that the document should be deleted. The application can reject this by
-   * returning false. If the EdenException is thrown the docuemnt will go to exception routing. If
+   * returning false. If an Exception is thrown the docuemnt will go to exception routing. If
    * a ResourceUnavailableException is thrown, the doc will be requeued and will try again later to
    * delete the document.
    * @param event
    * @param message
    * @return
-   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
-   * @throws ResourceUnavailableException EDEN will requeue the document and try the change again
+   * @throws java.lang.Exception A general Exception will put the document into Exception routing
+   * @throws ResourceUnavailableException requeue the document and try the change again
    */
   public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException;
   
@@ -102,7 +102,7 @@ public interface PostProcessorRemote {
    * 
    * @param event - holder for data from the engine's process
    * @return true if the method is successful, false otherwise
-   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
+   * @throws java.lang.Exception A general Exception will put the document into Exception routing
    */
   public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception;
 
@@ -111,7 +111,7 @@ public interface PostProcessorRemote {
    * 
    * @param event - holder for data from the engine's process including whether the engine was successful or not
    * @return true if the method is successful, false otherwise
-   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
+   * @throws java.lang.Exception A general Exception will put the document into Exception routing
    */
   public boolean afterProcess(AfterProcessEventDTO event) throws Exception;
 }

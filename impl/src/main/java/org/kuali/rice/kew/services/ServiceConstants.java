@@ -47,7 +47,6 @@ public class ServiceConstants {
     PARTY_TYPE_MAP = map;
   }    
     
-  public static final String APP_RESOURCE_PREKEY = "edenDocuments.";
   public static final String APPROVE = "Approve Document";
   public static final String DISAPPROVE = "Disapprove Document";
   public static final String CANCEL = "Cancel Document";
@@ -86,7 +85,6 @@ public class ServiceConstants {
   public static final String WIZARD_DELETE = "delete";
   public static final String WIZARD_ROUTE = "RouteDocument";
   public static final String CUSTOM_ACTION = "customAction";
-  public static final String EDEN_WORKGROUP = "EDEN_TEAM";
 
   //  public static final String DOC_HANDLER_SESSION_APPENDER = "docHandler";
   public static final String DATE_FORMAT = "MM/dd/yyyy";

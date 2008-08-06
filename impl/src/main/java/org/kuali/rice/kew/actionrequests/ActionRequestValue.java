@@ -515,7 +515,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {
-        //before altering this method it is used in EdenUtility checkRouteLogAuthentication
+        //before altering this method it is used in checkRouteLogAuthentication
         //don't break that method
         if (recipient == null) {
             return false;

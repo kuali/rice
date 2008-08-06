@@ -269,7 +269,7 @@ public class EmailMessageTest extends KEWTestCase {
         FeedbackForm form = new FeedbackForm();
         form.setComments("this is \r\n a few lines of \r\n comments");
         form.setDocumentType("PingDocument");
-        form.setEdenCategory("an eden category");
+        form.setCategory("an eden category");
         form.setException(new Exception().toString());
         form.setFirstName("first name");
         form.setLastName("last name");

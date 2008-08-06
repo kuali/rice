@@ -36,16 +36,14 @@ public interface RouteModule {
      * Generate action requests for the given RouteContext.
      *
      * @return A List of the generated ActionRequestValue objects.
-     * @throws EdenException
      */
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
 
     /**
      * The route module will resolve the given responsibilityId and return an object that contains the key to
-     * either a user or a Eden workgroup.
+     * either a user or a workgroup.
      * @param rId ResponsibiliyId that we need resolved.
      * @return The ResponsibleParty containing a key to a user or workgroup.
-     * @throws EdenException if any problems are found this exception can be thrown.
      */
     public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws WorkflowException;
 

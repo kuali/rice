@@ -39,7 +39,6 @@ public interface WorkflowGroupService {
      * @param groupName
      * @return Workgroup if a group by the name passed in exists
      * @throws InvalidWorkgroupException
-     * @throws EdenException
      */
     public WorkgroupDTO getWorkgroupByGroupName(String groupName) throws WorkflowException;
 
@@ -48,7 +47,6 @@ public interface WorkflowGroupService {
      * 
      * @param kualiUser
      * @return a list of the groups that the user is a member of
-     * @throws EdenException
      * @throws ResourceUnavailableException
      * @throws KEWUserNotFoundException
      */

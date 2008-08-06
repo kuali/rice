@@ -55,7 +55,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
- * TODO we should not be referencing eden constants from this class and wedding ourselves to that workflow application This class is
+ * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
  * the base action form for all documents.
  */
 public abstract class KualiDocumentFormBase extends KualiForm implements Serializable {

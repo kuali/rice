@@ -54,7 +54,6 @@ import org.kuali.rice.kew.web.WorkflowAction;
 public class SuperUserAction extends WorkflowAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserAction.class);
     public static final String UNAUTHORIZED = "authorizationFailure";
-    //private static String DOCUMENT_TYPE = "EDENSERVICE-DOCS.WKGRPREQ";
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	return mapping.findForward("basic");

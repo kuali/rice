@@ -16,40 +16,11 @@
  */
 package org.kuali.rice.kew.routemodule;
 
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
-import org.kuali.rice.kew.clientapp.DeleteEvent;
-import org.kuali.rice.kew.clientapp.IPostProcessorBusinessLogic;
-import org.kuali.rice.kew.clientapp.ResourceLocator;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
-
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class TestRouteModulePostProcessor implements IPostProcessorBusinessLogic {
-
-    public void setLocator(ResourceLocator locator) {
-    }
-
-    public ResourceLocator getLocator() {
-        return null;
-    }
-
-    public boolean doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent, StringBuffer msg) throws Exception, ResourceUnavailableException {
-        return true;
-    }
-
-    public boolean doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent, StringBuffer parm2) throws Exception, ResourceUnavailableException {
-        return true;
-    }
-
-    public boolean doDeleteRouteHeader(DeleteEvent event, StringBuffer message) throws Exception, ResourceUnavailableException {
-        return true;
-    }
-
-    public String getVersion() throws Exception {
-        return "1.0";
-    }
+public class TestRouteModulePostProcessor extends DefaultPostProcessor {
 
 }

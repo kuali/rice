@@ -616,8 +616,8 @@ public class ActionListAction extends WorkflowAction {
         request.setAttribute("preferences", getUserSession(request).getPreferences());
 
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
-        String edenHelpDeskWgName = Utilities.getApplicationConstant(KEWConstants.HELP_DESK_ACTION_LIST_KEY);
-        if (edenHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(edenHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
+        String kewHelpDeskWgName = Utilities.getApplicationConstant(KEWConstants.HELP_DESK_ACTION_LIST_KEY);
+        if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY);

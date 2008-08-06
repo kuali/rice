@@ -56,7 +56,7 @@ public class FeedbackAction extends WorkflowAction {
         FeedbackForm feedbackForm = (FeedbackForm) form;
         feedbackForm.setTimeDate(new Date().toString());
 
-        // load EDEN User properties in Form elements
+        // load User properties in Form elements
         feedbackForm.setComments("");
 
         // load application properties from Request in Form elements
@@ -81,9 +81,9 @@ public class FeedbackAction extends WorkflowAction {
         String exception = request.getParameter("exception");
         if (exception == null) {
             feedbackForm.setException("");
-            feedbackForm.setEdenCategory("");
+            feedbackForm.setCategory("");
         } else {
-            feedbackForm.setEdenCategory("problem");
+            feedbackForm.setCategory("problem");
             feedbackForm.setException(exception);
         }
 
@@ -153,7 +153,7 @@ public class FeedbackAction extends WorkflowAction {
     	buffer.append("Document type: " + form.getDocumentType()).append("\n");
     	buffer.append("Document id: " + form.getRouteHeaderId()).append("\n\n");
 
-    	buffer.append("Category: " + form.getEdenCategory()).append("\n");
+    	buffer.append("Category: " + form.getCategory()).append("\n");
     	buffer.append("Comments: \n" + form.getComments()).append("\n\n");
 
     	buffer.append("Exception: \n" + form.getException());

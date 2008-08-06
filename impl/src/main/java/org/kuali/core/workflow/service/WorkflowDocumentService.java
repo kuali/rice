@@ -46,7 +46,6 @@ public interface WorkflowDocumentService {
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      * @throws ResourceUnavailableException
      * @throws KEWUserNotFoundException
-     * @throws EdenException
      */
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, UniversalUser workflowUser) throws WorkflowException;
 
@@ -59,7 +58,6 @@ public interface WorkflowDocumentService {
      * @return existing workflowDoc
      * @throws IllegalArgumentException if the given documentHeaderId is null
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
-     * @throws EdenException
      */
     public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, UniversalUser workflowUser) throws WorkflowException;
 
@@ -91,7 +89,6 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
@@ -103,7 +100,6 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
@@ -114,7 +110,6 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
@@ -144,7 +139,6 @@ public interface WorkflowDocumentService {
      * 
      * @param workflowDocument
      * @param annotation
-     * @throws EdenException
      */
     public void disapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
@@ -154,7 +148,6 @@ public interface WorkflowDocumentService {
      * 
      * @param workflowDocument
      * @param annotation
-     * @throws EdenException
      */
     public void cancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
@@ -167,7 +160,6 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
@@ -180,7 +172,6 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
@@ -190,7 +181,6 @@ public interface WorkflowDocumentService {
      * 
      * @param workflowDocument
      * @param adHocRecipients
-     * @throws EdenException
      */
     public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException;
     

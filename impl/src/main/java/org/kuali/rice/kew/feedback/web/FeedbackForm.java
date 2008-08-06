@@ -42,22 +42,22 @@ public class FeedbackForm extends ActionForm {
     private String firstName;
     private String lastName;
     private String phone;
-    private String edenCategory;
+    private String category;
     private String methodToCall = "";
 
     /**
-     * @return Returns the edenCategory.
+     * @return Returns the category.
      */
-    public String getEdenCategory() {
-        return edenCategory;
+    public String getCategory() {
+        return category;
     }
 
     /**
-     * @param edenCategory
-     *            The edenCategory to set.
+     * @param category
+     *            The category to set.
      */
-    public void setEdenCategory(String edenCategory) {
-        this.edenCategory = edenCategory;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     /* getters and setters */

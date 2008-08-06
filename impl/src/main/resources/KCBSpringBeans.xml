@@ -34,7 +34,7 @@
         </property>
     </bean>
 
-    <bean id="kcbDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
+    <bean id="kcbDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
             <list>
                 <value>org.kuali.rice.kcb.datasource</value>

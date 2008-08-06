@@ -28,7 +28,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.database.platform.Platform;
+import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.ojb.SuffixableQueryByCriteria;
 import org.springframework.dao.DataAccessException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;

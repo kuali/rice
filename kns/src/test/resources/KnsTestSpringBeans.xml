@@ -22,7 +22,7 @@
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
 
-	<bean id="knsDataSource" class="org.kuali.rice.database.XAPoolDataSource">
+	<bean id="knsDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />

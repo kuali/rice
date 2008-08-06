@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2005-2007 The Kuali Foundation.
  * 
@@ -13,14 +14,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-package org.kuali.rice.database.platform;
+ */package org.kuali.rice.core.database.platform;
 
-/**
- * This allows us to use Oracle9i as an alias for the Oracle platform.  Oracle9i is one
- * of the platforms supported by OJB so we want to keep our platform identifiers
- * consistent with OJB.
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- */
-public class Oracle9iPlatform extends OraclePlatform {}
+
+
+public abstract class ANSISqlPlatform implements Platform {
+
+	public String getDateSQL(String date, String time) {
+        // SQL 92 date literal syntax:
+        // http://www.stanford.edu/dept/itss/docs/oracle/9i/java.920/a96654/ref.htm#1005145
+        String d = date.replace('/', '-');
+        if (time == null) {
+            return "{d '" + d + "'}";    
+        } else {
+            return "{ts '" + d + " " + time + "'}"; 
+        }
+    }
+
+    public String toString() {
+        return "[ANSISqlPlatform]";
+    }
+}

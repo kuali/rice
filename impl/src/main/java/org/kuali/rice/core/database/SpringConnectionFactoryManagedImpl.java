@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.database;
+package org.kuali.rice.core.database;
 
 import java.sql.Connection;
 
@@ -31,7 +31,7 @@ import org.springmodules.orm.ojb.support.LocalDataSourceConnectionFactory;
  * config:</p>
  * <blockquote>
  *   <code>
- *     ConnectionFactoryClass=org.kuali.rice.database.SpringConnectionFactoryManagedImpl
+ *     ConnectionFactoryClass=org.kuali.rice.core.database.SpringConnectionFactoryManagedImpl
  *   </code>
  * </blockquote>
  * Apparently this strategy is not required in OJB 1.0.4:

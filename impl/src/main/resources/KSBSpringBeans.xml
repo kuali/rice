@@ -42,7 +42,7 @@
 		</property>
 	</bean>
 
-	<bean id="ksbRegistryDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbRegistry.datasource</value>
@@ -55,7 +55,7 @@
 		</property>
 	</bean>
 
-	<bean id="ksbMessageDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbMessageDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbMessage.datasource</value>
@@ -68,7 +68,7 @@
 		</property>
 	</bean>
 
-	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="nonTransactionalDataSource" value="true"/>
 		<property name="preferredDataSourceParams">
 			<list>

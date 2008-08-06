@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.responsibility.dao;
 
 import org.apache.ojb.broker.PersistenceBroker;
+import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;

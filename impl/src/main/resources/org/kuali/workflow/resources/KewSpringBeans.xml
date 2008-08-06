@@ -28,7 +28,7 @@
     </property>
 	</bean>
   
-	<bean id="enWorkflowDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
+	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
 				<value>org.kuali.workflow.datasource</value>

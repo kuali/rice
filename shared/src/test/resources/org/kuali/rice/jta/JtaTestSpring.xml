@@ -6,7 +6,7 @@
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
 
-	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
+	<bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver" />
 		<property name="url" value="jdbc:derby://localhost:1573/target/JtaTest;create=true;user=jtatestuser;password=jtatestpassword"/>

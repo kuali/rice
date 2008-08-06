@@ -61,7 +61,7 @@
   	<param name="datasource.pool.size">5</param>
     <param name="datasource.pool.maxWait">30000</param>
     <param name="datasource.ojb.platform">Oracle9i</param>
-    <param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
+    <param name="datasource.platform">org.kuali.rice.core.database.platform.OraclePlatform</param>
     <param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.pool.validationQuery">select 1 from dual</param>
     -->

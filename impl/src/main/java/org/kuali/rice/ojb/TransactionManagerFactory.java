@@ -41,7 +41,7 @@ import org.kuali.rice.exceptions.RiceRuntimeException;
  * setting the OJB properties:</p>
  * <blockquote>
  *   <code>
- *     JTATransactionManagerClass=org.kuali.rice.database.WorkflowTransactionManagerFactory
+ *     JTATransactionManagerClass=org.kuali.rice.core.database.WorkflowTransactionManagerFactory
  *   </code>
  * </blockquote>
  *

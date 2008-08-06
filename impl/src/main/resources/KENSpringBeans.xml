@@ -72,7 +72,7 @@
         </property>
     </bean>
 
-    <bean id="kenDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
+    <bean id="kenDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
             <list>
                 <value>org.kuali.ken.datasource</value>

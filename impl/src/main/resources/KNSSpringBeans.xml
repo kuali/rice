@@ -44,7 +44,7 @@
 		</property>
 	</bean>
 
-	<bean id="knsDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
+	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
 
 	<bean id="dbPlatformFactory" class="org.kuali.core.dbplatform.ConfigurableKualiDBPlatformFactory">
 		<property name="ojbPlatform" value="${datasource.ojb.platform}" />

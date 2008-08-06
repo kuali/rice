@@ -144,7 +144,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.database.platform.Platform)
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.core.database.platform.Platform)
      */
     public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException {
     	setCriteria(searchCriteria);

@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.database.platform.Platform;
+import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;

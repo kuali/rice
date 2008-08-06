@@ -180,7 +180,7 @@
 		</property>
 	</bean>
 
-	<bean id="webAuthenticationService" class="org.kuali.rice.web.RiceRemoteUserWebAuthenticationServiceImpl" />
+	<bean id="webAuthenticationService" class="org.kuali.rice.kns.web.RiceRemoteUserWebAuthenticationServiceImpl" />
 
 	<bean id="kualiModuleService" class="org.kuali.core.service.impl.KualiModuleServiceImpl" />
 
@@ -370,7 +370,7 @@
 		</property>
 	</bean>
 
-	<bean id="kualiGroupService" class="org.kuali.rice.web.RiceGroupServiceImpl">
+	<bean id="kualiGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl">
 		<property name="workflowGroupService">
 			<ref bean="workflowGroupService" />
 		</property>

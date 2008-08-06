@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
@@ -37,6 +36,7 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class is the service implementation for the MaintenanceDocumentDictionary structure. Defines the API for the interacting

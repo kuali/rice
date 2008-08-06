@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
@@ -85,6 +84,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 

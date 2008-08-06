@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a maintenance document type does not allow

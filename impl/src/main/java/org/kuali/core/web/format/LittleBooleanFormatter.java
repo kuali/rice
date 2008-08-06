@@ -18,7 +18,7 @@ package org.kuali.core.web.format;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class is a formatter for little-b boolean classes, that cannot accept a null.

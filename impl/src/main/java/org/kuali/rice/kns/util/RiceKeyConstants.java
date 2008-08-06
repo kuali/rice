@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali;
+package org.kuali.rice.kns.util;
 
 /**
  * Holds error key constants.

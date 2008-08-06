@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 
 /**

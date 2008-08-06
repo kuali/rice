@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.DataDictionary;
@@ -38,6 +37,7 @@ import org.kuali.core.web.struts.form.KualiHelpForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class handles requests for help text.

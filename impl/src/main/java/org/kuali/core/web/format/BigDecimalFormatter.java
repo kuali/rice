@@ -21,7 +21,7 @@ import java.text.ParseException;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class is used to format BigDecimal objects.

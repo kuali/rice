@@ -16,7 +16,7 @@
 package org.kuali.core.web.format;
 // end Kuali Foundation modification
 
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification

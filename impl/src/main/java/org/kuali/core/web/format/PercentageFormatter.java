@@ -22,9 +22,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiPercent;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification

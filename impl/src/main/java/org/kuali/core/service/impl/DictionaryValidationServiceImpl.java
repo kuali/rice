@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.ApcRuleDefinition;
@@ -47,6 +46,7 @@ import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypeUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

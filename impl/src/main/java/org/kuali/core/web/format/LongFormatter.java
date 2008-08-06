@@ -16,7 +16,7 @@
 package org.kuali.core.web.format;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class is used to format Long objects.

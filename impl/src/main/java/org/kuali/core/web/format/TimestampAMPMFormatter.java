@@ -20,8 +20,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class is used to format timestamp objects.

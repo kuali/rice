@@ -18,8 +18,8 @@ package org.kuali.core.web.format;
 import java.text.NumberFormat;
 
 import org.junit.Test;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.util.KualiDecimal;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.test.KNSTestBase;
 
 public class CurrencyFormatterTest extends KNSTestBase {

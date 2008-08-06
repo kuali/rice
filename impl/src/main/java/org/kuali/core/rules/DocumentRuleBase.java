@@ -13,7 +13,6 @@
 package org.kuali.core.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
@@ -44,6 +43,7 @@ import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 
 /**

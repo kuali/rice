@@ -25,7 +25,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.GlobalBusinessObject;
@@ -71,6 +70,7 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 
 /**

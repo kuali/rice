@@ -23,9 +23,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import org.kuali.RiceKeyConstants;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification

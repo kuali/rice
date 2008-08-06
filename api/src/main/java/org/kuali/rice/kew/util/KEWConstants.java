@@ -161,19 +161,7 @@ public class KEWConstants {
 
     public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
-    public static final String EDEN_APP_CODE = "en";
-    public static final String WORKFLOW_ENGINE_EJB = EDEN_APP_CODE + "/WorkflowEngine";
-    public static final String EDEN_UTILITY_EJB = EDEN_APP_CODE + "/EdenUtility";
-    public static final String DOC_TYPE_EJB = EDEN_APP_CODE + "/DocumentType";
-    public static final String ACTIONLIST_EJB = EDEN_APP_CODE + "/ActionListSession";
-    public static final String DOC_SEARCH_EJB = EDEN_APP_CODE + "/DocSearch";
-    public static final String ROUTE_MANAGER_EJB = EDEN_APP_CODE + "/RouteManager";
-    public static final String ROUTE_HEADER_EJB = EDEN_APP_CODE + "/RouteHeader";
-    public static final String NPD_ACTIONLIST_EJB = EDEN_APP_CODE + "/DelegationActionList";
-    public static final String BASE_REVIEW_HIERARCHY_EJB = EDEN_APP_CODE + "/BaseReviewHierarchy";
-    public static final String DELEGATION_RM_CLASS = "org.kuali.rice.kew.ejb.rm.DelegationRouteModuleRemote";
-    public static final String ROUTE_MODULE_CLASS = "org.kuali.rice.kew.ejb.RouteModuleHome";
-    public static final String ENGINE_CLASS = "org.kuali.rice.kew.eden.EdenWorkflowEngineHome";
+    public static final String APP_CODE = "kew";
     public static final String PROD_DEPLOYMENT_CODE = "prd";
 
     public static final String YES_LABEL = "Yes";
@@ -237,21 +225,18 @@ public class KEWConstants {
     public static final String ALL_CODE = "All";
     public static final String NO_FILTERING = "No Filtering";
     public static final String DELEGATION_DEFAULT = "Choose Secondary Delegation";
-    /** Value for the active code used throughout EDEN */
+
     public static final String ACTIVE_CD = "Y";
     public static final String ACTIVE_LABEL = "ACTIVE";
     public static final String ACTIVE_LABEL_LOWER = "Active";
 
-    /** Value for the inactive code used throughout EDEN */
     public static final String INACTIVE_CD = "N";
     public static final String INACTIVE_LABEL = "INACTIVE";
     public static final String INACTIVE_LABEL_LOWER = "Inactive";
 
-    /** Value used for a true value throughout EDEN */
     public static final String TRUE_CD = "1";
     public static final String TRUE = "T";
 
-    /** Value used for a false value throughout EDEN */
     public static final String FALSE_CD = "0";
     public static final String FALSE = "F";
 
@@ -261,19 +246,6 @@ public class KEWConstants {
 
     public static final int TITLE_MAX_LENGTH = 255;
 
-    // these values are reversed
-    // UPAA == MANAGER_UNVL_UID and FISCAL_MANAGER == ORG_FSCL_APRVR_UID
-    // this needs to be fixed in the next version
-
-    /** UPAA key for the FiscalUPAA map from EdenUtility * */
-    public static final String UPAA = "MANAGER_UNVL_ID";
-
-    /** Document Lock codes 
-  public static final String DOC_LOCKED_RESPONSIBILITY_CHANGE = "R";
-  public static final String DOC_UNLOCKED = null;
-**/
-    /** Fiscal Manager key for the FiscalUPAA map from EdenUtility * */
-    public static final String FISCAL_MANAGER = "ORG_FSCL_APRVR_UID";
     public static final Date CURRENT_DATE = new Date(-7);
     public static final Map DOCUMENT_STATUSES;
 
@@ -315,13 +287,12 @@ public class KEWConstants {
     }
 
     public static final String HEADER_TAG = "ROUTE_HEADER";
-    public static final String EDEN_NAMESPACE = "EDEN";
     public static final String DOCTYPE_TAG = "DOCTYPE";
     public static final String DOC_TYPE_GROUP_DOCUMENT_SHORT_NAME = "EDENSERVICE-DOCS.DocumentTypeGroup";
     public static final String DOC_TYPE_DOCUMENT_SHORT_NAME = "EDENSERVICE-DOCS.DocumentType";
     public static final String WORKFLOW_DOCUMENT_ROOT = "EDENSERVICE-DOCS";
 
-    // order of these is impportant since this forms a priority according to the codes index into the string
+    // order of these is important since this forms a priority according to the codes index into the string
     public static final String REQUEST_CODES = KEWConstants.ACTION_REQUEST_FYI_REQ + KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ + KEWConstants.ACTION_REQUEST_APPROVE_REQ + KEWConstants.ACTION_REQUEST_COMPLETE_REQ;
     public static final String ACTION_CODES = KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_APPROVED_CD + KEWConstants.ACTION_TAKEN_COMPLETED_CD + KEWConstants.ACTION_TAKEN_ROUTED;
     public static final String ROUTE_MANAGER_DRIVER_WRKGRP = "RouteManagerDriverCommandGroup";

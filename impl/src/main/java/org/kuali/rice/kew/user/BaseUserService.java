@@ -29,7 +29,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.dao.BaseUserDAO;
 import org.kuali.rice.kew.xml.UserXmlHandler;
 
@@ -62,7 +62,7 @@ public class BaseUserService implements UserService {
 		return capabilities;
 	}
 
-	public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException {
+	public WorkflowUser getWorkflowUser(UserIdDTO userId) throws KEWUserNotFoundException {
         UserId userIdInterface = null;
         if (userId instanceof EmplIdDTO) {
             userIdInterface = new EmplId(((EmplIdDTO)userId).getEmplId());
@@ -73,17 +73,17 @@ public class BaseUserService implements UserService {
         } else if (userId instanceof WorkflowIdDTO) {
             userIdInterface = new WorkflowUserId(((WorkflowIdDTO)userId).getWorkflowId());
         } else {
-            throw new EdenUserNotFoundException("Attempting to fetch user with unknown id type");
+            throw new KEWUserNotFoundException("Attempting to fetch user with unknown id type");
         }
         return getWorkflowUser(userIdInterface);
     }
     
-    public WorkflowUser getWorkflowUser(UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(UserId userId) throws KEWUserNotFoundException {
         WorkflowUser user = getFromCache(userId);
         if (user == null) {
         	user = (WorkflowUser) userDao.getWorkflowUser(userId);
         	if (user == null) {
-            	throw new EdenUserNotFoundException("User is invalid. userId " + userId.toString());
+            	throw new KEWUserNotFoundException("User is invalid. userId " + userId.toString());
         	} else {
         		addToCache(user);
         	}

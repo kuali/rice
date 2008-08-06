@@ -28,7 +28,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
@@ -64,7 +64,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
      * @see org.kuali.rice.kew.plugin.attributes.RoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent)
-	    throws EdenUserNotFoundException {
+	    throws KEWUserNotFoundException {
 	try {
 	    readConfiguration();
 	    String elementName = (String)getParamMap().get(XML_ELEMENT_LABEL);
@@ -90,7 +90,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
      * @see org.kuali.rice.kew.plugin.attributes.RoleAttribute#resolveQualifiedRole(org.kuali.rice.kew.engine.RouteContext, java.lang.String, java.lang.String)
      */
     public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole)
-	    throws EdenUserNotFoundException {
+	    throws KEWUserNotFoundException {
 	String roleNameLabel = (String)getParamMap().get(ROLE_NAME_LABEL);
 	if (roleNameLabel == null) {
 	    readConfiguration();

@@ -35,7 +35,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
@@ -94,7 +94,7 @@ public class FlexRM {
         this.effectiveDate = effectiveDate;
     }
 
-    /*public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
+    /*public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, String ruleTemplateName) throws KEWUserNotFoundException, WorkflowException {
 	return getActionRequests(routeHeader, null, ruleTemplateName);
     }*/
 
@@ -148,10 +148,10 @@ public class FlexRM {
      * @param nodeInstance the route node instance; this may NOT be null
      * @param ruleTemplateName the rule template
      * @return list of action requests
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws WorkflowException
      */
-    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
+    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) throws KEWUserNotFoundException, WorkflowException {
         return getActionRequests(routeHeader, nodeInstance.getRouteNode(), nodeInstance, ruleTemplateName);
     }
 
@@ -162,10 +162,10 @@ public class FlexRM {
      * @param nodeInstance the route node instance; this may be null!
      * @param ruleTemplateName the rule template
      * @return list of action requests
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws WorkflowException
      */
-    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNode routeNodeDef, RouteNodeInstance nodeInstance, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
+    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNode routeNodeDef, RouteNodeInstance nodeInstance, String ruleTemplateName) throws KEWUserNotFoundException, WorkflowException {
 	RouteContext context = RouteContext.getCurrentRouteContext();
 	// TODO really the route context just needs to be able to support nested create and clears
 	// (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this
@@ -226,14 +226,14 @@ public class FlexRM {
     }
 
     private void makeActionRequests(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
-    throws EdenUserNotFoundException, WorkflowException {
+    throws KEWUserNotFoundException, WorkflowException {
 
 	List responsibilities = rule.getResponsibilities();
 	makeActionRequests(arFactory, responsibilities, context, rule, routeHeader, parentRequest, ruleDelegation);
     }
 
     public void makeActionRequests(ActionRequestFactory arFactory, List<RuleResponsibility> responsibilities, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
-    throws EdenUserNotFoundException, WorkflowException {
+    throws KEWUserNotFoundException, WorkflowException {
 
 //	Set actionRequests = new HashSet();
 	for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
@@ -252,7 +252,7 @@ public class FlexRM {
     }
 
     private void buildDelegationGraph(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues delegationRule, DocumentRouteHeaderValue routeHeaderValue, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
-    throws EdenUserNotFoundException, WorkflowException {
+    throws KEWUserNotFoundException, WorkflowException {
 	context.setActionRequest(parentRequest);
 	if (delegationRule.getActiveInd().booleanValue() && delegationRule.getToDate().after(new Date()) && delegationRule.getFromDate().before(new Date())) {
 	    for (Iterator iter = delegationRule.getResponsibilities().iterator(); iter.hasNext();) {
@@ -270,7 +270,7 @@ public class FlexRM {
      * Generates action requests for a role responsibility
      */
     private void makeRoleActionRequests(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, RuleResponsibility resp, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest,
-	    RuleDelegation ruleDelegation) throws EdenUserNotFoundException, WorkflowException {
+	    RuleDelegation ruleDelegation) throws KEWUserNotFoundException, WorkflowException {
 
 	String roleName = resp.getResolvedRoleName();
 	RoleAttribute roleAttribute = resp.resolveRoleAttribute();
@@ -343,7 +343,7 @@ public class FlexRM {
      * Generates action requests for a non-role responsibility, either a user or workgroup
      */
     private void makeActionRequest(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RuleResponsibility resp, ActionRequestValue parentRequest,
-	    RuleDelegation ruleDelegation) throws EdenUserNotFoundException, WorkflowException {
+	    RuleDelegation ruleDelegation) throws KEWUserNotFoundException, WorkflowException {
 	if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, null)) {
 	    return;
 	}

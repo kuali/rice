@@ -48,7 +48,7 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -79,7 +79,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
         return results;
     }
 
-    public void process(Long documentId, Long nodeInstanceId) throws InvalidActionTakenException, EdenUserNotFoundException, DocumentSimulatedRouteException {
+    public void process(Long documentId, Long nodeInstanceId) throws InvalidActionTakenException, KEWUserNotFoundException, DocumentSimulatedRouteException {
     	RouteContext context = RouteContext.createNewRouteContext();
     	try {
     		ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
@@ -131,7 +131,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     			results.setSimulatedActionsTaken(context.getActivationContext().getSimulatedActionsTaken());
             } catch (InvalidActionTakenException e) {
                 throw e;
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
                 throw e;
             } catch (Exception e) {
                 String errorMsg = "Error running simulation for document " + ((criteria.isDocumentSimulation()) ? "id " + documentId.toString() : "type " + criteria.getDocumentTypeName());
@@ -200,7 +200,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
         return isInPath;
     }
 
-    private boolean hasReachedCompletion(ProcessContext processContext, List actionRequests, RouteNodeInstance nodeInstance, SimulationCriteria criteria) throws EdenUserNotFoundException {
+    private boolean hasReachedCompletion(ProcessContext processContext, List actionRequests, RouteNodeInstance nodeInstance, SimulationCriteria criteria) throws KEWUserNotFoundException {
         if (!criteria.getDestinationRecipients().isEmpty()) {
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) iterator.next();
@@ -218,7 +218,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
             || nodeInstance.getRouteNode().getRouteNodeName().equals(criteria.getDestinationNodeName());
     }
 
-    private List processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) throws EdenUserNotFoundException {
+    private List processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) throws KEWUserNotFoundException {
     	List actionsTaken = new ArrayList();
     	List requestsToCheck = new ArrayList();
     	requestsToCheck.addAll(routeContext.getEngineState().getGeneratedRequests());
@@ -235,7 +235,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	return actionsTaken;
     }
 
-    private List generateActionsToTakeForNode(String nodeName, DocumentRouteHeaderValue routeHeader, SimulationCriteria criteria, List pendingActionRequests) throws EdenUserNotFoundException {
+    private List generateActionsToTakeForNode(String nodeName, DocumentRouteHeaderValue routeHeader, SimulationCriteria criteria, List pendingActionRequests) throws KEWUserNotFoundException {
         List actions = new ArrayList();
         if ( (criteria.getActionsToTake() != null) && (!criteria.getActionsToTake().isEmpty()) ) {
             for (Iterator iter = criteria.getActionsToTake().iterator(); iter.hasNext();) {
@@ -530,7 +530,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 	 *
 	 * Returns the highest priority delegator in the list of action requests.
 	 */
-	private Recipient findDelegatorForActionRequests(List actionRequests) throws EdenUserNotFoundException {
+	private Recipient findDelegatorForActionRequests(List actionRequests) throws KEWUserNotFoundException {
 		return KEWServiceLocator.getActionRequestService().findDelegator(actionRequests);
 	}
 

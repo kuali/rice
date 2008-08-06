@@ -22,7 +22,7 @@ import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
@@ -133,12 +133,12 @@ public class UserServiceTest extends KEWTestCase {
 		try {
 			user = userService.getWorkflowUser(new AuthenticationUserId("BadIdWhichWillNeverReturnAUser,NotInAMillionYears"));
 			fail("Bad id should have thrown an exception.");
-		} catch (EdenUserNotFoundException e) {}
+		} catch (KEWUserNotFoundException e) {}
 		
 		try {
 			user = userService.getWorkflowUser(new WorkflowUserId("-1"));
 			fail("Bad id should have thrown an exception.");
-		} catch (EdenUserNotFoundException e) {}
+		} catch (KEWUserNotFoundException e) {}
 		
 		// try fetching with a null id, should throw IllegalArgumentException
 		try {
@@ -146,11 +146,11 @@ public class UserServiceTest extends KEWTestCase {
 			fail("Passing null should have thrown an exception");
 		} catch (IllegalArgumentException e) {}
 		
-		// try fetching with a null "wrapped" id, should throw EdenUserNotFoundException
+		// try fetching with a null "wrapped" id, should throw KEWUserNotFoundException
 		try {
 			user = userService.getWorkflowUser(new AuthenticationUserId(null));
 			fail("Null id should have thrown an exception");
-		} catch (EdenUserNotFoundException e) {}
+		} catch (KEWUserNotFoundException e) {}
 		
 	}
 	

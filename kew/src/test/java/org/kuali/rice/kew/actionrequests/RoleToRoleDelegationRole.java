@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -77,7 +77,7 @@ public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
 	}
 
 	public List getQualifiedRoleNames(String roleName,
-			DocumentContent documentContent) throws EdenUserNotFoundException {
+			DocumentContent documentContent) throws KEWUserNotFoundException {
 		List names = new ArrayList();
 		if (MAIN_ROLE.equals(roleName)) {
 			names = new ArrayList(MAIN_USERS);
@@ -89,7 +89,7 @@ public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
 
 	public ResolvedQualifiedRole resolveQualifiedRole(
 			RouteContext routeContext, String roleName, String qualifiedRole)
-			throws EdenUserNotFoundException {
+			throws KEWUserNotFoundException {
 		List userIds = new ArrayList();
 		if (MAIN_ROLE.equals(roleName)) {
 			userIds = MAIN_USERS;

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -67,11 +67,11 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         loadXmlFile("SearchSecurityConfig.xml");
     }
 
-    private WorkflowUser loginUser(String networkId) throws EdenUserNotFoundException {
+    private WorkflowUser loginUser(String networkId) throws KEWUserNotFoundException {
         return loginUser(networkId, new ArrayList<String>());
     }
 
-    private WorkflowUser loginUser(String networkId, List<String> dummyRoleNames) throws EdenUserNotFoundException {
+    private WorkflowUser loginUser(String networkId, List<String> dummyRoleNames) throws KEWUserNotFoundException {
         AuthenticationUserId id = new AuthenticationUserId(networkId);
         LOG.debug("performing user login: " + networkId);
         WorkflowUser workflowUser = null;

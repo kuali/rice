@@ -27,7 +27,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -92,7 +92,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    protected void processActionRequests() throws InvalidActionTakenException, EdenUserNotFoundException {
+    protected void processActionRequests() throws InvalidActionTakenException, KEWUserNotFoundException {
         //this method has been written to process all of the actions though only approvals are currently processed
 
         DocumentType docType = getRouteHeader().getDocumentType();
@@ -153,7 +153,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
    //     checkLocking();
         this.processActionRequests();
         this.queueDocumentProcessing();

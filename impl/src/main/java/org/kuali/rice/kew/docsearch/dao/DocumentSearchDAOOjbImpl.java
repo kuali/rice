@@ -30,7 +30,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.doctype.DocumentSecurityService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -45,15 +45,15 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
 
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException {
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException {
         return getList(documentSearchGenerator, criteria, criteria.getThreshold(), user);
     }
 
-    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException {
+    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException {
         return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), user);
     }
 
-    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, Integer searchResultCap, WorkflowUser user) throws EdenUserNotFoundException {
+    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, Integer searchResultCap, WorkflowUser user) throws KEWUserNotFoundException {
         LOG.debug("start getList");
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
         List docList = new ArrayList();

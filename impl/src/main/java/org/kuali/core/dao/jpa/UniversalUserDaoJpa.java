@@ -28,7 +28,7 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.rice.jpa.criteria.Criteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 
@@ -58,9 +58,9 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 		return (UniversalUser) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	}
 
-	public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
+	public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException {
 		if ((userId == null) || userId.isEmpty()) {
-			throw new EdenUserNotFoundException("Attempting to lookup user with null or empty id");
+			throw new KEWUserNotFoundException("Attempting to lookup user with null or empty id");
 		}
 		Criteria criteria = new Criteria(org.kuali.core.workflow.bo.WorkflowUser.class.getName());
 		if (userId instanceof org.kuali.rice.kew.user.AuthenticationUserId) {
@@ -77,7 +77,7 @@ public class UniversalUserDaoJpa implements UniversalUserDao {
 		}
 		WorkflowUser user = (WorkflowUser) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 		if (user == null) {
-			throw new EdenUserNotFoundException(new StringBuffer("Unable to locate user with ").append(userId.getClass().getName()).append(": ").append(userId.getId()).toString());
+			throw new KEWUserNotFoundException(new StringBuffer("Unable to locate user with ").append(userId.getClass().getName()).append(": ").append(userId.getId()).toString());
 		}
 		return user;
 	}

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class WorkflowAttributeRuleExpression implements RuleExpression {
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         boolean match = isMatch(ruleDefinition, context.getDocumentContent());
         if (match) {

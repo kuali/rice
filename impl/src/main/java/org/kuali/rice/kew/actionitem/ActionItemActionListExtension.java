@@ -23,7 +23,7 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -63,7 +63,7 @@ public class ActionItemActionListExtension extends ActionItem {
         return workgroup; 
     }
     
-    public WorkflowUser getDelegatorUser() throws EdenUserNotFoundException {
+    public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
         WorkflowUser delegator = null;
         if (getDelegatorWorkflowId() != null) {
             delegator = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
@@ -79,7 +79,7 @@ public class ActionItemActionListExtension extends ActionItem {
         return delegator;
     }
     
-    public String getDelegatorName() throws EdenUserNotFoundException {
+    public String getDelegatorName() throws KEWUserNotFoundException {
         return delegatorName;
     }
     

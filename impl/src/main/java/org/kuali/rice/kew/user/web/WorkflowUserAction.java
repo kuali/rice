@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -99,7 +99,7 @@ public class WorkflowUserAction extends WorkflowAction {
     			if (existingUser != null) {
             		modifiedUser = getUserService().copy(existingUser, true);
         		}
-    		} catch (EdenUserNotFoundException e) {
+    		} catch (KEWUserNotFoundException e) {
     			// we didn't find an existing user for the given id
     		}
     	} 

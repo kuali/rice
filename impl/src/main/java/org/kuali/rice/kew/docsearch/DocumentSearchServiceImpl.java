@@ -31,7 +31,7 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -74,7 +74,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-	public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws EdenUserNotFoundException {
+	public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws KEWUserNotFoundException {
 		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, user);
 		if (savedSearch == null || savedSearch.getOptionId() == null) {
 			return null;
@@ -83,15 +83,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return new SavedSearchResult(criteria, getList(user, criteria));
 	}
 
-    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, false);
     }
     
-    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, true);
     }
 	
-	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaRestrictions) throws EdenUserNotFoundException {
+	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {

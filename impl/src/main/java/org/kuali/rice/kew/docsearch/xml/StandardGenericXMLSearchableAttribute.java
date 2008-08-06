@@ -36,7 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
@@ -599,7 +599,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     							GroupNameId groupId = new GroupNameId(workgroupName);
     							try {
     								visible = KEWServiceLocator.getWorkgroupService().isUserMemberOfGroup(groupId, session.getWorkflowUser());
-    							} catch (EdenUserNotFoundException e) {
+    							} catch (KEWUserNotFoundException e) {
     								throw new RuntimeException("Error checking for workgroup membership permissions for workgroup '" + workgroupName + "'.  Error Message: " + e.getMessage(), e);
     							}
     						}

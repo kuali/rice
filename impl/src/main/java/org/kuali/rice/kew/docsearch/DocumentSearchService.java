@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -36,9 +36,9 @@ public interface DocumentSearchService {
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
+    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException;
 
     /**
      * This method performs a standard document search but uses the value returned by
@@ -48,10 +48,10 @@ public interface DocumentSearchService {
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
-    public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws EdenUserNotFoundException;
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException;
+    public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws KEWUserNotFoundException;
     public void clearNamedSearches(WorkflowUser user);
     public List getNamedSearches(WorkflowUser user);
     public List getMostRecentSearches(WorkflowUser user);

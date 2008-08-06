@@ -20,7 +20,7 @@ import java.util.List;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.util.OrmUtils;
@@ -39,7 +39,7 @@ public class UniversalUserDaoProxy implements UniversalUserDao {
 		return getDao(UniversalUser.class).getUser(userId);
 	}
 
-	public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
+	public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException {
 		return getDao(BaseWorkflowUser.class).getWorkflowUser(userId);
 	}
 

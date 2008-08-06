@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
@@ -56,7 +56,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    protected String validateActionRules() throws EdenUserNotFoundException {
+    protected String validateActionRules() throws KEWUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -75,9 +75,9 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * - Records the action
      *
      * @throws InvalidActionTakenException
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
     	MDC.put("docId", getRouteHeader().getRouteHeaderId());
   //      checkLocking();
         updateSearchableAttributesIfPossible();

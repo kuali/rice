@@ -43,7 +43,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleService;
@@ -160,7 +160,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         createDate = new Timestamp(System.currentTimeMillis());
     }
 
-    public Workgroup getWorkgroup() throws EdenUserNotFoundException {
+    public Workgroup getWorkgroup() throws KEWUserNotFoundException {
         if (getWorkgroupId() == null) {
             LOG.error("Attempting to get a workgroup with a blank workgroup id");
             return null;
@@ -191,7 +191,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         return workflowId != null;
     }
 
-    public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
         if (getWorkflowId() == null) {
             return null;
         }
@@ -199,7 +199,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         return userSrv.getWorkflowUser(new WorkflowUserId(getWorkflowId()));
     }
 
-    public Recipient getRecipient() throws EdenUserNotFoundException {
+    public Recipient getRecipient() throws KEWUserNotFoundException {
         if (getWorkflowId() != null) {
             return getWorkflowUser();
         } else if (getWorkgroupId() != null){
@@ -514,7 +514,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
-    public boolean isRecipientRoutedRequest(Recipient recipient) throws EdenUserNotFoundException {
+    public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {
         //before altering this method it is used in EdenUtility checkRouteLogAuthentication
         //don't break that method
         if (recipient == null) {

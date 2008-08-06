@@ -29,7 +29,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.dao.ActionItemComparator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.mail.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -96,7 +96,7 @@ public class DefaultNotificationService implements NotificationService {
 				sendEmail = false;
 			}
 			return sendEmail;
-		} catch (EdenUserNotFoundException e) {
+		} catch (KEWUserNotFoundException e) {
 			throw new WorkflowRuntimeException("Error loading user with workflow id " + actionItem.getWorkflowId() + " for notification.", e);
 		}
 	}

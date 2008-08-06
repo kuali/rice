@@ -31,7 +31,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -287,7 +287,7 @@ public class BaseWorkgroup implements Workgroup, Routable {
      * Constructs the List of WorkflowUsers for the given workgroup from it's list of "workgroupMembers" and sets that
      * as the List of "members" on this Workgroup.
      */
-	public void materializeMembers() throws EdenUserNotFoundException {
+	public void materializeMembers() throws KEWUserNotFoundException {
     	// clear it out first, just to be safe
     	getMembers().clear();
 		for (Iterator iter = getWorkgroupMembers().iterator(); iter.hasNext();) {

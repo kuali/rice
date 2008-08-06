@@ -35,7 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.UserService;
@@ -85,7 +85,7 @@ public class UserLoginFilter implements Filter {
                 if (userSession.getWorkflowUser() == null) {
                     try {
                         userSession.setBackdoorId(userSession.getLoggedInWorkflowUser().getAuthenticationUserId().getAuthenticationId());
-                    } catch (EdenUserNotFoundException e) {
+                    } catch (KEWUserNotFoundException e) {
                         // realistically if we can't find the logged in user we're done.
                         LOG.error("Error setting backdoor id", e);
                     }

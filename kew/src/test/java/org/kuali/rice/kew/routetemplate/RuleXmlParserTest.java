@@ -27,7 +27,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
@@ -118,7 +118,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         return null;
     }
 
-    @Test public void testNamedRule() throws EdenUserNotFoundException {
+    @Test public void testNamedRule() throws KEWUserNotFoundException {
         loadXmlFile("NamedRule.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
@@ -146,7 +146,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("A", responsibility.getActionRequestedCd());
     }
     
-    @Test public void testNamedRuleWithExpression() throws EdenUserNotFoundException {
+    @Test public void testNamedRuleWithExpression() throws KEWUserNotFoundException {
         loadXmlFile("NamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
@@ -177,7 +177,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("some expression", rule.getRuleExpressionDef().getExpression());
     }
 
-    @Test public void testUpdatedRule() throws EdenUserNotFoundException {
+    @Test public void testUpdatedRule() throws KEWUserNotFoundException {
         testNamedRule();
         loadXmlFile("UpdatedNamedRule.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
@@ -206,7 +206,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("F", responsibility.getActionRequestedCd());
     }
     
-    @Test public void testUpdatedRuleWithExpression() throws EdenUserNotFoundException {
+    @Test public void testUpdatedRuleWithExpression() throws KEWUserNotFoundException {
         testNamedRule();
         loadXmlFile("UpdatedNamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
@@ -237,9 +237,9 @@ public class RuleXmlParserTest extends KEWTestCase {
     
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    @Test public void testAnonymousDuplicatesNamed() throws EdenUserNotFoundException {
+    @Test public void testAnonymousDuplicatesNamed() throws KEWUserNotFoundException {
         testNamedRule();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRule.xml");
@@ -257,9 +257,9 @@ public class RuleXmlParserTest extends KEWTestCase {
     
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    @Test public void testAnonymousWithExpressionDuplicatesNamed() throws EdenUserNotFoundException {
+    @Test public void testAnonymousWithExpressionDuplicatesNamed() throws KEWUserNotFoundException {
         testNamedRuleWithExpression();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRuleWithExpression.xml");
@@ -275,7 +275,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
     }
 
-    @Test public void testParameterReplacement() throws IOException, InvalidXmlException, EdenUserNotFoundException {
+    @Test public void testParameterReplacement() throws IOException, InvalidXmlException, KEWUserNotFoundException {
         Core.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
         Core.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
@@ -305,7 +305,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         }
     }
     
-    @Test public void removeTemplateFromNamedRule() throws IOException, InvalidXmlException, EdenUserNotFoundException {
+    @Test public void removeTemplateFromNamedRule() throws IOException, InvalidXmlException, KEWUserNotFoundException {
         RuleService ruleService = KEWServiceLocator.getRuleService();
         int originalRuleCount = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
 
@@ -356,7 +356,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("F", responsibility.getActionRequestedCd());
     }
     
-    @Test public void testInvalidTemplatelessNamedRule() throws EdenUserNotFoundException {
+    @Test public void testInvalidTemplatelessNamedRule() throws KEWUserNotFoundException {
         testNamedRule();
         loadXmlFile("InvalidTemplatelessNamedRule.xml");
     }

@@ -26,7 +26,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -51,7 +51,7 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
             if (userId instanceof org.kuali.core.bo.user.UuId) {
                 return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new UuIdDTO(userId.toString())));
             }
-        } catch (EdenUserNotFoundException eunfe) {
+        } catch (KEWUserNotFoundException eunfe) {
         	return null;
         }
         catch (Exception e) {
@@ -61,7 +61,7 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
         throw new UnsupportedOperationException("Id type given to dao that is not supported. " + userId);
     }
 
-    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException {
         return KEWServiceLocator.getUserService().getWorkflowUser(userId);
     }
 

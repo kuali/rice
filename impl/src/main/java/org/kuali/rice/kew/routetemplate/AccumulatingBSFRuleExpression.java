@@ -24,7 +24,7 @@ import org.apache.bsf.BSFManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -100,7 +100,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
          * @param ruleName the name of the rule to evaluate
          * @return whether the rule was successful
          */
-        public boolean evalRule(String ruleName) throws EdenUserNotFoundException, WorkflowException {
+        public boolean evalRule(String ruleName) throws KEWUserNotFoundException, WorkflowException {
             RuleExpressionResult result = workflow.invokeRule(ruleName);
             accumulate(result);
             return result.isSuccess();
@@ -112,7 +112,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
          * @param accumOnSuccess whether to accumulate the rules responsibilities on success (true), or on failure (false)
          * @return whether the rule was successful
          */
-        public boolean evalRule(String ruleName, boolean accumOnSuccess) throws EdenUserNotFoundException, WorkflowException {
+        public boolean evalRule(String ruleName, boolean accumOnSuccess) throws KEWUserNotFoundException, WorkflowException {
             RuleExpressionResult result = workflow.invokeRule(ruleName);
             if (accumOnSuccess == result.isSuccess()) {
                 accumulate(result);

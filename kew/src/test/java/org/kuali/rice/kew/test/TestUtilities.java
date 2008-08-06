@@ -50,7 +50,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -228,7 +228,7 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is in the given user's action list.
      */
-    public static void assertInActionList(NetworkIdDTO networkId, Long documentId) throws EdenUserNotFoundException {
+    public static void assertInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
     	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
     	Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(user);
@@ -244,7 +244,7 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is NOT in the given user's action list.
      */
-    public static void assertNotInActionList(NetworkIdDTO networkId, Long documentId) throws EdenUserNotFoundException {
+    public static void assertNotInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
     	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
     	Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(user);

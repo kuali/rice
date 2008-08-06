@@ -18,7 +18,7 @@ package org.kuali.rice.kew.user.dao;
 
 import java.util.List;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.UserId;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.kew.user.UserId;
  */
 public interface BaseUserDAO {
 	
-	public BaseWorkflowUser getWorkflowUser(UserId userId) throws EdenUserNotFoundException;
+	public BaseWorkflowUser getWorkflowUser(UserId userId) throws KEWUserNotFoundException;
     public List getSearchResults(String lastName, String firstName, String authenticationUserId, String workflowId, String emplId, String uuId);
     public void save(BaseWorkflowUser user);
     

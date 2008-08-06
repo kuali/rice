@@ -45,7 +45,7 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -134,11 +134,11 @@ public class RuleServiceImpl implements RuleService {
         getRuleDAO().save(ruleBaseValues);
     }
 
-    public void makeCurrent(Long routeHeaderId) throws EdenUserNotFoundException {
+    public void makeCurrent(Long routeHeaderId) throws KEWUserNotFoundException {
         makeCurrent(findByRouteHeaderId(routeHeaderId));
     }
 
-    public void makeCurrent(List rules) throws EdenUserNotFoundException {
+    public void makeCurrent(List rules) throws KEWUserNotFoundException {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -238,7 +238,7 @@ public class RuleServiceImpl implements RuleService {
      * aren't being added or removed.  This is why it doesn't perform some of the functions like checking
      * for delegation rules that were removed from a parent rule.
      */
-    public void makeCurrent2(List rules) throws EdenUserNotFoundException {
+    public void makeCurrent2(List rules) throws KEWUserNotFoundException {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -700,7 +700,7 @@ public class RuleServiceImpl implements RuleService {
         return title.toString();
     }
 
-    public void validate(RuleBaseValues ruleBaseValues, List errors) throws EdenUserNotFoundException {
+    public void validate(RuleBaseValues ruleBaseValues, List errors) throws KEWUserNotFoundException {
         if (errors == null) {
             errors = new ArrayList();
         }
@@ -738,7 +738,7 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws EdenUserNotFoundException {
+    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws KEWUserNotFoundException {
         if (errors == null) {
             errors = new ArrayList();
         }
@@ -835,7 +835,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName,
-            Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws EdenUserNotFoundException {
+            Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
                 (StringUtils.isEmpty(ruleTemplateName)) &&
@@ -863,7 +863,7 @@ public class RuleServiceImpl implements RuleService {
 
         WorkflowUser user = null;
         if (userId != null) {
-            // below will throw EdenUserNotFoundException
+            // below will throw KEWUserNotFoundException
             user = getUserService().getWorkflowUser(userId);
         }
 

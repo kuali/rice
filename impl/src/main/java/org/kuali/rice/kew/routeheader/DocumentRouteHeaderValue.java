@@ -55,7 +55,7 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -217,7 +217,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public DocumentRouteHeaderValue() {
     }
 
-    public WorkflowUser getInitiatorUser() throws EdenUserNotFoundException {
+    public WorkflowUser getInitiatorUser() throws KEWUserNotFoundException {
     	// if we are running a simulation, there will be no initiator
     	if (getInitiatorWorkflowId() == null) {
     		return null;
@@ -225,7 +225,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return getUser(getInitiatorWorkflowId());
     }
 
-    public WorkflowUser getRoutedByUser() throws EdenUserNotFoundException {
+    public WorkflowUser getRoutedByUser() throws KEWUserNotFoundException {
         // if we are running a simulation, there will be no initiator
         if (getRoutedByUserWorkflowId() == null) {
             return null;
@@ -233,7 +233,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return getUser(getRoutedByUserWorkflowId());
     }
 
-    private WorkflowUser getUser(java.lang.String workflowId) throws EdenUserNotFoundException {
+    private WorkflowUser getUser(java.lang.String workflowId) throws KEWUserNotFoundException {
         UserService userSrv = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = null;
         user = userSrv.getWorkflowUser(new WorkflowUserId(workflowId));
@@ -763,7 +763,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 	return this.getRootBranch().getBranchState();
     }
 
-    public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException, EdenUserNotFoundException {
+    public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException, KEWUserNotFoundException {
         CustomActionListAttribute customActionListAttribute = null;
         if (this.getDocumentType() != null) {
         	customActionListAttribute = this.getDocumentType().getCustomActionListAttribute();
@@ -775,7 +775,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return customActionListAttribute;
     }
 
-    public CustomEmailAttribute getCustomEmailAttribute() throws WorkflowException, EdenUserNotFoundException {
+    public CustomEmailAttribute getCustomEmailAttribute() throws WorkflowException, KEWUserNotFoundException {
         CustomEmailAttribute customEmailAttribute = null;
         try {
             if (this.getDocumentType() != null) {
@@ -793,7 +793,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return customEmailAttribute;
     }
 
-    public CustomNoteAttribute getCustomNoteAttribute() throws WorkflowException, EdenUserNotFoundException {
+    public CustomNoteAttribute getCustomNoteAttribute() throws WorkflowException, KEWUserNotFoundException {
         CustomNoteAttribute customNoteAttribute = null;
         try {
             if (this.getDocumentType() != null) {

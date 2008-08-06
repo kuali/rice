@@ -22,7 +22,7 @@ import java.util.Set;
 
 import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 import org.kuali.workflow.attribute.Extension;
@@ -59,7 +59,7 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public Workgroup getWorkgroup(WorkgroupIdDTO groupIdVO);
 
-    public List<Workgroup> getUsersGroups(WorkflowUser member) throws EdenUserNotFoundException ;
+    public List<Workgroup> getUsersGroups(WorkflowUser member) throws KEWUserNotFoundException ;
 
     public Set<String> getUsersGroupNames(WorkflowUser member);
 
@@ -69,9 +69,9 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public List search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards);
 
-    public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws EdenUserNotFoundException;
+    public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException;
 
-    public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws EdenUserNotFoundException;
+    public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws KEWUserNotFoundException;
 
     /**
      * Executes a shallow copy of the given workgroup.

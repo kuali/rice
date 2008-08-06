@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
@@ -41,11 +41,11 @@ public interface ActionListService {
     
     public Collection getActionList(Long routeHeaderId, ActionListFilter filter);
 
-    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException;
+    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws KEWUserNotFoundException;
 
     public boolean refreshActionList(WorkflowUser user);
 
-    public void saveActionItem(ActionItem actionItem) throws EdenUserNotFoundException;
+    public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException;
 
     public void deleteActionItem(ActionItem actionItem);
 
@@ -63,7 +63,7 @@ public interface ActionListService {
      * this method should schedule the changes to occur asynchronously to mitigate transaction
      * and concurent document modification issues.
      */
-    public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup) throws EdenUserNotFoundException;
+    public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was added to a workgroup.  This method will generate
@@ -71,7 +71,7 @@ public interface ActionListService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws EdenUserNotFoundException;
+    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete
@@ -79,9 +79,9 @@ public interface ActionListService {
      * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
      * at the time of the method invocation before removing the action items.
      */
-    public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup) throws EdenUserNotFoundException;
+    public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException;
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws EdenUserNotFoundException;
+    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException;
 
     public void validateActionItem(ActionItem actionItem);
 

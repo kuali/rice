@@ -25,7 +25,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.server.BeanConverter;
@@ -73,7 +73,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
         this.deploymentEnvironment = deploymentEnvironment;
     }
 
-    protected static CustomEmailAttribute getCustomEmailAttribute(WorkflowUser user, ActionItem actionItem) throws EdenUserNotFoundException, WorkflowException {
+    protected static CustomEmailAttribute getCustomEmailAttribute(WorkflowUser user, ActionItem actionItem) throws KEWUserNotFoundException, WorkflowException {
 	if (actionItem.getRouteHeader() == null) {
 	    actionItem.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()));
 	}

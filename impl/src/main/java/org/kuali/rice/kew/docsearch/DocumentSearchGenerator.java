@@ -22,7 +22,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.kuali.rice.kew.WorkflowServiceError;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -37,11 +37,11 @@ public interface DocumentSearchGenerator {
 	public void setSearchingUser(WorkflowUser searchingUser);
     public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaVO searchCriteria);
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaVO searchCriteria);
-    public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException;
+    public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException;
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaVO, WorkflowUser)} instead.
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException;
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException, SQLException;
     /**
      * This method processes search results in the given <code>resultSet</code> into {@link DocSearchVO} objects
      * 
@@ -50,9 +50,9 @@ public interface DocumentSearchGenerator {
      * @param searchCriteria - criteria used to perform the search
      * @param user - user who performed the search
      * @return a list of DocSearchVO objects (one for each route header id)
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws EdenUserNotFoundException, SQLException;    public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException;    public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
     public int getDocumentSearchResultSetLimit();
 }

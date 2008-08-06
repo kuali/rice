@@ -25,7 +25,7 @@ import java.util.Vector;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -49,11 +49,11 @@ public class ChartOrgDispatchAttribute extends AbstractRoleAttribute {
         return Arrays.asList(new Role[] { new Role(getClass(), DISPATCH_ROLE, DISPATCH_ROLE) });
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         return parseWorkgroups(documentContent);
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
         List recipients = new ArrayList();
         recipients.add(new GroupNameId(qualifiedRole));
         return new ResolvedQualifiedRole(roleName, recipients);

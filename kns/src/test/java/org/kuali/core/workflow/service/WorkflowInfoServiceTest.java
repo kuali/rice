@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.testharness.KNSTestCase;
 
@@ -65,8 +65,8 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
             KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO("unknownUserId"));
         }
         catch (WorkflowException we) {
-            // in the case of embedded mode, we get the actual EdenUserNotFoundException as the cause of the WorkflowException
-            if (we.getMessage().startsWith("org.kuali.rice.kew.exception.WorkflowException: org.kuali.rice.kew.exception.EdenUserNotFoundException") || we.getCause() instanceof EdenUserNotFoundException) {
+            // in the case of embedded mode, we get the actual KEWUserNotFoundException as the cause of the WorkflowException
+            if (we.getMessage().startsWith("org.kuali.rice.kew.exception.WorkflowException: org.kuali.rice.kew.exception.KEWUserNotFoundException") || we.getCause() instanceof KEWUserNotFoundException) {
                 failedAsExpected = true;
             }
         }

@@ -68,7 +68,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
@@ -229,7 +229,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return rid;
     }
     
-    private WorkflowUser getWorkflowUserInternal(UserIdDTO userId) throws EdenUserNotFoundException {
+    private WorkflowUser getWorkflowUserInternal(UserIdDTO userId) throws KEWUserNotFoundException {
         if (userId == null ){
             LOG.error("null userId passed in.");
             throw new RuntimeException("null userId passed in.");

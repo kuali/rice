@@ -33,7 +33,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
@@ -97,7 +97,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    WorkflowUser user = null;
 	    try {
 		user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(form.getUserId()));
-	    } catch (EdenUserNotFoundException e) {
+	    } catch (KEWUserNotFoundException e) {
 		LOG.warn("User not found.", e);
 	    }
 	    form.setUser(user);
@@ -109,7 +109,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    WorkflowUser replacementUser = null;
 	    try {
 		replacementUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(form.getReplacementUserId()));
-	    } catch (EdenUserNotFoundException e) {
+	    } catch (KEWUserNotFoundException e) {
 		LOG.warn("Replacement user not found.", e);
 	    }
 	    form.setReplacementUser(replacementUser);
@@ -185,7 +185,7 @@ public class RemoveReplaceAction extends WorkflowAction {
         return mapping.findForward("docHandler");
     }
 
-    protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) throws EdenUserNotFoundException {
+    protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) throws KEWUserNotFoundException {
         form.setDocument(document);
         form.setOperation(document.getOperation());
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getUserWorkflowId()));

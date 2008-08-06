@@ -26,7 +26,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.mail.CustomizableActionListEmailServiceImpl;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -127,7 +127,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      * 
      * @see mocks.MockEmailNotificationService#immediateReminderEmailsSent(java.lang.String, java.lang.Long, java.lang.String)
      */
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException {
+    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException {
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(networkId));
         List actionItemsSentUser = (List)immediateReminders.get(user.getWorkflowId());
         if (actionItemsSentUser == null) {

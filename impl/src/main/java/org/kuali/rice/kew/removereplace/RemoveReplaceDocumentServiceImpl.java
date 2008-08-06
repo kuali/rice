@@ -23,7 +23,7 @@ import org.jdom.Element;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -137,7 +137,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 		removeReplaceElement.addContent(workgroupsElement);
 	    }
 	    workflowDoc.setApplicationContent(XmlHelper.jotNode(rootElement));
-	} catch (EdenUserNotFoundException e) {
+	} catch (KEWUserNotFoundException e) {
 	    throw new WorkflowRuntimeException(e);
 	}
     }

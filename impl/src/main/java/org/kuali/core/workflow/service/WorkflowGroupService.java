@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -50,7 +50,7 @@ public interface WorkflowGroupService {
      * @return a list of the groups that the user is a member of
      * @throws EdenException
      * @throws ResourceUnavailableException
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
     public Collection getWorkflowUsersGroups(UserIdDTO userId) throws WorkflowException;
 

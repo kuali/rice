@@ -30,7 +30,7 @@ import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
@@ -75,7 +75,7 @@ public class UserSession implements Serializable {
      * 
      * @param networkId
      * @throws UserNotFoundException
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws ResourceUnavailableException
      */
     public UserSession(String networkId) throws UserNotFoundException, WorkflowException {
@@ -139,7 +139,7 @@ public class UserSession implements Serializable {
      * @param networkId
      * @throws UserNotFoundException
      * @throws ResourceUnavailableException
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
     public void setBackdoorUser(String networkId) throws UserNotFoundException, WorkflowException {
        // only allow backdoor in non-production environments

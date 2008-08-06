@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.test.services;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 
@@ -25,7 +25,7 @@ public interface EchoService {
 
 	public String echo(String string);
 	
-	public WorkflowUser getUser(UserId userId) throws EdenUserNotFoundException;
+	public WorkflowUser getUser(UserId userId) throws KEWUserNotFoundException;
 	
 	public String trueEcho(String string);
 }

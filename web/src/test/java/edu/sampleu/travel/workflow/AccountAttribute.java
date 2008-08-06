@@ -28,7 +28,7 @@ import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -56,7 +56,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
     }
 
 
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         XPath xpath = WorkflowUtils.getXPath(documentContent.getDocument());
         NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.core.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.workflow.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
@@ -74,7 +74,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
     }
 
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
         String accountNum = qualifiedRole;
         TravelAccount account = new TravelAccount();
         account.setNumber(accountNum);

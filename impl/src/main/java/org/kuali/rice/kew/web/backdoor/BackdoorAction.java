@@ -94,7 +94,7 @@ public class BackdoorAction extends WorkflowAction {
             //uSession.setPreferences(SpringServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser()));
             //request.setAttribute("reloadPage","true");
 
-        }catch(EdenUserNotFoundException ex){
+        }catch(KEWUserNotFoundException ex){
         	uSession.setBackdoorId(null);
         	backdoorForm.setBackdoorId(null);
         	request.setAttribute("BackdoorException","No such user found. Login failure!");

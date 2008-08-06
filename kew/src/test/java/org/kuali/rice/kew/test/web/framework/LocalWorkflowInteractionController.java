@@ -18,7 +18,7 @@ package org.kuali.rice.kew.test.web.framework;
 
 import javax.servlet.Servlet;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -33,7 +33,7 @@ public class LocalWorkflowInteractionController extends LocalInteractionControll
         super(servlet);
     }
 
-    protected MockHttpServletRequest createServletRequest(String method, String uri, Script script) throws EdenUserNotFoundException {
+    protected MockHttpServletRequest createServletRequest(String method, String uri, Script script) throws KEWUserNotFoundException {
         WorkflowServletRequest request = new WorkflowServletRequest(method, uri);
         String user = script.getState().getUser();
         if (user != null) {

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -40,13 +40,13 @@ public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
         return roleNames;
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         List qualifiedRoleNames = new ArrayList();
         qualifiedRoleNames.add(roleName);
         return qualifiedRoleNames;
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
         NodeState nodeState = routeContext.getNodeInstance().getNodeState("role");
         if (nodeState == null) {
             return new ResolvedQualifiedRole();

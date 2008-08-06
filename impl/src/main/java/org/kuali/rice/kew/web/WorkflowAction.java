@@ -39,7 +39,7 @@ import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -211,7 +211,7 @@ public abstract class WorkflowAction extends DispatchAction {
 		if (KEWConstants.PERSON.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
 			try {
 				getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
-			} catch (EdenUserNotFoundException e) {
+			} catch (KEWUserNotFoundException e) {
 				LOG.error("App Specific user recipient not found", e);
 				messages.add(new WorkflowServiceErrorImpl("AppSpecific Recipient invalid", "appspecificroute.user.invalid"));
 			}

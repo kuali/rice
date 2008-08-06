@@ -28,7 +28,7 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -84,7 +84,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         return new WorkflowDocument(new WorkflowIdDTO(initiator.getWorkflowUser().getWorkflowId()), documentType);
     }
 
-    public Workgroup findByDocumentId(Long documentId) throws EdenUserNotFoundException {
+    public Workgroup findByDocumentId(Long documentId) throws KEWUserNotFoundException {
         BaseWorkgroup workgroup = getWorkgroupDAO().findByDocumentId(documentId);
         if (workgroup != null) {
             workgroup.materializeMembers();
@@ -92,7 +92,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         return workgroup;
     }
 
-    public void activateRoutedWorkgroup(Long documentId) throws EdenUserNotFoundException {
+    public void activateRoutedWorkgroup(Long documentId) throws KEWUserNotFoundException {
         LOG.debug("activating routed workgroup");
         BaseWorkgroup newWorkgroup = (BaseWorkgroup)findByDocumentId(documentId);
         BaseWorkgroup oldWorkgroup = (BaseWorkgroup) getWorkgroupService().getWorkgroup(newWorkgroup.getWorkflowGroupId());
@@ -301,7 +301,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     }
 
 
-    protected BaseWorkgroup createNewRemoveReplaceVersion(BaseWorkgroup workgroup, Long documentId) throws EdenUserNotFoundException {
+    protected BaseWorkgroup createNewRemoveReplaceVersion(BaseWorkgroup workgroup, Long documentId) throws KEWUserNotFoundException {
 	BaseWorkgroup copy = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().copy(workgroup);
 	copy.setDocumentId(documentId);
 	List<BaseWorkgroupMember> members = new ArrayList<BaseWorkgroupMember>();

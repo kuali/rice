@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionitem.dao;
 import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 
@@ -51,6 +51,6 @@ public interface ActionItemDAO {
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
     
-    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException;
+    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws KEWUserNotFoundException;
     
 }

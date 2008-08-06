@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
@@ -92,7 +92,7 @@ public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute,
         return required;
     }
 
-	public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+	public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
 		ArrayList qualifiedRoleNames = new ArrayList();
 		Map qualifiedRoles = (Map)roles.get(roleName);
 		if (qualifiedRoles != null) {
@@ -103,7 +103,7 @@ public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute,
 		return qualifiedRoleNames;
 	}
 
-	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
 		ResolvedQualifiedRole resolved = new ResolvedQualifiedRole();
 		Map qualifiedRoles = (Map)roles.get(roleName);
 		if (qualifiedRoles != null) {

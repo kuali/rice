@@ -17,7 +17,7 @@
 package mocks;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.mail.ActionListEmailService;
 import org.kuali.rice.kew.user.WorkflowUser;
 
@@ -32,7 +32,7 @@ public interface MockEmailNotificationService extends ActionListEmailService {
     public void sendDailyReminder();
     public void sendWeeklyReminder();
 
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException;
+    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException;
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant);
     public Integer getTotalPeriodicRemindersSent();
     /**

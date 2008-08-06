@@ -18,7 +18,7 @@ package org.kuali.rice.kew.workgroup;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
@@ -49,7 +49,7 @@ public class WorkgroupMembershipChangeProcessor implements KEWXMLService {
 		String operation = parameters[0];
 		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(parameters[1]));
 		if (user == null) {
-			throw new EdenUserNotFoundException("Could not locate the user for the given authentication id '" + parameters[1] + "'");
+			throw new KEWUserNotFoundException("Could not locate the user for the given authentication id '" + parameters[1] + "'");
 		}
 		Long versionNumber = new Long(parameters[3]);
 		GroupNameId workgroupName = new GroupNameId(parameters[2]);

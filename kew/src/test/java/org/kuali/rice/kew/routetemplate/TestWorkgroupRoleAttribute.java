@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.AbstractRoleAttribute;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -41,14 +41,14 @@ public class TestWorkgroupRoleAttribute extends AbstractRoleAttribute {
 		return roles;
 	}
 
-	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
 		List<String> qualRoleNames = new ArrayList<String>();
 		qualRoleNames.add("TestWorkgroup");
 		return qualRoleNames;
 	}
 
 
-	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
 		List<Id> recipients = new ArrayList<Id>();
 		recipients.add(new GroupNameId(qualifiedRole));
 		return new ResolvedQualifiedRole("workgroup role lable", recipients);

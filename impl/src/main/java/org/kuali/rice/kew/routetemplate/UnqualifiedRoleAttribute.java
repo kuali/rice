@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
 
@@ -56,7 +56,7 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
     /**
      * Returns a List<String> containing only the roleName parameter; i.e. no qualification occurs
      */
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         List<String> qualifiedRoleName = new ArrayList<String>(1);
         qualifiedRoleName.add(roleName);
         return qualifiedRoleName;
@@ -88,7 +88,7 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
         return valid;
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
         // some sanity checking
         if (!roleName.equals(qualifiedRole)) {
             throw new IllegalArgumentException("UnqualifiedRoleAttribute resolveQualifiedRole invoked with differing role and qualified role (they should be the same)");
@@ -105,5 +105,5 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
      * @param roleName the role name
      * @return a ResolvedQualifiedRole
      */
-    protected abstract ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName)  throws EdenUserNotFoundException;
+    protected abstract ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName)  throws KEWUserNotFoundException;
 }

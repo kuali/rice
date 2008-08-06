@@ -26,7 +26,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -106,7 +106,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         this.getPersistenceBrokerTemplate().store(actionItem);
     }
 
-    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException {
+    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws KEWUserNotFoundException {
         Criteria notNullWorkflowCriteria = new Criteria();
         notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria();

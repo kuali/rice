@@ -18,7 +18,7 @@ package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -47,7 +47,7 @@ public class ActionListImmediateProcessorImpl implements ActionListImmediateEmai
                 		LOG.debug("sending immediate reminder to " + actionItem.getUser().getAuthenticationUserId().getAuthenticationId());
                 	}
 					getActionListEmailService().sendImmediateReminder(actionItem.getUser(), actionItem);
-				} catch (EdenUserNotFoundException e) {
+				} catch (KEWUserNotFoundException e) {
 					throw new WorkflowRuntimeException(e);
 				}    
             }

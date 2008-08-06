@@ -17,7 +17,7 @@ package org.kuali.rice.kew.routetemplate;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.util.ClassLoaderUtils;
 
@@ -87,7 +87,7 @@ class RuleImpl implements Rule {
         return ruleExpression;
     }
 
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;

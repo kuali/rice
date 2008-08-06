@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.EmplId;
@@ -35,7 +35,7 @@ public class BaseUserDAOOjbImpl extends PersistenceBrokerDaoSupport implements B
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    public BaseWorkflowUser getWorkflowUser(UserId userId) throws EdenUserNotFoundException {
+    public BaseWorkflowUser getWorkflowUser(UserId userId) throws KEWUserNotFoundException {
     	if (userId == null) {
     		throw new IllegalArgumentException("UserId must be non-null.");
     	}
@@ -93,11 +93,11 @@ public class BaseUserDAOOjbImpl extends PersistenceBrokerDaoSupport implements B
     }
 
 
-    private Criteria getUserCriteria(UserId userId) throws EdenUserNotFoundException {
+    private Criteria getUserCriteria(UserId userId) throws KEWUserNotFoundException {
         Criteria crit = new Criteria();
         if (userId.isEmpty()) {
             LOG.error("Attempting to lookup user with empty Id " + userId);
-            throw new EdenUserNotFoundException("Attempting to lookup user with empty Id");
+            throw new KEWUserNotFoundException("Attempting to lookup user with empty Id");
         }
         if (userId instanceof EmplId) {
             LOG.debug("Creating example user with EMPLID " + userId.toString());

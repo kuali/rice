@@ -25,7 +25,7 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -59,7 +59,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
         DocumentType docType = getRouteHeader().getDocumentType();
         if (!docType.isSuperUser(getUser())) {
             return "User not authorized for super user action";
@@ -67,7 +67,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         return "";
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
    //     checkLocking();
 
         String errorMessage = validateActionRules();
@@ -107,7 +107,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 
     protected abstract void markDocument() throws WorkflowException;
 
-    protected void processActionRequests() throws InvalidActionTakenException, EdenUserNotFoundException {
+    protected void processActionRequests() throws InvalidActionTakenException, KEWUserNotFoundException {
         LOG.debug("Processing pending action requests");
 
         ActionTakenValue actionTaken = saveActionTaken();

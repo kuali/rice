@@ -33,7 +33,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -255,7 +255,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     /**
      * Invokes the blanket approval for the given node instance. This deactivates all pending approve or complete requests at the node and sends out notifications to the individuals who's requests were trumped by the blanket approve.
      */
-    private void invokeBlanketApproval(ActionTakenValue actionTaken, RouteNodeInstance nodeInstance, NotificationContext notifyContext) throws EdenUserNotFoundException {
+    private void invokeBlanketApproval(ActionTakenValue actionTaken, RouteNodeInstance nodeInstance, NotificationContext notifyContext) throws KEWUserNotFoundException {
         List actionRequests = getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(nodeInstance.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         actionRequests = getActionRequestService().getRootRequests(actionRequests);
         List requestsToNotify = new ArrayList();

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -54,7 +54,7 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
         returnAction.recordAction();
     }
     
-    protected void processActionRequests() throws InvalidActionTakenException, EdenUserNotFoundException {
+    protected void processActionRequests() throws InvalidActionTakenException, KEWUserNotFoundException {
         //do nothing
     }
 

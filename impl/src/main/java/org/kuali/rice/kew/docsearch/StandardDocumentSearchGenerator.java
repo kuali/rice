@@ -36,7 +36,7 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.user.AuthenticationUserId;
@@ -146,7 +146,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.database.platform.Platform)
      */
-    public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException {
+    public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException {
     	setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
@@ -470,7 +470,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaVO, WorkflowUser)} instead.
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException {
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException, SQLException {
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, null);
     }
     
@@ -478,10 +478,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @param resultSet
      * @param criteria
      * @return
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws EdenUserNotFoundException, SQLException {
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
@@ -580,7 +580,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	}
     }
 
-    public DocSearchVO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, EdenUserNotFoundException {
+    public DocSearchVO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, KEWUserNotFoundException {
         DocSearchVO docSearchVO = new DocSearchVO();
 
         docSearchVO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
@@ -680,7 +680,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getDocSearchSQL() throws EdenUserNotFoundException {
+    protected String getDocSearchSQL() throws KEWUserNotFoundException {
     	String sqlPrefix = "Select * from (";
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
@@ -836,7 +836,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getInitiatorSql(String initiator, String whereClausePredicatePrefix) throws EdenUserNotFoundException {
+    protected String getInitiatorSql(String initiator, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
         if ((initiator == null) || "".equals(initiator.trim())) {
             return "";
         } else {
@@ -891,7 +891,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return establishDateString(fromDateLastModified, toDateLastModified, LAST_STATUS_UPDATE_DATE, whereClausePredicatePrefix);
     }
 
-    protected String getViewerSql(String viewer, String whereClausePredicatePrefix) throws EdenUserNotFoundException {
+    protected String getViewerSql(String viewer, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
     	String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(viewer.trim()));
@@ -910,7 +910,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return sql;
     }
 
-    protected String getApproverSql(String approver, String whereClausePredicatePrefix) throws EdenUserNotFoundException {
+    protected String getApproverSql(String approver, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(approver.trim())).getWorkflowUserId().getWorkflowId();

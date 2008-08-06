@@ -116,7 +116,7 @@ import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Column;
@@ -165,7 +165,7 @@ import org.w3c.dom.NodeList;
 public class BeanConverter {
     private static final Logger LOG = Logger.getLogger(BeanConverter.class);
 
-    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, EdenUserNotFoundException {
+    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
             return null;
@@ -212,7 +212,7 @@ public class BeanConverter {
         return routeHeaderVO;
     }
 
-    public static RouteHeaderDTO convertActionListRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, EdenUserNotFoundException {
+    public static RouteHeaderDTO convertActionListRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
             return null;
@@ -355,7 +355,7 @@ public class BeanConverter {
         }
     }
 
-    public static DocumentRouteHeaderValue convertRouteHeaderVO(RouteHeaderDTO routeHeaderVO) throws WorkflowException, EdenUserNotFoundException {
+    public static DocumentRouteHeaderValue convertRouteHeaderVO(RouteHeaderDTO routeHeaderVO) throws WorkflowException, KEWUserNotFoundException {
         DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
         routeHeader.setAppDocId(routeHeaderVO.getAppDocId());
         routeHeader.setApprovedDate(Utilities.convertCalendar(routeHeaderVO.getDateApproved()));
@@ -397,7 +397,7 @@ public class BeanConverter {
         return routeHeader;
     }
     
-    public static ActionItemDTO convertActionItem(ActionItem actionItem) throws EdenUserNotFoundException {
+    public static ActionItemDTO convertActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
         ActionItemDTO actionItemVO = new ActionItemDTO();
         actionItemVO.setActionItemId(actionItem.getActionItemId());
         actionItemVO.setActionItemIndex(actionItem.getActionItemIndex());
@@ -639,7 +639,7 @@ public class BeanConverter {
         return userVO;
     }
 
-    public static WorkflowUser convertUserVO(UserDTO userVO) throws EdenUserNotFoundException {
+    public static WorkflowUser convertUserVO(UserDTO userVO) throws KEWUserNotFoundException {
         if (userVO == null) {
             return null;
         }
@@ -653,7 +653,7 @@ public class BeanConverter {
         } else if (userVO.getUuId() != null) {
             userId = new UuId(userVO.getUuId());
         } else {
-            throw new EdenUserNotFoundException("Cannot convert the given UserVO, it does not contain any valid user ids.");
+            throw new KEWUserNotFoundException("Cannot convert the given UserVO, it does not contain any valid user ids.");
         }
         return KEWServiceLocator.getUserService().getWorkflowUser(userId);
     }
@@ -733,7 +733,7 @@ public class BeanConverter {
         return routePath;
     }
 
-    public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+    public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
         // TODO some newly added actionrequest properties are not here (delegation stuff)
         ActionRequestDTO actionRequestVO = new ActionRequestDTO();
         actionRequestVO.setActionRequested(actionRequest.getActionRequested());
@@ -783,7 +783,7 @@ public class BeanConverter {
         return actionRequestVO;
     }
 
-    public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) throws EdenUserNotFoundException {
+    public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) throws KEWUserNotFoundException {
         if (actionTaken == null) {
             return null;
         }
@@ -905,9 +905,9 @@ public class BeanConverter {
      * 
      * @param responsiblePartyVO
      * @return
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyDTO responsiblePartyVO) throws EdenUserNotFoundException {
+    public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyDTO responsiblePartyVO) throws KEWUserNotFoundException {
         if (responsiblePartyVO == null) {
             return null;
         }
@@ -933,7 +933,7 @@ public class BeanConverter {
      * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
      * component (namely ActionRequestService.initializeActionRequestGraph).
      */
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO) throws EdenUserNotFoundException {
+    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO) throws KEWUserNotFoundException {
         if (actionRequestVO == null) {
             return null;
         }
@@ -951,7 +951,7 @@ public class BeanConverter {
         return actionRequest;
     }
 
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO, ActionRequestValue parentActionRequest) throws EdenUserNotFoundException {
+    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO, ActionRequestValue parentActionRequest) throws KEWUserNotFoundException {
         if (actionRequestVO == null) {
             return null;
         }
@@ -971,7 +971,7 @@ public class BeanConverter {
     /**
      * This method converts everything except for the parent and child requests
      */
-    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestVO) throws EdenUserNotFoundException {
+    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestVO) throws KEWUserNotFoundException {
 
         actionRequest.setActionRequested(actionRequestVO.getActionRequested());
         actionRequest.setActionRequestId(actionRequestVO.getActionRequestId());
@@ -1041,7 +1041,7 @@ public class BeanConverter {
         }
     }
 
-    public static ActionTakenValue convertActionTakenVO(ActionTakenDTO actionTakenVO) throws EdenUserNotFoundException {
+    public static ActionTakenValue convertActionTakenVO(ActionTakenDTO actionTakenVO) throws KEWUserNotFoundException {
         if (actionTakenVO == null) {
             return null;
         }
@@ -1103,7 +1103,7 @@ public class BeanConverter {
         return deleteEventVO;
     }
 
-    public static ActionTakenEventDTO convertActionTakenEvent(ActionTakenEvent actionTakenEvent) throws EdenUserNotFoundException {
+    public static ActionTakenEventDTO convertActionTakenEvent(ActionTakenEvent actionTakenEvent) throws KEWUserNotFoundException {
         if (actionTakenEvent == null) {
             return null;
         }
@@ -1114,7 +1114,7 @@ public class BeanConverter {
         return actionTakenEventVO;
     }
 
-    public static BeforeProcessEventDTO convertBeforeProcessEvent(BeforeProcessEvent event) throws EdenUserNotFoundException {
+    public static BeforeProcessEventDTO convertBeforeProcessEvent(BeforeProcessEvent event) throws KEWUserNotFoundException {
         if (event == null) {
             return null;
         }
@@ -1125,7 +1125,7 @@ public class BeanConverter {
         return beforeProcessEvent;
     }
 
-    public static AfterProcessEventDTO convertAfterProcessEvent(AfterProcessEvent event) throws EdenUserNotFoundException {
+    public static AfterProcessEventDTO convertAfterProcessEvent(AfterProcessEvent event) throws KEWUserNotFoundException {
         if (event == null) {
             return null;
         }
@@ -1273,7 +1273,7 @@ public class BeanConverter {
         nodeVO.setDocumentTypeId(node.getDocumentTypeId());
         try {
             nodeVO.setExceptionWorkgroup(convertWorkgroup(node.getExceptionWorkgroup()));
-        } catch (EdenUserNotFoundException e) {
+        } catch (KEWUserNotFoundException e) {
             throw new WorkflowRuntimeException("Could not locate users in exception workgroup for node " + node.getRouteNodeId() + ".", e);
         }
         nodeVO.setFinalApprovalInd(node.getFinalApprovalInd().booleanValue());
@@ -1398,7 +1398,7 @@ public class BeanConverter {
         }
     }
 
-    public static SimulationCriteria convertReportCriteriaVO(ReportCriteriaDTO criteriaVO) throws EdenUserNotFoundException {
+    public static SimulationCriteria convertReportCriteriaVO(ReportCriteriaDTO criteriaVO) throws KEWUserNotFoundException {
         if (criteriaVO == null) {
             return null;
         }
@@ -1411,7 +1411,7 @@ public class BeanConverter {
         if (criteriaVO.getRoutingUser() != null) {
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(criteriaVO.getRoutingUser());
             if (user == null) {
-                throw new EdenUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
+                throw new KEWUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
             }
             criteria.setRoutingUser(user);
         }
@@ -1432,7 +1432,7 @@ public class BeanConverter {
                 UserIdDTO userIdVO = criteriaVO.getTargetUsers()[index];
                 WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userIdVO);
                 if (user == null) {
-                    throw new EdenUserNotFoundException("Could not locate user for the given id: " + userIdVO);
+                    throw new KEWUserNotFoundException("Could not locate user for the given id: " + userIdVO);
                 }
                 criteria.getDestinationRecipients().add(user);
             }
@@ -1446,7 +1446,7 @@ public class BeanConverter {
         return criteria;
     }
 
-    public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) throws EdenUserNotFoundException {
+    public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) throws KEWUserNotFoundException {
         if (actionToTakeVO == null) {
             return null;
         }
@@ -1461,7 +1461,7 @@ public class BeanConverter {
         }
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(actionToTakeVO.getUserIdVO());
         if (user == null) {
-            throw new EdenUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
+            throw new KEWUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
         }
         actionToTake.setUser(user);
         return actionToTake;

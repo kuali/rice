@@ -26,7 +26,7 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.lookup.LookupUtils;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 
@@ -56,9 +56,9 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
         return (UniversalUser) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(UniversalUser.class, criteria));
     }
 
-    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException {
         if ((userId == null) || userId.isEmpty()) {
-            throw new EdenUserNotFoundException("Attempting to lookup user with null or empty id");
+            throw new KEWUserNotFoundException("Attempting to lookup user with null or empty id");
         }
         Criteria criteria = new Criteria();
         if (userId instanceof org.kuali.rice.kew.user.AuthenticationUserId) {
@@ -75,7 +75,7 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
         }
         WorkflowUser user = (WorkflowUser) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(org.kuali.core.workflow.bo.WorkflowUser.class, criteria));
         if (user == null) {
-            throw new EdenUserNotFoundException(new StringBuffer("Unable to locate user with ").append(userId.getClass().getName()).append(": ").append(userId.getId()).toString());
+            throw new KEWUserNotFoundException(new StringBuffer("Unable to locate user with ").append(userId.getClass().getName()).append(": ").append(userId.getId()).toString());
         }
         return user;
     }

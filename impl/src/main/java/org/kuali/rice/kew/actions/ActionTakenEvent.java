@@ -27,7 +27,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestService;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -113,7 +113,7 @@ public abstract class ActionTakenEvent {
 	 * Validates whether or not this action is valid for the given WorkflowUser
 	 * and DocumentRouteHeaderValue.
 	 */
-	protected boolean isActionValid() throws EdenUserNotFoundException {
+	protected boolean isActionValid() throws KEWUserNotFoundException {
 		return Utilities.isEmpty(validateActionRules());
 	}
 
@@ -121,9 +121,9 @@ public abstract class ActionTakenEvent {
 	 * Placeholder for validation rules for each action
 	 *
 	 * @return error message string of specific error message
-	 * @throws EdenUserNotFoundException
+	 * @throws KEWUserNotFoundException
 	 */
-	protected abstract String validateActionRules() throws EdenUserNotFoundException;
+	protected abstract String validateActionRules() throws KEWUserNotFoundException;
 
 	/**
 	 * Method to indicate that this action may require initiator execution only
@@ -135,7 +135,7 @@ public abstract class ActionTakenEvent {
 		return true;
 	}
 
-	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
+	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");
 		return true;
 	}
@@ -147,12 +147,12 @@ public abstract class ActionTakenEvent {
 		return "";
 	}
 
-	public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+	public void performAction() throws InvalidActionTakenException, KEWUserNotFoundException {
 	    recordAction();
 	    queueDocumentProcessing();
 	}
 
-	protected abstract void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException;
+	protected abstract void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException;
 
 	public void performDeferredAction() {
 
@@ -262,7 +262,7 @@ public abstract class ActionTakenEvent {
 	/**
 	 * Returns the highest priority delegator in the list of action requests.
 	 */
-	protected Recipient findDelegatorForActionRequests(List actionRequests) throws EdenUserNotFoundException {
+	protected Recipient findDelegatorForActionRequests(List actionRequests) throws KEWUserNotFoundException {
 		return getActionRequestService().findDelegator(actionRequests);
 	}
 

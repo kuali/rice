@@ -34,7 +34,7 @@ import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.RouteNodeService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -100,7 +100,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * TODO will this work properly in the case of an ALL APPROVE role requests with some of the requests already completed?
      */
-    private void revokePendingRequests(List pendingRequests, ActionTakenValue actionTaken, Recipient delegator) throws EdenUserNotFoundException {
+    private void revokePendingRequests(List pendingRequests, ActionTakenValue actionTaken, Recipient delegator) throws KEWUserNotFoundException {
         revokeRequests(pendingRequests);
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
@@ -113,7 +113,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Takes a list of root action requests and marks them and all of their children as "non-current".
      */
-    private void revokeRequests(List actionRequests) throws EdenUserNotFoundException {
+    private void revokeRequests(List actionRequests) throws KEWUserNotFoundException {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             actionRequest.setCurrentIndicator(Boolean.FALSE);
@@ -126,7 +126,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
     }
 
-    private void processReturnToInitiator(RouteNodeInstance newNodeInstance) throws EdenUserNotFoundException {
+    private void processReturnToInitiator(RouteNodeInstance newNodeInstance) throws KEWUserNotFoundException {
 	// important to pull this from the RouteNode's DocumentType so we get the proper version
         RouteNode initialNode = newNodeInstance.getRouteNode().getDocumentType().getPrimaryProcess().getInitialRouteNode();
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
@@ -141,11 +141,11 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -164,7 +164,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
         String actionTakenCode = getActionPerformedCode();
 
         // Move is always correct because the client application has authorized it
@@ -210,7 +210,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         return actionCompatible;
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
  //       checkLocking();
         updateSearchableAttributesIfPossible();
@@ -343,7 +343,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 		}
     }
 
-    private void executeNodeChange(Collection activeNodes, NodeGraphSearchResult result) throws InvalidActionTakenException, EdenUserNotFoundException {
+    private void executeNodeChange(Collection activeNodes, NodeGraphSearchResult result) throws InvalidActionTakenException, KEWUserNotFoundException {
         Integer oldRouteLevel = null;
         Integer newRouteLevel = null;
         if (CompatUtils.isRouteLevelCompatible(getRouteHeader())) {

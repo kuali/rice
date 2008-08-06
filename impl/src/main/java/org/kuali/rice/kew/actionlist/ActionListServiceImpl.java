@@ -39,7 +39,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestService;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -68,7 +68,7 @@ public class ActionListServiceImpl implements ActionListService {
 
     private ActionItemDAO actionItemDAO;
 
-    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException {
+    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws KEWUserNotFoundException {
         return getActionItemDAO().findDelegators(workflowUser, delegationType);
     }
 
@@ -95,7 +95,7 @@ public class ActionListServiceImpl implements ActionListService {
     public void deleteActionItem(ActionItem actionItem) {
         try {
             KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-        } catch (EdenUserNotFoundException e) {
+        } catch (KEWUserNotFoundException e) {
             LOG.error("error saving refreshUserOption", e);
         }
         getActionItemDAO().deleteActionItem(actionItem);
@@ -112,7 +112,7 @@ public class ActionListServiceImpl implements ActionListService {
             ActionItem actionItem = (ActionItem) iter.next();
             try {
                 KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
                 LOG.error("error saving refreshUserOption", e);
             }
         }
@@ -140,7 +140,7 @@ public class ActionListServiceImpl implements ActionListService {
      * schedules the action item updates to happen asynchronously.
      */
     public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         List oldMembers = oldWorkgroup.getUsers();
         List newMembers = newWorkgroup.getUsers();
         MembersDiff membersDiff = getMembersDiff(oldMembers, newMembers);
@@ -173,7 +173,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws EdenUserNotFoundException {
+    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException {
         // first verify that the user is still a member of the workgroup
         if (workgroup.hasMember(user)) {
             List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
@@ -226,7 +226,7 @@ public class ActionListServiceImpl implements ActionListService {
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
     public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         // first verify that the user is no longer a member of the workgroup
         if (!workgroup.hasMember(user)) {
             List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
@@ -245,7 +245,7 @@ public class ActionListServiceImpl implements ActionListService {
         }
     }
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws EdenUserNotFoundException {
+    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException {
         Collection items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
         for (Iterator iterator = items.iterator(); iterator.hasNext();) {
             ActionItem item = (ActionItem) iterator.next();
@@ -291,7 +291,7 @@ public class ActionListServiceImpl implements ActionListService {
         return map;
     }
 
-    public void saveActionItem(ActionItem actionItem) throws EdenUserNotFoundException {
+    public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
         KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
         getActionItemDAO().saveActionItem(actionItem);
     }
@@ -344,7 +344,7 @@ public class ActionListServiceImpl implements ActionListService {
         } else {
             try {
                 getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
                         actionItem.getActionItemId().toString()));
             }
@@ -464,7 +464,7 @@ public class ActionListServiceImpl implements ActionListService {
                     this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
                 }
             }
-        } catch (EdenUserNotFoundException eunfe) {
+        } catch (KEWUserNotFoundException eunfe) {
             throw new WorkflowRuntimeException(eunfe);
         }
     }

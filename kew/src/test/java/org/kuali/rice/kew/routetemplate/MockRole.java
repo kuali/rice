@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute;
@@ -66,7 +66,7 @@ public class MockRole extends UnqualifiedRoleAttribute {
     }
 
     @Override
-    protected ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws EdenUserNotFoundException {
+    protected ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
         String[] ids = roleName.split("[,\\s+]");
         ResolvedQualifiedRole rqr = new ResolvedQualifiedRole();
         for (String id: ids) {

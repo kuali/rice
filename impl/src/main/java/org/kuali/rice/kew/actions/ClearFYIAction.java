@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -76,11 +76,11 @@ public class ClearFYIAction extends ActionTakenEvent {
      * Method to check if the Action is currently valid on the given document
      * @return  returns an error message to give system better identifier for problem
      */
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -94,7 +94,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         return "";
     }
 
-    public boolean isActionCompatibleRequest(List requests) throws EdenUserNotFoundException {
+    public boolean isActionCompatibleRequest(List requests) throws KEWUserNotFoundException {
 
         // can always cancel saved or initiated document
         if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
@@ -124,7 +124,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws ResourceUnavailableException
      */
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
     //    checkLocking();
         updateSearchableAttributesIfPossible();

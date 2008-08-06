@@ -28,7 +28,7 @@ import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -56,11 +56,11 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return getActionTakenDAO().findByActionTakenId(actionTakenId);
     }
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
     	return getPreviousAction(actionRequest, null);
     }
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws EdenUserNotFoundException {
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws KEWUserNotFoundException {
 
         ActionTakenValue foundActionTaken = null;
         List users = new ArrayList();
@@ -154,7 +154,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         } else {
             try{
                 getUserService().getWorkflowUser(new WorkflowUserId(userId));
-            } catch (EdenUserNotFoundException e){
+            } catch (KEWUserNotFoundException e){
                 errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
             }
         }

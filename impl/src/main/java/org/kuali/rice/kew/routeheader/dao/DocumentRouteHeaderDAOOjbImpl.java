@@ -38,7 +38,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListService;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -130,7 +130,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     		ActionItem actionItem = (ActionItem) iter.next();
     		try {
     			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-    		} catch (EdenUserNotFoundException e) {
+    		} catch (KEWUserNotFoundException e) {
     			LOG.error("error saving refreshUserOption", e);
     		}
     	}

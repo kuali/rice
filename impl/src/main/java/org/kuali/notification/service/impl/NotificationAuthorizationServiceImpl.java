@@ -24,7 +24,7 @@ import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
@@ -70,7 +70,7 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
 	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(userId));
     
 	    return KEWServiceLocator.getWorkgroupService().isUserMemberOfGroup(groupNameId, user);
-	} catch(EdenUserNotFoundException eunfe) {
+	} catch(KEWUserNotFoundException eunfe) {
 	    LOG.error(eunfe);
 	    return false;
 	}

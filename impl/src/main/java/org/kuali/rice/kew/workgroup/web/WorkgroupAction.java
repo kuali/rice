@@ -37,7 +37,7 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -157,7 +157,7 @@ public class WorkgroupAction extends WorkflowAction {
             		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(workgroupForm.getWorkgroupMember()));
             		workgroupForm.getWorkgroup().getMembers().add(user);
             		workgroupForm.getWorkgroupMembers().add(new WorkgroupMember(user));
-            	} catch (EdenUserNotFoundException e) {
+            	} catch (KEWUserNotFoundException e) {
             		LOG.warn("User " + workgroupForm.getWorkgroupMember() + " is invalid");
             		errors.add(new WorkflowServiceErrorImpl("User is invalid", "user.userservice.id.invalid"));
             	}

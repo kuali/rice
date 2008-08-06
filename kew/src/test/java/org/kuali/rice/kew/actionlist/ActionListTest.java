@@ -35,7 +35,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.ActionListService;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.test.TestUtilities;
@@ -248,7 +248,7 @@ public class ActionListTest extends KEWTestCase {
         return routeHeader;
     }
 
-    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, Long workgroupId) throws EdenUserNotFoundException {
+    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, Long workgroupId) throws KEWUserNotFoundException {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId(new Long(1));

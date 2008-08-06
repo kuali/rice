@@ -35,7 +35,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
@@ -260,7 +260,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             WorkflowUser user = null;
             try {
         	user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
         	throw new WorkflowRuntimeException(e);
             }
             if (user == null) {

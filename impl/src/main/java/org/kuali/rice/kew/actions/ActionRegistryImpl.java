@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -127,7 +127,7 @@ public class ActionRegistryImpl implements ActionRegistry {
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
      */
-    public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, EdenUserNotFoundException {
+    public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException {
         ValidActions validActions = new ValidActions();
         for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
             String actionTakenCode = (String) iter.next();

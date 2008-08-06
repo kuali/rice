@@ -36,7 +36,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
 import org.kuali.rice.kew.user.UserService;
@@ -89,14 +89,14 @@ public class RuleResponsibility implements WorkflowPersistable {
     @Transient
     private List delegationRules = new ArrayList();
 
-    public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
         if (isUsingWorkflowUser()) {
             return ((UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE)).getWorkflowUser(new WorkflowUserId(ruleResponsibilityName));
         }
         return null;
     }
 
-    public Workgroup getWorkgroup() throws EdenUserNotFoundException {
+    public Workgroup getWorkgroup() throws KEWUserNotFoundException {
         if (isUsingWorkgroup()) {
             return ((WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV)).getWorkgroup(new WorkflowGroupId(new Long(ruleResponsibilityName)));
         }

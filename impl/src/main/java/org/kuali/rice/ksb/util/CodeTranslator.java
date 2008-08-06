@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 /**
- * Utility class to translate the various codes used in Eden into labels and vice versa.
+ * Utility class to translate the various codes into labels and vice versa.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

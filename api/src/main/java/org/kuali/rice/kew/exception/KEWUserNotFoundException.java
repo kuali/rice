@@ -22,23 +22,23 @@ package org.kuali.rice.kew.exception;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EdenUserNotFoundException extends WorkflowException {
+public class KEWUserNotFoundException extends WorkflowException {
 	
 	private static final long serialVersionUID = -7171012642086191459L;
 
-	public EdenUserNotFoundException() {
+	public KEWUserNotFoundException() {
 		super();
 	}
 
-	public EdenUserNotFoundException(Throwable cause) {
+	public KEWUserNotFoundException(Throwable cause) {
 		super(cause);
 	}
 
-	public EdenUserNotFoundException(String s) {
+	public KEWUserNotFoundException(String s) {
 		super(s);
 	}
   
-	public EdenUserNotFoundException(String s, Throwable cause) {
+	public KEWUserNotFoundException(String s, Throwable cause) {
 		super(s, cause);
 	}
   

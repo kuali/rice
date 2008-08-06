@@ -28,7 +28,7 @@ import java.util.Set;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
@@ -128,7 +128,7 @@ public class UserSession implements Serializable {
         return workflowUser;
     }
     
-    public boolean setBackdoorId(String id) throws EdenUserNotFoundException {
+    public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
         if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment())) {
             if (id.matches("^\\d*$")) {
                 this.backdoorId = new EmplId(id);

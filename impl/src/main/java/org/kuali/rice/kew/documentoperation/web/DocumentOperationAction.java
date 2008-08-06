@@ -64,7 +64,7 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.RouteNodeService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
@@ -612,7 +612,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("initiatorWorkflowId".equals(lookupField)) {
 					try {
 						routeHeader.setInitiatorWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("route header initiator not found");
 						routeHeader.setInitiatorWorkflowId(null);
 					}
@@ -638,7 +638,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("workflowId".equals(lookupField)) {
 					try {
 						actionRequest.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("action request user not found");
 						actionRequest.setWorkflowId(null);
 					}
@@ -659,7 +659,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("workflowId".equals(lookupField)) {
 					try {
 						actionTaken.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("action taken user not found");
 						actionTaken.setWorkflowId(null);
 					}
@@ -667,7 +667,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("delegatorWorkflowId".equals(lookupField)) {
 					try {
 						actionTaken.setDelegatorWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("action taken delegator user not found");
 						actionTaken.setDelegatorWorkflowId(null);
 					}
@@ -686,7 +686,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("workflowId".equals(lookupField)) {
 					try {
 						actionItem.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("action item user not found");
 						actionItem.setWorkflowId(null);
 					}
@@ -705,7 +705,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				if ("delegatorWorkflowId".equals(lookupField)) {
 					try {
 						actionItem.setDelegatorWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (EdenUserNotFoundException e) {
+					} catch (KEWUserNotFoundException e) {
 						LOG.info("action item delegator user not found");
 						actionItem.setDelegatorWorkflowId(null);
 					}

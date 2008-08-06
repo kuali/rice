@@ -58,7 +58,7 @@ import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -101,28 +101,28 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
 	public DocumentRouteHeaderValue acknowledgeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		AcknowledgeAction action = new AcknowledgeAction(routeHeader, user, annotation);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue releaseWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, workgroup);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue takeWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, workgroup);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue approveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		ApproveAction action = new ApproveAction(routeHeader, user, annotation);
 		action.performAction();
 		return finish(routeHeader);
@@ -135,7 +135,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(document);
 	}
 
-	public DocumentRouteHeaderValue blanketApproval(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue blanketApproval(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException, KEWUserNotFoundException {
 		RouteNode node = (routeLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), routeLevel));
 		if (node == null && routeLevel != null) {
 			throw new InvalidActionTakenException("Could not locate node for route level " + routeLevel);
@@ -149,7 +149,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue blanketApproval(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, Set nodeNames) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue blanketApproval(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, Set nodeNames) throws InvalidActionTakenException, KEWUserNotFoundException {
 		BlanketApproveAction action = new BlanketApproveAction(routeHeader, user, annotation, nodeNames);
 		action.recordAction();
 
@@ -157,14 +157,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue cancelDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		// init(routeHeader);
 		CancelAction action = new CancelAction(routeHeader, user, annotation);
 		action.recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue clearFYIDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue clearFYIDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException, KEWUserNotFoundException {
 		// init(routeHeader);
 		ClearFYIAction action = new ClearFYIAction(routeHeader, user, "");
 		action.recordAction();
@@ -172,7 +172,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue completeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		CompleteAction action = new CompleteAction(routeHeader, user, annotation);
 		action.performAction();
 		return finish(routeHeader);
@@ -218,14 +218,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue disapproveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		DisapproveAction action = new DisapproveAction(routeHeader, user, annotation);
 		action.recordAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation)
-			throws InvalidActionTakenException, EdenUserNotFoundException {
+			throws InvalidActionTakenException, KEWUserNotFoundException {
 		RouteNode node = (destRouteLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), destRouteLevel));
 		if (node == null && destRouteLevel != null) {
 			throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
@@ -236,14 +236,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation)
-			throws InvalidActionTakenException, EdenUserNotFoundException {
+			throws InvalidActionTakenException, KEWUserNotFoundException {
 		ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, user, annotation, destinationNodeName, true);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue routeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws WorkflowException,
-			InvalidActionTakenException, EdenUserNotFoundException {
+			InvalidActionTakenException, KEWUserNotFoundException {
 		RouteDocumentAction actionEvent = new RouteDocumentAction(routeHeader, user, annotation);
 		actionEvent.performAction();
         LOG.info("routeDocument: " + routeHeader);
@@ -260,7 +260,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue saveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		SaveActionEvent action = new SaveActionEvent(routeHeader, user, annotation);
 		action.performAction();
 		return finish(routeHeader);
@@ -274,19 +274,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KEWServiceLocator.getRouteHeaderService().deleteRouteHeader(routeHeader);
 	}
 
-	public void logDocumentAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws EdenUserNotFoundException, InvalidActionTakenException {
+	public void logDocumentAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws KEWUserNotFoundException, InvalidActionTakenException {
 		LogDocumentActionAction action = new LogDocumentActionAction(routeHeader, user, annotation);
 		action.recordAction();
 	}
 
-	public DocumentRouteHeaderValue moveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue moveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException {
 		MoveDocumentAction action = new MoveDocumentAction(routeHeader, user, annotation, movePoint);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor)
-			throws InvalidActionTakenException, EdenUserNotFoundException {
+			throws InvalidActionTakenException, KEWUserNotFoundException {
 		init(routeHeader);
 		SuperUserActionRequestApproveEvent suActionRequestApprove = new SuperUserActionRequestApproveEvent(routeHeader, user, actionRequestId, annotation, runPostProcessor);
 		suActionRequestApprove.recordAction();
@@ -300,31 +300,31 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * when attempting to save the branch after the transition to the 'A' status.
      */
     public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor)
-        throws InvalidActionTakenException, EdenUserNotFoundException {
+        throws InvalidActionTakenException, KEWUserNotFoundException {
         return superUserActionRequestApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), actionRequestId, annotation, runPostProcessor);
     }
 
 	public DocumentRouteHeaderValue superUserApprove(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		init(routeHeader);
 		new SuperUserApproveEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue superUserCancelAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
-			EdenUserNotFoundException {
+			KEWUserNotFoundException {
 		init(routeHeader);
 		new SuperUserCancelEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException {
 		init(routeHeader);
 		new SuperUserDisapproveEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException {
 		init(routeHeader);
 		new SuperUserNodeApproveEvent(routeHeader, user, annotation, runPostProcessor, nodeName).recordAction();
 		return finish(routeHeader);
@@ -336,7 +336,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * when attempting to save the branch after the transition to the 'A' status.
 	 */
 	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
-		EdenUserNotFoundException {
+		KEWUserNotFoundException {
 		return superUserNodeApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
 
@@ -347,12 +347,12 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * so that we can stay within the same PersistenceBroker cache.
 	 */
 	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor)
-		throws InvalidActionTakenException, EdenUserNotFoundException {
+		throws InvalidActionTakenException, KEWUserNotFoundException {
 		return superUserReturnDocumentToPreviousNode(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
 
 	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor)
-			throws InvalidActionTakenException, EdenUserNotFoundException {
+			throws InvalidActionTakenException, KEWUserNotFoundException {
 		init(routeHeader);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, user, annotation, runPostProcessor, nodeName);
 		action.recordAction();
@@ -376,7 +376,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 	}
 
-	public DocumentRouteHeaderValue revokeAdHocRequests(WorkflowUser user, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue revokeAdHocRequests(WorkflowUser user, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException {
 		RevokeAdHocAction action = new RevokeAdHocAction(document, user, revoke, annotation);
 		action.performAction();
 		return finish(document);

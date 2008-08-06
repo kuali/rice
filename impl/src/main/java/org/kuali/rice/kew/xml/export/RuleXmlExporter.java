@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
@@ -128,7 +128,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                         renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
                         renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());
                     }
-                } catch (EdenUserNotFoundException e) {
+                } catch (KEWUserNotFoundException e) {
                     throw new WorkflowRuntimeException("Could not locate user when attempting to export responsibility.");
                 }
                 if (delegation == null) {

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.docsearch;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -29,6 +29,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface DocumentSearchResultProcessor {
     
-    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchVO> docSearchResultRows,DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException, SQLException;
+    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchVO> docSearchResultRows,DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException;
 
 }

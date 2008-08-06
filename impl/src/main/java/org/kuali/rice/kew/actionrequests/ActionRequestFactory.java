@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
@@ -122,11 +122,11 @@ public class ActionRequestFactory {
     }
 
     //unify these 2 methods if possible
-    public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws EdenUserNotFoundException {
+    public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
         Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
-    private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws EdenUserNotFoundException {
+    private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws KEWUserNotFoundException {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
@@ -147,7 +147,7 @@ public class ActionRequestFactory {
         return notificationRequests;
     }
 
-    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, WorkflowUser reasonUser, String notificationRequestCode, String actionTakenCode) throws EdenUserNotFoundException {
+    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, WorkflowUser reasonUser, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
 
     	String annotation = generateNotificationAnnotation(reasonUser, notificationRequestCode, actionTakenCode, actionRequest);
         ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
@@ -225,9 +225,9 @@ public class ActionRequestFactory {
      * @param ignorePrevious
      * @param description
      * @return the created root role request
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      */
-    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) throws EdenUserNotFoundException {
+    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) throws KEWUserNotFoundException {
 
     	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
@@ -259,7 +259,7 @@ public class ActionRequestFactory {
     	return requestGraph;
     }
 
-    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws EdenUserNotFoundException {
+    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {
     	Recipient parentRecipient = parentRequest.getRecipient();
     	if (parentRecipient instanceof RoleRecipient) {
     		throw new WorkflowRuntimeException("Cannot delegate on Role Request.  It must be a request to a person or workgroup, although that request may be in a role");
@@ -297,7 +297,7 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws EdenUserNotFoundException {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}

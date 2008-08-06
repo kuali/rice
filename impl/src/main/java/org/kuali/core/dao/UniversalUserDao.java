@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -32,7 +32,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 public interface UniversalUserDao {
     public UniversalUser getUser(org.kuali.core.bo.user.UserId userId) throws UserNotFoundException;
 
-    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException;
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException;
 
     public void save(WorkflowUser workflowUser);
 

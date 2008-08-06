@@ -25,7 +25,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -100,7 +100,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         } else {
             try {
                 KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(routeHeader.getInitiatorWorkflowId()));
-            } catch(EdenUserNotFoundException e){
+            } catch(KEWUserNotFoundException e){
                 errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));
             }
         }

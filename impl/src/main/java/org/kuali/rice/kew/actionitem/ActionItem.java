@@ -36,7 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -134,18 +134,18 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         return getWorkgroup(delegatorWorkgroupId);
     }
 
-    private WorkflowUser getUser(String workflowId) throws EdenUserNotFoundException {
+    private WorkflowUser getUser(String workflowId) throws KEWUserNotFoundException {
     	if (StringUtils.isBlank(workflowId)) {
     		return null;
     	}
         return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
     }
     
-    public WorkflowUser getUser() throws EdenUserNotFoundException {
+    public WorkflowUser getUser() throws KEWUserNotFoundException {
         return getUser(workflowId);
     }
     
-    public WorkflowUser getDelegatorUser() throws EdenUserNotFoundException {
+    public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
         return getUser(delegatorWorkflowId);
     }
 

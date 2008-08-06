@@ -35,7 +35,7 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -312,7 +312,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @param adHocRecipients
      * @throws InvalidActionTakenException
      * @throws InvalidRouteTypeException
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws InvalidActionRequestException
      * @throws EdenException
      * @throws InvalidWorkgroupException

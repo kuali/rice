@@ -29,7 +29,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -73,7 +73,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return new BaseWorkgroupExtension();
 	}
 
-	public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws EdenUserNotFoundException {
+	public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws KEWUserNotFoundException {
 		Workgroup workgroup = this.getWorkgroup(groupId);
 		return workgroup == null ? false : workgroup.hasMember(user);
 	}
@@ -82,13 +82,13 @@ public class BaseWorkgroupService implements WorkgroupService {
 		List workgroups = getWorkgroupDAO().search(workgroup, extensionValues);
 		try {
 			materializeMembers(workgroups);
-		} catch (EdenUserNotFoundException e) {
+		} catch (KEWUserNotFoundException e) {
 			throw new WorkflowRuntimeException("A problem was encountered when searching for workgroup.", e);
 		}
 		return workgroups;
 	}
 
-	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws EdenUserNotFoundException {
+	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException {
 	    List<Workgroup> workgroups = (List<Workgroup>)getWorkgroupDAO().find(workgroup, extensionValues, user);
 	    // climb up to find all groups that we're nested in
 	    workgroups = getWorkgroupsGroups(workgroups);
@@ -142,7 +142,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 			if (workgroup == null) {
 				workgroup = getExternalWorkgroup(groupId, loadWorkgroupExtensions);
 			}
-		} catch (EdenUserNotFoundException e) {
+		} catch (KEWUserNotFoundException e) {
 			throw new WorkflowRuntimeException("Error locating user in workgroup.", e);
 		}
 		return workgroup;
@@ -162,7 +162,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 	 * @return the initialized workgroup, does not have to be the exact same instance as the workgroup
 	 * passed in
 	 */
-	protected BaseWorkgroup initializeLoadedWorkgroup(BaseWorkgroup workgroup) throws EdenUserNotFoundException {
+	protected BaseWorkgroup initializeLoadedWorkgroup(BaseWorkgroup workgroup) throws KEWUserNotFoundException {
 		workgroup.materializeMembers();
 		return workgroup;
 	}
@@ -171,7 +171,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return null;
 	}
 
-	public List<Workgroup> getUsersGroups(WorkflowUser user) throws EdenUserNotFoundException {
+	public List<Workgroup> getUsersGroups(WorkflowUser user) throws KEWUserNotFoundException {
 		List workgroupMembers = getWorkgroupMemberDAO().findByWorkflowId(user.getWorkflowUserId().getWorkflowId());
 		List<Workgroup> workgroups = new ArrayList<Workgroup>();
 		for (Iterator iter = workgroupMembers.iterator(); iter.hasNext();) {
@@ -309,7 +309,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 
     // helper methods
 
-    protected void materializeMembers(List workgroups) throws EdenUserNotFoundException {
+    protected void materializeMembers(List workgroups) throws KEWUserNotFoundException {
     	for (Iterator iterator = workgroups.iterator(); iterator.hasNext();) {
 			((BaseWorkgroup) iterator.next()).materializeMembers();
 		}

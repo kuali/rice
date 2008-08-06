@@ -57,7 +57,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.BaseUserService;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.UserCapabilities;
@@ -370,16 +370,16 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         universalUserDao.save(simpleUser);
     }
 
-    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws KEWUserNotFoundException {
         return universalUserDao.getWorkflowUser(getWorkflowUserId(userId));
     }
 
-    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser(org.kuali.rice.kew.user.UserId userId) throws KEWUserNotFoundException {
         WorkflowUser user = getFromCache(userId);
         if (user == null) {
             user = (WorkflowUser) universalUserDao.getWorkflowUser(userId);
             if (user == null) {
-                throw new EdenUserNotFoundException("User is invalid. userId " + userId.toString());
+                throw new KEWUserNotFoundException("User is invalid. userId " + userId.toString());
             }
             else {
                 addToCache(user);
@@ -392,7 +392,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         return universalUserDao.search(user, useWildcards);
     }
 
-    private org.kuali.rice.kew.user.UserId getWorkflowUserId(UserIdDTO userId) throws EdenUserNotFoundException {
+    private org.kuali.rice.kew.user.UserId getWorkflowUserId(UserIdDTO userId) throws KEWUserNotFoundException {
         org.kuali.rice.kew.user.UserId userIdInterface = null;
         if (userId instanceof EmplIdDTO) {
             userIdInterface = new org.kuali.rice.kew.user.EmplId(((EmplIdDTO) userId).getEmplId());
@@ -407,7 +407,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
             userIdInterface = new WorkflowUserId(((WorkflowIdDTO) userId).getWorkflowId());
         }
         else {
-            throw new EdenUserNotFoundException("Attempting to fetch user with unknown id type");
+            throw new KEWUserNotFoundException("Attempting to fetch user with unknown id type");
         }
         return userIdInterface;
     }

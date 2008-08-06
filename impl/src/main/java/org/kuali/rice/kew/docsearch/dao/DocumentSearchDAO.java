@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
 public interface DocumentSearchDAO {
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException;
-    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException;
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException;
+    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException;
 }

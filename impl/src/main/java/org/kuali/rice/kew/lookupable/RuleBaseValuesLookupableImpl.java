@@ -29,7 +29,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
@@ -473,7 +473,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			try {
 				WorkflowUser user = getUserService().getWorkflowUser(new AuthenticationUserId(networkIdParam.trim()));
 				workflowId = user.getWorkflowUserId().getWorkflowId();
-			} catch (EdenUserNotFoundException e) {
+			} catch (KEWUserNotFoundException e) {
 				errors.add(new WorkflowServiceErrorImpl("User Invalid", "routetemplate.ruleservice.user.invalid"));
 			}
 		}

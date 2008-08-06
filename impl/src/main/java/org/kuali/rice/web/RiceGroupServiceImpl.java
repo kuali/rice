@@ -73,7 +73,7 @@ public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
         }
         catch (WorkflowException e) {
             LOG.error("Caught a WorkflowException: " + userId, e);
-            throw new RuntimeException("EdenException: ", e);
+            throw new RuntimeException("WorkflowException: ", e);
         }
 
         return usersGroups;

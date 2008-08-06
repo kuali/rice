@@ -37,7 +37,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.clientapp.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.notification.NotificationService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -99,15 +99,15 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     
 
-    public void activateRequests(Collection actionRequests) throws EdenUserNotFoundException {
+    public void activateRequests(Collection actionRequests) throws KEWUserNotFoundException {
         activateRequests(actionRequests, new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
 
-    public void activateRequests(Collection actionRequests, boolean simulate) throws EdenUserNotFoundException {
+    public void activateRequests(Collection actionRequests, boolean simulate) throws KEWUserNotFoundException {
         activateRequests(actionRequests, new ActivationContext(simulate));
     }
 
-    public void activateRequests(Collection actionRequests, ActivationContext activationContext) throws EdenUserNotFoundException {
+    public void activateRequests(Collection actionRequests, ActivationContext activationContext) throws KEWUserNotFoundException {
         if (actionRequests == null) {
             return;
         }
@@ -122,26 +122,26 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         LOG.debug("Generated " + activationContext.getGeneratedActionItems().size() + " action items.");
     }
 
-    public void activateRequest(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+    public void activateRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
         activateRequests(Utilities.asList(actionRequest), new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
 
-    public void activateRequest(ActionRequestValue actionRequest, boolean simulate) throws EdenUserNotFoundException {
+    public void activateRequest(ActionRequestValue actionRequest, boolean simulate) throws KEWUserNotFoundException {
         activateRequests(Utilities.asList(actionRequest), new ActivationContext(simulate));
     }
 
     public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         activateRequests(Utilities.asList(actionRequest), activationContext);
     }
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         return activateRequestNoNotification(actionRequest, new ActivationContext(simulate));
     }
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         activationContext.setGeneratedActionItems(new ArrayList());
         activateRequestInternal(actionRequest, activationContext);
         return activationContext.getGeneratedActionItems();
@@ -152,7 +152,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * for generated action items.
      */
     private void activateRequestsInternal(Collection actionRequests, ActivationContext activationContext)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         if (actionRequests == null) {
             return;
         }
@@ -166,7 +166,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * Internal helper method for activating a single action requests and it's children. Maintains an accumulator for
      * generated action items.
      */
-    private void activateRequestInternal(ActionRequestValue actionRequest, ActivationContext activationContext) throws EdenUserNotFoundException {
+    private void activateRequestInternal(ActionRequestValue actionRequest, ActivationContext activationContext) throws KEWUserNotFoundException {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         if (actionRequest == null || actionRequest.isActive() || actionRequest.isDeactivated()) {
             return;
@@ -195,7 +195,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @return the List of generated ActionItems
      */
     private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
@@ -256,7 +256,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
-            ActivationContext activationContext) throws EdenUserNotFoundException {
+            ActivationContext activationContext) throws KEWUserNotFoundException {
 
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
@@ -402,14 +402,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List findAllValidRequests(WorkflowUser user, Long routeHeaderId, String requestCode)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         ActionRequestDAO arDAO = getActionRequestDAO();
         Collection pendingArs = arDAO.findAllPendingByDocId(routeHeaderId);
         return findAllValidRequests(user, pendingArs, requestCode);
     }
 
     public List findAllValidRequests(WorkflowUser user, Collection actionRequests, String requestCode)
-    throws EdenUserNotFoundException {
+    throws KEWUserNotFoundException {
         List matchedArs = new ArrayList();
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue ar = (ActionRequestValue) iter.next();
@@ -529,7 +529,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().findPendingRootRequestsByDocumentType(documentTypeId);
     }
 
-    public void saveActionRequest(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+    public void saveActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
 
         if (actionRequest.isWorkgroupRequest() && !actionRequest.getWorkgroup().getActiveInd().booleanValue()) {
             throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
@@ -605,7 +605,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().findByStatusAndDocId(statusCd, routeHeaderId);
     }
 
-    public void alterActionRequested(List actionRequests, String actionRequestCd) throws EdenUserNotFoundException {
+    public void alterActionRequested(List actionRequests, String actionRequestCd) throws KEWUserNotFoundException {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 
@@ -637,7 +637,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return false;
     }
 
-    public Recipient findDelegator(List actionRequests) throws EdenUserNotFoundException {
+    public Recipient findDelegator(List actionRequests) throws KEWUserNotFoundException {
         Recipient delegator = null;
         String requestCode = KEWConstants.ACTION_REQUEST_FYI_REQ;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -653,7 +653,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return delegator;
     }
 
-    public Recipient findDelegator(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+    public Recipient findDelegator(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
         ActionRequestValue delegatorRequest = findDelegatorRequest(actionRequest);
         Recipient delegator = null;
         if (delegatorRequest != null) {
@@ -766,7 +766,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 } else {
                     try {
                         getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-                    } catch (EdenUserNotFoundException e) {
+                    } catch (KEWUserNotFoundException e) {
                         errors.add(new WorkflowServiceErrorImpl("ActionRequest person id invalid.",
                                 "actionrequest.personid.invalid", actionRequest.getActionRequestId().toString()));
                     }

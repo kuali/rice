@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -40,9 +40,9 @@ public interface ActionTakenService {
 
     public void saveActionTaken(ActionTakenValue actionTaken);
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws EdenUserNotFoundException;
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws EdenUserNotFoundException;
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws KEWUserNotFoundException;
 
     public Collection findByRouteHeaderId(Long routeHeaderId);
 

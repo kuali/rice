@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.reflect.DataDefinition;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -68,7 +68,7 @@ public interface ActionRegistry {
      * Returns a List of valid action codes for the given user on the document.
      *
      * @throws ResourceUnavailableException if an action class cannot be constructed
-     * @throws EdenUserNotFoundException if the given user is invalid
+     * @throws KEWUserNotFoundException if the given user is invalid
      */
-    public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, EdenUserNotFoundException;
+    public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException;
 }

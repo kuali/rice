@@ -34,7 +34,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.ActionListService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.PreferencesService;
 import org.kuali.rice.kew.user.Recipient;
@@ -107,7 +107,7 @@ public class ActionListFilterAction extends WorkflowAction {
         return null;
     }
 
-    private List getUserWorkgroupsDropDownList(WorkflowUser user) throws EdenUserNotFoundException {
+    private List getUserWorkgroupsDropDownList(WorkflowUser user) throws KEWUserNotFoundException {
     	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
     	List sortedUserWorkgroups = new ArrayList();
     	KeyValue keyValue = null;

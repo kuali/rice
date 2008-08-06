@@ -28,7 +28,7 @@ import java.util.Map;
 import org.jdom.Element;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routetemplate.MyRules2;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
@@ -69,7 +69,7 @@ public class MockRuleServiceImpl implements RuleService {
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return null;
     }
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws EdenUserNotFoundException {
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException {
         return null;
     }
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
@@ -163,7 +163,7 @@ public class MockRuleServiceImpl implements RuleService {
         return (List) rulesByRouteHeaderId.get(routeHeaderId);
     }
 
-    public void makeCurrent(Long routeHeaderId) throws EdenUserNotFoundException {
+    public void makeCurrent(Long routeHeaderId) throws KEWUserNotFoundException {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 

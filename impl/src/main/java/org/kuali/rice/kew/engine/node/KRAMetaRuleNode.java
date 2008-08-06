@@ -28,7 +28,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.RouteManagerException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -52,7 +52,7 @@ public class KRAMetaRuleNode extends IteratedRequestActivationNode {
         return new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
     }
     
-    protected List<ActionRequestValue> initializeRequests(List<ActionRequestValue> requests, RouteContext context) throws EdenUserNotFoundException {
+    protected List<ActionRequestValue> initializeRequests(List<ActionRequestValue> requests, RouteContext context) throws KEWUserNotFoundException {
         // RequestNode.getNewActionRequests
         List<ActionRequestValue> newRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iterator = requests.iterator(); iterator.hasNext();) {

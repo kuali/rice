@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -63,7 +63,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
         if (workgroup == null) {
             return "User cannot Release Workgroup Authority without a given workgroup";
         } else {
@@ -71,7 +71,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         }
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         String error = performReleaseWorkgroupAuthority(false);
         if (!Utilities.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
@@ -80,7 +80,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         queueDocumentProcessing();
     }
     
-    private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws EdenUserNotFoundException {
+    private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws KEWUserNotFoundException {
         if (! workgroup.hasMember(getUser())) {
             return (getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
         }

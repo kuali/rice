@@ -21,7 +21,7 @@ package org.kuali.rice.kew.test.web;
 import javax.servlet.ServletContext;
 
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -48,11 +48,11 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         super(method, requestURI);
     }
 
-    public WorkflowServletRequest(String user) throws EdenUserNotFoundException {
+    public WorkflowServletRequest(String user) throws KEWUserNotFoundException {
         setUser(user);
     }
 
-    public void setUser(String user) throws EdenUserNotFoundException {
+    public void setUser(String user) throws KEWUserNotFoundException {
         WorkflowUser wfuser;
         if (user == null) {
             wfuser = null;
@@ -70,7 +70,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         return userId.getId();
     }
 
-    public void setBackdoorId(String backdoorId) throws EdenUserNotFoundException {
+    public void setBackdoorId(String backdoorId) throws KEWUserNotFoundException {
         UserSession session = getUserSession();
         if (session == null) {
             throw new IllegalStateException("Session must be set before backdoor id is set");

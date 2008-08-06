@@ -33,7 +33,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleDelegation;
@@ -393,7 +393,7 @@ public class RuleXmlParser implements XmlConstants {
                 }
                 responsibility.setRuleResponsibilityName(workflowUser.getWorkflowId());
                 responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
                 throw new InvalidXmlException(e);
             }
         } else if (workgroup != null) {

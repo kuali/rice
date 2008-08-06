@@ -37,7 +37,7 @@ import javax.persistence.Version;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -174,7 +174,7 @@ public class RouteNode implements Serializable {
         this.activationType = at.getCode();
     }
 
-    public Workgroup getExceptionWorkgroup() throws EdenUserNotFoundException {
+    public Workgroup getExceptionWorkgroup() throws KEWUserNotFoundException {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.exceptionWorkgroupId));
     }
 

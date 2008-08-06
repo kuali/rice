@@ -26,7 +26,7 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
@@ -97,7 +97,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
     
     
 	@Override
-    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) throws EdenUserNotFoundException {
+    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         if (!isValidRole(roleName)) {
             throw new WorkflowRuntimeException("Invalid role: " + roleName);
         }
@@ -121,7 +121,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
     }
 
 	@Override
-    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws EdenUserNotFoundException {
+    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {
         List<Id> members = new ArrayList<Id>();
         UserId roleUserId = null;
         String roleName = qualifiedRoleName.getBaseRoleName();
@@ -196,7 +196,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 		if (!StringUtils.isBlank(userid)) {
 			try {
 				user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(userid));
-			} catch (EdenUserNotFoundException e) {
+			} catch (KEWUserNotFoundException e) {
 				errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for userid '" + userid + "'", "uh.accountattribute.userid.invalid"));
 			}
 		}

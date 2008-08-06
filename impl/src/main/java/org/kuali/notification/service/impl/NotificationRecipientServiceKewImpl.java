@@ -25,7 +25,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.web.WebWorkflowUser;
@@ -104,7 +104,7 @@ public class NotificationRecipientServiceKewImpl implements NotificationRecipien
 	    } else {
 		return false;
 	    }
-	} catch (EdenUserNotFoundException e) {
+	} catch (KEWUserNotFoundException e) {
 	    return false;
 	}
     }
@@ -158,7 +158,7 @@ public class NotificationRecipientServiceKewImpl implements NotificationRecipien
 	    } else {
 		return "";
 	    }
-	} catch (EdenUserNotFoundException e) {
+	} catch (KEWUserNotFoundException e) {
 	    return "";
 	}
     }

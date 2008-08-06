@@ -38,7 +38,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.edl.StyleService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
@@ -140,7 +140,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             delegatorId = actionItem.getDelegatorWorkflowId();
             try {
                 delegatorDisplayValue = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getDelegatorWorkflowId())).getTransposedName();
-            } catch (EdenUserNotFoundException e) {
+            } catch (KEWUserNotFoundException e) {
                 LOG.error("Cannot find user for id " + actionItem.getWorkflowId(),e);
                 delegatorDisplayValue = "USER NOT FOUND";
             };

@@ -27,7 +27,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleDelegation;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
@@ -310,7 +310,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				try {
 					WorkflowUser user = getUserService().getWorkflowUser(new AuthenticationUserId(getReviewer()));
 					setRuleResponsibilityName(user.getWorkflowUserId().getWorkflowId());
-				} catch (EdenUserNotFoundException e) {
+				} catch (KEWUserNotFoundException e) {
 					invalidUser = true;
 				}
 			}

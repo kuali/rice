@@ -31,7 +31,7 @@ import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeService;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.routetemplate.RuleAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
@@ -94,7 +94,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     	assertEquals("Value of 'override searchable attributes' should be default",DocumentSearchXMLResultProcessor.DEFAULT_OVERRIDE_SEARCHABLE_ATTRIBUTES_VALUE,docSearchResult.getOverrideSearchableAttributes());
     }
     
-    private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) throws EdenUserNotFoundException {
+    private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) throws KEWUserNotFoundException {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);

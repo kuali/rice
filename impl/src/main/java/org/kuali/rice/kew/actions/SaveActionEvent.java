@@ -22,7 +22,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -64,7 +64,7 @@ public class SaveActionEvent extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
 	return validateActionRulesCustom(true);
     }
 
@@ -79,7 +79,7 @@ public class SaveActionEvent extends ActionTakenEvent {
 	return "";
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
 	MDC.put("docId", getRouteHeader().getRouteHeaderId());
 //	checkLocking();
 	LOG.debug("Checking to see if the action is legal");
@@ -126,7 +126,7 @@ public class SaveActionEvent extends ActionTakenEvent {
 	//    }
     }
 
-    protected ActionRequestValue generateSaveRequest() throws EdenUserNotFoundException {
+    protected ActionRequestValue generateSaveRequest() throws KEWUserNotFoundException {
 	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
 		getRouteHeaderId()).get(0);
 	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);

@@ -21,7 +21,7 @@ import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.document.Document;
 import org.kuali.core.rule.event.SaveEvent;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -47,7 +47,7 @@ public interface DocumentService {
      *
      * @param documentTypeName
      * @return
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws EdenException
      */
     public Document getNewDocument(String documentTypeName) throws WorkflowException;
@@ -57,7 +57,7 @@ public interface DocumentService {
      *
      * @param documentClass
      * @return
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws EdenException
      */
     public Document getNewDocument(Class documentClass) throws WorkflowException;
@@ -67,7 +67,7 @@ public interface DocumentService {
      *
      * @param documentHeaderId
      * @return
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws EdenException
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;

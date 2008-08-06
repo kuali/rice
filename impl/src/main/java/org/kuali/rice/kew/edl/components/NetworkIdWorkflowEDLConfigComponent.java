@@ -19,7 +19,7 @@ package org.kuali.rice.kew.edl.components;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -62,7 +62,7 @@ public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 			//not blank validate as normal whether required or not
 			try {
 				KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(param.getParamValue()));
-			} catch (EdenUserNotFoundException e) {
+			} catch (KEWUserNotFoundException e) {
 				return ("The value " + param.getParamValue() + " is an invalid Network ID");
 			}
 		}

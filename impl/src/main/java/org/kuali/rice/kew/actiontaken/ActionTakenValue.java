@@ -37,7 +37,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.actionrequests.ActionRequestService;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
@@ -100,11 +100,11 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Transient
     private String actionDateString;
 
-    public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {
+    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
       return getWorkflowUserForWorkflowId( workflowId );
     }
 
-    public WorkflowUser getDelegatorUser() throws EdenUserNotFoundException {
+    public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
       return getWorkflowUserForWorkflowId( delegatorWorkflowId );
     }
 
@@ -127,7 +127,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         return getDelegatorWorkflowId() != null || getDelegatorWorkgroupId() != null;
     }
 
-    public String getDelegatorDisplayName() throws EdenUserNotFoundException {
+    public String getDelegatorDisplayName() throws KEWUserNotFoundException {
         if (! isForDelegator()) {
             return "";
         }
@@ -143,7 +143,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         }
     }
 
-    private WorkflowUser getWorkflowUserForWorkflowId( String id ) throws EdenUserNotFoundException {
+    private WorkflowUser getWorkflowUserForWorkflowId( String id ) throws KEWUserNotFoundException {
       WorkflowUser w = null;
 
       if ( (id != null) && (id.trim().length() > 0) ) {

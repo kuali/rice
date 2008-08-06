@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 /**
@@ -45,7 +45,7 @@ public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
         super(ROLES);
     }
 
-    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws EdenUserNotFoundException {
+    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
         // sounds like the role label should be specified as the first parameter here,
         // but I'll follow AccountAttribute's lead and specify the role key
         List members = new ArrayList(1);

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.routetemplate;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -33,8 +33,8 @@ public interface RuleExpression {
      * @param rule the rule that this rule expression applies to
      * @param context the RouteContext under which the expression is being evaluated
      * @return the result of the rule evaluation
-     * @throws EdenUserNotFoundException
+     * @throws KEWUserNotFoundException
      * @throws WorkflowException
      */
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException;
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException;
 }

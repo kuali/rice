@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 /**
@@ -50,10 +50,10 @@ public interface UserService extends XmlLoader {
      * 
      * @param the UserId of the user to lookup
      * @return the user which matches the given id if no user could be found
-     * @throws EdenUserNotFoundException if no user could be located for the given id or if
+     * @throws KEWUserNotFoundException if no user could be located for the given id or if
      * the given UserId is of an invalid type
      */
-    public WorkflowUser getWorkflowUser(UserId userId) throws EdenUserNotFoundException;
+    public WorkflowUser getWorkflowUser(UserId userId) throws KEWUserNotFoundException;
 
     /**
      * Similar to getWorkflowUser(UserId) except that the id is represented as a UserIdVO
@@ -61,10 +61,10 @@ public interface UserService extends XmlLoader {
      *
      * @param the UserIdVO of the user to lookup
      * @return the user which matches the given id or null if no user could be found
-     * @throws EdenUserNotFoundException if no user could be located for the given id or if
+     * @throws KEWUserNotFoundException if no user could be located for the given id or if
      * the given UserId is of an invalid type
      */
-    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws EdenUserNotFoundException;
+    public WorkflowUser getWorkflowUser(UserIdDTO userId) throws KEWUserNotFoundException;
     
     /**
      * Invokes a search for WorkflowUsers using an example user object as the search criteria.

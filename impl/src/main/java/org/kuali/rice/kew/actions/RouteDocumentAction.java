@@ -23,7 +23,7 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -69,7 +69,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    public String validateActionRules() throws KEWUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -83,9 +83,9 @@ public class RouteDocumentAction extends ActionTakenEvent {
     /**
      * Record the routing action. To route a document, it must be in the proper state. Previous requests and actions have no bearing on the outcome of this action, unless the
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException
-     * @throws org.kuali.rice.kew.exception.EdenUserNotFoundException
+     * @throws org.kuali.rice.kew.exception.KEWUserNotFoundException
      */
-    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
   //      checkLocking();
         updateSearchableAttributesIfPossible();

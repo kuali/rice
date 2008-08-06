@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
-import org.kuali.rice.kew.exception.EdenUserNotFoundException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
 
@@ -77,7 +77,7 @@ public class AdHocRevoke implements java.io.Serializable {
 	/**
 	 * Determines if the given action request is an ad hoc request which matches this set of criteria.
 	 */
-	public boolean matchesActionRequest(ActionRequestValue actionRequest) throws EdenUserNotFoundException {
+	public boolean matchesActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
 		if (!actionRequest.isAdHocRequest()) {
 			return false;
 		}

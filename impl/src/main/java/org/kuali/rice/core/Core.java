@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.core;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,14 +40,6 @@ public class Core {
     private static final Logger LOG = Logger.getLogger(Core.class);
 
     /**
-     * A convenience reference to what we should consider the "core" classloader.  This is most likely
-     * going to be whatever webapp classloader the workflow engine resides in, but to make it crystal
-     * clear, this is defined here for easy reference.  Note that this is NOT the institutional plugin
-     * classloader.
-     */
-    private static final WeakReference<ClassLoader> CORE_CLASSLOADER = new WeakReference<ClassLoader>(Core.class.getClassLoader());
-
-    /**
      * Concurrency utility which allows other, loosely coupled, components to wait for configuration initialization
      * to complete before proceeding (namely the SpringServiceLocator, before it initializes Spring)
      */
@@ -57,15 +48,6 @@ public class Core {
 
     private Core() {
         // nothing to do here
-    }
-
-    /**
-     * Convenience method to return what all code should consider the "core" workflow engine classloader.  Note that this is NOT
-     * the institutional plugin classloader.
-     * @return the "core" workflow engine classloader
-     */
-    public static ClassLoader getCoreClassLoader() {
-        return CORE_CLASSLOADER.get();
     }
 
     /**

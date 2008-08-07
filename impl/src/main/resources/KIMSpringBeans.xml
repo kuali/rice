@@ -83,7 +83,7 @@
 
     <bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
 
-    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.ojb.PlatformAwareDaoBaseOjb">
+    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
@@ -94,9 +94,9 @@
         <property name="kimServicesDaoOjb" ref="kimServicesDaoOjb" />
     </bean>
 
-    <bean id="kimServicesDaoJpa" class="org.kuali.rice.kim.dao.KIMServicesDaoJpa" />
+    <bean id="kimServicesDaoJpa" class="org.kuali.rice.kim.dao.impl.KIMServicesDaoJpa" />
 
-    <bean id="kimServicesDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kim.dao.KIMServicesDaoOjb" />
+    <bean id="kimServicesDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kim.dao.impl.KIMServicesDaoOjb" />
 
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">

@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kcb.dto.MessageVO;
+import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -47,7 +47,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         
         // send it off to KCB
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
-        MessageVO mvo = new MessageVO();
+        MessageDTO mvo = new MessageDTO();
         mvo.setChannel("KEW");
         mvo.setContent("i'm a kew notification");
         mvo.setContentType("KEW notification");

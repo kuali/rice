@@ -160,7 +160,7 @@
 
     <!-- DAOS -->
 
-    <bean id="genericDao" class="org.kuali.rice.core.dao.ojb.GenericDaoOjb">
+    <bean id="genericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kcbDataSource</value>
         </property>

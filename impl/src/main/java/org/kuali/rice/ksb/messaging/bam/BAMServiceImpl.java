@@ -22,9 +22,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.bam.dao.BAMConfigDAO;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
 
 
@@ -33,8 +34,6 @@ public class BAMServiceImpl implements BAMService {
 	private static final Logger LOG = Logger.getLogger(BAMServiceImpl.class);
 
 	private BAMDAO dao;
-
-	private BAMConfigDAO configDao;
 
 	public BAMTargetEntry recordClientInvocation(ServiceInfo serviceDefinition, Object target, Method method, Object[] params) {
 		if (isEnabled()) {
@@ -130,7 +129,7 @@ public class BAMServiceImpl implements BAMService {
 	}
 
 	public boolean isEnabled() {
-		return getConfigDao().getEnabledState();
+		return Boolean.valueOf(Core.getCurrentContextConfig().getProperty(Config.BAM_ENABLED));
 	}
 
 	public BAMDAO getDao() {
@@ -139,14 +138,6 @@ public class BAMServiceImpl implements BAMService {
 
 	public void setDao(BAMDAO dao) {
 		this.dao = dao;
-	}
-
-	public BAMConfigDAO getConfigDao() {
-		return this.configDao;
-	}
-
-	public void setConfigDao(BAMConfigDAO configDao) {
-		this.configDao = configDao;
 	}
 
 	public List<BAMTargetEntry> getCallsForService(QName serviceName) {

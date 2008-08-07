@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb.service;
 
-import org.kuali.rice.kcb.dto.MessageVO;
+import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
 
@@ -32,7 +32,7 @@ public interface MessagingService {
      * @param message message to deliver
      * @return identifier for the message
      */
-    public Long deliver(MessageVO message) throws MessageDeliveryException;
+    public Long deliver(MessageDTO message) throws MessageDeliveryException;
     /**
      * Removes a specific message and all deliveries
      * 

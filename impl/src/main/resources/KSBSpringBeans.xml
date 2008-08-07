@@ -134,8 +134,8 @@
 
 	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.BAMServiceImpl">
 		<property name="dao">
-		  <!-- <bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMDaoJpaImpl" /> -->
-			<bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMDAOOjbImpl">
+		  <!-- <bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDaoJpaImpl" /> -->
+			<bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
@@ -150,7 +150,7 @@
 
 	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDAO">
-			<bean class="org.kuali.rice.ksb.messaging.dao.MessageQueueDAOOjbImpl">
+			<bean class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl">
 				<property name="jcdAlias" value="ksbMessageDataSource" />
 			</bean>
 		</property>
@@ -158,7 +158,7 @@
 
 	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.ServiceRegistryImpl" lazy-init="true">
 		<property name="dao">
-			<bean class="org.kuali.rice.ksb.messaging.dao.ServiceInfoDAOOjbImpl">
+			<bean class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>

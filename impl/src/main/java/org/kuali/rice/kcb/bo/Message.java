@@ -34,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * recipient and may result in several {@link MessageDelivery}s.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-// this class could possibly just extend the MessageVO
+// this class could possibly just extend the MessageDTO
 @Entity
 @Table(name="KCB_MESSAGES")
 public class Message {

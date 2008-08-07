@@ -26,7 +26,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
-import org.kuali.rice.kcb.dto.MessageVO;
+import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
 import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
@@ -66,7 +66,7 @@ public class MessagingServiceTest extends KCBTestCase {
     }
 
     protected long deliver() throws Exception {
-        MessageVO message = new MessageVO();
+        MessageDTO message = new MessageDTO();
         message.setContent("test content 1");
         message.setChannel("Test Channel #1");
         message.setContentType("test content type 1");

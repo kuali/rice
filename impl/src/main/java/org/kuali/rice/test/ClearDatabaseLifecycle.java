@@ -21,7 +21,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -123,21 +125,24 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                                 Assert.fail("Empty schema name given");
                             }
                             final List<String> reEnableConstraints = new ArrayList<String>();
-                            final ResultSet resultSet = statement.getConnection().getMetaData().getTables(null, schemaName, null, new String[] { "TABLE" });
+                            DatabaseMetaData metaData = statement.getConnection().getMetaData();
+                            Map<String, List<String[]>> exportedKeys = indexExportedKeys(metaData, schemaName);
+                            final ResultSet resultSet = metaData.getTables(null, schemaName, null, new String[] { "TABLE" });
                             while (resultSet.next()) {
                                 String tableName = resultSet.getString("TABLE_NAME");
                                 if (shouldTableBeCleared(tableName)) {
-                                    if (!isUsingDerby(statement.getConnection().getMetaData())) {
-                                        ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
-                                        while (keyResultSet.next()) {
-                                            final String fkName = keyResultSet.getString("FK_NAME");
-                                            final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
-                                            final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
-                                            LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
-                                            statement.addBatch(disableConstraint);
-                                            reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
-                                        }
-                                        keyResultSet.close();
+                                    if (!isUsingDerby(metaData)) {
+                                    	List<String[]> exportedKeyNames = exportedKeys.get(tableName);
+                                    	if (exportedKeyNames != null) {
+                                    		for (String[] exportedKeyName : exportedKeyNames) {
+                                    			final String fkName = exportedKeyName[0];
+                                    			final String fkTableName = exportedKeyName[1];
+                                    			final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
+                                    			LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
+                                    			statement.addBatch(disableConstraint);
+                                    			reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
+                                    		}
+                                    	}
                                     }
                                     String deleteStatement = "DELETE FROM " + tableName;
                                     LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
@@ -162,6 +167,28 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
             LOG.error(e);
             throw new RuntimeException(e);
         }
+    }
+    
+    protected Map<String, List<String[]>> indexExportedKeys(DatabaseMetaData metaData, String schemaName) throws SQLException {
+    	Map<String, List<String[]>> exportedKeys = new HashMap<String, List<String[]>>();
+        if (!isUsingDerby(metaData)) {
+        	ResultSet keyResultSet = metaData.getExportedKeys(null, schemaName, null);
+        	while (keyResultSet.next()) {
+        		String tableName = keyResultSet.getString("PKTABLE_NAME");
+        		if (shouldTableBeCleared(tableName)) {
+        			List<String[]> exportedKeyNames = exportedKeys.get(tableName);
+        			if (exportedKeyNames == null) {
+        				exportedKeyNames = new ArrayList<String[]>();
+        				exportedKeys.put(tableName, exportedKeyNames);
+        			}
+        			final String fkName = keyResultSet.getString("FK_NAME");
+        			final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
+        			exportedKeyNames.add(new String[] { fkName, fkTableName });
+        		}
+        	}
+        	keyResultSet.close();
+        }
+        return exportedKeys;        
     }
 
     private boolean shouldTableBeCleared(String tableName) {

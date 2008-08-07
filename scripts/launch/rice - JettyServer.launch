@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/rice-0.9.4/impl/src/main/java/org/kuali/rice/web/jetty/JettyServer.java"/>
+<listEntry value="/rice-0.9.4/impl/src/main/java/org/kuali/rice/core/web/jetty/JettyServer.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>

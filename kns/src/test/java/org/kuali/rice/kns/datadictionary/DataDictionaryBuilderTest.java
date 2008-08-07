@@ -34,9 +34,9 @@ import org.kuali.test.KNSWithTestSpringContext;
 public class DataDictionaryBuilderTest extends KNSTestBase {
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    static final String PACKAGE_CORE_BO = "org/kuali/core/bo/datadictionary/";
+    static final String PACKAGE_CORE_BO = "org/kuali/rice/kns/bo/datadictionary/";
 
-	static final String PACKAGE_CORE_DOCUMENT = "org/kuali/core/document/datadictionary/";
+	static final String PACKAGE_CORE_DOCUMENT = "org/kuali/rice/kns/document/datadictionary/";
 
 	static final String PACKAGE_KFS = "org/kuali/kfs/datadictionary/";
 
@@ -48,7 +48,7 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 
 	static final String PACKAGE_KRA_ROUTINGFORM = "org/kuali/module/kra/routingform/datadictionary/";
 
-	static final String TESTPACKAGE_INVALID = "org/kuali/core/datadictionary/test/invalid/";
+	static final String TESTPACKAGE_INVALID = "org/kuali/rice/kns/datadictionary/test/invalid/";
 
 	DataDictionary dd = null;
 

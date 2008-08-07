@@ -52,8 +52,8 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		super.setUp();
 
 		dd = new DataDictionary();
-		dd.addConfigFileLocation("classpath:org/kuali/core/bo/datadictionary");
-		dd.addConfigFileLocation("classpath:org/kuali/core/document/datadictionary");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/document/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
         dd.parseDataDictionaryConfigurationFiles( false );
 	}

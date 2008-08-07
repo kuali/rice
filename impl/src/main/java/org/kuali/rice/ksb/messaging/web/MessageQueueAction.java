@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
@@ -316,7 +317,7 @@ public class MessageQueueAction extends KSBAction {
          * Called by the super's Execute method on every request.
          */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-	request.setAttribute("rice_constant", new RiceConstants());
+	request.setAttribute("rice_constant", new JSTLConstants(RiceConstants.class));
 	request.setAttribute("ksb_constant", new KSBConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());

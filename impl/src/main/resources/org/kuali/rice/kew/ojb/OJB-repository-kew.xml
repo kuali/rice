@@ -574,7 +574,6 @@
     <collection-descriptor element-class-ref="org.kuali.rice.kew.routetemplate.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
       collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
     	<inverse-foreignkey field-ref="ruleResponsibilityId" />
-        <!-- <query-customizer class="org.kuali.rice.kew.routetemplate.dao.RuleDelegationQueryCustomizer"/> -->
     </collection-descriptor>
 
   </class-descriptor>

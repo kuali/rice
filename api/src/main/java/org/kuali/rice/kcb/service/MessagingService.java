@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kcb.service;
 
+import org.kuali.rice.kcb.dto.MessageVO;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
-import org.kuali.rice.kcb.vo.MessageVO;
 
 /**
  * The KCB MessagingService provides an API to deliver messages

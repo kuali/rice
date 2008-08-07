@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
+import org.kuali.rice.kcb.dto.MessageVO;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
@@ -33,7 +34,6 @@ import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
-import org.kuali.rice.kcb.vo.MessageVO;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.quartz.JobDataMap;
 import org.quartz.Scheduler;
@@ -115,7 +115,7 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     /**
-     * @see org.kuali.rice.kcb.service.MessagingService#deliver(org.kuali.rice.kcb.vo.MessageVO)
+     * @see org.kuali.rice.kcb.service.MessagingService#deliver(org.kuali.rice.kcb.dto.MessageVO)
      */
     public Long deliver(MessageVO message) throws MessageDeliveryException {
         Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(message.getRecipient(), message.getChannel());

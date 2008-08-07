@@ -17,7 +17,7 @@ package org.kuali.rice.test.web;
 
 import java.net.URL;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -43,6 +43,6 @@ public class HtmlUnitUtil {
     }
     
     public static Integer getPort() {
-	return new Integer(Core.getCurrentContextConfig().getProperty("kns.test.port"));
+	return new Integer(ConfigContext.getCurrentContextConfig().getProperty("kns.test.port"));
     }
 }

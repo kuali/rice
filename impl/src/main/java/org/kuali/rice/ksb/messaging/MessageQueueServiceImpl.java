@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -35,7 +35,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     private MessageQueueDAO messageQueueDAO;
 
     public void delete(PersistedMessage routeQueue) {
-	    if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+	    if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
 		if (LOG.isDebugEnabled()) {
 		    LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
 		}
@@ -44,7 +44,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	}
 
     public void save(PersistedMessage routeQueue) {
-	    if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+	    if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Persisting Message " + routeQueue);
 		}
@@ -89,7 +89,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     }
 
     public Integer getMaxRetryAttempts() {
-	return new Integer(Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+	return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
     public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
@@ -108,7 +108,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
 			message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));
 	}
-	message.setMessageEntity(Core.getCurrentContextConfig().getMessageEntity());
+	message.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
 	message.setMethodName(methodCall.getMethodName());
 	return message;
     }

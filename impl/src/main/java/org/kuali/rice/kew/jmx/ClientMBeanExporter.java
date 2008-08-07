@@ -19,8 +19,8 @@ package org.kuali.rice.kew.jmx;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.springframework.jmx.export.MBeanExporter;
 
 /**
@@ -33,7 +33,7 @@ public class ClientMBeanExporter extends MBeanExporter {
 
 	@Override
 	public void afterPropertiesSet() {
-		Map beans = (Map)Core.getCurrentContextConfig().getObject(Config.M_BEANS);
+		Map beans = (Map)ConfigContext.getCurrentContextConfig().getObject(Config.M_BEANS);
 		if (beans == null) {
 			beans = new HashMap();
 		}

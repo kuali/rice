@@ -19,8 +19,8 @@ import javax.naming.NamingException;
 import javax.transaction.TransactionManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
@@ -42,13 +42,13 @@ public class TransactionManagerFactoryBean implements FactoryBean {
 	
 	public Object getObject() throws Exception {
 		
-		if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
+		if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
 			return null;
 		}
 		
-		TransactionManager transactionManager =  (TransactionManager)Core.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ);
+		TransactionManager transactionManager =  (TransactionManager)ConfigContext.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ);
 		if (transactionManager == null) {
-			String transactionManagerJndiName = Core.getCurrentContextConfig().getProperty(Config.TRANSACTION_MANAGER_JNDI);
+			String transactionManagerJndiName = ConfigContext.getCurrentContextConfig().getProperty(Config.TRANSACTION_MANAGER_JNDI);
 			if (!StringUtils.isEmpty(transactionManagerJndiName)) {
 				if (this.jndiTemplate == null) {
 				    this.jndiTemplate = new JndiTemplate();

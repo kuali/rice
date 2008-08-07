@@ -23,7 +23,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -60,7 +60,7 @@ public class RiceConfigurationListener implements ServletContextListener {
         try {
             SimpleConfig serverConfig = new SimpleConfig(configLocations);
             serverConfig.parseConfig();
-            Core.init(serverConfig);
+            ConfigContext.init(serverConfig);
         }
         catch (Exception e) {
             e.printStackTrace();

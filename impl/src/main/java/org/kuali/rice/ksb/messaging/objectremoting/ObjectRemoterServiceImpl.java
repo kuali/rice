@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.objectremoting;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -57,7 +57,7 @@ public class ObjectRemoterServiceImpl extends BaseLifecycle implements ObjectRem
 	}
 	
 	public void removeService(QName serviceName) {
-		LOG.debug("Removing service " + serviceName + " from message entity" + Core.getCurrentContextConfig().getMessageEntity());
+		LOG.debug("Removing service " + serviceName + " from message entity" + ConfigContext.getCurrentContextConfig().getMessageEntity());
 		KSBServiceLocator.getServiceDeployer().removeRemoteServiceFromRegistry(serviceName);
 	}
 

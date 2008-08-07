@@ -19,7 +19,7 @@ package org.kuali.rice.kew.core;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
@@ -30,7 +30,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
- * A resource loader which is responsible for loading resources from the Workflow Core.  It is responsible for
+ * A resource loader which is responsible for loading resources from the Workflow ConfigContext.  It is responsible for
  * searching for service overrides in the Institutional Plugin before falling back to default services
  * from the core.
  *
@@ -41,7 +41,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(CoreResourceLoader.class);
 
-	public static final QName NAME = new QName(Core.getCurrentContextConfig().getMessageEntity(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
+	public static final QName NAME = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
 
 	private final PluginRegistry registry;
 
@@ -112,7 +112,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 	
 	protected boolean useRemoteIdentityServices() {
-	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_IDENTITY_SERVICES);
+	    String useRemoteIdentityServicesValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_IDENTITY_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
 	        return new Boolean(useRemoteIdentityServicesValue.trim());
 	    }
@@ -120,7 +120,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 	
 	protected boolean useRemoteEmailServices() {
-	    String useRemoteEmailServicesValue = Core.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_EMAIL_SERVICES);
+	    String useRemoteEmailServicesValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_EMAIL_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteEmailServicesValue)) {
 	        return new Boolean(useRemoteEmailServicesValue.trim());
 	    }

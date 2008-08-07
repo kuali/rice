@@ -21,7 +21,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
@@ -121,7 +121,7 @@ public class MessageServiceInvoker implements Runnable {
 	    LOG.debug("Attempting to call service " + serviceInfo.getQname());
 	}
 	
-	if (Core.getCurrentContextConfig().getStoreAndForward() && !methodCall.isIgnoreStoreAndForward()) {
+	if (ConfigContext.getCurrentContextConfig().getStoreAndForward() && !methodCall.isIgnoreStoreAndForward()) {
 	    QName serviceName = serviceInfo.getQname();
 	    RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
 	    QName storeAndForwardName = new QName(serviceName.getNamespaceURI(), serviceName.getLocalPart()

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -129,7 +129,7 @@ public class UserSession implements Serializable {
     }
     
     public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
-        if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment())) {
+        if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment())) {
             if (id.matches("^\\d*$")) {
                 this.backdoorId = new EmplId(id);
             } else {

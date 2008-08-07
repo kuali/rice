@@ -19,8 +19,8 @@ import java.io.File;
 import java.sql.DriverManager;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
@@ -46,9 +46,9 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 	
 		//just checking that the driver's on the classpath and the url is valid
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        DriverManager.getConnection(Core.getCurrentContextConfig().getProperty("datasource.url")).close();
+        DriverManager.getConnection(ConfigContext.getCurrentContextConfig().getProperty("datasource.url")).close();
 		
-		String dbLocation = Core.getCurrentContextConfig().getProperty("db.location");
+		String dbLocation = ConfigContext.getCurrentContextConfig().getProperty("db.location");
 		File db = new File(dbLocation);
 		if (! db.exists()) {
 			throw new ConfigurationException("Can't find db file " + dbLocation);
@@ -60,7 +60,7 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 		}
 		
 		LOG.info("Setting up Derby for testing");
-		LOG.info("Derby connection string: " + Core.getCurrentContextConfig().getProperty("datasource.url"));
+		LOG.info("Derby connection string: " + ConfigContext.getCurrentContextConfig().getProperty("datasource.url"));
 		SQLDataLoader dataLoader = new SQLDataLoader(this.getSqlFile(), ";");
 		dataLoader.runSql();
 	}
@@ -77,7 +77,7 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 		if (this.getSqlFile() == null) {
 			return false;
 		}
-		String dbDriverName = Core.getCurrentContextConfig().getProperty(Config.DATASOURCE_DRIVER_NAME);
+		String dbDriverName = ConfigContext.getCurrentContextConfig().getProperty(Config.DATASOURCE_DRIVER_NAME);
 		if (dbDriverName == null) {
 			throw new ConfigurationException("No property '" + Config.DATASOURCE_DRIVER_NAME + "' found");
 		}

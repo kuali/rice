@@ -18,8 +18,8 @@ package org.kuali.rice.kns.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
@@ -73,9 +73,9 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 						kualiModule.setInitializeDataDictionary(true);
 					}
 					kualiModule.setModuleAuthorizer(new KualiModuleAuthorizerBase());
-					kualiModule.setModuleCode(Core.getCurrentContextConfig().getMessageEntity());
-					kualiModule.setModuleId(Core.getCurrentContextConfig().getMessageEntity());
-					kualiModule.setModuleName(Core.getCurrentContextConfig().getMessageEntity());
+					kualiModule.setModuleCode(ConfigContext.getCurrentContextConfig().getMessageEntity());
+					kualiModule.setModuleId(ConfigContext.getCurrentContextConfig().getMessageEntity());
+					kualiModule.setModuleName(ConfigContext.getCurrentContextConfig().getMessageEntity());
 					kualiModule.afterPropertiesSet();
 					KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
 					this.started = true;

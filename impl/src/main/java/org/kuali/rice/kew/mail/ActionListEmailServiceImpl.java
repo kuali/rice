@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListService;
@@ -111,7 +111,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	public EmailSubject getEmailSubject() {
-        String subject = Core.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_SUBJECT_KEY);
+        String subject = ConfigContext.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_SUBJECT_KEY);
         if (subject == null) {
             subject = ACTION_LIST_REMINDER;
 	}
@@ -119,7 +119,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	public EmailSubject getEmailSubject(String customSubject) {
-        String subject = Core.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_SUBJECT_KEY);
+        String subject = ConfigContext.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_SUBJECT_KEY);
         if (subject == null) {
             subject = ACTION_LIST_REMINDER;
 	}
@@ -394,7 +394,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		sf.append(getHelpLink(documentType) + "\n\n\n");*/
 
         MessageFormat messageFormat = null;
-        String stringMessageFormat = Core.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_MESSAGE_KEY);
+        String stringMessageFormat = ConfigContext.getCurrentContextConfig().getProperty(IMMEDIATE_REMINDER_EMAIL_MESSAGE_KEY);
         LOG.debug("Immediate reminder email message from configuration (" + IMMEDIATE_REMINDER_EMAIL_MESSAGE_KEY + "): " + stringMessageFormat);
         if (stringMessageFormat == null) {
             messageFormat = DEFAULT_IMMEDIATE_REMINDER;
@@ -524,7 +524,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public void scheduleBatchEmailReminders() throws Exception {
 	    String emailBatchGroup = "Email Batch";
-	    String dailyCron = Core.getCurrentContextConfig().getProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION);
+	    String dailyCron = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION);
 	    if (!StringUtils.isBlank(dailyCron)) {
 		LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
 		CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
@@ -537,7 +537,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		LOG.warn("No " + KEWConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
 	    }
 
-	    String weeklyCron = Core.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+	    String weeklyCron = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
 	    if (!StringUtils.isBlank(dailyCron)) {
 		LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
 		CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
@@ -594,14 +594,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected String getActionListUrl() {
-		return Core.getCurrentContextConfig().getBaseUrl()
+		return ConfigContext.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
 						.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
-		return Core.getCurrentContextConfig().getBaseUrl()
+		return ConfigContext.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
 						.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY)
 				+ "/" + "Preferences.do";

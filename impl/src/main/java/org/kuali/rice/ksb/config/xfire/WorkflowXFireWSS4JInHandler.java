@@ -26,7 +26,7 @@ import org.apache.ws.security.handler.WSHandlerConstants;
 import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.fault.XFireFault;
 import org.codehaus.xfire.security.wss4j.WSS4JInHandler;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
@@ -47,7 +47,7 @@ public class WorkflowXFireWSS4JInHandler extends WSS4JInHandler {
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
-		this.setProperty(WSHandlerConstants.USER, Core.getCurrentContextConfig().getKeystoreAlias());
+		this.setProperty(WSHandlerConstants.USER, ConfigContext.getCurrentContextConfig().getKeystoreAlias());
 	}
 
 	@Override
@@ -67,13 +67,13 @@ public class WorkflowXFireWSS4JInHandler extends WSS4JInHandler {
 	protected Properties getMerlinProperties() {
 		Properties props = new Properties();
 		props.put("org.apache.ws.security.crypto.merlin.keystore.type", "jks");
-		props.put("org.apache.ws.security.crypto.merlin.keystore.password", Core.getCurrentContextConfig().getKeystorePassword());
-		props.put("org.apache.ws.security.crypto.merlin.alias.password", Core.getCurrentContextConfig().getKeystorePassword());
-		props.put("org.apache.ws.security.crypto.merlin.keystore.alias", Core.getCurrentContextConfig().getKeystoreAlias());
-		props.put("org.apache.ws.security.crypto.merlin.file", Core.getCurrentContextConfig().getKeystoreFile());
+		props.put("org.apache.ws.security.crypto.merlin.keystore.password", ConfigContext.getCurrentContextConfig().getKeystorePassword());
+		props.put("org.apache.ws.security.crypto.merlin.alias.password", ConfigContext.getCurrentContextConfig().getKeystorePassword());
+		props.put("org.apache.ws.security.crypto.merlin.keystore.alias", ConfigContext.getCurrentContextConfig().getKeystoreAlias());
+		props.put("org.apache.ws.security.crypto.merlin.file", ConfigContext.getCurrentContextConfig().getKeystoreFile());
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Using keystore location " + Core.getCurrentContextConfig().getKeystoreFile());
+			LOG.debug("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());
 		}
 		return props;
 	}

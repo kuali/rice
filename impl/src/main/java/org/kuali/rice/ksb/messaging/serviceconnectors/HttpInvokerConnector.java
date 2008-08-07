@@ -31,7 +31,7 @@ import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KEWHttpInvokerProxyFactoryBean;
 import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
@@ -90,7 +90,7 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		if (! this.httpClientInitialized) {
 		    this.httpClientParams = new HttpClientParams();
 			configureDefaultHttpClientParams(this.httpClientParams);
-			Properties configProps = Core.getCurrentContextConfig().getProperties();
+			Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
 			for (Iterator iterator = configProps.keySet().iterator(); iterator.hasNext();) {
 				String paramName = (String) iterator.next();
 				if (paramName.startsWith("http.")) {

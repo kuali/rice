@@ -18,8 +18,8 @@ package org.kuali.rice.kew.clientapp;
 
 import java.rmi.RemoteException;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.RiceConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.config.KEWConfigurer;
@@ -102,7 +102,7 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     private boolean isLocal() {
-	Config config = Core.getCurrentContextConfig();
+	Config config = ConfigContext.getCurrentContextConfig();
 	if (config != null) {
 	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(KEWConstants.LOCAL_CLIENT_PROTOCOL);
 	}

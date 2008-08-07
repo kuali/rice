@@ -18,7 +18,7 @@
 
 package org.kuali.rice.kew.mail;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequests.ActionRequestValue;
@@ -89,10 +89,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected String getActionListUrl() {
-        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "ActionList.do";
+        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "ActionList.do";
     }
 
     protected String getPreferencesUrl() {
-        return Core.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "Preferences.do";
+        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "Preferences.do";
     }
 }

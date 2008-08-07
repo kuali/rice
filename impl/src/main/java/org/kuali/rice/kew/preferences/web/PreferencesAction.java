@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.PreferencesService;
@@ -67,7 +67,7 @@ public class PreferencesAction extends WorkflowAction {
         request.setAttribute("actionListContent", KEWConstants.ACTION_LIST_CONTENT);
         getDelegatorFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
-        prefForm.setShowOutbox(Core.getCurrentContextConfig().getOutBoxOn());
+        prefForm.setShowOutbox(ConfigContext.getCurrentContextConfig().getOutBoxOn());
         return null;
     }
 

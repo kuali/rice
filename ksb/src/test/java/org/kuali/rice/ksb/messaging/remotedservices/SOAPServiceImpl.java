@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.remotedservices;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 /**
  *
@@ -28,7 +28,7 @@ public class SOAPServiceImpl implements SOAPService {
 	
 	public String doTheThing(String param) {
 		CALL_COUNT++;
-		System.out.println("!!!TestHarnessSharedTopic called with M.E " + Core.getCurrentContextConfig().getMessageEntity() + " !!! ");
+		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " !!! ");
 		ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
 		return param;
 	}

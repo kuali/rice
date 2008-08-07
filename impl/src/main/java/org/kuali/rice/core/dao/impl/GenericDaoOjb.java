@@ -25,8 +25,8 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.ojb.SuffixableQueryByCriteria;
@@ -228,7 +228,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
         if (selectForUpdate && useSelectForUpdate) {
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
-            Config config = Core.getCurrentContextConfig();
+            Config config = ConfigContext.getCurrentContextConfig();
             Platform platform = null;
 			try {
 				platform = (Platform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();

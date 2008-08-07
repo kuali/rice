@@ -26,7 +26,6 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.AfterStopEvent;
 import org.kuali.rice.core.config.event.BeforeStartEvent;
@@ -148,12 +147,12 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		    this.rootConfig = new SimpleConfig();
 		}
 		// append current root config to existing core config if config has already been initialized
-		Config currentRootConfig = Core.getRootConfig();
+		Config currentRootConfig = ConfigContext.getRootConfig();
 		if (currentRootConfig != null) {
 			currentRootConfig.getProperties().putAll(this.rootConfig.getProperties());
 			this.rootConfig = currentRootConfig;
 		} else {
-			Core.init(this.rootConfig);
+			ConfigContext.init(this.rootConfig);
 		}
 		if (this.configLocations != null) {
 			Config config = new SimpleConfig(this.configLocations, this.properties);

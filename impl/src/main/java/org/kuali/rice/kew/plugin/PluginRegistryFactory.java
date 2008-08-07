@@ -19,8 +19,8 @@ package org.kuali.rice.kew.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.util.Utilities;
 
 
@@ -35,8 +35,8 @@ public class PluginRegistryFactory {
     public PluginRegistry createPluginRegistry() {
 
         ServerPluginRegistry registry = new ServerPluginRegistry();
-        String institutionalPluginDir = Core.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
-        String pluginDir = Core.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
+        String institutionalPluginDir = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
+        String pluginDir = ConfigContext.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
         List<String> pluginDirectories = new ArrayList<String>();
         // TODO: maybe ensure that if these directories are the same, that
         // only one gets through

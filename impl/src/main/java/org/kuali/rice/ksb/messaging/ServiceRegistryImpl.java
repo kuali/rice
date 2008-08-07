@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.DataAccessUtils;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
@@ -50,7 +50,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String messageEntity) {
-		if (Core.getCurrentContextConfig().getDevMode()) {
+		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			return new ArrayList<ServiceInfo>();
 		}
 		return getDao().findLocallyPublishedServices(ipNumber, messageEntity);

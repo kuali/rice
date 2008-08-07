@@ -19,7 +19,7 @@ package org.kuali.rice.kew.preferences;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
@@ -106,7 +106,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         
-        if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
+        if (ConfigContext.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
             preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    
         } else {
             preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
@@ -167,7 +167,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionSrv.save(user, DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
         optionSrv.save(user, COLUMN_LAST_APPROVED_DATE_KEY, preferences.getShowDateApproved());
         optionSrv.save(user, COLUMN_CURRENT_NODE_KEY, preferences.getShowCurrentNode());
-        if (Core.getCurrentContextConfig().getOutBoxOn()) {
+        if (ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
             optionSrv.save(user, USE_OUT_BOX, preferences.getUseOutbox());
         }
         LOG.debug("saved preferences user " + user.getAuthenticationUserId());

@@ -32,7 +32,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 
@@ -86,7 +86,7 @@ public class ServiceInfo implements Serializable {
 	public ServiceInfo(ServiceDefinition serviceDefinition) {
 		this.setServiceDefinition(serviceDefinition);
 		this.setQname(serviceDefinition.getServiceName());
-		this.setMessageEntity(Core.getCurrentContextConfig().getMessageEntity());
+		this.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
 		this.setServerIp(RiceUtilities.getIpNumber());
 		this.setEndpointUrl(serviceDefinition.getServiceEndPoint().toString());
 		this.setServiceName(this.getQname().toString());

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.mail;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.quartz.Job;
@@ -38,7 +38,7 @@ public class WeeklyEmailJob implements Job {
 	}
 
 	protected boolean shouldExecute() {
-		return Boolean.valueOf(Core.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE));
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE));
 	}
 
 }

@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.plugin.PluginEnvironment;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;

@@ -22,8 +22,8 @@ import java.security.PublicKey;
 import java.security.Signature;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 public class DigitalSignatureTest extends KSBTestCase {
@@ -36,7 +36,7 @@ public class DigitalSignatureTest extends KSBTestCase {
 	 */
 	@Test public void testSigning() throws Exception {
 		
-		Config config = Core.getCurrentContextConfig();
+		Config config = ConfigContext.getCurrentContextConfig();
 //		config.parseConfig(); 
 //		
 		Signature rsa = Signature.getInstance("SHA1withRSA");

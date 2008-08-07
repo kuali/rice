@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
@@ -35,7 +35,7 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
     
     @Test public void testCallingQueueAsnyc() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
-	Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "true");
+	ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "true");
 	
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
 	String value1 = "value1";

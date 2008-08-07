@@ -28,7 +28,6 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -46,7 +45,7 @@ public class SimpleNodeSettingsStore implements NodeSettings, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         this.enabled = false;
     	if (StringUtils.isEmpty(this.propertiesPath)) {
-    	    this.propertiesPath = Core.getCurrentContextConfig().getProperty(Config.NODE_PROPERTIES_PATH);
+    	    this.propertiesPath = ConfigContext.getCurrentContextConfig().getProperty(Config.NODE_PROPERTIES_PATH);
     	}
     	// if it's still empty, then node settings are not available
     	if (StringUtils.isEmpty(this.propertiesPath)) {

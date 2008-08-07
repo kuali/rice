@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -112,7 +112,7 @@ public class OrmUtils {
     }
     
     public static boolean isJpaEnabled() {
-    	return "true".equalsIgnoreCase(Core.getCurrentContextConfig().getProperty(RiceConstants.RICE_JPA_ENABLED));
+    	return "true".equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.RICE_JPA_ENABLED));
     }
 	
 }

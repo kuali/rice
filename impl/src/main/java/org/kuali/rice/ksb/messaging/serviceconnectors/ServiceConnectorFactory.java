@@ -13,8 +13,8 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
@@ -42,7 +42,7 @@ public class ServiceConnectorFactory {
 
     public static ServiceConnector getServiceConnector(final ServiceInfo serviceInfo) {
 	final ServiceDefinition serviceDefinition = serviceInfo.getServiceDefinition();
-	final CredentialsSourceFactory credentialsSourceFactory = (CredentialsSourceFactory) Core.getCurrentContextConfig()
+	final CredentialsSourceFactory credentialsSourceFactory = (CredentialsSourceFactory) ConfigContext.getCurrentContextConfig()
 		.getObjects().get(Config.CREDENTIALS_SOURCE_FACTORY);
 	final CredentialsSource credentialsSource = credentialsSourceFactory != null ? credentialsSourceFactory
 		.getCredentialsForType(serviceDefinition.getCredentialsType()) : null;
@@ -54,7 +54,7 @@ public class ServiceConnectorFactory {
 	}
 
 	// if set in local mode then preempt any protocol connectors
-	if (Core.getCurrentContextConfig().getDevMode()) {
+	if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 	    serviceConnector = new BusLocalConnector(serviceInfo);
 	} else if (serviceDefinition instanceof JavaServiceDefinition) {
 	    serviceConnector = new HttpInvokerConnector(serviceInfo);

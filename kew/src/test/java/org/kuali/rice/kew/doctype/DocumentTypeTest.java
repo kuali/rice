@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.clientapp.WorkflowInfo;
@@ -49,7 +49,7 @@ public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
 
     protected void loadTestData() throws Exception {
-        Core.getCurrentContextConfig().overrideProperty("test.doctype.workgroup", "TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.doctype.workgroup", "TestWorkgroup");
         loadXmlFile("DoctypeConfig.xml");
     }
 
@@ -136,7 +136,7 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testDocumentTypeXmlParser() throws Exception {
-        Core.getCurrentContextConfig().overrideProperty("test.base.url", "http://someurl/path");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.base.url", "http://someurl/path");
         DocumentType parsedDocument = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
         assertEquals("Wrong name", "DocumentType", parsedDocument.getName());
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());

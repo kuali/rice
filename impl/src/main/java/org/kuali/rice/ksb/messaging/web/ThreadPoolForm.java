@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.util.KSBConstants;
 
@@ -71,7 +71,7 @@ public class ThreadPoolForm extends ActionForm {
         this.allServers = allServers;
     }
     public String getMessageEntity() {
-	return Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY);
+	return ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY);
     }
     public Long getMaxRetryAttempts() {
         return this.maxRetryAttempts;

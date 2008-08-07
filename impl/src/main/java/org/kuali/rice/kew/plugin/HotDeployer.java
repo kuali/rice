@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 
@@ -142,7 +142,7 @@ public class HotDeployer implements Runnable {
 
 		// TODO this currently couldn't handle an institutional plugin being "added", should it be able to?!?
 		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
-		Config parentConfig = Core.getCurrentContextConfig();
+		Config parentConfig = ConfigContext.getCurrentContextConfig();
 		Plugin institutionalPlugin = registry.getInstitutionalPlugin();
 		if (institutionalPlugin != null) {
 			parentClassLoader = institutionalPlugin.getClassLoader();

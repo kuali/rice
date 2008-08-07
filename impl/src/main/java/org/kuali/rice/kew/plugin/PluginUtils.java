@@ -26,8 +26,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -122,7 +122,7 @@ public final class PluginUtils {
     }
 
     public static String getInstitutionalPluginName() {
-    	String pluginName = Core.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_NAME);
+    	String pluginName = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_NAME);
     	if (StringUtils.isEmpty(pluginName)) {
     		pluginName = DEFAULT_INSTITUTIONAL_PLUGIN_NAME;
     	}

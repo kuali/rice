@@ -3,7 +3,7 @@ package org.kuali.rice.core.config.spring;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -15,8 +15,8 @@ public class PlatformTransactionManagerFactoryBean implements FactoryBean {
 	private TransactionManager transactionManager;
 
 	public Object getObject() throws Exception {
-		if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
-			return Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER);
+		if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
+			return ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER);
 		}
 		JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
 		jtaTransactionManager.setTransactionManager(this.getTransactionManager());

@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.server;
 
 import javax.servlet.ServletContextEvent;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -29,6 +29,6 @@ public class KSBTestContextLoaderListener extends ContextLoaderListener {
 		super.contextInitialized(event);
 		String testClientName = event.getServletContext().getInitParameter("test.client.spring.context.name");
 		ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-		Core.getCurrentContextConfig().getObjects().put(testClientName, appContext);
+		ConfigContext.getCurrentContextConfig().getObjects().put(testClientName, appContext);
 	}
 }

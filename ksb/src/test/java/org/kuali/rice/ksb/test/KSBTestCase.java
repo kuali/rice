@@ -21,8 +21,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
@@ -54,7 +54,7 @@ public abstract class KSBTestCase extends RiceTestCase {
         // the core before another set of RLs get put in the core. This is 
         // because we are sometimes using the GRL to fetch a specific servers
         // spring file out for testing purposes.
-        Core.destroy();
+        ConfigContext.destroy();
         super.setUp();
         if (startClient1() || startClient2()) {
             ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
@@ -144,7 +144,7 @@ public abstract class KSBTestCase extends RiceTestCase {
     }
 
     public static Object getServiceFromWebAppResourceLoader(String serviceName) {
-        for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
+        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
             if (configEntry.getKey() instanceof WebAppClassLoader) {
                 ClassLoader old = Thread.currentThread().getContextClassLoader();
                 // to make GRL select services from correct classloader
@@ -160,14 +160,14 @@ public abstract class KSBTestCase extends RiceTestCase {
     }
 
     public static Object getServiceFromTestClient1SpringContext(String serviceName) {
-        for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
+        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
             if (configEntry.getKey() instanceof WebAppClassLoader) {
                 ClassLoader old = Thread.currentThread().getContextClassLoader();
                 // to make GRL select services from correct classloader
                 Thread.currentThread().setContextClassLoader(configEntry.getKey());
                 try {
                     // TestClient1SpringContext found in web.xml of TestClient1
-                    ApplicationContext appContext = (ApplicationContext) Core.getCurrentContextConfig().getObject("TestClient1SpringContext");
+                    ApplicationContext appContext = (ApplicationContext) ConfigContext.getCurrentContextConfig().getObject("TestClient1SpringContext");
 
                     return appContext.getBean(serviceName);
                 } finally {

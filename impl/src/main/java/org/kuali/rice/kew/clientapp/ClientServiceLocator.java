@@ -19,8 +19,8 @@ package org.kuali.rice.kew.clientapp;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
@@ -79,7 +79,7 @@ public class ClientServiceLocator {
     }
 
 	public static synchronized Config getClientConfig() throws WorkflowException {
-		Config config = Core.getCurrentContextConfig();
+		Config config = ConfigContext.getCurrentContextConfig();
 		if (config == null) {
 			config = new ClientConfig();
 			try {

@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 /**
  * Platform implementation that generates Oracle-compliant SQL
@@ -90,7 +90,7 @@ public class OraclePlatform extends ANSISqlPlatform {
     }
 
     protected long getTimeoutSeconds() {
-    	String timeoutValue = Core.getCurrentContextConfig().getDocumentLockTimeout();
+    	String timeoutValue = ConfigContext.getCurrentContextConfig().getDocumentLockTimeout();
     	if (timeoutValue != null) {
     		try {
     			return Long.parseLong(timeoutValue);

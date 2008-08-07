@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.core.dependencylifecycles;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.batch.XmlPollerService;
@@ -38,7 +38,7 @@ public class XmlPipelineLifeCycle extends BaseLifecycle {
 		scheduledExecutor = Executors.newScheduledThreadPool(1);
 		final XmlPollerService xmlPoller = KEWServiceLocator.getXmlPollerService();
 		LOG.info("Starting XML data loader.  Polling at " + xmlPoller.getPollIntervalSecs() + "-second intervals");
-		if (!Core.getCurrentContextConfig().getDevMode()) {
+		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
 			future = scheduledExecutor.scheduleWithFixedDelay(xmlPoller, xmlPoller.getInitialDelaySecs(), xmlPoller.getPollIntervalSecs(), TimeUnit.SECONDS);
 			super.start();
 		}

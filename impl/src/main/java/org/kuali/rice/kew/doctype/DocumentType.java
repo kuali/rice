@@ -35,7 +35,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
@@ -756,7 +756,7 @@ public class DocumentType implements WorkflowPersistable {
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
     	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
     	if (objDef == null) {
-    		String defaultNoteClass = Core.getCurrentContextConfig().getDefaultNoteClass();
+    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
     		if (defaultNoteClass == null){
     			return null;
     		}
@@ -1011,7 +1011,7 @@ public class DocumentType implements WorkflowPersistable {
 		}
 		if (returnVal == null) {
 //			returnVal = "KEW";
-			returnVal = Core.getCurrentContextConfig().getMessageEntity();
+			returnVal = ConfigContext.getCurrentContextConfig().getMessageEntity();
 		}
 		return returnVal;
 	}

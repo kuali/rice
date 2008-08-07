@@ -17,7 +17,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 /**
  * A KSBExporter which only exports the service if the specified property is set to true.
@@ -30,7 +30,7 @@ public class PropertyConditionalKSBExporter extends KSBExporter {
 
 	public void afterPropertiesSet() throws Exception {
 	    Boolean useRemoteIdentityServices = false;
-	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(getPropertyName());
+	    String useRemoteIdentityServicesValue = ConfigContext.getCurrentContextConfig().getProperty(getPropertyName());
         if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
             useRemoteIdentityServices = new Boolean(useRemoteIdentityServicesValue);
         }

@@ -47,7 +47,7 @@ public class EDLCreationTest extends KEWTestCase {
 	
 	@Ignore("This test needs to be implemented!")
 	@Test public void testEDLDOMCreationAndTransformation() throws Exception {
-//		Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
+//		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
 //		WorkflowUser user = SpringServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
 //		EDLController edlController = getEDLService().getEDLController("TestEDL1");
 //		
@@ -63,7 +63,7 @@ public class EDLCreationTest extends KEWTestCase {
 	
 	@Ignore("This test needs to be implemented!")
 	@Test public void testEDLCreationWithWorkflowDocument() throws Exception {
-//		Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
+//		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
 //		WorkflowUser user = SpringServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
 //		EDLController edlController = getEDLService().getEDLController("TestEDL1");
 //		

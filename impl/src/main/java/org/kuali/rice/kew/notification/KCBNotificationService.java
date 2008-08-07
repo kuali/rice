@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
@@ -46,7 +46,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
         
         // send it off to KCB
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
         MessageDTO mvo = new MessageDTO();
         mvo.setChannel("KEW");
         mvo.setContent("i'm a kew notification");
@@ -69,7 +69,7 @@ public class KCBNotificationService extends DefaultNotificationService {
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
         
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
             try {

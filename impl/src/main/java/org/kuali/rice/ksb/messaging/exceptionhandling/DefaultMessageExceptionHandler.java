@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
@@ -100,7 +100,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 
     public Integer getMaxRetryAttempts() {
         try {
-            return new Integer(Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+            return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
         } catch (NumberFormatException e) {
             LOG.error("Constant '" + KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
             return DEFAULT_MAX_RETRIES;
@@ -108,7 +108,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
     }
 
     public Integer getGlobalMaxRetryAttempts() {
-        String globalMax = Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
+        String globalMax = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
         if (StringUtils.isBlank(globalMax)) {
             return null;
         }
@@ -125,7 +125,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 
     public Long getTimeIncrement() {
         try {
-            return new Long(Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY));
+            return new Long(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY));
         } catch (NumberFormatException e) {
             LOG.error("Constant '" + KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY + "' is not a number and will not be used " + "as the default time increment for exception routing.  Default of " + DEFAULT_TIME_INCREMENT + " will be used.");
             return DEFAULT_TIME_INCREMENT;
@@ -133,6 +133,6 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
     }
 
     public Boolean getImmediateExceptionRouting() {
-        return new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.IMMEDIATE_EXCEPTION_ROUTING));
+        return new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.IMMEDIATE_EXCEPTION_ROUTING));
     }
 }

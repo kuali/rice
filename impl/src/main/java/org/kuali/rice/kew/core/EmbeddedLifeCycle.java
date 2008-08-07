@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.core.dependencylifecycles.SpringLifeCycle;
@@ -39,21 +39,21 @@ public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {
 	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-	String springLocation = Core.getCurrentContextConfig().getAlternateSpringFile();
+	String springLocation = ConfigContext.getCurrentContextConfig().getAlternateSpringFile();
 	if (springLocation == null) {
 	    springLocation = "org/kuali/rice/kew/resources/KewSpringBeans.xml";
 	}
-	String additionalSpringFiles = Core.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
+	String additionalSpringFiles = ConfigContext.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
 	if (!StringUtils.isEmpty(additionalSpringFiles)) {
 	    springLocation += "," + additionalSpringFiles;
         }
     	lifecycles.add(new SpringLifeCycle(springLocation));
     	lifecycles.add(new WebApplicationGlobalResourceLifecycle());
     	lifecycles.add(new ExportOverridableServicesLifecycle());
-    	if (Core.getCurrentContextConfig().getXmlPipelineLifeCycleEnabled()) {
+    	if (ConfigContext.getCurrentContextConfig().getXmlPipelineLifeCycleEnabled()) {
             lifecycles.add(new XmlPipelineLifeCycle());
     	}
-    	if (Core.getCurrentContextConfig().getEmailReminderLifecycleEnabled()) {
+    	if (ConfigContext.getCurrentContextConfig().getEmailReminderLifecycleEnabled()) {
             lifecycles.add(new EmailReminderLifecycle());
     	}
     	return lifecycles;

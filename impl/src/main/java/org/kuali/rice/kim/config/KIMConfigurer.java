@@ -19,8 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -44,7 +44,7 @@ public class KIMConfigurer extends ModuleConfigurer {
     	public Config loadConfig(Config parentConfig) throws Exception {
     	    	LOG.info("Starting configuration of KIM for message entity " + parentConfig.getMessageEntity());
     		
-    		Config currentConfig = Core.getCurrentContextConfig();
+    		Config currentConfig = ConfigContext.getCurrentContextConfig();
     		
     		// ANY NEW CONFIG ELEMENTS NEED TO BE ADDED HERE
     

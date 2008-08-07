@@ -38,7 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
@@ -321,10 +321,10 @@ public class MessageQueueAction extends KSBAction {
 	request.setAttribute("ksb_constant", new KSBConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
-	routeQueueForm.setMessagePersistence(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
-	routeQueueForm.setMessageDelivery(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
-	routeQueueForm.setMessageOff(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
+	routeQueueForm.setMyMessageEntity(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
+	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
+	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
 	List<ServiceInfo> services = KSBServiceLocator.getIPTableService().fetchAll();
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessage rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());

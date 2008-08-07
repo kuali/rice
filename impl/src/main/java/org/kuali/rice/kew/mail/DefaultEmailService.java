@@ -19,7 +19,7 @@ package org.kuali.rice.kew.mail;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -33,8 +33,8 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 	private Mailer mailer;
 	
 	public void afterPropertiesSet() throws Exception {
-		String username = Core.getCurrentContextConfig().getProperty(USERNAME_PROPERTY);
-		String password = Core.getCurrentContextConfig().getProperty(PASSWORD_PROPERTY);
+		String username = ConfigContext.getCurrentContextConfig().getProperty(USERNAME_PROPERTY);
+		String password = ConfigContext.getCurrentContextConfig().getProperty(PASSWORD_PROPERTY);
 		if (username != null && password != null) {
 			mailer = new Mailer(getConfigProperties(), username, password);
 		} else {
@@ -48,7 +48,7 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 	 * @return
 	 */
 	private Properties getConfigProperties() {
-		return Core.getCurrentContextConfig().getProperties();
+		return ConfigContext.getCurrentContextConfig().getProperties();
 	}
 	
 	public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {

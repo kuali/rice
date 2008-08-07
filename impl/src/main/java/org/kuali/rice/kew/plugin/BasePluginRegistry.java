@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
 
@@ -42,7 +42,7 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 	private List<PluginEnvironment> pluginEnvironments = Collections.synchronizedList(new ArrayList<PluginEnvironment>());
 	
 	public BasePluginRegistry() {
-		super(new QName(Core.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
+		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
 	}
 	
 	public BasePluginRegistry(QName name) {

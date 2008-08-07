@@ -27,7 +27,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
@@ -62,8 +62,8 @@ public class ServiceRegistryAction extends KSBAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ServiceRegistryForm form = (ServiceRegistryForm)actionForm;
 	form.setMyIpAddress(RiceUtilities.getIpNumber());
-	form.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
-	form.setDevMode(Core.getCurrentContextConfig().getDevMode());
+	form.setMyMessageEntity(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	form.setDevMode(ConfigContext.getCurrentContextConfig().getDevMode());
 	RemotedServiceRegistry registry = KSBServiceLocator.getServiceDeployer();
 	RemoteResourceServiceLocator remoteLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
 	form.setPublishedServices(getPublishedServices(registry));

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 
@@ -57,7 +57,7 @@ public class UrlResolver {
 	}
 
 	protected String getUrl(String urlName) {
-		String url = Core.getCurrentContextConfig().getProperty(urlName);
+		String url = ConfigContext.getCurrentContextConfig().getProperty(urlName);
 		if (StringUtils.isEmpty(url)) {
 			throw new WorkflowRuntimeException("Could not locate the url value for '" + urlName + "'.  Please be sure to configure it properly in your workflow.xml.");
 		}

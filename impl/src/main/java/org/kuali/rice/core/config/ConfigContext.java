@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core;
+package org.kuali.rice.core.config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,9 +25,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigHolder;
-import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
@@ -36,8 +33,8 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class Core {
-    private static final Logger LOG = Logger.getLogger(Core.class);
+public class ConfigContext {
+    private static final Logger LOG = Logger.getLogger(ConfigContext.class);
 
     /**
      * Concurrency utility which allows other, loosely coupled, components to wait for configuration initialization
@@ -46,7 +43,7 @@ public class Core {
     private static final ContextualConfigLock initialized = new ContextualConfigLock("ConfigurationInitialized");
     private static final Map<ClassLoader, Config> CONFIGS = new HashMap<ClassLoader, Config>();
 
-    private Core() {
+    private ConfigContext() {
         // nothing to do here
     }
 
@@ -60,7 +57,7 @@ public class Core {
     }
     
     /**
-     * Initializes the Core with the given Config and binds it to the given ClassLoader.
+     * Initializes the ConfigContext with the given Config and binds it to the given ClassLoader.
      */
     public static void init(ClassLoader classLoader, Config config) {
     	CONFIGS.put(classLoader, config);
@@ -72,7 +69,7 @@ public class Core {
      */
     public static void destroy() {
         if (!initialized.hasFired()) {
-            LOG.warn("Destroy on un-initialized Core was ignored.");
+            LOG.warn("Destroy on un-initialized ConfigContext was ignored.");
             return;
         }
         CONFIGS.clear();

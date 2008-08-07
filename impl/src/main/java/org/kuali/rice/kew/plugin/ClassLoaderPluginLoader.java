@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.plugin.manifest.PluginManifest;
@@ -53,7 +53,7 @@ public class ClassLoaderPluginLoader implements PluginLoader {
 	
 	public Plugin load() throws Exception {
 		//for now default the embedded plugin to the M.E. of the current context
-		QName name = new QName(Core.getCurrentContextConfig().getMessageEntity(), ResourceLoader.EMBEDDED_PLUGIN);
+		QName name = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.EMBEDDED_PLUGIN);
 		Plugin plugin = new Plugin(name, loadPluginManifest(pluginManifestPath), classLoader);
 		plugin.bindThread();
 		try {
@@ -80,7 +80,7 @@ public class ClassLoaderPluginLoader implements PluginLoader {
     private PluginManifest loadPluginManifest(String pluginManifestPath) {
         PluginManifestParser parser = new PluginManifestParser();
         try {
-            PluginManifest pluginManifest  = parser.parse(classLoader.getResource(pluginManifestPath), Core.getCurrentContextConfig());
+            PluginManifest pluginManifest  = parser.parse(classLoader.getResource(pluginManifestPath), ConfigContext.getCurrentContextConfig());
             pluginManifest.parseConfig();
             return pluginManifest;
         } catch (FileNotFoundException e) {

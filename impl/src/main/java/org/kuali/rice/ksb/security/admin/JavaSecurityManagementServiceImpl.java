@@ -36,8 +36,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -68,13 +68,13 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
      */
     public void afterPropertiesSet() throws Exception {
         if (StringUtils.isEmpty(getModuleKeyStoreLocation())) {
-            setModuleKeyStoreLocation(Core.getCurrentContextConfig().getKeystoreFile());
+            setModuleKeyStoreLocation(ConfigContext.getCurrentContextConfig().getKeystoreFile());
         }
         if (StringUtils.isEmpty(getModuleKeyStoreAlias())) {
-            setModuleKeyStoreAlias(Core.getCurrentContextConfig().getKeystoreAlias());
+            setModuleKeyStoreAlias(ConfigContext.getCurrentContextConfig().getKeystoreAlias());
         }
         if (StringUtils.isEmpty(getModuleKeyStorePassword())) {
-            setModuleKeyStorePassword(Core.getCurrentContextConfig().getKeystorePassword());
+            setModuleKeyStorePassword(ConfigContext.getCurrentContextConfig().getKeystorePassword());
         }
         verifyConfiguration();
         this.moduleKeyStore = loadKeyStore();

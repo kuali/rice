@@ -33,7 +33,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
@@ -111,7 +111,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 	
 	public void initEDLGlobalConfig() {
 		try {
-			this.edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig(Core.getCurrentContextConfig().getEDLConfigLocation());	
+			this.edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig(ConfigContext.getCurrentContextConfig().getEDLConfigLocation());	
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}

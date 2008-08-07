@@ -19,8 +19,8 @@ import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
@@ -42,13 +42,13 @@ public class UserTransactionFactoryBean implements FactoryBean {
 	
 	public Object getObject() throws Exception {
 		
-		if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
+		if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
 			return null;
 		}
 		
-		UserTransaction userTransaction = (UserTransaction)Core.getCurrentContextConfig().getObject(Config.USER_TRANSACTION_OBJ);
+		UserTransaction userTransaction = (UserTransaction)ConfigContext.getCurrentContextConfig().getObject(Config.USER_TRANSACTION_OBJ);
 		if (userTransaction == null) {
-			String userTransactionJndiName = Core.getCurrentContextConfig().getProperty(Config.USER_TRANSACTION_JNDI);
+			String userTransactionJndiName = ConfigContext.getCurrentContextConfig().getProperty(Config.USER_TRANSACTION_JNDI);
 			if (!StringUtils.isEmpty(userTransactionJndiName)) {
 				if (this.jndiTemplate == null) {
 				    this.jndiTemplate = new JndiTemplate();

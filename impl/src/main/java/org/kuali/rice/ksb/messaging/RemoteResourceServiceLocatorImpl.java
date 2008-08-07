@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -173,7 +173,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
-			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + Core.getCurrentContextConfig().getMessageEntity());
+			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + ConfigContext.getCurrentContextConfig().getMessageEntity());
 			run();
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
@@ -193,7 +193,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 		LOG.debug("Checking for new services on the bus");
 		List<ServiceInfo> servicesOnBus = null;
-		if (Core.getCurrentContextConfig().getDevMode()) {
+		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			servicesOnBus = new ArrayList<ServiceInfo>();
 			for (ServiceHolder remoteServiceHolder : KSBServiceLocator.getServiceDeployer().getPublishedServices().values()) {
 				servicesOnBus.add(remoteServiceHolder.getServiceInfo());
@@ -235,7 +235,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 	
 	protected void installAlternateEndpoint(ServiceInfo serviceInfo) {
-	List<AlternateEndpointLocation> alternateEndpointLocations = (List<AlternateEndpointLocation>) Core
+	List<AlternateEndpointLocation> alternateEndpointLocations = (List<AlternateEndpointLocation>) ConfigContext
 		.getCurrentContextConfig().getObject(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS);
 	if (alternateEndpointLocations != null) {
 	    for (AlternateEndpointLocation alternateEndpointLocation : alternateEndpointLocations) {
@@ -253,7 +253,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 	    }
 	}
-	List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>) Core.getCurrentContextConfig().getObject(
+	List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>) ConfigContext.getCurrentContextConfig().getObject(
 		KSBConstants.KSB_ALTERNATE_ENDPOINTS);
 	if (alternateEndpoints != null) {
 	    for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
@@ -275,7 +275,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public void start() throws Exception {
 		LOG.info("Starting the RemoteResourceServiceLocator...");
 
-		int refreshRate = Core.getCurrentContextConfig().getRefreshRate();
+		int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
 		this.future = KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		this.started = true;
 		run();

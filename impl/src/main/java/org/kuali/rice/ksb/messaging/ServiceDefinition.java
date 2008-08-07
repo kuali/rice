@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
@@ -153,7 +153,7 @@ public abstract class ServiceDefinition implements Serializable {
 			throw new ConfigurationException("Must give a serviceName or localServiceName");
 		}
 		
-		String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+		String messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
 		if (messageEntity == null) {
 			throw new ConfigurationException("Must have a messageEntity");
 		}
@@ -173,7 +173,7 @@ public abstract class ServiceDefinition implements Serializable {
 			
 		LOG.debug("Validating service " + this.serviceName);
 		
-		String endPointURL = Core.getCurrentContextConfig().getEndPointUrl();
+		String endPointURL = ConfigContext.getCurrentContextConfig().getEndPointUrl();
 		if (this.serviceEndPoint == null && endPointURL == null) {
 			throw new ConfigurationException("Must provide a serviceEndPoint or serviceServletURL");
 		} else if (this.serviceEndPoint == null) {

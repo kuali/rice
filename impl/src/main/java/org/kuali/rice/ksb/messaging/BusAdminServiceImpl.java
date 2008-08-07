@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.config.ServiceBasedServiceDefinitionRegisterer;
@@ -60,12 +60,12 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     }
 
     public void setConfigProperty(String propertyName, String propertyValue) {
-	String originalValue = Core.getCurrentContextConfig().getProperty(propertyName);
+	String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
 	if (propertyValue == null) {
-	    Core.getCurrentContextConfig().getProperties().remove(propertyName);
+	    ConfigContext.getCurrentContextConfig().getProperties().remove(propertyName);
 	} else {
-	    Core.getCurrentContextConfig().getProperties().put(propertyName, propertyValue);
+	    ConfigContext.getCurrentContextConfig().getProperties().put(propertyName, propertyValue);
 	}
     }
 

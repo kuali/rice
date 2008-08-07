@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
@@ -276,8 +276,8 @@ public class RuleXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testParameterReplacement() throws IOException, InvalidXmlException, KEWUserNotFoundException {
-        Core.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
-        Core.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         RuleBaseValues rule = rules.get(0);
@@ -290,8 +290,8 @@ public class RuleXmlParserTest extends KEWTestCase {
             assertEquals("WorkflowAdmin", resp.getWorkgroup().getGroupNameId().getNameId());
         }
         
-        Core.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
-        Core.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "TestWorkgroup");
         rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         rule = rules.get(0);

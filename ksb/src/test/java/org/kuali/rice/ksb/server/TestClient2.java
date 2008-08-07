@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.test.BaseTestServer;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
@@ -40,8 +40,8 @@ public class TestClient2 extends BaseTestServer {
 	@Override
 	protected Server createServer() {
 		
-		Server server = new Server(new Integer(Core.getCurrentContextConfig().getProperty("ksb.client2.port")));
-		String location = Core.getCurrentContextConfig().getProperty("client2.location");
+		Server server = new Server(new Integer(ConfigContext.getCurrentContextConfig().getProperty("ksb.client2.port")));
+		String location = ConfigContext.getCurrentContextConfig().getProperty("client2.location");
 		LOG.debug("#####################################");
 		LOG.debug("#");
 		LOG.debug("#  Starting Client2 using location " + location);

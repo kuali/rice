@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -77,7 +77,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     public static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
 
     public void start() throws Exception {
-        String useClearDatabaseLifecycle = Core.getCurrentContextConfig().getProperty("use.clearDatabaseLifecycle");
+        String useClearDatabaseLifecycle = ConfigContext.getCurrentContextConfig().getProperty("use.clearDatabaseLifecycle");
 
         if (useClearDatabaseLifecycle != null && !Boolean.valueOf(useClearDatabaseLifecycle)) {
             LOG.debug("Skipping ClearDatabaseLifecycle due to property: use.clearDatabaseLifecycle=" + useClearDatabaseLifecycle);

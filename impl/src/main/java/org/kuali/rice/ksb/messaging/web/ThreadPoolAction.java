@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.BusAdminService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
@@ -82,15 +82,15 @@ public class ThreadPoolAction extends KSBAction {
 	    form.getThreadPool().setMaximumPoolSize(form.getMaximumPoolSize());
 
 	    if (form.getTimeIncrement() == null) {
-		Core.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
+		ConfigContext.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
 	    } else {
-		Core.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
+		ConfigContext.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
 	    }
 
 	    if (form.getMaxRetryAttempts() == null) {
-		Core.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
+		ConfigContext.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
 	    } else {
-		Core.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
+		ConfigContext.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
 	    }
 	}
 	return mapping.findForward("basic");
@@ -106,13 +106,13 @@ public class ThreadPoolAction extends KSBAction {
 	    form.setMaximumPoolSize(form.getThreadPool().getMaximumPoolSize());
 	}
 	if (form.getTimeIncrement() == null) {
-	    String timeIncrementValue = Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
+	    String timeIncrementValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
 	    if (!StringUtils.isEmpty(timeIncrementValue)) {
 		form.setTimeIncrement(Long.parseLong(timeIncrementValue));
 	    }
 	}
 	if (form.getMaxRetryAttempts() == null) {
-	    String maxRetryAttemptsValue = Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
+	    String maxRetryAttemptsValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
 	    if (!StringUtils.isEmpty(maxRetryAttemptsValue)) {
 		form.setMaxRetryAttempts(Long.parseLong(maxRetryAttemptsValue));
 	    }

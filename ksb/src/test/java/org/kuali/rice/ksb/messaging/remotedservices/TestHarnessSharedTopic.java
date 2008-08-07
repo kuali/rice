@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 
 import java.io.Serializable;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 
 
@@ -29,7 +29,7 @@ public class TestHarnessSharedTopic implements KEWJavaService {
 
 	public void invoke(Serializable payLoad) {
 	    	CALL_COUNT++;
-		System.out.println("!!!TestHarnessSharedTopic called with M.E " + Core.getCurrentContextConfig().getMessageEntity() + " !!! ");
+		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " !!! ");
 		ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
 		if (CALL_COUNT_NOTIFICATION_THRESHOLD > 0) {
 		    if (CALL_COUNT == CALL_COUNT_NOTIFICATION_THRESHOLD) {

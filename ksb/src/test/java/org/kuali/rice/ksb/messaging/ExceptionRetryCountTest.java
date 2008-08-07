@@ -17,7 +17,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -69,7 +69,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
     public void testRetryCount() throws Exception {
 		//Turn the requeue up very high so the message will go through all it's requeues immediately
 
-		Core.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
 
 	KEWJavaService explodingQueue = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		this.retryCountServiceName);

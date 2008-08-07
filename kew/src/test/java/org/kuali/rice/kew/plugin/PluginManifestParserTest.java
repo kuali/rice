@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.plugin.manifest.PluginManifest;
 import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
@@ -44,7 +44,7 @@ public class PluginManifestParserTest extends KEWTestCase {
     
     @Test public void testParse() throws Exception {
     	
-        PluginManifest plugin = parser.parse(new File(getBaseDir() + MANIFEST_PATH_SUFFIX), Core.getRootConfig());
+        PluginManifest plugin = parser.parse(new File(getBaseDir() + MANIFEST_PATH_SUFFIX), ConfigContext.getRootConfig());
         assertNotNull(plugin);
 
         List listeners = plugin.getListeners();

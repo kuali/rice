@@ -14,7 +14,7 @@ package org.kuali.rice.ksb.messaging.quartz;
 
 import javax.sql.DataSource;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -38,9 +38,9 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 
     @Override
     protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
-        if (Core.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
+        if (ConfigContext.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
             try {
-                Scheduler scheduler = (Scheduler) Core.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
+                Scheduler scheduler = (Scheduler) ConfigContext.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
                 scheduler.addJobListener(new MessageServiceExecutorJobListener());
                 return scheduler;
             } catch (Exception e) {
@@ -53,7 +53,7 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        boolean useQuartzDatabase = new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.USE_QUARTZ_DATABASE));
+        boolean useQuartzDatabase = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.USE_QUARTZ_DATABASE));
         if (useQuartzDatabase) {
             // require a transaction manager
             if (jtaTransactionManager == null) {

@@ -26,8 +26,8 @@ import java.util.TreeMap;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
@@ -59,7 +59,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 
 	public ServerPluginRegistry() {
-		super(new QName(Core.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
+		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
 	}
 
 	public void start() throws Exception {
@@ -143,7 +143,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
         	try {
         		LOG.info("Loading "+(isInstitutionalPlugin ? "Institutional " : "")+"plugin '" + pluginName + "'");
         		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
-        		Config parentConfig = Core.getCurrentContextConfig();
+        		Config parentConfig = ConfigContext.getCurrentContextConfig();
         		if (institutionalPlugin != null) {
         			parentClassLoader = institutionalPlugin.getClassLoader();
         			parentConfig = institutionalPlugin.getConfig();

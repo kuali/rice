@@ -27,8 +27,8 @@ import javax.xml.transform.Templates;
 import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.edl.EDLController;
@@ -187,7 +187,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
      * by the EDLControllerFactory.
      */
     @Test public void testConfigCaching() throws Exception {
-    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
+    	ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
     	loadXmlFile("EDocLiteContent.xml");
         loadXmlFile("edlstyle.xml");
@@ -230,7 +230,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
      * the "compiled" stylesheets.
      */
     @Test public void testStyleCaching() throws Exception {
-    	Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
+    	ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
     	loadXmlFile("EDocLiteContent.xml");
         loadXmlFile("edlstyle.xml");

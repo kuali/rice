@@ -23,8 +23,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.SimpleConfig;
@@ -66,7 +66,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(Core.getCurrentContextConfig().getClientProtocol())) {
+		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
 			lifecycles.add(createThinClientLifecycle());
 		} else {
 			if (isStandaloneServer()) {
@@ -79,7 +79,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	}
 
 	protected boolean isStandaloneServer() {
-		return new Boolean(Core.getCurrentContextConfig().getProperty("kew.standalone.server")).booleanValue();
+		return new Boolean(ConfigContext.getCurrentContextConfig().getProperty("kew.standalone.server")).booleanValue();
 	}
 
 	/**

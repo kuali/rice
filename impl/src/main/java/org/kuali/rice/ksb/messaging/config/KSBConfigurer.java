@@ -27,8 +27,8 @@ import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.xfire.transport.http.EasySSLProtocolSocketFactory;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
@@ -105,7 +105,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	public Config loadConfig(Config parentConfig) throws Exception {
 		LOG.info("Starting configuration of KSB for message entity " + getMessageEntity(parentConfig));
-		Config currentConfig = Core.getCurrentContextConfig();
+		Config currentConfig = ConfigContext.getCurrentContextConfig();
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);
 		configureKeystore(currentConfig);
@@ -134,7 +134,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 			public void start() throws Exception {
 		// first check if we want to allow self-signed certificates for SSL communication
-		if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
+		if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
 		    Protocol.registerProtocol("https", new Protocol("https",
 			    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
 		}
@@ -186,13 +186,13 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	@SuppressWarnings("unchecked")
 	protected void configureBus(Config config) throws Exception {
-		LOG.debug("Configuring services for Message Entity " + Core.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+		LOG.debug("Configuring services for Message Entity " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		configureServiceList(config, Config.BUS_DEPLOYED_SERVICES, getServices());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void configureServiceList(Config config, String key, List services) throws Exception {
-		LOG.debug("Configuring services for Message Entity " + Core.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+		LOG.debug("Configuring services for Message Entity " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
 		if (serviceDefinitions == null) {
 			config.getObjects().put(key, services);
@@ -286,8 +286,8 @@ public class KSBConfigurer extends ModuleConfigurer {
      *
      */
     protected void cleanUpConfiguration() {
-        Core.getCurrentContextConfig().getObjects().remove(Config.BUS_DEPLOYED_SERVICES);
-        Core.getCurrentContextConfig().getObjects().remove(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
+        ConfigContext.getCurrentContextConfig().getObjects().remove(Config.BUS_DEPLOYED_SERVICES);
+        ConfigContext.getCurrentContextConfig().getObjects().remove(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
     }
 
 	public boolean isStarted() {

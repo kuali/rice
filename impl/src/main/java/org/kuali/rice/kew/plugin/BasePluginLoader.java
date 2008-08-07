@@ -25,8 +25,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.exception.InvalidXmlException;
@@ -126,7 +126,7 @@ public abstract class BasePluginLoader implements PluginLoader {
         PluginManifest pluginManifest = loadPluginManifest(url);
         QName qPluginName = getPluginName(pluginManifest);
         classLoader.setConfig(pluginManifest);
-        Core.init(classLoader, pluginManifest);
+        ConfigContext.init(classLoader, pluginManifest);
         configureExtraClasspath(classLoader, pluginManifest);
         this.logPrefix = PluginUtils.getLogPrefix(qPluginName, institutionalPlugin).toString();
         LOG.info("Constructing plugin '" + simplePluginName + "' with classloader: " + classLoader);
@@ -172,7 +172,7 @@ public abstract class BasePluginLoader implements PluginLoader {
     	String messageEntity = pluginManifest.getMessageEntity();
     	QName qPluginName = null;
         if (messageEntity == null) {
-        	qPluginName = new QName(Core.getCurrentContextConfig().getMessageEntity(), simplePluginName);
+        	qPluginName = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), simplePluginName);
         } else {
         	qPluginName = new QName(messageEntity, simplePluginName);
         }

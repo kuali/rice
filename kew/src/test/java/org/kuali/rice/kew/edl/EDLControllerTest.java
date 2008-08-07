@@ -19,8 +19,8 @@ package org.kuali.rice.kew.edl;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLController;
@@ -40,7 +40,7 @@ public class EDLControllerTest extends KEWTestCase {
 	}
 
 	@Test public void testEDLControllerCreation() throws Exception {
-		Core.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
+		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
 
 		EDLController edlController = getEDLService().getEDLController("FakeyEDL");

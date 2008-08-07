@@ -17,7 +17,7 @@ package org.kuali.rice.kns.config;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
@@ -38,7 +38,7 @@ public class KNSResourceLoaderFactory {
 	
 	private static void initialize() {
 		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME));
+			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 	
@@ -55,10 +55,10 @@ public class KNSResourceLoaderFactory {
 	}
 	
 	public static QName getSpringResourceLoaderName() {
-		return (QName)Core.getCurrentContextConfig().getObject(KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME);
+		return (QName)ConfigContext.getCurrentContextConfig().getObject(KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME);
 	}
 	
 	public static void setSpringResourceLoaderName(QName knsSpringResourceLoaderName) {
-		Core.getCurrentContextConfig().getObjects().put(KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME, knsSpringResourceLoaderName);
+		ConfigContext.getCurrentContextConfig().getObjects().put(KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME, knsSpringResourceLoaderName);
 	}	
 }

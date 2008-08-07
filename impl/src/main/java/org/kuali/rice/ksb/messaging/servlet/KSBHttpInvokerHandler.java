@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.springframework.web.servlet.HandlerMapping;
@@ -54,7 +54,7 @@ public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
 	    }
 	    if (LOG.isDebugEnabled()) {
 		LOG.debug("#############################################################");
-		LOG.debug("Entering Message Entity " + Core.getCurrentContextConfig().getMessageEntity()
+		LOG.debug("Entering Message Entity " + ConfigContext.getCurrentContextConfig().getMessageEntity()
 			+ ".  Looking up handler for [" + serviceName + "]");
 		LOG.debug("#############################################################");
 	    }

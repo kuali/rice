@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.util.KSBConstants;
 
@@ -37,7 +37,7 @@ public class KSBTestUtils {
     }
 
     private static void setupMessaging(String value) {
-        Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGE_DELIVERY, value);
+        ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGE_DELIVERY, value);
         ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
     }
 

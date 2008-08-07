@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.properties.KualiPropertiesFactory;
 import org.kuali.rice.kns.util.properties.PropertyHolder;
@@ -35,7 +35,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     public AbstractStaticConfigurationServiceImpl() {
         KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(KNSConstants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
         this.propertyHolder = propertiesFactory.getProperties(null);
-        this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
+        this.propertyHolder.getHeldProperties().putAll(ConfigContext.getCurrentContextConfig().getProperties());
     }
     
     public boolean isProductionEnvironment() {

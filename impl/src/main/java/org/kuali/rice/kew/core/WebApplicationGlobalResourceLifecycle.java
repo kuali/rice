@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.core;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.SpringLoader;
@@ -37,7 +37,7 @@ public class WebApplicationGlobalResourceLifecycle extends BaseLifecycle {
 
 		// create the plugin registry
 		PluginRegistry registry = null;
-		String pluginRegistryEnabled = Core.getCurrentContextConfig().getProperty("plugin.registry.enabled");
+		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
 		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled)) {
 			registry = new PluginRegistryFactory().createPluginRegistry();
 		}

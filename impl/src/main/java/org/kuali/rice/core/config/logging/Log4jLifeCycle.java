@@ -32,8 +32,8 @@ import org.apache.log4j.helpers.FileWatchdog;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.util.Log4jConfigurer;
 import org.springframework.util.ResourceUtils;
@@ -66,7 +66,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
 
 	public void start() throws Exception {
         // obtain the root workflow config
-		Config config = Core.getRootConfig();
+		Config config = ConfigContext.getRootConfig();
 
         // first check for in-line xml configuration
 		String log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_XML);

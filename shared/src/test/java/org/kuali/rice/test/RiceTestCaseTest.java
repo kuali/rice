@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.test.RiceTestCase;
 
 /**
@@ -31,7 +31,7 @@ public class RiceTestCaseTest extends RiceTestCase {
 
 	@Test
 	public void testTestCase() throws Exception {
-		String testConfigVal = Core.getCurrentContextConfig().getProperty("rice.test.case.test");
+		String testConfigVal = ConfigContext.getCurrentContextConfig().getProperty("rice.test.case.test");
 		assertEquals("Test config value should have been properly configured.", "test", testConfigVal);
 	}
 	

@@ -21,7 +21,7 @@ import java.net.Socket;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.JettyServerTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle.ConfigMode;
@@ -51,7 +51,7 @@ public class TestPerSuiteJettyServerTestCase extends JettyServerTestCase {
     }
 
     private void testJettyServerIsPresent() {
-        String portStr = Core.getCurrentContextConfig().getProperty("unittest.jetty.server1.port");
+        String portStr = ConfigContext.getCurrentContextConfig().getProperty("unittest.jetty.server1.port");
         assertNotNull(portStr);
         int port = Integer.parseInt(portStr);
         

@@ -18,7 +18,7 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -66,8 +66,8 @@ public class BaseResourceLoader extends ResourceLoaderContainer implements Resou
 		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getMessageEntity()) ||
 				objectDefinition.getMessageEntity() == null ||
 				// TODO did we really want to check for the KEW_MESSAGING_ENTITY here???
-				//(KEWConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getMessageEntity()) && Core.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
-				Core.getCurrentContextConfig().getRunningEmbeddedServerMode()) {
+				//(KEWConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getMessageEntity()) && ConfigContext.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
+				ConfigContext.getCurrentContextConfig().getRunningEmbeddedServerMode()) {
 			Object object = ObjectDefinitionResolver.createObject(objectDefinition, this.classLoader, true);
 			if (object != null) {
 				return postProcessObject(objectDefinition, object);

@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.bo.Notification;
@@ -117,7 +117,7 @@ public class KENWebServiceTest extends ServerTestBase {
     public void invokeSOAPService() throws Exception {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
 
-        Core.getCurrentContextConfig().overrideProperty("bam.enabled", "true");
+        ConfigContext.getCurrentContextConfig().overrideProperty("bam.enabled", "true");
         KEWXMLService service = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
         service.invoke(notificationMessageAsXml);
         

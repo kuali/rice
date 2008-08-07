@@ -32,7 +32,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.KNSServiceLocator;
@@ -118,8 +118,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    }
 	    if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null
 		    && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
-		if (Core.getCurrentContextConfig().getProperty("rice.user") != null
-			&& !new Boolean(Core.getCurrentContextConfig().getProperty("rice.user"))) {
+		if (ConfigContext.getCurrentContextConfig().getProperty("rice.user") != null
+			&& !new Boolean(ConfigContext.getCurrentContextConfig().getProperty("rice.user"))) {
 		    userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 		}
 		userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));

@@ -21,8 +21,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.messaging.bam.BAMService;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
@@ -43,7 +43,7 @@ public class StoreAndForwardTest extends KSBTestCase {
 	
 
 	@Test public void testServiceCall() throws Exception {
-		Core.getCurrentContextConfig().overrideProperty(Config.STORE_AND_FORWARD, "true");
+		ConfigContext.getCurrentContextConfig().overrideProperty(Config.STORE_AND_FORWARD, "true");
 		QName serviceName = new QName("TestCl1", "testXmlAsyncService");
 		KEWXMLService testXmlAsyncService = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testXmlAsyncService.invoke("message content");

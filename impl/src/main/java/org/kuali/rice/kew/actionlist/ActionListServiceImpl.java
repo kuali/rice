@@ -27,7 +27,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
@@ -452,7 +452,7 @@ public class ActionListServiceImpl implements ActionListService {
     public void saveOutboxItem(ActionItem actionItem) {
         try {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
-                    && Core.getCurrentContextConfig().getOutBoxOn()
+                    && ConfigContext.getCurrentContextConfig().getOutBoxOn()
                     && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getUser().getWorkflowId()) == null
                     && !actionItem.getRouteHeader().getDocRouteStatus().equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
                 // only create an outbox item if this user has taken action on the document

@@ -24,8 +24,8 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.ws.security.WSPasswordCallback;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 
 
@@ -44,7 +44,7 @@ public class CryptoPasswordCallbackHandler implements CallbackHandler {
         for (int i = 0; i < callbacks.length; i++) {
             if (callbacks[i] instanceof WSPasswordCallback) {
                 WSPasswordCallback pc = (WSPasswordCallback) callbacks[i];
-                String password = Core.getCurrentContextConfig().getKeystorePassword();
+                String password = ConfigContext.getCurrentContextConfig().getKeystorePassword();
                 if (password == null) {
                 	throw new ConfigurationException("Could not locate the webservice password.  Should be configured as the '" + Config.KEYSTORE_PASSWORD + "' property.");
                 }

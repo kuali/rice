@@ -17,7 +17,6 @@ package org.kuali.rice.core.config;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
@@ -53,7 +52,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
         return moduleName.toUpperCase() + "_SPRING_RESOURCE_LOADER";        
     }
     public static final QName getDefaultResourceLoaderQName(String moduleName) {
-        return new QName(Core.getCurrentContextConfig().getMessageEntity(), getDefaultResourceLoaderName(moduleName));
+        return new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), getDefaultResourceLoaderName(moduleName));
     }
 
     /**
@@ -120,7 +119,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
             context = springResource;
         }
 
-        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(Core.getCurrentContextConfig().getMessageEntity(), resourceLoaderName), context);
+        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), resourceLoaderName), context);
 
         return resourceLoader;
     }

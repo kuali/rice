@@ -22,8 +22,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceHolder;
@@ -47,14 +47,14 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 
 	@SuppressWarnings("unchecked")
 	private ServiceDefinition addServiceToConfig() throws Exception {
-		List httpServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List httpServices = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		ServiceDefinition mockServiceDef = getMockServiceDefinition();
 		httpServices.add(mockServiceDef);
 		return mockServiceDef;
 	}
 	
 	private void removeServiceFromConfig() throws Exception {
-		List httpServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List httpServices = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		ServiceDefinition serviceToRemove = null;
 		for (Iterator iter = httpServices.iterator(); iter.hasNext();) {
 			ServiceDefinition serviceDef = (ServiceDefinition)iter.next();

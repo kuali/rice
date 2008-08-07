@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.quartz;
 
 import java.util.Properties;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
@@ -34,7 +34,7 @@ public class QuartzConfigPropertiesFactoryBean extends AbstractFactoryBean {
     @Override
     protected Object createInstance() throws Exception {
 	Properties properties = new Properties();
-	Properties configProps = Core.getCurrentContextConfig().getProperties();
+	Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
 	for (Object keyObj : configProps.keySet()) {
 	    if (keyObj instanceof String) {
 		String key = (String)keyObj;

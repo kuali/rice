@@ -29,7 +29,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -119,7 +119,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
             }
             SimpleConfig config = new SimpleConfig(baseProps);
             config.parseConfig();
-            Core.init(config);
+            ConfigContext.init(config);
             
             context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
             context.start();
@@ -202,7 +202,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
      * Determines whether or not the Message Fetcher should be executed.
      */
     protected boolean shouldExecuteMessageFetcher() {
-        String executeMessageFetcher = Core.getCurrentContextConfig().getProperty(RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER);
+        String executeMessageFetcher = ConfigContext.getCurrentContextConfig().getProperty(RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER);
         return StringUtils.isBlank(executeMessageFetcher) ? true : new Boolean(executeMessageFetcher);
     }
 

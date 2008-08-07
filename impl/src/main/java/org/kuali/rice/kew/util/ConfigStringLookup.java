@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.text.StrLookup;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 /**
  * Looks up Strings from the Config and Application Constants.
@@ -34,7 +34,7 @@ public class ConfigStringLookup extends StrLookup {
 		// check app constants first
 		String paramValue = Utilities.getApplicationConstant(propertyName);
 		if (paramValue == null) {
-			paramValue = Core.getCurrentContextConfig().getProperty(propertyName);
+			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 		}
 		return paramValue;
 	}

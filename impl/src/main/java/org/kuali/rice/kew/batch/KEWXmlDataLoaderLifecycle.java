@@ -17,7 +17,7 @@ package org.kuali.rice.kew.batch;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 
 /**
@@ -50,7 +50,7 @@ public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
     }
 
     public void start() throws Exception {
-        String useKewXmlDataLoaderLifecycle = Core.getCurrentContextConfig().getProperty("use.kewXmlmlDataLoaderLifecycle");
+        String useKewXmlDataLoaderLifecycle = ConfigContext.getCurrentContextConfig().getProperty("use.kewXmlmlDataLoaderLifecycle");
 
         if (useKewXmlDataLoaderLifecycle != null && !Boolean.valueOf(useKewXmlDataLoaderLifecycle)) {
             LOG.debug("Skipping KEWXmlDataLoaderLifecycle due to property: use.kewXmlmlDataLoaderLifecycle=" + useKewXmlDataLoaderLifecycle);

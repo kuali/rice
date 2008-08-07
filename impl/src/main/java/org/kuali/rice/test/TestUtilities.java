@@ -24,8 +24,8 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
@@ -175,14 +175,14 @@ public class TestUtilities {
      * Overrides the current context config with the Config registered to the (last) WebAppClassLoader
      */
     public static void addWebappsToContext() {
-        for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
+        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
             if (configEntry.getKey() instanceof WebAppClassLoader) {
                 ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
                 if (rl == null) {
                     Assert.fail("didn't find resource loader for workflow test harness web app");
                 }
                 GlobalResourceLoader.addResourceLoader(rl);
-                Core.overrideConfig(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
+                ConfigContext.overrideConfig(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
             }
         }
     }

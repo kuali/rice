@@ -19,8 +19,8 @@ package org.kuali.rice.kew.clientapp;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.BaseConfig;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -33,22 +33,22 @@ public class ClientConfig extends BaseConfig {
 
 	public ClientConfig() {
 		super(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
-		Core.init(this);
+		ConfigContext.init(this);
 	}
 
 	public Properties getBaseProperties() {
 		//so workflow can use this config for client and point to the workflow.xml with server settings (so everyone can
 		//rock the workflow.xml file
 
-		if (Core.getRootConfig() != null) {
-			return Core.getRootConfig().getProperties();
+		if (ConfigContext.getRootConfig() != null) {
+			return ConfigContext.getRootConfig().getProperties();
 		}
 		return null;
 	}
 
 	public Map getBaseObjects() {
-		if (Core.getRootConfig() != null) {
-			return Core.getRootConfig().getObjects();
+		if (ConfigContext.getRootConfig() != null) {
+			return ConfigContext.getRootConfig().getObjects();
 		}
 		return null;
 	}

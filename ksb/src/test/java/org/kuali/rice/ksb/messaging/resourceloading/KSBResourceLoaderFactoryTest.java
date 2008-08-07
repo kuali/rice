@@ -20,8 +20,8 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -38,7 +38,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		props.put(Config.MESSAGE_ENTITY, me);
 		Config config = new SimpleConfig(props);
 		config.parseConfig();
-		Core.init(config);
+		ConfigContext.init(config);
 		
 		ResourceLoader rl = KSBResourceLoaderFactory.createRootKSBResourceLoader();
 		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getSpringResourceLoaderName()));
@@ -52,7 +52,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		Properties props = new Properties();
 		Config config = new SimpleConfig(props);
 		config.parseConfig();
-		Core.init(config);
+		ConfigContext.init(config);
 		
 		boolean errorThrown = false;
 		try {

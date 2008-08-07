@@ -33,7 +33,7 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -66,7 +66,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {
-		super(new QName(Core.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader"));
+		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader"));
 	}
 
 	@Override
@@ -113,13 +113,13 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 
 	protected Object getServiceProxy(Class serviceInterface, String endpointParam, String secureEndpointParam) {
 	    HttpInvokerProxyFactoryBean proxyFactory = new HttpInvokerProxyFactoryBean();
-	    String serviceUrl = Core.getCurrentContextConfig().getProperty(endpointParam);
+	    String serviceUrl = ConfigContext.getCurrentContextConfig().getProperty(endpointParam);
 	    if (StringUtils.isEmpty(serviceUrl)) {
 		throw new IllegalArgumentException("The " + endpointParam + " configuration parameter was not defined but is required.");
 	    }
 	    proxyFactory.setServiceUrl(serviceUrl);
 	    proxyFactory.setServiceInterface(serviceInterface);
-	    String secureProp = Core.getCurrentContextConfig().getProperty(secureEndpointParam);
+	    String secureProp = ConfigContext.getCurrentContextConfig().getProperty(secureEndpointParam);
 	    Boolean secureIt = null;
 	    if (secureProp == null) {
 		secureIt = true;
@@ -153,7 +153,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	protected void initializeHttpClientParams() {
 		httpClientParams = new HttpClientParams();
 		configureDefaultHttpClientParams(httpClientParams);
-		Properties configProps = Core.getCurrentContextConfig().getProperties();
+		Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
 		for (Iterator iterator = configProps.keySet().iterator(); iterator.hasNext();) {
 			String paramName = (String) iterator.next();
 			if (paramName.startsWith("http.")) {

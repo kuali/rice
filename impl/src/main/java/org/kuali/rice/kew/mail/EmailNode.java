@@ -23,7 +23,7 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -107,7 +107,7 @@ public class EmailNode implements SimpleNode {
     }
     
     protected boolean isProduction() {
-	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment());
+	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
     }
     
     protected void loadConfiguration(RouteContext context) throws Exception {

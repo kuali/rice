@@ -174,7 +174,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	}
 	
 	protected int getJettyServerPort() {
-//	    String port = Core.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT);
+//	    String port = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT);
 //	    if (StringUtils.isNotBlank(port)) {
 //	        return Integer.valueOf(port).intValue();
 //	    }

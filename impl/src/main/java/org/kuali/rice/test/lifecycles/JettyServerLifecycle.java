@@ -19,8 +19,8 @@ import java.net.BindException;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -135,13 +135,13 @@ public class JettyServerLifecycle implements Lifecycle {
             }
             GlobalResourceLoader.addResourceLoader(rl);
 	    }
-	    Config webappConfig = Core.getConfig(webappClassLoader);
+	    Config webappConfig = ConfigContext.getConfig(webappClassLoader);
 	    WEBAPP_CONFIGS.put(jettyServer.getPort(), webappConfig);
 	    if (ConfigMode.OVERRIDE == configMode) {
             // this overrides the test harness classloader config with the webapp's config...
-            Core.overrideConfig(Thread.currentThread().getContextClassLoader(), webappConfig);
+            ConfigContext.overrideConfig(Thread.currentThread().getContextClassLoader(), webappConfig);
         } else if (ConfigMode.MERGE == configMode) {
-            Config curCtxConfig = Core.getCurrentContextConfig();
+            Config curCtxConfig = ConfigContext.getCurrentContextConfig();
             if (webappConfig != null) {
                 curCtxConfig.getProperties().putAll(webappConfig.getProperties());
                 curCtxConfig.getObjects().putAll(webappConfig.getObjects());

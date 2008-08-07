@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -125,7 +125,7 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	@SuppressWarnings("unchecked")
 	public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
 		Criteria crit = new Criteria();
-		String messagingEntity = Core.getCurrentContextConfig().getMessageEntity();
+		String messagingEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
 		crit.addEqualTo("messageEntity", messagingEntity);
 		crit.addNotEqualTo("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
 		crit.addEqualTo("ipNumber", RiceUtilities.getIpNumber());

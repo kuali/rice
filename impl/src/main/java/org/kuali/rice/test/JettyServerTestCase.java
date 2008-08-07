@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.server.JettyServer;
@@ -141,7 +141,7 @@ public abstract class JettyServerTestCase extends BaselineTestCase {
         }
         public void start() throws Exception {
             if (jettyServer.getPort() == JettyServer.CONFIG_PARAM_PORT) {
-                String val = Core.getCurrentContextConfig().getProperty(portConfigParam);
+                String val = ConfigContext.getCurrentContextConfig().getProperty(portConfigParam);
                 if (val == null) {
                     throw new RuntimeException("Jetty port not found in config param: " + portConfigParam);
                 }

@@ -28,8 +28,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -253,7 +253,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {
                 Config config = getTestHarnessConfig();
-                Core.init(config);
+                ConfigContext.init(config);
                 super.start();
             }
         });

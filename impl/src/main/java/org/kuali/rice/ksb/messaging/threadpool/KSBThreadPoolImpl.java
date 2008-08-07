@@ -16,8 +16,8 @@
 package org.kuali.rice.ksb.messaging.threadpool;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
@@ -74,12 +74,12 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
          * Loads the thread pool settings from the DAO.
          */
     protected void loadSettings() {
-	Core.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE);
+	ConfigContext.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE);
 
 	if (!this.poolSizeSet) {
 	    int poolSize;
 	    try {
-		poolSize = new Integer(Core.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE));
+		poolSize = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE));
 	    } catch (NumberFormatException nfe) {
 		poolSize = -1;
 	    }
@@ -128,7 +128,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 	    // if the thread ends up getting spawned by an action inside of a workflow plugin or something along those lines, it will inherit the plugin's
 	    // classloader as it's ContextClassLoader.  Let's make sure it's set to the same ClassLoader that loaded the KSBConfigurer
 	    thread.setContextClassLoader(contextClassLoader);
-	    thread.setName(Core.getCurrentContextConfig().getMessageEntity() + "/KSB-pool-" + factorySequence + "-thread-"
+	    thread.setName(ConfigContext.getCurrentContextConfig().getMessageEntity() + "/KSB-pool-" + factorySequence + "-thread-"
 		    + threadSequence);
 	    return thread;
 	}

@@ -41,11 +41,11 @@ public class SpringLifeCycle extends BaseLifecycle {
 
 	public void start() throws Exception {
 		LOG.warn("Initializing Spring from " + springFileNames);
-//		Config config = Core.getCurrentContextConfig();
+//		Config config = ConfigContext.getCurrentContextConfig();
 //		String originalME = config.getMessageEntity();
 		try {
 //			if (config.getRunningEmbeddedServerMode()) {
-//				Core.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, "KEW");
+//				ConfigContext.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, "KEW");
 //			}
 			SpringLoader.getInstance().setContextFiles(springFileNames);
 //			SpringLoader.getInstance().start();
@@ -55,7 +55,7 @@ public class SpringLifeCycle extends BaseLifecycle {
 			throw new RuntimeException("Spring Initialization Failed.");
 		}
 //		finally {
-//			Core.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, originalME);
+//			ConfigContext.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, originalME);
 //		}
 	}
 

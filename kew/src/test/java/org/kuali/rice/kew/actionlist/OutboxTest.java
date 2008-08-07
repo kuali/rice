@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -234,7 +234,7 @@ public class OutboxTest extends KEWTestCase {
         Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
         assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
 
-        Core.getCurrentContextConfig().overrideProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
+        ConfigContext.getCurrentContextConfig().overrideProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
         WorkflowUser natjohns = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("natjohns"));
         prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohns);
         assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());

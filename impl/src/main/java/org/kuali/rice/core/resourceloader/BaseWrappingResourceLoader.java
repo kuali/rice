@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -64,7 +64,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 
 	@Override
 	public void start() throws Exception {
-	    String servicesToCacheFromConfig = Core.getCurrentContextConfig().getProperty(RiceConstants.SERVICES_TO_CACHE);
+	    String servicesToCacheFromConfig = ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.SERVICES_TO_CACHE);
 	    if (!StringUtils.isEmpty(servicesToCacheFromConfig)) {
 		String[] services = servicesToCacheFromConfig.split(",");
 		for (String serviceName : services) {

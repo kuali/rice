@@ -19,8 +19,8 @@ package org.kuali.rice.kew.clientapp;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.kew.config.KEWConfigurer;
@@ -41,7 +41,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	@Override
 	public void tearDown() throws Exception {
-		QName thinRLName = new QName(Core.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader");
+		QName thinRLName = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader");
 		GlobalResourceLoader.getResourceLoader().removeResourceLoader(thinRLName);
 		ResourceLoader tempThinRL = GlobalResourceLoader.getResourceLoader(thinRLName);
 		if (tempThinRL != null) {
@@ -75,14 +75,14 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	protected void setUpWebservices() throws Exception {
 		try {
-		    String remoteUrlLocation = Core.getCurrentContextConfig().getProperty("serviceServletUrl");
-			Core.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
-            Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowUtilityService");
-//            Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
-            Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowDocumentActionsService");
-//            Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
-			Core.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
-			Core.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
+		    String remoteUrlLocation = ConfigContext.getCurrentContextConfig().getProperty("serviceServletUrl");
+			ConfigContext.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
+            ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowUtilityService");
+//            ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
+            ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowDocumentActionsService");
+//            ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
+			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
+			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
 			KEWConfigurer kewConfigurer  = new KEWConfigurer();
 			kewConfigurer.start();
 		} catch (Exception e) {

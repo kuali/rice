@@ -24,7 +24,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 
@@ -52,7 +52,7 @@ public class RemotedServiceHolder implements ServiceHolder {
 	}
 
 	public void setServiceInfo(ServiceInfo entry) {
-	    if (Core.getCurrentContextConfig().getDevMode()) {
+	    if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 		this.serviceInfo = cloneServiceInfo(entry);
 	    } else {
 		this.serviceInfo = entry;

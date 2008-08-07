@@ -28,7 +28,7 @@ public class JettyLifecycle implements Lifecycle {
 	}
 
 	public void start() throws Exception {
-//		server = new Server(new Integer(Core.getCurrentContextConfig().getProperty("http.service.port")));
+//		server = new Server(new Integer(ConfigContext.getCurrentContextConfig().getProperty("http.service.port")));
 //		Context root = new Context(server,"/en-test",Context.SESSIONS);
 //	    root.addServlet(new ServletHolder(new KSBDispatcherServlet()), "/remoting/*");
 	    //server.start();

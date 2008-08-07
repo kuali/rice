@@ -29,7 +29,7 @@ import org.apache.ojb.broker.util.sequence.AbstractSequenceManager;
 import org.apache.ojb.broker.util.sequence.SequenceManager;
 import org.apache.ojb.broker.util.sequence.SequenceManagerException;
 import org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
@@ -56,7 +56,7 @@ public class ConfigurableSequenceManager implements SequenceManager {
 
 	protected SequenceManager createSequenceManager(PersistenceBroker broker) {
 		String propertyPrefix = getPropertyPrefix();
-		String sequenceManagerClassName = Core.getCurrentContextConfig().getProperty(getSequenceManagerClassNameProperty(propertyPrefix));
+		String sequenceManagerClassName = ConfigContext.getCurrentContextConfig().getProperty(getSequenceManagerClassNameProperty(propertyPrefix));
 		if (StringUtils.isBlank(sequenceManagerClassName)) {
 			sequenceManagerClassName = DEFAULT_SEQUENCE_MANAGER_CLASSNAME;
 		}
@@ -88,7 +88,7 @@ public class ConfigurableSequenceManager implements SequenceManager {
 
 	protected Properties getSequenceManagerConfigProperties(String propertyPrefix) {
 		Properties sequenceManagerProperties = new Properties();
-		Properties properties = Core.getCurrentContextConfig().getProperties();
+		Properties properties = ConfigContext.getCurrentContextConfig().getProperties();
 		String attributePrefix = propertyPrefix + ".attribute.";
 		for (Iterator iterator = properties.keySet().iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();

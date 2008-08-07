@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
@@ -447,7 +447,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             Long routeHeaderId = (Long) iterator.next();
             String messageEntity = KEWServiceLocator.getRouteHeaderService().getMessageEntityByDocumentId(routeHeaderId);
             if (messageEntity == null) {
-                messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+                messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
             }
             DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(messageEntity,
                     routeHeaderId, cacheWait);

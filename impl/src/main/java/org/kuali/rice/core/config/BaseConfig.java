@@ -32,7 +32,6 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.util.RiceUtilities;
 
 /**
@@ -323,17 +322,17 @@ public abstract class BaseConfig implements Config {
     public Integer getRefreshRate() {
         Integer refreshRate;
         try {
-            refreshRate = new Integer(Core.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
+            refreshRate = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
         } catch (NumberFormatException nfe) {
             LOG.error("Couldn't parse property " + Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 30 seconds.");
-            Core.getCurrentContextConfig().overrideProperty(Config.REFRESH_RATE, "30");
+            ConfigContext.getCurrentContextConfig().overrideProperty(Config.REFRESH_RATE, "30");
             return 30;
         }
         return refreshRate;
     }
 
     public String getEndPointUrl() {
-        return Core.getCurrentContextConfig().getProperty(Config.SERVICE_SERVLET_URL);
+        return ConfigContext.getCurrentContextConfig().getProperty(Config.SERVICE_SERVLET_URL);
     }
 
     public String getAlternateOJBFile() {

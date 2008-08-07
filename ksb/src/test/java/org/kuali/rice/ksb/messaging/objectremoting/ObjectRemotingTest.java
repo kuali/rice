@@ -20,8 +20,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
@@ -56,7 +56,7 @@ public class ObjectRemotingTest extends KSBTestCase {
 		});
 		
 		boolean madeTempServicesCheck = false;
-		for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
+		for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
 			if (configEntry.getKey() instanceof WebAppClassLoader) {
 				ClassLoader old = Thread.currentThread().getContextClassLoader();
 				//to make KSBServiceLocator select services from Client1WebApp

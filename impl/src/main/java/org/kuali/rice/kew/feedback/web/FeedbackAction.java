@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.mail.EmailBody;
@@ -148,7 +148,7 @@ public class FeedbackAction extends WorkflowAction {
     	buffer.append("Email: " + form.getUserEmail()).append("\n");
     	buffer.append("Phone: " + form.getPhone()).append("\n");
     	buffer.append("Time: " + form.getTimeDate()).append("\n");
-    	buffer.append("Environment: " + Core.getCurrentContextConfig().getEnvironment()).append("\n\n");
+    	buffer.append("Environment: " + ConfigContext.getCurrentContextConfig().getEnvironment()).append("\n\n");
 
     	buffer.append("Document type: " + form.getDocumentType()).append("\n");
     	buffer.append("Document id: " + form.getRouteHeaderId()).append("\n\n");

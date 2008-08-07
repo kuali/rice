@@ -17,7 +17,7 @@ package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.kew.ActionTakenEvent;
 import org.kuali.rice.kew.DocumentRouteLevelChange;
@@ -47,7 +47,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         String dummyData = "testing this stuff";
         Integer testServerPort = Integer.valueOf(getJettyServerPort() + 1);
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
-        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + Core.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
+        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
         document.saveRoutingData();
 

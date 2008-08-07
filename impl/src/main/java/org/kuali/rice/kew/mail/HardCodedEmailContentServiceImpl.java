@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
@@ -262,7 +262,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         buffer.append("Email: " + form.getUserEmail()).append("\n");
         buffer.append("Phone: " + form.getPhone()).append("\n");
         buffer.append("Time: " + form.getTimeDate()).append("\n");
-        buffer.append("Environment: " + Core.getCurrentContextConfig().getEnvironment()).append("\n\n");
+        buffer.append("Environment: " + ConfigContext.getCurrentContextConfig().getEnvironment()).append("\n\n");
         
         buffer.append("Document type: " + form.getDocumentType()).append("\n");
         buffer.append("Document id: " + (form.getRouteHeaderId() != null ? form.getRouteHeaderId() : "")).append("\n\n");

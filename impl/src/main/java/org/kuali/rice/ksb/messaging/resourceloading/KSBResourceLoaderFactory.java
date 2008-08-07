@@ -17,8 +17,8 @@ package org.kuali.rice.ksb.messaging.resourceloading;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -47,18 +47,18 @@ public class KSBResourceLoaderFactory {
 	private static final String KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME = "KSB_REMOTE_RESOURCE_LOADER";
 
 	private static void initialize() {
-		Config config = Core.getCurrentContextConfig();
+		Config config = ConfigContext.getCurrentContextConfig();
 		if (config.getMessageEntity() == null) {
 			throw new ConfigurationException("No message entity available at this time");
 		}
 		if (getRootResourceLoaderName() == null) {
-			setRootResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KSB_ROOT_RESOURCE_LOACER_NAME));
+			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_ROOT_RESOURCE_LOACER_NAME));
 		}
 		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME));
+			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME));
 		}
 		if (getRemoteResourceLoaderName() == null) {
-			setRemoteResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
+			setRemoteResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 
@@ -92,27 +92,27 @@ public class KSBResourceLoaderFactory {
 	}
 
 	public static QName getRootResourceLoaderName() {
-		return (QName)Core.getCurrentContextConfig().getObject(KSB_ROOT_RESOURCE_LOACER_NAME);
+		return (QName)ConfigContext.getCurrentContextConfig().getObject(KSB_ROOT_RESOURCE_LOACER_NAME);
 	}
 
 	public static void setRootResourceLoaderName(QName name) {
-		Core.getCurrentContextConfig().getObjects().put(KSB_ROOT_RESOURCE_LOACER_NAME, name);
+		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_ROOT_RESOURCE_LOACER_NAME, name);
 	}
 
 	public static QName getSpringResourceLoaderName() {
-		return (QName)Core.getCurrentContextConfig().getObject(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME);
+		return (QName)ConfigContext.getCurrentContextConfig().getObject(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME);
 	}
 
 	public static void setSpringResourceLoaderName(QName ksbRsourceLoaderName) {
-		Core.getCurrentContextConfig().getObjects().put(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME, ksbRsourceLoaderName);
+		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME, ksbRsourceLoaderName);
 	}
 
 	public static QName getRemoteResourceLoaderName() {
-		return (QName)Core.getCurrentContextConfig().getObject(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME);
+		return (QName)ConfigContext.getCurrentContextConfig().getObject(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME);
 	}
 
 	public static void setRemoteResourceLoaderName(QName remoteResourceLoaderName) {
-		Core.getCurrentContextConfig().getObjects().put(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME, remoteResourceLoaderName);
+		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME, remoteResourceLoaderName);
 	}
 
 }

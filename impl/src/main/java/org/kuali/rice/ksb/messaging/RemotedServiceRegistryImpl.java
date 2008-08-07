@@ -28,8 +28,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
@@ -90,10 +90,10 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		if (serviceDefinition == null) {
 			throw new RuntimeException("Service Definition is null");
 		}
-		List services = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List services = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		if (services == null) {
 			services = new ArrayList();
-			Core.getCurrentContextConfig().getObjects().put(Config.BUS_DEPLOYED_SERVICES, services);
+			ConfigContext.getCurrentContextConfig().getObjects().put(Config.BUS_DEPLOYED_SERVICES, services);
 		}
 		services.add(serviceDefinition);
 		// force an immediate registry of the service
@@ -169,15 +169,15 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public synchronized void run() {
-	    	String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+	    	String messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
 		LOG.debug("Checking for newly published services on message entity " + messageEntity + " ...");
 
-		String serviceServletUrl = (String) Core.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
+		String serviceServletUrl = (String) ConfigContext.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
 			throw new RuntimeException("No service url provided to locate services.  This is configured in the KSBConfigurer.");
 		}
 
-		List javaServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List javaServices = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
 		List<ServiceInfo> configuredJavaServices = new ArrayList<ServiceInfo>();
 		for (Iterator iter = javaServices.iterator(); iter.hasNext();) {
@@ -190,7 +190,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		configuredServices.addAll(configuredJavaServices);
 		List<ServiceInfo> fetchedServices = null;
 
-		if (Core.getCurrentContextConfig().getDevMode()) {
+		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			fetchedServices = new ArrayList<ServiceInfo>();
 		} else {
 			//TODO we are not verifying that this read is not being done in dev mode in a test
@@ -200,7 +200,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
 		boolean needUpdated = diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 		if (needUpdated) {
-			if (!Core.getCurrentContextConfig().getDevMode()) {
+			if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
 				getServiceInfoService().save(diffCalc.getServicesNeedUpdated());
 				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());
 			}
@@ -233,8 +233,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			return;
 		}
 		run();
-		if (!Core.getCurrentContextConfig().getDevMode()) {
-			int refreshRate = Core.getCurrentContextConfig().getRefreshRate();
+		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
+			int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
 			this.future = KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		}
 		this.started = true;
@@ -248,7 +248,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			}
 			this.future = null;
 		}
-		List<ServiceInfo> fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), Core.getCurrentContextConfig().getMessageEntity());
+		List<ServiceInfo> fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), ConfigContext.getCurrentContextConfig().getMessageEntity());
 		this.getServiceInfoService().markServicesDead(fetchedServices);
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();

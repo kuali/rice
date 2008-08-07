@@ -27,7 +27,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -119,7 +119,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
     		}
     		SimpleConfig config = new SimpleConfig(baseProps);
     		config.parseConfig();
-    		Core.init(config);
+    		ConfigContext.init(config);
 
     		context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
     		context.start();
@@ -171,7 +171,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
 //	public void configureLifeCycles() {
 //		lifeCycles.add(new Log4jLifeCycle());
-//		String springLocation = Core.getCurrentContextConfig().getAlternateSpringFile();
+//		String springLocation = ConfigContext.getCurrentContextConfig().getAlternateSpringFile();
 //		if (springLocation == null) {
 //			springLocation = "ServerSpring.xml";
 //		}

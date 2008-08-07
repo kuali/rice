@@ -20,7 +20,7 @@ import mocks.MockEmailNotificationService;
 import mocks.MockEmailNotificationServiceImpl;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -46,17 +46,17 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 	 */
 	@Override
 	public void tearDown() throws Exception {
-        Core.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
-        Core.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
+        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
+        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
 	    super.tearDown();
 	}
 
 	@Test public void testDailyEmails() throws Exception {
 		// fire daily every 2 seconds
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
 		// turn daily on and weekly off
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "true");
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "true");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
 
 		// setup ewestfal to recieve daily emails
 		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
@@ -90,7 +90,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		emailReminderLifecycle.stop();
 
 		// setting cron to empty so job will cease
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_DAILY);
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_DAILY);
 
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();
@@ -99,10 +99,10 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 	@Test public void testWeeklyEmails() throws Exception {
 		// fire daily every 2 seconds
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
 		// turn weekly on and daily off
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "true");
-		Core.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "true");
+		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
 
 		// setup ewestfal to recieve weekly emails
 		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
@@ -136,7 +136,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		emailReminderLifecycle.stop();
 
         // setting cron to empty so job will cease
-        Core.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_WEEKLY);
+        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_WEEKLY);
 
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();
@@ -303,7 +303,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //	@Test public void testNoEmailDatesInConfig() throws Exception {
 //		KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.APP_CONST_EMAIL_FIRST_SEND_IP_KEY, Utilities.getIpNumber()));
 //
-//		Config config = Core.getCurrentContextConfig();
+//		Config config = ConfigContext.getCurrentContextConfig();
 //		config.getProperties().remove(Config.FIRST_DAILY_EMAIL_DELIVERY_DATE);
 //		config.getProperties().remove(Config.FIRST_WEEKLY_EMAIL_DELIVERY_DATE);
 //		emailReminderLifecycle.start();
@@ -322,7 +322,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //	 */
 //	@Test public void testActionListEmailServiceBeingCalled() throws Exception {
 //		KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.APP_CONST_EMAIL_FIRST_SEND_IP_KEY, Utilities.getIpNumber()));
-//		Config config = Core.getCurrentContextConfig();
+//		Config config = ConfigContext.getCurrentContextConfig();
 //		config.overrideProperty(Config.FIRST_DAILY_EMAIL_DELIVERY_DATE, DAILY_REMINDER_DATE);
 //		config.overrideProperty(Config.FIRST_WEEKLY_EMAIL_DELIVERY_DATE, WEEKLY_REMINDER_DATE);
 //		emailReminderLifecycle.start();
@@ -333,7 +333,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //	private void setUpConfigForEmail() throws Exception {
 //		KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.APP_CONST_EMAIL_FIRST_SEND_IP_KEY, Utilities.getIpNumber()));
 //
-//		Config config = Core.getCurrentContextConfig();
+//		Config config = ConfigContext.getCurrentContextConfig();
 //		config.overrideProperty(Config.FIRST_DAILY_EMAIL_DELIVERY_DATE, DAILY_REMINDER_DATE);
 //		config.overrideProperty(Config.FIRST_WEEKLY_EMAIL_DELIVERY_DATE, WEEKLY_REMINDER_DATE);
 //

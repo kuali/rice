@@ -39,8 +39,8 @@ import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.JdbcConnectionDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -129,7 +129,7 @@ public class BaseOjbConfigurer extends BaseLifecycle {
 
 
     protected String getOjbPropertiesLocation() {
-        String ojbPropertiesLocation = Core.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
+        String ojbPropertiesLocation = ConfigContext.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
         if (!StringUtils.isBlank(ojbPropertiesLocation)) {
             LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);
         } else {
@@ -170,7 +170,7 @@ public class BaseOjbConfigurer extends BaseLifecycle {
             Element descriptor = (Element)connectionDescriptors.item(index);
             String currentPlatform = descriptor.getAttribute("platform");
             if (StringUtils.isBlank(currentPlatform)) {
-                String ojbPlatform = Core.getCurrentContextConfig().getProperty(Config.OJB_PLATFORM);
+                String ojbPlatform = ConfigContext.getCurrentContextConfig().getProperty(Config.OJB_PLATFORM);
                 if (StringUtils.isEmpty(ojbPlatform)) {
                     throw new ConfigurationException("Could not configure OJB, the '" + Config.OJB_PLATFORM + "' configuration property was not set.");
                 }
@@ -256,7 +256,7 @@ public class BaseOjbConfigurer extends BaseLifecycle {
 //	descriptor.setIgnoreAutoCommitExceptions(false);
 //	descriptor.setJcdAlias(getJcdAlias());
 //	descriptor.setDefaultConnection(false);
-//	String ojbPlatform = Core.getCurrentContextConfig().getProperty(Config.OJB_PLATFORM);
+//	String ojbPlatform = ConfigContext.getCurrentContextConfig().getProperty(Config.OJB_PLATFORM);
 //	if (StringUtils.isEmpty(ojbPlatform)) {
 //		throw new ConfigurationException("Could not configure OJB, the '" + Config.OJB_PLATFORM + "' configuration property was not set.");
 //	}

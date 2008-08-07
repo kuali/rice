@@ -18,8 +18,8 @@ package org.kuali.rice.core.config.spring;
 import java.util.List;
 import java.util.Properties;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.springframework.beans.factory.FactoryBean;
@@ -35,8 +35,8 @@ public class ConfigFactoryBean implements FactoryBean {
 			throw new ConfigurationException("No config locations declared, at least one is required");
 		}
 		Properties baseProperties = new Properties();
-		if (Core.getCurrentContextConfig() != null) {
-			baseProperties = Core.getCurrentContextConfig().getProperties();
+		if (ConfigContext.getCurrentContextConfig() != null) {
+			baseProperties = ConfigContext.getCurrentContextConfig().getProperties();
 		}
 		SimpleConfig config = null;
 		if (CONFIG_OVERRIDE_LOCATION != null) {

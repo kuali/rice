@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
@@ -137,7 +137,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 	
     public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
-	String searchGeneratorClass = Core.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
+	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
 	    return new StandardDocumentSearchGenerator();
 	}
@@ -145,7 +145,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
     
     public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor() {
-	String searchGeneratorClass = Core.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM);
+	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
 	    return new StandardDocumentSearchResultProcessor();
 	}

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.config;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
@@ -39,7 +39,7 @@ public class KIMResourceLoaderFactory {
 	 */
 	private static void initialize() {
 		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME));
+			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class KIMResourceLoaderFactory {
 	 * @return QName
 	 */
 	public static QName getSpringResourceLoaderName() {
-		return (QName)Core.getCurrentContextConfig().getObject(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME);
+		return (QName)ConfigContext.getCurrentContextConfig().getObject(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME);
 	}
 	
 	/**
@@ -80,6 +80,6 @@ public class KIMResourceLoaderFactory {
 	 * @param kimSpringResourceLoaderName
 	 */
 	public static void setSpringResourceLoaderName(QName kimSpringResourceLoaderName) {
-		Core.getCurrentContextConfig().getObjects().put(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME, kimSpringResourceLoaderName);
+		ConfigContext.getCurrentContextConfig().getObjects().put(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME, kimSpringResourceLoaderName);
 	}	
 }

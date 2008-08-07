@@ -45,7 +45,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
@@ -99,7 +99,7 @@ public final class Util {
      * @return the name of the user configured to be the Notification system user
      */
     public static String getNotificationSystemUser() {
-        String system_user = Core.getCurrentContextConfig().getProperty(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME);
+        String system_user = ConfigContext.getCurrentContextConfig().getProperty(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME);
         if (system_user == null) {
             system_user = NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER;
         }

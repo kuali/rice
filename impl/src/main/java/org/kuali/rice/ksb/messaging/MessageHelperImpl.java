@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceproxies.AsynchronousServiceCallProxy;
@@ -103,7 +103,7 @@ public class MessageHelperImpl implements MessageHelper {
     public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
 
         List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
-        if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
+        if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
             return SynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
         }
 
@@ -113,7 +113,7 @@ public class MessageHelperImpl implements MessageHelper {
 
     public Object getDelayedAsynchronousServiceCallProxy(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
         List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
-        if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
+        if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
             LOG.warn("Executing a delayed service call for " + qname + " with delay of " + delayMilliseconds + " in synchronous mode.  Service will be invoked immediately.");
             return SynchronousServiceCallProxy.createInstance(servicesToProxy, null, context, value1, value2);
         }

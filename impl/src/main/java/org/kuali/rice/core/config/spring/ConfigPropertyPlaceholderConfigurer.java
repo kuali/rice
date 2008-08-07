@@ -18,8 +18,8 @@ package org.kuali.rice.core.config.spring;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigLogger;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
@@ -41,7 +41,7 @@ public class ConfigPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         // perform standard property resource file loading
         super.loadProperties(props);
         // load the Rice properties
-        Config config = Core.getCurrentContextConfig();
+        Config config = ConfigContext.getCurrentContextConfig();
         if (config != null) {
             log.debug("Replacing parameters in Spring using config:\r\n" + config);
             ConfigLogger.logConfig(config);

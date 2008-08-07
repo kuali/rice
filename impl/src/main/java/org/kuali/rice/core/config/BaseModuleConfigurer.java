@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -76,7 +75,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {
         LOG.info("Starting configuration of " + getModuleName() + " for message entity " + parentConfig.getMessageEntity());
-        return Core.getCurrentContextConfig();
+        return ConfigContext.getCurrentContextConfig();
     }
 
     /**

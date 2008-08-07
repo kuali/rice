@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.ken.service.KENAPIService;
@@ -37,7 +37,7 @@ public class KENIntegrationServiceAPIImpl implements KENIntegrationService {
      * @see org.kuali.rice.kcb.service.KENIntegrationService#getAllChannelNames()
      */
     public Collection<String> getAllChannelNames() {
-        KENAPIService api = (KENAPIService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KENServiceConstants.KENAPI_SERVICE));
+        KENAPIService api = (KENAPIService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KENServiceConstants.KENAPI_SERVICE));
         return api.getAllChannelNames();
     }
 

@@ -17,7 +17,7 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
@@ -47,7 +47,7 @@ public class RootResourceLoaderLifecycle extends BaseLifecycle {
 	}
 
 	protected String getMessageEntity() {
-		return Core.getCurrentContextConfig().getMessageEntity();
+		return ConfigContext.getCurrentContextConfig().getMessageEntity();
 	}
 
 

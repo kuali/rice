@@ -41,8 +41,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.ojb.broker.PBKey;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.SpringLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -98,7 +98,7 @@ public class TestUtilities {
 //        routeQueue.setQueueStatus("Q");
 //        routeQueue.setRetryCount(new Integer(0));
 //        routeQueue.setPayload( KSBServiceLocator.getMessageHelper().serializeObject(payload));
-//        routeQueue.setMessageEntity(Core.getCurrentContextConfig().getMessageEntity());
+//        routeQueue.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
 //        KEWServiceLocator.getRouteQueueService().save(routeQueue);
 //        return routeQueue;
 //    }
@@ -124,7 +124,7 @@ public class TestUtilities {
 //		}
 //		KEWServiceLocator.getServiceDeployer().registerService(serviceDef);
 //		// force a refresh on our node
-//		RemoteResourceServiceLocatorImpl remoteResourceServiceLocator = (RemoteResourceServiceLocatorImpl) GlobalResourceLoader.getResourceLoader(new QName(Core.getCurrentContextConfig().getMessageEntity(),
+//		RemoteResourceServiceLocatorImpl remoteResourceServiceLocator = (RemoteResourceServiceLocatorImpl) GlobalResourceLoader.getResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(),
 //				ResourceLoader.REMOTE_RESOURCE_LOADER_NAME));
 //		remoteResourceServiceLocator.run();
 //	}
@@ -410,7 +410,7 @@ public class TestUtilities {
 		return tmpDir;
 }
 	public static File getEnPluginsDirectory() {
-	    String directory = Core.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
+	    String directory = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
 	    if (StringUtils.isNotBlank(directory)) {
 	        return new File(directory);
 	    }
@@ -418,7 +418,7 @@ public class TestUtilities {
 	}
 
 	public static File getPluginsDirectory() {
-        String directory = Core.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
+        String directory = ConfigContext.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
         if (StringUtils.isNotBlank(directory)) {
             return new File(directory);
         }

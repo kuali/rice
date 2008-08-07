@@ -20,8 +20,8 @@ package org.kuali.rice.kew.routeheader;
 import java.sql.Timestamp;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
@@ -94,7 +94,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
 
     @Test public void testLockRouteHeader() throws Exception {
 	//fail("TestLockRouteHeader needs to be fixed.  It is currently deadlocking the tests!!!!");
-    	if (Core.getRootConfig().getProperty("datasource.ojb.platform").equals("Mckoi")) {
+    	if (ConfigContext.getRootConfig().getProperty("datasource.ojb.platform").equals("Mckoi")) {
     		return;
     	}
 
@@ -123,7 +123,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         assertTrue("Locker thread should have completed.", locker.isCompleted());
 
         // now configure a lock timeout for 2 seconds
-        Core.getCurrentContextConfig().overrideProperty(Config.DOCUMENT_LOCK_TIMEOUT, "2");
+        ConfigContext.getCurrentContextConfig().overrideProperty(Config.DOCUMENT_LOCK_TIMEOUT, "2");
         synchronized (lock) {
             locker = new Locker(documentId);
             locker.start();

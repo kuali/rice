@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.testclient1;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService;
 
@@ -27,7 +27,7 @@ public class ChainedRequestService1Impl implements ChainedRequestService {
 
 	public String sendRequest(String value) {
 		StringBuffer buffer = new StringBuffer(value);
-		buffer.append(Core.getCurrentContextConfig().getMessageEntity()).append(",");
+		buffer.append(ConfigContext.getCurrentContextConfig().getMessageEntity()).append(",");
 		ChainedRequestService service = (ChainedRequestService)GlobalResourceLoader.getService(new QName("TestCl2", "chainedRequestService2"));
 		return service.sendRequest(buffer.toString());
 	}

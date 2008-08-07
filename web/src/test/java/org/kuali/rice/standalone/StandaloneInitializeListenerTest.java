@@ -22,7 +22,7 @@ import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
@@ -62,10 +62,10 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
             assertTrue("Context should be active.", listener.getContext().isActive());
             assertTrue("Context should be running.", listener.getContext().isRunning());
             
-            String riceBase = Core.getCurrentContextConfig().getProperty("rice.base");
+            String riceBase = ConfigContext.getCurrentContextConfig().getProperty("rice.base");
             assertFalse("rice base should exist.", StringUtils.isBlank(riceBase));
             // test that the init params are pumped into the config system
-            String testInitParam = Core.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
+            String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
         
             assertTrue(mockServletContext.getAttribute("Constants") instanceof KEWConstants);

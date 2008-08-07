@@ -27,7 +27,7 @@ import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.service.EncryptionService;
 
@@ -50,7 +50,7 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         if (desKey != null) {
             throw new RuntimeException("The secret key must be kept secret. Storing it in the Java source code is a really bad idea.");
         }
-        String key = Core.getCurrentContextConfig().getProperty("encryption.key");
+        String key = ConfigContext.getCurrentContextConfig().getProperty("encryption.key");
         if (!StringUtils.isEmpty(key)) {
             setSecretKey(key);
         }

@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.Plugin;
@@ -59,12 +59,12 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
     @Before
     // public void setUp() throws Exception {
     // super.setUp();
-    // Config config = Core.getCurrentContextConfig();
+    // Config config = ConfigContext.getCurrentContextConfig();
     // if (config == null) {
     // // because of previously running tests, the config might already be initialized
     // config = new SimpleConfig();
     // config.getProperties().put(Config.MESSAGE_ENTITY, "KEW");
-    // Core.init(config);
+    // ConfigContext.init(config);
     // }
     // // from RiceTestCase if this ever get put into that hierarchy
     //
@@ -86,12 +86,12 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
     // }
     @Test
     public void testLoad() throws Exception {
-	Config config = Core.getCurrentContextConfig();
+	Config config = ConfigContext.getCurrentContextConfig();
 	if (config == null) {
 	    // because of previously running tests, the config might already be initialized
 	    config = new SimpleConfig();
 	    config.getProperties().put(Config.MESSAGE_ENTITY, "KEW");
-	    Core.init(config);
+	    ConfigContext.init(config);
 	}
 
 	File pluginZipFile = new File(this.getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip");
@@ -109,7 +109,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 
 	// create the ZipFilePluginLoader and load the plugin
 	ZipFilePluginLoader loader = new ZipFilePluginLoader(pluginZipFile, null, ClassLoaderUtils.getDefaultClassLoader(),
-		Core.getRootConfig(), false);
+		ConfigContext.getRootConfig(), false);
 	this.plugin = loader.load();
 	assertNotNull("Plugin should have been successfully loaded.", plugin);
 	// check the plugin name, it's QName should be '{KEW}ziptest', it's plugin name should be 'ziptest'

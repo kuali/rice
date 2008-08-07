@@ -12,8 +12,8 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import org.kuali.rice.core.Core;
 import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -32,10 +32,10 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class MessageSender {
 
     public static void sendMessage(PersistedMessage message) throws Exception {
-	if (!new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
+	if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 
-	    if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
-		    || Core.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ) != null) {
+	    if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
+		    || ConfigContext.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ) != null) {
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 		    TransactionSynchronizationManager.registerSynchronization(new MessageSendingTransactionSynchronization(
 			    message));

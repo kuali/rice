@@ -15,7 +15,7 @@ package org.kuali.rice.ksb.messaging;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
@@ -38,7 +38,7 @@ public class MessageFetcherTest extends KSBTestCase {
     @Override
     public void setUp() throws Exception {
 	super.setUp();
-	Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "true");
+	ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "true");
 	TestHarnessSharedTopic.CALL_COUNT = 0;
     }
 
@@ -74,7 +74,7 @@ public class MessageFetcherTest extends KSBTestCase {
     }
 
     private void turnOnMessaging() {
-	Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "false");
+	ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "false");
     }
 
     @Test

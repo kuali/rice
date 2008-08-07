@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.cache;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.Core;
+import org.kuali.rice.core.config.ConfigContext;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -94,7 +94,7 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 
 	protected Properties loadCacheSettings() {
 		Properties properties = new Properties();
-		Properties configProperties = Core.getCurrentContextConfig().getProperties();
+		Properties configProperties = ConfigContext.getCurrentContextConfig().getProperties();
 		for (Object keyObject : configProperties.keySet()) {
 			String key = (String)keyObject;
 			if (key.startsWith(CACHE_PREFIX)) {

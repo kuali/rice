@@ -139,9 +139,6 @@
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
-		<property name="configDao">
-			<bean class="org.kuali.rice.ksb.messaging.bam.dao.BAMConfigDAOImpl" />
-		</property>
 	</bean>
 
 	<bean id="enMessageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />

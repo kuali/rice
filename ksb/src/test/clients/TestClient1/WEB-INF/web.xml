@@ -13,7 +13,7 @@
     </context-param>
 
     <listener>
-      <listener-class>org.kuali.rice.kew.server.KSBTestContextLoaderListener</listener-class>
+      <listener-class>org.kuali.rice.ksb.server.KSBTestContextLoaderListener</listener-class>
     </listener>
 
     <servlet>

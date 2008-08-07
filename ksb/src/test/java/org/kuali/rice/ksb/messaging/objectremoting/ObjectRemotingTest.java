@@ -73,8 +73,8 @@ public class ObjectRemotingTest extends KSBTestCase {
 		assertTrue(madeTempServicesCheck);
 		
 		//verify service worked with bam
-		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}org.kuali.rice.kew.testclient1.TestClient1ObjectToBeRemoted0"), "invoke", true));
-		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}org.kuali.rice.kew.testclient1.TestClient1ObjectToBeRemoted0"), "invoke", false));
+		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}org.kuali.rice.ksb.testclient1.TestClient1ObjectToBeRemoted0"), "invoke", true));
+		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}org.kuali.rice.ksb.testclient1.TestClient1ObjectToBeRemoted0"), "invoke", false));
 		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}ObjectRemoterService"), "getRemotedClassURL", true));
 		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}ObjectRemoterService"), "getRemotedClassURL", false));
 		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}ObjectRemoterService"), "removeService", true));

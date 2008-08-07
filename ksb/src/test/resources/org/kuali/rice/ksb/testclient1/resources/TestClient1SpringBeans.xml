@@ -47,18 +47,18 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="echoService" class="org.kuali.rice.kew.testclient1.EchoService1Impl" />
-	<bean id="chainedRequestService" class="org.kuali.rice.kew.testclient1.ChainedRequestService1Impl" />
-	<bean id="testJavaAsyncService" class="org.kuali.rice.kew.testclient1.JavaAsyncTestServiceImpl" />
-	<bean id="testXmlAsyncService" class="org.kuali.rice.kew.testclient1.XmlAsyncTestServiceImpl" />
+	<bean id="echoService" class="org.kuali.rice.ksb.testclient1.EchoService1Impl" />
+	<bean id="chainedRequestService" class="org.kuali.rice.ksb.testclient1.ChainedRequestService1Impl" />
+	<bean id="testJavaAsyncService" class="org.kuali.rice.ksb.testclient1.JavaAsyncTestServiceImpl" />
+	<bean id="testXmlAsyncService" class="org.kuali.rice.ksb.testclient1.XmlAsyncTestServiceImpl" />
 	<!-- 
 		<bean id="distributedCachingTestHelperService" class="org.kuali.rice.kew.test.services.DistributedCachingTestHelperServiceImpl" />
 	-->
-	<bean id="sharedQueue" class="org.kuali.rice.kew.testclient1.ClientApp1SharedQueue" />
-	<bean id="sharedTopic" class="org.kuali.rice.kew.testclient1.Client1SharedTopic" />
+	<bean id="sharedQueue" class="org.kuali.rice.ksb.testclient1.ClientApp1SharedQueue" />
+	<bean id="sharedTopic" class="org.kuali.rice.ksb.testclient1.Client1SharedTopic" />
 	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="testLocalServiceFavoriteCall" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
-	<bean id="soapService" class="org.kuali.rice.kew.testclient1.Client1SOAPService" />
+	<bean id="soapService" class="org.kuali.rice.ksb.testclient1.Client1SOAPService" />
 
 	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl">
 <!--

@@ -37,7 +37,8 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
 public class ServerTestBase extends RiceTestCase {
 	
 	protected static final String HTML_PAGE_TITLE_TEXT = "Kuali Rice";
-
+	protected static final String MODULE_NAME = "web";
+	
     private String contextName = "/knstest";
     private String relativeWebappRoot = "/../web/src/main/webapp";
     private String sqlFilename = "classpath:ServerDefaultTestData.sql";
@@ -88,7 +89,7 @@ public class ServerTestBase extends RiceTestCase {
 
     @Override
     protected String getModuleName() {
-        return "server";
+        return MODULE_NAME;
     }
 
     protected String getTestConfigFilename() {

@@ -167,7 +167,7 @@ public class DocumentSearchTest extends KEWTestCase {
      * Test for https://test.kuali.org/jira/browse/KULWF-703
      */
     @Test public void testSearchEDENSERVICE_DOCS() throws Exception {
-        loadXmlStream(new FileInputStream(getBaseDir()+"/src/main/config/xml/KEWBootstrap.xml"));
+        loadXmlStream(new FileInputStream(getBaseDir()+"/../impl/src/main/config/xml/KEWBootstrap.xml"));
 
         Collection c = KEWServiceLocator.getDocumentTypeService().find(new DocumentType(), "EDENSERVICE-DOCS", true);
         assertNotNull(c);

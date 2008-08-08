@@ -6,7 +6,7 @@
      overrides notification email service
      does not include security beans not required for unit tests -->
 <beans>
-  <import resource="KCBSpringBeans.xml"/>
+  <import resource="class:org/kuali/rice/kcb/config/KCBSpringBeans.xml"/>
 
   <!-- override the notificationEmailService with a Mock implementation -->
   <bean id="emailService" class="org.kuali.rice.kcb.test.service.impl.MockEmailServiceImpl" >

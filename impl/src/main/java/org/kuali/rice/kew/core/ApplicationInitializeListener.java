@@ -90,7 +90,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
         	}
         }
 
-        String bootstrapSpringBeans = "org/kuali/rice/kew/resources/ServerKewSpringBeans.xml";
+        String bootstrapSpringBeans = "classpath:org/kuali/rice/kew/config/ServerKEWSpringBeans.xml";
         if (!StringUtils.isBlank(System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
         	bootstrapSpringBeans = System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE);
         } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE))) {

@@ -41,7 +41,7 @@ public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
 	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 	String springLocation = ConfigContext.getCurrentContextConfig().getAlternateSpringFile();
 	if (springLocation == null) {
-	    springLocation = "org/kuali/rice/kew/resources/KewSpringBeans.xml";
+	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
 	}
 	String additionalSpringFiles = ConfigContext.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
 	if (!StringUtils.isEmpty(additionalSpringFiles)) {

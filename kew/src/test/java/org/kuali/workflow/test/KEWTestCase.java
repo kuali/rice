@@ -123,7 +123,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 */
 	@Override
 	public void setUpInternal() throws Exception {
-	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "classpath:org/kuali/rice/kew/config/TestKEWSpringBeans.xml");
 	    super.setUpInternal();
 	    loadTestDataInternal();
 	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);

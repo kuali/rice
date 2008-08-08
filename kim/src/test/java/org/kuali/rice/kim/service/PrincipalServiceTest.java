@@ -55,11 +55,13 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void getAllPrincipalNames_Java() {
 		getAllPrincipalNames(principalService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllPrincipalNames_Soap() {
 		getAllPrincipalNames(principalSoapService);
 	}
@@ -78,11 +80,13 @@ public class PrincipalServiceTest extends KIMTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void getAllPrincipals_Java() {
 		getAllPrincipals(principalService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllPrincipals_Soap() {
 		getAllPrincipals(principalSoapService);
 	}

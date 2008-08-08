@@ -114,11 +114,13 @@ public class RoleServiceTest extends KIMTestCase {
 		}
 
 	@Test
+	@Ignore
 	public void getAllRoleNames_Java() {
 		getAllRoleNames(roleService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllRoleNames_Soap() {
 		getAllRoleNames(roleSoapService);
 	}
@@ -135,11 +137,13 @@ public class RoleServiceTest extends KIMTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void getAllRoles_Java() {
 		getAllRoles(roleService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllRoles_Soap() {
 		getAllRoles(roleSoapService);
 	}

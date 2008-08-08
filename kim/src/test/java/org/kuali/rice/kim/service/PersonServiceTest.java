@@ -66,11 +66,13 @@ public class PersonServiceTest extends KIMTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void getAllPersonIds_Java() {
 		getAllPersonIds(personService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllPersonIds_Soap() {
 		getAllPersonIds(personSoapService);
 	}
@@ -87,11 +89,13 @@ public class PersonServiceTest extends KIMTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void getAllPersons_Java() {
 		getAllPersons(personService);
 	}
 
 	@Test
+	@Ignore
 	public void getAllPersons_Soap() {
 		getAllPersons(personSoapService);
 	}

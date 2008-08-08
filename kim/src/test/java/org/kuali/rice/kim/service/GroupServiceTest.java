@@ -137,6 +137,7 @@ public class GroupServiceTest extends KIMTestCase {
     private static final String TEST_GROUP3 = "KIM Test Group3";
 
 	@Test
+	@Ignore
     public void testGetAllGroupNames_SyncJava() throws Exception {
         QName serviceName = new QName("KIM", "groupService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
@@ -151,6 +152,7 @@ public class GroupServiceTest extends KIMTestCase {
 
 
     @Test
+    @Ignore
     public void testGetAllGroupNames_SyncSOAP() throws Exception {
         QName serviceName = new QName("KIM", "groupSoapService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
@@ -162,6 +164,7 @@ public class GroupServiceTest extends KIMTestCase {
    }
     
     @Test
+    @Ignore
     public void testGetAllGroups_SyncJava() throws Exception {
         QName serviceName = new QName("KIM", "groupService");
         GroupService groupService = (GroupService) GlobalResourceLoader.getService(serviceName);
@@ -173,6 +176,7 @@ public class GroupServiceTest extends KIMTestCase {
    }
     
     @Test
+    @Ignore
     public void testGetAllGroups_SyncSOAP() throws Exception {
         QName serviceName = new QName("KIM", "groupSoapService");
         GroupService groupSoapService = (GroupService) GlobalResourceLoader.getService(serviceName);

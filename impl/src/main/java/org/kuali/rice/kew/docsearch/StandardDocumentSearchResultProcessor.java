@@ -29,7 +29,7 @@ import org.kuali.rice.kew.KEWPropertyConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;

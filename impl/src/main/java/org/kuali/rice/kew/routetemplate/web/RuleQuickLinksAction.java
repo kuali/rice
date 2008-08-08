@@ -30,7 +30,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleService;

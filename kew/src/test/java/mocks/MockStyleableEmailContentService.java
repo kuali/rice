@@ -16,7 +16,7 @@
  */
 package mocks;
 
-import org.kuali.rice.kew.mail.EmailContentService;
+import org.kuali.rice.kew.mail.service.EmailContentService;
 
 /**
  * Class to use for verification of style service being called

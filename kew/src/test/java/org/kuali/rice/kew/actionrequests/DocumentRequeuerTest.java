@@ -23,7 +23,7 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.actionrequests.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;

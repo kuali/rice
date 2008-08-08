@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;

@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.kew.actionlist.ActionListService;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;

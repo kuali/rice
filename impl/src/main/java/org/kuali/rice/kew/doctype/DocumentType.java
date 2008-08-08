@@ -48,6 +48,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;

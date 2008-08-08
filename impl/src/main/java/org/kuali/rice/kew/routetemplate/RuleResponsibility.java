@@ -35,7 +35,7 @@ import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.plugin.attributes.RoleAttribute;

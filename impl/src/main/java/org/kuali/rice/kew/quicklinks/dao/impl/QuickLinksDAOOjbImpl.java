@@ -27,10 +27,10 @@ import java.util.StringTokenizer;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.docsearch.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.quicklinks.ActionListStats;
 import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;

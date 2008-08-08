@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

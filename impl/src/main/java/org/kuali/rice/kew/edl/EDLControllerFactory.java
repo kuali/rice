@@ -25,6 +25,7 @@ import javax.xml.transform.Templates;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.XmlHelper;

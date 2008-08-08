@@ -24,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.edl.service.EDocLiteService;
 
 
 /**

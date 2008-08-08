@@ -26,7 +26,7 @@ import org.jdom.Element;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.Id;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 
 
 /**

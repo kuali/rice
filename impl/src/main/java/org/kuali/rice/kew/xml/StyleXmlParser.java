@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
-import org.kuali.rice.kew.edl.StyleService;
+import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;

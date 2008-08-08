@@ -33,7 +33,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.kew.actionlist.ActionListService;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.PreferencesService;

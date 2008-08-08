@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;

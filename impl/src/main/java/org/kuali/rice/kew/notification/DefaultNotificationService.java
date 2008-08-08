@@ -31,7 +31,7 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.mail.ActionListImmediateEmailReminderService;
+import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

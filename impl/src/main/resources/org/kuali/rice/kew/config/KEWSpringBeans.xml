@@ -151,7 +151,7 @@
 	<!-- 2.1 Workflow Engine -->
 	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine"  lazy-init="true"/>
 
-	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.RouteNodeServiceImpl" lazy-init="true">
+	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.service.impl.RouteNodeServiceImpl" lazy-init="true">
 		<property name="routeNodeDAO">
 			<ref bean="enRouteNodeDAO" />
 		</property>
@@ -164,7 +164,7 @@
 	</bean>
 
 
-	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.BranchServiceImpl" lazy-init="true">
+	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.service.impl.BranchServiceImpl" lazy-init="true">
 		<property name="branchDAO">
 			<ref bean="enBranchDAO"/>
 		</property>
@@ -184,12 +184,12 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  ActionRequestService -->
-	<bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequests.ActionRequestServiceImpl" lazy-init="true">
+	<bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl" lazy-init="true">
 		<property name="actionRequestDAO">
 			<ref bean="enActionRequestDAO" />
 		</property>
 	</bean>
-	<bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequests.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true">
+	<bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  RuleAttributeService -->
@@ -277,7 +277,7 @@
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.RoutingReportServiceImpl"  lazy-init="true"/>
 	<!--  ActionListService -->
-	<bean id="enActionListService" class="org.kuali.rice.kew.actionlist.ActionListServiceImpl" lazy-init="true">
+	<bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl" lazy-init="true">
 		<property name="actionListDAO">
 			<ref bean="enActionListDAO" />
 		</property>
@@ -293,7 +293,7 @@
 	</bean>
 
 	<!--  DocumentSearchService -->
-	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.DocumentSearchServiceImpl" lazy-init="true">
+	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl" lazy-init="true">
 		<property name="documentSearchDAO">
 			<ref bean="enDocumentSearchDAO" />
 		</property>
@@ -306,7 +306,7 @@
 	</bean>
 
 	<!--  DocumentTypeService -->
-	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.DocumentTypeServiceImpl" lazy-init="true">
+	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl" lazy-init="true">
 		<property name="documentTypeDAO">
 			<ref bean="enDocumentTypeDAO" />
 		</property>
@@ -316,7 +316,7 @@
 	</bean>
 
     <!--  DocumentSecurityService -->
-    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.DocumentSecurityServiceImpl"/>
+    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
 
 	<!-- Exception routing service -->
 	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
@@ -338,7 +338,7 @@
   
   
 	<!--  ActionTakenService -->
-	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.ActionTakenServiceImpl" lazy-init="true">
+	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl" lazy-init="true">
 		<property name="actionTakenDAO">
 			<ref bean="enActionTakenDAO" />
 		</property>
@@ -366,7 +366,7 @@
 	</bean>
 
 
-	<bean id="enApplicationConstantsService" class="org.kuali.rice.kew.applicationconstants.ApplicationConstantsServiceImpl"
+	<bean id="enApplicationConstantsService" class="org.kuali.rice.kew.applicationconstants.service.impl.ApplicationConstantsServiceImpl"
 		depends-on="enWorkflowDataSource" lazy-init="true">
 		<property name="applicationConstantsDAO">
       <!-- <ref bean="enApplicationConstantsDAO" /> -->
@@ -385,20 +385,20 @@
 	<bean id="WorkGroupLookupableImplService" class="org.kuali.rice.kew.workgroup.WorkGroupLookupableImpl" scope="prototype" />
     <bean id="WorkgroupTypeLookup" class="org.kuali.rice.kew.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
-	<bean id="enEmailService" class="org.kuali.rice.kew.mail.DefaultEmailService"  lazy-init="true"/>
+	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
 
 <!--
-    <bean id="enEmailContentService" class="org.kuali.rice.kew.mail.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
-    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.ActionListEmailServiceImpl">
+    <bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
+    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl">
       <property name="deploymentEnvironment">
         <value>${environment}</value>
       </property>
     </bean>
 -->
-	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl" lazy-init="true">
+	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
         <property name="styleService" ref="enStyleService"/>
     </bean>
-    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.CustomizableActionListEmailServiceImpl">
+    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl">
         <property name="deploymentEnvironment">
             <value>${environment}</value>
         </property>
@@ -451,7 +451,7 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
-    <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.EDocLiteServiceImpl" lazy-init="true">
+    <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO">
             <ref local="enEDocLiteDAO"/>
         </property>
@@ -460,13 +460,13 @@
         </property>
     </bean>
 
-    <bean id="enStyleService" class="org.kuali.rice.kew.edl.StyleServiceImpl" lazy-init="true">
+    <bean id="enStyleService" class="org.kuali.rice.kew.edl.service.impl.StyleServiceImpl" lazy-init="true">
         <property name="styleDAO">
             <ref local="enEDocLiteDAO"/>
         </property>
     </bean>
 
-    <bean id="enHelpService" class="org.kuali.rice.kew.help.HelpServiceImpl" lazy-init="true">
+    <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
         <property name="helpDAO">
             <!-- <ref bean="enHelpDAO" /> -->
             <ref bean="enHelpOJBDAO" />
@@ -642,10 +642,10 @@
 	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
-    <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.SearchableAttributeProcessor"/>
+    <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.service.impl.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
-    <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.ActionListImmediateProcessorImpl" />
+    <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
     <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.server.SimpleDocumentActionsWebServiceImpl"/>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -698,7 +698,7 @@
             <ref bean="enActionListEmailService" />
           </property>
           <property name="localServiceName" value="enActionListEmailService" />
-          <property name="serviceInterface" value="org.kuali.rice.kew.mail.ActionListEmailService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.mail.service.ActionListEmailService" />
           <property name="priority" value="30"/>
           <property name="retryAttempts" value="3" />
         </bean>
@@ -799,7 +799,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="org.kuali.rice.kew.actionrequests.DocumentRequeuerImpl" />
+            <bean class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
           </property>
           <property name="localServiceName" value="DocumentRequeueProcessorService" />
           <property name="priority" value="10"/>

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actionitem;
 
 import java.util.Comparator;
 
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 
 
 /**

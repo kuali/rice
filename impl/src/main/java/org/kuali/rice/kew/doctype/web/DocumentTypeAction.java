@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;

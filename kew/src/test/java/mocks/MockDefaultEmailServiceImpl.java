@@ -16,11 +16,11 @@
 package mocks;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.mail.DefaultEmailService;
 import org.kuali.rice.kew.mail.EmailBody;
 import org.kuali.rice.kew.mail.EmailFrom;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.mail.EmailTo;
+import org.kuali.rice.kew.mail.service.impl.DefaultEmailService;
 
 
 /**

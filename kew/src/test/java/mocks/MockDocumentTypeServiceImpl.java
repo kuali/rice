@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;

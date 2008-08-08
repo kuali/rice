@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;

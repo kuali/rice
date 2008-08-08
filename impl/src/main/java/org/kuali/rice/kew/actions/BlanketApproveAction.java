@@ -23,14 +23,14 @@ import java.util.Set;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeService;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;

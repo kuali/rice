@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
-import org.kuali.rice.kew.applicationconstants.ApplicationConstantsService;
+import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
 import org.kuali.rice.kew.web.WorkflowAction;
 
 

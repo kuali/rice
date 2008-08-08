@@ -19,12 +19,12 @@ package org.kuali.rice.kew.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.actionrequests.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
-import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
-import org.kuali.rice.kew.mail.ActionListImmediateEmailReminderService;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.RuleCacheProcessor;
 import org.kuali.rice.ksb.messaging.KEWXMLService;

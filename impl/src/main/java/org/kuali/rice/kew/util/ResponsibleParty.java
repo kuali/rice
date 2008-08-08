@@ -18,7 +18,7 @@ package org.kuali.rice.kew.util;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
 

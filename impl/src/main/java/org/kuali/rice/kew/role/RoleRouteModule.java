@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.actionrequests.ActionRequestFactory;
-import org.kuali.rice.kew.actionrequests.ActionRequestService;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

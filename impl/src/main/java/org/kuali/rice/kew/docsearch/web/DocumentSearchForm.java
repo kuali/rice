@@ -33,7 +33,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocSearchCriteriaManager;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;

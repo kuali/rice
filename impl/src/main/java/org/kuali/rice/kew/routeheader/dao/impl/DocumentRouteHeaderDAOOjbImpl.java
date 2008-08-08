@@ -37,7 +37,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.ActionListService;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.LockingException;

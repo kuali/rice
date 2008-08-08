@@ -53,7 +53,7 @@ import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
-import org.kuali.rice.kew.docsearch.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;

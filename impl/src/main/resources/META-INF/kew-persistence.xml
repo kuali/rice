@@ -16,7 +16,7 @@
     <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
     <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
     <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
-    <class>org.kuali.rice.kew.actionrequests.ActionRequestValue</class>
+    <class>org.kuali.rice.kew.actionrequest.ActionRequestValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeLongValue</class>

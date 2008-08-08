@@ -37,7 +37,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;

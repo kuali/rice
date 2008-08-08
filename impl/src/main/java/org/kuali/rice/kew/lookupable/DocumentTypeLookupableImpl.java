@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;

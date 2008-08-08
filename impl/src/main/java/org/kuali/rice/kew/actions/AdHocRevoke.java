@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;

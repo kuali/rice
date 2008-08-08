@@ -23,7 +23,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
-import org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl;
+import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -66,7 +66,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     /**
      * This overridden method is used in case the action item has an null route header attached
      * 
-     * @see org.kuali.rice.kew.mail.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {

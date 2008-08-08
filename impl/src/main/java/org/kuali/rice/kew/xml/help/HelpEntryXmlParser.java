@@ -35,7 +35,7 @@ import org.jdom.input.DOMBuilder;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kew.help.HelpService;
+import org.kuali.rice.kew.help.service.HelpService;
 import org.xml.sax.SAXException;
 
 

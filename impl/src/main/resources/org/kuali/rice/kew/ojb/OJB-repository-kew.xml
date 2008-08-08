@@ -39,7 +39,7 @@
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionRequests">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
@@ -208,13 +208,13 @@
     <field-descriptor name="delegatorWorkflowId" column="ACTN_TKN_DLGTR_PRSN_EN_ID"  jdbc-type="VARCHAR"/>
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_TKN_DLGTR_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="currentIndicator" column="ACTN_TKN_CUR_IND" jdbc-type="BIT" />
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="false"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="false"
       auto-delete="false" name="actionRequests">
       <inverse-foreignkey field-ref="actionTakenId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.actionrequests.ActionRequestValue" table="EN_ACTN_RQST_T">
+  <class-descriptor class="org.kuali.rice.kew.actionrequest.ActionRequestValue" table="EN_ACTN_RQST_T">
     <field-descriptor column="ACTN_RQST_ID" name="actionRequestId" jdbc-type="BIGINT" primarykey="true"
       autoincrement="true" sequence-name="SEQ_ACTION_REQUEST"/>
     <field-descriptor column="ACTN_RQST_PARNT_ID" name="parentActionRequestId" jdbc-type="BIGINT" />
@@ -245,7 +245,7 @@
     <field-descriptor column="ACTN_RQST_APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
    	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="CHAR" />
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-    	class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" name="parentActionRequest">
+    	class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" name="parentActionRequest">
     	<foreignkey field-ref="parentActionRequestId" />
     </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
@@ -264,7 +264,7 @@
       auto-delete="false" name="actionItems" proxy="true">
       <inverse-foreignkey field-ref="actionRequestId" />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequests.ActionRequestValue" auto-retrieve="true" auto-update="true"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="true"
       auto-delete="false" name="childrenRequests">
       <inverse-foreignkey field-ref="parentActionRequestId" />
     </collection-descriptor>

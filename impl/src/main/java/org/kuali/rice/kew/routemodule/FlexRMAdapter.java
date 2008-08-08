@@ -18,7 +18,7 @@ package org.kuali.rice.kew.routemodule;
 
 import java.util.List;
 
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routetemplate.FlexRM;

@@ -32,7 +32,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
 /**
  * Exports Style definitions to XML.
  *
- * @see org.kuali.rice.kew.edl.StyleService
+ * @see org.kuali.rice.kew.edl.service.StyleService
  * @see org.kuali.rice.kew.xml.StyleXmlParser
  * @see EDocLiteStyle
  *

@@ -30,7 +30,7 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
-import org.kuali.rice.kew.doctype.DocumentSecurityService;
+import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

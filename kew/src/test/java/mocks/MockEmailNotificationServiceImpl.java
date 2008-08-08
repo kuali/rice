@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.mail.CustomizableActionListEmailServiceImpl;
+import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 
@@ -51,7 +51,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      * This overridden method will perform the standard operations from org.kuali.rice.kew.mail.ActionListEmailServiceImpl but will also keep track of action
      * items processed
      * 
-     * @see org.kuali.rice.kew.mail.ActionListEmailServiceImpl#sendImmediateReminder(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
+     * @see org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl#sendImmediateReminder(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {

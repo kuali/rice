@@ -18,7 +18,7 @@ package org.kuali.rice.kew.user;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 
 
 /**

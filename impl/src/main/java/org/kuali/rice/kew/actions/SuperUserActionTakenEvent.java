@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.WorkflowServiceErrorException;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.actionrequests.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;

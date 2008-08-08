@@ -48,6 +48,7 @@ import org.kuali.rice.kew.actionrequests.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -670,10 +671,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         setStatusModDate(new Timestamp(System.currentTimeMillis()));
 
         /* set the variables from the routeHeaderVO */
-        List variables = routeHeaderVO.getVariables();
-        Iterator it = variables.iterator();
-        while (it.hasNext()) {
-            KeyValuePair kvp = (KeyValuePair) it.next();
+        List<KeyValueDTO> variables = routeHeaderVO.getVariables();
+        for (KeyValueDTO kvp : variables) {
             setVariable(kvp.getKey(), kvp.getValue());
         }
     }

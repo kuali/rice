@@ -34,8 +34,9 @@ public class ExportFormat {
     private static final String XML_EXT = ".xml";
     private static final String XML_MIME = "application/xml";
     
-    public static final List<ExportFormat> STANDARD_FORMATS = Arrays.asList(new ExportFormat[] { ExportFormat.XML });
     public static final ExportFormat XML = new ExportFormat(XML_FORMAT, XML_EXT, XML_MIME);
+
+    public static final List<ExportFormat> STANDARD_FORMATS = Arrays.asList(new ExportFormat[] { XML });
     
     private final String formatName;
     private final String extension;

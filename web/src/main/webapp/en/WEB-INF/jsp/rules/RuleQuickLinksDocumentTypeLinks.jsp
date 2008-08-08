@@ -56,7 +56,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
 													<c:param name="ruleTemplateName" value="${ruleTemplateName}"/>
-													<%-- delegationWizard is a constants in EdenConstants --%>
+													<%-- delegationWizard is a constants in KEWConstants --%>
 													<c:param name="delegationWizard" value="true"/>
 													<c:param name="docTypeFullName" value="${documentType.name}"/>
 												</c:url>')">Add Delegation</a>
@@ -65,7 +65,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
 													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.encodedName}"/>
-													<%-- delegationWizard is a constants in EdenConstants --%>
+													<%-- delegationWizard is a constants in KEWConstants --%>
 													<c:param name="docTypeFullName" value="${documentType.name}"/>
 													<c:param name="delegateRuleSearch" value="true"/>
 												</c:url>')">Search Delegations</a>
@@ -92,7 +92,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
 													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
-													<%-- delegationWizard is a constants in EdenConstants --%>
+													<%-- delegationWizard is a constants in KEWConstants --%>
 													<c:param name="delegationWizard" value="true"/>
 													<c:param name="docTypeFullName" value="${documentType.name}"/>
 												</c:url>" target=_blank>Add Delegation</a>
@@ -101,7 +101,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
 													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
-													<%-- delegationWizard is a constants in EdenConstants --%>
+													<%-- delegationWizard is a constants in KEWConstants --%>
 													<c:param name="docTypeFullName" value="${documentType.name}"/>
 													<c:param name="delegateRuleSearch" value="true"/>
 												</c:url>" target=_blank>Search Delegations</a>

@@ -158,7 +158,7 @@ Environment: <xsl:value-of select="@env"/>
 Document type: <xsl:value-of select="documentType"/>
 Document id: <xsl:value-of select="routeHeaderId"/>
 
-Category: <xsl:value-of select="edenCategory"/>
+Category: <xsl:value-of select="category"/>
 Comments: 
 <xsl:value-of select="comments"/>
 

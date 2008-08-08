@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
-        <!-- ApplicationConstants elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <ApplicationConstant>
             <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
             <ConstantValue>2620</ConstantValue>
@@ -232,8 +230,6 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 
-        <!-- users elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <!-- Core admin user -->
         <user>
             <workflowId>admin</workflowId>
@@ -246,10 +242,6 @@
             <lastName>admin</lastName>
         </user>
     
-
-
-        <!-- users elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
-
         <user>
             <workflowId>idm1</workflowId>
             <emplId>idm1</emplId>
@@ -341,10 +333,6 @@
             <lastName>Two</lastName>
         </user>
 	
-
-
-        <!-- users elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
-
         <!-- The NotSys user is needed for the message sending forms that come with the system -->
         <user>
             <workflowId>NotSys</workflowId>
@@ -372,8 +360,6 @@
 
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 
-        <!-- workgroups elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <!-- Core admin workgroup -->
         <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
@@ -386,8 +372,6 @@
         </workgroup>
     
 
-
-        <!-- workgroups elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
 
         <workgroup allowOverwrite="true">
             <workgroupName>Kuali Identity Managers</workgroupName>
@@ -421,10 +405,6 @@
             </members>
         </workgroup>
 	
-
-
-        <!-- workgroups elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
-
        <workgroup allowOverwrite="true">
             <workgroupName>NotificationAdmin</workgroupName>
             <description>Notification system admin group for automation.</description>
@@ -453,8 +433,6 @@
 
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 
-        <!-- ruleAttributes elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
             <className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
@@ -477,10 +455,6 @@
 			<type>RuleAttribute</type>
 		</ruleAttribute>
     
-
-
-        <!-- ruleAttributes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
-
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
         <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
@@ -627,8 +601,6 @@
 
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 
-        <!-- ruleTemplates elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <ruleTemplate allowOverwrite="true">
             <name>WorkflowDocumentDelegationTemplate</name>
             <description>WorkflowDocumentDelegationTemplate</description>
@@ -667,10 +639,6 @@
                 </attributes>
         </ruleTemplate>
     
-
-
-        <!-- ruleTemplates elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
-
         <ruleTemplate allowOverwrite="true">
             <name>ReviewersRouting</name>
             <description>Routes to channel reviewers</description>
@@ -689,8 +657,6 @@
     </ruleTemplates>
 
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
-
-        <!-- documentTypes elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <documentType>
             <name>EDENSERVICE-DOCS</name>
@@ -855,10 +821,6 @@
             </routeNodes>
         </documentType>
     
-
-
-        <!-- documentTypes elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
-
    <documentType>
       <name>KIMPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
@@ -1112,11 +1074,6 @@
       </routeNodes>
     </documentType>
 
-  
-
-
-        <!-- documentTypes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
-
         <!-- Notification Document Type -->
         <documentType>
           <name>KualiNotification</name>
@@ -1225,10 +1182,6 @@
             </routeNodes>
         </documentType>
     
-
-
-        <!-- documentTypes elements from ..\/kom/src/main/config/xml/KOMBootstrap.xml -->
-
    <documentType>
       <name>KualiOrganizationMaintenanceDocument</name>
       <description>Create or Update a Organization</description>
@@ -1310,8 +1263,6 @@
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 
-        <!-- rules elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
-
         <rule>
             <documentType>EDENSERVICE-DOCS</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
@@ -1344,10 +1295,6 @@
             </responsibilities>
         </rule>
     
-
-
-        <!-- rules elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
-
 	<rule>
        <name>KIMNamespaceKualiIdentityManagersGroupApproval</name>
        <documentType>KIMNamespaceMaintenanceDocument</documentType>
@@ -1446,12 +1393,6 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-
-
-
-
-
-        <!-- rules elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <rule>
           <documentType>SendNotificationRequest</documentType>

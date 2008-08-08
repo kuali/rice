@@ -123,12 +123,12 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         });
 
         // load the KEW bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../kew/src/main/config/xml/KEWBootstrap.xml"));
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../kew/src/main/config/bootstrap/widgets.xml"));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/xml/KEWBootstrap.xml"));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/bootstrap/widgets.xml"));
 
         // load the KEN bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/src/main/config/xml/KENBootstrap.xml"));
-        lifecycles.add(new SQLDataLoaderLifecycle("file:" + getBaseDir() + "/src/main/config/sql/KENBootstrap.sql", "/" ));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/xml/KENBootstrap.xml"));
+        lifecycles.add(new SQLDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/sql/KENBootstrap.sql", "/" ));
 
         // load the KEN test data
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet

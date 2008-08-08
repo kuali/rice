@@ -42,7 +42,7 @@
                 import org.kuali.rice.kew.user.*
                 import org.kuali.rice.kew.workgroup.*
                 import org.kuali.rice.kew.engine.node.*
-                import org.kuali.rice.kew.EdenConstants
+                import org.kuali.rice.kew.util.KEWConstants
                 import org.kuali.rice.kew.KEWServiceLocator
 
                 print 'NodeInstanceRecipientRule is executing...'
@@ -56,7 +56,7 @@
                     throw new RuntimeException("No type state specified")
                 
                 RuleResponsibility responsibility = new RuleResponsibility()
-                responsibility.setResponsibilityId(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID)
+                responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID)
                 responsibility.setActionRequestedCd("A")
                 String recipient = recipState.getValue()
                 
@@ -67,7 +67,7 @@
                     }
                     println "Generating user responsibility: " + recipient
                     responsibility.setRuleResponsibilityName(workflowUser.getWorkflowId())
-                    responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)
+                    responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)
                 } else {
                     Workgroup workgroupObject = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient));
                     if (workgroupObject == null) {
@@ -75,7 +75,7 @@
                     }
                     println "Generating workgroup responsibility: " + recipient
                     responsibility.setRuleResponsibilityName(workgroupObject.getWorkflowGroupId().getGroupId().toString());
-                    responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID)
+                    responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID)
                 }
                 
                 return new RuleExpressionResult(rule, true, responsibility)

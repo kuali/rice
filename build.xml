@@ -212,7 +212,7 @@
 			<fileset dir=".">
 				<exclude name="**/target/**"/>
 				<exclude name="atomikos-tmp/**"/>
-				<exclude name="jetty-tmp/**"/>
+				<exclude name="**/jetty-tmp/**"/>
 			</fileset>
 		</copy>
 		<zip destfile="target/rice-${maven.project.version}-src.zip">

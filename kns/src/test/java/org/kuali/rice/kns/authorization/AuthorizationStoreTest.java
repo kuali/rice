@@ -188,7 +188,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
         authorizationStore.addAuthorization(LEGIT_WORKGROUP_NAME_1, ACTION1, TARGETTYPE1);
         authorizationStore.addAuthorization(LEGIT_WORKGROUP_NAME_2, ACTION1, TARGETTYPE1);
 
-        assertFalse(authorizationStore.isAuthorized(userThatBelongsToLegitWorkgroupOne, ACTION1, TARGETTYPE1));
+        assertTrue(authorizationStore.isAuthorized(userThatBelongsToLegitWorkgroupOne, ACTION1, TARGETTYPE1));
     }
 
     @Test public final void testIsAuthorized_singleGroupAuth_multiGroupUser() {

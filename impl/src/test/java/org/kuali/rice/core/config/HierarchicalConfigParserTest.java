@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.util.Properties;
 
@@ -31,7 +31,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 	@Test public void testHierarchicalConfigParser() throws Exception {
 		// first load the hier-config-3.xml file
 //		HierarchicalConfigParser parser = new HierarchicalConfigParser(null);
-		SimpleConfig simpleConfig = new SimpleConfig("classpath:org/kuali/rice/config/hier-config-3.xml");
+		SimpleConfig simpleConfig = new SimpleConfig("classpath:org/kuali/rice/core/config/hier-config-3.xml");
 		simpleConfig.parseConfig();
 //		String fileLoc1 = ;
 //		Map propertyMap = parser.parse(fileLoc1);
@@ -44,7 +44,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 		
 		// next load the hier-config-2.xml file
 		
-		String fileLoc2 = "classpath:org/kuali/rice/config/hier-config-2.xml";
+		String fileLoc2 = "classpath:org/kuali/rice/core/config/hier-config-2.xml";
 		simpleConfig = new SimpleConfig(fileLoc2);
 		simpleConfig.parseConfig();
 		properties = simpleConfig.getProperties();
@@ -57,7 +57,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 		assertEquals("password3", properties.get("password2"));
 		
 		// next load the hier-config-1.xml file
-		String fileLoc3 = "classpath:org/kuali/rice/config/hier-config-1.xml";
+		String fileLoc3 = "classpath:org/kuali/rice/core/config/hier-config-1.xml";
 		simpleConfig = new SimpleConfig(fileLoc3);
 		simpleConfig.parseConfig();
 		properties = simpleConfig.getProperties();
@@ -79,7 +79,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 	 * @throws Exception
 	 */
 	@Test public void testParsingOfAltConfigLocation() throws Exception {
-		String fileLoc1 = "classpath:org/kuali/rice/config/config-alt-location-param.xml";
+		String fileLoc1 = "classpath:org/kuali/rice/core/config/config-alt-location-param.xml";
 		SimpleConfig simpleConfig = new SimpleConfig(fileLoc1);
 		simpleConfig.parseConfig();
 		assertNotNull(simpleConfig.getProperties());

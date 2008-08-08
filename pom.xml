@@ -175,7 +175,6 @@
 	    <module>api</module>
 		<module>impl</module>
         <module>web</module>
-		<module>core</module>
 		<module>shared</module>
 		<module>ksb</module>
         <module>kcb</module>

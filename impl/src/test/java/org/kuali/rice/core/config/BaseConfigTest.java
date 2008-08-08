@@ -15,7 +15,7 @@
  */
 // Created on Apr 27, 2006
 
-package org.kuali.rice.config;
+package org.kuali.rice.core.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class BaseConfigTest extends TestCase {
         base.setProperty("foo", "base:foo");
         base.setProperty("boo", "base:boo");
         List<String> configs = new ArrayList<String>(1);
-        configs.add("classpath:org/kuali/rice/config/config-1.xml");
+        configs.add("classpath:org/kuali/rice/core/config/config-1.xml");
         SimpleConfig sc = new SimpleConfig(configs, base);
         sc.parseConfig();
         assertEquals("base:boo", sc.getProperty("boo"));

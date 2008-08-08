@@ -4,7 +4,7 @@
 	<param name="user">${axis:user}</param>
 	<param name="password">${axis:user}</param>
 	
-	<param name="config.location">classpath:org/kuali/rice/config/hier-config-3.xml</param>
+	<param name="config.location">classpath:org/kuali/rice/core/config/hier-config-3.xml</param>
 	
 	<param name="user2">${axis:user}</param>
 	<param name="password2">${axis:password}</param>

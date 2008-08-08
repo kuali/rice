@@ -119,6 +119,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     	        startLifecycles(this.suiteLifeCycles);
         	    SUITE_LIFE_CYCLES_RAN = true;
         	} catch (Throwable e) {
+        		e.printStackTrace();
                 SUITE_LIFE_CYCLES_RAN = false;
                 SUITE_LIFE_CYCLES_FAILED = true;
                 failedSuiteTestName = getFullTestName();

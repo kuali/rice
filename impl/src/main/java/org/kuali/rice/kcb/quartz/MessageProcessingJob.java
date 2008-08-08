@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
@@ -34,6 +33,7 @@ import org.kuali.rice.kcb.deliverer.BulkMessageDeliverer;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.MessageDeliveryProcessingException;
 import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;

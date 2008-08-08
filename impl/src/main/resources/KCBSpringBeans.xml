@@ -49,7 +49,7 @@
 
 
     <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
-    <bean id="initializer" class="org.kuali.rice.kcb.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
+    <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
         <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
         <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
     </bean>

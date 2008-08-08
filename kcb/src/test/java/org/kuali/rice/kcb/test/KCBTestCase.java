@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kcb.test;
 
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
-import org.kuali.rice.kcb.KCBServiceLocator;
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
+import org.kuali.rice.kcb.service.KCBServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**

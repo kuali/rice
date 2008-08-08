@@ -18,10 +18,10 @@ package org.kuali.rice.kcb.quartz;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob.Mode;
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.quartz.JobExecutionContext;

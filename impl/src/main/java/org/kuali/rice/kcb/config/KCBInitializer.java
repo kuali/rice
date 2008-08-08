@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb;
+package org.kuali.rice.kcb.config;
 
 import junit.framework.Assert;
 
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;

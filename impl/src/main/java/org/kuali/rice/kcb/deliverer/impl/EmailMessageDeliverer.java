@@ -22,13 +22,13 @@ import java.util.Set;
 
 import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
 import org.kuali.rice.kcb.service.EmailService;
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 
 /**

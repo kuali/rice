@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb;
+package org.kuali.rice.kcb.service;
 
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.kcb.service.EmailService;
-import org.kuali.rice.kcb.service.KENIntegrationService;
-import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
-import org.kuali.rice.kcb.service.MessageDeliveryService;
-import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
-import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.quartz.JobDetail;
 import org.springframework.transaction.PlatformTransactionManager;
 

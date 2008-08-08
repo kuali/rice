@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.services.impl;
+package org.kuali.rice.kcb.service.impl;
 
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.RecipientPreference;
+import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 import org.kuali.rice.kcb.test.TestData;

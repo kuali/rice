@@ -37,7 +37,7 @@ public class RiceTestCaseTest extends RiceTestCase {
 	
 	@Override
 	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[]{"classpath:META-INF/testharness-test-config.xml"});
+		return Arrays.asList(new String[]{"classpath:META-INF/impl-test-config.xml"});
 	}
 
 	@Override

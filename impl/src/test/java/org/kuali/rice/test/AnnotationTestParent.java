@@ -40,7 +40,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 @PerSuiteUnitTestData({
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('1')"),
-        @UnitTestData(filename = "classpath:AnnotationTestParentData.sql")
+        @UnitTestData(filename = "classpath:org/kuali/rice/core/test/AnnotationTestParentData.sql")
 })
 public abstract class AnnotationTestParent extends RiceTestCase {
 
@@ -58,12 +58,12 @@ public abstract class AnnotationTestParent extends RiceTestCase {
 
     @Override
     protected String getModuleName() {
-        return "testharness";
+        return "impl";
     }
 
     @Override
     protected String getDerbySQLFileLocation() {
-        return "classpath:db/derby/testharness.sql";
+        return "classpath:org/kuali/rice/database/derby/testharness.sql";
     }
 
     protected void verifyCount(String valueToVerify, int count) throws SQLException {

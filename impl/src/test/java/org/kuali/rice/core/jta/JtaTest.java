@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.database;
+package org.kuali.rice.core.jta;
 
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -35,29 +35,36 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Tests if transactions across multiple databases rollback properly when failures occur.
+ * Tests various aspects of our JTA environment and configuration.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore
-public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
+@Ignore("Test was written to verify that Atomikos can handle a situation that will fail under JOTM/XAPool.  System is not back to using JOTM/XAPool so test will always fail.")
+public class JtaTest extends BaseRiceTestCase {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MultipleDatabaseTransactionTest.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JtaTest.class);
 
-    private static final String TEST_TABLE = "TESTTABLE";
+    private static final String TEST_TABLE = "JTATESTTABLE";
 
+    /**
+     * This test verifies that our connection pool can recover from a network or database outage. As a bit of history for
+     * this. The test as written below would have failed on JOTM/XAPool because of bugs in that software. However, it should
+     * pass when using Atomikos.
+     */
     @Test
-    public void testTransactionRollbackAcrossTwoDatabases() throws Exception {
-        NetworkServerControl server = new NetworkServerControl(InetAddress.getByName("localhost"), 1925);
+    public void testConnectionRecovery() throws Exception {
+
+        NetworkServerControl server = new NetworkServerControl(InetAddress.getByName("localhost"), 1573);
         LOG.info("Starting server");
         server.start(null);
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("org/kuali/rice/database/MultipleDatabaseTransactionTestSpring.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("org/kuali/rice/core/jta/JtaTestSpring.xml");
         context.start();
 
         final DataSource dataSource = (DataSource) context.getBean("dataSource");
 
         try {
+
             TransactionTemplate template = (TransactionTemplate) context.getBean("transactionTemplate");
             assertNotNull(template);
 
@@ -72,22 +79,25 @@ public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
                                 LOG.info(TEST_TABLE + " exists, dropping it.");
                                 Statement statement = connection.createStatement();
                                 statement.execute("DROP TABLE " + TEST_TABLE);
-                                statement.close();
                             }
                             resultSet.close();
                             Statement statement = connection.createStatement();
                             LOG.info("Creating " + TEST_TABLE);
                             statement.execute("CREATE TABLE " + TEST_TABLE + " (column1 SMALLINT)");
                             statement.close();
-                            Statement statement2 = connection.createStatement();
-                            LOG.info("Inserting into " + TEST_TABLE);
-                            statement2.execute("INSERT INTO " + TEST_TABLE + " (column1) VALUES (1)");
-                            statement2.close();
                             return null;
                         }
                     });
                 }
             });
+
+            LOG.info("Stopping derby...");
+            server.shutdown();
+            LOG.info("...derby stopped.");
+
+            LOG.info("Restarting derby...");
+            server.start(null);
+            LOG.info("...derby restarted.");
 
             template.execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
@@ -95,9 +105,7 @@ public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
                     return jdbcTemplate.execute(new ConnectionCallback() {
                         public Object doInConnection(Connection connection) throws SQLException {
                             Statement statement = connection.createStatement();
-                            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM " + TEST_TABLE);
-                            resultSet.next();                            
-                            assertTrue(resultSet.getInt(1) == 1);
+                            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TEST_TABLE);
                             resultSet.close();
                             statement.close();
                             return null;
@@ -108,8 +116,12 @@ public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
 
         } finally {
             context.stop();
-            server.shutdown();
-        }        
+        }
+
+        LOG.info("Stopping derby...");
+        server.shutdown();
+        LOG.info("...derby stopped.");
+
     }
 
 }

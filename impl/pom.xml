@@ -14,7 +14,7 @@
 			<testResource>
 				<directory>${basedir}/src/test/resources</directory>
 				<includes>
-					<include>META-INF/testharness-test-config.xml</include>
+					<include>META-INF/impl-test-config.xml</include>
 				</includes>
 				<filtering>true</filtering>
 			</testResource>
@@ -30,7 +30,7 @@
 			<testResource>
 				<directory>${basedir}/src/test/resources</directory>
 				<excludes>
-					<exclude>testharness-test-config.xml</exclude>
+					<exclude>impl-test-config.xml</exclude>
 				</excludes>
 				<filtering>false</filtering>
 			</testResource>
@@ -123,6 +123,20 @@
       		<artifactId>groovy-all-minimal</artifactId>
       		<version>1.5.4</version>
     	</dependency>
+    	
+    	<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbynet</artifactId>
+			<version>10.2.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.2.2.0</version>
+			<scope>test</scope>
+		</dependency>
     	
 	</dependencies>
 </project>

@@ -163,7 +163,7 @@ public class KEWConstants {
 
     public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
-    public static final String APP_CODE = "kew";
+    public static final String APP_CODE = "en";
     public static final String PROD_DEPLOYMENT_CODE = "prd";
 
     public static final String YES_LABEL = "Yes";

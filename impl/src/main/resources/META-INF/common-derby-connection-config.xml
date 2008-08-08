@@ -7,7 +7,7 @@ Relies on props ${basedir} and ${module.name} to be set.  These are either set b
 	<param name="datasource.ojb.sequenceManager.className">org.apache.ojb.broker.util.sequence.SequenceManagerInMemoryImpl</param>
 	<param name="datasource.ojb.platform">Derby</param>
 	<param name="datasource.platform">org.kuali.rice.core.database.platform.DerbyPlatform</param>
-	<param name="db.location">${basedir}/src/test/resources/db/derby/${module.name}-db</param>
+	<param name="db.location">${basedir}/src/test/resources/org/kuali/rice/core/database/derby/${module.name}-db</param>
 	<param name="datasource.url">jdbc:derby:${db.location};user=${module.name};create=true</param>
 	<param name="datasource.driver.name">org.apache.derby.jdbc.EmbeddedDriver</param>	 	
 	<param name="datasource.pool.validationQuery">values(1)</param>

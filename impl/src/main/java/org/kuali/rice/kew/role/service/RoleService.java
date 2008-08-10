@@ -14,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.role;
+package org.kuali.rice.kew.role.service;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.role.QualifiedRole;
+import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 

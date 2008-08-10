@@ -14,24 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.quicklinks;
-
-import java.util.List;
-
-import org.kuali.rice.kew.user.WorkflowUser;
-
+package org.kuali.rice.kew.responsibility.service;
 
 /**
- * A service providing data access to Quick Links information.  The Quick
- * Links provide quick information and access to various functions
- * in the Quick Links GUI of the web application.
- *
+ * A service for obtaining responsibility IDs.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface QuickLinksService {
-    public List getWatchedDocuments(WorkflowUser workflowUser);
-    public List getRecentSearches(WorkflowUser workflowUser);
-    public List getNamedSearches(WorkflowUser workflowUser);
-    public List getActionListStats(WorkflowUser workflowUser);
-    public List getInitiatedDocumentTypesList(WorkflowUser workflowUser);
+public interface ResponsibilityIdService {
+
+	public Long getNewResponsibilityId(); 
+	
 }

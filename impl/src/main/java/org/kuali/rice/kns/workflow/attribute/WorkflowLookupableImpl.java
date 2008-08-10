@@ -28,7 +28,7 @@ import net.sf.cglib.proxy.Enhancer;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.lookupable.LookupForm;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -145,7 +145,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getSearchResults(java.util.Map)
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getSearchResults(java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getSearchResults(java.util.Map, java.util.Map)
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) throws Exception {
         List searchResults = lookupable.getSearchResults(fieldValues);
@@ -221,7 +221,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getReturnLocation()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getReturnLocation()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getReturnLocation()
      */
     public String getReturnLocation() {
         return RETURN_LOCATION;
@@ -229,7 +229,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getTitle()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getTitle()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getTitle()
      */
     public String getTitle() {
         return lookupable.getTitle();
@@ -237,7 +237,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getHtmlMenuBar()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getHtmlMenuBar()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getHtmlMenuBar()
      */
     public String getHtmlMenuBar() {
         //  dont show the kuali 'create-new' menu bar in workflow lookups
@@ -246,7 +246,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getLookupInstructions()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getLookupInstructions()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getLookupInstructions()
      */
     public String getLookupInstructions() {
         return lookupable.getLookupInstructions();
@@ -257,7 +257,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
      * and setting them on our rows, based on our lookupParameters attribute.
      * 
      * @see org.kuali.rice.kns.lookup.Lookupable#checkForAdditionalFields(java.util.Map)
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#checkForAdditionalFields(java.util.Map,
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#checkForAdditionalFields(java.util.Map,
      *      javax.servlet.http.HttpServletRequest)
      */
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
@@ -294,7 +294,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getRows()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getRows()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getRows()
      */
     public List getRows() {
         return workflowRows;
@@ -302,7 +302,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getColums()
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getColumns()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getColumns()
      */
     public List getColumns() {
         return workflowColumns;
@@ -311,7 +311,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method does nothing.
      * 
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#changeIdToName(java.util.Map)
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#changeIdToName(java.util.Map)
      */
     public void changeIdToName(Map fieldValues) throws Exception {
     }
@@ -319,7 +319,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method always returns an empty list.
      * 
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getDefaultReturnType()
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getDefaultReturnType()
      */
     public List getDefaultReturnType() {
         return new ArrayList();
@@ -328,7 +328,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
     /**
      * This method always returns the empty string.
      * 
-     * @see org.kuali.rice.kew.plugin.attributes.WorkflowLookupable#getNoReturnParams(java.util.Map)
+     * @see org.kuali.rice.kew.lookupable.WorkflowLookupable#getNoReturnParams(java.util.Map)
      */
     public String getNoReturnParams(Map fieldConversions) {
         return "";

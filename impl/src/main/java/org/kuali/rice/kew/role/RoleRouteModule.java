@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.BaseRouteModule;
 import org.kuali.rice.kew.routemodule.RouteModuleException;

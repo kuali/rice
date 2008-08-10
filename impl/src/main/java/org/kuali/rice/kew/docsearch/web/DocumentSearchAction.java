@@ -60,7 +60,7 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.Column;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

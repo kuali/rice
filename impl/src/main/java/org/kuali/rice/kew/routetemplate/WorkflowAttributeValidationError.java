@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 
 
 /**

@@ -20,9 +20,10 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package org.kuali.rice.kew.responsibility;
+package org.kuali.rice.kew.responsibility.service.impl;
 
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
+import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

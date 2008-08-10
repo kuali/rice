@@ -37,7 +37,7 @@ import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.lookupable.Row;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.web.WebWorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

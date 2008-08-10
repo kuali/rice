@@ -14,26 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.attributes;
+package org.kuali.rice.kew.preferences.service;
 
-import java.util.List;
-
-import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-
+import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.user.WorkflowUser;
 
 /**
- * An interface which can be implemented by a {@link WorkflowAttribute} to allow for
- * validation of client routing data.
+ * A service which provides data access for {@link Preferences}.
+ * 
+ * @see Preferences
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface WorkflowAttributeXmlValidator {
+public interface PreferencesService {
 
-    /**
-     * called after client has set properties on the attribute for 'xmlizing'.  Returns 
-     * @return List of WorkflowAttributeValidationError objects
-     */
-    public List<WorkflowAttributeValidationError> validateClientRoutingData();
-    
+    public void savePreferences(WorkflowUser user, Preferences actionListPreferences);
+    public Preferences getPreferences(WorkflowUser user);
+
 }

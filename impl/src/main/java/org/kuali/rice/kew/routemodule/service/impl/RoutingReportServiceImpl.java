@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.routemodule;
+package org.kuali.rice.kew.routemodule.service.impl;
 
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routemodule.service.RoutingReportService;
 
 
 public class RoutingReportServiceImpl implements RoutingReportService {

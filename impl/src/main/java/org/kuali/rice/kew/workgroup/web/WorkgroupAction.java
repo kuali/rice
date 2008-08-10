@@ -48,7 +48,7 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;

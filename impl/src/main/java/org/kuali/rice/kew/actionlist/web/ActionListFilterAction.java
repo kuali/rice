@@ -36,7 +36,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.PreferencesService;
+import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

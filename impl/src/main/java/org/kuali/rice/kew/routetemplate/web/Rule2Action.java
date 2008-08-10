@@ -42,7 +42,7 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.MyRules2;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;

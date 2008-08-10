@@ -32,7 +32,7 @@ import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 

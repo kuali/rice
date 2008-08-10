@@ -14,23 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.routemodule;
+package org.kuali.rice.kew.quicklinks.service;
 
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import java.util.List;
 
+import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**
- * A service for locating Route Modules.
- * 
+ * A service providing data access to Quick Links information.  The Quick
+ * Links provide quick information and access to various functions
+ * in the Quick Links GUI of the web application.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface RouteModuleService {
-    
-    public RouteModule findRouteModule(RouteNode node) throws ResourceUnavailableException;
-    
-    public RouteModule findRouteModule(ActionRequestValue actionRequest) throws ResourceUnavailableException;
-    
+public interface QuickLinksService {
+    public List getWatchedDocuments(WorkflowUser workflowUser);
+    public List getRecentSearches(WorkflowUser workflowUser);
+    public List getNamedSearches(WorkflowUser workflowUser);
+    public List getActionListStats(WorkflowUser workflowUser);
+    public List getInitiatedDocumentTypesList(WorkflowUser workflowUser);
 }

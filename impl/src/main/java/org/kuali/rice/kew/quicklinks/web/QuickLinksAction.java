@@ -27,7 +27,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.quicklinks.QuickLinksService;
+import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;

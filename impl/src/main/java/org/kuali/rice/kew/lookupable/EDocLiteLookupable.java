@@ -30,7 +30,6 @@ import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 

@@ -24,13 +24,13 @@ import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 
 
 /**

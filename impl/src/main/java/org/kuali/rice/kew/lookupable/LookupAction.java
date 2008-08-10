@@ -45,7 +45,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;

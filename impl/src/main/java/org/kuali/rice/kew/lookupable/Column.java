@@ -19,7 +19,6 @@ package org.kuali.rice.kew.lookupable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 

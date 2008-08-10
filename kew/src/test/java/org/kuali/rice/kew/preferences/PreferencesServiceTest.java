@@ -23,7 +23,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.PreferencesService;
+import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;

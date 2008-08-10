@@ -27,7 +27,6 @@ import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
 import org.kuali.rice.kew.util.KEWConstants;

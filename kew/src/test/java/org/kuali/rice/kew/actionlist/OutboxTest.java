@@ -28,7 +28,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.PreferencesServiceImpl;
+import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.routetemplate.TestRuleAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;

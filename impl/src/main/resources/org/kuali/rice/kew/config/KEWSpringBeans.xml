@@ -142,11 +142,11 @@
 
 
 	<!-- WorkflowDocument -->
-	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.WorkflowDocumentServiceImpl" lazy-init="true" />
+	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
 
 
 	<!--  RouteModuleService -->
-	<bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.RouteModuleServiceImpl"  lazy-init="true"/>
+	<bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl"  lazy-init="true"/>
 
 	<!-- 2.1 Workflow Engine -->
 	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine"  lazy-init="true"/>
@@ -175,7 +175,7 @@
 	</bean>
 
 	<!--  ResponsibilityIdService -->
-	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.ResponsibilityIdServiceImpl" lazy-init="true">
+	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.service.impl.ResponsibilityIdServiceImpl" lazy-init="true">
 		<property name="responsibilityIdDAO">
 			<ref bean="enResponsibilityIdDAO" />
 		</property>
@@ -256,7 +256,7 @@
 	</bean>
 
 	<!--  RouteHeaderService -->
-	<bean id="enDocumentRouteHeaderService" class="org.kuali.rice.kew.routeheader.RouteHeaderServiceImpl" lazy-init="true">
+	<bean id="enDocumentRouteHeaderService" class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl" lazy-init="true">
 		<property name="routeHeaderDAO">
 			<ref bean="enDocumentRouteHeaderDAO" />
 		</property>
@@ -275,7 +275,7 @@
   </bean>
 
 	<!--  Routing Report Service -->
-	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.RoutingReportServiceImpl"  lazy-init="true"/>
+	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
 	<!--  ActionListService -->
 	<bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl" lazy-init="true">
 		<property name="actionListDAO">
@@ -322,7 +322,7 @@
 	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
 
 	<!--  PreferencesService -->
-	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.PreferencesServiceImpl" lazy-init="true" />
+	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />
 	<!--  UserOptionsService -->
 	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
 		<property name="userOptionsDAO">
@@ -349,7 +349,7 @@
 
 
 	<!--  RoleService -->
-	<bean id="enRoleService" class="org.kuali.rice.kew.role.RoleServiceImpl"  lazy-init="true">
+	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true">
       <property name="roleDAO">
         <bean class="org.kuali.rice.kew.role.dao.impl.RoleDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource"/>
@@ -576,7 +576,7 @@
   </bean>
 
   <!--  QuickLinksService -->
-  <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.QuickLinksServiceImpl">
+  <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.service.impl.QuickLinksServiceImpl">
     <property name="quickLinksDAO">
       <ref bean="enQuickLinksDAO" />
     </property>
@@ -630,7 +630,7 @@
       <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
     </bean>
 
-    <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.RemoveReplaceDocumentServiceImpl">
+    <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.service.impl.RemoveReplaceDocumentServiceImpl">
       <property name="removeReplaceDocumentDAO">
         <bean class="org.kuali.rice.kew.removereplace.dao.impl.RemoveReplaceDocumentDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource"/>

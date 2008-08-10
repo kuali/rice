@@ -36,7 +36,7 @@ import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
+import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;

@@ -24,7 +24,7 @@ import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.PreferencesService;
+import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

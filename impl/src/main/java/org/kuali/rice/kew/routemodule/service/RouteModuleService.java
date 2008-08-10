@@ -14,20 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.preferences;
+package org.kuali.rice.kew.routemodule.service;
 
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.routemodule.RouteModule;
+
+
 
 /**
- * A service which provides data access for {@link Preferences}.
- * 
- * @see Preferences
+ * A service for locating Route Modules.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface PreferencesService {
-
-    public void savePreferences(WorkflowUser user, Preferences actionListPreferences);
-    public Preferences getPreferences(WorkflowUser user);
-
+public interface RouteModuleService {
+    
+    public RouteModule findRouteModule(RouteNode node) throws ResourceUnavailableException;
+    
+    public RouteModule findRouteModule(ActionRequestValue actionRequest) throws ResourceUnavailableException;
+    
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.routemodule;
+package org.kuali.rice.kew.routemodule.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.ObjectDefinition;
@@ -24,6 +24,10 @@ import org.kuali.rice.kew.clientapp.RouteModuleRemote;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routemodule.FlexRMAdapter;
+import org.kuali.rice.kew.routemodule.RouteModule;
+import org.kuali.rice.kew.routemodule.RouteModuleRemoteAdapter;
+import org.kuali.rice.kew.routemodule.service.RouteModuleService;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

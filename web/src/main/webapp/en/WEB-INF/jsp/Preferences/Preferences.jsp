@@ -4,7 +4,7 @@
 <%@ taglib uri="../../tld/c.tld" prefix="c" %>
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
-<%@ page import="org.kuali.rice.kew.preferences.PreferencesService" %>
+<%@ page import="org.kuali.rice.kew.preferences.service.PreferencesService" %>
 
 <html-el:html>
 <head>

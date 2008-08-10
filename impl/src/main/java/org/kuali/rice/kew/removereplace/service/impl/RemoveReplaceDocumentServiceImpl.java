@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.removereplace;
+package org.kuali.rice.kew.removereplace.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,11 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
+import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
+import org.kuali.rice.kew.removereplace.RuleTarget;
+import org.kuali.rice.kew.removereplace.WorkgroupTarget;
 import org.kuali.rice.kew.removereplace.dao.RemoveReplaceDocumentDAO;
+import org.kuali.rice.kew.removereplace.service.RemoveReplaceDocumentService;
 import org.kuali.rice.kew.routetemplate.RuleBaseValues;
 import org.kuali.rice.kew.routetemplate.RuleService;
 import org.kuali.rice.kew.user.WorkflowUser;

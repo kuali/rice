@@ -19,7 +19,6 @@ package org.kuali.rice.kew.lookupable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 
 
 /**

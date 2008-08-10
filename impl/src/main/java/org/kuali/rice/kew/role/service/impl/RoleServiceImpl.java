@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.role;
+package org.kuali.rice.kew.role.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -36,7 +36,11 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.role.QualifiedRole;
+import org.kuali.rice.kew.role.QualifiedRoleMember;
+import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.role.dao.RoleDAO;
+import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routetemplate.FlexRM;
 import org.kuali.rice.kew.routetemplate.RolePoker;

@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.PreferencesService;
+import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;

@@ -14,12 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.routeheader;
+package org.kuali.rice.kew.routeheader.service;
 
 import java.util.Collection;
 import java.util.Set;
 
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 
 
 /**

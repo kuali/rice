@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.lookupable.Row;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.RuleExtension;
 import org.kuali.rice.kew.routetemplate.RuleExtensionValue;

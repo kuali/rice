@@ -14,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.notes;
+package org.kuali.rice.kew.notes.service.impl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.service.AttachmentService;
 
 
 /**

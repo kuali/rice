@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routetemplate;
 
-import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.rule.RoleAttribute;
 
 /**
  * A defined role on a {@link RoleAttribute}.

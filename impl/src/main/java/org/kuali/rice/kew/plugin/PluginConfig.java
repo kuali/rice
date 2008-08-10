@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.manifest;
+package org.kuali.rice.kew.plugin;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -28,28 +28,28 @@ import org.kuali.rice.core.config.BaseConfig;
 import org.kuali.rice.core.config.Config;
 
 /**
- * Class representing a plugin's manifest, containing configuration
- * settings parsed from the manifest.
+ * Class representing a plugin's config, containing configuration
+ * settings parsed from the config.
  *
  * @see Config
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PluginManifest extends BaseConfig {
+public class PluginConfig extends BaseConfig {
 
 	private String resourceLoaderClassname;
 	private List listeners = new ArrayList();
 	private Properties parentProperties;
 	private Map parentObjects;
 
-	public PluginManifest(URL url, Config parentConfig) {
+	public PluginConfig(URL url, Config parentConfig) {
 		super(url.toString());
 		this.parentProperties = parentConfig.getProperties();
 		this.parentObjects = parentConfig.getObjects();
 	}
 
-	public PluginManifest(File manifestFile, Config parentConfig) throws MalformedURLException {
-		this(manifestFile.toURL(), parentConfig);
+	public PluginConfig(File configFile, Config parentConfig) throws MalformedURLException {
+		this(configFile.toURL(), parentConfig);
 	}
 
 	public Properties getBaseProperties() {
@@ -77,6 +77,6 @@ public class PluginManifest extends BaseConfig {
 	}
 
     public String toString() {
-        return "[PluginManifest: resourceLoaderClassname: " + getResourceLoaderClassname() + "]";
+        return "[PluginConfig: resourceLoaderClassname: " + getResourceLoaderClassname() + "]";
     }
 }

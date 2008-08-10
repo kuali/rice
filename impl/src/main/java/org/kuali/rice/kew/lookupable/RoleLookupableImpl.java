@@ -27,13 +27,13 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.plugin.attributes.WorkflowLookupable;
 import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.routetemplate.RuleTemplate;
 import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
 import org.kuali.rice.kew.routetemplate.RuleTemplateService;
+import org.kuali.rice.kew.rule.RoleAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.Utilities;
 
 

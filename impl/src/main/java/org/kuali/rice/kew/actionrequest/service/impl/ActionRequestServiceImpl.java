@@ -42,7 +42,7 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.notification.NotificationService;
+import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;

@@ -38,7 +38,7 @@ import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;

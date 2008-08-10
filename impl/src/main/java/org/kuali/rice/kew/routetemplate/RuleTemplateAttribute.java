@@ -34,7 +34,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

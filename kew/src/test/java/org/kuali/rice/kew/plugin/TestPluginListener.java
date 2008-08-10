@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.plugin;
 
 import org.kuali.rice.kew.plugin.Plugin;
-import org.kuali.rice.kew.plugin.client.PluginListener;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

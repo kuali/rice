@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.lookupable.Row;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 
 
 /**

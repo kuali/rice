@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.manifest;
+package org.kuali.rice.kew.plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +31,15 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.plugin.PluginException;
 import org.kuali.rice.kew.util.Utilities;
 
 
 /**
- * Parses a {@link PluginManifest} configuration from an XML file.
+ * Parses a {@link PluginConfig} configuration from an XML file.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PluginManifestParser {
+public class PluginConfigParser {
 
     private static final String PARAMETER_TAG = "parameter";
     private static final String LISTENER_TAG = "listener";
@@ -51,27 +50,27 @@ public class PluginManifestParser {
     private static final String VALUE_ATTRIBUTE = "value";
     private static final String CLASS_ATTRIBUTE = "class";
 
-    public PluginManifest parse(File manifestFile, Config parentConfig) throws IOException, InvalidXmlException {
-    	return parse(manifestFile.toURL(), parentConfig);
+    public PluginConfig parse(File configFile, Config parentConfig) throws IOException, InvalidXmlException {
+    	return parse(configFile.toURL(), parentConfig);
     }
 
-	public PluginManifest parse(URL url, Config parentConfig) throws IOException, InvalidXmlException {
+	public PluginConfig parse(URL url, Config parentConfig) throws IOException, InvalidXmlException {
 		SAXBuilder builder = new SAXBuilder(false);
 		try {
             // NOTE: need to be wary of whether streams are closed properly
             // by builder
 			Document doc = builder.build(url);
 			Element root = doc.getRootElement();
-			PluginManifest pluginManifest = new PluginManifest(url, parentConfig);
-			parseResourceLoader(root, pluginManifest);
-			parseListeners(root, pluginManifest);
-			return pluginManifest;
+			PluginConfig pluginConfig = new PluginConfig(url, parentConfig);
+			parseResourceLoader(root, pluginConfig);
+			parseListeners(root, pluginConfig);
+			return pluginConfig;
 		} catch (JDOMException e) {
-		    throw new PluginException("Error when parsing the plugin manifest file.", e);
+		    throw new PluginException("Error when parsing the plugin config file.", e);
 		}
 	}
 
-	public void parseResourceLoader(Element element, PluginManifest pluginManifest) throws InvalidXmlException {
+	public void parseResourceLoader(Element element, PluginConfig pluginConfig) throws InvalidXmlException {
 		List loaderElements = element.getChildren(RESOURCE_LOADER_TAG);
 		if (loaderElements.size() > 1) {
 			throw new InvalidXmlException("Only one <resourceLoader> tag may be defined.");
@@ -81,14 +80,14 @@ public class PluginManifestParser {
 			if (StringUtils.isEmpty(attributeClass)) {
 				throw new InvalidXmlException("<resourceLoader> element must define a 'class' attribute.");
 			}
-			pluginManifest.setResourceLoaderClassname(attributeClass);
+			pluginConfig.setResourceLoaderClassname(attributeClass);
 		}
 	}
 
-	public void parseListeners(Element element, PluginManifest pluginManifest) throws InvalidXmlException {
+	public void parseListeners(Element element, PluginConfig pluginConfig) throws InvalidXmlException {
 		List listeners = element.getChildren(LISTENER_TAG);
 		for (Iterator iterator = listeners.iterator(); iterator.hasNext();) {
-		    pluginManifest.addListener(parseListenerProperties((Element)iterator.next()));
+		    pluginConfig.addListener(parseListenerProperties((Element)iterator.next()));
 		}
 	}
 

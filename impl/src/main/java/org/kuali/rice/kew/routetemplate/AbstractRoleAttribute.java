@@ -18,8 +18,8 @@ package org.kuali.rice.kew.routetemplate;
 
 import java.util.List;
 
-import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.rule.RoleAttribute;
 
 
 /**

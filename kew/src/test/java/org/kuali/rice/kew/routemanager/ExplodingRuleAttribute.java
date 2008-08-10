@@ -19,8 +19,8 @@ package org.kuali.rice.kew.routemanager;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 
 
 public class ExplodingRuleAttribute implements WorkflowAttribute {

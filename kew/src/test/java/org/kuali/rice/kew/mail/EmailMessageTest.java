@@ -33,7 +33,6 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
-import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.workflow.test.KEWTestCase;

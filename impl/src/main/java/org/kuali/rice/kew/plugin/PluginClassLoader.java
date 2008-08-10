@@ -24,7 +24,6 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.plugin.manifest.PluginManifest;
 import org.kuali.rice.kew.util.SimpleEnumeration;
 
 
@@ -40,7 +39,7 @@ public class PluginClassLoader extends URLClassLoader implements Lifecycle {//im
 
     //private ModificationTracker modTracker = new ModificationTracker();
     //this is purposely typed.
-    private PluginManifest config;
+    private PluginConfig config;
     private boolean started = false;
 
     public PluginClassLoader() {
@@ -217,11 +216,11 @@ public class PluginClassLoader extends URLClassLoader implements Lifecycle {//im
         return sb.toString();
     }
 
-	public PluginManifest getConfig() {
+	public PluginConfig getConfig() {
 		return config;
 	}
 
-	public void setConfig(PluginManifest config) {
+	public void setConfig(PluginConfig config) {
 		this.config = config;
 	}
 

@@ -37,6 +37,6 @@ public interface PluginLoader extends Modifiable {
 	 */
 	public boolean isRemoved();
 	
-	public void setPluginManifestPath(String pluginManifestPath);
+	public void setPluginConfigPath(String pluginConfigPath);
 	
 }

@@ -14,17 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin;
+package org.kuali.rice.kew.notification.service;
+
+import java.util.List;
+
+import org.kuali.rice.kew.actionitem.ActionItem;
+
 
 /**
- * A service which is overridable.  An OverridableService has a default service
- * which is the service it should fall back to if no service override can
- * be found.
+ * A service which sends notifications regarding the generation of ActionItems.
+ * 
+ * @see ActionItem
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface OverridableService {
+public interface NotificationService {
 
-	public Object getDefaultService();
+	/**
+	 * Send out notifications in regards to the given ActionItems being generated.
+	 */
+	public void notify(List<ActionItem> actionItems);
 	
+	/**
+	 * Remove notifications for action items that are being deleted
+	 * @param actionItems actionItems that are being deleted
+	 */
+	public void removeNotification(List<ActionItem> actionItems);
 }

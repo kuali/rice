@@ -14,13 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.attributes;
+package org.kuali.rice.kew.actionlist;
 
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
-import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actionlist.web.ActionListAction;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.web.session.UserSession;

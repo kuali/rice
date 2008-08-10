@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routetemplate;
 
-import org.kuali.rice.kew.plugin.attributes.RoleAttribute;
+import org.kuali.rice.kew.rule.RoleAttribute;
 
 /**
  * Defines a service for "poking" a role for a specified document.  When a role is 

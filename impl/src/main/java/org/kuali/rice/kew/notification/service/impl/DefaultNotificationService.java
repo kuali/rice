@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.notification;
+package org.kuali.rice.kew.notification.service.impl;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,6 +33,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;

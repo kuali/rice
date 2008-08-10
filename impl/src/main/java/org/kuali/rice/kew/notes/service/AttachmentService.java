@@ -14,30 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.notification;
+package org.kuali.rice.kew.notes.service;
 
-import java.util.List;
+import java.io.File;
 
-import org.kuali.rice.kew.actionitem.ActionItem;
-
+import org.kuali.rice.kew.notes.Attachment;
 
 /**
- * A service which sends notifications regarding the generation of ActionItems.
+ * A service providing access for attachments.
  * 
- * @see ActionItem
+ * @see Attachment
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface NotificationService {
+public interface AttachmentService {
 
-	/**
-	 * Send out notifications in regards to the given ActionItems being generated.
-	 */
-	public void notify(List<ActionItem> actionItems);
+	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception;
+	public File findAttachedFile(Attachment attachment) throws Exception;
+	public void deleteAttachedFile(Attachment attachment) throws Exception;
 	
-	/**
-	 * Remove notifications for action items that are being deleted
-	 * @param actionItems actionItems that are being deleted
-	 */
-	public void removeNotification(List<ActionItem> actionItems);
 }

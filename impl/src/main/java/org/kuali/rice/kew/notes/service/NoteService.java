@@ -14,20 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.attributes;
+package org.kuali.rice.kew.notes.service;
 
+import java.io.File;
+import java.util.List;
+
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.Note;
 
 /**
- * A service for locating WorkflowLookupables.
+ * A service which handles data access for notes and attachments.
  * 
+ * @see Note
+ * @see Attachment
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface LookupableService {
+public interface NoteService {
 
-    /**
-     * Find the Lookupable for the given name.  If the lookupable is stateful, then this method
-     * should return a new instance of the lookupable everytime it is called.
-     */
-    WorkflowLookupable find(String name);
+    public Note getNoteByNoteId(Long noteId);
+    public List getNotesByRouteHeaderId(Long routeHeaderId);
+    public void saveNote(Note note);
+    public void deleteNote(Note note);
+    public void deleteAttachment(Attachment attachment);
+    public File findAttachmentFile(Attachment attachment);
+    public Attachment findAttachment(Long attachmentId);
     
 }

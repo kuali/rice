@@ -14,9 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.client;
+package org.kuali.rice.kew.plugin;
 
-import org.kuali.rice.kew.plugin.Plugin;
 
 /**
  * Receives startup and shutdown callbacks from a {@link Plugin} when it

@@ -27,10 +27,10 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.plugin.attributes.MassRuleAttribute;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.rule.MassRuleAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
 

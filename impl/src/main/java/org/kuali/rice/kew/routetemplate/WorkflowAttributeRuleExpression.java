@@ -22,9 +22,9 @@ import java.util.List;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.plugin.attributes.WorkflowAttribute;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

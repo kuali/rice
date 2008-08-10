@@ -19,6 +19,7 @@ package org.kuali.rice.kew.plugin.attributes;
 import java.util.List;
 
 import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 
 
 /**

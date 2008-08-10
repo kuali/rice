@@ -24,8 +24,6 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.plugin.manifest.PluginManifest;
-import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
 
 
 /**
@@ -40,7 +38,7 @@ import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
  */
 public class ClassLoaderPluginLoader implements PluginLoader {
 	
-	private String pluginManifestPath;
+	private String pluginConfigPath;
 	private ClassLoader classLoader;
 	
 	public ClassLoaderPluginLoader(ClassLoader classLoader) {
@@ -54,7 +52,7 @@ public class ClassLoaderPluginLoader implements PluginLoader {
 	public Plugin load() throws Exception {
 		//for now default the embedded plugin to the M.E. of the current context
 		QName name = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.EMBEDDED_PLUGIN);
-		Plugin plugin = new Plugin(name, loadPluginManifest(pluginManifestPath), classLoader);
+		Plugin plugin = new Plugin(name, loadPluginConfig(pluginConfigPath), classLoader);
 		plugin.bindThread();
 		try {
 			PluginUtils.installResourceLoader(plugin);
@@ -65,8 +63,8 @@ public class ClassLoaderPluginLoader implements PluginLoader {
 		return plugin;
 	}
 
-	public void setPluginManifestPath(String pluginManifestPath) {
-		this.pluginManifestPath = pluginManifestPath;
+	public void setPluginConfigPath(String pluginConfigPath) {
+		this.pluginConfigPath = pluginConfigPath;
 	}
 	
 	public boolean isRemoved() {
@@ -77,18 +75,18 @@ public class ClassLoaderPluginLoader implements PluginLoader {
 		return false;
 	}
 
-    private PluginManifest loadPluginManifest(String pluginManifestPath) {
-        PluginManifestParser parser = new PluginManifestParser();
+    private PluginConfig loadPluginConfig(String pluginConfigPath) {
+        PluginConfigParser parser = new PluginConfigParser();
         try {
-            PluginManifest pluginManifest  = parser.parse(classLoader.getResource(pluginManifestPath), ConfigContext.getCurrentContextConfig());
-            pluginManifest.parseConfig();
-            return pluginManifest;
+            PluginConfig pluginConfig  = parser.parse(classLoader.getResource(pluginConfigPath), ConfigContext.getCurrentContextConfig());
+            pluginConfig.parseConfig();
+            return pluginConfig;
         } catch (FileNotFoundException e) {
-            throw new PluginException("Could not locate the plugin manifest file at path " + pluginManifestPath, e);
+            throw new PluginException("Could not locate the plugin config file at path " + pluginConfigPath, e);
         } catch (IOException ioe) {
-            throw new PluginException("Could not read the plugin manifest file", ioe);
+            throw new PluginException("Could not read the plugin config file", ioe);
         } catch (InvalidXmlException ixe) {
-            throw new PluginException("Could not parse the plugin manifest file", ixe);
+            throw new PluginException("Could not parse the plugin config file", ixe);
         }
     }
 	

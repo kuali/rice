@@ -20,7 +20,6 @@ package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 
 
 /**

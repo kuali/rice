@@ -61,7 +61,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
     /**
      * Returns qualified role names based on IDs in the XML.  Each returned qualified Role contains a single ID.
      * 
-     * @see org.kuali.rice.kew.plugin.attributes.RoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
+     * @see org.kuali.rice.kew.rule.RoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent)
 	    throws KEWUserNotFoundException {
@@ -87,7 +87,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
     /**
      * Takes the given qualified role which contains an ID and returns a resolved role for the entity with that id.
      * 
-     * @see org.kuali.rice.kew.plugin.attributes.RoleAttribute#resolveQualifiedRole(org.kuali.rice.kew.engine.RouteContext, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kew.rule.RoleAttribute#resolveQualifiedRole(org.kuali.rice.kew.engine.RouteContext, java.lang.String, java.lang.String)
      */
     public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole)
 	    throws KEWUserNotFoundException {

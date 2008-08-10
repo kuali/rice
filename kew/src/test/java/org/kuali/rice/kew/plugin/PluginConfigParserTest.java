@@ -22,20 +22,18 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
-import org.kuali.rice.kew.plugin.manifest.PluginManifest;
-import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
 import org.kuali.workflow.test.KEWTestCase;
 
 
 /**
- * Tests that the PluginManifestParser properly parses the plugin manifest xml file.
+ * Tests that the PluginConfigParser properly parses the plugin config xml file.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PluginManifestParserTest extends KEWTestCase {
+public class PluginConfigParserTest extends KEWTestCase {
 
-    private PluginManifestParser parser = new PluginManifestParser();
-    private static final String MANIFEST_PATH_SUFFIX = "/src/test/resources/org/kuali/rice/kew/plugin/workflow.xml";
+    private PluginConfigParser parser = new PluginConfigParser();
+    private static final String CONFIG_PATH_SUFFIX = "/src/test/resources/org/kuali/rice/kew/plugin/workflow.xml";
     private static final String EDEN_NAME = "jdbc/dev/en/EDEN";
     private static final String SUDS_NAME = "jdbc/dev/en/SUDS";
     private static final String DS_TYPE = "javax.sql.DataSource";
@@ -44,7 +42,7 @@ public class PluginManifestParserTest extends KEWTestCase {
     
     @Test public void testParse() throws Exception {
     	
-        PluginManifest plugin = parser.parse(new File(getBaseDir() + MANIFEST_PATH_SUFFIX), ConfigContext.getRootConfig());
+        PluginConfig plugin = parser.parse(new File(getBaseDir() + CONFIG_PATH_SUFFIX), ConfigContext.getRootConfig());
         assertNotNull(plugin);
 
         List listeners = plugin.getListeners();

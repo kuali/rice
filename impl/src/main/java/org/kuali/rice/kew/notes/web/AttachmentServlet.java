@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.notes;
+package org.kuali.rice.kew.notes.web;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.service.NoteService;
 
 
 /**

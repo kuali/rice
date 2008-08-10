@@ -27,7 +27,6 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.plugin.client.PluginListener;
 
 
 /**

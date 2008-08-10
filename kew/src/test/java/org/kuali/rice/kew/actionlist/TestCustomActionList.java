@@ -23,10 +23,9 @@ import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.plugin.attributes.CustomActionListAttribute;
-import org.kuali.rice.kew.plugin.attributes.CustomEmailAttribute;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

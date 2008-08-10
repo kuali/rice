@@ -14,13 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.notes;
+package org.kuali.rice.kew.notes.service.impl;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.kew.notes.Attachment;
+import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
+import org.kuali.rice.kew.notes.service.AttachmentService;
+import org.kuali.rice.kew.notes.service.NoteService;
 
 
 public class NoteServiceImpl implements NoteService {

@@ -180,11 +180,11 @@ public class ZipFilePluginLoader extends BasePluginLoader {
         return new PluginClassLoader(parentClassLoader, sharedPluginDirectory, extractionDirectory);
     }
 
-    protected URL getPluginManifestURL() throws PluginException, MalformedURLException {
-        File pluginManifestFile = new File(extractionDirectory, pluginManifestPath);
-        if (!pluginManifestFile.exists() || !pluginManifestFile.isFile()) {
-            throw new PluginException(getLogPrefix() + " Could not locate the plugin manifest file at path " + pluginManifestFile.getAbsolutePath());
+    protected URL getPluginConfigURL() throws PluginException, MalformedURLException {
+        File pluginConfigFile = new File(extractionDirectory, pluginConfigPath);
+        if (!pluginConfigFile.exists() || !pluginConfigFile.isFile()) {
+            throw new PluginException(getLogPrefix() + " Could not locate the plugin config file at path " + pluginConfigFile.getAbsolutePath());
         }
-        return pluginManifestFile.toURL();
+        return pluginConfigFile.toURL();
     }
 }

@@ -33,8 +33,6 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderUtil;
 import org.kuali.rice.kew.core.CoreResourceLoader;
-import org.kuali.rice.kew.plugin.client.PluginListener;
-import org.kuali.rice.kew.plugin.manifest.PluginManifest;
 
 
 /**
@@ -181,12 +179,12 @@ public final class PluginUtils {
     }
 
     public static void installResourceLoader(Plugin plugin) {
-    	if (plugin.getConfig() instanceof PluginManifest) {
-			PluginManifest pluginManifest = (PluginManifest)plugin.getConfig();
-			if (!StringUtils.isEmpty(pluginManifest.getResourceLoaderClassname())) {
-                ResourceLoader resourceLoader = (ResourceLoader) ResourceLoaderUtil.createObject(pluginManifest.getResourceLoaderClassname(), plugin.getClassLoader());
+    	if (plugin.getConfig() instanceof PluginConfig) {
+			PluginConfig pluginConfig = (PluginConfig)plugin.getConfig();
+			if (!StringUtils.isEmpty(pluginConfig.getResourceLoaderClassname())) {
+                ResourceLoader resourceLoader = (ResourceLoader) ResourceLoaderUtil.createObject(pluginConfig.getResourceLoaderClassname(), plugin.getClassLoader());
                 if (resourceLoader == null) {
-                    LOG.warn("Could not create resource loader from plugin resource loader class: " + pluginManifest.getResourceLoaderClassname());
+                    LOG.warn("Could not create resource loader from plugin resource loader class: " + pluginConfig.getResourceLoaderClassname());
                     // if null, use a default resource loader
 					resourceLoader = new BaseResourceLoader(plugin.getName());
                 }
@@ -196,9 +194,9 @@ public final class PluginUtils {
     }
 
     public static void installPluginListeners(Plugin plugin) {
-    	if (plugin.getConfig() instanceof PluginManifest) {
-			PluginManifest pluginManifest = (PluginManifest)plugin.getConfig();
-			for (Iterator iterator = pluginManifest.getListeners().iterator(); iterator.hasNext();) {
+    	if (plugin.getConfig() instanceof PluginConfig) {
+			PluginConfig pluginConfig = (PluginConfig)plugin.getConfig();
+			for (Iterator iterator = pluginConfig.getListeners().iterator(); iterator.hasNext();) {
 	            String pluginListenerClassName = (String) iterator.next();
 	            try {
 	                Class listenerClass = Class.forName(pluginListenerClassName, true, plugin.getClassLoader());

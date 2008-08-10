@@ -81,7 +81,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
 
     /**
-     * @see org.kuali.rice.kew.plugin.attributes.RoleAttribute#getRoleNames()
+     * @see org.kuali.rice.kew.rule.RoleAttribute#getRoleNames()
      */
     public List<Role> getRoleNames() {
         LOG.info("CHANNEL REVIEWER ROLE ATTRIBUTE CALLED ROLENAMES");

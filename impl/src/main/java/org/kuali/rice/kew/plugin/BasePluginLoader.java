@@ -30,15 +30,13 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.plugin.manifest.PluginManifest;
-import org.kuali.rice.kew.plugin.manifest.PluginManifestParser;
 import org.kuali.rice.kew.util.Utilities;
 
 
 /**
  * Abstract base PluginLoader implementation.
- * Delegates to template methods to obtain plugin ClassLoader and plugin manifest file URL,
- * then load the manifest under the plugin ClassLoader, and constructs a Plugin object.
+ * Delegates to template methods to obtain plugin ClassLoader and plugin config file URL,
+ * then load the config under the plugin ClassLoader, and constructs a Plugin object.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -46,7 +44,7 @@ public abstract class BasePluginLoader implements PluginLoader {
     private static final Logger LOG = Logger.getLogger(BasePluginLoader.class);
 
     private static final String META_INF_PATH = "META-INF";
-    private static final String PLUGIN_MANIFEST_PATH = META_INF_PATH + "/workflow.xml";
+    private static final String PLUGIN_CONFIG_PATH = META_INF_PATH + "/workflow.xml";
 
     protected final String simplePluginName;
     protected final boolean institutionalPlugin;
@@ -55,7 +53,7 @@ public abstract class BasePluginLoader implements PluginLoader {
     protected final ClassLoader parentClassLoader;
     protected final Config parentConfig;
     protected final File sharedPluginDirectory;
-    protected String pluginManifestPath = PLUGIN_MANIFEST_PATH;
+    protected String pluginConfigPath = PLUGIN_CONFIG_PATH;
 
     public BasePluginLoader(String simplePluginName, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig, boolean institutionalPlugin) {
         this.sharedPluginDirectory = sharedPluginDirectory;
@@ -77,8 +75,8 @@ public abstract class BasePluginLoader implements PluginLoader {
         return simplePluginName;
     }
 
-    public void setPluginManifestPath(String pluginManifestPath) {
-        this.pluginManifestPath = pluginManifestPath;
+    public void setPluginConfigPath(String pluginConfigPath) {
+        this.pluginConfigPath = pluginConfigPath;
     }
 
     protected String getSimplePluginName() {
@@ -94,11 +92,11 @@ public abstract class BasePluginLoader implements PluginLoader {
     protected abstract PluginClassLoader createPluginClassLoader() throws IOException;
     /**
      * Template method that subclasses should implement to supply an appropriate
-     * URL to the plugin's manifest
-     * @return an appropriate URL to the plugin's manifest
+     * URL to the plugin's configuration
+     * @return an appropriate URL to the plugin's configuration
      * @throws IOException if anything goes awry
      */
-    protected abstract URL getPluginManifestURL() throws PluginException, IOException;
+    protected abstract URL getPluginConfigURL() throws PluginException, IOException;
 
     /**
      * Loads and creates the Plugin.
@@ -122,15 +120,15 @@ public abstract class BasePluginLoader implements PluginLoader {
      * Executes loading of the plugin within the current context classloader set to the Plugin's classloader.
      */
     protected Plugin loadWithinContextClassLoader(PluginClassLoader classLoader) throws PluginException, IOException {
-    	URL url = getPluginManifestURL();
-        PluginManifest pluginManifest = loadPluginManifest(url);
-        QName qPluginName = getPluginName(pluginManifest);
-        classLoader.setConfig(pluginManifest);
-        ConfigContext.init(classLoader, pluginManifest);
-        configureExtraClasspath(classLoader, pluginManifest);
+    	URL url = getPluginConfigURL();
+        PluginConfig pluginConfig = loadPluginConfig(url);
+        QName qPluginName = getPluginName(pluginConfig);
+        classLoader.setConfig(pluginConfig);
+        ConfigContext.init(classLoader, pluginConfig);
+        configureExtraClasspath(classLoader, pluginConfig);
         this.logPrefix = PluginUtils.getLogPrefix(qPluginName, institutionalPlugin).toString();
         LOG.info("Constructing plugin '" + simplePluginName + "' with classloader: " + classLoader);
-        Plugin plugin = new Plugin(qPluginName, pluginManifest, classLoader);
+        Plugin plugin = new Plugin(qPluginName, pluginConfig, classLoader);
         installResourceLoader(plugin);
         installPluginListeners(plugin);
         return plugin;
@@ -144,8 +142,8 @@ public abstract class BasePluginLoader implements PluginLoader {
     	PluginUtils.installPluginListeners(plugin);
     }
 
-    protected void configureExtraClasspath(PluginClassLoader classLoader, PluginManifest manifest) throws MalformedURLException {
-		String extraClassesDirs = manifest.getProperty(Config.EXTRA_CLASSES_DIR);
+    protected void configureExtraClasspath(PluginClassLoader classLoader, PluginConfig config) throws MalformedURLException {
+		String extraClassesDirs = config.getProperty(Config.EXTRA_CLASSES_DIR);
 		if (!Utilities.isEmpty(extraClassesDirs)) {
 			String[] extraClasses = extraClassesDirs.split(",");
 			for (int index = 0; index < extraClasses.length; index++) {
@@ -155,7 +153,7 @@ public abstract class BasePluginLoader implements PluginLoader {
 				}
 			}
 		}
-		String extraLibDirs = manifest.getProperty(Config.EXTRA_LIB_DIR);
+		String extraLibDirs = config.getProperty(Config.EXTRA_LIB_DIR);
 		if (!Utilities.isEmpty(extraLibDirs)) {
 			String[] extraLibs = extraLibDirs.split(",");
 			for (int index = 0; index < extraLibs.length; index++) {
@@ -168,8 +166,8 @@ public abstract class BasePluginLoader implements PluginLoader {
 	}
 
 
-    protected QName getPluginName(PluginManifest pluginManifest) {
-    	String messageEntity = pluginManifest.getMessageEntity();
+    protected QName getPluginName(PluginConfig pluginConfig) {
+    	String messageEntity = pluginConfig.getMessageEntity();
     	QName qPluginName = null;
         if (messageEntity == null) {
         	qPluginName = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), simplePluginName);
@@ -179,18 +177,18 @@ public abstract class BasePluginLoader implements PluginLoader {
     	return qPluginName;
     }
 
-    protected PluginManifest loadPluginManifest(URL url) {
-        PluginManifestParser parser = new PluginManifestParser();
+    protected PluginConfig loadPluginConfig(URL url) {
+        PluginConfigParser parser = new PluginConfigParser();
         try {
-            PluginManifest pluginManifest  = parser.parse(url, parentConfig);
-            pluginManifest.parseConfig();
-            return pluginManifest;
+            PluginConfig pluginConfig  = parser.parse(url, parentConfig);
+            pluginConfig.parseConfig();
+            return pluginConfig;
         } catch (FileNotFoundException e) {
-            throw new PluginException(getLogPrefix() + " Could not locate the plugin manifest file at path " + url, e);
+            throw new PluginException(getLogPrefix() + " Could not locate the plugin config file at path " + url, e);
         } catch (IOException ioe) {
-            throw new PluginException(getLogPrefix() + " Could not read the plugin manifest file", ioe);
+            throw new PluginException(getLogPrefix() + " Could not read the plugin config file", ioe);
         } catch (InvalidXmlException ixe) {
-            throw new PluginException(getLogPrefix() + " Could not parse the plugin manifest file", ixe);
+            throw new PluginException(getLogPrefix() + " Could not parse the plugin config file", ixe);
         }
     }
 }

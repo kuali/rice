@@ -405,8 +405,8 @@
         <property name="emailContentGenerator" ref="enEmailContentService"/>
     </bean>
 
-<!--	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.KCBNotificationService"  lazy-init="true"/> -->
-    <bean id="enNotificationService" class="org.kuali.rice.kew.notification.DefaultNotificationService"  lazy-init="true"/>
+<!--	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/> -->
+    <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.core.config.BeanHolder">
@@ -562,14 +562,14 @@
   </bean>
 
   <!--  NoteService -->
-  <bean id="enNoteService" class="org.kuali.rice.kew.notes.NoteServiceImpl">
+  <bean id="enNoteService" class="org.kuali.rice.kew.notes.service.impl.NoteServiceImpl">
     <property name="noteDAO">
       <bean class="org.kuali.rice.kew.notes.dao.impl.NoteDAOOjbImpl">
 				<property name="jcdAlias" value="enWorkflowDataSource" />
       </bean>
     </property>
     <property name="attachmentService">
-      <bean class="org.kuali.rice.kew.notes.AttachmentServiceImpl">
+      <bean class="org.kuali.rice.kew.notes.service.impl.AttachmentServiceImpl">
         <property name="attachmentDir" value="${attachment.dir.location}" />
       </bean>
     </property>

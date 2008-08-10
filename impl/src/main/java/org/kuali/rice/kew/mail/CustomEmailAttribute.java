@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.plugin.attributes;
+package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;

@@ -19,7 +19,6 @@ package org.kuali.rice.kew.rule;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.routetemplate.FlexRM;
 
 
 /**

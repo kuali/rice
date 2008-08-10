@@ -23,9 +23,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
-import org.kuali.rice.kew.routetemplate.Role;
-import org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute;
+import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
+import org.kuali.rice.kew.rule.Role;
+import org.kuali.rice.kew.rule.UnqualifiedRoleAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
@@ -58,7 +58,7 @@ public class MockRole extends UnqualifiedRoleAttribute {
 
     /**
      * Overridden to accept any role name
-     * @see org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute#isValidRoleName(java.lang.String)
+     * @see org.kuali.rice.kew.rule.UnqualifiedRoleAttribute#isValidRoleName(java.lang.String)
      */
     @Override
     protected boolean isValidRoleName(String roleName) {

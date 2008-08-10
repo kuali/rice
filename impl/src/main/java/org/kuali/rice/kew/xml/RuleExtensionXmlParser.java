@@ -25,12 +25,12 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
-import org.kuali.rice.kew.routetemplate.RuleBaseValues;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
-import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
-import org.kuali.rice.kew.routetemplate.RuleTemplate;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 

@@ -30,7 +30,7 @@
 				
 		<ruleAttribute>
 			<name>KualiOrgReviewAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>KualiOrgReviewAttribute</label>
 			<description>KualiOrgReviewAttribute</description>
 			<type>RuleXmlAttribute</type>

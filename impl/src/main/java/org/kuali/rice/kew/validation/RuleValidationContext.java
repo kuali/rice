@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.kew.validation;
 
-import org.kuali.rice.kew.routetemplate.RuleBaseValues;
-import org.kuali.rice.kew.routetemplate.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

@@ -3,7 +3,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
     <ruleAttribute>
       <name>InitiatorAttribute</name>
-      <className>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute</className>
+      <className>org.kuali.rice.kew.rule.InitiatorRoleAttribute</className>
       <label>Initiator Role Attribute</label>
       <description>Initiator Role Attribute</description>
       <type>RuleAttribute</type>

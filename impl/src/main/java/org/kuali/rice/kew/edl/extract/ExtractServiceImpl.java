@@ -7,8 +7,8 @@ import org.kuali.rice.kew.edl.extract.dao.ExtractDAO;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
-import org.kuali.rice.kew.routetemplate.RuleServiceImpl;
-import org.kuali.rice.kew.routetemplate.dao.RuleDAO;
+import org.kuali.rice.kew.rule.dao.RuleDAO;
+import org.kuali.rice.kew.rule.service.impl.RuleServiceImpl;
 
 
 public class ExtractServiceImpl implements ExtractService {

@@ -28,10 +28,10 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routetemplate.GenericRoleAttribute;
-import org.kuali.rice.kew.routetemplate.QualifiedRoleName;
-import org.kuali.rice.kew.routetemplate.Role;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
+import org.kuali.rice.kew.rule.GenericRoleAttribute;
+import org.kuali.rice.kew.rule.QualifiedRoleName;
+import org.kuali.rice.kew.rule.Role;
+import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
@@ -62,7 +62,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
 
     /**
-     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#isMatch(org.kuali.rice.kew.routeheader.DocumentContent, java.util.List)
+     * @see org.kuali.rice.kew.rule.GenericRoleAttribute#isMatch(org.kuali.rice.kew.routeheader.DocumentContent, java.util.List)
      */
     @Override
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
@@ -71,7 +71,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
 
     /**
-     * @see org.kuali.rice.kew.routetemplate.GenericWorkflowAttribute#getProperties()
+     * @see org.kuali.rice.kew.rule.GenericWorkflowAttribute#getProperties()
      */
     @Override
     public Map<String, String> getProperties() {
@@ -89,7 +89,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     }
     
     /**
-     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
+     * @see org.kuali.rice.kew.rule.GenericRoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
     @Override
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
@@ -101,7 +101,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     /**
      * This looks at the reviewers list passed through from KEN and then resolves the individuals that need to actually approve 
      * the message.
-     * @see org.kuali.rice.kew.routetemplate.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, org.kuali.rice.kew.routetemplate.QualifiedRoleName)
+     * @see org.kuali.rice.kew.rule.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, org.kuali.rice.kew.rule.QualifiedRoleName)
      */
     @Override
     protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {

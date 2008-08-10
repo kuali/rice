@@ -7,7 +7,7 @@
             <name>KRABizRuleAttribute</name>
             <description>KRABizRuleAttribute description</description>
             <label>KRABizRuleAttribute label</label>
-            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <type>RuleXmlAttribute</type>
             <routingConfig>
                 <fieldDef name="field" title="some field" workflowType="ALL">

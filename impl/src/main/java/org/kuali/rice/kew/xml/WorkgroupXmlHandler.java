@@ -37,7 +37,7 @@ import org.jdom.input.DOMBuilder;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UuId;

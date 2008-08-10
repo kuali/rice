@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.routetemplate.web.RoutingReportAction;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.web.RoutingReportAction;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

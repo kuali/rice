@@ -33,7 +33,7 @@ import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.Utilities;
 import org.xml.sax.InputSource;
 

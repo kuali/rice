@@ -1092,21 +1092,21 @@
 
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
-            <className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
+            <className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
             <label>foo</label>
             <description>foo</description>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
             <name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
-            <className>org.kuali.rice.kew.routetemplate.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
+            <className>org.kuali.rice.kew.rule.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
             <label>RemoveReplaceWorkgroupTypeRoutingAttribute</label>
             <description>An attribute for routing workgroups that have been changed via the Remove/Replace User document</description>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
 			<name>RemoveReplaceRuleRoutingAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.RemoveReplaceRuleRoutingAttribute</className>
+			<className>org.kuali.rice.kew.rule.RemoveReplaceRuleRoutingAttribute</className>
 			<label>RemoveReplaceRuleRoutingAttribute</label>
 			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
 			<type>RuleAttribute</type>
@@ -1289,7 +1289,7 @@
         </ruleAttribute>
         <ruleAttribute>
           <name>RuleRoutingAttribute</name>
-          <className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
+          <className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
           <label>Rule Routing</label>
           <description>Rule Routing</description>
           <messageEntity>TRAVEL</messageEntity>
@@ -1505,7 +1505,7 @@
             <parent>EDENSERVICE-DOCS</parent>
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
-            <postProcessorName>org.kuali.rice.kew.routetemplate.RulePostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>

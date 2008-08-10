@@ -42,12 +42,12 @@ import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.role.dao.RoleDAO;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routetemplate.FlexRM;
-import org.kuali.rice.kew.routetemplate.RolePoker;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
-import org.kuali.rice.kew.routetemplate.RuleTemplate;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.RoleAttribute;
+import org.kuali.rice.kew.rule.RolePoker;
+import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;
@@ -305,7 +305,7 @@ public class RoleServiceImpl implements RoleService {
             if (workflowAttribute instanceof RoleAttribute) {
                 List roleNames = ((RoleAttribute)workflowAttribute).getRoleNames();
                 for (Iterator roleIt = roleNames.iterator(); roleIt.hasNext();) {
-                    org.kuali.rice.kew.routetemplate.Role role = (org.kuali.rice.kew.routetemplate.Role) roleIt.next();
+                    org.kuali.rice.kew.rule.Role role = (org.kuali.rice.kew.rule.Role) roleIt.next();
                     if (role.getLabel().equals(roleName)) {
                         return true;
                     }

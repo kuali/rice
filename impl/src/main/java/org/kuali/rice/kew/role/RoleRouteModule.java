@@ -32,7 +32,7 @@ import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.BaseRouteModule;
 import org.kuali.rice.kew.routemodule.RouteModuleException;
-import org.kuali.rice.kew.routetemplate.FlexRM;
+import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
 

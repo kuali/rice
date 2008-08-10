@@ -9,7 +9,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>RuleRoutingAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
+			<className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
 			<label>RuleRoutingAttribute</label>
 			<description>RuleRoutingAttribute</description>
 			<type>RuleAttribute</type>
@@ -134,7 +134,7 @@
 			<parent>EDENSERVICE-DOCS</parent>
 			<description>Rule Maintenance Document Type Document</description>
 			<label>Rule Maintenance Document Type Document</label>
-			<postProcessorName>org.kuali.rice.kew.routetemplate.RulePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>

@@ -25,9 +25,9 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.routetemplate.RuleTemplate;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
-import org.kuali.rice.kew.routetemplate.RuleTemplateOption;
+import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.test.OldClearDatabaseLifecycle;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 

@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.routetemplate.GenericAttributeContent;
+import org.kuali.rice.kew.rule.GenericAttributeContent;
 
 
 public class GenericAttributeContentTest extends TestCase {

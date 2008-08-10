@@ -327,7 +327,7 @@
         </ruleAttribute>
         <ruleAttribute>
           <name>RuleRoutingAttribute</name>
-          <className>org.kuali.rice.kew.routetemplate.RuleRoutingAttribute</className>
+          <className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
           <label>Rule Routing</label>
           <description>Rule Routing</description>
           <messageEntity>TRAVEL</messageEntity>

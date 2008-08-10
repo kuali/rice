@@ -71,7 +71,7 @@ import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.routetemplate.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;

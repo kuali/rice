@@ -69,7 +69,7 @@
                   <c:set var="respIdVal" value="${ruleIdVal}z${respIndex}"/>
                   <c:set var="delKey" value="${extraId}rule${ruleIndex}resp${respIndex}"/>
                   <%
-                  	org.kuali.rice.kew.routetemplate.web.Rule2Form ruleForm = (org.kuali.rice.kew.routetemplate.web.Rule2Form)request.getAttribute("Rule2Form");
+                  	org.kuali.rice.kew.rule.web.Rule2Form ruleForm = (org.kuali.rice.kew.rule.web.Rule2Form)request.getAttribute("Rule2Form");
                                        String displayDelegationsValue = (String)ruleForm.getShowDelegationsMap().get(pageContext.getAttribute("delKey"));
                                        if (displayDelegationsValue == null) displayDelegationsValue = "true";
                                        pageContext.setAttribute("displayDelegationsValue", displayDelegationsValue);

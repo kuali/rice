@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -75,7 +75,7 @@ public class KualiXmlAttributeHelper {
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
      * 
-     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
     public Element processConfigXML(Element root) {
@@ -86,7 +86,7 @@ public class KualiXmlAttributeHelper {
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, overwriting the original title in the XML.
      * 
-     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
     public Element processConfigXML(Element root, String[] xpathExpressionElements) {

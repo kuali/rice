@@ -32,8 +32,8 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
-import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.XmlHelper;
 

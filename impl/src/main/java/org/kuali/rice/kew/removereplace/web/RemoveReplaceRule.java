@@ -17,7 +17,7 @@ package org.kuali.rice.kew.removereplace.web;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.routetemplate.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleBaseValues;
 
 
 /**

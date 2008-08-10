@@ -193,16 +193,16 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  RuleAttributeService -->
-	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.routetemplate.RuleAttributeServiceImpl" lazy-init="true">
+	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl" lazy-init="true">
 		<property name="ruleAttributeDAO">
 			<ref bean="enRuleAttributeDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  RuleTemplateService -->
-	<bean id="enRuleTemplateService" class="org.kuali.rice.kew.routetemplate.RuleTemplateServiceImpl" lazy-init="true">
+	<bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl" lazy-init="true">
 		<property name="ruleTemplateDAO">
 			<ref bean="enRuleTemplateDAO" />
 		</property>
@@ -219,27 +219,27 @@
 			<ref bean="enRuleDelegationDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleTemplateAttributeDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleTemplateAttributeDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleTemplateAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-	<bean id="enRuleTemplateOptionDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleTemplateOptionDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleTemplateOptionDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-	<bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleTemplateDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 	<!--  RuleDelegationService -->
-	<bean id="enRuleDelegationService" class="org.kuali.rice.kew.routetemplate.RuleDelegationServiceImpl" lazy-init="true">
+	<bean id="enRuleDelegationService" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationServiceImpl" lazy-init="true">
 		<property name="ruleDelegationDAO">
 			<ref bean="enRuleDelegationDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 	<!--  RuleService -->
-	<bean id="enRuleService" class="org.kuali.rice.kew.routetemplate.RuleServiceImpl" lazy-init="true">
+	<bean id="enRuleService" class="org.kuali.rice.kew.rule.service.impl.RuleServiceImpl" lazy-init="true">
 		<property name="ruleDAO">
 			<ref bean="enRuleDAO" />
 		</property>
@@ -247,11 +247,11 @@
 			<ref bean="enRuleResponsibilityDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
-	<bean id="enRuleResponsibilityDAO" class="org.kuali.rice.kew.routetemplate.dao.impl.RuleResponsibilityDAOOjbImpl" lazy-init="true">
+	<bean id="enRuleResponsibilityDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleResponsibilityDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
@@ -814,7 +814,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="org.kuali.rice.kew.routetemplate.RuleCacheProcessorImpl" />
+            <bean class="org.kuali.rice.kew.rule.service.impl.RuleCacheProcessorImpl" />
           </property>
           <property name="serviceNameSpaceURI" value=""/>
           <property name="localServiceName" value="RuleCacheProcessorService" />
@@ -830,7 +830,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="org.kuali.rice.kew.routetemplate.RolePokerProcessor" />
+            <bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
           </property>
           <property name="localServiceName" value="RolePokerProcessorService" />
           <property name="priority" value="10"/>

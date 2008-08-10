@@ -22,8 +22,6 @@ import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
-import org.kuali.rice.kew.routetemplate.Role;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -49,7 +47,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *   <li>{@link #resolveQualifiedRole(RouteContext, String, String)} is immediately called for each of the qualified role names
  *       returned in the previous step, and it returns a {@link ResolvedQualifiedRole} containing the
  *       list of concrete recipients ({@link Id}s).</li>
- *   <li>({@link org.kuali.rice.kew.routetemplate.UnqualifiedRoleAttribute} base class can be used to simplify this
+ *   <li>({@link org.kuali.rice.kew.rule.UnqualifiedRoleAttribute} base class can be used to simplify this
  *       two-step process)</li>
  * </ol>
  * 

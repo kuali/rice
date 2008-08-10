@@ -26,16 +26,16 @@
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>
     <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleTemplate</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleTemplateOption</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleAttribute</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleTemplateAttribute</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleBaseValues</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleExpressionDef</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleDelegation</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleResponsibility</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleExtension</class>
-    <class>org.kuali.rice.kew.routetemplate.RuleExtensionValue</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplate</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
+    <class>org.kuali.rice.kew.rule.RuleAttribute</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplateAttribute</class>
+    <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
+    <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
+    <class>org.kuali.rice.kew.rule.RuleDelegation</class>
+    <class>org.kuali.rice.kew.rule.RuleResponsibility</class>
+    <class>org.kuali.rice.kew.rule.RuleExtension</class>
+    <class>org.kuali.rice.kew.rule.RuleExtensionValue</class>
     <class>org.kuali.rice.kew.help.HelpEntry</class>
     <class>org.kuali.rice.kew.engine.node.RouteNode</class>
     <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>

@@ -23,9 +23,7 @@ import java.util.Map;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
-import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
-import org.kuali.rice.kew.routetemplate.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -44,8 +42,8 @@ import org.kuali.rice.kew.util.KEWConstants;
  * <ol>
  *   <li>...?...</li>
  *   <li>{@link #validateRuleData(Map)} and {@link #validateRoutingData(Map)} and are called to validate the configuration/extension values
- *       of the rule definition, and the user-configured rule data (??). see {@link org.kuali.rice.kew.routetemplate.web.WebRuleBaseValues},
- *       {@link org.kuali.rice.kew.routetemplate.RuleRoutingAttribute}.</li>
+ *       of the rule definition, and the user-configured rule data (??). see {@link org.kuali.rice.kew.rule.web.WebRuleBaseValues},
+ *       {@link org.kuali.rice.kew.rule.RuleRoutingAttribute}.</li>
  *   <li>Not sure where and why these are called, or how that is reconciled with XML-based ingestion....?  The 'required' field only seems
  *       to matter with regard to these two methods; it seems to only ever be used in implementations of these two methods</li> 
  * </ol>
@@ -55,7 +53,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *       it to the client-side document</li>
  *   <li>Upon action taken on the document, the Attributes that are described by the <code>WorkflowAttributeDefinitionVO</code>s
  *       are looked up (... how ...) and constructed on the client side.</li>
- *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute}),
+ *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute}),
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
  *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute

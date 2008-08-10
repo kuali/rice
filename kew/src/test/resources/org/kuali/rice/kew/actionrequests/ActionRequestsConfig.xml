@@ -9,7 +9,7 @@
 		</ruleAttribute>
         <ruleAttribute>
             <name>InlineRequestsStep1Attribute</name>
-            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <label>InlineRequestsStep1Attribute</label>
             <description>InlineRequestsStep1Attribute</description>
             <type>RuleXmlAttribute</type>
@@ -28,7 +28,7 @@
         </ruleAttribute>
         <ruleAttribute>
             <name>InlineRequestsStep2Attribute</name>
-            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <label>InlineRequestsStep2Attribute</label>
             <description>InlineRequestsStep2Attribute</description>
             <type>RuleXmlAttribute</type>
@@ -47,7 +47,7 @@
         </ruleAttribute>
         <ruleAttribute>
             <name>InlineRequestsStep3Attribute</name>
-            <className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
             <label>InlineRequestsStep3Attribute</label>
             <description>InlineRequestsStep3Attribute</description>
             <type>RuleXmlAttribute</type>
@@ -326,7 +326,7 @@
                     <routeModule>org.kuali.rice.kew.routemodule.InlineRequestsRouteModule</routeModule>
                     <match>//step = 'step3'</match>
                     <responsibility xmlns="ns:workflow/Rule">
-                        <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                        <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                         <actionRequested>A</actionRequested>
                     </responsibility>
                 </requests>
@@ -392,7 +392,7 @@
                         <name>InlineRequestsStep3Attribute</name>
                     </ruleAttributes>
                     <responsibility xmlns="ns:workflow/Rule">
-                        <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                        <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                         <actionRequested>A</actionRequested>
                     </responsibility>
                 </requests>

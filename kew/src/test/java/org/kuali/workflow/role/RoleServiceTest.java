@@ -29,7 +29,7 @@ import org.kuali.rice.kew.role.QualifiedRoleMember;
 import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.role.RoleAttribute;
 import org.kuali.rice.kew.role.service.RoleService;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.workflow.test.KEWTestCase;
 
 

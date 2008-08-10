@@ -23,12 +23,12 @@ import org.jdom.Element;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.routetemplate.RuleBaseValues;
-import org.kuali.rice.kew.routetemplate.RuleDelegation;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
-import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
-import org.kuali.rice.kew.routetemplate.RuleResponsibility;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 

@@ -26,8 +26,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 
 
 public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {

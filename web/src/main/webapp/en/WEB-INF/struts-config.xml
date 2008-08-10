@@ -15,17 +15,17 @@
       <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
       <form-bean name="SuperUserForm" type="org.kuali.rice.kew.superuser.web.SuperUserForm"/>
       <form-bean name="ApplicationConstantsForm" type="org.kuali.rice.kew.applicationconstants.web.ApplicationConstantsForm" />
-      <form-bean name="RuleAttributeReportForm" type="org.kuali.rice.kew.routetemplate.web.RuleAttributeReportForm" />
-      <form-bean name="RuleTemplateForm" type="org.kuali.rice.kew.routetemplate.web.RuleTemplateForm" />
+      <form-bean name="RuleAttributeReportForm" type="org.kuali.rice.kew.rule.web.RuleAttributeReportForm" />
+      <form-bean name="RuleTemplateForm" type="org.kuali.rice.kew.rule.web.RuleTemplateForm" />
       <form-bean name="WorkgroupTypeForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupTypeForm" />
-      <form-bean name="Rule2Form" type="org.kuali.rice.kew.routetemplate.web.Rule2Form" />
-      <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.routetemplate.web.RoutingReportForm" />
+      <form-bean name="Rule2Form" type="org.kuali.rice.kew.rule.web.Rule2Form" />
+      <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.rule.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
       <form-bean name="DocumentTypeForm" type="org.kuali.rice.kew.doctype.web.DocumentTypeForm" />
       <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
       <form-bean name="RouteManagerDriverForm" type="org.kuali.rice.kew.routemanager.web.RouteManagerDriverForm"/>
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
-      <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.routetemplate.web.RuleQuickLinksForm" />
+      <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
       <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
@@ -51,7 +51,7 @@
     <!-- ========== action mapping definitions ============================= -->
     <action-mappings>
 
-      <action path="/RuleQuickLinks" scope="request" type="org.kuali.rice.kew.routetemplate.web.RuleQuickLinksAction"
+      <action path="/RuleQuickLinks" scope="request" type="org.kuali.rice.kew.rule.web.RuleQuickLinksAction"
       	parameter="methodToCall" name="RuleQuickLinkForm">
       	<forward name="basic" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp" />
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>
@@ -206,7 +206,7 @@
          type="org.apache.struts.actions.ForwardAction"
          parameter="/WEB-INF/jsp/doctype/DocumentType.jsp"/>
 
-       <action path="/RuleAttributeReport" type="org.kuali.rice.kew.routetemplate.web.RuleAttributeReportAction"
+       <action path="/RuleAttributeReport" type="org.kuali.rice.kew.rule.web.RuleAttributeReportAction"
                input="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp"
                name="RuleAttributeReportForm" scope="request" parameter="methodToCall">
           <forward path="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp" name="basic" />
@@ -214,7 +214,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RuleAttributeReport.jsp"/>
        </action>
 
-       <action path="/RuleTemplate" type="org.kuali.rice.kew.routetemplate.web.RuleTemplateAction"
+       <action path="/RuleTemplate" type="org.kuali.rice.kew.rule.web.RuleTemplateAction"
           input="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"
           name="RuleTemplateForm" scope="request" parameter="methodToCall">
           <forward path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp" name="report" />
@@ -230,7 +230,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
        </action>
 
-       <action path="/Rule" type="org.kuali.rice.kew.routetemplate.web.Rule2Action"
+       <action path="/Rule" type="org.kuali.rice.kew.rule.web.Rule2Action"
           input="/WEB-INF/jsp/rules/RuleEdit.jsp"
           name="Rule2Form" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/rules/RuleDocHandler.jsp" name="docHandler" />
@@ -243,7 +243,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
        </action>
 
-       <action path="/DelegateRule" type="org.kuali.rice.kew.routetemplate.web.DelegateRule2Action"
+       <action path="/DelegateRule" type="org.kuali.rice.kew.rule.web.DelegateRule2Action"
           input="/WEB-INF/jsp/rules/DelegateRule.jsp"
           name="Rule2Form" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/rules/DelegateRule.jsp" name="basic" />
@@ -252,7 +252,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
        </action>
 
-       <action path="/RoutingReport" type="org.kuali.rice.kew.routetemplate.web.RoutingReportAction"
+       <action path="/RoutingReport" type="org.kuali.rice.kew.rule.web.RoutingReportAction"
           input="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"
           name="RoutingReportForm" scope="request" parameter="methodToCall" validate="true">
           <forward path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp" name="basic" />

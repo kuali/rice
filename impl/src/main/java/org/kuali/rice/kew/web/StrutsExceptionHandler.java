@@ -33,7 +33,7 @@ import org.apache.struts.action.ExceptionHandler;
 import org.apache.struts.config.ExceptionConfig;
 import org.kuali.rice.kew.WorkflowServiceError;
 import org.kuali.rice.kew.WorkflowServiceErrorException;
-import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.validation.ValidationResult;
 import org.kuali.rice.kew.validation.ValidationResults;
 

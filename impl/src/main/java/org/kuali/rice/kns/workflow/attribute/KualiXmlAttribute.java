@@ -18,7 +18,7 @@ package org.kuali.rice.kns.workflow.attribute;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
 import org.w3c.dom.Element;
 
 

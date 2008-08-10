@@ -32,9 +32,9 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.RouteManagerException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routetemplate.FlexRM;
-import org.kuali.rice.kew.routetemplate.KRAMetaRuleEngine;
-import org.kuali.rice.kew.routetemplate.RuleExpressionResult;
+import org.kuali.rice.kew.rule.FlexRM;
+import org.kuali.rice.kew.rule.KRAMetaRuleEngine;
+import org.kuali.rice.kew.rule.RuleExpressionResult;
 import org.kuali.rice.kew.util.Utilities;
 
 

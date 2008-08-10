@@ -37,7 +37,7 @@ import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
+import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;

@@ -133,7 +133,7 @@
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
@@ -146,7 +146,7 @@
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
@@ -159,7 +159,7 @@
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                 </responsibility>
             </responsibilities>
         </rule>
@@ -170,7 +170,7 @@
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <role>org.kuali.rice.kew.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

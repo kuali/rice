@@ -28,7 +28,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routetemplate.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 
 
 public class MockSearchableAttribute implements SearchableAttribute {

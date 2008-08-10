@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.var.Property;
 import org.kuali.rice.kew.engine.node.var.PropertyScheme;
-import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.xml.sax.InputSource;
 
 

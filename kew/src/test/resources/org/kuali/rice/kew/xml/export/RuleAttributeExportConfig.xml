@@ -16,7 +16,7 @@
 
 		<ruleAttribute>
 			<name>SchoolAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>School/Division Routing</label>
 			<description>School/Division Routing</description>
 			<type>RuleXmlAttribute</type>
@@ -36,7 +36,7 @@
 
 				<ruleAttribute>
 			<name>DepartmentAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>School/Division Routing</label>
 			<description>School/Division Routing</description>
 			<type>RuleXmlAttribute</type>

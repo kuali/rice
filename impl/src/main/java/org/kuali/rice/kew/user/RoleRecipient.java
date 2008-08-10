@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.user;
 
-import org.kuali.rice.kew.routetemplate.ResolvedQualifiedRole;
+import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 
 /**
  * Marks a Role to be used in an ActionRequestValue.

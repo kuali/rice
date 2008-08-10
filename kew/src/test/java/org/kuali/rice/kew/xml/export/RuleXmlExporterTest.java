@@ -30,11 +30,11 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.routetemplate.RuleBaseValues;
-import org.kuali.rice.kew.routetemplate.RuleDelegation;
-import org.kuali.rice.kew.routetemplate.RuleExtension;
-import org.kuali.rice.kew.routetemplate.RuleExtensionValue;
-import org.kuali.rice.kew.routetemplate.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 

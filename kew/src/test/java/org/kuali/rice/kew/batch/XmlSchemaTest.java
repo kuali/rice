@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.rice.kew.routetemplate.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.test.BaseRiceTestCase;

@@ -28,7 +28,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.routetemplate.UniversityIdRoleAttribute;
+import org.kuali.rice.kew.rule.UniversityIdRoleAttribute;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

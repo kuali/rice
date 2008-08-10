@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.workflow.attribute;
 
-import org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute;
+import org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute;
 import org.w3c.dom.Element;
 
 
@@ -39,7 +39,7 @@ public class KualiXmlRuleAttributeImpl extends StandardGenericXMLRuleAttribute i
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
      * 
-     * @see org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
     public Element getConfigXML() {
         Element root = getAttributeConfigXML();

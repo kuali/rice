@@ -41,7 +41,7 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>OrgReviewAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
 			<label>Rule Test Org Review Attribute</label>
 			<description>Org Review Attribute for Rule Test</description>
 			<type>RuleXmlAttribute</type>

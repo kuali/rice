@@ -20,8 +20,8 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.routetemplate.RuleTemplate;
-import org.kuali.rice.kew.routetemplate.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.workflow.test.KEWTestCase;
 

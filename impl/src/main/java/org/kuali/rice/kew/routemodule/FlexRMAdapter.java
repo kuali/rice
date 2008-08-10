@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.routetemplate.FlexRM;
+import org.kuali.rice.kew.rule.FlexRM;
 
 
 /**

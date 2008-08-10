@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.routetemplate;
 
-import org.kuali.rice.kew.routetemplate.RuleValidationAttribute;
+import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 

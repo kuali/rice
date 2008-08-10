@@ -25,7 +25,7 @@ import javax.xml.xpath.XPathConstants;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.kuali.rice.kew.routetemplate.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.support.xstream.XStreamSafeEvaluator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

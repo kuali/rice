@@ -28,8 +28,8 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowPersistable;
-import org.kuali.rice.kew.routetemplate.RuleAttribute;
-import org.kuali.rice.kew.routetemplate.RuleAttributeService;
+import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.service.RuleAttributeService;
 
 
 /**

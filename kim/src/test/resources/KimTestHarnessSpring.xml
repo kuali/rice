@@ -67,7 +67,7 @@
 					</property>
 					<property name="databaseRepositoryFilePaths">
 						<list>
-							<value>OJB-repository-kim.xml</value>
+							<value>org/kuali/rice/kim/config/OJB-repository-kim.xml</value>
 						</list>
 					</property>
 				</bean>

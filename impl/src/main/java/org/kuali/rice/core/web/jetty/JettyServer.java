@@ -119,8 +119,10 @@ public class JettyServer implements Lifecycle {
 		Server server = new Server(getPort());
 		setBaseDirSystemProperty();
 		if (useWebAppContext()) {
+			File tmpDir = new File(System.getProperty("basedir") + "/target/jetty-tmp");
+			tmpDir.mkdirs();
 			WebAppContext webAppContext = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
-			webAppContext.setTempDirectory(new File(System.getProperty("basedir") + "/target/jetty-tmp"));
+			webAppContext.setTempDirectory(tmpDir);
 			webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			context = webAppContext;
 			server.addHandler(context);

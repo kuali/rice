@@ -25,13 +25,13 @@ import java.util.Set;
 
 import org.kuali.rice.kew.clientapp.RouteModuleRemote;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.util.ResponsibleParty;
 
 
@@ -62,8 +62,8 @@ public class RouteModuleRemoteAdapter implements RouteModule {
     public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         try {
             List actionRequests = new ArrayList();
-            RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(routeHeader, null);
-            DocumentContentDTO documentContentVO = BeanConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
+            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
+            DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
             ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {
                 Set rootRequests = findRootRequests(actionRequestVOs);
@@ -71,7 +71,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
                 for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
                     ActionRequestDTO actionRequestVO = (ActionRequestDTO) iterator.next();
                     actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
-                    actionRequests.add(BeanConverter.convertActionRequestVO(actionRequestVO));
+                    actionRequests.add(DTOConverter.convertActionRequestVO(actionRequestVO));
                 }
             }
             return actionRequests;
@@ -85,7 +85,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
 
     public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws WorkflowException {
         try {
-            return BeanConverter.convertResponsiblePartyVO(routeModule.resolveResponsibilityId(responsibilityId));
+            return DTOConverter.convertResponsiblePartyVO(routeModule.resolveResponsibilityId(responsibilityId));
         } catch (RemoteException e) {
             if (e.getCause() instanceof WorkflowException) {
                 throw (WorkflowException)e.getCause();

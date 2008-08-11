@@ -35,10 +35,10 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -71,7 +71,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserNodeApproveAction(BeanConverter.convertUserId(userId), documentId, superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserNodeApproveAction(DTOConverter.convertUserId(userId), documentId, superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting routeLevelApprove()...");
         superUserForm.getActionRequests().clear();
@@ -85,7 +85,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserApprove(BeanConverter.convertUserId(userId), BeanConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserApprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
@@ -99,7 +99,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserDisapprove(BeanConverter.convertUserId(userId), BeanConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserDisapprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
@@ -113,7 +113,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserCancel(BeanConverter.convertUserId(userId), BeanConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserCancel(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
@@ -127,7 +127,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserReturnToPreviousNode(BeanConverter.convertUserId(userId), documentId, superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserReturnToPreviousNode(DTOConverter.convertUserId(userId), documentId, superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
         LOG.info("exiting returnToPreviousRouteLevel() ...");
         superUserForm.getActionRequests().clear();
@@ -160,7 +160,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserActionRequestApproveAction(BeanConverter.convertUserId(userId), documentId, new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
+        documentActions.superUserActionRequestApproveAction(DTOConverter.convertUserId(userId), documentId, new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
         String messageString;
         String actionReqest = (String) request.getParameter("buttonClick");
         if (actionReqest.equalsIgnoreCase("acknowlege")){

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.server;
+package org.kuali.rice.kew.service.impl;
 
 import java.rmi.RemoteException;
 import java.util.Set;
@@ -22,6 +22,7 @@ import java.util.Set;
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
 import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
@@ -49,7 +50,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
         
 //      update notes database based on notes and notesToDelete arrays in routeHeaderVO
-        BeanConverter.updateNotes(routeHeaderVO, routeHeaderVO.getRouteHeaderId());
+        DTOConverter.updateNotes(routeHeaderVO, routeHeaderVO.getRouteHeaderId());
         
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         document.setRouteHeaderData(routeHeaderVO);
@@ -77,7 +78,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().releaseWorkgroupAuthority(user, routeHeader, workgroup, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO takeWorkgroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, WorkgroupIdDTO workgroupId, String annotation) throws WorkflowException {
@@ -87,7 +88,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().takeWorkgroupAuthority(user, routeHeader, workgroup, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO acknowledgeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -96,7 +97,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Acknowledge [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().acknowledgeDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO approveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -105,7 +106,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().approveDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO appSpecificRouteDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, ResponsiblePartyDTO responsiblePartyVO, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException {
@@ -117,9 +118,9 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("AdHoc Route [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", responsibleParty=" + responsiblePartyVO + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         
-        Recipient recipient = BeanConverter.convertResponsiblePartyVOtoRecipient(responsiblePartyVO);
+        Recipient recipient = DTOConverter.convertResponsiblePartyVOtoRecipient(responsiblePartyVO);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, routeHeader, actionRequested, nodeName, annotation, recipient, responsibilityDesc, new Boolean(ignorePrevActions));
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO blanketApproval(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, Integer routeLevel) throws WorkflowException {
@@ -128,7 +129,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Blanket Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", routeLevel=" + routeLevel + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().blanketApproval(user, routeHeader, annotation, routeLevel);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
 
     public RouteHeaderDTO blanketApprovalToNodes(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, String[] nodeNames) throws WorkflowException {
@@ -138,7 +139,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         Set nodeNameSet = Utilities.asSet(nodeNames);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().blanketApproval(user, routeHeader, annotation, nodeNameSet);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
 
     
@@ -148,7 +149,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().cancelDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO clearFYIDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
@@ -157,7 +158,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Clear FYI [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().clearFYIDocument(user, routeHeader);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO completeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -166,7 +167,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Complete [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().completeDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO createDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
@@ -174,14 +175,14 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(routeHeaderVO, "routeHeaderVO");
         LOG.debug("Create Document [userId=" + userId + ", docTypeName=" + routeHeaderVO.getDocTypeName() + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);        
-        DocumentRouteHeaderValue routeHeader = BeanConverter.convertRouteHeaderVO(routeHeaderVO);
+        DocumentRouteHeaderValue routeHeader = DTOConverter.convertRouteHeaderVO(routeHeaderVO);
         routeHeader.setInitiatorWorkflowId(user.getWorkflowUserId().getWorkflowId());
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().createDocument(user, routeHeader);
         
 //      update notes database based on notes and notesToDelete arrays in routeHeaderVO
-        BeanConverter.updateNotes(routeHeaderVO, routeHeader.getRouteHeaderId());
+        DTOConverter.updateNotes(routeHeaderVO, routeHeader.getRouteHeaderId());
         
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO disapproveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -190,7 +191,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().disapproveDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO returnDocumentToPreviousRouteLevel(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, Integer destRouteLevel, String annotation) throws WorkflowException {
@@ -200,7 +201,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Return to Previous [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", destRouteLevel=" + destRouteLevel + "]");        
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().returnDocumentToPreviousRouteLevel(user, routeHeader, destRouteLevel, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO returnDocumentToPreviousNode(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, ReturnPointDTO returnPoint, String annotation) throws WorkflowException {
@@ -210,7 +211,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Return to Previous [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", destNodeName=" + returnPoint.getNodeName() + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().returnDocumentToPreviousNode(user, routeHeader, returnPoint.getNodeName(), annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO routeDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -219,7 +220,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Route Document [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().routeDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO saveRoutingData(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
@@ -228,7 +229,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Saving Routing Data [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().saveRoutingData(user, routeHeader);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO saveDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -237,7 +238,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("Save Document [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().saveDocument(user, routeHeader, annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public void deleteDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO) throws WorkflowException {
@@ -261,8 +262,8 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(userId, "userId");
         LOG.debug("Move [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + ", startNode=" + movePoint.getStartNodeName() + "steps=" + movePoint.getStepsToMove() + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().moveDocument(user, routeHeader, BeanConverter.convertMovePointVO(movePoint), annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().moveDocument(user, routeHeader, DTOConverter.convertMovePointVO(movePoint), annotation);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
 
     public RouteHeaderDTO revokeAdHocRequests(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, AdHocRevokeDTO revoke, String annotation) throws WorkflowException {
@@ -270,8 +271,8 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(userId, "userId");
         LOG.debug("Revoke AdHoc [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(user, routeHeader, BeanConverter.convertAdHocRevokeVO(revoke), annotation);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(user, routeHeader, DTOConverter.convertAdHocRevokeVO(revoke), annotation);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO superUserApprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, boolean runPostProcessor) throws WorkflowException {
@@ -280,7 +281,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("SU Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserApprove(user, routeHeader, annotation, runPostProcessor);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO superUserApprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -293,7 +294,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
 	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
 	routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(user, routeHeader, actionRequestId, annotation, true);
-	return BeanConverter.convertRouteHeader(routeHeader, user);
+	return DTOConverter.convertRouteHeader(routeHeader, user);
     }
 
     public RouteHeaderDTO superUserDisapprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation, boolean runPostProcessor) throws WorkflowException {
@@ -302,7 +303,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("SU Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(user, routeHeader, annotation, runPostProcessor);
-        return BeanConverter.convertRouteHeader(routeHeader, user);    	
+        return DTOConverter.convertRouteHeader(routeHeader, user);    	
     }
     
     public RouteHeaderDTO superUserDisapprove(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -315,7 +316,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(user, routeHeader, annotation, runPostProcessor);
-        return BeanConverter.convertRouteHeader(routeHeader, user);
+        return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
     public RouteHeaderDTO superUserCancel(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
@@ -329,13 +330,13 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);        
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		LOG.debug("Saving Document Content [documentId=" + documentId + "]");
-		String updatedDocumentContent = BeanConverter.buildUpdatedDocumentContent(documentContent);
+		String updatedDocumentContent = DTOConverter.buildUpdatedDocumentContent(documentContent);
     	// updatedDocumentContent will be null if the content has not changed, only update if its changed
     	if (updatedDocumentContent != null) {
     		document.setDocContent(updatedDocumentContent);
     		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
     	}
-    	return BeanConverter.convertDocumentContent(document.getDocContent(), documentId);
+    	return DTOConverter.convertDocumentContent(document.getDocContent(), documentId);
 	}
     	
 	public void superUserNodeApproveAction(UserIdDTO userId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws WorkflowException {

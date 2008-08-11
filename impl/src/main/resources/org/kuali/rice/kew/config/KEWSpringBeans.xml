@@ -509,7 +509,7 @@
     </property>
   </bean>
 
-  <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.server.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
+  <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
 
 
   <bean id="enXmlPollerService" class="org.kuali.rice.kew.batch.XmlPollerServiceImpl">
@@ -639,14 +639,14 @@
     </bean>
 
 
-	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
+	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.service.impl.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
-    <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.server.SimpleDocumentActionsWebServiceImpl"/>
+    <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.service.impl.SimpleDocumentActionsWebServiceImpl"/>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">

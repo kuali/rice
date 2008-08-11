@@ -609,7 +609,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
             workflowDocument.routeDocument("routing this document.");
             fail("routeDocument succeeded with malformed XML");
         } catch (WorkflowException we) {
-            // An exception is thrown in BeanConverter/XmlUtils.appendXml at the time of this writing
+            // An exception is thrown in DTOConverter/XmlUtils.appendXml at the time of this writing
             // so I will just assume that is the expected behavior
         }
         TestUtilities.waitForExceptionRouting();

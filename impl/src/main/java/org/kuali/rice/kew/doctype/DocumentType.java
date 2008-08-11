@@ -50,6 +50,7 @@ import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -60,7 +61,6 @@ import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.rule.RuleAttribute;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -546,7 +546,7 @@ public class DocumentType implements WorkflowPersistable {
      * @deprecated
      */
     public DocumentTypeDTO getDocumentTypeVO() {
-        return BeanConverter.convertDocumentType(this);
+        return DTOConverter.convertDocumentType(this);
     }
 
     private DocumentTypeService getDocumentTypeService() {

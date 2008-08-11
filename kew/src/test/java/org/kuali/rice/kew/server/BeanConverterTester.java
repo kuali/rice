@@ -27,12 +27,12 @@ import org.junit.Test;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.routetemplate.TestRuleAttribute;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -63,7 +63,7 @@ public class BeanConverterTester extends KEWTestCase {
         Workgroup group = (Workgroup) list.get(0);
         assertNotNull(group);
         WorkflowGroupIdDTO vo = new WorkflowGroupIdDTO(group.getWorkflowGroupId().getGroupId());
-        GroupId id = BeanConverter.convertWorkgroupIdVO(vo);
+        GroupId id = DTOConverter.convertWorkgroupIdVO(vo);
         assertNotNull(id);
     }
 
@@ -78,7 +78,7 @@ public class BeanConverterTester extends KEWTestCase {
         String searchableContent = null;
         String applicationContent = null;
         String xmlContent = constructContent(attributeContent, searchableContent, applicationContent);
-        DocumentContentDTO contentVO = BeanConverter.convertDocumentContent(xmlContent, new Long(-1234));
+        DocumentContentDTO contentVO = DTOConverter.convertDocumentContent(xmlContent, new Long(-1234));
         assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", "", contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
@@ -89,19 +89,19 @@ public class BeanConverterTester extends KEWTestCase {
         attributeContent = "";
         searchableContent = "";
         applicationContent = "";
-        contentVO = BeanConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
+        contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
         assertContent(contentVO, attributeContent, searchableContent, applicationContent);
 
         // test fancy dancy content
         attributeContent = "<iEnjoyFlexContent><id>1234</id></iEnjoyFlexContent>";
         searchableContent = "<thisIdBeWarrenG>Warren G</thisIdBeWarrenG><whatsMyName>Snoop</whatsMyName>";
         applicationContent = "<thisIsTotallyRad><theCoolestContentInTheWorld qualify=\"iSaidSo\">it's marvelous!</theCoolestContentInTheWorld></thisIsTotallyRad>";
-        contentVO = BeanConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
+        contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
         assertContent(contentVO, attributeContent, searchableContent, applicationContent);
 
         attributeContent = "invalid<xml, I can't believe you would do such a thing<<<";
         try {
-            contentVO = BeanConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
+            contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
             fail("Parsing bad xml should have thrown an InvalidXmlException.");
         } catch (InvalidXmlException e) {
             log.info("Expected InvalidXmlException was thrown.");
@@ -110,12 +110,12 @@ public class BeanConverterTester extends KEWTestCase {
 
         // test an older style document
         String appSpecificXml = "<iAmAnOldSchoolApp><myDocContent type=\"custom\">is totally app specific</myDocContent><howIroll>old school, that's how I roll</howIroll></iAmAnOldSchoolApp>";
-        contentVO = BeanConverter.convertDocumentContent(appSpecificXml, null);
+        contentVO = DTOConverter.convertDocumentContent(appSpecificXml, null);
         assertContent(contentVO, "", "", appSpecificXml);
 
         // test the old school (Workflow 1.6) flex document XML
         String fleXml = "<flexdoc><meinAttribute>nein</meinAttribute></flexdoc>";
-        contentVO = BeanConverter.convertDocumentContent(fleXml, null);
+        contentVO = DTOConverter.convertDocumentContent(fleXml, null);
         assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", fleXml, contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
@@ -140,7 +140,7 @@ public class BeanConverterTester extends KEWTestCase {
         // test no content, this should return empty document content
         DocumentContentDTO contentVO = new DocumentContentDTO();
         //routeHeaderVO.setDocumentContent(contentVO);
-        String content = BeanConverter.buildUpdatedDocumentContent(contentVO);
+        String content = DTOConverter.buildUpdatedDocumentContent(contentVO);
         assertEquals("Invalid content conversion.", KEWConstants.DEFAULT_DOCUMENT_CONTENT, content);
 
         // test simple case, no attributes
@@ -149,7 +149,7 @@ public class BeanConverterTester extends KEWTestCase {
         contentVO = new DocumentContentDTO();
         contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
         contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
-        content = BeanConverter.buildUpdatedDocumentContent(contentVO);
+        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
         String fullContent = startContent+constructContent(ATTRIBUTE_CONTENT, attributeContent)+constructContent(SEARCHABLE_CONTENT, searchableContent)+endContent;
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(fullContent), StringUtils.deleteWhitespace(content));
 
@@ -157,7 +157,7 @@ public class BeanConverterTester extends KEWTestCase {
         String testAttributeContent = new TestRuleAttribute().getDocContent();
         WorkflowAttributeDefinitionDTO attributeDefinition = new WorkflowAttributeDefinitionDTO(TestRuleAttribute.class.getName());
         contentVO.addAttributeDefinition(attributeDefinition);
-        content = BeanConverter.buildUpdatedDocumentContent(contentVO);
+        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
         fullContent = startContent+
             constructContent(ATTRIBUTE_CONTENT, attributeContent+testAttributeContent)+
             constructContent(SEARCHABLE_CONTENT, searchableContent)+
@@ -239,7 +239,7 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setDelegatorWorkgroupId(testWorkgroupId);
         
         // convert to action item vo object and verify
-        ActionItemDTO actionItemVO = BeanConverter.convertActionItem(actionItem);
+        ActionItemDTO actionItemVO = DTOConverter.convertActionItem(actionItem);
         assertEquals("Action Item VO object has incorrect value", actionRequestCd, actionItemVO.getActionRequestCd());
         assertEquals("Action Item VO object has incorrect value", actionRequestId, actionItemVO.getActionRequestId());
         assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());

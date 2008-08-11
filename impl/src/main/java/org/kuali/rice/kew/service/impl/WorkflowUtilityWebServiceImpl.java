@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.server;
+package org.kuali.rice.kew.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +40,7 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
@@ -104,7 +105,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (userId != null) {
             user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         }
-        RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(document, user);
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, user);
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + userId + "]");
         }
@@ -119,7 +120,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        RouteHeaderDTO routeHeaderVO = BeanConverter.convertRouteHeader(document, null);
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, null);
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
         }
@@ -146,7 +147,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching DocumentDetailVO [id="+documentId+"]");
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        DocumentDetailDTO documentDetailVO = BeanConverter.convertDocumentDetail(document);
+        DocumentDetailDTO documentDetailVO = DTOConverter.convertDocumentDetail(document);
         if (documentDetailVO == null) {
         	LOG.error("Returning null DocumentDetailVO [id=" + documentId + "]");
         }
@@ -161,7 +162,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching RouteNodeInstanceVO [id="+nodeInstanceId+"]");
         RouteNodeInstance nodeInstance = KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(nodeInstanceId);
-        return BeanConverter.convertRouteNodeInstance(nodeInstance);
+        return DTOConverter.convertRouteNodeInstance(nodeInstance);
     }
 
     public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
@@ -171,7 +172,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching WorkgroupVO [id="+workgroupId+"]");
         Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupId);
-        WorkgroupDTO workgroupVO = BeanConverter.convertWorkgroup(workgroup);
+        WorkgroupDTO workgroupVO = DTOConverter.convertWorkgroup(workgroup);
         if (workgroupVO == null) {
         	LOG.error("Returning null WorkgroupVO [id=" + workgroupId + "]");
         } else {
@@ -187,7 +188,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching UserVO [id="+userId+"]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        UserDTO userVO = BeanConverter.convertUser(user);
+        UserDTO userVO = DTOConverter.convertUser(user);
         if (userVO == null) {
         	LOG.error("Returning null UserVO [id=" + userId + "]");
         }
@@ -246,7 +247,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iter = workgroups.iterator(); iter.hasNext(); i++) {
             Workgroup workgroup = (Workgroup) iter.next();
-            workgroupVOs[i] = BeanConverter.convertWorkgroup(workgroup);
+            workgroupVOs[i] = DTOConverter.convertWorkgroup(workgroup);
         }
         return workgroupVOs;
     }
@@ -261,7 +262,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
             ActionItem actionItem = (ActionItem) iterator.next();
-            actionItemVOs[i] = BeanConverter.convertActionItem(actionItem);
+            actionItemVOs[i] = DTOConverter.convertActionItem(actionItem);
         }
         return actionItemVOs;
     }
@@ -307,7 +308,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iter = matchingActionRequests.iterator(); iter.hasNext(); i++) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            actionRequestVOs[i] = BeanConverter.convertActionRequest(actionRequest);
+            actionRequestVOs[i] = DTOConverter.convertActionRequest(actionRequest);
         }
         return actionRequestVOs;
     }
@@ -335,13 +336,13 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iter = actionsTaken.iterator(); iter.hasNext(); i++) {
             ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-            actionTakenVOs[i] = BeanConverter.convertActionTaken(actionTaken);
+            actionTakenVOs[i] = DTOConverter.convertActionTaken(actionTaken);
         }
         return actionTakenVOs;
     }
 
     /**
-     * This work is also being done in the bowels of convertDocumentContentVO in BeanConverter so some code
+     * This work is also being done in the bowels of convertDocumentContentVO in DTOConverter so some code
      * could be reduced.
      *
      * @param definition
@@ -353,7 +354,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             throw new RuntimeException("null definition passed in.");
         }
         LOG.debug("Validating WorkflowAttributeDefinitionVO [attributeName="+definition.getAttributeName()+"]");
-        AttributeDefinition attributeDefinition = BeanConverter.convertWorkflowAttributeDefinitionVO(definition, null);
+        AttributeDefinition attributeDefinition = DTOConverter.convertWorkflowAttributeDefinitionVO(definition, null);
         WorkflowAttribute attribute = null;
         if (attributeDefinition != null) {
         	attribute = (WorkflowAttribute) GlobalResourceLoader.getObject(attributeDefinition.getObjectDefinition());
@@ -373,7 +374,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             List errors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
             WorkflowAttributeValidationErrorDTO[] errorVOs = new WorkflowAttributeValidationErrorDTO[errors.size()];
             for (int i = 0; i < errorVOs.length; i++) {
-                errorVOs[i] = BeanConverter.convertWorkflowAttributeValidationError((WorkflowAttributeValidationError)errors.get(i));
+                errorVOs[i] = DTOConverter.convertWorkflowAttributeValidationError((WorkflowAttributeValidationError)errors.get(i));
             }
             return errorVOs;
         } else {
@@ -409,7 +410,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         RouteNodeInstanceDTO[] nodeInstanceVOs = new RouteNodeInstanceDTO[nodeInstances.size()];
         int i = 0;
         for (Iterator iter = nodeInstances.iterator(); iter.hasNext(); ) {
-            nodeInstanceVOs[i++] = BeanConverter.convertRouteNodeInstance((RouteNodeInstance) iter.next());
+            nodeInstanceVOs[i++] = DTOConverter.convertRouteNodeInstance((RouteNodeInstance) iter.next());
         }
         return nodeInstanceVOs;
     }
@@ -501,7 +502,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
         try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
-	        SimulationCriteria criteria = BeanConverter.convertReportCriteriaVO(reportCriteriaVO);
+	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaVO(reportCriteriaVO);
 	        // set activate requests to true by default so ignore previous works correctly
 	        criteria.setActivateRequests(Boolean.TRUE);
 	        SimulationResults results = simulationEngine.runSimulation(criteria);
@@ -725,8 +726,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
         incomingParamCheck(reportCriteria, "reportCriteria");
         LOG.debug("Executing routing report [docId=" + reportCriteria.getRouteHeaderId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
-        SimulationCriteria criteria = BeanConverter.convertReportCriteriaVO(reportCriteria);
-        return BeanConverter.convertDocumentDetail(KEWServiceLocator.getRoutingReportService().report(criteria));
+        SimulationCriteria criteria = DTOConverter.convertReportCriteriaVO(reportCriteria);
+        return DTOConverter.convertDocumentDetail(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
     public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
@@ -790,7 +791,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public DocumentContentDTO getDocumentContent(Long routeHeaderId) throws WorkflowException {
     	LOG.debug("Fetching document content [docId=" + routeHeaderId + "]");
     	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
-    	return BeanConverter.convertDocumentContent(document.getDocContent(), routeHeaderId);
+    	return DTOConverter.convertDocumentContent(document.getDocContent(), routeHeaderId);
     }
 
 	public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException {
@@ -838,7 +839,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (ruleReportCriteria.getRuleExtensionVOs() != null) {
             for (int i = 0; i < ruleReportCriteria.getRuleExtensionVOs().length; i++) {
                 RuleExtensionDTO ruleExtensionVO = ruleReportCriteria.getRuleExtensionVOs()[i];
-                KeyValuePair ruleExtension = BeanConverter.convertRuleExtensionVO(ruleExtensionVO);
+                KeyValuePair ruleExtension = DTOConverter.convertRuleExtensionVO(ruleExtensionVO);
                 extensionValues.put(ruleExtension.getKey(), ruleExtension.getValue());
             }
         }
@@ -847,15 +848,15 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
         }
         Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
-                ruleReportCriteria.getRuleDescription(),BeanConverter.convertWorkgroupIdVO(ruleReportCriteria.getResponsibleWorkgroup()),
-                BeanConverter.convertUserIdVO(ruleReportCriteria.getResponsibleUser()),ruleReportCriteria.getResponsibleRoleName(),
+                ruleReportCriteria.getRuleDescription(),DTOConverter.convertWorkgroupIdVO(ruleReportCriteria.getResponsibleWorkgroup()),
+                DTOConverter.convertUserIdVO(ruleReportCriteria.getResponsibleUser()),ruleReportCriteria.getResponsibleRoleName(),
                 ruleReportCriteria.isConsiderWorkgroupMembership(),ruleReportCriteria.isIncludeDelegations(),
                 ruleReportCriteria.isActiveIndicator(),extensionValues,actionRequestCodes);
         RuleDTO[] returnableRules = new RuleDTO[rulesFound.size()];
         int i = 0;
         for (Iterator iter = rulesFound.iterator(); iter.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iter.next();
-            returnableRules[i] = BeanConverter.convertRule(rule);
+            returnableRules[i] = DTOConverter.convertRule(rule);
             i++;
         }
         return returnableRules;
@@ -866,14 +867,14 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
     
     public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        DocSearchCriteriaVO criteria = BeanConverter.convertDocumentSearchCriteriaVO(criteriaVO);
+        DocSearchCriteriaVO criteria = DTOConverter.convertDocumentSearchCriteriaVO(criteriaVO);
         WorkflowUser user = null;
         if (userId != null) {
             criteria.setOverridingUserSession(true);
             user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         }
         DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListRestrictedByCriteria(user, criteria);
-        DocumentSearchResultDTO resultVO = BeanConverter.convertDocumentSearchResultComponents(components);
+        DocumentSearchResultDTO resultVO = DTOConverter.convertDocumentSearchResultComponents(components);
         resultVO.setOverThreshold(criteria.isOverThreshold());
         resultVO.setSecurityFilteredRows(Integer.valueOf(criteria.getSecurityFilteredRows()));
         return resultVO;

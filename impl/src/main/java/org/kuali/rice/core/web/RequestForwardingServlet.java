@@ -16,7 +16,7 @@
  */
 // Created on Dec 6, 2006
 
-package org.kuali.rice.kew.server;
+package org.kuali.rice.core.web;
 
 import java.io.IOException;
 import java.text.MessageFormat;

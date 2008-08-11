@@ -49,6 +49,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.CompatUtils;
@@ -66,7 +67,6 @@ import org.kuali.rice.kew.mail.CustomEmailAttributeImpl;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -658,7 +658,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
      * @throws WorkflowException
      */
     public void setRouteHeaderData(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
-//    	String updatedDocumentContent = BeanConverter.buildUpdatedDocumentContent(routeHeaderVO);
+//    	String updatedDocumentContent = DTOConverter.buildUpdatedDocumentContent(routeHeaderVO);
 //    	// updatedDocumentContent will be null if the content has not changed, only update if its changed
 //    	if (updatedDocumentContent != null) {
 //    		setDocContent(updatedDocumentContent);
@@ -780,7 +780,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customEmailAttribute = this.getDocumentType().getCustomEmailAttribute();
                 if (customEmailAttribute != null) {
-                    customEmailAttribute.setRouteHeaderVO(BeanConverter.convertRouteHeader(this, null));
+                    customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
                     return customEmailAttribute;
                 }
             }
@@ -788,7 +788,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom email attribute", e);
         }
         customEmailAttribute = new CustomEmailAttributeImpl();
-        customEmailAttribute.setRouteHeaderVO(BeanConverter.convertRouteHeader(this, null));
+        customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
         return customEmailAttribute;
     }
 
@@ -798,7 +798,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customNoteAttribute = this.getDocumentType().getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
-                    customNoteAttribute.setRouteHeaderVO(BeanConverter.convertRouteHeader(this, null));
+                    customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
                     return customNoteAttribute;
                 }
             }
@@ -806,7 +806,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom note attribute", e);
         }
         customNoteAttribute = new CustomNoteAttributeImpl();
-        customNoteAttribute.setRouteHeaderVO(BeanConverter.convertRouteHeader(this, null));
+        customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
         return customNoteAttribute;
     }
 

@@ -23,7 +23,7 @@ import org.kuali.rice.kew.DocumentRouteLevelChange;
 import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.clientapp.DeleteEvent;
 import org.kuali.rice.kew.clientapp.PostProcessorRemote;
-import org.kuali.rice.kew.server.BeanConverter;
+import org.kuali.rice.kew.dto.DTOConverter;
 
 
 /**
@@ -43,26 +43,26 @@ public class PostProcessorRemoteAdapter implements PostProcessor {
     }
     
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        return new ProcessDocReport(postProcessor.doRouteStatusChange(BeanConverter.convertDocumentRouteStatusChange(statusChangeEvent)));
+        return new ProcessDocReport(postProcessor.doRouteStatusChange(DTOConverter.convertDocumentRouteStatusChange(statusChangeEvent)));
     }
 
     public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        return new ProcessDocReport(postProcessor.doRouteLevelChange(BeanConverter.convertDocumentRouteLevelChange(levelChangeEvent)));
+        return new ProcessDocReport(postProcessor.doRouteLevelChange(DTOConverter.convertDocumentRouteLevelChange(levelChangeEvent)));
     }
 
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent deleteEvent) throws Exception {
-        return new ProcessDocReport(postProcessor.doDeleteRouteHeader(BeanConverter.convertDeleteEvent(deleteEvent)));
+        return new ProcessDocReport(postProcessor.doDeleteRouteHeader(DTOConverter.convertDeleteEvent(deleteEvent)));
     }
     
     public ProcessDocReport doActionTaken(ActionTakenEvent actionTakenEvent) throws Exception {
-        return new ProcessDocReport(postProcessor.doActionTaken(BeanConverter.convertActionTakenEvent(actionTakenEvent)));
+        return new ProcessDocReport(postProcessor.doActionTaken(DTOConverter.convertActionTakenEvent(actionTakenEvent)));
     }
     
     public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
-        return new ProcessDocReport(postProcessor.beforeProcess(BeanConverter.convertBeforeProcessEvent(event)));
+        return new ProcessDocReport(postProcessor.beforeProcess(DTOConverter.convertBeforeProcessEvent(event)));
     }
 
     public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
-        return new ProcessDocReport(postProcessor.afterProcess(BeanConverter.convertAfterProcessEvent(event)));
+        return new ProcessDocReport(postProcessor.afterProcess(DTOConverter.convertAfterProcessEvent(event)));
     }
 }

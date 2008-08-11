@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.server;
+package org.kuali.rice.kew.service.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -38,6 +38,13 @@ import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.webservice.DocumentResponse;
+import org.kuali.rice.kew.webservice.ErrorResponse;
+import org.kuali.rice.kew.webservice.NoteDetail;
+import org.kuali.rice.kew.webservice.NoteResponse;
+import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
+import org.kuali.rice.kew.webservice.StandardResponse;
+import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
 
 
 /**
@@ -835,7 +842,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			workflowDocument.saveRoutingData();
 
 ////	      update notes database based on notes and notesToDelete arrays in routeHeaderVO
-//	        BeanConverter.updateNotes(routeHeader, routeHeader.getRouteHeaderId());
+//	        DTOConverter.updateNotes(routeHeader, routeHeader.getRouteHeaderId());
 		} catch (WorkflowException e) {
 			errorMessage = "Workflow Error: " + e.getLocalizedMessage();
 		}

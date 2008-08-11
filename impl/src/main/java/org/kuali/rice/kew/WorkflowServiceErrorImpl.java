@@ -21,6 +21,8 @@ import org.kuali.rice.kew.services.ServiceErrorConstants;
  */
 public class WorkflowServiceErrorImpl implements Serializable, WorkflowServiceError {
 
+	private static final String CHILDREN_IN_ERROR = "-1";
+	
   static final long serialVersionUID = 6900090941686297017L;
   private Collection children;
   private String type;
@@ -91,7 +93,7 @@ public class WorkflowServiceErrorImpl implements Serializable, WorkflowServiceEr
       flatList = new ArrayList();
     }
 
-    if (error.getKey() != ServiceErrorConstants.CHILDREN_IN_ERROR) {
+    if (error.getKey() != CHILDREN_IN_ERROR) {
       flatList.add(error);
     }
 

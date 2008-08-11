@@ -10,12 +10,12 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailBody;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -78,13 +78,13 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				CustomEmailAttribute customEmailAttribute = actionItem
 						.getRouteHeader().getCustomEmailAttribute();
 				if (customEmailAttribute != null) {
-					RouteHeaderDTO routeHeaderVO = BeanConverter
+					RouteHeaderDTO routeHeaderVO = DTOConverter
 							.convertRouteHeader(actionItem.getRouteHeader(),
 									user);
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());
-					ActionRequestDTO actionRequestVO = BeanConverter
+					ActionRequestDTO actionRequestVO = DTOConverter
 							.convertActionRequest(actionRequest);
 					customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
 					customEmailAttribute.setActionRequestVO(actionRequestVO);

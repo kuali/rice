@@ -32,9 +32,7 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.services.ServiceConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 
 
@@ -66,9 +64,9 @@ public class DocumentTypeAction extends WorkflowAction {
 	public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
 		DocumentTypeForm documentTypeForm = (DocumentTypeForm) form;
 
-		if (getWorkgroupService().isUserMemberOfGroup(new GroupNameId(ServiceConstants.DOC_TYPE_BLANKET_APPRV_WRKGRP), getUserSession(request).getWorkflowUser())) {
-			documentTypeForm.setShowBlanketApproveButton(true);
-		}
+//		if (getWorkgroupService().isUserMemberOfGroup(new GroupNameId(ServiceConstants.DOC_TYPE_BLANKET_APPRV_WRKGRP), getUserSession(request).getWorkflowUser())) {
+//			documentTypeForm.setShowBlanketApproveButton(true);
+//		}
 
 		if (documentTypeForm.getDocumentType().getDocumentTypeId() != null && documentTypeForm.getDocumentType().getDocumentTypeId().longValue() != 0) {
 			DocumentType existing = getDocumentTypeService().findById(documentTypeForm.getDocumentType().getDocumentTypeId());

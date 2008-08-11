@@ -29,10 +29,10 @@ import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleAttribute;
-import org.kuali.rice.kew.server.BeanConverter;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
@@ -265,12 +265,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
         DocumentType docType = findById(documentTypeId);
-        return BeanConverter.convertDocumentType(docType);
+        return DTOConverter.convertDocumentType(docType);
     }
 
     public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
         DocumentType documentType = findByName(documentTypeName);
-        return BeanConverter.convertDocumentType(documentType);
+        return DTOConverter.convertDocumentType(documentType);
     }
 
     public synchronized List findAllCurrentRootDocuments() {

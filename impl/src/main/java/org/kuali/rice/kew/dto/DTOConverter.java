@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.server;
+package org.kuali.rice.kew.dto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -162,8 +162,8 @@ import org.w3c.dom.NodeList;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class BeanConverter {
-    private static final Logger LOG = Logger.getLogger(BeanConverter.class);
+public class DTOConverter {
+    private static final Logger LOG = Logger.getLogger(DTOConverter.class);
 
     public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
@@ -883,8 +883,8 @@ public class BeanConverter {
             return null;
         }
         ResponsiblePartyDTO responsiblePartyVO = new ResponsiblePartyDTO();
-        responsiblePartyVO.setWorkgroupId(BeanConverter.convertGroupId(responsibleParty.getGroupId()));
-        responsiblePartyVO.setUserId(BeanConverter.convertUserId(responsibleParty.getUserId()));
+        responsiblePartyVO.setWorkgroupId(DTOConverter.convertGroupId(responsibleParty.getGroupId()));
+        responsiblePartyVO.setUserId(DTOConverter.convertUserId(responsibleParty.getUserId()));
         responsiblePartyVO.setRoleName(responsibleParty.getRoleName());
         return responsiblePartyVO;
     }
@@ -894,8 +894,8 @@ public class BeanConverter {
             return null;
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
-        responsibleParty.setGroupId(BeanConverter.convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId()));
-        responsibleParty.setUserId(BeanConverter.convertUserIdVO(responsiblePartyVO.getUserId()));
+        responsibleParty.setGroupId(DTOConverter.convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId()));
+        responsibleParty.setUserId(DTOConverter.convertUserIdVO(responsiblePartyVO.getUserId()));
         responsibleParty.setRoleName(responsiblePartyVO.getRoleName());
         return responsibleParty;
     }

@@ -31,8 +31,8 @@ import org.kuali.rice.ken.exception.NotificationMessageDeliveryException;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocument;
 
 
 /**

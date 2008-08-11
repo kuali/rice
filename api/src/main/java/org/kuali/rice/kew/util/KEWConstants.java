@@ -807,4 +807,32 @@ public class KEWConstants {
     public static final String SIMPLE_DATE_FORMAT_FOR_TIME = RiceConstants.SIMPLE_DATE_FORMAT_FOR_TIME;
     public static final String DEFAULT_DATE_FORMAT_PATTERN = RiceConstants.DEFAULT_DATE_FORMAT_PATTERN;
 
+	public static final String ACTIONLIST_COMMAND = "displayActionListView";
+
+	public static final String ACTIONLIST_INLINE_COMMAND = "displayActionListInlineView";
+
+	public static final String EMAIL_COMMAND = "displayEmailView";
+
+	public static final String DOCSEARCH_COMMAND = "displayDocSearchView";
+
+	public static final String SUPERUSER_COMMAND = "displaySuperUserView";
+
+	public static final String HELPDESK_ACTIONLIST_COMMAND = "displayHelpDeskActionListView";
+
+	public static final String INITIATE_COMMAND = "initiate";
+
+	public static final String COMMAND_PARAMETER = "command";
+
+	public static final String ROUTEHEADER_ID_PARAMETER = "docId";
+
+	public static final String BACKDOOR_ID_PARAMETER = "backdoorId";
+
+	public static final String DOCTYPE_PARAMETER = "docTypeName";
+
+	public static final String INITIATE_URL = "initiateURL";
+
+	public static final String ADVANCE_SEARCH_URL = "advanceSearchURL";
+
+	public static final String DOCHANDLER_METHOD = "dochandlerMethod";
+
 }

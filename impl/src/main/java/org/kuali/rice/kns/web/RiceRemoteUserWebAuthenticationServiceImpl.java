@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.web.RemoteUserWebAuthenticationService;
+import org.kuali.rice.kew.web.service.impl.RemoteUserWebAuthenticationService;
 
 
 /**

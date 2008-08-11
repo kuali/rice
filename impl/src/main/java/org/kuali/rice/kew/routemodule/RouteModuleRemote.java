@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.clientapp;
+package org.kuali.rice.kew.routemodule;
 
 import java.rmi.RemoteException;
 

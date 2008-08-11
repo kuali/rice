@@ -23,13 +23,13 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 
@@ -47,7 +47,7 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
 
         String docHandler = null;
 
-        if (request.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER) != null) {
+        if (request.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER) != null) {
             RouteHeaderService rhSrv = (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
             DocumentRouteHeaderValue routeHeader = rhSrv.getRouteHeader(docHandlerForm.getDocId());
 
@@ -65,8 +65,8 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             } else {
                 docHandler += "&";
             }
-            docHandler += IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + docHandlerForm.getDocId();
-        } else if (request.getParameter(IDocHandler.DOCTYPE_PARAMETER) != null) {
+            docHandler += KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + docHandlerForm.getDocId();
+        } else if (request.getParameter(KEWConstants.DOCTYPE_PARAMETER) != null) {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());
             docHandler = documentType.getDocHandlerUrl();
@@ -75,15 +75,15 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             } else {
                 docHandler += "&";
             }
-            docHandler += IDocHandler.DOCTYPE_PARAMETER + "=" + docHandlerForm.getDocTypeName();
+            docHandler += KEWConstants.DOCTYPE_PARAMETER + "=" + docHandlerForm.getDocTypeName();
         } else {
 //TODO what should happen here if parms are missing; no proper ActionForward from here
             throw new RuntimeException ("Cannot determine document handler");
         }
 
-        docHandler += "&" + IDocHandler.COMMAND_PARAMETER + "=" + docHandlerForm.getCommand();
+        docHandler += "&" + KEWConstants.COMMAND_PARAMETER + "=" + docHandlerForm.getCommand();
         if (getUserSession(request).isBackdoorInUse()) {
-            docHandler += "&" + IDocHandler.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getNetworkId();
+            docHandler += "&" + KEWConstants.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getNetworkId();
         }
         return new ActionForward(docHandler, true);
     }

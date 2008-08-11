@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.web;
+package org.kuali.rice.kew.web.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.web.service.WebAuthenticationService;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

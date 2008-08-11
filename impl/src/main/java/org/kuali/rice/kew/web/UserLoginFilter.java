@@ -42,6 +42,7 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.service.WebAuthenticationService;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

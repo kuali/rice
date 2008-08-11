@@ -22,12 +22,12 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
-import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.MovePointDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.workflow.test.KEWTestCase;
 

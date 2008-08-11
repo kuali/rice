@@ -585,9 +585,9 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWebAuthenticationService" class="org.kuali.rice.kew.web.RemoteUserWebAuthenticationService"/>
+  <bean id="enWebAuthenticationService" class="org.kuali.rice.kew.web.service.impl.RemoteUserWebAuthenticationService"/>
 
-  <bean id="enWebAuthorizationService" class="org.kuali.rice.kew.web.DefaultWebAuthorizationService"/>
+  <bean id="enWebAuthorizationService" class="org.kuali.rice.kew.web.service.impl.DefaultWebAuthorizationService"/>
 
   <bean id="enUserService" class="org.kuali.rice.kew.user.BaseUserService">
     <property name="userDAO">

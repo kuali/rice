@@ -21,8 +21,6 @@ import java.util.Collection;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
-import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -31,6 +29,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.workflow.test.KEWTestCase;

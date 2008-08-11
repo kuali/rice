@@ -22,9 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.clientapp.IDocHandler;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -170,7 +169,7 @@ public class WorkflowRoutingForm extends ActionForm {
      * @return Returns the superUserSearch.
      */
     public boolean isSuperUserSearch() {
-        return (command != null && command.equals(IDocHandler.SUPERUSER_COMMAND));
+        return (command != null && command.equals(KEWConstants.SUPERUSER_COMMAND));
     }
 
     public String getDocTypeName() {

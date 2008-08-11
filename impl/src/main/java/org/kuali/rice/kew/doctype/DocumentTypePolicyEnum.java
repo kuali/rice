@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -39,8 +38,8 @@ public final class DocumentTypePolicyEnum {
     /**
      * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
      * super user search. If set to false the client must implement a custom super user screen to be used when the doc
-     * handler URL has a post variable of the name defined by {@link IDocHandler#COMMAND_PARAMETER} and a value of
-     * {@link IDocHandler#SUPERUSER_COMMAND}. The default is 'true'.
+     * handler URL has a post variable of the name defined by {@link KEWConstants#COMMAND_PARAMETER} and a value of
+     * {@link KEWConstants#SUPERUSER_COMMAND}. The default is 'true'.
      */
     public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum(KEWConstants.USE_KEW_SUPERUSER_DOCHANDLER);
 

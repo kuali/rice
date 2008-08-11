@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.docsearch.web.DocumentSearchForm;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.RowStyleable;
 
@@ -36,7 +36,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
 
 	private static final long serialVersionUID = 7850758046316186962L;
 	private static String UNKNOWN_ROUTING_STATUS = "UNKNOWN";
-    private static final String URL_SUFFIX = "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=";
+    private static final String URL_SUFFIX = "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=";
 
 	private Long routeHeaderId;
 	private String docRouteStatusCode;

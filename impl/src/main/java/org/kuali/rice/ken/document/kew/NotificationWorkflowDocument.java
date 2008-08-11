@@ -16,9 +16,9 @@
 package org.kuali.rice.ken.document.kew;
 
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocument;
 
 
 /**

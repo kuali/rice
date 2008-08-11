@@ -35,8 +35,6 @@ import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.attribute.ExtensionAttribute;
 import org.kuali.rice.kew.attribute.ExtensionData;
 import org.kuali.rice.kew.attribute.web.WebExtensions;
-import org.kuali.rice.kew.clientapp.IDocHandler;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -50,6 +48,7 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.Routable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -273,7 +272,7 @@ public class WorkgroupAction extends WorkflowAction {
 
     public ActionForward docHandler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         WorkgroupForm workgroupForm = (WorkgroupForm) form;
-        if (IDocHandler.INITIATE_COMMAND.equalsIgnoreCase(workgroupForm.getCommand())) {
+        if (KEWConstants.INITIATE_COMMAND.equalsIgnoreCase(workgroupForm.getCommand())) {
             return start(mapping, form, request, response);
         } else {
             if (workgroupForm.getWorkflowDocument().stateIsInitiated() && workgroupForm.getWorkflowDocument().getRouteHeader().getInitiator().getWorkflowId().equals(getUserSession(request).getWorkflowUser().getWorkflowId())) {

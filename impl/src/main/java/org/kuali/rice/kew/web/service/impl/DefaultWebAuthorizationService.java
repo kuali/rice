@@ -1,7 +1,9 @@
-package org.kuali.rice.kew.web;
+package org.kuali.rice.kew.web.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kew.web.AuthorizationResult;
+import org.kuali.rice.kew.web.service.WebAuthorizationService;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

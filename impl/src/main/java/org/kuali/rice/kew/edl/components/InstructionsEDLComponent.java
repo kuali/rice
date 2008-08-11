@@ -16,11 +16,11 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  *
  */
-public interface WebAuthenticationService extends org.kuali.rice.kew.web.WebAuthenticationService {
+public interface WebAuthenticationService extends org.kuali.rice.kew.web.service.WebAuthenticationService {
     /**
      * This method retrieves the network id from the servlet request.
      *

@@ -17,10 +17,10 @@
 package org.kuali.rice.kew.rule;
 
 import org.junit.Test;
-import org.kuali.rice.kew.clientapp.WorkflowInfo;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.workflow.test.KEWTestCase;
 
 

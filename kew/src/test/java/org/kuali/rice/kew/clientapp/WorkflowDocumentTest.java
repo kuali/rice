@@ -18,13 +18,13 @@ package org.kuali.rice.kew.clientapp;
 
 
 import org.junit.Test;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.workflow.test.KEWTestCase;
 
 

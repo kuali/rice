@@ -17,8 +17,8 @@ package org.kuali.rice.ken.service;
 
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocument;
 
 
 /**

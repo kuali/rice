@@ -29,8 +29,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.clientapp.IDocHandler;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -42,6 +40,7 @@ import org.kuali.rice.kew.routing.web.DocHandlerForm;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -170,7 +169,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 
     public ActionForward docHandler(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
-        if (IDocHandler.INITIATE_COMMAND.equalsIgnoreCase(form.getCommand())) {
+        if (KEWConstants.INITIATE_COMMAND.equalsIgnoreCase(form.getCommand())) {
             return start(mapping, form, request, response);
         }
         Long documentId = form.getDocId();

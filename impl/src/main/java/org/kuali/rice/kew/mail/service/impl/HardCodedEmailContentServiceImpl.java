@@ -26,7 +26,6 @@ import java.util.LinkedHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -60,8 +59,8 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         } else {
             docHandlerUrl += "&";
         }
-        docHandlerUrl += IDocHandler.ROUTEHEADER_ID_PARAMETER + "=" + actionItem.getRouteHeaderId();
-        docHandlerUrl += "&" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.ACTIONLIST_COMMAND;
+        docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + actionItem.getRouteHeaderId();
+        docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.ACTIONLIST_COMMAND;
         StringBuffer emailBody = new StringBuffer();
 
         emailBody.append("Your OneStart Action List has an eDoc(electronic document) that needs your attention: \n\n");

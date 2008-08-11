@@ -50,7 +50,7 @@ public class WebAuthenticationServiceCas implements WebAuthenticationService {
     }
 
     /**
-     * @see org.kuali.rice.kew.web.WebAuthenticationService#updateUserSession(org.kuali.rice.kew.web.session.UserSession,
+     * @see org.kuali.rice.kew.web.service.WebAuthenticationService#updateUserSession(org.kuali.rice.kew.web.session.UserSession,
      *      javax.servlet.http.HttpServletRequest)
      */
     public UserSession updateUserSession(UserSession userSession, HttpServletRequest request) {

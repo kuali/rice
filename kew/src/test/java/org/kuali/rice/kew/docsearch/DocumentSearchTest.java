@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kew.clientapp.IDocHandler;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
@@ -40,6 +38,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookupable.DocumentTypeLookupableImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -271,7 +270,7 @@ public class DocumentSearchTest extends KEWTestCase {
 	    KeyValueSort kvs = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, kvs);
 	    assertTrue("The document handler redirect for the client should be included in the route header id url", kvs.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
-	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().indexOf(IDocHandler.SUPERUSER_COMMAND) != -1);
+	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().indexOf(KEWConstants.SUPERUSER_COMMAND) != -1);
 	}
 
         user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
@@ -288,7 +287,7 @@ public class DocumentSearchTest extends KEWTestCase {
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL, documentTypeValue);
 	    if (customDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
 		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) != -1);
-		assertTrue("The document handler redirect for the client should include the command value for super user search", routeHeaderIdValue.getValue().indexOf(IDocHandler.SUPERUSER_COMMAND) != -1);
+		assertTrue("The document handler redirect for the client should include the command value for super user search", routeHeaderIdValue.getValue().indexOf(KEWConstants.SUPERUSER_COMMAND) != -1);
 	    } else if (standardDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
 		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().indexOf(KEWConstants.DOC_HANDLER_REDIRECT_PAGE) == -1);
 	    } else {

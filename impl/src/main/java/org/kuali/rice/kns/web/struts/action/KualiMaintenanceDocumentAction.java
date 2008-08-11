@@ -43,7 +43,7 @@ import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
@@ -448,7 +448,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         super.docHandler(mapping, form, request, response);
         KualiMaintenanceForm kualiMaintenanceForm = (KualiMaintenanceForm) form;
 
-        if (IDocHandler.ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) || IDocHandler.DOCSEARCH_COMMAND.equals(kualiMaintenanceForm.getCommand()) || IDocHandler.SUPERUSER_COMMAND.equals(kualiMaintenanceForm.getCommand()) || IDocHandler.HELPDESK_ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) && kualiMaintenanceForm.getDocId() != null) {
+        if (KEWConstants.ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.DOCSEARCH_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.SUPERUSER_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.HELPDESK_ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) && kualiMaintenanceForm.getDocId() != null) {
             if (kualiMaintenanceForm.getDocument() instanceof MaintenanceDocument) {
                 kualiMaintenanceForm.setReadOnly(true);
                 kualiMaintenanceForm.setMaintenanceAction(((MaintenanceDocument) kualiMaintenanceForm.getDocument()).getNewMaintainableObject().getMaintenanceAction());
@@ -466,7 +466,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 throw new IllegalStateException("Document is not a maintenance document");
             }
         }
-        else if (IDocHandler.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
+        else if (KEWConstants.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
             kualiMaintenanceForm.setReadOnly(false);
             return setupMaintenance(mapping, form, request, response, KNSConstants.MAINTENANCE_NEW_ACTION);
         }

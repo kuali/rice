@@ -21,11 +21,11 @@ import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -134,7 +134,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     }
     
     /**
-     * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.clientapp.WorkflowDocument)
+     * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.service.WorkflowDocument)
      */
     public void terminateWorkflowDocument(WorkflowDocument document) throws WorkflowException {
         document.superUserCancel("terminating document: routeHeaderId=" + document.getRouteHeaderId() + ", appDocId=" + document.getAppDocId());

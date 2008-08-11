@@ -34,7 +34,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.kew.clientapp.IDocHandler;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -183,7 +183,7 @@ public class NotificationController extends MultiActionController {
         String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
         String delivererId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.DELIVERER_ID);
         if (delivererId == null) {
-            delivererId = request.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER);
+            delivererId = request.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER);
         }
 
         NotificationMessageDelivery messageDelivery;
@@ -215,7 +215,7 @@ public class NotificationController extends MultiActionController {
      * @return whether the incoming request was from the action list
      */
     protected boolean requestIsFromKEW(HttpServletRequest req) {
-        return req.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER) != null;
+        return req.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER) != null;
     }
 
     /**

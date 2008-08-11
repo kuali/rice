@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -176,10 +175,10 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		} else {
 			docHandlerUrl += "&";
 		}
-		docHandlerUrl += IDocHandler.ROUTEHEADER_ID_PARAMETER + "="
+		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
 				+ actionItem.getRouteHeaderId();
-		docHandlerUrl += "&" + IDocHandler.COMMAND_PARAMETER + "="
-				+ IDocHandler.ACTIONLIST_COMMAND;
+		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
+				+ KEWConstants.ACTIONLIST_COMMAND;
 		StringBuffer sf = new StringBuffer();
 
 		sf

@@ -18,9 +18,9 @@ package org.kuali.rice.kew.workgroup;
 
 import java.util.List;
 
-import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.identity.Id;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

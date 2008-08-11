@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.clientapp;
+package org.kuali.rice.kew.web.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.web.UserLoginFilter;
-import org.kuali.rice.kew.web.WebAuthenticationService;
+import org.kuali.rice.kew.web.service.WebAuthenticationService;
 import org.kuali.rice.kew.web.session.UserSession;
 
 

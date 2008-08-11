@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
@@ -96,7 +95,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentActionBase.class);
 
     // COMMAND constants which cause docHandler to load an existing document instead of creating a new one
-    private static final String[] DOCUMENT_LOAD_COMMANDS = { IDocHandler.ACTIONLIST_COMMAND, IDocHandler.DOCSEARCH_COMMAND, IDocHandler.SUPERUSER_COMMAND, IDocHandler.HELPDESK_ACTIONLIST_COMMAND };
+    private static final String[] DOCUMENT_LOAD_COMMANDS = { KEWConstants.ACTIONLIST_COMMAND, KEWConstants.DOCSEARCH_COMMAND, KEWConstants.SUPERUSER_COMMAND, KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
 
     protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
@@ -273,7 +272,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && kualiDocumentFormBase.getDocId() != null) {
             loadDocument(kualiDocumentFormBase);
         }
-        else if (IDocHandler.INITIATE_COMMAND.equals(command)) {
+        else if (KEWConstants.INITIATE_COMMAND.equals(command)) {
             createDocument(kualiDocumentFormBase);
         }
         else {
@@ -289,7 +288,7 @@ public class KualiDocumentActionBase extends KualiAction {
             DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry( kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentType() );
             kualiDocumentFormBase.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
-        if (IDocHandler.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
+        if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
             kualiDocumentFormBase.setSuppressAllButtons(true);
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);

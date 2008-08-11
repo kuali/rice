@@ -3,6 +3,6 @@
  
 <beans>
   <bean class="org.kuali.rice.kew.config.spring.WorkflowPropertyPlaceholderConfigurer" />
-  <import resource="../../../../../../TestSpring.xml"/>
+  <import resource="classpath:org/kuali/rice/kew/test/config/TestSpring.xml"/>
   <import resource="SearchableAttributesSpringBeans.xml"/>
 </beans>

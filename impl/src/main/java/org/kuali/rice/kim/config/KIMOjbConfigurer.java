@@ -24,7 +24,7 @@ import org.kuali.rice.core.ojb.BaseOjbConfigurer;
  */
 public class KIMOjbConfigurer extends BaseOjbConfigurer {
 
-	private static final String DEFAULT_KIM_REPOSITORY_METADATA = "classpath:OJB-repository-kim.xml";
+	private static final String DEFAULT_KIM_REPOSITORY_METADATA = "classpath:org/kuali/rice/kim/config/OJB-repository-kim.xml";
 	private static final String KIM_JCD_ALIAS = "kimDataSource";
 
 	/**

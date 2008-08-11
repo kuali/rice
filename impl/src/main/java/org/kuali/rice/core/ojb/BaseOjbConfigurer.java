@@ -87,7 +87,7 @@ public class BaseOjbConfigurer extends BaseLifecycle {
      * @param moduleName the module name
      */
     public BaseOjbConfigurer(String moduleName) {
-        this.metadataLocation = "classpath:org/kuali/rice/" + moduleName.toLowerCase() + "/OJB-repository-" + moduleName.toLowerCase() + ".xml";
+        this.metadataLocation = "classpath:org/kuali/rice/" + moduleName.toLowerCase() + "/config/OJB-repository-" + moduleName.toLowerCase() + ".xml";
         this.jcdAliases = new String[] { moduleName.toLowerCase() + "DataSource" };
     }
 

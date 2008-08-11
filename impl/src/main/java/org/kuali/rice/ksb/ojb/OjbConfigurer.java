@@ -19,7 +19,7 @@ import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 public class OjbConfigurer extends BaseOjbConfigurer {
 
-	private static final String DEFAULT_KSB_REPOSITORY_METADATA = "classpath:OJB-repository-ksb.xml";
+	private static final String DEFAULT_KSB_REPOSITORY_METADATA = "classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml";
 	private static final String KSB_MESSAGE_JCD_ALIAS = "ksbMessageDataSource";
 	private static final String KSB_REGISTRY_JCD_ALIAS = "ksbRegistryDataSource";
 

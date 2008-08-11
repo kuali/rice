@@ -35,6 +35,7 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 public class KNSResourceLoaderFactory {
 
 	private static final String KNS_SPRING_RESOURCE_LOADER_LOCAL_NAME = "KNS_SPRING_RESOURCE_LOADER";
+	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
 	
 	private static void initialize() {
 		if (getSpringResourceLoaderName() == null) {
@@ -45,7 +46,7 @@ public class KNSResourceLoaderFactory {
 	public static ResourceLoader createRootKNSResourceLoader() {
 		initialize();
 		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), 
-				"KNSSpringBeans.xml");
+				KNS_SPRING_BEANS_PATH);
 		GlobalResourceLoader.addResourceLoaderFirst(resourceLoader);
 		return resourceLoader;
 	}

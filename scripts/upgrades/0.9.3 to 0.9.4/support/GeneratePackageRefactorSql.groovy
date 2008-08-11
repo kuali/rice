@@ -1,7 +1,6 @@
-URL scriptUrl = getClass().classLoader.resourceLoader.loadGroovySource(getClass().name)
 
 
-// generates master drop and create sql
+// generates sql for updating data for package refactoring, KULRICE-1712
 
 PROJECT_DIR = '/java/projects/rice'
 
@@ -15,24 +14,88 @@ count = 0
 for (arg in args) {
    	if (arg == '-pdir') PROJECT_DIR = args[count + 1]
 	count++
-}	
+}
 
 EOL = '\r\n'
 // set up variables based on PROJECT_DIR
 // Just add comma separated values for ignored DDL
-IGNORES = ['FS_UNIVERSAL_USR_T','SH_CMP_TYP_T','SH_CAMPUS_T','SH_EMP_STAT_T','SH_EMP_TYP_T']
-MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom', 'kcb']
-MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
-MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
+OUTPUT_DIR = PROJECT_DIR + '/scripts/upgrades/0.9.3 to 0.9.4/'
+OUTPUT_FILE = OUTPUT_DIR + 'package-refactor.sql'
+INPUT_DIR = OUTPUT_DIR + 'support/'
 
-SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql'
-SAMPLEAPP_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql'
-
-MASTERSAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sampleapp_destroy.sql' 
-MASTERSAMPLEAPP_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sampleapp_create.sql'
+RULE_ATTRS = INPUT_DIR + 'RuleAttributeMappings.txt'
+RULES = INPUT_DIR + 'RuleMappings.txt'
+POST_PROCS = INPUT_DIR + 'PostProcessorMappings.txt'
+NODES = INPUT_DIR + 'NodeMappings.txt'
 
 // prompt and read user input
-println warningtext()
+println warningtext()	
+input = new BufferedReader(new InputStreamReader(System.in))
+answer = input.readLine()
+if (!"yes".equals(answer.trim().toLowerCase())) {
+    System.exit(2)
+}
+
+File outFile = new File(OUTPUT_FILE)
+outFile.delete()
+
+outFile.withWriter { out ->
+
+File f = new File(RULE_ATTRS)
+f.eachLine {
+		        ln -> 
+		        if (! ln.trim().equals("")) {
+		        	splitLine = ln.split(',')
+		        	oldVal = splitLine[0].trim()
+		        	newVal = splitLine[1].trim()
+		        	out.writeLine("UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='${newVal}' WHERE RULE_ATTRIB_CLS_NM='${oldVal}'")
+		        	out.writeLine("/")
+		        }
+		    }
+	out.newLine()
+
+f = new File(RULES)
+f.eachLine {
+		        ln -> 
+		        if (! ln.trim().equals("")) {
+		        	splitLine = ln.split(',')
+		        	oldVal = splitLine[0].trim()
+		        	newVal = splitLine[1].trim()
+		        	out.writeLine("UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='${newVal}' WHERE RULE_RSP_NM='${oldVal}'")
+		        	out.writeLine("/")
+		        }
+		    }
+	out.newLine()
+
+f = new File(POST_PROCS)
+f.eachLine {
+		        ln -> 
+		        if (! ln.trim().equals("")) {
+		        	splitLine = ln.split(',')
+		        	oldVal = splitLine[0].trim()
+		        	newVal = splitLine[1].trim()
+		        	out.writeLine("UPDATE EN_DOC_TYP_T SET DOC_TYP_POST_PRCSR_NM='${newVal}' WHERE DOC_TYP_POST_PRCSR_NM='${oldVal}'")
+		        	out.writeLine("/")
+		        }
+		    }
+	out.newLine()
+
+f = new File(NODES)
+f.eachLine {
+		        ln -> 
+		        if (! ln.trim().equals("")) {
+		        	splitLine = ln.split(',')
+		        	oldVal = splitLine[0].trim()
+		        	newVal = splitLine[1].trim()
+		        	out.writeLine("UPDATE EN_RTE_NODE_T SET RTE_NODE_TYP='${newVal}' WHERE RTE_NODE_TYP='${oldVal}'")
+		        	out.writeLine("/")
+		        }
+		    }
+	out.newLine()
+}
+
+System.exit(0)
+
 input = new BufferedReader(new InputStreamReader(System.in))
 answer = input.readLine()
 if (!"yes".equals(answer.trim().toLowerCase())) {
@@ -201,9 +264,8 @@ def warningtext() {
 ==================================================================
                             WARNING 
 ==================================================================
-It will create or replace the following files:
-    1) ${MASTER_DESTROY_SQL}
-    2) ${MASTER_CREATE_SQL}
+It will create or replace the following file:
+    ${OUTPUT_FILE}
 
 If this is not what you want, please supply more information:
     usage: groovy dball.groovy [-pdir PROJECT_DIR]

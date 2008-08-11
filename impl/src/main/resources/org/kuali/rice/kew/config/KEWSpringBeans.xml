@@ -319,7 +319,7 @@
     <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
 
 	<!-- Exception routing service -->
-	<bean id="enExceptionRoutingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
+	<bean id="enExceptionRoutingService" class="org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
 
 	<!--  PreferencesService -->
 	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />

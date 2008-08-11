@@ -1,0 +1,16 @@
+edu.iu.uis.eden.engine.node.InitialNode, org.kuali.rice.kew.engine.node.InitialNode
+edu.iu.uis.eden.engine.node.NoOpNode, org.kuali.rice.kew.engine.node.NoOpNode
+edu.iu.uis.eden.engine.node.RequestsNode, org.kuali.rice.kew.engine.node.RequestsNode
+edu.iu.uis.eden.engine.node.SimpleJoinNode, org.kuali.rice.kew.engine.node.SimpleJoinNode
+edu.iu.uis.eden.engine.node.SimpleSplitNode, org.kuali.rice.kew.engine.node.SimpleSplitNode
+edu.iu.uis.eden.engine.node.FYIByNetworkId, org.kuali.rice.kew.engine.node.FYIByNetworkId
+edu.iu.uis.eden.engine.node.FYIByUniversityId, org.kuali.rice.kew.engine.node.FYIByUniversityId
+edu.iu.uis.eden.engine.node.DynamicNode, org.kuali.rice.kew.engine.node.DynamicNode
+edu.iu.uis.eden.engine.node.IteratedRequestActivationNode, org.kuali.rice.kew.engine.node.IteratedRequestActivationNode
+edu.iu.uis.eden.engine.node.KRAMetaRuleNode, org.kuali.rice.kew.engine.node.KRAMetaRuleNode
+edu.iu.uis.eden.engine.node.LogNode, org.kuali.rice.kew.engine.node.LogNode
+edu.iu.uis.eden.engine.node.RequestActivationNode, org.kuali.rice.kew.engine.node.RequestActivationNode
+edu.iu.uis.eden.engine.node.SimpleSubProcessNode, org.kuali.rice.kew.engine.node.SimpleSubProcessNode
+edu.iu.uis.eden.engine.node.HierarchyRoutingNode, org.kuali.rice.kew.engine.node.HierarchyRoutingNode
+edu.iu.uis.eden.engine.node.EmailNode, org.kuali.rice.kew.engine.node.EmailNode
+edu.iu.uis.eden.engine.node.SetVarNode, org.kuali.rice.kew.engine.node.SetVarNode

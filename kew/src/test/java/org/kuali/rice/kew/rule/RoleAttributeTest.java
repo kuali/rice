@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

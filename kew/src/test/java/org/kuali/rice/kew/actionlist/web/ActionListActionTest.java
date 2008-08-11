@@ -26,8 +26,8 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.workflow.test.KEWHtmlUnitTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;

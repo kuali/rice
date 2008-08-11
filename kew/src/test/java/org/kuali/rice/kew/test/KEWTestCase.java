@@ -11,7 +11,7 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.workflow.test;
+package org.kuali.rice.kew.test;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,9 +25,6 @@ import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTransactionalTest;
-import org.kuali.rice.kew.test.SQLDataLoader;
-import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
@@ -123,7 +120,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 */
 	@Override
 	public void setUpInternal() throws Exception {
-	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "classpath:org/kuali/rice/kew/test/config/TestKEWSpringBeans.xml");
+	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "classpath:org/kuali/rice/kew/config/TestKEWSpringBeans.xml");
 	    super.setUpInternal();
 	    loadTestDataInternal();
 	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);

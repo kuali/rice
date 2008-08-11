@@ -33,8 +33,8 @@
 package org.kuali.rice.kew.edl;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
-import org.kuali.workflow.test.TestUtils;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtils;
 
 /**
  * Tests the web GUI for the ActionList.

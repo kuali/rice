@@ -25,7 +25,7 @@ import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

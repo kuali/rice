@@ -33,9 +33,9 @@ import org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

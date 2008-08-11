@@ -33,6 +33,7 @@ import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -40,7 +41,6 @@ import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class BeanConverterTester extends KEWTestCase {

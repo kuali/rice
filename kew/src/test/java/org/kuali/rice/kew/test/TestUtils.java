@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.workflow.test;
+package org.kuali.rice.kew.test;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

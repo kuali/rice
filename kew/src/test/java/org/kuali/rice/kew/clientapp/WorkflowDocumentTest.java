@@ -25,7 +25,7 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.workflow.workgroup;
+package org.kuali.rice.kew.workgroup;
 
 import java.util.List;
 
@@ -22,13 +22,13 @@ import org.junit.Test;
 import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.attribute.ExtensionData;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute;
 import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

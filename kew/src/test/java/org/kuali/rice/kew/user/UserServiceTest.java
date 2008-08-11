@@ -23,6 +23,7 @@ import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
@@ -30,7 +31,6 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.UuId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class UserServiceTest extends KEWTestCase {

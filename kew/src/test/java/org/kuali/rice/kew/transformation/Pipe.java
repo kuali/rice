@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.xml.serializer.OutputPropertiesFactory;
 import org.apache.xml.serializer.Serializer;
 import org.apache.xml.serializer.SerializerFactory;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;

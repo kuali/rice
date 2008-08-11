@@ -33,6 +33,7 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 public class KIMResourceLoaderFactory {
 
 	private static final String KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME = "KIM_SPRING_RESOURCE_LOADER";
+	private static final String KIM_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMSpringBeans.xml";
 	
 	/**
 	 * This method initializes the resource loader for KIM.
@@ -50,8 +51,7 @@ public class KIMResourceLoaderFactory {
 	 */
 	public static ResourceLoader createRootKIMResourceLoader() {
 		initialize();
-		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), 
-				"KIMSpringBeans.xml");
+		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), KIM_SPRING_BEANS_PATH);
 		GlobalResourceLoader.addResourceLoaderFirst(resourceLoader);
 		return resourceLoader;
 	}

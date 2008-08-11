@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.dao.HelpDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.KEWTransactionalTest;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 

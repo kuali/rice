@@ -48,7 +48,7 @@ public abstract class NotificationWebServiceTestCaseBase extends NotificationTes
 
     protected ApplicationContext getContext() {
         //return applicationContext;
-        return new ClassPathXmlApplicationContext("KENSpringBeans-test.xml");
+        return new ClassPathXmlApplicationContext("classpath:org/kuali/rice/ken/config/KENSpringBeans-test.xml");
     }
 
     protected Server createWebServiceServer(int port) {

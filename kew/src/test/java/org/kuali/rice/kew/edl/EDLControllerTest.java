@@ -26,7 +26,7 @@ import org.kuali.rice.kew.edl.EDLController;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Element;
 

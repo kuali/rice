@@ -39,12 +39,12 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookupable.DocumentTypeLookupableImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class DocumentSearchTest extends KEWTestCase {

@@ -30,8 +30,8 @@ import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginUtils;
 import org.kuali.rice.kew.plugin.Reloader;
 import org.kuali.rice.kew.plugin.ServerPluginRegistry;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

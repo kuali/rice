@@ -29,9 +29,9 @@ import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {

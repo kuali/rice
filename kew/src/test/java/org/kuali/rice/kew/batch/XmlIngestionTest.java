@@ -27,8 +27,8 @@ import java.util.Properties;
 
 import org.junit.Test;
 import org.kuali.rice.kew.batch.XmlPollerServiceImpl;
-import org.kuali.workflow.test.KEWTestCase;
-import org.kuali.workflow.test.TestUtils;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;

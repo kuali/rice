@@ -26,10 +26,10 @@ import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class EmailReminderLifecycleTest extends KEWTestCase {

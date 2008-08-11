@@ -43,7 +43,7 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 

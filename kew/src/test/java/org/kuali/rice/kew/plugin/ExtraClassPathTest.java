@@ -26,8 +26,8 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.plugin.PluginEnvironment;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

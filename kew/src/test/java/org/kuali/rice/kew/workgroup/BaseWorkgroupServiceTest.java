@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -35,7 +36,6 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

@@ -21,12 +21,12 @@
     a "fake" service, used by ServiceInvocationRuleTest; in an ideal demonstration this would live in
     application space/context/resource loader, but for now it's still in the KEW module context  
   -->
-  <bean id="fakeService" class="org.kuali.workflow.test.FakeServiceImpl"/>
+  <bean id="fakeService" class="org.kuali.rice.kew.test.FakeServiceImpl"/>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="serviceDefinition">
       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-        <property name="serviceInterface"><value>org.kuali.workflow.test.FakeService</value></property>
+        <property name="serviceInterface"><value>org.kuali.rice.kew.test.FakeService</value></property>
         <property name="service">
           <ref bean="fakeService"/>
         </property>

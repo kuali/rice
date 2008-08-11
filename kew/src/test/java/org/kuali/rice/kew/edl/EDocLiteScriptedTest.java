@@ -18,7 +18,7 @@ package org.kuali.rice.kew.edl;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 public class EDocLiteScriptedTest extends KEWTestCase {
     /**

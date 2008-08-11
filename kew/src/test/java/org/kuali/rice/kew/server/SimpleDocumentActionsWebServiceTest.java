@@ -43,6 +43,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.ErrorResponse;
@@ -53,7 +54,6 @@ import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

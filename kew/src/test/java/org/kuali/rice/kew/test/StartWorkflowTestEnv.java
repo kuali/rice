@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.test;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

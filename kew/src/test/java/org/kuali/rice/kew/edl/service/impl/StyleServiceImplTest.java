@@ -37,8 +37,8 @@ import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.edl.service.impl.StyleServiceImpl;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

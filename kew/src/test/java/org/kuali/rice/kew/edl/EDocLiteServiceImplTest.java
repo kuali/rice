@@ -37,9 +37,9 @@ import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 
 

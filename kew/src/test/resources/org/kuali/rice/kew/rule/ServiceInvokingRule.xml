@@ -30,7 +30,7 @@
             <expression type="BSF:groovy">
                 import org.kuali.rice.kew.rule.RuleExpressionResult
                 import org.kuali.rice.core.resourceloader.*
-                import org.kuali.workflow.test.FakeService
+                import org.kuali.rice.kew.test.FakeService
                 import javax.xml.namespace.QName
 
                 println 'ServiceInvocationRule invoking FakeService...'

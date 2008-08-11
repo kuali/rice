@@ -26,8 +26,8 @@ import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class NoteServiceTest extends KEWTestCase {

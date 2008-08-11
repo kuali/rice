@@ -25,7 +25,7 @@ import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

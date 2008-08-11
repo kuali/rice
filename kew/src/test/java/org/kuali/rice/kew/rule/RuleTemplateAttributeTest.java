@@ -23,7 +23,7 @@ import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

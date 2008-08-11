@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.workflow.role;
+package org.kuali.rice.kew.role;
 
 import java.sql.Timestamp;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.kew.role.RoleAttribute;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**

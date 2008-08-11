@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.xml.export;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 public abstract class XmlExporterTestCase extends KEWTestCase {
 

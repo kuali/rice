@@ -37,12 +37,12 @@ import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class DocumentTypeTest extends KEWTestCase {

@@ -35,10 +35,10 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.test.BaseRiceTestCase;
-import org.kuali.workflow.test.TestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;

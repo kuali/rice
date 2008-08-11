@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.workflow.workgroup;
+package org.kuali.rice.kew.workgroup;
 
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute;
 import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 /**

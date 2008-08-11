@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.xml;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 public class XmlImportTest extends KEWTestCase {

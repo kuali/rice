@@ -35,8 +35,8 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase.ClearCacheLifecycle;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 
 
 /**

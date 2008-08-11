@@ -34,9 +34,9 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.xml.RuleXmlParser;
-import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.test.AssertThrows;
 
 

@@ -28,8 +28,8 @@ import org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider.S
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

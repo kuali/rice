@@ -5,5 +5,5 @@
      includes common notification spring beans
      does not include security beans not required for unit tests -->
 <beans>
-  <import resource="KENSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/ken/config/KENSpringBeans.xml"/>
 </beans>

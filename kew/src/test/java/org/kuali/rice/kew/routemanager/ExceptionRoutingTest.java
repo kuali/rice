@@ -31,9 +31,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-import org.kuali.workflow.test.KEWTestCase;
 
 
 public class ExceptionRoutingTest extends KEWTestCase {

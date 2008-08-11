@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -166,7 +166,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 	/**
 	 * Required to support flex routing report
 	 * 
-	 * @see org.kuali.rice.kew.routetemplate.WorkflowAttribute#getFieldConversions()
+	 * @see org.kuali.rice.kew.rule.WorkflowAttribute#getFieldConversions()
 	 */
 	public List getFieldConversions() {
 		List conversionFields = new ArrayList();

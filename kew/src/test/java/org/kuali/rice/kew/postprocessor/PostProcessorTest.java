@@ -17,8 +17,6 @@
 package org.kuali.rice.kew.postprocessor;
 
 import org.junit.Test;
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;

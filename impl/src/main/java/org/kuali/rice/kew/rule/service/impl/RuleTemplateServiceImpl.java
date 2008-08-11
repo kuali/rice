@@ -67,7 +67,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
     /*
      * (non-Javadoc)
      * 
-     * @see org.kuali.rice.kew.routetemplate.RuleTemplateAttributeService#delete(java.lang.Long)
+     * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#delete(java.lang.Long)
      */
 //    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes) {
 //
@@ -92,7 +92,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
     /*
      * (non-Javadoc)
      * 
-     * @see org.kuali.rice.kew.routetemplate.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
+     * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
      */
     public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
         return getRuleTemplateAttributeDAO().findByRuleTemplateAttributeId(ruleTemplateAttributeId);

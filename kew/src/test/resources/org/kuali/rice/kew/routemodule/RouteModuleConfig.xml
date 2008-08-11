@@ -10,7 +10,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>ChartOrgAttribute</name>
-			<className>org.kuali.rice.kew.routetemplate.attribute.ChartOrgAttribute</className>
+			<className>org.kuali.rice.kew.rule.attribute.ChartOrgAttribute</className>
 			<label>Chart Org Attribute</label>
 			<description>Chart Org Attribute</description>
 			<type>RuleAttribute</type>

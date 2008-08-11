@@ -552,7 +552,7 @@
 
 
   <!--  StatsService -->
-  <bean id="enStatsService" class="org.kuali.rice.kew.stats.StatsServiceImpl">
+  <bean id="enStatsService" class="org.kuali.rice.kew.stats.service.impl.StatsServiceImpl">
     <property name="statsDAO">
       <ref bean="enStatsDAO" />
     </property>
@@ -646,7 +646,7 @@
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
-    <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.service.impl.SimpleDocumentActionsWebServiceImpl"/>
+    <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.webservice.impl.SimpleDocumentActionsWebServiceImpl"/>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="serviceDefinition">

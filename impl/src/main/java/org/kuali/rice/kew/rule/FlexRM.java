@@ -73,7 +73,7 @@ public class FlexRM {
     /**
      * Package in which rule selector implementations live
      */
-    private static final String RULE_SELECTOR_PACKAGE = "org.kuali.rice.kew.routetemplate";
+    private static final String RULE_SELECTOR_PACKAGE = "org.kuali.rice.kew.rule";
     /**
      * The class name suffix all rule selectors should have; e.g. FooRuleSelector
      */

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routetemplate.TestRuleAttribute;
+import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 

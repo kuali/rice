@@ -72,7 +72,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
-                import org.kuali.rice.kew.routetemplate.*
+                import org.kuali.rice.kew.rule.*
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule1 is executing...'
@@ -133,7 +133,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
-                import org.kuali.rice.kew.routetemplate.*
+                import org.kuali.rice.kew.rule.*
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule4 is executing...'
@@ -155,7 +155,7 @@
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
-                import org.kuali.rice.kew.routetemplate.*
+                import org.kuali.rice.kew.rule.*
                 print "KRABizRule5 is executing..."
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
@@ -176,7 +176,7 @@
             -->
             <expression type="BSF:groovy">
                 import java.util.*
-                import org.kuali.rice.kew.routetemplate.*
+                import org.kuali.rice.kew.rule.*
 
                 responsibilityPriority = 0
                 responsibilities = new ArrayList()

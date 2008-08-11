@@ -35,7 +35,7 @@ class RuleImpl implements Rule {
     /**
      * Package in which rule expression implementations live
      */
-    private static final String RULE_EXPRESSION_PACKAGE = "org.kuali.rice.kew.routetemplate";
+    private static final String RULE_EXPRESSION_PACKAGE = "org.kuali.rice.kew.rule";
     /**
      * The class name suffix all rule expressions should have; e.g. FooRuleExpression
      */

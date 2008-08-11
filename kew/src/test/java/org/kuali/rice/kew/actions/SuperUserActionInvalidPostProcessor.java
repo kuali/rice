@@ -19,16 +19,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.rice.kew.ActionTakenEvent;
-import org.kuali.rice.kew.AfterProcessEvent;
-import org.kuali.rice.kew.BeforeProcessEvent;
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
-import org.kuali.rice.kew.clientapp.DeleteEvent;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 

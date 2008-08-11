@@ -28,7 +28,6 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.kew.clientapp.PostProcessorRemote;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
@@ -38,6 +37,7 @@ import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -65,7 +65,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     /**
      * Need to intercept ACKNOWLEDGE or FYI actions taken on notification workflow documents and set the local state of the 
      * Notification to REMOVED as well.
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
@@ -136,35 +136,35 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     }
 
     /**
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
      */
     public boolean doDeleteRouteHeader(DeleteEventDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
     public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
         return true;
     }
 
     /**
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
      */
     public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
         return true;
     }
 
     /**
-     * @see org.kuali.rice.kew.clientapp.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
      */
     public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return true;

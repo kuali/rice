@@ -21,7 +21,6 @@ import java.io.Serializable;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -31,6 +30,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.test.TestUtilities;

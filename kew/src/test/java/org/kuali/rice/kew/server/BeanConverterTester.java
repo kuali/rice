@@ -32,7 +32,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.routetemplate.TestRuleAttribute;
+import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;

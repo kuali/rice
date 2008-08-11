@@ -16,12 +16,12 @@
  */
 package org.kuali.rice.kew.routemanager;
 
-import org.kuali.rice.kew.ActionTakenEvent;
-import org.kuali.rice.kew.AfterProcessEvent;
-import org.kuali.rice.kew.BeforeProcessEvent;
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
-import org.kuali.rice.kew.clientapp.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.util.KEWConstants;

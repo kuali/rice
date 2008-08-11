@@ -3,7 +3,7 @@
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
     <ruleAttribute>
       <name>TestRuleValidationAttribute</name>
-      <className>org.kuali.rice.kew.routetemplate.TestRuleValidationAttribute</className>
+      <className>org.kuali.rice.kew.rule.TestRuleValidationAttribute</className>
       <label>Test Rule Validation Attribute</label>
       <description>Test Rule Validation Attribute</description>
       <type>RuleValidationAttribute</type>

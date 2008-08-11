@@ -28,7 +28,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 public class RuleRoutingDefinition extends WorkflowAttributeDefinitionDTO {
         
 	private static final long serialVersionUID = -5633697385117416044L;
-	private static final String RULE_ROUTING_ATTRIBUTE_CLASS = "org.kuali.rice.kew.routetemplate.RuleRoutingAttribute";
+	private static final String RULE_ROUTING_ATTRIBUTE_CLASS = "org.kuali.rice.kew.rule.RuleRoutingAttribute";
         
 	public RuleRoutingDefinition(String docTypeName) {
 		this();

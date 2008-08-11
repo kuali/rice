@@ -37,12 +37,12 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.ActionTakenEvent;
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.clientapp.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.Utilities;

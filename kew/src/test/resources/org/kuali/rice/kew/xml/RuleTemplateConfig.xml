@@ -6,35 +6,35 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>TemplateTestRuleAttribute1</name>
-			<className>org.kuali.rice.kew.routetemplate.TestRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.TestRuleAttribute</className>
 			<label>Test Rule Attribute 1</label>
 			<description>Test Rule Attribute 1</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>TemplateTestRuleAttribute2</name>
-			<className>org.kuali.rice.kew.routetemplate.TestRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.TestRuleAttribute</className>
 			<label>Test Rule Attribute 2</label>
 			<description>Test Rule Attribute 2</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>TemplateTestRuleAttribute3</name>
-			<className>org.kuali.rice.kew.routetemplate.TestRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.TestRuleAttribute</className>
 			<label>Test Rule Attribute 3</label>
 			<description>Test Rule Attribute 3</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>TemplateTestRuleAttribute4</name>
-			<className>org.kuali.rice.kew.routetemplate.TestRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.TestRuleAttribute</className>
 			<label>Test Rule Attribute 4</label>
 			<description>Test Rule Attribute 4</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>TemplateTestRuleAttribute5</name>
-			<className>org.kuali.rice.kew.routetemplate.TestRuleAttribute</className>
+			<className>org.kuali.rice.kew.rule.TestRuleAttribute</className>
 			<label>Test Rule Attribute 5</label>
 			<description>Test Rule Attribute 5</description>
 			<type>RuleAttribute</type>

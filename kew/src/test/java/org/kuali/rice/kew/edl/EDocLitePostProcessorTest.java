@@ -19,14 +19,14 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.web.jetty.JettyServer;
-import org.kuali.rice.kew.ActionTakenEvent;
-import org.kuali.rice.kew.DocumentRouteLevelChange;
-import org.kuali.rice.kew.DocumentRouteStatusChange;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.clientapp.DeleteEvent;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.edl.EDocLitePostProcessor;
+import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.workflow.test.KEWTestCase;
 

@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.Id;
 import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;

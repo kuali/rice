@@ -603,7 +603,7 @@
             <ignorePrevious>false</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <role>org.kuali.rice.kew.routetemplate.MockRole!group:IAmAGroupThatDoesNotExist</role>
+                    <role>org.kuali.rice.kew.rule.MockRole!group:IAmAGroupThatDoesNotExist</role>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

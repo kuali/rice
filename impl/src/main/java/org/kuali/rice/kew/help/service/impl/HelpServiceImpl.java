@@ -29,8 +29,8 @@ import org.kuali.rice.kew.help.dao.HelpDAO;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.xml.HelpEntryXmlParser;
 import org.kuali.rice.kew.xml.export.HelpEntryXmlExporter;
-import org.kuali.rice.kew.xml.help.HelpEntryXmlParser;
 import org.springframework.transaction.annotation.Transactional;
 
 

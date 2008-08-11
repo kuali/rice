@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.kew.clientapp.PostProcessorRemote;
+import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 
 /**
  * This interface is a KFS-local wrapper for the Workflow postprocessor interface.

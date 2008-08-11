@@ -64,7 +64,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *       <ol>
  *         <li>A special case is made for attributes defined in XML as
  *             of "RuleXmlAttribute" type ({@link KEWConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
- *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(org.kuali.rice.kew.routetemplate.RuleAttribute)}
+ *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(org.kuali.rice.kew.rule.RuleAttribute)}
  *             before proceeding with isMatch invocation. (what about a RuleAttributeAware interface so this can be done generically for all worklfow attribute
  *             implementations?)</li>
  *         <li>{@link WorkflowAttribute#isMatch(DocumentContent, List)} is called with the Rule's extension values passed</li>

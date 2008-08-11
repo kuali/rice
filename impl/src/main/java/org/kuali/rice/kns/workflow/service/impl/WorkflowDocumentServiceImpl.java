@@ -145,7 +145,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#acknowledge(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#acknowledge(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -157,7 +157,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#approve(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#approve(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -197,7 +197,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#blanketApprove(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#blanketApprove(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -209,7 +209,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#cancel(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#cancel(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void cancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -220,7 +220,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#clearFyi(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#clearFyi(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -243,7 +243,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#disapprove(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#disapprove(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void disapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -254,7 +254,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#route(org.kuali.rice.kew.routetemplate.FlexDoc)
+     * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#route(org.kuali.rice.kew.rule.FlexDoc)
      */
     public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {

@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.support.xstream.XStreamSafeSearchFunction;
+import org.kuali.rice.kew.xml.xstream.XStreamSafeSearchFunction;
 import org.w3c.dom.Node;
 
 

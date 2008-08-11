@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.user;
 
-import org.kuali.rice.kew.Id;
+import org.kuali.rice.kew.identity.Id;
 
 /**
  * A user's Id which has a String representable value.

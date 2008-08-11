@@ -23,13 +23,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.WorkflowServiceErrorException;
-import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.RuleAttributeXmlParser;
 import org.kuali.rice.kew.xml.export.RuleAttributeXmlExporter;

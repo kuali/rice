@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUser;

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew;
+package org.kuali.rice.core.resourceloader;
 
 import java.util.Set;
 
@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
-import org.kuali.rice.kew.core.ContextualConfigLock;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

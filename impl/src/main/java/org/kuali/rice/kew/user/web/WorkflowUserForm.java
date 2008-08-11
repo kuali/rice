@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.user.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UuId;

@@ -19,9 +19,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.workflow.test.KEWTestCase;
 

@@ -21,13 +21,13 @@ package org.kuali.rice.kew.mail.service.impl;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.mail.EmailBody;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 

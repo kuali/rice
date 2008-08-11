@@ -22,7 +22,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.BranchState;
@@ -30,6 +29,7 @@ import org.kuali.rice.kew.engine.node.PropertiesUtil;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;

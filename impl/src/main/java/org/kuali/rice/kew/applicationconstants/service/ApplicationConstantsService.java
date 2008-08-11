@@ -18,8 +18,8 @@ package org.kuali.rice.kew.applicationconstants.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.xml.XmlLoader;
 
 
 /**

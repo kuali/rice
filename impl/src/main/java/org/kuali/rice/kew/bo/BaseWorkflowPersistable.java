@@ -14,7 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew;
+package org.kuali.rice.kew.bo;
+
 
 /**
  * A base implementation of a WorkflowPersistable.

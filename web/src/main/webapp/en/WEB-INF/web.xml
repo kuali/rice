@@ -26,7 +26,7 @@
   <filter>
     <filter-name>BootstrapFilter</filter-name>
 
-    <filter-class>org.kuali.rice.kew.core.BootstrapFilter</filter-class>
+    <filter-class>org.kuali.rice.kew.web.BootstrapFilter</filter-class>
   </filter>
 
 
@@ -93,7 +93,7 @@
 
   <!-- Initializes the Workflow Core; must be executed first (to be safe) -->
   <listener>
-    <listener-class>org.kuali.rice.kew.core.ApplicationInitializeListener</listener-class>
+    <listener-class>org.kuali.rice.kew.web.ApplicationInitializeListener</listener-class>
   </listener>
 
   <servlet>

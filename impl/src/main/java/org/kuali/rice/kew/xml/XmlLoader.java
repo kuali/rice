@@ -1,4 +1,4 @@
-package org.kuali.rice.kew;
+package org.kuali.rice.kew.xml;
 
 import java.io.InputStream;
 

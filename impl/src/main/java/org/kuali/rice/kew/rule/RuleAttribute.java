@@ -32,7 +32,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
 
 
 /**

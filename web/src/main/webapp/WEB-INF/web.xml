@@ -21,7 +21,7 @@
 
   <filter>
     <filter-name>BootstrapFilter</filter-name>
-    <filter-class>org.kuali.rice.kew.core.BootstrapFilter</filter-class>
+    <filter-class>org.kuali.rice.kew.web.BootstrapFilter</filter-class>
   </filter>
 
 	<filter>

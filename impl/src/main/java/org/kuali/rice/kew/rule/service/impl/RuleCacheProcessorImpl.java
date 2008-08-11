@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.kew.rule.service.impl;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
 

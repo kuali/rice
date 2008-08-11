@@ -28,7 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

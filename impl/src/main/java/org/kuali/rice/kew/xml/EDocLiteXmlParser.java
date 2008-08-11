@@ -29,15 +29,15 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.WorkflowServiceErrorException;
-import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;

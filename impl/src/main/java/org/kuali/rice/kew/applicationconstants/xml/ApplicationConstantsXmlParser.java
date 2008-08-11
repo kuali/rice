@@ -32,8 +32,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.DOMBuilder;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.xml.sax.SAXException;
 
 

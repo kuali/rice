@@ -32,7 +32,7 @@ import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderUtil;
-import org.kuali.rice.kew.core.CoreResourceLoader;
+import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 
 
 /**

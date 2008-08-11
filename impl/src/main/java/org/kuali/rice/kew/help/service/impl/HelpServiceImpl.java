@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.WorkflowServiceErrorException;
-import org.kuali.rice.kew.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.dao.HelpDAO;

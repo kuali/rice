@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;

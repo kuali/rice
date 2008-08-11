@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core;
+package org.kuali.rice.kew.lifecycle;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupService;

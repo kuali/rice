@@ -21,15 +21,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.WorkflowServiceErrorException;
-import org.kuali.rice.kew.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 

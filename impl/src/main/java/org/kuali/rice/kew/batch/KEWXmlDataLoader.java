@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 

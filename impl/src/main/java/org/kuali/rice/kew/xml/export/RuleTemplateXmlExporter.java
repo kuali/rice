@@ -20,13 +20,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;

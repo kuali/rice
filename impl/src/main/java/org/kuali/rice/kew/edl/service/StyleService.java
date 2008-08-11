@@ -24,8 +24,8 @@ import java.util.List;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
-import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 
 

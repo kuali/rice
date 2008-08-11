@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.IDocHandler;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;

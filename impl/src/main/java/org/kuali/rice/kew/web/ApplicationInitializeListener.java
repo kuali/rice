@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core;
+package org.kuali.rice.kew.web;
 
 import java.io.File;
 import java.util.ArrayList;

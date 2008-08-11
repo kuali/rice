@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core.dependencylifecycles;
+package org.kuali.rice.core.lifecycle;
 
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.kew.SpringLoader;
+import org.kuali.rice.core.resourceloader.SpringLoader;
 
 
 /**

@@ -30,7 +30,7 @@ import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.core.EmbeddedLifeCycle;
+import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.ojb.OjbConfigurer;
 import org.kuali.rice.kew.util.KEWConstants;
 

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew;
+package org.kuali.rice.kew.bo;
 
 import java.io.Serializable;
 

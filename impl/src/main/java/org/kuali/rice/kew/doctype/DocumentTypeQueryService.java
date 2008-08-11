@@ -18,7 +18,7 @@ package org.kuali.rice.kew.doctype;
 
 import java.util.Collection;
 
-import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.XmlLoader;
 
 
 /**

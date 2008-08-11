@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

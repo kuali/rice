@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.web.WebWorkflowUser;

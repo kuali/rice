@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
@@ -26,6 +25,7 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

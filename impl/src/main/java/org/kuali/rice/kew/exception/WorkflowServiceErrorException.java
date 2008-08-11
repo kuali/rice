@@ -1,4 +1,4 @@
-package org.kuali.rice.kew;
+package org.kuali.rice.kew.exception;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -38,14 +38,14 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;

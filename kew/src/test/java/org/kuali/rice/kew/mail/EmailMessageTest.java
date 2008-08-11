@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.doctype.DocumentType;
@@ -33,6 +32,7 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.workflow.test.KEWTestCase;

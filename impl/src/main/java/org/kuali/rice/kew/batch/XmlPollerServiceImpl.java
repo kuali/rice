@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core;
+package org.kuali.rice.kew.lifecycle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,8 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kew.core.dependencylifecycles.SpringLifeCycle;
-import org.kuali.rice.kew.core.dependencylifecycles.XmlPipelineLifeCycle;
+import org.kuali.rice.core.lifecycle.SpringLifeCycle;
 import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 
 

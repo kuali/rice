@@ -19,9 +19,9 @@ package org.kuali.rice.kew.applicationconstants;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;

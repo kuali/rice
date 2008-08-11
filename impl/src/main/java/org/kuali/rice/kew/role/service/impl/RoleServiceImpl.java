@@ -28,7 +28,6 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -48,6 +47,7 @@ import org.kuali.rice.kew.rule.RolePoker;
 import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
 import org.kuali.rice.ksb.services.KSBServiceLocator;

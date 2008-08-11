@@ -33,12 +33,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.batch.CompositeXmlDocCollection;
 import org.kuali.rice.kew.batch.FileXmlDocCollection;
 import org.kuali.rice.kew.batch.XmlDoc;
 import org.kuali.rice.kew.batch.XmlDocCollection;
 import org.kuali.rice.kew.batch.ZipXmlDocCollection;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.UserLoginFilter;
 

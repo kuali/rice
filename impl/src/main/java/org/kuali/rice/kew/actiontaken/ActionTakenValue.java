@@ -34,12 +34,12 @@ import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.KEWServiceLocator;
-import org.kuali.rice.kew.WorkflowPersistable;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.UserUtils;

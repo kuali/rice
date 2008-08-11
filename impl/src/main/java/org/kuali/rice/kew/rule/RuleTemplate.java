@@ -35,7 +35,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kew.WorkflowPersistable;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -253,7 +253,7 @@ public class RuleTemplate implements WorkflowPersistable {
 
     /**
      * Returns a copy of this object and its dependents
-     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
+     * @see org.kuali.rice.kew.bo.WorkflowPersistable#copy(boolean)
      */
     public Object copy(boolean preserveKeys) {
         RuleTemplate ruleTemplateClone = new RuleTemplate();

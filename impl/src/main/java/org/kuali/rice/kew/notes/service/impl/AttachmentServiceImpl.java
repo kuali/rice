@@ -20,9 +20,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

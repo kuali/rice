@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

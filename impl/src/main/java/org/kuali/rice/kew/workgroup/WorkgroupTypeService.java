@@ -18,7 +18,7 @@ package org.kuali.rice.kew.workgroup;
 
 import java.util.List;
 
-import org.kuali.rice.kew.XmlLoader;
+import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 
 

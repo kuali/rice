@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.workgroup;
 
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;

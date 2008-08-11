@@ -17,8 +17,8 @@ package edu.sampleu.travel.rice;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.ksb.auth.AuthorizationService;

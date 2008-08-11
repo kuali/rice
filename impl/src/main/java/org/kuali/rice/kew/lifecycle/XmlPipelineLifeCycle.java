@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core.dependencylifecycles;
+package org.kuali.rice.kew.lifecycle;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.batch.XmlPollerService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;

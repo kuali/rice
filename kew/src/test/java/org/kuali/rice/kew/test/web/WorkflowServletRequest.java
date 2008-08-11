@@ -20,8 +20,8 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;

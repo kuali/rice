@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
 import org.kuali.rice.kew.docsearch.web.DocumentSearchForm;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.Utilities;

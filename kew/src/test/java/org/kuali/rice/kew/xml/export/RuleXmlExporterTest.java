@@ -27,7 +27,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -35,6 +34,7 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 

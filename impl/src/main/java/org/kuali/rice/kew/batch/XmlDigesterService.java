@@ -18,8 +18,8 @@ package org.kuali.rice.kew.batch;
 
 import java.io.IOException;
 
-import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.xml.XmlLoader;
 
 
 /**

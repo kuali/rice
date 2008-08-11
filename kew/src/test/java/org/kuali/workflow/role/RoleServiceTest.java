@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.identity.IdentityType;
 import org.kuali.rice.kew.role.QualifiedRole;
 import org.kuali.rice.kew.role.QualifiedRoleExtension;
@@ -30,6 +29,7 @@ import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.role.RoleAttribute;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
 

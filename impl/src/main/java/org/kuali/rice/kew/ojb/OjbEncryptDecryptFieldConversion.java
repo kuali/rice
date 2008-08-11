@@ -19,7 +19,7 @@ package org.kuali.rice.kew.ojb;
 import java.security.GeneralSecurityException;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.kew.KEWServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 public class OjbEncryptDecryptFieldConversion implements FieldConversion {

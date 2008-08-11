@@ -31,9 +31,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.BaseWorkflowPersistable;
 import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.attribute.ExtensionData;
+import org.kuali.rice.kew.bo.BaseWorkflowPersistable;
 
 
 /**

@@ -19,11 +19,11 @@ package org.kuali.rice.kew.workgroup.web;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.lookupable.WebLookupableDecorator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;

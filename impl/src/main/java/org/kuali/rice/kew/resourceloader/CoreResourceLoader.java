@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.core;
+package org.kuali.rice.kew.resourceloader;
 
 import javax.xml.namespace.QName;
 
@@ -23,9 +23,9 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.plugin.Plugin;
 import org.kuali.rice.kew.plugin.PluginRegistry;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

@@ -21,9 +21,9 @@ import java.util.Collection;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTransactionalTest;
 import org.kuali.workflow.test.KEWTestCase;
 

@@ -19,9 +19,9 @@ package org.kuali.rice.kew.clientapp;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.clientapp.SimpleWebAuthenticationService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.session.UserSession;

@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.NoteService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

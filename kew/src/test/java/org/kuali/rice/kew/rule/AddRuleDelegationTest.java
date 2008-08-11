@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.clientapp.WorkflowDocument;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -33,6 +32,7 @@ import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.web.Rule2Form;
 import org.kuali.rice.kew.rule.web.WebRuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleResponsibility;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

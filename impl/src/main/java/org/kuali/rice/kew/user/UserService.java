@@ -18,9 +18,9 @@ package org.kuali.rice.kew.user;
 
 import java.util.List;
 
-import org.kuali.rice.kew.XmlLoader;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.xml.XmlLoader;
 
 
 /**

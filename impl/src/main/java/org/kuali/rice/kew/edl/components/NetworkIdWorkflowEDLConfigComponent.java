@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

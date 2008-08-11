@@ -18,10 +18,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
-import org.kuali.rice.kew.KEWServiceLocator;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 

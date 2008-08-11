@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Utility map for the action form to provide a way for calling functions through jstl.

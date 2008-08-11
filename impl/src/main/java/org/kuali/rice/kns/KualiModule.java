@@ -23,6 +23,7 @@ import org.kuali.rice.kns.authorization.KualiModuleAuthorizer;
 import org.kuali.rice.kns.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.rules.PreRulesContinuationBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleUserService;
 import org.kuali.rice.kns.service.impl.KualiModuleUserServiceDefaultImpl;
 import org.springframework.beans.factory.InitializingBean;

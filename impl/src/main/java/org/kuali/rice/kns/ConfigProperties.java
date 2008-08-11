@@ -17,6 +17,7 @@ package org.kuali.rice.kns;
 
 import java.util.Properties;
 
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.JstlPropertyHolder;
 

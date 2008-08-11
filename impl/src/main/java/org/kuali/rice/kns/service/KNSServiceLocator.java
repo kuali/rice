@@ -10,7 +10,7 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.kns;
+package org.kuali.rice.kns.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,42 +30,6 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
-import org.kuali.rice.kns.service.AttachmentService;
-import org.kuali.rice.kns.service.AuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
-import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.DocumentSerializerService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.DocumentTypeService;
-import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
-import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
-import org.kuali.rice.kns.service.KeyValuesService;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiGroupService;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.KualiModuleUserPropertyService;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.MailService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.PessimisticLockService;
-import org.kuali.rice.kns.service.PostProcessorService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
-import org.kuali.rice.kns.service.UniversalUserService;
-import org.kuali.rice.kns.service.WebAuthenticationService;
-import org.kuali.rice.kns.service.XmlObjectSerializerService;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;

@@ -32,7 +32,7 @@ import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

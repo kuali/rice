@@ -22,7 +22,7 @@ import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

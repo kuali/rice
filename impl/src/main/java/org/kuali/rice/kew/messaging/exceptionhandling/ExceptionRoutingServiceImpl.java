@@ -38,7 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRoutingService {

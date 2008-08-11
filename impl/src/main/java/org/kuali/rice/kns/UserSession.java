@@ -31,6 +31,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 

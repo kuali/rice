@@ -31,7 +31,7 @@ import org.kuali.rice.ksb.messaging.BusAdminService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 

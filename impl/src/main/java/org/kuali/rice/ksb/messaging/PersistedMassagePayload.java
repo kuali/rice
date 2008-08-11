@@ -26,7 +26,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * Holds message payload content.  Needed to proxy the content so we don't have to 

@@ -50,7 +50,7 @@ import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

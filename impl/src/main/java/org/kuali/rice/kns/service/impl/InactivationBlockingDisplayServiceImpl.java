@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
 import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;

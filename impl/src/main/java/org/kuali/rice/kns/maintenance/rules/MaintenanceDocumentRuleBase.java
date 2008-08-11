@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -53,6 +52,7 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;

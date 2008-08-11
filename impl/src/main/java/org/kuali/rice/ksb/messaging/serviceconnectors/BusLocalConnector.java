@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.serviceconnectors;
 
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

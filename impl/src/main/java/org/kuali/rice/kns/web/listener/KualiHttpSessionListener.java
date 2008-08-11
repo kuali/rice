@@ -20,10 +20,10 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;

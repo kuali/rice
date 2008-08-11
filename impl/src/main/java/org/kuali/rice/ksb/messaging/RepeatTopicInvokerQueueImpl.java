@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.config.ServiceBasedServiceDefinitionRegisterer;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class RepeatTopicInvokerQueueImpl extends BaseLifecycle implements RepeatTopicInvokerQueue {

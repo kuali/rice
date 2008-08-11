@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.config;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

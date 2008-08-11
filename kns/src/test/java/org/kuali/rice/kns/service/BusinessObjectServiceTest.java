@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;

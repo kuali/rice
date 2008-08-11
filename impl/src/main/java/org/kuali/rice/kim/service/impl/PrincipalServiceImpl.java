@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.service.PrincipalService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill

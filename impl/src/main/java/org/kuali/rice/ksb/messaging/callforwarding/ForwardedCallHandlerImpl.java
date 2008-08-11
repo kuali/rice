@@ -24,7 +24,7 @@ import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSender;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 

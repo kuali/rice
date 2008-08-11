@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.bam.BAMService;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

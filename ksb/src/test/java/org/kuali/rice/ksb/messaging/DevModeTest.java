@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.BusLocalConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

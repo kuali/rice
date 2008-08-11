@@ -26,7 +26,6 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.user.UniversalUser;
@@ -35,6 +34,7 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.PersistenceStructureService;

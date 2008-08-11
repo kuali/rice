@@ -20,7 +20,7 @@ import org.kuali.rice.kim.dto.GroupTypeDTO;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.GroupTypeService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is the default KIM Group Type service implementation that is provided by Rice.  It is OJB specific.

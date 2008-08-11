@@ -18,8 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 

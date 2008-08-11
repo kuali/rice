@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document;
 
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is the base class implementation for all transaction processing eDocs. 

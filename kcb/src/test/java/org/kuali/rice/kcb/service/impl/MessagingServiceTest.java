@@ -29,7 +29,7 @@ import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
 import org.kuali.rice.kcb.test.KCBTestCase;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.quartz.JobExecutionContext;

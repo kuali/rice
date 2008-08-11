@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.messaging.ServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

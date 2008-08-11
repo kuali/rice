@@ -39,7 +39,7 @@ import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.objectremoting.ObjectRemoterService;
 import org.kuali.rice.ksb.messaging.objectremoting.RemoteObjectCleanup;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 

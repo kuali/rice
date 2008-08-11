@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestBase;
 

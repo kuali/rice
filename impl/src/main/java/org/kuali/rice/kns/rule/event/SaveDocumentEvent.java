@@ -18,10 +18,10 @@ package org.kuali.rice.kns.rule.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiRuleService;
 
 /**

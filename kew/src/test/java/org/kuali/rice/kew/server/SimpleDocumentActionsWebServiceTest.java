@@ -52,7 +52,7 @@ import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
 

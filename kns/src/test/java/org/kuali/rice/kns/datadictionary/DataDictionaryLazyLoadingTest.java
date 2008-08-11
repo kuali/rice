@@ -17,10 +17,10 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 

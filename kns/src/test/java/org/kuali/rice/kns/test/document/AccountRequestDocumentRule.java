@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 public class AccountRequestDocumentRule extends TransactionalDocumentRuleBase {

@@ -18,7 +18,7 @@ package org.kuali.rice.kcb.config;
 import junit.framework.Assert;
 
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;

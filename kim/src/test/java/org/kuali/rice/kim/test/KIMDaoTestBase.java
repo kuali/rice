@@ -14,8 +14,8 @@ package org.kuali.rice.kim.test;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This base class should be used for all KIM Unit Tests that will be testing the DAO layer.

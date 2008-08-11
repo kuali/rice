@@ -20,10 +20,10 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Ad Hoc Route Person Business Object

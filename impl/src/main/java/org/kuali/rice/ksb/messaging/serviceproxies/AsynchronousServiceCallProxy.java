@@ -32,7 +32,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 

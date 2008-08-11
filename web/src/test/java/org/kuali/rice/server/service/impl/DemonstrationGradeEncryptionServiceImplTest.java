@@ -25,7 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;
 
 /**

@@ -18,7 +18,7 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
 import org.apache.struts.util.PropertyMessageResources;
 import org.apache.struts.util.PropertyMessageResourcesFactory;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * A custom MessageResourceFactory that delegates to the KualiConfigurationService's pre-loaded properties. It will first try

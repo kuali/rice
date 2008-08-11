@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
@@ -30,6 +29,7 @@ import org.kuali.rice.kim.dto.GroupTypeDTO;
 import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
 import org.kuali.rice.kim.lookup.valuefinder.NextAttributeTypeIdFinder;
 import org.kuali.rice.kim.lookup.valuefinder.NextGroupTypeDefaultAttributeIdFinder;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.RoleQualificationForGroup;
 import org.kuali.rice.kns.document.MaintenanceDocument;

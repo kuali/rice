@@ -18,9 +18,9 @@ package org.kuali.rice.kns.document.authorization;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 

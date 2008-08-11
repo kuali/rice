@@ -24,7 +24,7 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.spring.Cached;
 import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
 import org.springframework.transaction.annotation.Transactional;

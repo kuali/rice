@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.TestBase;

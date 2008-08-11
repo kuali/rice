@@ -25,9 +25,9 @@ import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 

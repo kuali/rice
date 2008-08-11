@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.service.AuthorizationService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This implements the KIM Authorization Service

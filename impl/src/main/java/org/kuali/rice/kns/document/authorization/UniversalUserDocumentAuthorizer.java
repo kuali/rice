@@ -18,11 +18,11 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.authorization.UniversalUserAuthorizationConstants;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;

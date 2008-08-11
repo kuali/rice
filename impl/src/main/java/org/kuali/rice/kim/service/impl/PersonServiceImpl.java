@@ -31,7 +31,7 @@ import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.PersonAttributeDTO;
 import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is the default KIM PersonService implementation that is provided by

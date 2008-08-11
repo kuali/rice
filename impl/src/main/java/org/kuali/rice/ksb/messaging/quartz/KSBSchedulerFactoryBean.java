@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

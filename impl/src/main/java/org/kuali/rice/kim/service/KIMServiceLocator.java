@@ -1,4 +1,4 @@
-package org.kuali.rice.kim;
+package org.kuali.rice.kim.service;
 
 import javax.xml.namespace.QName;
 

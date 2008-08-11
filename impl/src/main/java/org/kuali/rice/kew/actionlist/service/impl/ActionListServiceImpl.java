@@ -54,7 +54,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.ksb.messaging.KEWXMLService;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

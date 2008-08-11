@@ -33,7 +33,7 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kew.util.KeyLabelPair;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;

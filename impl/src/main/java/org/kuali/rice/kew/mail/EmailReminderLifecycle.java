@@ -20,7 +20,7 @@ package org.kuali.rice.kew.mail;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.Scheduler;
 
 

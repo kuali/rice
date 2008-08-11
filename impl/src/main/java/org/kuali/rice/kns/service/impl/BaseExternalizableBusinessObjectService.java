@@ -18,10 +18,10 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.ExternalizableBusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * 

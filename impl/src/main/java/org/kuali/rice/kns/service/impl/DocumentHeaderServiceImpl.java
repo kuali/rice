@@ -16,10 +16,10 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.dao.DocumentHeaderDao;
 import org.kuali.rice.kns.service.DocumentHeaderService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

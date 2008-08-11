@@ -32,7 +32,7 @@ import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.QualifiedRoleService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is the default KIM QualifiedRoleService implementation that is provided

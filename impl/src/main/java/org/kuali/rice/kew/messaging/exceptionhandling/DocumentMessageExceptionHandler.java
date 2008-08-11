@@ -19,7 +19,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

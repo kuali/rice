@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.KualiModuleUser;
@@ -35,6 +34,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.KualiModuleUserPropertyService;

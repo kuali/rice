@@ -22,11 +22,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMConstants;
 import org.kuali.rice.kim.web.form.EntityAttributeForm;
 import org.kuali.rice.kns.bo.BusinessObject;

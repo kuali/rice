@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.KualiGroup;
 import org.kuali.rice.kns.bo.user.UniversalUser;

@@ -30,7 +30,7 @@ import org.kuali.rice.kim.dao.KIMServicesDao;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.service.EntityService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - lindholm don't forget to fill

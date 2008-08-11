@@ -15,7 +15,7 @@ package org.kuali.rice.ksb.quartz;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;

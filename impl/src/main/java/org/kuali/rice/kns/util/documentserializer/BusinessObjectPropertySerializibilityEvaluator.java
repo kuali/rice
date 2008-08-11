@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
@@ -27,6 +26,7 @@ import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.datadictionary.WorkflowProperty;
 import org.kuali.rice.kns.datadictionary.WorkflowPropertyGroup;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityMetadata.PropertySerializability;
 
 /**

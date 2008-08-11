@@ -34,7 +34,7 @@ import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;

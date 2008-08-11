@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging.quartz;
 
 import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

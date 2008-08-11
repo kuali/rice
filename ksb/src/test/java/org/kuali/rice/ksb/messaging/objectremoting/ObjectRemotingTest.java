@@ -25,7 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.testclient1.RemotedObject;
 import org.kuali.rice.ksb.testclient1.TestClient1ObjectToBeRemoted;

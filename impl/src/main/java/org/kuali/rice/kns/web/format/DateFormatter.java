@@ -23,8 +23,8 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.service.DateTimeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**

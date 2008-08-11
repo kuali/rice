@@ -22,7 +22,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.DataAccessUtils;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class ServiceRegistryImpl implements ServiceRegistry {

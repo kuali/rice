@@ -44,7 +44,7 @@ import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.ojb.OjbConfigurer;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;

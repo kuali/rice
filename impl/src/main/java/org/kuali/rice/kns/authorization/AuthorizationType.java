@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * A list of standard authorization types used by the application as a whole.

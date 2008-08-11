@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
 import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.services.KSBServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

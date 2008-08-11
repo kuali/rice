@@ -17,7 +17,7 @@ import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.NamespaceService;
-import org.kuali.rice.kns.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is the default KIM Namespace implementation that is provided by Rice. This will mature over time as the KIM component

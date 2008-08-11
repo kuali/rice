@@ -24,8 +24,8 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.KualiModule;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.springframework.core.io.DefaultResourceLoader;

@@ -18,10 +18,10 @@ package edu.sampleu.travel.rice;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.KNSServiceLocator;
 import org.kuali.rice.kns.bo.user.KualiModuleUser;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.impl.KualiModuleUserServiceBaseImpl;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;

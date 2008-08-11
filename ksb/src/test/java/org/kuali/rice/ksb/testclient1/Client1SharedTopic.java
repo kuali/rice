@@ -18,11 +18,11 @@ package org.kuali.rice.ksb.testclient1;
 
 import java.io.Serializable;
 
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
-public class Client1SharedTopic implements KEWJavaService {
+public class Client1SharedTopic implements KSBJavaService {
 
 	public void invoke(Serializable payLoad) {
 		ServiceCallInformationHolder.stuff.put("Client1Called", Boolean.TRUE);

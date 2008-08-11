@@ -36,7 +36,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -90,7 +90,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		serviceDef.setPriority(new Integer(1));
 		serviceDef.setQueue(true);
 		serviceDef.setRetryAttempts(0);
-		serviceDef.setServiceInterface(KEWJavaService.class.getName());
+		serviceDef.setServiceInterface(KSBJavaService.class.getName());
 		serviceDef.setServiceName(new QName("KEW", "exploader"));
 		serviceDef.setService(new ImTheExploderProcessor());
 
@@ -98,7 +98,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		serviceDef.validate();
 		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, true);
 
-		KEWJavaService exploderAsService = (KEWJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()));
+		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()));
 		exploderAsService.invoke("");
 		// we need to make the exploder a service to get this going again...
 		// SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(),
@@ -155,7 +155,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		}
 	}
 
-	public static class ImTheExploderProcessor implements KEWJavaService {
+	public static class ImTheExploderProcessor implements KSBJavaService {
 
 		public void invoke(Serializable payLoad) {
 			throw new WorkflowRuntimeException("I'm the Exploder!!!");

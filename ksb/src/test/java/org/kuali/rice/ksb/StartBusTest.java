@@ -18,9 +18,9 @@ package org.kuali.rice.ksb;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.MessagingTestObject;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -38,7 +38,7 @@ public class StartBusTest extends KSBTestCase {
 		
 		((Runnable)KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
 		
-		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new MessagingTestObject("message content"));
 		
 		// verifyServiceCalls(serviceName);

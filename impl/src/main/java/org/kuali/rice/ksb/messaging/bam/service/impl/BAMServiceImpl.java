@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging.bam;
+package org.kuali.rice.ksb.messaging.bam.service.impl;
 
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
@@ -26,7 +26,10 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.bam.BAMParam;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 
 
 public class BAMServiceImpl implements BAMService {

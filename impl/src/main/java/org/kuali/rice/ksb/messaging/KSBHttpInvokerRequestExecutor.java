@@ -42,20 +42,20 @@ import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExecutor {
+public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExecutor {
 	
 	private Boolean secure = Boolean.TRUE;
 	
-	public KEWHttpInvokerRequestExecutor() {
+	public KSBHttpInvokerRequestExecutor() {
 		super();
 	}
 	
-	public KEWHttpInvokerRequestExecutor(Boolean secure) {
+	public KSBHttpInvokerRequestExecutor(Boolean secure) {
 		super();
 		this.secure = secure;
 	}
 
-	public KEWHttpInvokerRequestExecutor(HttpClient httpClient) {
+	public KSBHttpInvokerRequestExecutor(HttpClient httpClient) {
 		super(httpClient);
 	}
 	

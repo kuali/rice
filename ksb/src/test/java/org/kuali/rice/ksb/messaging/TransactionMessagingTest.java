@@ -15,8 +15,8 @@ package org.kuali.rice.ksb.messaging;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSendingTransactionSynchronization;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
@@ -54,7 +54,7 @@ public class TransactionMessagingTest extends KSBTestCase {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper()
 			.getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 
@@ -77,7 +77,7 @@ public class TransactionMessagingTest extends KSBTestCase {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper()
 			.getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 

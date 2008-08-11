@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.SimpleServiceLocator;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 
 public class ServicesOverrideLifecycle extends BaseLifecycle {

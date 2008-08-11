@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import com.opensymphony.oscache.base.Cache;
@@ -42,7 +42,7 @@ import com.opensymphony.oscache.plugins.clustersupport.ClusterNotification;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RiceDistributedCacheListener extends AbstractBroadcastingListener implements KEWJavaService {
+public class RiceDistributedCacheListener extends AbstractBroadcastingListener implements KSBJavaService {
 
 	private static final Logger LOG = Logger.getLogger(RiceDistributedCacheListener.class);
 
@@ -82,7 +82,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 			LOG.debug("Sending cache notification " + notification);
 		}
 		try {
-			KEWJavaService oscacheNotificationService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(this.serviceName));
+			KSBJavaService oscacheNotificationService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(this.serviceName));
 			oscacheNotificationService.invoke(notification);
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);

@@ -14,12 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.ksb.messaging.service;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 /**
  * Service for interfacing with the queue of asynchronous messages.

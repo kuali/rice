@@ -132,7 +132,7 @@
 	<bean id="enScheduledThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
 
 
-	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.BAMServiceImpl">
+	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.service.impl.BAMServiceImpl">
 		<property name="dao">
 		  <!-- <bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDaoJpaImpl" /> -->
 			<bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl">
@@ -145,7 +145,7 @@
 
 	<bean id="enServiceInvoker" class="org.kuali.rice.ksb.messaging.RemotedServiceRegistryImpl" lazy-init="true" />
 
-	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.MessageQueueServiceImpl" lazy-init="true">
+	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.service.impl.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDAO">
 			<bean class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl">
 				<property name="jcdAlias" value="ksbMessageDataSource" />
@@ -153,7 +153,7 @@
 		</property>
 	</bean>
 
-	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.ServiceRegistryImpl" lazy-init="true">
+	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.service.impl.ServiceRegistryImpl" lazy-init="true">
 		<property name="dao">
 			<bean class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
@@ -170,8 +170,8 @@
 		</property>
 	</bean>
 
-	<bean id="digitalSignatureService" class="org.kuali.rice.ksb.security.DigitalSignatureServiceImpl" lazy-init="true" />
-	<bean id="ksbJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
+	<bean id="digitalSignatureService" class="org.kuali.rice.ksb.security.service.impl.DigitalSignatureServiceImpl" lazy-init="true" />
+	<bean id="ksbJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
 	<bean id="enRepeatTopicInvokerQueue" class="org.kuali.rice.ksb.messaging.RepeatTopicInvokerQueueImpl" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->
@@ -255,7 +255,7 @@
 		<property name="jtaTransactionManager" ref="transactionManager"/>
 	</bean>
 
-  <bean id="busAdminService" class="org.kuali.rice.ksb.messaging.BusAdminServiceImpl"/>
+  <bean id="busAdminService" class="org.kuali.rice.ksb.messaging.service.impl.BusAdminServiceImpl"/>
   
   <bean id="ksb.busAdminServiceDefinition" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" lazy-init="true">
     <property name="service">

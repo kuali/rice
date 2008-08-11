@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RouteDocumentMessageService implements KEWXMLService {
+public class RouteDocumentMessageService implements KSBXMLService {
 
 	private static final Logger LOG = Logger.getLogger(RouteDocumentMessageService.class);
 	

@@ -27,7 +27,6 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.DataAccessUtils;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
@@ -37,7 +36,8 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -152,7 +152,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
     @Test
     public void testServiceFetch() throws Exception {
 
-	KEWJavaService testTopic = (KEWJavaService) this.rrl.getService(this.testTopicName);
+	KSBJavaService testTopic = (KSBJavaService) this.rrl.getService(this.testTopicName);
 	assertNotNull("Sould have fetched service", testTopic);
 	try {
 	    this.rrl.getService(new QName("KEW", "FakeyMcService"));

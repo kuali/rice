@@ -23,7 +23,7 @@ import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
@@ -35,7 +35,7 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class WorkgroupMembershipChangeProcessor implements KEWXMLService {
+public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 
 	private static final String ADDED_OPERATION = "ADDED";
 	private static final String REMOVED_OPERATION = "REMOVED";

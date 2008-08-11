@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.testclient1;
 import java.io.Serializable;
 
 import org.kuali.rice.ksb.messaging.ClientAppServiceSharedPayloadObj;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
 
@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.messaging.KEWJavaService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ClientApp1SharedQueue implements KEWJavaService {
+public class ClientApp1SharedQueue implements KSBJavaService {
 	
 	public void invoke(Serializable payLoad) {
 		

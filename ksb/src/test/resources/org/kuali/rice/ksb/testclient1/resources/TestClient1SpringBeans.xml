@@ -156,7 +156,7 @@
 							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service" ref="testJavaAsyncService"></property>
 								<property name="localServiceName" value="testJavaAsyncService" />
-								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.KEWJavaService" />
+								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.service.KSBJavaService" />
 								<property name="priority" value="5" />
 								<property name="retryAttempts" value="1" />
 								<property name="busSecurity" value="true" />
@@ -166,7 +166,7 @@
 							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 								<property name="service" ref="testXmlAsyncService"></property>
 								<property name="localServiceName" value="testXmlAsyncService" />
-								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.KEWXMLService" />
+								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.service.KSBXMLService" />
 								<property name="priority" value="5" />
 								<property name="retryAttempts" value="1" />
 								<property name="messageExceptionHandler"

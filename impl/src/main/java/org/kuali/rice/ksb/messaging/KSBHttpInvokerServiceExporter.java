@@ -26,7 +26,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.remoting.support.RemoteInvocationTraceInterceptor;
 
 
-public class KEWHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
+public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 	
 	private List<Class> serviceInterfaces;
 	private ServiceInfo serviceInfo;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.security.admin;
+package org.kuali.rice.ksb.security.admin.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +38,8 @@ import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
+import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

@@ -39,7 +39,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
@@ -217,7 +217,7 @@ public abstract class ActionTakenEvent {
 	 */
 	protected void queueDocumentProcessing() {
 		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-		KEWXMLService documentRoutingService = (KEWXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
+		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
 //			String content = String.valueOf(getRouteHeaderId());
 			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic());

@@ -18,7 +18,7 @@ package org.kuali.rice.ken.service.impl;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
  * to be invoked as a web service generically from the bus.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class SendNotificationServiceKewXmlImpl implements KEWXMLService {
+public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(SendNotificationServiceKewXmlImpl.class);
     
@@ -43,7 +43,7 @@ public class SendNotificationServiceKewXmlImpl implements KEWXMLService {
     /**
      * Actually invokes the sendNotification() service method.  The KSB calls 
      * this.
-     * @see org.kuali.rice.ksb.messaging.KEWXMLService#invoke(java.lang.String)
+     * @see org.kuali.rice.ksb.messaging.service.KSBXMLService#invoke(java.lang.String)
      */
     public void invoke(String xml) {
     	try {

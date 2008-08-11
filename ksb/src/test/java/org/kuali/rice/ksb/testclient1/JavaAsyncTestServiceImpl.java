@@ -17,10 +17,10 @@ package org.kuali.rice.ksb.testclient1;
 
 import java.io.Serializable;
 
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
-public class JavaAsyncTestServiceImpl implements KEWJavaService {
+public class JavaAsyncTestServiceImpl implements KSBJavaService {
 
 	public void invoke(Serializable payLoad) {
 		System.out.println("Payload was recieved " + payLoad);

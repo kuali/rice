@@ -21,7 +21,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.ksb.auth.AuthorizationService;
+import org.kuali.rice.ksb.service.AuthorizationService;
 
 
 /**
@@ -37,7 +37,7 @@ public class WorkgroupAuthorizationServiceImpl implements AuthorizationService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.ksb.auth.AuthorizationService#isAdministrator(javax.servlet.http.HttpServletRequest)
+     * @see org.kuali.rice.ksb.service.AuthorizationService#isAdministrator(javax.servlet.http.HttpServletRequest)
      */
     public boolean isAdministrator(HttpServletRequest request) {
         UserSession userSession = UserSession.getAuthenticatedUser();

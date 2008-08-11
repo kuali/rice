@@ -26,7 +26,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 
 public class KSBResourceLoaderFactoryTest extends TestCase {

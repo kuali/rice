@@ -53,7 +53,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
@@ -148,7 +148,7 @@ public class ActionListServiceImpl implements ActionListService {
         MembersDiff membersDiff = getMembersDiff(oldMembers, newMembers);
         for (Iterator iterator = membersDiff.getRemovedMembers().iterator(); iterator.hasNext();) {
             WorkflowUser removedMember = (WorkflowUser) iterator.next();
-            KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
@@ -159,7 +159,7 @@ public class ActionListServiceImpl implements ActionListService {
         }
         for (Iterator iterator = membersDiff.getAddedMembers().iterator(); iterator.hasNext();) {
             WorkflowUser addedMember = (WorkflowUser) iterator.next();
-            KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(

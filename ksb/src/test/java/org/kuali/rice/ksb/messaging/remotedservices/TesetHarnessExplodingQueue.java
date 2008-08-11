@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 import java.io.Serializable;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
 /**
@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.messaging.KEWJavaService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class TesetHarnessExplodingQueue implements KEWJavaService {
+public class TesetHarnessExplodingQueue implements KSBJavaService {
 	
 	public static int NUM_CALLS = 0;
 

@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 

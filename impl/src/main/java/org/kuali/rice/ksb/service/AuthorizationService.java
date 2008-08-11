@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.auth;
+package org.kuali.rice.ksb.service;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * A simple authorization mechinism which can be used to determine whether or not the authenticated user
+ * A simple authorization mechanism which can be used to determine whether or not the authenticated user
  * is an administrator and therefore has the permissions to view the KSB.  The KSB itself has no
  * concept of identity available to it, so the application which is using the bus needs to have some
  * mechanism by which to determine identity at the time that the {@link #isAdministrator(HttpServletRequest)}

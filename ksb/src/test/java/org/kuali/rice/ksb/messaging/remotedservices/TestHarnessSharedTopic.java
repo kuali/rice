@@ -18,10 +18,10 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 import java.io.Serializable;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
-public class TestHarnessSharedTopic implements KEWJavaService {
+public class TestHarnessSharedTopic implements KSBJavaService {
 	
 	public static int CALL_COUNT = 0;
 	public static int CALL_COUNT_NOTIFICATION_THRESHOLD = 0;

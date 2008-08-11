@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.ksb.messaging.service;
+
+import org.kuali.rice.ksb.messaging.PersistedMessage;
 
 /**
  * A service for administrative functions for a node on the service bus.

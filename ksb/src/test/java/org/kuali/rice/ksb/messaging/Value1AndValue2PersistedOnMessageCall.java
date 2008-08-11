@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -40,7 +40,7 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
 	String value1 = "value1";
 	String value2 = "value2";
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
+	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	
 	PersistedMessage message = KSBServiceLocator.getRouteQueueService().getNextDocuments(null).get(0);

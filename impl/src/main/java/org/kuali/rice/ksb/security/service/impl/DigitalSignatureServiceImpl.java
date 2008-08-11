@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.security;
+package org.kuali.rice.ksb.security.service.impl;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -23,6 +23,7 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import org.kuali.rice.ksb.security.service.DigitalSignatureService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 public class DigitalSignatureServiceImpl implements DigitalSignatureService {

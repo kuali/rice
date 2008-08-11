@@ -27,7 +27,7 @@ import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
@@ -74,8 +74,8 @@ public class MessageServiceNames {
 		return new QName(baseServiceName);
 	}
 
-	public static KEWXMLService getRouteDocumentMessageService(DocumentRouteHeaderValue document) {
-		return (KEWXMLService) getServiceAsynchronously(getQName(DOCUMENT_ROUTING_SERVICE, document), document);
+	public static KSBXMLService getRouteDocumentMessageService(DocumentRouteHeaderValue document) {
+		return (KSBXMLService) getServiceAsynchronously(getQName(DOCUMENT_ROUTING_SERVICE, document), document);
 	}
 
 	public static MoveDocumentService getMoveDocumentProcessorService(DocumentRouteHeaderValue document) {

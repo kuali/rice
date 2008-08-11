@@ -33,8 +33,8 @@ import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
-import org.kuali.rice.ksb.messaging.KEWHttpInvokerProxyFactoryBean;
-import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
+import org.kuali.rice.ksb.messaging.KSBHttpInvokerProxyFactoryBean;
+import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.httpinvoker.AuthenticationCommonsHttpInvokerRequestExecutor;
 
@@ -58,16 +58,16 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 	
 	public Object getService() throws Exception {
 	    LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getActualEndpointUrl());
-		KEWHttpInvokerProxyFactoryBean client = new KEWHttpInvokerProxyFactoryBean();
+		KSBHttpInvokerProxyFactoryBean client = new KSBHttpInvokerProxyFactoryBean();
 		client.setServiceUrl(this.getServiceInfo().getActualEndpointUrl());
 		client.setServiceInfo(this.getServiceInfo());
 		
-		KEWHttpInvokerRequestExecutor executor;
+		KSBHttpInvokerRequestExecutor executor;
 		
 		if (getCredentialsSource() != null) {
 		    executor = new AuthenticationCommonsHttpInvokerRequestExecutor(getHttpClient(), getCredentialsSource(), getServiceInfo());
 		} else {
-		    executor = new KEWHttpInvokerRequestExecutor(getHttpClient());
+		    executor = new KSBHttpInvokerRequestExecutor(getHttpClient());
 		}
 		executor.setSecure(this.getServiceInfo().getServiceDefinition().getBusSecurity());
 		client.setHttpInvokerRequestExecutor(executor);	

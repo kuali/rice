@@ -17,11 +17,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
-import org.kuali.rice.ksb.messaging.bam.BAMService;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -45,7 +45,7 @@ public class SimpleServiceCallTest extends KSBTestCase {
 		
 		QName serviceName = new QName("TestCl1", "testJavaAsyncService");
 		SimpleCallback callback = new SimpleCallback();
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
+	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper()
 		.getServiceAsynchronously(serviceName, callback);
 	    synchronized (callback) {
 	        testJavaAsyncService.invoke(new MessagingTestObject("message content"));
@@ -60,7 +60,7 @@ public class SimpleServiceCallTest extends KSBTestCase {
 		
 		QName serviceName = new QName("TestCl1", "testXmlAsyncService");
 		SimpleCallback callback = new SimpleCallback();
-	KEWXMLService testXmlAsyncService = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
+	KSBXMLService testXmlAsyncService = (KSBXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		serviceName, callback);
 	    synchronized (callback) {	
 	        testXmlAsyncService.invoke("message content");

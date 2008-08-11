@@ -24,8 +24,8 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 
-public class KEWHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean {
-	private static final Logger LOG = Logger.getLogger(KEWHttpInvokerProxyFactoryBean.class);
+public class KSBHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean {
+	private static final Logger LOG = Logger.getLogger(KSBHttpInvokerProxyFactoryBean.class);
 
 	private Object serviceProxy;
 

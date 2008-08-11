@@ -23,7 +23,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.BusLocalConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;

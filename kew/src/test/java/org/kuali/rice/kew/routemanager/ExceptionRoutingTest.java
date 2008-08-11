@@ -32,7 +32,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.workflow.test.KEWTestCase;
 
 
@@ -234,7 +234,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
     	// the requeue here should happen synchronously because we are using the SynchronousRouteQueue
     	DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
     	QName documentServiceName = new QName(routeHeaderValue.getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-    	KEWXMLService routeDocumentMessageService = (KEWXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, routeHeaderValue);
+    	KSBXMLService routeDocumentMessageService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, routeHeaderValue);
     	routeDocumentMessageService.invoke(String.valueOf(document.getRouteHeaderId()));
     	
 //    	SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.DOCUMENT_ROUTING_SERVICE, String.valueOf(document.getRouteHeaderId()), routeHeaderValue);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.security.admin;
+package org.kuali.rice.ksb.security.admin.service;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
@@ -21,6 +21,8 @@ import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.List;
+
+import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 

@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.TestCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -79,7 +79,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 	 */
 	@Test public void testTimeToLive() throws Exception {
 
-		KEWJavaService explodingQueue = (KEWJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.queueTimeToLiveServiceName);
+		KSBJavaService explodingQueue = (KSBJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.queueTimeToLiveServiceName);
 		explodingQueue.invoke("");
 		TestUtilities.waitForExceptionRouting();
 		//this service is on a 3 second wait the queue is on a 1 sec.

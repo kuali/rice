@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging.bam;
+package org.kuali.rice.ksb.messaging.bam.service;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 
 
 /**

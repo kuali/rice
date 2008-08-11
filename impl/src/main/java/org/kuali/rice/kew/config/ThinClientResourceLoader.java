@@ -39,7 +39,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
-import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
+import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 
@@ -126,7 +126,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    } else {
 		secureIt = new Boolean(secureProp);
 	    }
-	    KEWHttpInvokerRequestExecutor executor = new KEWHttpInvokerRequestExecutor(getHttpClient());
+	    KSBHttpInvokerRequestExecutor executor = new KSBHttpInvokerRequestExecutor(getHttpClient());
 	    executor.setSecure(secureIt);
 	    proxyFactory.setHttpInvokerRequestExecutor(executor);
 	    proxyFactory.afterPropertiesSet();

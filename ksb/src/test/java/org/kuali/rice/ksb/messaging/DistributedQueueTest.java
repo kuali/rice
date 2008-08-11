@@ -20,10 +20,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
-import org.kuali.rice.ksb.messaging.bam.BAMService;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -54,7 +54,7 @@ public class DistributedQueueTest extends KSBTestCase {
 
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
 
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	verifyServiceCalls(serviceName);
 
@@ -66,7 +66,7 @@ public class DistributedQueueTest extends KSBTestCase {
 	
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
 	SimpleCallback callback = new SimpleCallback();
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
+	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
 	synchronized (callback) {
 	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	    callback.waitForAsyncCall();

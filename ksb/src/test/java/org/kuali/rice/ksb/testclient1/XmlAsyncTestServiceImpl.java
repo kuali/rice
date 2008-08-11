@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.ksb.testclient1;
 
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
-public class XmlAsyncTestServiceImpl implements KEWXMLService {
+public class XmlAsyncTestServiceImpl implements KSBXMLService {
 
 	public void invoke(String message) throws Exception {
 		//do nothing for now

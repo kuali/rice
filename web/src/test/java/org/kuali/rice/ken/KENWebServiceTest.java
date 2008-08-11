@@ -35,7 +35,7 @@ import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -109,7 +109,7 @@ public class KENWebServiceTest extends ServerTestBase {
     @Test
     public void invokeService() throws IOException, Exception {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
-        KEWXMLService service = (KEWXMLService) GlobalResourceLoader.getService(serviceName);
+        KSBXMLService service = (KSBXMLService) GlobalResourceLoader.getService(serviceName);
         service.invoke(notificationMessageAsXml);
     }
     
@@ -118,7 +118,7 @@ public class KENWebServiceTest extends ServerTestBase {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
 
         ConfigContext.getCurrentContextConfig().overrideProperty("bam.enabled", "true");
-        KEWXMLService service = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+        KSBXMLService service = (KSBXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
         service.invoke(notificationMessageAsXml);
         
         Thread.sleep(40000);

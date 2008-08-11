@@ -24,8 +24,7 @@ import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.fault.XFireFault;
-import org.codehaus.xfire.security.wss4j.WSS4JInHandler;
+import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -37,17 +36,18 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class WorkflowXFireWSS4JInHandler extends WSS4JInHandler {
+public class XFireWSS4JOutHandler extends WSS4JOutHandler {
 
-	private static final Logger LOG = Logger.getLogger(WorkflowXFireWSS4JInHandler.class);
+	private static final Logger LOG = Logger.getLogger(XFireWSS4JOutHandler.class);
+
 	private ServiceInfo serviceInfo;
 
-	public WorkflowXFireWSS4JInHandler(ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	public XFireWSS4JOutHandler(ServiceInfo serviceInfo) {
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
 		this.setProperty(WSHandlerConstants.USER, ConfigContext.getCurrentContextConfig().getKeystoreAlias());
+		this.serviceInfo = serviceInfo;
 	}
 
 	@Override
@@ -75,11 +75,12 @@ public class WorkflowXFireWSS4JInHandler extends WSS4JInHandler {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());
 		}
+
 		return props;
 	}
 
 	@Override
-	public void invoke(MessageContext context) throws XFireFault {
+	public void invoke(MessageContext context) throws Exception {
 		if (getServiceInfo().getServiceDefinition().getBusSecurity()) {
 			super.invoke(context);
 		}

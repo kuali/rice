@@ -22,7 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
-import org.kuali.rice.ksb.messaging.KEWHttpInvokerRequestExecutor;
+import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
 
 
 /**
- * Extension to {@link KEWHttpInvokerRequestExecutor} that retrieves
+ * Extension to {@link KSBHttpInvokerRequestExecutor} that retrieves
  * credentials from the CredentialsSource and places them in a BASIC HTTP
  * Authorization header.
  * 
@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
  * @since 0.9
  */
 public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
-    KEWHttpInvokerRequestExecutor {
+    KSBHttpInvokerRequestExecutor {
 
     /**
      * Source of the credentials to pass via BASIC AUTH.

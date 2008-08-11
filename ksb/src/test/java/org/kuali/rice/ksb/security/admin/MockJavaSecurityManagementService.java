@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.security.admin;
 
 import java.security.KeyStore;
 
-import org.kuali.rice.ksb.security.admin.JavaSecurityManagementService;
+import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 
 /**
  * This interface is 

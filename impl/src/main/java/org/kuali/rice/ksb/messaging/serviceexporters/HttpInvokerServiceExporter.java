@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-import org.kuali.rice.ksb.messaging.KEWHttpInvokerServiceExporter;
+import org.kuali.rice.ksb.messaging.KSBHttpInvokerServiceExporter;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
@@ -33,7 +33,7 @@ public class HttpInvokerServiceExporter implements ServiceExporter {
 	}
 	
 	public ServerSideRemotedServiceHolder getServiceExporter(Object serviceImpl) {
-		KEWHttpInvokerServiceExporter service = new KEWHttpInvokerServiceExporter();
+		KSBHttpInvokerServiceExporter service = new KSBHttpInvokerServiceExporter();
 		service.setServiceInfo(getServiceInfo());
 		service.setService(serviceImpl);
 		service.afterPropertiesSet();

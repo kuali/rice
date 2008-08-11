@@ -18,10 +18,10 @@ package org.kuali.rice.ksb.messaging;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -44,7 +44,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
-		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		
 		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
@@ -57,7 +57,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
 		SimpleCallback simpleCallback = new SimpleCallback();
-		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
 		synchronized (simpleCallback) {
 		    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		    simpleCallback.waitForAsyncCall();

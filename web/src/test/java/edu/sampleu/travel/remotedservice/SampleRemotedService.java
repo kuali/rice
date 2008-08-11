@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.remotedservice;
 
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 /**
  * Sample remoted service 
@@ -23,7 +23,7 @@ import org.kuali.rice.ksb.messaging.KEWXMLService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class SampleRemotedService implements KEWXMLService {
+public class SampleRemotedService implements KSBXMLService {
 
     public void invoke(String message) throws Exception {
 	System.out.println("A MESSAGE WAS RECIEVED!!!");

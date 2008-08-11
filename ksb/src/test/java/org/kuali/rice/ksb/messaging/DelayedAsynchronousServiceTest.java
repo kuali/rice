@@ -20,9 +20,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
-import org.kuali.rice.ksb.messaging.bam.BAMService;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -49,7 +49,7 @@ public class DelayedAsynchronousServiceTest extends KSBTestCase {
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
 
 	// Queue up the service to be called asynchronously after 5 seconds
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, "context", "value1", "value2", 5000);
+	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, "context", "value1", "value2", 5000);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	verifyServiceCalls(serviceName, false);
 

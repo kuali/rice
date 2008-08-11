@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.ksb.messaging.resourceloading.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 
 /**

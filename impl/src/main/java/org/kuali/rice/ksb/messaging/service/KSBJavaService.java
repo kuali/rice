@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.ksb.messaging.service;
+
+import java.io.Serializable;
 
 /**
- * A service which can be invoked with a String message that contains
- * XML content.
+ * Interface for a service which is invoked with a single Serializable payload.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface KEWXMLService {
+public interface KSBJavaService {
 
-	public void invoke(String message) throws Exception;
+	public void invoke(Serializable payLoad);
 	
 }

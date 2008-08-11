@@ -17,10 +17,10 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 
 import java.io.Serializable;
 
-import org.kuali.rice.ksb.messaging.KEWJavaService;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
-public class TestRepeatMessageQueue implements KEWJavaService {
+public class TestRepeatMessageQueue implements KSBJavaService {
 
 	public static int CALL_COUNT = 0;
 	

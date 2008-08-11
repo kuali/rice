@@ -34,6 +34,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
+import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.mvc.Controller;

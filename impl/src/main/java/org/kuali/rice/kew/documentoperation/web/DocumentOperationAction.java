@@ -77,7 +77,7 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
@@ -732,7 +732,7 @@ public class DocumentOperationAction extends WorkflowAction {
 	public ActionForward queueDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
-			KEWXMLService routeDoc = MessageServiceNames.getRouteDocumentMessageService(docForm.getRouteHeader());
+			KSBXMLService routeDoc = MessageServiceNames.getRouteDocumentMessageService(docForm.getRouteHeader());
 			routeDoc.invoke(docForm.getRouteHeaderId());
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document was successfully queued"));

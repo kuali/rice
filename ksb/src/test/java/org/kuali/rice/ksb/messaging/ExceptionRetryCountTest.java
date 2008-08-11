@@ -19,9 +19,9 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
-import org.kuali.rice.ksb.messaging.KEWJavaService;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -71,7 +71,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 
 		ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
 
-	KEWJavaService explodingQueue = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
+	KSBJavaService explodingQueue = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		this.retryCountServiceName);
 		explodingQueue.invoke("");
 		TestUtilities.waitForExceptionRouting();

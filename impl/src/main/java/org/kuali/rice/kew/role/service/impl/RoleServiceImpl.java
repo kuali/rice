@@ -49,7 +49,7 @@ import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
@@ -317,7 +317,7 @@ public class RoleServiceImpl implements RoleService {
 
     protected void requeueDocument(DocumentRouteHeaderValue document) {
     	QName documentServiceName = new QName(document.getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-    	KEWXMLService documentRoutingService = (KEWXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
+    	KSBXMLService documentRoutingService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
     	try {
 			documentRoutingService.invoke(String.valueOf(document.getRouteHeaderId()));
 		} catch (Exception e) {

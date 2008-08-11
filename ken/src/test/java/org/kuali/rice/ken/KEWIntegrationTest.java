@@ -23,7 +23,7 @@ import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.ksb.messaging.KEWXMLService;
+import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -47,7 +47,7 @@ public class KEWIntegrationTest extends NotificationTestCaseBase {
         assertNotNull(workgroupService);
         LOG.info("Default KEW WorkgroupService: " + workgroupService);
 
-        KEWXMLService notification = (KEWXMLService) GlobalResourceLoader.getService(new QName("KEN", "sendNotificationKewXmlService"));
+        KSBXMLService notification = (KSBXMLService) GlobalResourceLoader.getService(new QName("KEN", "sendNotificationKewXmlService"));
         assertNotNull(notification);
         // XmlIngesterService is = SpringServiceLocator..getXmlIngesterService();
         // check that the quickstart user is present 

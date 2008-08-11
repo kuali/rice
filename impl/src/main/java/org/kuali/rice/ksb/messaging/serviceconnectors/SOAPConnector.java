@@ -23,8 +23,8 @@ import org.codehaus.xfire.service.Service;
 import org.codehaus.xfire.service.binding.ObjectServiceFactory;
 import org.codehaus.xfire.util.dom.DOMInHandler;
 import org.codehaus.xfire.util.dom.DOMOutHandler;
-import org.kuali.rice.ksb.config.xfire.WorkflowXFireWSS4JInHandler;
-import org.kuali.rice.ksb.config.xfire.WorkflowXFireWSS4JOutHandler;
+import org.kuali.rice.ksb.config.xfire.XFireWSS4JInHandler;
+import org.kuali.rice.ksb.config.xfire.XFireWSS4JOutHandler;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
@@ -58,9 +58,9 @@ public class SOAPConnector extends AbstractServiceConnector {
 			client.addOutHandler(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
 		}
 
-		client.addOutHandler(new WorkflowXFireWSS4JOutHandler(getServiceInfo()));
+		client.addOutHandler(new XFireWSS4JOutHandler(getServiceInfo()));
 		client.addInHandler(new DOMInHandler());
 		client.addInHandler(new org.codehaus.xfire.util.LoggingHandler());
-		client.addInHandler(new WorkflowXFireWSS4JInHandler(getServiceInfo()));
+		client.addInHandler(new XFireWSS4JInHandler(getServiceInfo()));
 	}
 }

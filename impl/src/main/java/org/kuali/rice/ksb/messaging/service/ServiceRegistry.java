@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.ksb.messaging.service;
 
 import java.util.List;
+
+import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 /**
  * Service for providing data access for {@link ServiceInfo}.

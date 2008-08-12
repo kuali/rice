@@ -41,6 +41,9 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
     	document.routeDocument("");
 
+    	// ensure the UserSession is cleared out (could have been set up by other tests)
+    	UserSession.setAuthenticatedUser(null);
+    	
         // false because we didn't set up the user session properly
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
         

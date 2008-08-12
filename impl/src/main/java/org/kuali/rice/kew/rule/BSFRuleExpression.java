@@ -22,6 +22,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.ClassDumper;
 
 
 /**
@@ -48,7 +49,7 @@ public class BSFRuleExpression implements RuleExpression {
         BSFManager manager = new BSFManager();
         try {
             declareBeans(manager, rule, context);
-            result = (RuleExpressionResult) manager.eval(lang, ruleDefinition.toString(), 0, 0, expression);
+            result = (RuleExpressionResult) manager.eval(lang, null, 0, 0, expression);
         } catch (BSFException e) {
             throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);
         }
@@ -82,7 +83,7 @@ public class BSFRuleExpression implements RuleExpression {
      * @param context the current RouteContext
      */
     protected void declareBeans(BSFManager manager, Rule rule, RouteContext context) throws BSFException {
-        manager.declareBean("rule", rule, RuleBaseValues.class);
+        manager.declareBean("rule", rule, Rule.class);
         manager.declareBean("routeContext", context, RouteContext.class);
         manager.declareBean("workflow", new WorkflowRuleAPI(context), WorkflowRuleAPI.class);
     }

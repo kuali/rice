@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.actionrequests;
+package org.kuali.rice.kew.actionrequest;
 
 import java.util.Iterator;
 import java.util.List;

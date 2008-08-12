@@ -227,7 +227,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	protected void loadXmlFile(String fileName) {
 	    try {
-	        KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
+	    	KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
 	    } catch (Exception e) {
 	        throw new WorkflowRuntimeException(e);
 	    }

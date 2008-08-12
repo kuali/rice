@@ -43,9 +43,8 @@ import org.springframework.test.AssertThrows;
 
 public class RuleServiceTest extends KEWTestCase {
 
-
     protected void loadTestData() throws Exception {
-        loadXmlFile("RouteTemplateConfig.xml");
+        loadXmlFile("org/kuali/rice/kew/rule/RouteTemplateConfig.xml");
     }
 
     @Test public void testClearCacheWithDocumentTypeUpdate() throws Exception {
@@ -100,7 +99,7 @@ public class RuleServiceTest extends KEWTestCase {
 
         DocumentType root = KEWServiceLocator.getDocumentTypeService().findByName("EDENSERVICE-DOCS");
 
-        loadXmlFile("DocumentTypeToImportForCacheTest.xml");
+        loadXmlFile("org/kuali/rice/kew/rule/DocumentTypeToImportForCacheTest.xml");
 
         root = KEWServiceLocator.getDocumentTypeService().findByName("EDENSERVICE-DOCS");
 
@@ -245,7 +244,7 @@ public class RuleServiceTest extends KEWTestCase {
         assertNotNull("The list should not be null.", rulesFetched);
         assertEquals("The list should be empty.", 0, rulesFetched.size());
 
-        loadXmlFile("NewEdenserviceDocsRule.xml");
+        loadXmlFile("org/kuali/rice/kew/rule/NewEdenserviceDocsRule.xml");
 
         // verify that all rules for doc types in the hierarchy have been flushed from the cache
 

@@ -15,13 +15,13 @@ package org.kuali.rice.kns.web.struts.action;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
-import org.apache.commons.lang.StringUtils;
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
@@ -33,13 +33,14 @@ import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.v2.service.AuthenticationService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -104,7 +105,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	try {
 	    UserSession userSession = null;
 	    if (!isUserSessionEstablished(request)) {
-		id = KNSServiceLocator.getWebAuthenticationService().getNetworkId(request);
+	    id = ((AuthenticationService) GlobalResourceLoader.getService(new QName("KIM", "webAuthenticationService"))).getPrincipalName(request);
 		userSession = new UserSession(id);
 		String kualiSessionId = this.getKualiSessionId(request,response);
 		if (kualiSessionId == null) {

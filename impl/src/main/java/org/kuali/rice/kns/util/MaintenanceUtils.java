@@ -136,7 +136,9 @@ public class MaintenanceUtils {
                     srr.getAffectedReferencesFromLookup(businessObject, attributeName, "")));
             return field;
         }
-
+        if (maintainableFieldDefinition.isNoLookup()){
+        	return field;
+        }        
         return LookupUtils.setFieldQuickfinder(businessObject, attributeName, field, displayedFieldNames, srr);
     }
 
@@ -162,6 +164,9 @@ public class MaintenanceUtils {
                         maintainable.getAffectedReferencesFromLookup(businessObject, attributeName, collectionPrefix)));
             }
             return field;
+        }
+        if(maintainableFieldDefinition.isNoLookup()){
+        	return field;
         }
         return LookupUtils.setFieldQuickfinder(businessObject, collectionName, addLine, index,
                 attributeName, field, displayedFieldNames, maintainable);

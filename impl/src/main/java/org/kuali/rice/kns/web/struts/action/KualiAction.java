@@ -455,10 +455,15 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
         
     	if (form instanceof KualiDocumentFormBase) {
-			parameters.put(KNSConstants.DOC_NUM, ((KualiDocumentFormBase) form)
-					.getDocument().getDocumentNumber());
+    		String docNum = ((KualiDocumentFormBase) form).getDocument().getDocumentNumber();
+			if(docNum != null){
+				parameters.put(KNSConstants.DOC_NUM, docNum);
+			}
 		}else if(form instanceof LookupForm){
-    		parameters.put(KNSConstants.DOC_NUM, ((LookupForm) form).getDocNum());
+			String docNum = ((LookupForm) form).getDocNum();
+			if(docNum != null){
+				parameters.put(KNSConstants.DOC_NUM, ((LookupForm) form).getDocNum());
+			}
     	}
     	
         String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
@@ -626,8 +631,11 @@ public abstract class KualiAction extends DispatchAction {
         }
         
     	if (form instanceof KualiDocumentFormBase) {
-			parameters.put(KNSConstants.DOC_NUM, ((KualiDocumentFormBase) form)
+    		String docNum = ((KualiDocumentFormBase) form).getDocument().getDocumentNumber();
+    		if(docNum != null){
+    			parameters.put(KNSConstants.DOC_NUM, ((KualiDocumentFormBase) form)
 					.getDocument().getDocumentNumber());
+    		}
 		}
 
         String questionUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.QUESTION_ACTION, parameters);

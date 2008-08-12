@@ -22,8 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.v2.bo.Principal;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

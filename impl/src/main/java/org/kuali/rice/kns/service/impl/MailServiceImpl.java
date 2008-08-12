@@ -30,7 +30,8 @@ public class MailServiceImpl implements MailService {
 
     private MailSender mailSender;
     private String batchMailingList;
-
+    private String incidentMailingList;
+    
     /**
      * 
      */
@@ -88,4 +89,19 @@ public class MailServiceImpl implements MailService {
     public String getBatchMailingList() {
         return batchMailingList;
     }
+    
+	/**
+	 * @return the incidentMailingList
+	 */
+	public String getIncidentMailingList() {
+		return this.incidentMailingList;
+	}
+
+	/**
+	 * @param incidentMailingList the incidentMailingList to set
+	 */
+	public void setIncidentMailingList(String incidentMailingList) {
+		this.incidentMailingList = incidentMailingList;
+	}
+
 }

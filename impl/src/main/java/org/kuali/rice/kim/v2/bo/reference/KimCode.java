@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.v2.bo.reference;
 
-import org.kuali.core.bo.KualiCode;
+import org.kuali.rice.kns.bo.KualiCode;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

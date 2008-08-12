@@ -38,11 +38,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
     		" encountered an error and is unable to complete your request at this time."+
             " Please provide more information regarding this error by completing"+
             " this Incident Report.";
-    /**
-     * List of Kuali exception type names. This is the list to search for determining
-     * the caught exception is a Kuali exception
-     */
-    protected List<String> kualiExceptionNames;
+
     /**
      * Basic exception information is initialized and contained in this class instance.
      * Additional setting and other information can be added when exception is caught.
@@ -73,17 +69,14 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * </ul> 
      */
     public ExceptionIncident(Exception exception,
-            List<String> exceptionNames,
             Map<String,String> properties) {
         if (LOG.isTraceEnabled()) {
-            String message=String.format("ENTRY %s%n%s%n%s",
+            String message=String.format("ENTRY %s%n%s",
                     (exception==null)?"null":exception.toString(),
-                    (exceptionNames==null)?"":exceptionNames.toString(),
                     (properties==null)?"":properties.toString());
             LOG.trace(message);
         }
         
-        this.kualiExceptionNames=exceptionNames;
         initialize(exception, properties);
                 
         if (LOG.isTraceEnabled()) {
@@ -333,9 +326,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
 
         // Create the display message
         String displayMessage;
-        if (exception instanceof KualiException ||
-               (kualiExceptionNames != null &&
-                kualiExceptionNames.contains(exception.getClass().getSimpleName()))) {
+        if (exception instanceof KualiException) {
             displayMessage=exception.getMessage();
         } else {
             displayMessage=GENERIC_SYSTEM_ERROR_MESSAGE;
@@ -347,20 +338,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
         }
 
         return displayMessage;
-    }
-
-    /**
-     * @return the kualiExceptionNames
-     */
-    public final List<String> getKualiExceptionNames() {
-        return this.kualiExceptionNames;
-    }
-
-    /**
-     * @param kualiExceptionNames the kualiExceptionNames to set
-     */
-    public final void setKualiExceptionNames(List<String> kualiExceptionNames) {
-        this.kualiExceptionNames = kualiExceptionNames;
     }
 
     /**

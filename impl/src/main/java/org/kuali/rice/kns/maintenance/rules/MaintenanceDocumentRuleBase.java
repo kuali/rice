@@ -224,8 +224,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean isDocumentInactivatingBusinessObject(MaintenanceDocument maintenanceDocument) {
         if (maintenanceDocument.isEdit()) {
+        	Class boClass = maintenanceDocument.getNewMaintainableObject().getBoClass();
             // we can only be inactivating a business object if we're editing it
-            if (Inactivateable.class.isAssignableFrom(boClass)) {
+            if (boClass != null && Inactivateable.class.isAssignableFrom(boClass)) {
                 Inactivateable oldInactivateableBO = (Inactivateable) oldBo;
                 Inactivateable newInactivateableBO = (Inactivateable) newBo;
 
@@ -243,6 +244,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument) {
         if (isDocumentInactivatingBusinessObject(maintenanceDocument)) {
+        	Class boClass = maintenanceDocument.getNewMaintainableObject().getBoClass();
             Set<InactivationBlockingMetadata> inactivationBlockingMetadatas = ddService.getAllInactivationBlockingDefinitions(boClass);
 
             if (inactivationBlockingMetadatas != null) {

@@ -231,7 +231,9 @@ public class LookupForm extends KualiForm {
             }
             fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
             fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
-            fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
+            if(this.getDocNum() != null){
+            	fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
+            }
             if (StringUtils.isNotBlank(getReferencesToRefresh())) {
                 fieldValues.put(KNSConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
             }

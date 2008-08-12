@@ -58,7 +58,8 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
     protected boolean required = false;
     protected boolean readOnly = false;
-    protected boolean readOnlyAfterAdd = false; 
+    protected boolean readOnlyAfterAdd = false;
+    private boolean noLookup = false;
 
     protected String defaultValue;
     protected String template;
@@ -338,5 +339,18 @@ The defaultValueFinderClass specifies the java class that will be
         this.overrideLookupClass = overrideLookupClass;
     }
     
-    
+	/**
+	 * @return the noLookup
+	 */
+	public boolean isNoLookup() {
+		return this.noLookup;
+	}
+
+	/**
+	 * @param noLookup the noLookup to set
+	 */
+	public void setNoLookup(boolean noLookup) {
+		this.noLookup = noLookup;
+	}
+       
 }

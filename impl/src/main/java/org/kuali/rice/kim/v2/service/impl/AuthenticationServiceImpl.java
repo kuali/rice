@@ -2,8 +2,8 @@ package org.kuali.rice.kim.v2.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.core.web.filter.KualiCasFilter;
 import org.kuali.rice.kim.v2.service.AuthenticationService;
+import org.kuali.rice.kns.web.filter.KualiCasFilter;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 	private boolean validatePassword = true;

@@ -199,7 +199,8 @@
    	    </c:choose>
 
        	<logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
-            <html:radio property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}"
+       		<c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${KeyValue.label}"/>
+            <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
             	value="key" idName="KeyValue" disabled="${disableField}" onchange="${onchange}"
             	styleClass="${styleClass}"/>${KeyValue.label}
         </logic:iterate>

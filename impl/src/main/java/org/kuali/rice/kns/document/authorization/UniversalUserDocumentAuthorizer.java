@@ -18,6 +18,10 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.v2.service.AuthenticationService;
 import org.kuali.rice.kns.authorization.UniversalUserAuthorizationConstants;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
@@ -116,7 +120,7 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
             // check whether users are editable within Kuali
             usersMaintainedByKuali = configService.getPropertyAsBoolean( KNSConstants.MAINTAIN_USERS_LOCALLY_KEY );
             // check whether local CAS is in use
-            passwordEditingEnabled = KNSServiceLocator.getWebAuthenticationService().isValidatePassword();
+            passwordEditingEnabled = ((AuthenticationService) GlobalResourceLoader.getService(new QName("KIM", "webAuthenticationService"))).validatePassword();
         }
     }
 }

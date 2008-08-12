@@ -18,12 +18,8 @@ package org.kuali.rice.kim.v2.bo.entity;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-//import javax.persistence.Column;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
-
-import org.kuali.core.bo.Inactivateable;
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

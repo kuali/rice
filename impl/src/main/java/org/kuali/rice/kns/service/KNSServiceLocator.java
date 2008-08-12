@@ -154,12 +154,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
     }
 
-    public static final String WEB_AUTHENTICATION_SERVICE = "webAuthenticationService";
-
-    public static WebAuthenticationService getWebAuthenticationService() {
-	return (WebAuthenticationService) getService(WEB_AUTHENTICATION_SERVICE);
-    }
-
     public static final String DATETIME_SERVICE = "dateTimeService";
 
     public static DateTimeService getDateTimeService() {

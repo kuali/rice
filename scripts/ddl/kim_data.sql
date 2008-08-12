@@ -144,6 +144,19 @@ INSERT INTO kr_kim_afltn_type_t ( afltn_type_cd, afltn_type_nm, emp_afltn_type_i
     VALUES ( 'KUALI', 'Kuali Foundation', 'N', '07', SYS_GUID() )
 /
 
+-- updated from latest erd
+
+INSERT INTO kr_kim_entity_principal_t ( entity_prncpl_id, entity_prncpl_nm, entity_id, prncpl_pswd, obj_id, ver_nbr, actv_ind )
+    VALUES ( 'KULUSER', 'KULUSER', 'KULUSER', '', SYS_GUID(), 1, 'Y' )
+/
+
+INSERT INTO kr_kim_entity_principal_t ( entity_prncpl_id, entity_prncpl_nm, entity_id, prncpl_pswd, obj_id, ver_nbr, actv_ind )
+    VALUES ( '6162502038', 'KHUNTLEY', '6162502038', '', SYS_GUID(), 1, 'Y' )
+/
+
+INSERT INTO kr_kim_entity_principal_t ( entity_prncpl_id, entity_prncpl_nm, entity_id, prncpl_pswd, obj_id, ver_nbr, actv_ind )
+    VALUES ( 'admin', 'admin', 'admin', '', SYS_GUID(), 1 ,'Y' )
+/
 
 COMMIT
 /

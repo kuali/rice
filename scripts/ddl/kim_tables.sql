@@ -3,10 +3,10 @@ DECLARE
         SELECT table_name, constraint_name
             FROM user_constraints
             WHERE constraint_type = 'R'
-              AND table_name LIKE 'KR\_KIM\_%' ESCAPE '\';
+              AND table_name LIKE 'KR\_KIM\_%' ESCAPE '\'; --'
     CURSOR tbls IS 
         SELECT table_name FROM user_tables
-            WHERE table_name LIKE 'KR\_KIM\_%' ESCAPE '\';
+            WHERE table_name LIKE 'KR\_KIM\_%' ESCAPE '\'; --'
 BEGIN
     FOR r IN constraint_cursor LOOP
         dbms_output.put_line( 'Dropping Constraint: '||r.constraint_name );
@@ -25,7 +25,7 @@ CREATE TABLE kr_kim_entity_t
     entity_id      VARCHAR2(40),
     obj_id         VARCHAR2(36) CONSTRAINT kr_kim_entity_tn1 NOT NULL,
     ver_nbr        NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_tn2 NOT NULL,
-    row_actv_ind   CHAR(1) DEFAULT 'Y',
+    actv_ind   CHAR(1) DEFAULT 'Y',
     last_updt_dt   DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_tp1 PRIMARY KEY ( entity_id )
 )
@@ -35,14 +35,14 @@ ALTER TABLE kr_kim_entity_t ADD CONSTRAINT kr_kim_entity_tc0 UNIQUE (obj_id)
 
 CREATE TABLE kr_kim_ent_type_t
 (
-    ent_type_cd     VARCHAR2(10),
+    ent_typ_cd     VARCHAR2(10),
     obj_id          VARCHAR2(36) CONSTRAINT kr_kim_ent_type_tn1 NOT NULL,
     ver_nbr         NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_ent_type_tn2 NOT NULL,
     ent_type_nm     VARCHAR2(40),
     display_sort_cd VARCHAR2(2),
-    row_actv_ind    CHAR(1) DEFAULT 'Y',
+    actv_ind    CHAR(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
-    CONSTRAINT kr_kim_ent_type_tp1 PRIMARY KEY ( ent_type_cd )
+    CONSTRAINT kr_kim_ent_type_tp1 PRIMARY KEY ( ent_typ_cd )
 )
 /
 ALTER TABLE kr_kim_ent_type_t ADD CONSTRAINT kr_kim_ent_type_tc0 UNIQUE (obj_id)
@@ -51,12 +51,12 @@ ALTER TABLE kr_kim_ent_type_t ADD CONSTRAINT kr_kim_ent_type_tc0 UNIQUE (obj_id)
 CREATE TABLE kr_kim_entity_ent_type_t
 (
     entity_id      VARCHAR2(40),
-    ent_type_cd    VARCHAR2(10),
+    ent_typ_cd    VARCHAR2(10),
     obj_id         VARCHAR2(36) CONSTRAINT kr_kim_entity_ent_type_tn1 NOT NULL,
     ver_nbr        NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_ent_type_tn2 NOT NULL,
-    row_actv_ind   CHAR(1) DEFAULT 'Y',
+    actv_ind   CHAR(1) DEFAULT 'Y',
     last_updt_dt   DATE DEFAULT SYSDATE,
-    CONSTRAINT kr_kim_entity_ent_type_tp1 PRIMARY KEY ( entity_id, ent_type_cd )
+    CONSTRAINT kr_kim_entity_ent_type_tp1 PRIMARY KEY ( entity_id, ent_typ_cd )
 )
 /
 
@@ -70,7 +70,7 @@ CREATE TABLE kr_kim_ent_name_type_t
     ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_ent_name_type_tn2 NOT NULL,
     ent_name_type_nm    VARCHAR2(40),
     display_sort_cd     VARCHAR2(2),
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_ent_name_type_tp1 PRIMARY KEY ( ent_name_type_cd )
 )
@@ -89,7 +89,7 @@ CREATE TABLE kr_kim_entity_name_t
     middle_nm         VARCHAR2(80),
     name_suffix       VARCHAR2(80),
     name_prefix       VARCHAR2(80),
-    row_actv_ind      CHAR(1) DEFAULT 'Y',
+    actv_ind      CHAR(1) DEFAULT 'Y',
     last_updt_dt      DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_name_tp1 PRIMARY KEY ( entity_id, ent_name_type_cd )
 )
@@ -105,7 +105,7 @@ CREATE TABLE kr_kim_entity_bio_t
     ethnicity         VARCHAR2(40),
     birth_dt          DATE,
     gender_cd         CHAR(1) CONSTRAINT kr_kim_entity_bio_tn3 NOT NULL,
-    row_actv_ind      CHAR(1) DEFAULT 'Y',
+    actv_ind      CHAR(1) DEFAULT 'Y',
     last_updt_dt      DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_bio_tp1 PRIMARY KEY ( entity_id )
 )
@@ -114,20 +114,20 @@ ALTER TABLE kr_kim_entity_bio_t ADD CONSTRAINT kr_kim_entity_bio_tc0 UNIQUE (obj
 /
 
 
-CREATE TABLE kr_kim_ext_key_type_t
+CREATE TABLE kr_kim_ext_id_type_t
 (
-    ext_key_type_cd     VARCHAR2(10),
-    obj_id              VARCHAR2(36) CONSTRAINT kr_kim_ext_key_type_tn1 NOT NULL,
-    ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_ext_key_type_tn2 NOT NULL,
-    ext_key_type_nm     VARCHAR2(40),
+    ext_id_type_cd     VARCHAR2(10),
+    obj_id              VARCHAR2(36) CONSTRAINT kr_kim_ext_id_type_tn1 NOT NULL,
+    ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_ext_id_type_tn2 NOT NULL,
+    ext_id_type_nm     VARCHAR2(40),
     display_sort_cd     VARCHAR2(2),
     encr_req_ind        CHAR(1) DEFAULT 'N',
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
-    CONSTRAINT kr_kim_ext_key_type_tp1 PRIMARY KEY ( ext_key_type_cd )
+    CONSTRAINT kr_kim_ext_id_type_tp1 PRIMARY KEY ( ext_id_type_cd )
 )
 /
-ALTER TABLE kr_kim_ext_key_type_t ADD CONSTRAINT kr_kim_ext_key_type_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_ext_id_type_t ADD CONSTRAINT kr_kim_ext_id_type_tc0 UNIQUE (obj_id)
 /
 
 CREATE TABLE kr_kim_email_type_t
@@ -137,7 +137,7 @@ CREATE TABLE kr_kim_email_type_t
     ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_email_type_tn2 NOT NULL,
     email_type_nm       VARCHAR2(40),
     display_sort_cd     VARCHAR2(2),
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_email_type_tp1 PRIMARY KEY ( email_type_cd )
 )
@@ -152,7 +152,7 @@ CREATE TABLE kr_kim_phone_type_t
     ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_phone_type_tn2 NOT NULL,
     phone_type_nm       VARCHAR2(40),
     display_sort_cd     VARCHAR2(2),
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_phone_type_tp1 PRIMARY KEY ( phone_type_cd )
 )
@@ -168,7 +168,7 @@ CREATE TABLE kr_kim_addr_type_t
     ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_addr_type_tn2 NOT NULL,
     addr_type_nm       VARCHAR2(40),
     display_sort_cd     VARCHAR2(2),
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_addr_type_tp1 PRIMARY KEY ( addr_type_cd )
 )
@@ -184,7 +184,7 @@ CREATE TABLE kr_kim_afltn_type_t
     afltn_type_nm       VARCHAR2(40),
     emp_afltn_type_ind  CHAR(1) DEFAULT 'N',
     display_sort_cd     VARCHAR2(2),
-    row_actv_ind        CHAR(1) DEFAULT 'Y',
+    actv_ind        CHAR(1) DEFAULT 'Y',
     last_updt_dt        DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_afltn_type_tp1 PRIMARY KEY ( afltn_type_cd )
 )
@@ -192,20 +192,20 @@ CREATE TABLE kr_kim_afltn_type_t
 ALTER TABLE kr_kim_afltn_type_t ADD CONSTRAINT kr_kim_afltn_type_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_entity_ext_key_t
+CREATE TABLE kr_kim_entity_ext_id_t
 (
     entity_id       VARCHAR2(40),
-    ext_key_type_cd VARCHAR2(10),
-    obj_id          VARCHAR2(36) CONSTRAINT kr_kim_entity_ext_key_tn1 NOT NULL,
-    ver_nbr         NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_ext_key_tn2 NOT NULL,
-    ext_key_val     VARCHAR2(128),
-    row_actv_ind    CHAR(1) DEFAULT 'Y',
+    ext_id_type_cd VARCHAR2(10),
+    obj_id          VARCHAR2(36) CONSTRAINT kr_kim_entity_ext_id_tn1 NOT NULL,
+    ver_nbr         NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_ext_id_tn2 NOT NULL,
+    ext_id_val     VARCHAR2(128),
+    actv_ind    CHAR(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
-    CONSTRAINT kr_kim_entity_ext_key_tp1 PRIMARY KEY ( entity_id, ext_key_type_cd )
+    CONSTRAINT kr_kim_entity_ext_id_tp1 PRIMARY KEY ( entity_id, ext_id_type_cd )
 )
 /
 
-ALTER TABLE kr_kim_entity_ext_key_t ADD CONSTRAINT kr_kim_entity_ext_key_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_entity_ext_id_t ADD CONSTRAINT kr_kim_entity_ext_id_tc0 UNIQUE (obj_id)
 /
 
 CREATE TABLE kr_kim_entity_addr_t
@@ -217,11 +217,11 @@ CREATE TABLE kr_kim_entity_addr_t
     addr_line_1     VARCHAR2(80),
     addr_line_2     VARCHAR2(80),
     addr_line_3     VARCHAR2(80),
-    city_name       VARCHAR2(60),
+    city_nm         VARCHAR2(60),
     postal_state_cd VARCHAR2(2),
-    postal_zip_code VARCHAR2(11),
+    postal_zip_cd   VARCHAR2(11),
     postal_cntry_cd VARCHAR2(2),
-    row_actv_ind    CHAR(1) DEFAULT 'Y',
+    actv_ind    CHAR(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_addr_tp1 PRIMARY KEY ( entity_id, addr_type_cd )
 )
@@ -237,7 +237,7 @@ CREATE TABLE kr_kim_entity_email_t
     obj_id          VARCHAR2(36) CONSTRAINT kr_kim_entity_email_tn1 NOT NULL,
     ver_nbr         NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_email_tn2 NOT NULL,
     email_addr      VARCHAR2(128),
-    row_actv_ind    CHAR(1) DEFAULT 'Y',
+    actv_ind    CHAR(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_email_tp1 PRIMARY KEY ( entity_id, email_type_cd )
 )
@@ -256,7 +256,7 @@ CREATE TABLE kr_kim_entity_phone_t
     phone_nbr       VARCHAR2(20),
     phone_ext_nbr   VARCHAR2(8),
     postal_cntry_cd VARCHAR2(2),
-    row_actv_ind    CHAR(1) DEFAULT 'Y',
+    actv_ind    CHAR(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_entity_phone_tp1 PRIMARY KEY ( entity_id, phone_type_cd )
 )
@@ -264,3 +264,26 @@ CREATE TABLE kr_kim_entity_phone_t
 
 ALTER TABLE kr_kim_entity_phone_t ADD CONSTRAINT kr_kim_entity_phone_tc0 UNIQUE (obj_id)
 /
+
+-- updated from latest erd
+
+CREATE TABLE kr_kim_entity_principal_t
+(
+    entity_prncpl_id VARCHAR2(40),
+    obj_id           VARCHAR2(36) CONSTRAINT kr_kim_entity_principal_tn1 NOT NULL,
+    ver_nbr          NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_principal_tn2 NOT NULL,
+    entity_prncpl_nm VARCHAR2(100) CONSTRAINT kr_kim_entity_principal_tn3 NOT NULL,
+    entity_id        VARCHAR2(40),
+    prncpl_pswd      VARCHAR2(400),
+    actv_ind         CHAR(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_entity_phone_tp1 PRIMARY KEY ( entity_prncpl_id )
+)
+/
+
+ALTER TABLE kr_kim_entity_principal_t ADD CONSTRAINT kr_kim_entity_principal_tc0 UNIQUE (obj_id)
+/
+
+ALTER TABLE kr_kim_entity_principal_t ADD CONSTRAINT kr_kim_entity_principal_tc1 UNIQUE (entity_prncpl_nm)
+/
+
+

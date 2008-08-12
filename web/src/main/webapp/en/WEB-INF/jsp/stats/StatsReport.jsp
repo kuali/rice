@@ -184,26 +184,6 @@
 			        <tr>
 				      <td class="datacell" colspan="2">&nbsp;</td>
 			        </tr>
-			 			<tr>
-			 				<td class="thnormal" width="50%"><bean-el:message key="stats.StatsReport.avgActionsPerDoc"/></td>
-							<td class="datacell" width="50%"><c:out value="${StatsForm.stats.avgActionsPerDoc}"/>
-									<c:if test="${StatsForm.avgActionsPerTimeUnit == StatsForm.dayTimeUnit}">
-										<bean-el:message key="general.label.perDay"/>&nbsp;
-									</c:if>
-									<c:if test="${StatsForm.avgActionsPerTimeUnit == StatsForm.weekTimeUnit}">
-										<bean-el:message key="general.label.perWeek"/>&nbsp;
-									</c:if>
-									<c:if test="${StatsForm.avgActionsPerTimeUnit == StatsForm.monthTimeUnit}">
-										<bean-el:message key="general.label.perMonth"/>&nbsp;
-									</c:if>
-									<c:if test="${StatsForm.avgActionsPerTimeUnit == StatsForm.yearTimeUnit}">
-										<bean-el:message key="general.label.perYear"/>&nbsp;
-									</c:if>
-									<html-el:select property="avgActionsPerTimeUnit">
-							  		<html-el:options collection="timeUnitDropDown" property="key" labelProperty="value"/>
-									</html-el:select>
-							</td>
-						</tr>
 					</table>
 				</td>
 			</tr>

@@ -28,6 +28,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
@@ -391,7 +392,10 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         if ( bo instanceof PersistableBusinessObject ) {
             referenceClasses = getPersistenceStructureService().listReferenceObjectFields( bo.getClass() );
         }
-        List<RelationshipDefinition> ddRelationships = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass().getName()).getRelationships();
+        DataDictionaryEntry ddEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass().getName());
+        List<RelationshipDefinition> ddRelationships = (ddEntry == null
+        													? new ArrayList<RelationshipDefinition>()
+        													: ddEntry.getRelationships());
         List<BusinessObjectRelationship> relationships = new ArrayList<BusinessObjectRelationship>();
         
         // loop over all relationships

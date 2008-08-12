@@ -90,61 +90,92 @@ request.setAttribute("test", incident);
     <font color="blue" size="3">Please use the Incident Report form below to report the problems</font>
   </div>
   <br/>
-  <div class="topblurb">
-    <div align="center">
-      <table cellpadding="0" class="container2">
-        <tr>
-          <td colspan="2" class="infoline">
-            <div align="left"><font color="blue">This information will be forwarded to our support team. Please describe what action you were taking when the problem occurred</font></div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div align="left"><strong>Document Id</strong></div>
-          </td>
-          <td align="center">
-            <div align="center"><font color="green">${documentId}</font></div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div align="left"><strong>Error Message<strong></div>
-          </td>
-          <td align="center">
-            <div align="center">
-              <font color="red">${displayMessage}</font>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div align="left"><strong>Description</strong></div>
-          </td>
-          <td align="center">
-			  <kul:htmlControlAttribute property="description"
-				                        attributeEntry="${textAreaAttributes.infoTextArea}" />
-              <kul:expandedTextArea textAreaFieldName="description"
-                                    action="kualiExceptionIncidentReport"
-                                    textAreaLabel="Exception Incident Extended Text Area"
-                                    title="Exception Incident"/>
-          </td>
-        </tr>
-        <tr>
-          <td align="center" colspan="2">
-            <div>
-			<input
-				type="image" name="submit"
-				src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_complete.gif"
-				class="globalbuttons" title="return" alt="return">
-			<input
-				type="image" name="cancel" value="true"
-				src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
-				class="globalbuttons" title="cancel" alt="cancel">
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <br/>
+	<div class="topblurb">
+		<div align="center">
+			<table cellpadding="10" cellspacing="0" border="0" class="container2">
+				<tr>
+					<td colspan="2" class="infoline">
+						<div align="left">
+							<font color="blue">This information will be forwarded to
+								our support team. Please describe what action you were taking
+								when the problem occurred</font>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div align="left" valign="top">
+							<strong>Document Id</strong>
+						</div>
+					</td>
+					<td align="left" valign="top">
+						<div align="left">
+							<font color="green">${documentId}</font>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div align="left" valign="top">
+							<strong>Error Message<strong>
+						</div>
+					</td>
+					<td align="left">
+						<div align="left">
+							<font color="red">${displayMessage}</font>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top" align="left">
+						<div align="left">
+							<strong>User Input</strong>
+						</div>
+					</td>
+					<td align="left" valign="top">
+						<textarea name='description' rows='5' cols='100' maxlength='1000'></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td align="left">
+						<div>
+							<input type="image" name="submit"
+								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_complete.gif"
+								class="globalbuttons" title="return" alt="return">
+							<input type="image" name="cancel" value="true"
+								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
+								class="globalbuttons" title="cancel" alt="cancel">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<br />
+	<c:if test="${!KualiConfigurationService.isProductionEnvironment}">
+		<table>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+			<tr>
+				<td valign="top" colspan="2">
+					<div align="left" valign="top">
+						<strong>******************Stack Trace-Only shown when not
+							in production*****************</strong>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" valign="top" colspan="2">
+					<div align="left">
+						${stackTrace}
+					</div>
+				</td>
+			</tr>
+		</table>
+	</c:if>
 </kul:page>

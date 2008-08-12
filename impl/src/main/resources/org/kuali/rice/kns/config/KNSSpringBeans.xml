@@ -180,8 +180,6 @@
 		</property>
 	</bean>
 
-	<bean id="webAuthenticationService" class="org.kuali.rice.kns.web.RiceRemoteUserWebAuthenticationServiceImpl" />
-
 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 
 	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
@@ -189,6 +187,7 @@
 			<ref bean="mailSender" />
 		</property>
 		<property name="batchMailingList" value="${mailing.list.batch}" />
+		<property name="incidentMailingList" value="${kr.incident.mailing.list}" />
 	</bean>
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -201,46 +200,8 @@
         <bean class="org.kuali.rice.kns.mail.MailMessage">
           <!-- The property place holder below must be specified in          -->
           <!-- common-config-default.xml or any other KNS configuration file -->
-          <property name="fromAddress"><value>${MailMessage.from}</value></property>
+          <property name="fromAddress"><value>${kr.incident.mailing.list}</value></property>
         </bean>
-	  </property>
-	  <property name="kualiExceptionNames">
-	    <list>
-	      <value>AuthorizationException</value>
-	      <value>BeanComparisonException</value>
-	      <value>BusinessObjectNotFoundException</value>
-	      <value>ClassNotPersistableException</value>
-	      <value>DocumentAuthorizationException</value>
-	      <value>DocumentInitiationAuthorizationException</value>
-	      <value>DocumentTypeAuthorizationException</value>
-	      <value>DuplicateKeyException</value>
-	      <value>FileUploadLimitExceededException</value>
-	      <value>GroupNotFoundException</value>
-	      <value>IllegalObjectStateException</value>
-	      <value>InactiveDocumentTypeAuthorizationException</value>
-	      <value>InfrastructureException</value>
-	      <value>IntrospectionException</value>
-	      <value>MaintenanceNewCopyAuthorizationException</value>
-	      <value>MetadataException</value>
-	      <value>ModuleAuthorizationException</value>
-	      <value>ObjectNotABusinessObjectException</value>
-	      <value>ObjectNotABusinessObjectRuntimeException</value>
-	      <value>PropertiesException</value>
-	      <value>ReferenceAttributeDoesntExistException</value>
-	      <value>ReferenceAttributeNotAnOjbReferenceException</value>
-	      <value>ReferentialIntegrityException</value>
-	      <value>UnknownBusinessClassAttributeException</value>
-	      <value>UnknownBusinessClassException</value>
-	      <value>UnknownDocumentIdException</value>
-	      <value>UnknownDocumentTypeException</value>
-	      <value>UserNotFoundException</value>
-	      <value>ValidationException</value>
-	    </list>
-	  </property>
-	  <property name="additionalExceptionNameList">
-        <!-- The property place holder below must be specified in          -->
-        <!-- common-config-default.xml or any other KNS configuration file -->
-	    <value>${KualiExceptionIncidentServiceImpl.additionalExceptionNameList}</value>
 	  </property>
 	</bean>
 	
@@ -708,6 +669,7 @@
 	</bean>
 
 		<bean id="sessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
+		<property name="maxCacheSize" value="${session.document.cache.size}" />
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>

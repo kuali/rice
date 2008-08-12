@@ -22,8 +22,8 @@ import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
-import org.kuali.core.bo.KualiCodeBase;
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.KualiCodeBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

@@ -107,3 +107,8 @@ ALTER TABLE kr_kim_entity_phone_t ADD CONSTRAINT kr_kim_entity_phone_tr3
 	REFERENCES sh_country_t
 	ON DELETE CASCADE
 /
+
+
+-- kr_kim_entity_principal_t
+-- not adding for now since the rest of the tables need updated to the new erd
+

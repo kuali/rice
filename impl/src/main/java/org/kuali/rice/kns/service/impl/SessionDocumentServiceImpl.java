@@ -27,12 +27,12 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KualiLRUMap;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -43,13 +43,42 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional
-public class SessionDocumentServiceImpl implements SessionDocumentService {
+public class SessionDocumentServiceImpl implements SessionDocumentService, InitializingBean  {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SessionDocumentServiceImpl.class);
     
     private BusinessObjectService businessObjectService;
     
     private SessionDocumentDao sessionDocumentDao;
+    
+	private KualiLRUMap cachedObjects;
+	
+	private int maxCacheSize;
 
+	/** Special list class which doesn't blow up when setting an index which doesn't exist. */
+    public static class CachedObject  {
+        UserSession userSession;
+		String formKey;
+        CachedObject(){}
+		public UserSession getUserSession() {
+			return this.userSession;
+		}
+		
+		public void setUserSession(UserSession userSession) {
+			this.userSession = userSession;
+		}
+	
+		public String getFormKey() {
+			return this.formKey;
+		}
+		
+		public void setFormKey(String formKey) {
+			this.formKey = formKey;
+		}
+    }
+
+	public void afterPropertiesSet() throws Exception {
+		cachedObjects = new KualiLRUMap(maxCacheSize);		
+	}
 
 	/**
      * @see org.kuali.rice.kns.service.SessionDocumentService#getDocumentForm(String documentNumber, String docFormKey, UserSession userSession)
@@ -121,9 +150,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
 		 if (StringUtils.isBlank(formKey)
 				|| userSession.retrieveObject(formKey) == null) {
 			 LOG.debug("set Document Form into session");
-			 String docFormKey = GlobalVariables.getUserSession().addObject(form);
-			 form.setFormKey(docFormKey);
+			 formKey = GlobalVariables.getUserSession().addObject(form);
+			 form.setFormKey(formKey);
 		 }
+		 String key = userSession.getKualiSessionId() + "-" + formKey;
+		 CachedObject cachedObject = new CachedObject(); 
+		 cachedObject.setUserSession(userSession);
+		 cachedObject.setFormKey(formKey);
+		 cachedObjects.put(key, cachedObject);
 		 
         String documentNumber = form.getDocument().getDocumentNumber(); 
     	
@@ -186,4 +220,19 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
 		this.businessObjectService = businessObjectService;
 	}
     
+	/**
+	 * @return the maxCacheSize
+	 */
+	public int getMaxCacheSize() {
+		return this.maxCacheSize;
+	}
+
+
+	/**
+	 * @param maxCacheSize the maxCacheSize to set
+	 */
+	public void setMaxCacheSize(int maxCacheSize) {
+		this.maxCacheSize = maxCacheSize;
+	}
+
 }

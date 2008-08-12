@@ -58,18 +58,6 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * An email template is used to construct an email to be sent by the mail service.
      */
     private MailMessage messageTemplate;
-    /**
-     * List of recognized Kuali exceptions in classname. The caught exception not in this
-     * list is consider as generic system exception.
-     */
-    private List<String> kualiExceptionNames;
-    /**
-     * Id of a Spring Bean defining list of addtional recognized Kuali exceptions in
-     * classname. This is to be included with the kualiExceptionNames. Note: The reason
-     * for this parameter is allowing injection of additional exception names beside the
-     * provided default list in kualiExceptionNames parameter.
-     */
-    private String additionalExceptionNameList;
 
     /**
      * This mails the report using the mail service from the mail template.
@@ -258,22 +246,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
             LOG.trace(lm);
         }
         
-        // Set up list of Kuali exception names
-        List<String> exceptionNames=new ArrayList<String>();
-        if (kualiExceptionNames != null) {
-            exceptionNames.addAll(kualiExceptionNames);
-        }
-        if (additionalExceptionNameList != null &&
-            additionalExceptionNameList.length() > 0 &&
-            KNSServiceLocator.isSingleton(additionalExceptionNameList)) {
-            List<String> names=KNSServiceLocator.getNervousSystemContextBean (
-                    List.class, additionalExceptionNameList);
-            exceptionNames.addAll(names);
-        }
-        KualiExceptionIncident ei=new ExceptionIncident(exception,
-                exceptionNames,
-                properties);
-  
+        KualiExceptionIncident ei=new ExceptionIncident(exception, properties);
+        
         if (LOG.isTraceEnabled()) {
             String lm=String.format("EXIT %s", ei.toProperties().toString());
             LOG.trace(lm);
@@ -302,34 +276,6 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         }
                 
         return ei;
-    }
-
-    /**
-     * @return the kualiExceptionNames
-     */
-    public final List<String> getKualiExceptionNames() {
-        return this.kualiExceptionNames;
-    }
-
-    /**
-     * @param kualiExceptionNames the kualiExceptionNames to set
-     */
-    public final void setKualiExceptionNames(List<String> kualiExceptionNames) {
-        this.kualiExceptionNames = kualiExceptionNames;
-    }
-
-    /**
-     * @return the additionalExceptionNameList
-     */
-    public final String getAdditionalExceptionNameList() {
-        return this.additionalExceptionNameList;
-    }
-
-    /**
-     * @param additionalExceptionNameList the additionalExceptionNameList to set
-     */
-    public final void setAdditionalExceptionNameList(String additionalExceptionNameList) {
-        this.additionalExceptionNameList = additionalExceptionNameList;
     }
 
 }

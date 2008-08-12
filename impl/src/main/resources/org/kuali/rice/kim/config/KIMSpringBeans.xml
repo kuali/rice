@@ -401,7 +401,7 @@
   
     <bean id="webAuthenticationService" class="org.kuali.rice.kim.v2.service.impl.AuthenticationServiceImpl" />
     
-  <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="serviceDefinition">
       <bean parent="kimService">
         <property name="service" ref="webAuthenticationService" />

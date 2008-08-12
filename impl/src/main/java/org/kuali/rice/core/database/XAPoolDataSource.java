@@ -132,7 +132,7 @@ public class XAPoolDataSource extends StandardXAPoolDataSource implements Initia
     }
     
     public void setPreparedStmtCacheSize(int preparedStatementCacheSize) {
-    	this.dataSource.setPreparedStatementCacheSize(preparedStatementCacheSize);
+    	this.dataSource.setPreparedStmtCacheSize(preparedStatementCacheSize);
     }
 
 }

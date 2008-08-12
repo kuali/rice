@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -44,11 +44,11 @@ public interface DocumentSearchService {
      *         represented by a list of {@link DocumentSearchResult} objects
      * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException;
+    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException;
 
     /**
      * This method performs a standard document search but uses the value returned by
-     * {@link DocSearchCriteriaVO#getThreshold()} as the maximum search results returned
+     * {@link DocSearchCriteriaDTO#getThreshold()} as the maximum search results returned
      * 
      * @param user - user executing the search
      * @param criteria - criteria to use to search documents
@@ -56,7 +56,7 @@ public interface DocumentSearchService {
      *         represented by a list of {@link DocumentSearchResult} objects
      * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException;
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException;
     public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws KEWUserNotFoundException;
     public void clearNamedSearches(WorkflowUser user);
     public List getNamedSearches(WorkflowUser user);

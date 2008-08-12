@@ -55,9 +55,9 @@ public interface DocumentSearchCriteriaProcessor {
 
 	public void setSearchingUser(WorkflowUser searchingUser);
 	
-	public void setDocSearchCriteriaVO(DocSearchCriteriaVO docSearchCriteriaVO);
+	public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO);
 
-	public DocSearchCriteriaVO getDocSearchCriteriaVO();
+	public DocSearchCriteriaDTO getDocSearchCriteriaDTO();
 	
 	public boolean isHeaderBarDisplayed();
 	

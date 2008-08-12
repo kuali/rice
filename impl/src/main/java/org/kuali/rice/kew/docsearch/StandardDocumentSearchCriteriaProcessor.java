@@ -38,7 +38,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchCriteriaProcessor.class);
 
     private WorkflowUser searchingUser;
-    private DocSearchCriteriaVO docSearchCriteriaVO = new DocSearchCriteriaVO();
+    private DocSearchCriteriaDTO docSearchCriteriaDTO = new DocSearchCriteriaDTO();
     
     public StandardDocumentSearchCriteriaProcessor() {}
     
@@ -57,17 +57,17 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     }
 
     /**
-     * @return the docSearchCriteriaVO
+     * @return the docSearchCriteriaDTO
      */
-    public DocSearchCriteriaVO getDocSearchCriteriaVO() {
-        return this.docSearchCriteriaVO;
+    public DocSearchCriteriaDTO getDocSearchCriteriaDTO() {
+        return this.docSearchCriteriaDTO;
     }
 
     /**
-     * @param docSearchCriteriaVO the docSearchCriteriaVO to set
+     * @param docSearchCriteriaDTO the docSearchCriteriaDTO to set
      */
-    public void setDocSearchCriteriaVO(DocSearchCriteriaVO docSearchCriteriaVO) {
-        this.docSearchCriteriaVO = docSearchCriteriaVO;
+    public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO) {
+        this.docSearchCriteriaDTO = docSearchCriteriaDTO;
     }
     
     private Set<String> generateHiddenFieldKeySet(List<String> hiddenFieldKeys) {

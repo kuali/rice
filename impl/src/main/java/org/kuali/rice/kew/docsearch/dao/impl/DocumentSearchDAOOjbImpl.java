@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
@@ -46,15 +46,15 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
 
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException {
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, WorkflowUser user) throws KEWUserNotFoundException {
         return getList(documentSearchGenerator, criteria, criteria.getThreshold(), user);
     }
 
-    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException {
+    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, WorkflowUser user) throws KEWUserNotFoundException {
         return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), user);
     }
 
-    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, Integer searchResultCap, WorkflowUser user) throws KEWUserNotFoundException {
+    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, Integer searchResultCap, WorkflowUser user) throws KEWUserNotFoundException {
         LOG.debug("start getList");
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
         List docList = new ArrayList();

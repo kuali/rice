@@ -24,7 +24,7 @@ import java.util.List;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -89,19 +89,19 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		if (savedSearch == null || savedSearch.getOptionId() == null) {
 			return null;
 		}
-		DocSearchCriteriaVO criteria = getCriteriaFromSavedSearch(savedSearch);
+		DocSearchCriteriaDTO criteria = getCriteriaFromSavedSearch(savedSearch);
 		return new SavedSearchResult(criteria, getList(user, criteria));
 	}
 
-    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException {
+    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, false);
     }
     
-    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws KEWUserNotFoundException {
+    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, true);
     }
 	
-	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
+	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {
@@ -162,14 +162,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     	return (DocumentSearchResultProcessor)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
 
-    public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,WorkflowUser user,DocSearchCriteriaVO criteria) {
+    public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,WorkflowUser user,DocSearchCriteriaDTO criteria) {
         List<WorkflowServiceError> errors = docSearchGenerator.performPreSearchConditions(user,criteria);
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("Document Search Precondition Errors", errors);
         }
     }
 
-    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaVO criteria) {
+    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
         errors.addAll(docSearchGenerator.validateSearchableAttributes(criteria));
         if (!errors.isEmpty()) {
@@ -177,7 +177,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
-    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocSearchCriteriaVO criteria) {
+    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocSearchCriteriaDTO criteria) {
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
         // validate the network id's
@@ -421,7 +421,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedMostRecentSearches;
 	}
 
-	private void saveSearch(WorkflowUser user, DocSearchCriteriaVO criteria) {
+	private void saveSearch(WorkflowUser user, DocSearchCriteriaDTO criteria) {
 		if (user == null) {
 			String message = "User given to save search was null.";
 			LOG.warn(message);
@@ -681,12 +681,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-	private DocSearchCriteriaVO getCriteriaFromSavedSearch(UserOptions savedSearch) {
-		DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+	private DocSearchCriteriaDTO getCriteriaFromSavedSearch(UserOptions savedSearch) {
+		DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
 		if (savedSearch != null) {
 			String docTypeFullName = getOptionCriteriaField(savedSearch, "docTypeFullName");
 			if (!Utilities.isEmpty(docTypeFullName)) {
-				criteria = new DocSearchCriteriaVO();
+				criteria = new DocSearchCriteriaDTO();
 			}
 			criteria.setDocTypeFullName(getOptionCriteriaField(savedSearch, "docTypeFullName"));
 			criteria.setAppDocId(getOptionCriteriaField(savedSearch, "appDocId"));

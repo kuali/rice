@@ -26,24 +26,24 @@ import java.io.Serializable;
 public class SavedSearchResult implements Serializable {
 	
 	private static final long serialVersionUID = -764778230573234367L;
-	private DocSearchCriteriaVO docSearchCriteriaVO;
+	private DocSearchCriteriaDTO docSearchCriteriaDTO;
 	private DocumentSearchResultComponents searchResult;
     
     /**
      * @deprecated
      */
     public boolean isAdvancedSearch() {
-        return docSearchCriteriaVO.isAdvancedSearch();
+        return docSearchCriteriaDTO.isAdvancedSearch();
     }
-    public SavedSearchResult(DocSearchCriteriaVO docSearchCriteriaVO, DocumentSearchResultComponents searchResult) {
-        this.docSearchCriteriaVO = docSearchCriteriaVO;
+    public SavedSearchResult(DocSearchCriteriaDTO docSearchCriteriaDTO, DocumentSearchResultComponents searchResult) {
+        this.docSearchCriteriaDTO = docSearchCriteriaDTO;
         this.searchResult = searchResult;
     }
-    public DocSearchCriteriaVO getDocSearchCriteriaVO() {
-        return docSearchCriteriaVO;
+    public DocSearchCriteriaDTO getDocSearchCriteriaDTO() {
+        return docSearchCriteriaDTO;
     }
-//    public void setDocSearchCriteriaVO(DocSearchCriteriaVO docSearchCriteriaVO) {
-//        this.docSearchCriteriaVO = docSearchCriteriaVO;
+//    public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO) {
+//        this.docSearchCriteriaDTO = docSearchCriteriaDTO;
 //    }
 	public DocumentSearchResultComponents getSearchResult() {
 		return searchResult;

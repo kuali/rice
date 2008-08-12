@@ -48,20 +48,20 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
     private Map<String,Boolean> sortableByKey = new HashMap<String,Boolean>();
     private Map<String,String> labelsByKey = new HashMap<String,String>();
-    private DocSearchCriteriaVO searchCriteria;
+    private DocSearchCriteriaDTO searchCriteria;
     private WorkflowUser searchingUser;
 
     /**
      * @return the searchCriteria
      */
-    public DocSearchCriteriaVO getSearchCriteria() {
+    public DocSearchCriteriaDTO getSearchCriteria() {
         return searchCriteria;
     }
 
     /**
      * @param searchCriteria the searchCriteria to set
      */
-    public void setSearchCriteria(DocSearchCriteriaVO searchCriteria) {
+    public void setSearchCriteria(DocSearchCriteriaDTO searchCriteria) {
         this.searchCriteria = searchCriteria;
     }
 
@@ -83,7 +83,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		return new ArrayList<Column>();
 	}
 
-    private List<Column> getAndSetUpCustomDisplayColumns(DocSearchCriteriaVO criteria) {
+    private List<Column> getAndSetUpCustomDisplayColumns(DocSearchCriteriaDTO criteria) {
         List<Column> columns = getCustomDisplayColumns();
         for (Column column : columns) {
             for (Field field : getFields(criteria)) {
@@ -123,17 +123,17 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
     }
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.kew.user.WorkflowUser)
+	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchVO> docSearchResultRows, DocSearchCriteriaVO criteria, WorkflowUser user) {
+	public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows, DocSearchCriteriaDTO criteria, WorkflowUser user) {
         this.setSearchCriteria(criteria);
         this.setSearchingUser(user);
 		List columns = constructColumnList(criteria);
 
 		List<DocumentSearchResult> documentSearchResults = new ArrayList<DocumentSearchResult>();
 		for (Iterator iter = docSearchResultRows.iterator(); iter.hasNext();) {
-			DocSearchVO docSearchVO = (DocSearchVO) iter.next();
-			DocumentSearchResult docSearchResult = this.generateSearchResult(docSearchVO,columns);
+			DocSearchDTO docCriteriaDTO = (DocSearchDTO) iter.next();
+			DocumentSearchResult docSearchResult = this.generateSearchResult(docCriteriaDTO,columns);
 			if (docSearchResult != null) {
 				documentSearchResults.add(docSearchResult);
 			}
@@ -146,7 +146,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	 *
 	 * @return a list of columns in an ordered list that will be used to generate the final search results
 	 */
-	public List<Column> constructColumnList(DocSearchCriteriaVO criteria) {
+	public List<Column> constructColumnList(DocSearchCriteriaDTO criteria) {
 		List<Column> tempColumns = new ArrayList<Column>();
 		List<Column> customDisplayColumnNames = getAndSetUpCustomDisplayColumns(criteria);
         if ((!getShowAllStandardFields()) && (getOverrideSearchableAttributes())) {
@@ -190,11 +190,11 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG);
 	}
 
-	public void addSearchableAttributeColumnsNoOverrides(List<Column> columns,DocSearchCriteriaVO criteria) {
+	public void addSearchableAttributeColumnsNoOverrides(List<Column> columns,DocSearchCriteriaDTO criteria) {
         this.addSearchableAttributeColumnsBasedOnFields(columns, criteria, null);
 	}
 
-    protected void addSearchableAttributeColumnsBasedOnFields(List<Column> columns,DocSearchCriteriaVO criteria,List<String> searchAttributeFieldNames) {
+    protected void addSearchableAttributeColumnsBasedOnFields(List<Column> columns,DocSearchCriteriaDTO criteria,List<String> searchAttributeFieldNames) {
         Set<String> alreadyProcessedFieldKeys = new HashSet<String>();
         List<Field> fields = this.getFields(criteria, searchAttributeFieldNames);
         for (Field field : fields) {
@@ -215,13 +215,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
         }
     }
 
-	public void addAllCustomColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
+	public void addAllCustomColumns(List<Column> columns,DocSearchCriteriaDTO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			this.addCustomColumn(columns,customColumn);
 		}
 	}
 
-	public void addCustomStandardCriteriaColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
+	public void addCustomStandardCriteriaColumns(List<Column> columns,DocSearchCriteriaDTO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_SET.contains(customColumn.getKey())) {
 				this.addCustomColumn(columns,customColumn);
@@ -239,7 +239,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		addColumnUsingKey(columns, customColumn.getDisplayParameters(), customColumn.getKey(), customColumn.getColumnTitle(), sortable);
 	}
 
-	private List<Field> getFields(DocSearchCriteriaVO criteria) {
+	private List<Field> getFields(DocSearchCriteriaDTO criteria) {
 	    return getFields(criteria, null);
 	}
 	
@@ -251,7 +251,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	return documentType;
     }
 
-    private List<Field> getFields(DocSearchCriteriaVO criteria, List<String> searchAttributeFieldNames) {
+    private List<Field> getFields(DocSearchCriteriaDTO criteria, List<String> searchAttributeFieldNames) {
 		List<Field> returnFields = new ArrayList<Field>();
 		DocumentType documentType = getDocumentType(criteria.getDocTypeFullName());
 		if (documentType != null) {
@@ -280,12 +280,12 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		return returnFields;
 	}
 
-	public DocumentSearchResult generateSearchResult(DocSearchVO docSearchVO, List columns) {
-		Map<String,Object> alternateSortValues = getSortValuesMap(docSearchVO);
+	public DocumentSearchResult generateSearchResult(DocSearchDTO docCriteriaDTO, List columns) {
+		Map<String,Object> alternateSortValues = getSortValuesMap(docCriteriaDTO);
 		DocumentSearchResult docSearchResult = null;
 		for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 			Column currentColumn = (Column) iterator.next();
-			KeyValueSort kvs = generateSearchResult(docSearchVO,currentColumn,alternateSortValues);
+			KeyValueSort kvs = generateSearchResult(docCriteriaDTO,currentColumn,alternateSortValues);
 			if (kvs != null) {
 				if (docSearchResult == null) {
 					docSearchResult = new DocumentSearchResult();
@@ -301,7 +301,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		public String userDisplayValue;
 	}
 
-	public KeyValueSort generateSearchResult(DocSearchVO docSearchVO, Column column, Map<String,Object> sortValuesByColumnKey) {
+	public KeyValueSort generateSearchResult(DocSearchDTO docCriteriaDTO, Column column, Map<String,Object> sortValuesByColumnKey) {
 		KeyValueSort returnValue = null;
 		DisplayValues fieldValue = null;
 		Object sortFieldValue = null;
@@ -309,33 +309,33 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		SearchableAttributeValue attributeValue = null;
 
 		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(columnKeyName)) {
-			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docSearchVO.getRouteHeaderId().toString(), docSearchVO.isUsingSuperUserSearch(), docSearchVO.getDocTypeName());
+			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docCriteriaDTO.getRouteHeaderId().toString(), docCriteriaDTO.isUsingSuperUserSearch(), docCriteriaDTO.getDocTypeName());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(columnKeyName)) {
-			fieldValue = this.getRouteLogFieldDisplayValue(docSearchVO.getRouteHeaderId().toString());
+			fieldValue = this.getRouteLogFieldDisplayValue(docCriteriaDTO.getRouteHeaderId().toString());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED.equals(columnKeyName)) {
 			fieldValue = new DisplayValues();
-			fieldValue.htmlValue = DocSearchUtils.getDisplayValueWithDateTime(docSearchVO.getDateCreated());
+			fieldValue.htmlValue = DocSearchUtils.getDisplayValueWithDateTime(docCriteriaDTO.getDateCreated());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(columnKeyName)) {
 			fieldValue = new DisplayValues();
-			fieldValue.htmlValue = docSearchVO.getDocTypeLabel();
+			fieldValue.htmlValue = docCriteriaDTO.getDocTypeLabel();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(columnKeyName)) {
 			fieldValue = new DisplayValues();
-			fieldValue.htmlValue = docSearchVO.getDocumentTitle();
+			fieldValue.htmlValue = docCriteriaDTO.getDocumentTitle();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(columnKeyName)) {
-			fieldValue = this.getInitiatorFieldDisplayValue(docSearchVO.getInitiatorTransposedName(), docSearchVO.getInitiatorWorkflowId());
+			fieldValue = this.getInitiatorFieldDisplayValue(docCriteriaDTO.getInitiatorTransposedName(), docCriteriaDTO.getInitiatorWorkflowId());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(columnKeyName)) {
 			fieldValue = new DisplayValues();
-			fieldValue.htmlValue = docSearchVO.getDocRouteStatusCodeDesc();
+			fieldValue.htmlValue = docCriteriaDTO.getDocRouteStatusCodeDesc();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else {
 			// check searchable attributes
-			for (Iterator iter = docSearchVO.getSearchableAttributes().iterator(); iter.hasNext();) {
+			for (Iterator iter = docCriteriaDTO.getSearchableAttributes().iterator(); iter.hasNext();) {
 				KeyValueSort searchAttribute = (KeyValueSort) iter.next();
 				if (searchAttribute.getKey().equals(columnKeyName)) {
 					Object sortValue = sortValuesByColumnKey.get(columnKeyName);
@@ -395,7 +395,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	 * @param value - the value that will show on screen as the clickable link
 	 * @param routeHeaderId - the string value of the route header id the doc handler should point to
 	 * @param isSuperUserSearch - boolean indicating whether this search is a super user search or not
-	 *        see {@link org.kuali.rice.kew.docsearch.DocSearchVO#isUsingSuperUserSearch()}
+	 *        see {@link org.kuali.rice.kew.docsearch.DocSearchDTO#isUsingSuperUserSearch()}
 	 * @return the fully encoded html for a link using the text from the input parameter 'value'
 	 */
 	protected DisplayValues getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch, String documentTypeName) {
@@ -405,11 +405,11 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		return dv; 
 	}
 
-	private Map<String,Object> getSortValuesMap(DocSearchVO docSearchVO) {
+	private Map<String,Object> getSortValuesMap(DocSearchDTO docCriteriaDTO) {
 		Map<String, Object> alternateSort = new HashMap<String, Object>();
-		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID, docSearchVO.getRouteHeaderId());
-		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, docSearchVO.getInitiatorTransposedName());
-		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED, docSearchVO.getDateCreated());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID, docCriteriaDTO.getRouteHeaderId());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, docCriteriaDTO.getInitiatorTransposedName());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED, docCriteriaDTO.getDateCreated());
 		return alternateSort;
 	}
 

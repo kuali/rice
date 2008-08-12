@@ -697,7 +697,7 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * Checks whether a document would product at least one action request under the specified criteria
-     * @param reportCriteriaVO criteria under which to perform the check
+     * @param reportCriteriaDTO criteria under which to perform the check
      * @param actionRequestedCodes the types of action requests to check for
      * @param ignoreCurrentActionRequests determines if method should look only at simulation generated requests 
      *        or both simulation generated requests and requests that are currently active on the document
@@ -705,9 +705,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs
      * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
         try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, ignoreCurrentActionRequests);
+            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentActionRequests);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -718,9 +718,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * 
      * This method assumes both existing and generated requests should be taken into account
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException {
         try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes);
+            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes);
         } catch (Exception e) {
             throw handleException(e);
         }

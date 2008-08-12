@@ -29,6 +29,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface DocumentSearchResultProcessor {
     
-    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchVO> docSearchResultRows,DocSearchCriteriaVO criteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException;
+    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows,DocSearchCriteriaDTO criteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException;
 
 }

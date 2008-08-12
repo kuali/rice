@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**
- * This is a virtual object representing the DocSearchCriteriaVO class
+ * This is a virtual object representing the DocSearchCriteriaDTO class
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

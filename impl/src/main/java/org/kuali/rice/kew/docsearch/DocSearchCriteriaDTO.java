@@ -36,7 +36,7 @@ import org.kuali.rice.kew.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocSearchCriteriaVO implements Serializable {
+public class DocSearchCriteriaDTO implements Serializable {
 
     private static final long serialVersionUID = -5738747438282249790L;
 
@@ -94,7 +94,7 @@ public class DocSearchCriteriaVO implements Serializable {
     private boolean overridingUserSession = false;
     private boolean saveSearchForUser = false;
 
-    public DocSearchCriteriaVO() {
+    public DocSearchCriteriaDTO() {
         super();
     }
 
@@ -420,7 +420,7 @@ public class DocSearchCriteriaVO implements Serializable {
     }
 
     /**
-     * TODO this is here for historic reasons and has been replaced by a managed state in the CriteriaVO... eliminate
+     * TODO this is here for historic reasons and has been replaced by a managed state in the CriteriaDTO... eliminate
      * @deprecated
      */
     public boolean isAdvancedSearch() {

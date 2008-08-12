@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.docsearch.DocSearchVO;
+import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.SecurityAttribute;
@@ -26,8 +26,8 @@ import org.kuali.rice.kew.web.session.UserSession;
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSecurityServiceImpl.class);
 
-  public boolean docSearchAuthorized(UserSession userSession, DocSearchVO docSearchVO, SecuritySession session) {
-      return checkAuthorization(userSession, session, docSearchVO.getDocTypeName(), docSearchVO.getRouteHeaderId(), docSearchVO.getInitiatorWorkflowId());
+  public boolean docSearchAuthorized(UserSession userSession, DocSearchDTO docCriteriaDTO, SecuritySession session) {
+      return checkAuthorization(userSession, session, docCriteriaDTO.getDocTypeName(), docCriteriaDTO.getRouteHeaderId(), docCriteriaDTO.getInitiatorWorkflowId());
   }
 
   public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {

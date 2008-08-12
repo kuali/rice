@@ -69,7 +69,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.DOC_RTE_STAT_MDFN_DT ";
 
     private static List searchableAttributes;
-    private static DocSearchCriteriaVO criteria;
+    private static DocSearchCriteriaDTO criteria;
     private static WorkflowUser searchingUser;
 
     private boolean usingAtLeastOneSearchAttribute = false;
@@ -87,11 +87,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		this.searchableAttributes = searchableAttributes;
 	}
 
-	public DocSearchCriteriaVO getCriteria() {
+	public DocSearchCriteriaDTO getCriteria() {
 		return criteria;
 	}
 
-	public void setCriteria(DocSearchCriteriaVO criteria) {
+	public void setCriteria(DocSearchCriteriaDTO criteria) {
 		StandardDocumentSearchGenerator.criteria = criteria;
 	}
 
@@ -112,16 +112,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 	}
 
 	/* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#clearSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaVO)
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#clearSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO)
      */
-    public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria) {
-        return new DocSearchCriteriaVO();
+    public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria) {
+        return new DocSearchCriteriaDTO();
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#performPreSearchConditions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.docsearch.DocSearchCriteriaVO)
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#performPreSearchConditions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO)
      */
-    public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaVO searchCriteria) {
+    public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
     	return new ArrayList<WorkflowServiceError>();
     }
@@ -144,9 +144,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaVO, org.kuali.rice.core.database.platform.Platform)
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.core.database.platform.Platform)
      */
-    public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException {
+    public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException {
     	setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
@@ -165,7 +165,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#validateSearchableAttributes()
      */
-    public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaVO searchCriteria) {
+    public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
         List searchableAttributes = criteria.getSearchableAttributes();
@@ -468,9 +468,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /**
-     * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaVO, WorkflowUser)} instead.
+     * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, WorkflowUser)} instead.
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws KEWUserNotFoundException, SQLException {
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException, SQLException {
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, null);
     }
     
@@ -481,7 +481,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
@@ -493,16 +493,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 ( (searchCriteria.getThreshold() == null) || (resultMap.size() < searchCriteria.getThreshold().intValue()) ) && 
                 ( (searchCriteria.getFetchLimit() == null) || (iteration < searchCriteria.getFetchLimit().intValue()) ) ) {
         	iteration++;
-            DocSearchVO docSearchVO = processRow(searchAttributeStatement, resultSet);
-            docSearchVO.setSuperUserSearch(getCriteria().getSuperUserSearch());
-            if (!resultMap.containsKey(docSearchVO.getRouteHeaderId())) {
-                docList.add(docSearchVO);
-                resultMap.put(docSearchVO.getRouteHeaderId(), docSearchVO);
+            DocSearchDTO docCriteriaDTO = processRow(searchAttributeStatement, resultSet);
+            docCriteriaDTO.setSuperUserSearch(getCriteria().getSuperUserSearch());
+            if (!resultMap.containsKey(docCriteriaDTO.getRouteHeaderId())) {
+                docList.add(docCriteriaDTO);
+                resultMap.put(docCriteriaDTO.getRouteHeaderId(), docCriteriaDTO);
                 size++;
             } else {
                 // handle duplicate rows with different search data
-                DocSearchVO previousEntry = (DocSearchVO)resultMap.get(docSearchVO.getRouteHeaderId());
-                handleMultipleDocumentRows(previousEntry, docSearchVO);
+                DocSearchDTO previousEntry = (DocSearchDTO)resultMap.get(docCriteriaDTO.getRouteHeaderId());
+                handleMultipleDocumentRows(previousEntry, docCriteriaDTO);
             }
             resultSetHasNext = resultSet.next();
         }
@@ -529,8 +529,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	perfLog = new PerformanceLogger();
         	SecuritySession securitySession = new SecuritySession(userSession);
         	for (Iterator iterator = docList.iterator(); iterator.hasNext();) {
-        		DocSearchVO docSearchVO = (DocSearchVO) iterator.next();
-        		if (!KEWServiceLocator.getDocumentSecurityService().docSearchAuthorized(userSession, docSearchVO, securitySession)) {
+        		DocSearchDTO docCriteriaDTO = (DocSearchDTO) iterator.next();
+        		if (!KEWServiceLocator.getDocumentSecurityService().docSearchAuthorized(userSession, docCriteriaDTO, securitySession)) {
         			iterator.remove();
         			criteria.setSecurityFilteredRows(criteria.getSecurityFilteredRows() + 1);
         		}
@@ -547,9 +547,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      *
      * TODO this is currently concatenating strings together with HTML elements, this seems bad in this location,
      * perhaps we should move this to the web layer (and perhaps enhance the searchable attributes
-     * portion of the DocSearchVO data structure?)
+     * portion of the DocSearchDTO data structure?)
      */
-    private void handleMultipleDocumentRows(DocSearchVO existingRow, DocSearchVO newRow) {
+    private void handleMultipleDocumentRows(DocSearchDTO existingRow, DocSearchDTO newRow) {
 
     	for (Iterator iterator = newRow.getSearchableAttributes().iterator(); iterator.hasNext();) {
     		KeyValueSort newData = (KeyValueSort) iterator.next();
@@ -580,60 +580,60 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	}
     }
 
-    public DocSearchVO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, KEWUserNotFoundException {
-        DocSearchVO docSearchVO = new DocSearchVO();
+    public DocSearchDTO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, KEWUserNotFoundException {
+        DocSearchDTO docCriteriaDTO = new DocSearchDTO();
 
-        docSearchVO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
+        docCriteriaDTO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
 
         String docTypeLabel = rs.getString("DOC_TYP_LBL_TXT");
         String activeIndicatorCode = rs.getString("DOC_TYP_ACTV_IND");
 
-        docSearchVO.setDocRouteStatusCode(rs.getString("DOC_RTE_STAT_CD"));
-        docSearchVO.setDateCreated(rs.getTimestamp("DOC_CRTE_DT"));
-        docSearchVO.setDocumentTitle(rs.getString("DOC_TTL"));
-        docSearchVO.setDocTypeName(rs.getString("DOC_TYP_NM"));
-        docSearchVO.setDocTypeLabel(docTypeLabel);
+        docCriteriaDTO.setDocRouteStatusCode(rs.getString("DOC_RTE_STAT_CD"));
+        docCriteriaDTO.setDateCreated(rs.getTimestamp("DOC_CRTE_DT"));
+        docCriteriaDTO.setDocumentTitle(rs.getString("DOC_TTL"));
+        docCriteriaDTO.setDocTypeName(rs.getString("DOC_TYP_NM"));
+        docCriteriaDTO.setDocTypeLabel(docTypeLabel);
 
         if ((activeIndicatorCode == null) || (activeIndicatorCode.trim().length() == 0)) {
-            docSearchVO.setActiveIndicatorCode(KEWConstants.ACTIVE_CD);
+            docCriteriaDTO.setActiveIndicatorCode(KEWConstants.ACTIVE_CD);
         } else {
-            docSearchVO.setActiveIndicatorCode(activeIndicatorCode);
+            docCriteriaDTO.setActiveIndicatorCode(activeIndicatorCode);
         }
 
         if ((docTypeLabel == null) || (docTypeLabel.trim().length() == 0)) {
-            docSearchVO.setDocTypeHandlerUrl("");
+            docCriteriaDTO.setDocTypeHandlerUrl("");
         } else {
-            docSearchVO.setDocTypeHandlerUrl(rs.getString("DOC_TYP_HDLR_URL_ADDR"));
+            docCriteriaDTO.setDocTypeHandlerUrl(rs.getString("DOC_TYP_HDLR_URL_ADDR"));
         }
 
-        docSearchVO.setInitiatorWorkflowId(rs.getString("DOC_INITR_PRSN_EN_ID"));
+        docCriteriaDTO.setInitiatorWorkflowId(rs.getString("DOC_INITR_PRSN_EN_ID"));
 
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(docSearchVO.getInitiatorWorkflowId()));
+        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(docCriteriaDTO.getInitiatorWorkflowId()));
 
-        docSearchVO.setInitiatorNetworkId(user.getAuthenticationUserId().getAuthenticationId());
-        docSearchVO.setInitiatorName(user.getDisplayName());
-        docSearchVO.setInitiatorFirstName(user.getGivenName());
-        docSearchVO.setInitiatorLastName(user.getLastName());
-        docSearchVO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), user));
-        docSearchVO.setInitiatorEmailAddress(user.getEmailAddress());
+        docCriteriaDTO.setInitiatorNetworkId(user.getAuthenticationUserId().getAuthenticationId());
+        docCriteriaDTO.setInitiatorName(user.getDisplayName());
+        docCriteriaDTO.setInitiatorFirstName(user.getGivenName());
+        docCriteriaDTO.setInitiatorLastName(user.getLastName());
+        docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), user));
+        docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
 
         if (usingAtLeastOneSearchAttribute) {
-            populateRowSearchableAttributes(docSearchVO,searchAttributeStatement);
+            populateRowSearchableAttributes(docCriteriaDTO,searchAttributeStatement);
         }
-        return docSearchVO;
+        return docCriteriaDTO;
     }
 
     /**
      * This method performs searches against the search attribute value tables (see classes implementing
-     * {@link SearchableAttributeValue}) to get data to fill in search attribute values on the given docSearchVO parameter
+     * {@link SearchableAttributeValue}) to get data to fill in search attribute values on the given docCriteriaDTO parameter
      * 
-     * @param docSearchVO - document search result object getting search attributes added to it
+     * @param docCriteriaDTO - document search result object getting search attributes added to it
      * @param searchAttributeStatement - statement being used to call the database for queries
      * @throws SQLException
      */
-    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, Statement searchAttributeStatement) throws SQLException {
+    public void populateRowSearchableAttributes(DocSearchDTO docCriteriaDTO, Statement searchAttributeStatement) throws SQLException {
         searchAttributeStatement.setFetchSize(50);
-        Long documentId = docSearchVO.getRouteHeaderId();
+        Long documentId = docCriteriaDTO.getRouteHeaderId();
         List<SearchableAttributeValue> attributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
         for (Iterator iter = attributeValues.iterator(); iter.hasNext();) {
@@ -646,7 +646,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     searchAttValue.setSearchableAttributeKey(attributeResultSet.getString("DOC_HDR_EXT_VAL_KEY"));
                     searchAttValue.setupAttributeValue(attributeResultSet, "DOC_HDR_EXT_VAL");
                     if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
-                        docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
+                        docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
                     }
                 }
             } finally {
@@ -664,10 +664,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     
     /**
      * @deprecated As of version 0.9.3 this method is no longer used. Method
-     *             {@link #populateRowSearchableAttributes(DocSearchVO, Statement)} is being used instead.
+     *             {@link #populateRowSearchableAttributes(DocSearchDTO, Statement)} is being used instead.
      */
     @Deprecated
-    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
+    public void populateRowSearchableAttributes(DocSearchDTO docCriteriaDTO, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
         List searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         for (Iterator iter = searchAttributeValues.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -675,7 +675,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
             searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
             if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
-        	docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
+        	docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
             }
         }
     }
@@ -807,7 +807,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /**
      * @deprecated As of version 0.9.3 this method is no longer used. This method had been used to generate SQL to return searchable attributes using left
      *             outer joins. The new mechanism to get search attributes from the database is to call each search attribute
-     *             table individually in the {@link #populateRowSearchableAttributes(DocSearchVO, Statement, ResultSet)}
+     *             table individually in the {@link #populateRowSearchableAttributes(DocSearchDTO, Statement, ResultSet)}
      *             method.
      */
     @Deprecated

@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
@@ -50,7 +50,7 @@ public class DocumentSearchForm extends ActionForm {
 
     private static final long serialVersionUID = 8680419749805107805L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchForm.class);
-//	private DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+//	private DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
     private DocumentSearchCriteriaProcessor criteriaProcessor = new StandardDocumentSearchCriteriaProcessor();
 
 	private String searchTarget;
@@ -93,18 +93,18 @@ public class DocumentSearchForm extends ActionForm {
         this.criteriaProcessor = criteriaProcessor;
     }
 
-    public DocSearchCriteriaVO getCriteria() {
+    public DocSearchCriteriaDTO getCriteria() {
         if (this.criteriaProcessor == null) {
             return null;
         }
-		return this.criteriaProcessor.getDocSearchCriteriaVO();
+		return this.criteriaProcessor.getDocSearchCriteriaDTO();
 	}
 
-//    public void setCriteria(DocSearchCriteriaVO criteria) {
+//    public void setCriteria(DocSearchCriteriaDTO criteria) {
 //        if (criteria == null) {
 //            throw new RuntimeException("Criteria should never be null");
 //        }
-//        this.criteriaProcessor.setDocSearchCriteriaVO(criteria);
+//        this.criteriaProcessor.setDocSearchCriteriaDTO(criteria);
 //    }
 //
 	public void setDocTypeFullName(String docTypeFullName) {
@@ -654,7 +654,7 @@ public class DocumentSearchForm extends ActionForm {
 	}
 	
     public boolean isAdvancedSearch() {
-        return (StringUtils.equals(DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING,getCriteria().getIsAdvancedSearch()));
+        return (StringUtils.equals(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING,getCriteria().getIsAdvancedSearch()));
     }
 
 	public StandardDocSearchCriteriaManager getDocumentSearchCriteriaManager() {

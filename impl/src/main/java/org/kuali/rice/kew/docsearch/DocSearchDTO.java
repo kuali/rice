@@ -32,7 +32,7 @@ import org.kuali.rice.kew.web.RowStyleable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocSearchVO implements Serializable, RowStyleable {
+public class DocSearchDTO implements Serializable, RowStyleable {
 
 	private static final long serialVersionUID = 7850758046316186962L;
 	private static String UNKNOWN_ROUTING_STATUS = "UNKNOWN";
@@ -58,7 +58,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
 
 	private List searchableAttributes = new ArrayList();
 
-	public DocSearchVO() {
+	public DocSearchDTO() {
 	}
 
 	public String getSuperUserSearch() {
@@ -200,7 +200,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
     }
 
     public boolean isUsingSuperUserSearch() {
-    	return DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
+    	return DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
     }
 
     public String getRowStyleClass() {

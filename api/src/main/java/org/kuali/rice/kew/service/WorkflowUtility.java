@@ -103,14 +103,14 @@ public interface WorkflowUtility {
     public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException;
 
     // 2.4
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests);
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests);
 
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
      * 
      * This method assumes both existing and generated requests should be taken into account
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes);
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes);
 
     /**
      * @since 0.9.1

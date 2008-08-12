@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -72,7 +72,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         String userNetworkId = "rkirkend";
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName)));
 
@@ -133,27 +133,27 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         workDoc_Matching2.routeDocument("");
         
         // do search with attribute using doc type 1... make sure both docs are returned
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType1));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search with attribute using doc type 2... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName2);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType2));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search without attribute using doc type 1... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search without attribute using doc type 2... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName2);
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
@@ -167,14 +167,14 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         workDoc_Matching3.routeDocument("");
         
         // do search with attribute using doc type 3... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType3));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
         
         // do search without attribute using doc type 3... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
@@ -188,14 +188,14 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         workDoc_NonMatching2.routeDocument("");
         
         // do search with attribute using doc type 1... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue, docType1));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         // do search without attribute using doc type 1... make sure all 3 docs are returned
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 3, result.getSearchResults().size());

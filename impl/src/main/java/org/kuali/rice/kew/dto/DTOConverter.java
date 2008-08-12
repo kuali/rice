@@ -43,7 +43,7 @@ import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.definition.AttributeDefinition;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -1365,7 +1365,7 @@ public class DTOConverter {
         }
     }
 
-    public static SimulationCriteria convertReportCriteriaVO(ReportCriteriaDTO criteriaVO) throws KEWUserNotFoundException {
+    public static SimulationCriteria convertReportCriteriaDTO(ReportCriteriaDTO criteriaVO) throws KEWUserNotFoundException {
         if (criteriaVO == null) {
             return null;
         }
@@ -1514,8 +1514,8 @@ public class DTOConverter {
         return rule;
     }
     
-    public static DocSearchCriteriaVO convertDocumentSearchCriteriaVO(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+    public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setAppDocId(criteriaVO.getAppDocId());
         criteria.setApprover(criteriaVO.getApprover());
         criteria.setDocRouteStatus(criteriaVO.getDocRouteStatus());
@@ -1527,8 +1527,8 @@ public class DTOConverter {
         criteria.setFromDateFinalized(criteriaVO.getFromDateFinalized());
         criteria.setFromDateLastModified(criteriaVO.getFromDateLastModified());
         criteria.setInitiator(criteriaVO.getInitiator());
-        criteria.setIsAdvancedSearch((criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
-        criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setIsAdvancedSearch((criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
         criteria.setRouteHeaderId(criteriaVO.getRouteHeaderId());
         criteria.setViewer(criteriaVO.getViewer());
         criteria.setWorkgroupViewerName(criteriaVO.getWorkgroupViewerName());

@@ -94,23 +94,23 @@ public interface KualiWorkflowInfo {
 
     /**
      * Determines if a document generated (or retrieved) using the given criteria has (or will have) an action request using
-     * one of the given action request codes.  User may or may not pass in a target node name inside the ReportCriteriaVO object.
+     * one of the given action request codes.  User may or may not pass in a target node name inside the ReportCriteriaDTO object.
      * 
-     * @param reportCriteriaVO  - Holds either a document type name or a document id as well as other data to help simulate routing
+     * @param reportCriteriaDTO  - Holds either a document type name or a document id as well as other data to help simulate routing
      * @param actionRequestedCodes - List of Action Request Codes from the Workflow system
      * @param ignoreCurrentlyActiveRequests determines if method should look only at simulation generated requests 
      *        or both simulation generated requests and requests that are currently active on the document
      * @return true if the document has or will have at least one request that matches the criteria and has a requested code that matches one of the given codes
      * @throws WorkflowException
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;
     
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
      * 
      * Use of this method passes the value 'false' in for the <code>ignoreCurrentlyActiveRequests</code> parameter of {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)}
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException;
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException;
 
     /**
      * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the routeHeaderId parameter

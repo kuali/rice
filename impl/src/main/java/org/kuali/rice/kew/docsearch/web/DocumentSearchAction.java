@@ -46,7 +46,7 @@ import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -152,13 +152,13 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward advanced(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setIsAdvancedSearch(DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING);
+        docSearchForm.setIsAdvancedSearch(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
     public ActionForward superUserSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setSuperUserSearch(DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING);
+        docSearchForm.setSuperUserSearch(DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
@@ -174,21 +174,21 @@ public class DocumentSearchAction extends WorkflowAction {
         String advancedSearchValue = docSearchForm.getIsAdvancedSearch();
         String superUserSearchValue = docSearchForm.getSuperUserSearch();
         // set up new criteria object using generator class if possible
-        DocSearchCriteriaVO newCriteria = null;
+        DocSearchCriteriaDTO newCriteria = null;
         if (StringUtils.isNotBlank(currentDocTypeName)) {
             newCriteria = getValidDocumentType(currentDocTypeName).getDocumentSearchGenerator().clearSearch(docSearchForm.getCriteria());
         }
         if (newCriteria == null) {
-            newCriteria = new DocSearchCriteriaVO();
+            newCriteria = new DocSearchCriteriaDTO();
         }
         newCriteria.setIsAdvancedSearch(advancedSearchValue);
         newCriteria.setSuperUserSearch(superUserSearchValue);
         // adjust the processor class and state if necessary
         State state = getCurrentState(request);
         DocumentSearchCriteriaProcessor currentProcessor = state.getCriteriaProcessor();
-        if (StringUtils.equals(currentProcessor.getDocSearchCriteriaVO().getDocTypeFullName(),newCriteria.getDocTypeFullName())) {
+        if (StringUtils.equals(currentProcessor.getDocSearchCriteriaDTO().getDocTypeFullName(),newCriteria.getDocTypeFullName())) {
             // since doc type names are equal do not reset the state or processor only the criteria object
-            state.getCriteriaProcessor().setDocSearchCriteriaVO(newCriteria);
+            state.getCriteriaProcessor().setDocSearchCriteriaDTO(newCriteria);
         } else {
             // document types are not equal so reset the state and processor using the new criteria
             state = adjustStateAndForm(null, docSearchForm, newCriteria, getUserSession(request));
@@ -197,12 +197,12 @@ public class DocumentSearchAction extends WorkflowAction {
 //        DocumentSearchCriteriaProcessor processor = buildCriteriaProcessor((state != null) ? state.getCriteriaProcessor() : null, docSearchForm, getUserSession(request));
 //        if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
 //            DocumentSearchGenerator generator = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchGenerator();
-//            DocSearchCriteriaVO newCriteria = generator.clearSearch(processor.getDocSearchCriteriaVO());
+//            DocSearchCriteriaDTO newCriteria = generator.clearSearch(processor.getDocSearchCriteriaDTO());
 //            if (newCriteria == null) {
-//                newCriteria = new DocSearchCriteriaVO();
+//                newCriteria = new DocSearchCriteriaDTO();
 //            }
-//            newCriteria.setIsAdvancedSearch(processor.getDocSearchCriteriaVO().getIsAdvancedSearch());
-//            newCriteria.setSuperUserSearch(processor.getDocSearchCriteriaVO().getSuperUserSearch());
+//            newCriteria.setIsAdvancedSearch(processor.getDocSearchCriteriaDTO().getIsAdvancedSearch());
+//            newCriteria.setSuperUserSearch(processor.getDocSearchCriteriaDTO().getSuperUserSearch());
 //            processor = buildCriteriaProcessor(processor, docSearchForm, newCriteria, getUserSession(request));
 //            setAdjustedState(request, state);
 //        }
@@ -222,7 +222,7 @@ public class DocumentSearchAction extends WorkflowAction {
                 // if using a saved search assume new state needs created by discarding old state
                 currentState = null;
                 docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
-                docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
+                docSearchForm.getCriteriaProcessor().setDocSearchCriteriaDTO(result.getDocSearchCriteriaDTO());
                 docSearchForm.clearSearchableAttributeProperties();
                 docSearchForm.checkForAdditionalFields();
                 docSearchForm.setupPropertyFieldsUsingCriteria();
@@ -238,7 +238,7 @@ public class DocumentSearchAction extends WorkflowAction {
             }
         } else {
             docSearchForm.addSearchableAttributesToCriteria();
-            DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
+            DocSearchCriteriaDTO criteria = docSearchForm.getCriteria();
             if (docSearchForm.isInitiatorUser()) {
                 criteria.setInitiator(getUserSession(request).getNetworkId());
             }
@@ -321,7 +321,7 @@ public class DocumentSearchAction extends WorkflowAction {
         return state;
     }
     
-    private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, DocSearchCriteriaVO criteria, UserSession userSession) {
+    private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, DocSearchCriteriaDTO criteria, UserSession userSession) {
         State state = new State(docSearchForm);
         if (currentState != null) {
             state = new State(currentState);
@@ -335,7 +335,7 @@ public class DocumentSearchAction extends WorkflowAction {
         return buildCriteriaProcessor(processor, docSearchForm, docSearchForm.getCriteria(), userSession);
     }
     
-    private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, DocSearchCriteriaVO criteria, UserSession userSession) {
+    private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, DocSearchCriteriaDTO criteria, UserSession userSession) {
         if (processor == null) {
             // no criteria processor... set one up
             if ( (criteria != null) && (StringUtils.isNotBlank(criteria.getDocTypeFullName())) ) {
@@ -348,21 +348,21 @@ public class DocumentSearchAction extends WorkflowAction {
             if (Utilities.isEmpty(criteria.getDocTypeFullName())) {
                 // document type name was cleared out... clear the criteria processor
                 processor = new StandardDocumentSearchCriteriaProcessor();
-            } else if (!StringUtils.equals(criteria.getDocTypeFullName(), processor.getDocSearchCriteriaVO().getDocTypeFullName())) {
+            } else if (!StringUtils.equals(criteria.getDocTypeFullName(), processor.getDocSearchCriteriaDTO().getDocTypeFullName())) {
                 // document type name is not the same as previous state's criteria... update criteria processor
                 processor = getValidDocumentType(criteria.getDocTypeFullName()).getDocumentSearchCriteriaProcessor();
             }
         }
         docSearchForm.addSearchableAttributesToCriteria();
-        DocSearchCriteriaVO newCriteria = criteria;
+        DocSearchCriteriaDTO newCriteria = criteria;
         if (docSearchForm.isInitiatorUser()) {
             newCriteria.setInitiator(userSession.getNetworkId());
         }
         if (newCriteria != null) {
-            processor.setDocSearchCriteriaVO(newCriteria);
+            processor.setDocSearchCriteriaDTO(newCriteria);
         }
-//        processor.getDocSearchCriteriaVO().setSuperUserSearch(formCriteria.getSuperUserSearch());
-//        processor.getDocSearchCriteriaVO().setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
+//        processor.getDocSearchCriteriaDTO().setSuperUserSearch(formCriteria.getSuperUserSearch());
+//        processor.getDocSearchCriteriaDTO().setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
         processor.setSearchingUser(userSession.getWorkflowUser());
         return processor;
     }
@@ -499,13 +499,13 @@ public class DocumentSearchAction extends WorkflowAction {
         State state = getCurrentState(request);
         state.updateForm(docSearchForm);
         State originalState = getOriginalState(request);
-        docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(originalState.getCriteriaProcessor().getDocSearchCriteriaVO());
+        docSearchForm.getCriteriaProcessor().setDocSearchCriteriaDTO(originalState.getCriteriaProcessor().getDocSearchCriteriaDTO());
         DocumentSearchResultComponents searchComponents = state.getResult().getSearchResult();
         List<Column> columns = searchComponents.getColumns();
         List<DocumentSearchResult> displayResults = searchComponents.getSearchResults();
 
 //        docSearchForm.setCriteriaProcessor(state.getCriteriaProcessor());
-//        docSearchForm.setCriteria(state.getResult().getDocSearchCriteriaVO());
+//        docSearchForm.setCriteria(state.getResult().getDocSearchCriteriaDTO());
         setDropdowns(docSearchForm, request);
         docSearchForm.setNamedSearch("");
 
@@ -653,10 +653,10 @@ public class DocumentSearchAction extends WorkflowAction {
             updateForm(form, null);
         }
 
-        public void updateForm(DocumentSearchForm form, DocSearchCriteriaVO criteria) {
+        public void updateForm(DocumentSearchForm form, DocSearchCriteriaDTO criteria) {
             form.setCriteriaProcessor(getCriteriaProcessor());
             if (criteria != null) {
-                form.getCriteriaProcessor().setDocSearchCriteriaVO(criteria);
+                form.getCriteriaProcessor().setDocSearchCriteriaDTO(criteria);
             }
             form.setHeaderBarEnabled(isHeaderBarEnabled());
             form.setSearchCriteriaEnabled(isSearchCriteriaEnabled());

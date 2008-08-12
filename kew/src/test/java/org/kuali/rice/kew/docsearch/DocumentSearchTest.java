@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -63,20 +63,20 @@ public class DocumentSearchTest extends KEWTestCase {
 
     @Test public void testDocSearch() throws Exception {
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         List searchResults = null;
         DocumentSearchResultComponents result = null;
         criteria.setDocTitle("*IN");
         criteria.setNamedSearch("bytitle");
         result = docSearchService.getList(user, criteria);
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTitle("*IN-CFSG");
         criteria.setNamedSearch("for in accounts");
         result = docSearchService.getList(user, criteria);
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setFromDateApproved("09/16/2004");
         result = docSearchService.getList(user, criteria);
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocRouteNodeId("3");
         criteria.setDocRouteNodeLogic("equal");
         result = docSearchService.getList(user, criteria);
@@ -115,7 +115,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         assertNotNull(result);
@@ -192,14 +192,14 @@ public class DocumentSearchTest extends KEWTestCase {
 
     @Test public void testDefaultCreateDateSearchCriteria() throws Exception {
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         Calendar criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
         assertEquals("Criteria date minus today's date should equal the constant value", KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTitle("testing");
         result = docSearchService.getList(user, criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
@@ -259,7 +259,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
         criteria.setDocTypeFullName(customDocHandlerDocumentType);
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -274,7 +274,7 @@ public class DocumentSearchTest extends KEWTestCase {
 	}
 
         user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
         result = docSearchService.getList(user, criteria);
         assertNotNull(result);

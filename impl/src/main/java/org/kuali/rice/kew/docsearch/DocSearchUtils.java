@@ -437,10 +437,10 @@ public class DocSearchUtils {
     }
 
     /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaVO}
+     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
      * object search attributes based on the document type name set on the <code>criteria</code> object.<br>
      * <br>
-     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaVO, List, String, boolean)}
+     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
      * with a boolean value of false for the <code>setAttributesStrictly</code> parameter.
      * 
      * @param criteria -
@@ -452,15 +452,15 @@ public class DocSearchUtils {
      * @param searchAttributesString -
      *            A potential string that must be parsed to use to set attributes on the <code>criteria</code> object
      */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaVO criteria, List propertyFields, String searchAttributesString) {
+    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, String searchAttributesString) {
         addSearchableAttributesToCriteria(criteria, propertyFields, searchAttributesString, false);
     }
 
     /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaVO}
+     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
      * object search attributes based on the document type name set on the <code>criteria</code> object.<br>
      * <br>
-     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaVO, List, String, boolean)}
+     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
      * with a null value for the <code>searchAttributesString</code> parameter.
      * 
      * @param criteria -
@@ -474,12 +474,12 @@ public class DocSearchUtils {
      *            <code>propertyFields</code> does not match a search attribute on the specified document type. If set to
      *            true an error with be thrown. If set to false the mismatch will be ignored.
      */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaVO criteria, List propertyFields, boolean setAttributesStrictly) {
+    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, boolean setAttributesStrictly) {
         addSearchableAttributesToCriteria(criteria, propertyFields, null, setAttributesStrictly);
     }
 
     /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaVO}
+     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
      * object search attributes based on the document type name set on the <code>criteria</code> object.
      * 
      * @param criteria -
@@ -495,7 +495,7 @@ public class DocSearchUtils {
      *            <code>propertyFields</code> does not match a search attribute on the specified document type. If set to
      *            true an error with be thrown. If set to false the mismatch will be ignored.
      */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaVO criteria, List propertyFields, String searchAttributesString, boolean setAttributesStrictly) {
+    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, String searchAttributesString, boolean setAttributesStrictly) {
         if (criteria != null) {
             DocumentType docType = getDocumentType(criteria.getDocTypeFullName());
             if (docType == null) {

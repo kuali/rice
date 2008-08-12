@@ -33,7 +33,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.definition.AttributeDefinition;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionItemDTO;
@@ -492,17 +492,17 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
      * 
      * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes) {
-        return documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, false);
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) {
+        return documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
     }
 
     /**
      * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[], boolean)
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
         try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
-	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaVO(reportCriteriaVO);
+	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteriaDTO);
 	        // set activate requests to true by default so ignore previous works correctly
 	        criteria.setActivateRequests(Boolean.TRUE);
 	        SimulationResults results = simulationEngine.runSimulation(criteria);
@@ -726,7 +726,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
         incomingParamCheck(reportCriteria, "reportCriteria");
         LOG.debug("Executing routing report [docId=" + reportCriteria.getRouteHeaderId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
-        SimulationCriteria criteria = DTOConverter.convertReportCriteriaVO(reportCriteria);
+        SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteria);
         return DTOConverter.convertDocumentDetail(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
@@ -831,7 +831,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException {
         incomingParamCheck(ruleReportCriteria, "ruleReportCriteria");
         if (ruleReportCriteria == null) {
-            throw new IllegalArgumentException("At least one criterion must be sent in a RuleReportCriteriaVO object");
+            throw new IllegalArgumentException("At least one criterion must be sent in a RuleReportCriteriaDTO object");
         }
         LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsibleUser() + ", responsibleWorkgroup=" +
                 ruleReportCriteria.getResponsibleWorkgroup() + "]");
@@ -867,7 +867,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
     
     public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        DocSearchCriteriaVO criteria = DTOConverter.convertDocumentSearchCriteriaVO(criteriaVO);
+        DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
         WorkflowUser user = null;
         if (userId != null) {
             criteria.setOverridingUserSession(true);

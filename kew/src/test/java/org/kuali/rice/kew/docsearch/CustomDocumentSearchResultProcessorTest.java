@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -100,7 +100,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType));
         return docSearchService.getList(user, criteria);

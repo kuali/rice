@@ -69,7 +69,7 @@ public class WorkflowReports implements Serializable {
     }
     
     /*public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws WorkflowException {
-    	ReportCriteriaVO criteria = new ReportCriteriaVO(routeHeaderId);
+    	ReportCriteriaDTO criteria = new ReportCriteriaDTO(routeHeaderId);
     	criteria.setUsersToFilterIn(new UserIdVO[] { userId });
     	RouteHeaderDetailVO detail = workflowInfo.routingReport(criteria);
     	if (isUser(detail.getInitiator(), userId) || detail.getActionsTaken().length > 0) {
@@ -87,7 +87,7 @@ public class WorkflowReports implements Serializable {
     }
     
     public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws WorkflowException {
-    	ReportCriteriaVO criteria = new ReportCriteriaVO(routeHeaderId, new Integer(0), routeLevel);
+    	ReportCriteriaDTO criteria = new ReportCriteriaDTO(routeHeaderId, new Integer(0), routeLevel);
     	RouteHeaderDetailVO detail = workflowInfo.routingReport(criteria);
     	ActionTakenVO actionTaken = new ActionTakenVO();
     	actionTaken.setActionTaken(KEWConstants.ACTION_TAKEN_APPROVED_CD);
@@ -111,7 +111,7 @@ public class WorkflowReports implements Serializable {
     public boolean routeLevelHasApproverActionRequest(String docType, String docContent, Integer routeLevel) throws WorkflowException {
     	//DocumentContentVO documentContent = new DocumentContentVO();
     	//documentContent.setAttributeContent(docContent);
-    	ReportCriteriaVO criteria = new ReportCriteriaVO(docType, docContent, routeLevel, routeLevel);
+    	ReportCriteriaDTO criteria = new ReportCriteriaDTO(docType, docContent, routeLevel, routeLevel);
     	RouteHeaderDetailVO detail = workflowInfo.routingReport(criteria);
     	for (int index = 0; index < detail.getActionRequests().length; index++) {
 			ActionRequestVO actionRequest = detail.getActionRequests()[index];

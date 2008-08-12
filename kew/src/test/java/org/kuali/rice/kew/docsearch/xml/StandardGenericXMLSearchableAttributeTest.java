@@ -31,7 +31,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaVO;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -234,7 +234,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -242,7 +242,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
-        DocSearchCriteriaVO criteria2 = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria2 = new DocSearchCriteriaDTO();
         criteria2.setDocTypeFullName(documentTypeName);
         criteria2.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "fred", docType));
         DocumentSearchResultComponents result2 = docSearchService.getList(user, criteria2);
@@ -250,7 +250,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults2.size());
 
-        DocSearchCriteriaVO criteria3 = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria3 = new DocSearchCriteriaDTO();
         criteria3.setDocTypeFullName(documentTypeName);
         criteria3.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         DocumentSearchResultComponents result3 = null;
@@ -261,7 +261,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), docType));
         result = docSearchService.getList(user, criteria);
@@ -270,7 +270,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria2 = null;
         searchResults2 = null;
-        criteria2 = new DocSearchCriteriaVO();
+        criteria2 = new DocSearchCriteriaDTO();
         criteria2.setDocTypeFullName(documentTypeName);
         criteria2.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111", docType));
         result2 = docSearchService.getList(user, criteria2);
@@ -279,7 +279,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria3 = null;
         result3 = null;
-        criteria3 = new DocSearchCriteriaVO();
+        criteria3 = new DocSearchCriteriaDTO();
         criteria3.setDocTypeFullName(documentTypeName);
         criteria3.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeymcfakefake", "99999999", docType));
         try {
@@ -289,7 +289,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), docType));
         result = docSearchService.getList(user, criteria);
@@ -298,7 +298,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria2 = null;
         searchResults2 = null;
-        criteria2 = new DocSearchCriteriaVO();
+        criteria2 = new DocSearchCriteriaDTO();
         criteria2.setDocTypeFullName(documentTypeName);
         criteria2.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548", docType));
         result2 = docSearchService.getList(user, criteria2);
@@ -307,7 +307,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria3 = null;
         result3 = null;
-        criteria3 = new DocSearchCriteriaVO();
+        criteria3 = new DocSearchCriteriaDTO();
         criteria3.setDocTypeFullName(documentTypeName);
         criteria3.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeylostington", "9999.9999", docType));
         try {
@@ -317,7 +317,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)), docType));
         result = docSearchService.getList(user, criteria);
@@ -326,7 +326,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria2 = null;
         searchResults2 = null;
-        criteria2 = new DocSearchCriteriaVO();
+        criteria2 = new DocSearchCriteriaDTO();
         criteria2.setDocTypeFullName(documentTypeName);
         criteria2.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979", docType));
         result2 = docSearchService.getList(user, criteria2);
@@ -335,7 +335,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria3 = null;
         result3 = null;
-        criteria3 = new DocSearchCriteriaVO();
+        criteria3 = new DocSearchCriteriaDTO();
         criteria3.setDocTypeFullName(documentTypeName);
         criteria3.addSearchableAttribute(createSearchAttributeCriteriaComponent("lastingsfakerson", "07/06/2007", docType));
         try {
@@ -363,7 +363,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -373,7 +373,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "fred", docType));
         result = docSearchService.getList(user, criteria);
@@ -383,7 +383,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         try {
@@ -411,7 +411,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -419,7 +419,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ja*", docType));
         result = docSearchService.getList(user, criteria);
@@ -427,7 +427,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ja", docType));
         result = docSearchService.getList(user, criteria);
@@ -435,7 +435,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should have one document.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ack", docType));
         result = docSearchService.getList(user, criteria);
@@ -466,10 +466,10 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
         String validSearchValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString();
-        DocSearchCriteriaVO criteria = null;
+        DocSearchCriteriaDTO criteria = null;
         List searchResults = null;
         DocumentSearchResultComponents result = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, validSearchValue, docType));
         result = docSearchService.getList(user, criteria);
@@ -478,7 +478,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "*" + validSearchValue.substring(2), docType));
 
@@ -496,7 +496,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = null;
         searchResults = null;
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, validSearchValue.substring(0, (validSearchValue.length() - 2)), docType));
         result = docSearchService.getList(user, criteria);
@@ -520,25 +520,25 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(networkId));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "JACK", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jAck", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jacK", docType));
         result = docSearchService.getList(user, criteria);
@@ -552,43 +552,43 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "JACK", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jaCk", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jacK", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jAc", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jA*", docType));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "aCk", docType));
         result = docSearchService.getList(user, criteria);
@@ -637,7 +637,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -645,7 +645,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "fred", docType));
         result = docSearchService.getList(user, criteria);
@@ -653,7 +653,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         try {
@@ -684,7 +684,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -692,7 +692,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "fred", docType));
         result = docSearchService.getList(user, criteria);
@@ -700,7 +700,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         try {
@@ -1203,7 +1203,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -1211,7 +1211,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "fred", docType));
         result = docSearchService.getList(user, criteria);
@@ -1219,7 +1219,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         try {
@@ -1254,7 +1254,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
 
          // execute the search by our chart, we should see one result
-         DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
          criteria.setDocTypeFullName(documentTypeName);
          criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "BL", docType));
          DocumentSearchResultComponents results = docSearchService.getList(user, criteria);
@@ -1265,7 +1265,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
 
          // search with no searchable attribute criteria, should return our document as well
-         criteria = new DocSearchCriteriaVO();
+         criteria = new DocSearchCriteriaDTO();
          criteria.setDocTypeFullName(documentTypeName);
          results = docSearchService.getList(user, criteria);
          searchResults = results.getSearchResults();
@@ -1309,7 +1309,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
 
         // execute the search by our chart, we should see one result
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(docType);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("chart", "BL", documentType));
         DocumentSearchResultComponents results = docSearchService.getList(user, criteria);
@@ -1348,7 +1348,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
@@ -1356,7 +1356,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 1, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "fred", docType));
         result = docSearchService.getList(user, criteria);
@@ -1364,7 +1364,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
-        criteria = new DocSearchCriteriaVO();
+        criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", docType));
         try {

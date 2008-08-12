@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.kim.v2.bo;
 
-
 /**
- * This is a description of what this class does - abyrne don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public interface Entity {
-
+public interface Principal {
+	public String getPrincipalId();
+	public void setPrincipalId(String principalId);
+	public String getPrincipalName();
+	public void setPrincipalName(String principalName);
+	public String getEntityId();
+	public void setEntityId(String entityId);
+	public String getPassword();
+	public void setPassword(String password);	
+	public boolean isActive();
+	public void setActive(boolean active);
 }

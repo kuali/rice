@@ -655,7 +655,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     	boolean foundPmckown = false;
     	for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
 			ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-			String netId = actionRequest.getUserVO().getNetworkId(); 
+			String netId = actionRequest.getUserDTO().getNetworkId(); 
 			if (netId.equals("rkirkend")) {
 				foundRkirkend = true;
 				assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
@@ -694,7 +694,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         boolean foundPmckown = false;
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
             ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-            String netId = actionRequest.getUserVO().getNetworkId(); 
+            String netId = actionRequest.getUserDTO().getNetworkId(); 
             if (netId.equals("rkirkend")) {
                 foundRkirkend = true;
                 assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());

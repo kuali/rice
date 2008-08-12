@@ -46,11 +46,11 @@ public class VariablesTest extends KEWTestCase {
         LOG.info("\tDoc: class=" + doc.getDocumentType() + " title=" + doc.getTitle() + " status=" + doc.getStatusDisplayValue());
         LOG.info("\tActionRequests:");
         for (ActionRequestDTO ar: doc.getActionRequests()) {
-            LOG.info("\t\tId: " + ar.getActionRequestId() + " UserId: " + ar.getUserIdVO() + " User: " + (ar.getUserVO() != null ? ar.getUserVO().getDisplayName() : null) + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
+            LOG.info("\t\tId: " + ar.getActionRequestId() + " UserId: " + ar.getUserIdVO() + " User: " + (ar.getUserDTO() != null ? ar.getUserDTO().getDisplayName() : null) + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
         }
         LOG.info("\tActionTakens:");
         for (ActionTakenDTO at: doc.getActionsTaken()) {
-            LOG.info("\t\tId: " + at.getActionTakenId() + " User: " + (at.getUserVO() != null ? at.getUserVO().getDisplayName() : null) + " ActionTaken: " + at.getActionTaken());
+            LOG.info("\t\tId: " + at.getActionTakenId() + " User: " + (at.getUserDTO() != null ? at.getUserDTO().getDisplayName() : null) + " ActionTaken: " + at.getActionTaken());
         }
         LOG.info("\tNodeNames:");
         for (String name: doc.getNodeNames()) {

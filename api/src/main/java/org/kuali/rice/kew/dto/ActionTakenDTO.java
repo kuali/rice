@@ -87,19 +87,19 @@ public class ActionTakenDTO implements Serializable {
         this.actionDate = actionDate;
     }
 
-    public UserDTO getUserVO() {
+    public UserDTO getUserDTO() {
         return userVO;
     }
 
-    public void setUserVO(UserDTO userVO) {
+    public void setUserDTO(UserDTO userVO) {
         this.userVO = userVO;
     }
 
-    public UserDTO getDelegatorVO() {
+    public UserDTO getDelegatorDTO() {
         return delegatorVO;
     }
 
-    public void setDelegatorVO(UserDTO delegatorVO) {
+    public void setDelegatorDTO(UserDTO delegatorVO) {
         this.delegatorVO = delegatorVO;
     }
 

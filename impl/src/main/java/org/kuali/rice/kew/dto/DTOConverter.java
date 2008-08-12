@@ -714,7 +714,7 @@ public class DTOConverter {
         actionRequestVO.setAnnotation(actionRequest.getAnnotation());
         actionRequestVO.setDateCreated(Utilities.convertTimestamp(actionRequest.getCreateDate()));
         actionRequestVO.setDocVersion(actionRequest.getDocVersion());
-        actionRequestVO.setUserVO(convertUser(actionRequest.getWorkflowUser()));
+        actionRequestVO.setUserDTO(convertUser(actionRequest.getWorkflowUser()));
         if (actionRequest.getWorkflowId() != null) {
             // TODO switch this to a user vo
             actionRequestVO.setEmplyId(actionRequest.getWorkflowUser().getEmplId().getEmplId());
@@ -736,7 +736,7 @@ public class DTOConverter {
         actionRequestVO.setStatus(actionRequest.getStatus());
         if (actionRequest.isWorkgroupRequest()) {
             actionRequestVO.setWorkgroupId(actionRequest.getWorkgroupId());
-            actionRequestVO.setWorkgroupVO(convertWorkgroup(actionRequest.getWorkgroup()));
+            actionRequestVO.setWorkgroupDTO(convertWorkgroup(actionRequest.getWorkgroup()));
         }
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
@@ -763,11 +763,11 @@ public class DTOConverter {
         actionTakenVO.setRouteHeaderId(actionTaken.getRouteHeaderId());
         WorkflowUser user = actionTaken.getWorkflowUser();
         if (user != null) {
-            actionTakenVO.setUserVO(convertUser(user));
+            actionTakenVO.setUserDTO(convertUser(user));
         }
         WorkflowUser delegator = actionTaken.getDelegatorUser();
         if (delegator != null) {
-            actionTakenVO.setDelegatorVO(convertUser(delegator));
+            actionTakenVO.setDelegatorDTO(convertUser(delegator));
         }
         return actionTakenVO;
     }
@@ -978,8 +978,8 @@ public class DTOConverter {
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new EmplId(actionRequestVO.getEmplyId()));
             actionRequest.setWorkflowId(user.getWorkflowId());
             userSet = true;
-        } else if (actionRequestVO.getUserVO() != null) {
-            WorkflowUser user = convertUserVO(actionRequestVO.getUserVO());
+        } else if (actionRequestVO.getUserDTO() != null) {
+            WorkflowUser user = convertUserVO(actionRequestVO.getUserDTO());
             actionRequest.setWorkflowId(user.getWorkflowId());
             userSet = true;
         }
@@ -992,8 +992,8 @@ public class DTOConverter {
             }
             actionRequest.setWorkgroupId(workgroupId);
             userSet = true;
-        } else if (actionRequestVO.getWorkgroupVO() != null) {
-            Long workgroupId = actionRequestVO.getWorkgroupVO().getWorkgroupId();
+        } else if (actionRequestVO.getWorkgroupDTO() != null) {
+            Long workgroupId = actionRequestVO.getWorkgroupDTO().getWorkgroupId();
             // validate that the workgroup is good.
             Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
             if (workgroup == null) {
@@ -1018,7 +1018,7 @@ public class DTOConverter {
         actionTaken.setActionTakenId(actionTakenVO.getActionTakenId());
         actionTaken.setAnnotation(actionTakenVO.getAnnotation());
         actionTaken.setCurrentIndicator(Boolean.TRUE);
-        WorkflowUser delegator = convertUserVO(actionTakenVO.getDelegatorVO());
+        WorkflowUser delegator = convertUserVO(actionTakenVO.getDelegatorDTO());
         actionTaken.setDelegator(delegator);
         if (delegator != null) {
             actionTaken.setDelegatorWorkflowId(delegator.getWorkflowUserId().getWorkflowId());
@@ -1027,7 +1027,7 @@ public class DTOConverter {
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
         actionTaken.setRouteHeader(routeHeader);
         actionTaken.setRouteHeaderId(actionTaken.getRouteHeaderId());
-        WorkflowUser user = convertUserVO(actionTakenVO.getUserVO());
+        WorkflowUser user = convertUserVO(actionTakenVO.getUserDTO());
         actionTaken.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
         return actionTaken;
     }

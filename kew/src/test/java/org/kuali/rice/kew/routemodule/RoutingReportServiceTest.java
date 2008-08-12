@@ -75,7 +75,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         boolean ackToJhopf = false;
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
             ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
-            String netId = requestVO.getUserVO().getNetworkId(); 
+            String netId = requestVO.getUserDTO().getNetworkId(); 
             if (netId.equals("bmcgough")) {
                 assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
                 assertEquals("Should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
@@ -126,7 +126,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         // assert that we don't have an acknowledge to jhopf
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
             ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
-            if (requestVO.getUserVO().getNetworkId().equals("jhopf")) {
+            if (requestVO.getUserDTO().getNetworkId().equals("jhopf")) {
                 fail("There should be no request to jhopf");
             }
         }

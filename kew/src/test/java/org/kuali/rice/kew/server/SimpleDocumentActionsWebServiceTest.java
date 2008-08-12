@@ -128,11 +128,11 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	protected static ActionRequestDTO actionHasBeenRequested(ActionRequestDTO[] actionsRequested, String recipient, String action) {
 		for (ActionRequestDTO actionRequested : actionsRequested) {
 			if (recipient != null) {
-				if (actionRequested.getUserVO() != null) {
-					if (!recipient.equals(actionRequested.getUserVO().getNetworkId()))
+				if (actionRequested.getUserDTO() != null) {
+					if (!recipient.equals(actionRequested.getUserDTO().getNetworkId()))
 						continue;
-				} else if (actionRequested.getWorkgroupVO() != null) {
-					if (!recipient.equals(actionRequested.getWorkgroupVO().getWorkgroupName()))
+				} else if (actionRequested.getWorkgroupDTO() != null) {
+					if (!recipient.equals(actionRequested.getWorkgroupDTO().getWorkgroupName()))
 						continue;
 				} else {
 					throw new RuntimeException("Action request not sent to user or workgroup");
@@ -211,20 +211,20 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("We didn't send an annotation so it should be null", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("This should be an approval request", actionRequest.isApprovalRequest());
 		assertTrue("The action request should have been done", actionRequest.isDone());
 		assertEquals("A", actionRequest.getActionTaken().getActionTaken());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertNull("We didn't send an annotation so it should be null", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("This should be an acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("The action request should have been done", actionRequest.isDone());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_FYI_USER, "F");
 		assertEquals("F", actionRequest.getActionRequested());
 		assertNull("We didn't send an annotation so it should be null", actionRequest.getAnnotation());
-		assertEquals(TEST_FYI_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_FYI_USER, actionRequest.getUserDTO().getNetworkId());
 		assertFalse("The action request should have been done", actionRequest.isDone());
 
 		// let's cleanup shall we
@@ -273,20 +273,20 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an approval request", actionRequest.isApprovalRequest());
 		assertTrue("ActionRequest should be Done", actionRequest.isDone());
 		assertEquals("A", actionRequest.getActionTaken().getActionTaken());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Acknowledge Request", actionRequest.isAcknowledgeRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_FYI_USER, "F");
 		assertEquals("F", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_FYI_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_FYI_USER, actionRequest.getUserDTO().getNetworkId());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
 		// let's cleanup shall we
@@ -335,20 +335,20 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval Request", actionRequest.isApprovalRequest());
 		assertTrue("ActionRequest should be Done", actionRequest.isDone());
 		assertEquals("B", actionRequest.getActionTaken().getActionTaken());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Acknowledge Request", actionRequest.isAcknowledgeRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_FYI_USER, "F");
 		assertEquals("F", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_FYI_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_FYI_USER, actionRequest.getUserDTO().getNetworkId());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
 		// let's cleanup shall we
@@ -477,14 +477,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("ActionRequeset should be Done", actionRequest.isDone());
 		assertEquals("D", actionRequest.getActionTaken().getActionTaken());
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_USER, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("Action ACKNOWLEDGE generated by Workflow because User One took action DISAPPROVED", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -541,7 +541,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 //		assertEquals("A", actionRequest.getActionRequested());
 
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("ActionRequest should be Done", actionRequest.isDone());
 		assertEquals("A", actionRequest.getActionTaken().getActionTaken());
@@ -550,7 +550,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertEquals("K", actionRequest.getActionRequested());
 
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("ActionRequest should be Done", actionRequest.isDone());
 
@@ -558,7 +558,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		assertEquals("F", actionRequest.getActionRequested());
 
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_FYI_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_FYI_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("ActionRequest should be Done", actionRequest.isDone());
 
 		// let's cleanup shall we
@@ -713,14 +713,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_GROUP, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
 		assertTrue("Should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -775,14 +775,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_ADHOC_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -837,7 +837,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -899,7 +899,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_ADHOC_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -961,7 +961,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_ADHOC_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -1013,7 +1013,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("Action APPROVE generated by Workflow because Eric Westfall took action RETURNED TO PREVIOUS ROUTE LEVEL", actionRequest.getAnnotation());
-		assertEquals(TEST_USER2, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER2, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -1056,7 +1056,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_USER, "A");
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_ADHOC_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -1112,13 +1112,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupVO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -1173,13 +1173,13 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_USER, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_ADHOC_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -1235,7 +1235,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -1393,7 +1393,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertNull("Annotation should be null since we didn't set it", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 
@@ -1431,7 +1431,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("Action APPROVE generated by Workflow because Test Student took action RETURNED TO PREVIOUS ROUTE LEVEL", actionRequest.getAnnotation());
-		assertEquals(TEST_USER, actionRequest.getUserVO().getNetworkId());
+		assertEquals(TEST_USER, actionRequest.getUserDTO().getNetworkId());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 

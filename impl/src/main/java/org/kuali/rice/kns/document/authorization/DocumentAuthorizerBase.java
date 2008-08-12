@@ -158,8 +158,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                     boolean reqFound = false;
                     for ( ActionRequestDTO req : requests ) {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
-                        if ( req.getWorkgroupVO() != null ) {
-                        UserDTO[] users = req.getWorkgroupVO().getMembers();
+                        if ( req.getWorkgroupDTO() != null ) {
+                        UserDTO[] users = req.getWorkgroupDTO().getMembers();
                         for ( UserDTO usr : users ) {
                             if ( usr.getUuId().equals( user.getPersonUniversalIdentifier() ) ) {
                             flags.setCanCancel( true );

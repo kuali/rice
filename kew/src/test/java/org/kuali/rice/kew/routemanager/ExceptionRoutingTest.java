@@ -71,7 +71,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isWorkgroupRequest());
-            assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupVO().getWorkgroupName());
+            assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupDTO().getWorkgroupName());
             assertNotNull("annotation cannot be null", actionRequest.getAnnotation());
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
@@ -145,7 +145,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
                 //assertEquals("Node instance id should be id of routeNode1", routeNode1.getRouteNodeInstanceId(), actionRequest.getNodeInstanceId());
                 // routeMethod name should be null as well
                 assertNull("Exception request routeMethodName wrong", actionRequest.getRouteMethodName());
-                assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupVO().getWorkgroupName());
+                assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupDTO().getWorkgroupName());
                 hasCompleteRequest = true;
             }
         }

@@ -108,7 +108,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         boolean rkirkendATFound = false;
         for (int i = 0; i < actionsTaken.length; i++) {
             ActionTakenDTO at = actionsTaken[i];
-            if (at.getUserVO().getNetworkId().equals("rkirkend")) {
+            if (at.getUserDTO().getNetworkId().equals("rkirkend")) {
                 assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken());
                 rkirkendATFound = true;
             }

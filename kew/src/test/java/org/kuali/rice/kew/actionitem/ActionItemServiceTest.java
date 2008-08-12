@@ -428,9 +428,9 @@ public class ActionItemServiceTest extends KEWTestCase {
         boolean routedTestWorkgroup = false;
         for (int i = 0; i < ars.length; i++) {
             ActionRequestDTO request = ars[i];
-            if (request.isWorkgroupRequest() && request.getWorkgroupVO().getWorkgroupName().equals("TestWorkgroup")) {
+            if (request.isWorkgroupRequest() && request.getWorkgroupDTO().getWorkgroupName().equals("TestWorkgroup")) {
                 routedTestWorkgroup = true;
-            } else if (request.isWorkgroupRequest() && request.getWorkgroupVO().getWorkgroupName().equals("WorkflowAdmin")) {
+            } else if (request.isWorkgroupRequest() && request.getWorkgroupDTO().getWorkgroupName().equals("WorkflowAdmin")) {
                 routedWorkflowAdmin = true;
             }
         }

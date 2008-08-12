@@ -73,7 +73,7 @@ public class AnnotationComponent implements EDLModelComponent {
                     annotation = actionTaken.getAnnotation();
                     if (annotation != null) {
                         LOG.debug("Adding annotation: " + annotation);
-                        EDLXmlUtils.createTextElementOnParent(currentVersion, "annotation", actionTaken.getUserVO().getDisplayName() + ": " + annotation);
+                        EDLXmlUtils.createTextElementOnParent(currentVersion, "annotation", actionTaken.getUserDTO().getDisplayName() + ": " + annotation);
                         LOG.debug("dom: " + XmlHelper.jotNode(dom));
                     }
                 }

@@ -210,19 +210,19 @@ public class ActionRequestDTO implements Serializable {
         return ignorePrevAction;
     }
 
-    public UserDTO getUserVO() {
+    public UserDTO getUserDTO() {
         return userVO;
     }
 
-    public void setUserVO(UserDTO userVO) {
+    public void setUserDTO(UserDTO userVO) {
         this.userVO = userVO;
     }
 
-    public WorkgroupDTO getWorkgroupVO() {
+    public WorkgroupDTO getWorkgroupDTO() {
         return workgroupVO;
     }
 
-    public void setWorkgroupVO(WorkgroupDTO workgroupVO) {
+    public void setWorkgroupDTO(WorkgroupDTO workgroupVO) {
         this.workgroupVO = workgroupVO;
     }
 

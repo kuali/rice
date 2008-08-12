@@ -287,12 +287,12 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
                 if (actionRequests[actionRequestIndex].isActivated() && actionRequests[actionRequestIndex].isAdHocRequest()) {
-                    if (actionRequests[actionRequestIndex].isUserRequest() && currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getUserVO().getWorkflowId())) {
+                    if (actionRequests[actionRequestIndex].isUserRequest() && currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getUserDTO().getWorkflowId())) {
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isWorkgroupRequest()) {
-                        for (int workgroupMemberIndex = 0; workgroupMemberIndex < actionRequests[actionRequestIndex].getWorkgroupVO().getMembers().length; workgroupMemberIndex++) {
-                            if (currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getWorkgroupVO().getMembers()[workgroupMemberIndex].getWorkflowId())) {
+                        for (int workgroupMemberIndex = 0; workgroupMemberIndex < actionRequests[actionRequestIndex].getWorkgroupDTO().getMembers().length; workgroupMemberIndex++) {
+                            if (currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getWorkgroupDTO().getMembers()[workgroupMemberIndex].getWorkflowId())) {
                                 isAdHocRequested = true;
                             }
                         }
@@ -633,7 +633,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         
         for (ActionTakenDTO actionTaken : actionsTaken) {
             if (KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
-                String universalUserId = actionTaken.getUserVO().getUuId();
+                String universalUserId = actionTaken.getUserDTO().getUuId();
                 if (!universalUserIds.contains(universalUserId)) {
                     universalUserIds.add(universalUserId);
                     universalUsers.add(universalUserService.getUniversalUser(universalUserId));

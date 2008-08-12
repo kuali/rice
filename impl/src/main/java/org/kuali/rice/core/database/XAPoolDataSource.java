@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import javax.transaction.TransactionManager;
 
 import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
-import org.enhydra.jdbc.standard.StandardXADataSource;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,7 +27,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * StandardXAPoolDataSource subclass that adds some convienance getters and setters and implements our Lifecycle interface.
  * 
- * We will be removing this file from a future release in order to get rid of our dependencies on XAPool.  If you
+ * @deprecated We will be removing this file from a future release in order to get rid of our dependencies on XAPool.  If you
  * desire to continue using JOTM and XAPool, please configure using org.enhyrdra.jdbc.standard.StandardXADataSource directly
  * instead of using this class.
  */
@@ -46,15 +45,12 @@ public class XAPoolDataSource extends StandardXAPoolDataSource implements Initia
     public static final String MAX_WAIT = "maxWait";
     public static final String VALIDATION_QUERY = "validationQuery";
 
-    private StandardXADataSource dataSource = new StandardXADataSource();
+    private RiceXADataSource dataSource = new RiceXADataSource();
     private boolean started = false;
 
     public XAPoolDataSource() {
         setDataSource(this.dataSource);
-//       NOTE: the following line prevents a bug in XAPool from manifesting itself where
-        // prepared statements aren't closed resulting in a "maximum open cursors exceeded" message
-        // from the Oracle JDBC driver
-        this.dataSource.setPreparedStmtCacheSize(0);
+        setPreparedStmtCacheSize(0);
         setCheckLevelObject(2);
     }
 
@@ -130,9 +126,8 @@ public class XAPoolDataSource extends StandardXAPoolDataSource implements Initia
     public void setValidationQuery(String validationQuery) {
         super.setJdbcTestStmt(validationQuery);
     }
-    
-    public void setPreparedStmtCacheSize(int preparedStatementCacheSize) {
-    	this.dataSource.setPreparedStmtCacheSize(preparedStatementCacheSize);
-    }
 
+    public void setPreparedStmtCacheSize(int preparedStatementCacheSize) {
+    	this.dataSource.setPreparedStatementCacheSize(preparedStatementCacheSize);
+    }
 }

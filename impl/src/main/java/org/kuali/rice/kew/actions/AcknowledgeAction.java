@@ -140,7 +140,6 @@ public class AcknowledgeAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Acknowledging document : " + annotation);
@@ -151,16 +150,6 @@ public class AcknowledgeAction extends ActionTakenEvent {
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-
-//        if (!getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-//            LOG.warn("Document not in state to be acknowledged.");
-//            throw new InvalidActionTakenException("Document is not in a state to be acknowledged");
-//        }
-//
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
-//        }
 
         LOG.debug("Record the acknowledge action");
         Recipient delegator = findDelegatorForActionRequests(actionRequests);

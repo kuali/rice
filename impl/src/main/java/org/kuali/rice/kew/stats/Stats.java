@@ -30,7 +30,6 @@ public class Stats {
 	String numUsers = "0";
 	String numActionItems = "0";
 	String numDocTypes = "0";
-    String avgActionsPerDoc = "0";
 	String approvedNumber = "0";
 	String canceledNumber = "0";
 	String disapprovedNumber = "0";
@@ -48,14 +47,6 @@ public class Stats {
  
     public void setApprovedNumber(String approvedNumber) {
         this.approvedNumber = approvedNumber;
-    }
- 
-    public String getAvgActionsPerDoc() {
-        return avgActionsPerDoc;
-    }
- 
-    public void setAvgActionsPerDoc(String avgActionsPerDoc) {
-        this.avgActionsPerDoc = avgActionsPerDoc;
     }
  
     public String getCanceledNumber() {

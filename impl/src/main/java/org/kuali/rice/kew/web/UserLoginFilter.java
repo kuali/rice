@@ -30,20 +30,23 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.service.WebAuthenticationService;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.v2.service.AuthenticationService;
 
 
 /**
@@ -80,7 +83,7 @@ public class UserLoginFilter implements Filter {
 
         if (userSession != null) {
             // callback to the authentication service to update the user session if necessary
-            KEWServiceLocator.getWebAuthenticationService().updateUserSession(userSession, request);
+        	// TODO: Implement UserSession Hook
             if (userSession.isBackdoorInUse()) {
                 // a bad backdoorId is passed in all bets off
                 if (userSession.getWorkflowUser() == null) {
@@ -145,8 +148,8 @@ public class UserLoginFilter implements Filter {
 
         WorkflowUser workflowUser = null;
         try {
-            WebAuthenticationService webAuthenticationService = KEWServiceLocator.getWebAuthenticationService();
-            UserId id = webAuthenticationService.getUserId(request);
+        	AuthenticationService webAuthenticationService = (AuthenticationService) GlobalResourceLoader.getService(new QName("KIM", "webAuthenticationService"));
+            UserId id = new AuthenticationUserId(webAuthenticationService.getPrincipalName(request));
             if (id == null || StringUtils.isBlank(id.getId())) {
                 LOG.error("WebAuthenticationService did not derive a network id from incoming request");
                 return null;
@@ -164,7 +167,7 @@ public class UserLoginFilter implements Filter {
             }
             userSession.setPreferences(preferences);
             userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
-            webAuthenticationService.establishInitialUserSession(userSession, request);
+        	// TODO: Implement UserSession Hook
             return userSession;
         } catch (Exception e) {
             LOG.error("Error in user login", e);

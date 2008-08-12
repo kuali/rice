@@ -101,7 +101,6 @@ public class MoveDocumentAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-    //    checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 
@@ -112,15 +111,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-
-
             RouteNodeInstance startNodeInstance = determineStartNode(activeNodes, movePoint);
 
-//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//            if (! isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//                throw new InvalidActionTakenException("No request for the user is compatible with the MOVE action");
-//            }
             LOG.debug("Record the move action");
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
             ActionTakenValue actionTaken = saveActionTaken(delegator);
@@ -135,23 +127,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 MoveDocumentService moveDocumentProcessor = MessageServiceNames.getMoveDocumentProcessorService(getRouteHeader());
                 moveDocumentProcessor.moveDocument(getUser(), getRouteHeader(), actionTaken, targetNodeNames);
 
-//                SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(),
-//                		KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0), MoveDocumentProcessor.class.getName(),
-//                		MoveDocumentProcessor.getMoveDocumentProcessorValue(getUser(), getActionTaken(), targetNodeNames));
-                //BlanketApproveAction blanketAction = new BlanketApproveAction(getRouteHeader(), getUser(), annotation, targetNodeName);
-                //blanketAction.actionTaken = actionTaken;
-                //blanketAction.recordAction();
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
                 ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getUser(), annotation, targetNodeName, false);
                 
-                // this is immediately overwritten in recordAction() anyway
-                //returnAction.actionTaken = actionTaken;
-                
-                
                 returnAction.recordAction();
             }
-//        }
     }
 
     public void performDeferredMoveDocumentWork(ActionTakenValue actionTaken, Set nodeNames) throws Exception {

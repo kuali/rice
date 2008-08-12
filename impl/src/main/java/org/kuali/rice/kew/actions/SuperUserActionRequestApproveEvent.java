@@ -154,7 +154,6 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     }
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
-   //     checkLocking();
         this.processActionRequests();
         this.queueDocumentProcessing();
     }

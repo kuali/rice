@@ -28,11 +28,7 @@ import org.kuali.rice.kew.stats.service.StatsService;
 public class StatsServiceImpl implements StatsService {
 
     private StatsDAO statsDAO;
-    
-    public void ActionsTakenPerUnitOfTimeReport(Stats stats, Date begDate, Date endDate, String unitOfTimeConst) throws SQLException, LookupException {
-        getStatsDAO().ActionsTakenPerUnitOfTimeReport(stats, begDate, endDate, unitOfTimeConst);
-    }
-    
+        
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
         getStatsDAO().NumActiveItemsReport(stats);
     }

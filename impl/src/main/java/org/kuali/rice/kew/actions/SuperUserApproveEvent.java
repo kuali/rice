@@ -66,8 +66,6 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         // it causes an optimistic lock
 		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));
 
-	//	checkLocking();
-
 		DocumentType docType = getRouteHeader().getDocumentType();
 
         String errorMessage = super.validateActionRules();
@@ -77,13 +75,6 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
-
-//		if (!docType.isSuperUser(getUser())) {
-//			LOG.info("User not authorized");
-//			List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
-//			errors.add(new WorkflowServiceErrorImpl("User not authorized for super user action", AUTHORIZATION));
-//			throw new WorkflowServiceErrorException("Super User Authorization Error", errors);
-//		}
 
         ActionTakenValue actionTaken = saveActionTaken();
 

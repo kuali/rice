@@ -87,11 +87,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      */
     public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-  //      checkLocking();
         updateSearchableAttributesIfPossible();
-//        if (routeHeader.getDocumentType().getInitiatorMustRoutePolicy().getPolicyValue().booleanValue()) {
-//            super.recordAction();
-//        }
 
         LOG.debug("Routing document : " + annotation);
 
@@ -103,7 +99,6 @@ public class RouteDocumentAction extends ActionTakenEvent {
 
 
         // we want to check that the "RouteDocument" command is valid here, not the "Complete" command (which is in our Action's action taken code)
-//        if (getRouteHeader().isValidActionToTake(KEWConstants.ACTION_TAKEN_ROUTED_CD)) {
             LOG.debug("Record the routing action");
             ActionTakenValue actionTaken = saveActionTaken();
 

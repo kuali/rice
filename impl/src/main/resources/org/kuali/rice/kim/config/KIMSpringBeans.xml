@@ -398,4 +398,16 @@
   -->
 
   <!-- END JPA CONFIGURATION -->
+  
+    <bean id="webAuthenticationService" class="org.kuali.rice.kim.v2.service.impl.AuthenticationServiceImpl" />
+    
+  <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <property name="serviceDefinition">
+      <bean parent="kimService">
+        <property name="service" ref="webAuthenticationService" />
+        <property name="localServiceName" value="webAuthenticationService" />
+      </bean>
+    </property>
+  
+  </bean>
 </beans>

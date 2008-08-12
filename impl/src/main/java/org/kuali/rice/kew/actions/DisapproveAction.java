@@ -125,7 +125,6 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-   //     checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Disapproving document : " + annotation);
@@ -137,29 +136,9 @@ public class DisapproveAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        if (!getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-//            LOG.warn("Document not in state to be disapproved.");
-//            throw new InvalidActionTakenException("Document is not in a state to be disapproved");
-//        }
-//
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
-//        }
-
         LOG.debug("Record the disapproval action");
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
         ActionTakenValue actionTaken = saveActionTaken(delegator);
-
-//        actionRequests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, getRouteHeaderId());
-//        List actionRequestsToNotify = new ArrayList();
-//        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-//            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-//            //action request must be a complete and not to initiator (initiator will get specific request because they are initiator)
-//            if (actionRequest.isApproveOrCompleteRequest() && ! actionRequest.isRecipientRoutedRequest(getRouteHeader().getInitiatorUser())) {
-//                actionRequestsToNotify.add(actionRequest);
-//            }
-//        }
 
         LOG.debug("Deactivate all pending action requests");
         actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());

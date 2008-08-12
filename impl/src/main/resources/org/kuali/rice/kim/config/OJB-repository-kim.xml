@@ -355,4 +355,17 @@
 			<foreignkey field-ref="namespaceId" />
 		</reference-descriptor>
 	</class-descriptor>
+	
+	  <!-- KIM V2 Below : Will be moved into KIM after demodularization -->
+  
+  <class-descriptor class="org.kuali.rice.kim.v2.bo.impl.PrincipalImpl" table="KR_KIM_ENTITY_PRINCIPAL_T">
+    <field-descriptor name="principalId" column="entity_prncpl_id" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="principalName" column="entity_prncpl_nm" jdbc-type="VARCHAR"  />
+    <field-descriptor name="entityId" column="entity_id" jdbc-type="VARCHAR"  />
+    <field-descriptor name="password" column="prncpl_pswd" jdbc-type="VARCHAR"  />
+    <field-descriptor name="active" column="actv_ind" jdbc-type="VARCHAR"  />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="VARCHAR" locking="true"  />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+  </class-descriptor>
+	
 </descriptor-repository>

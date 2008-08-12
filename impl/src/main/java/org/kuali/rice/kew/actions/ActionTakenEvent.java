@@ -158,12 +158,6 @@ public abstract class ActionTakenEvent {
 
 	}
 
-/*	protected void checkLocking() throws InvalidActionTakenException {
-		if (routeHeader.isLocked()) {
-			throw new InvalidActionTakenException("The document " + routeHeader.getRouteHeaderId() + " is locked.  Action cannot be taken.");
-		}
-	}
-*/
 	protected void updateSearchableAttributesIfPossible() {
 		// queue the document up so that it can be indexed for searching if it
 		// has searchable attributes

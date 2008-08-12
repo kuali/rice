@@ -105,4 +105,7 @@
     
     <param name="log4j.reload.minutes">5</param>
     <param name="log4j.settings.path">classpath:log4j.properties</param>
+        
+    <!-- Configuration for Session Document Cache Size -->
+    <param name="session.document.cache.size">100</param>
 </config>

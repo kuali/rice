@@ -68,7 +68,6 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
-   //     checkLocking();
 
         String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
@@ -77,14 +76,6 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
-
-//        DocumentType docType = getRouteHeader().getDocumentType();
-//        if (!docType.isSuperUser(getUser())) {
-//            LOG.info("User not authorized");
-//            List errors = new ArrayList();
-//            errors.add(new WorkflowServiceErrorImpl("User not authorized for super user action", AUTHORIZATION));
-//            throw new WorkflowServiceErrorException("Super User Authorization Error", errors);
-//        }
 
         processActionRequests();
 

@@ -60,7 +60,6 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
-    //    checkLocking();
 
         if (Utilities.isEmpty(nodeName)) {
             throw new InvalidActionTakenException("No approval node name set");
@@ -75,12 +74,6 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
             errors.add(new WorkflowServiceErrorImpl(errorMessage, SuperUserActionTakenEvent.AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
-//        if (!docType.isSuperUser(getUser())) {
-//            LOG.info("User not authorized");
-//            List errors = new ArrayList();
-//            errors.add(new WorkflowServiceErrorImpl("User not authorized for super user action", AUTHORIZATION));
-//            throw new WorkflowServiceErrorException("Super User Authorization Error", errors);
-//        }
 
         ActionTakenValue actionTaken = saveActionTaken();
 

@@ -39,33 +39,11 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StatsDAOOjbImpl.class);
 
-    public static final String SQL_NUM_ACTION_PER_TIME = "select " + "round(avg(count(to_char(actn_tkn_dt, ?)))) as avg from en_actn_tkn_t where actn_tkn_dt between ? and ? group by to_char(actn_tkn_dt, ?)";
     public static final String SQL_NUM_ACTIVE_ITEMS = "select count(*) from en_actn_itm_t";
     public static final String SQL_NUM_DOC_TYPES_REPORT = "select count(*) as num from en_doc_typ_t where doc_typ_cur_ind = 1";
     public static final String SQL_DOCUMENTS_ROUTED = "select count(*) as count, en_doc_hdr_t.doc_rte_stat_cd from en_doc_hdr_t where en_doc_hdr_t.doc_crte_dt between ? and ? group by doc_rte_stat_cd";
     public static final String SQL_NUM_USERS = "select count(distinct prsn_en_id) as prsn_count from en_usr_optn_t";
     public static final String SQL_NUM_DOCS_INITIATED = "select count(*), en_doc_typ_t.doc_typ_nm from en_doc_hdr_t, en_doc_typ_t where en_doc_hdr_t.doc_crte_dt > ? and en_doc_hdr_t.doc_typ_id = en_doc_typ_t.doc_typ_id group by en_doc_typ_t.doc_typ_nm";
-    
-    
-    
-    public void ActionsTakenPerUnitOfTimeReport(Stats stats, Date begDate, Date endDate, String unitOfTimeConst) throws SQLException, LookupException {
-
-        LOG.debug("ActionsTakenPerUnitOfTimeReport()");
-        PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
-        PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_NUM_ACTION_PER_TIME);
-        ps.setString(1, unitOfTimeConst);
-        ps.setTimestamp(2, new Timestamp(begDate.getTime()));
-        ps.setTimestamp(3, new Timestamp(endDate.getTime()));
-        ps.setString(4, unitOfTimeConst);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            stats.setAvgActionsPerDoc(new Integer(rs.getInt("avg")).toString());
-        }
-
-        closeDatabaseObjects(rs, ps, conn, broker);
-    }
 
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
 

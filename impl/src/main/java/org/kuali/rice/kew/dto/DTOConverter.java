@@ -263,37 +263,6 @@ public class DTOConverter {
         return validActionsVO;
     }
 
-    // private static void populateActionListRouteHeaderVO(RouteHeaderVO routeHeaderVO, DocumentRouteHeaderValue routeHeader)
-    // throws WorkflowException {
-    // routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
-    // routeHeaderVO.setDateApproved(Utilities.convertTimestamp(routeHeader.getApprovedDate()));
-    // routeHeaderVO.setDateCreated(Utilities.convertTimestamp(routeHeader.getCreateDate()));
-    // routeHeaderVO.setDateFinalized(Utilities.convertTimestamp(routeHeader.getFinalizedDate()));
-    // routeHeaderVO.setDateLastModified(Utilities.convertTimestamp(routeHeader.getStatusModDate()));
-    // //routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent()));
-    // routeHeaderVO.setDocRouteLevel(routeHeader.getDocRouteLevel());
-    //
-    // Collection activeNodes =
-    // SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
-    // routeHeaderVO.setNodeNames(new String[activeNodes.size()]);
-    // int index = 0;
-    // for (Iterator iterator = activeNodes.iterator(); iterator.hasNext(); index++) {
-    // RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-    // routeHeaderVO.getNodeNames()[index++] = nodeInstance.getRouteNode().getRouteNodeName();
-    // }
-    //
-    // routeHeaderVO.setDocRouteStatus(routeHeader.getDocRouteStatus());
-    // routeHeaderVO.setDocTitle(routeHeader.getDocTitle());
-    // if (routeHeader.getDocumentType() != null) {
-    // routeHeaderVO.setDocTypeName(routeHeader.getDocumentType().getName());
-    // routeHeaderVO.setDocumentUrl(routeHeader.getDocumentType().getDocHandlerUrl());
-    // }
-    // routeHeaderVO.setDocVersion(routeHeader.getDocVersion());
-    // routeHeaderVO.setInitiator(convertUser(routeHeader.getInitiatorUser()));
-    // routeHeaderVO.setOverrideInd(routeHeader.getOverrideInd());
-    // routeHeaderVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
-    // }
-
     private static void populateRouteHeaderVO(RouteHeaderDTO routeHeaderVO, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         routeHeaderVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
         routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
@@ -335,7 +304,6 @@ public class DTOConverter {
         routeHeaderVO.setDocVersion(routeHeader.getDocVersion());
         routeHeaderVO.setInitiator(convertUser(routeHeader.getInitiatorUser()));
         routeHeaderVO.setRoutedByUser(convertUser(routeHeader.getRoutedByUser()));
-   //     routeHeaderVO.setOverrideInd(routeHeader.getOverrideInd());
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
@@ -390,7 +358,6 @@ public class DTOConverter {
         if (routeHeaderVO.getRoutedByUser() != null) {
             routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByUser().getWorkflowId());
         }
-     //   routeHeader.setOverrideInd(routeHeaderVO.getOverrideInd());
         routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
         routeHeader.setStatusModDate(Utilities.convertCalendar(routeHeaderVO.getDateLastModified()));
 

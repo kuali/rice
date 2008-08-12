@@ -25,7 +25,6 @@ import org.kuali.rice.kew.stats.Stats;
 
 public interface StatsDAO {
 
-    public void ActionsTakenPerUnitOfTimeReport(Stats stats, Date begDate, Date endDate, String unitOfTimeConst) throws SQLException, LookupException;
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException;
     public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException;
     public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException;

@@ -79,17 +79,12 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
     	MDC.put("docId", getRouteHeader().getRouteHeaderId());
-  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-//        if (! routeHeader.isValidActionToTake(getActionTakenCode())) {
-//              LOG.warn("RevokeAdHocRequest action is not valid on this document.");
-//              throw new InvalidActionTakenException("Revoke adhoc request is not valid on this document.");
-//        }
 
         LOG.debug("Revoking adhoc request : " + annotation);
 

@@ -132,7 +132,6 @@ public class CompleteAction extends ActionTakenEvent {
      */
     public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-   //     checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);
 
@@ -143,22 +142,8 @@ public class CompleteAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        LOG.debug("Checking to see if the action is legal");
-//
-//        if (! getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-//            LOG.warn("Document not in state to be completed.");
-//            throw new InvalidActionTakenException("Document is not in a state to be completed");
-//        }
-//
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//        //getActionRequestService().findAllPendingByUserAndDoc(getDelegator(), getRouteHeaderId());
-
         LOG.debug("Record the complete action");
         ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
-
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
-//        }
 
         LOG.debug("Deactivate all pending action requests");
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);

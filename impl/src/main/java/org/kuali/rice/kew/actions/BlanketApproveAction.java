@@ -134,7 +134,6 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-   //     checkLocking();
         updateSearchableAttributesIfPossible();
 
         List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
@@ -143,33 +142,13 @@ public class BlanketApproveAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        for (Iterator iterator = nodeNames.iterator(); iterator.hasNext();) {
-//            String nodeName = (String) iterator.next();
-//            if (nodeName == null) {
-//                iterator.remove();
-//                continue;
-//            }
-//            if (!getRouteNodeService().isNodeInPath(getRouteHeader(), nodeName)) {
-//                throw new InvalidActionTakenException("Document already at or beyond route node " + nodeName);
-//            }
-//        }
         LOG.debug("Checking to see if the action is legal");
-
-//        //find all current activated/initialized action requests
-//        if (! getRouteHeader().getDocumentType().getBlanketApproveWorkgroup().hasMember(getUser())) {
-//        	throw new InvalidActionTakenException("User is not authorized to BlanketApprove document");
-//        } else if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
 
             LOG.debug("Blanket approving document : " + annotation);
 
             if (getRouteHeader().isStateInitiated() || getRouteHeader().isStateSaved()) {
                 markDocumentEnroute(getRouteHeader());
             }
-
-//            List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//            if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//                throw new InvalidActionTakenException("No request for the user is compatible with the BlanketApprove Action");
-//            }
 
             LOG.debug("Record the blanket approval action");
             Recipient delegator = findDelegatorForActionRequests(actionRequests);

@@ -137,7 +137,6 @@ public class ApproveAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-   //     checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Approving document : " + annotation);
 
@@ -146,15 +145,6 @@ public class ApproveAction extends ActionTakenEvent {
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-
-//        if (! routeHeader.isValidActionToTake(getActionTakenCode())) {
-//              LOG.warn("Document not in state to be approved.");
-//              throw new InvalidActionTakenException("Document is not in a state to be approved");
-//        }
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible " + "with the APPROVE action");
-//        }
 
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
 

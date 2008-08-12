@@ -109,7 +109,6 @@ public class CancelAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-  //      checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Canceling document : " + annotation);
@@ -120,13 +119,6 @@ public class CancelAction extends ActionTakenEvent {
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//
-//        LOG.debug("Checking to see if the action is legal");
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible with the DISAPPROVE or DENY action");
-//        }
 
         LOG.debug("Record the cancel action");
         ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));

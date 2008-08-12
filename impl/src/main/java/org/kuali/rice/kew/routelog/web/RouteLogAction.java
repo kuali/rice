@@ -90,11 +90,6 @@ public class RouteLogAction extends WorkflowAction {
                 rlForm.setShowFutureError(errorMsg);
             }
         }
-/*
-        if (routeHeader.isLocked()) {
-            return mapping.findForward("documentLocked");
-        }
-*/
         request.setAttribute("routeHeader", routeHeader);
         return mapping.findForward("viewRouteLog");
     }

@@ -126,7 +126,6 @@ public class ClearFYIAction extends ActionTakenEvent {
      */
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
-    //    checkLocking();
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Clear FYI for document : " + annotation);
@@ -137,16 +136,6 @@ public class ClearFYIAction extends ActionTakenEvent {
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-
-//        if (!getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-//            LOG.warn("Document not in state to have FYI processed.");
-//            throw new InvalidActionTakenException("Document is not in a state to have FYI processed");
-//        }
-//
-//        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
-//        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
-//            throw new InvalidActionTakenException("No request for the user is compatible with the ClearFYI Action");
-//        }
 
         ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
 

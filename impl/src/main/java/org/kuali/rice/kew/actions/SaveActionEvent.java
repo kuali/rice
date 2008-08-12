@@ -81,7 +81,6 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
 	MDC.put("docId", getRouteHeader().getRouteHeaderId());
-//	checkLocking();
 	LOG.debug("Checking to see if the action is legal");
 	/* Code below for variable 'checkIfActionIsValid' is used to identify when the 
 	 * DocumentRouteHeaderValue 'legal actions' should be checked for the current
@@ -120,10 +119,6 @@ public class SaveActionEvent extends ActionTakenEvent {
 		throw new InvalidActionTakenException(ex.getMessage());
 	    }
 	}
-	//    } else {
-	//      LOG.warn("Document not in state to be saved.");
-	//      throw new InvalidActionTakenException("Document is not in a state to be saved");
-	//    }
     }
 
     protected ActionRequestValue generateSaveRequest() throws KEWUserNotFoundException {

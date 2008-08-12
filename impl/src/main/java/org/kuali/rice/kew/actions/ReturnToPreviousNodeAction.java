@@ -212,7 +212,6 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
- //       checkLocking();
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 
@@ -222,13 +221,6 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-//        if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-//
-//        	List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-//            if (! isActionCompatibleRequest(actionRequests, getActionTakenCode()) && ! isSuperUserUsage()) {
-//                throw new InvalidActionTakenException("No request for the user is compatible with the RETURN TO PREVIOUS NODE action");
-//            }
-
             Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
             NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, nodeName);
             NodeGraphSearchResult result = KEWServiceLocator.getRouteNodeService().searchNodeGraph(criteria);
@@ -237,9 +229,6 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             LOG.debug("Record the returnToPreviousNode action");
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
             ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE, delegator);
-
-            //getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-            //notifyActionTaken(this.actionTaken);
 
             LOG.debug("Finding requests in return path and setting current indicator to FALSE");
             List doneRequests = new ArrayList();
@@ -264,10 +253,6 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             revokePendingRequests(pendingRequests, actionTaken, delegator);
             notifyActionTaken(actionTaken);
             executeNodeChange(activeNodeInstances, result);
-//        } else {
-//            String docStatus = getRouteHeader().getDocRouteStatus();
-//            throw new InvalidActionTakenException("Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName);
-//        }
     }
 
     /**

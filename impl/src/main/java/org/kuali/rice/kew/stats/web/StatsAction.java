@@ -52,7 +52,6 @@ public class StatsAction extends WorkflowAction {
             this.getStatsService().NumActiveItemsReport(statForm.getStats());
             this.getStatsService().DocumentsRoutedReport(statForm.getStats(), statForm.getBeginningDate(), statForm.getEndingDate());
             this.getStatsService().NumberOfDocTypesReport(statForm.getStats());
-            this.getStatsService().ActionsTakenPerUnitOfTimeReport(statForm.getStats(), statForm.getBeginningDate(), statForm.getEndingDate(), statForm.getAvgActionsPerTimeUnit());
             this.getStatsService().NumInitiatedDocsByDocTypeReport(statForm.getStats());
             
             return mapping.findForward("basic");

@@ -33,6 +33,7 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 public class KOMResourceLoaderFactory {
 
 	private static final String KOM_SPRING_RESOURCE_LOADER_LOCAL_NAME = "KOM_SPRING_RESOURCE_LOADER";
+	private static final String KOM_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kom/config/KOMSpringBeans.xml";
 	
 	/**
 	 * This method initializes the resource loader for KOM.
@@ -50,8 +51,7 @@ public class KOMResourceLoaderFactory {
 	 */
 	public static ResourceLoader createRootKOMResourceLoader() {
 		initialize();
-		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), 
-				"KOMSpringBeans.xml");
+		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), KOM_SPRING_BEANS_PATH);
 		GlobalResourceLoader.addResourceLoaderFirst(resourceLoader);
 		return resourceLoader;
 	}

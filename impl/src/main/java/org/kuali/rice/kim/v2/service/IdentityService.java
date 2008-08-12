@@ -3,8 +3,8 @@ package org.kuali.rice.kim.v2.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.v2.bo.Entity;
 import org.kuali.rice.kim.v2.bo.Principal;
+import org.kuali.rice.kim.v2.bo.entity.Entity;
 
 public interface IdentityService extends IdentityServiceBase {
 	// CLIENT API	

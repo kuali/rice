@@ -2,11 +2,11 @@ package org.kuali.rice.kim.v2.service;
 
 import java.util.List;
 
-import org.kuali.rice.kim.v2.bo.Entity;
 import org.kuali.rice.kim.v2.bo.Group;
 import org.kuali.rice.kim.v2.bo.Permission;
 import org.kuali.rice.kim.v2.bo.Principal;
 import org.kuali.rice.kim.v2.bo.Role;
+import org.kuali.rice.kim.v2.bo.entity.Entity;
 
 // THIS DEFERS TO THE OTHER SERVICES AND ADDS CACHING - THIS IS WHAT CLIENTS SHOULD ACTUALLY USE - HOW TO MAKE THAT CLEAR?
 public interface IdentityManagementService extends IdentityManagementServiceBase {

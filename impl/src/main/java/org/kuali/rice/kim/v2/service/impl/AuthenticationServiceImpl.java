@@ -1,14 +1,25 @@
 package org.kuali.rice.kim.v2.service.impl;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.kuali.core.web.filter.KualiCasFilter;
 import org.kuali.rice.kim.v2.service.AuthenticationService;
 
-// TODO implement this class
 public class AuthenticationServiceImpl implements AuthenticationService {
-    public String getPrincipalName() {
-    	return null;
+	private boolean validatePassword = true;
+	
+	// TODO: Remove request and get this from Acegi
+	public String getPrincipalName(HttpServletRequest request) {
+		// TODO: Fix this
+		// A bit of a hack as this could be broken down into a CAS and Remote User implementation
+		return (request.getRemoteUser() == null) ? KualiCasFilter.getRemoteUser(request) : request.getRemoteUser();
     }
     
     public boolean validatePassword() {
-    	return true;
+    	return validatePassword;
     }
+
+	public void setValidatePassword(boolean validatePassword) {
+		this.validatePassword = validatePassword;
+	}    
 }

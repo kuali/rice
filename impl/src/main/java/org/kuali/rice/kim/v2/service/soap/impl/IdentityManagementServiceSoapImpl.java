@@ -7,7 +7,7 @@ import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
-import org.kuali.rice.kim.v2.service.soap.IdentityManagementServiceSoap;
+import org.kuali.rice.kim.v2.service.IdentityManagementServiceSoap;
 
 // TODO implement this class by piggy backing on the standard implementation ("has a" not "is a") and translating from interface to DTOs
 public class IdentityManagementServiceSoapImpl implements IdentityManagementServiceSoap {

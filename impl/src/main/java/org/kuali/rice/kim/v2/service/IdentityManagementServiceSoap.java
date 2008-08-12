@@ -1,4 +1,4 @@
-package org.kuali.rice.kim.v2.service.soap;
+package org.kuali.rice.kim.v2.service;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
-import org.kuali.rice.kim.v2.service.IdentityManagementServiceBase;
 
 public interface IdentityManagementServiceSoap extends IdentityManagementServiceBase {
     public List<RoleDTO> getWebServiceSafeRolesForPrincipal(String principalId);

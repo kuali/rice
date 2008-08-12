@@ -3,11 +3,11 @@ package org.kuali.rice.kim.v2.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.v2.bo.Entity;
 import org.kuali.rice.kim.v2.bo.Group;
 import org.kuali.rice.kim.v2.bo.Permission;
 import org.kuali.rice.kim.v2.bo.Principal;
 import org.kuali.rice.kim.v2.bo.Role;
+import org.kuali.rice.kim.v2.bo.entity.Entity;
 import org.kuali.rice.kim.v2.service.IdentityManagementService;
 
 // TODO implement this class

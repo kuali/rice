@@ -41,7 +41,7 @@ UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.docsearch.Sta
 
 UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR' WHERE RULE_RSP_NM='edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR'
 /
-UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='eorg.kuali.rice.kew.rule.RoutedByUserRoleAttribute!ROUTED_BY_USER' WHERE RULE_RSP_NM='edu.iu.uis.eden.routetemplate.RoutedByUserRoleAttribute!ROUTED_BY_USER'
+UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='org.kuali.rice.kew.rule.RoutedByUserRoleAttribute!ROUTED_BY_USER' WHERE RULE_RSP_NM='edu.iu.uis.eden.routetemplate.RoutedByUserRoleAttribute!ROUTED_BY_USER'
 /
 UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='org.kuali.rice.kew.rule.NetworkIdRoleAttribute!networkId' WHERE RULE_RSP_NM='edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute!networkId'
 /

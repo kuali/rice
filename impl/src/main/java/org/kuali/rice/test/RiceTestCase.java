@@ -176,6 +176,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     @After
     public void tearDown() throws Exception {
+    	// wait for outstanding threads to complete for 2 minutes
+    	ThreadMonitor.tearDown(120000);
         stopLifecycles(this.perTestLifeCycles);
         logAfterRun();
     }

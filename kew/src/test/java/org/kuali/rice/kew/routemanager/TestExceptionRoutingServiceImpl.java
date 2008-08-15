@@ -19,6 +19,7 @@ package org.kuali.rice.kew.routemanager;
 import org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.test.ThreadMonitor;
 
 
 
@@ -30,6 +31,7 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 	@Override
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, routeHeaderId, this);
+		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
 	}
 	

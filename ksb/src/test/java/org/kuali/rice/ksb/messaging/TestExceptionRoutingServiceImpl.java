@@ -18,6 +18,7 @@ package org.kuali.rice.ksb.messaging;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl;
 import org.kuali.rice.test.TestUtilities;
+import org.kuali.rice.test.ThreadMonitor;
 
 
 public class TestExceptionRoutingServiceImpl extends DefaultExceptionServiceImpl {
@@ -27,6 +28,7 @@ public class TestExceptionRoutingServiceImpl extends DefaultExceptionServiceImpl
     
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, message, service, this);
+		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
 	}
 	

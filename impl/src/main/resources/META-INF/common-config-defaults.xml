@@ -93,6 +93,7 @@
     <param name="ken.system.user">NotSys</param>
     
     <!-- Configuration for Exception Incident handling and reporting -->
+    <param name="kr.incident.mailing.list"></param>
     <param name="KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE">knsExceptionIncidentService</param>
       <!-- property place holders for knsExceptionIncidentService bean defined in KNSSpringBean.xml -->
       <param name="MailMessage.from">admin@kuali.org</param>

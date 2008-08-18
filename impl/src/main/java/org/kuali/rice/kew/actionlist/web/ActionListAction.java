@@ -28,7 +28,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
@@ -84,13 +83,14 @@ public class ActionListAction extends WorkflowAction {
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
-
+    
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
         ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
+       
 
         // process display tag parameters
         Integer page = form.getPage();
@@ -99,18 +99,24 @@ public class ActionListAction extends WorkflowAction {
         if (form.getDir() != null) {
         	sortOrder = parseSortOrder(form.getDir());
         }
-
+        else if ( !StringUtils.isEmpty(getUserSession(request).getSortOrder()))     {
+        	sortOrder = parseSortOrder(getUserSession(request).getSortOrder());
+        	System.out.println("Session value for SortOrder "+sortOrder);
+        }
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
         	page = new Integer(1);
         	sortCriterion = ActionItemComparator.DOCUMENT_ID;
         }
-
+        else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
+        	sortCriterion = getUserSession(request).getSortCriteria();
+            System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());        	
+        }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
         	page = form.getCurrentPage();
         }
-
+      
         // update the values of the "current" display tag parameters
         form.setCurrentPage(page);
         if (!StringUtils.isEmpty(sortCriterion)) {
@@ -214,7 +220,9 @@ public class ActionListAction extends WorkflowAction {
             }
             PaginatedList currentPage = buildCurrentPage(actionList, form.getCurrentPage(), form.getCurrentSort(), form.getCurrentDir(), pageSize, preferences, errors, form);
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            
+            uSession.setCurrentPage(form.getCurrentPage());
+            uSession.setSortCriteria(form.getSort());
+            uSession.setSortOrder(form.getCurrentDir());
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);

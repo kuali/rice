@@ -65,9 +65,53 @@ public class UserSession implements Serializable {
     private Preferences preferences;
     private List authentications = new ArrayList();
     private Set<String> groups = new HashSet<String>();
+    private String sortOrder;
+    private String sortCriteria;
+    private int currentPage;
 
+    /**
+	 * @return the sortOrder
+	 */
+	public String getSortOrder() {
+		return this.sortOrder;
+	}
 
-    public UserSession (WorkflowUser user) {
+	/**
+	 * @param sortOrder the sortOrder to set
+	 */
+	public void setSortOrder(String sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+	/**
+	 * @return the sortCriteria
+	 */
+	public String getSortCriteria() {
+		return this.sortCriteria;
+	}
+
+	/**
+	 * @param sortCriteria the sortCriteria to set
+	 */
+	public void setSortCriteria(String sortCriteria) {
+		this.sortCriteria = sortCriteria;
+	}
+
+	/**
+	 * @return the currentPage
+	 */
+	public int getCurrentPage() {
+		return this.currentPage;
+	}
+
+	/**
+	 * @param currentPage the currentPage to set
+	 */
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public UserSession (WorkflowUser user) {
         this.workflowUser = user;
         this.nextObjectKey = 0;
     }

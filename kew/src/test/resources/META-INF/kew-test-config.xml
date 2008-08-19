@@ -21,9 +21,9 @@
 	<param name="threadPool.size">5</param>
 	<param name="embedded.plugin.default.current.classloader">true</param>
 
-	<param name="keystore.alias">onestartsharedservices-devandtst</param>
+	<param name="keystore.alias">rice.keystore</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
-	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
+	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/rice.keystore</param>
 
 	<param name="webservices.settings.url">${kew.url.host}:${http.service.port}/en-test/services</param>
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>

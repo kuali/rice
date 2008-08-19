@@ -47,7 +47,7 @@
 	<param name="datasource.password">ask your team</param>
 
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>
-	<param name="keystore.location">keystore/onestartsharedservices-devandtst_keystore</param>
+	<param name="keystore.location">keystore/rice.keystore</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 
 	<param name="dev.mode">true</param>

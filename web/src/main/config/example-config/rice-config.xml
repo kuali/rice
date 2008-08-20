@@ -19,8 +19,7 @@
 	<param name="datasource.pool.size">5</param>
 	<param name="datasource.pool.maxWait">10000</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
-	<param name="notification.ojb.platform">Oracle</param>
-
+	
 	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
 
 	<!-- log4j settings -->

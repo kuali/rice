@@ -55,67 +55,67 @@ public class RouteNodeConfigParamTest extends KEWTestCase {
         // adhoc node
         RouteNode routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "AdHoc");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<start name=\"AdHoc\"><activationType>P</activationType></start>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<start name=\"AdHoc\"><activationType>P</activationType></start>");
         assertHasConfigParam(routeNodeDef, "activationType", "P");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setStartedVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"setStartedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>started</name><value>startedVariableValue</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"setStartedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>started</name><value>startedVariableValue</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "started");
         assertHasConfigParam(routeNodeDef, "value", "startedVariableValue");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setCopiedVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"setCopiedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>copiedVar</name><value>var:started</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"setCopiedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>copiedVar</name><value>var:started</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "copiedVar");
         assertHasConfigParam(routeNodeDef, "value", "var:started");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "PreApprovalTestOne");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<requests name=\"PreApprovalTestOne\"><activationType>S</activationType><ruleSelector>Named</ruleSelector><ruleName>TestRule1</ruleName></requests>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<requests name=\"PreApprovalTestOne\"><activationType>S</activationType><ruleSelector>Named</ruleSelector><ruleName>TestRule1</ruleName></requests>");
         assertHasConfigParam(routeNodeDef, "activationType", "S");
         assertHasConfigParam(routeNodeDef, "ruleSelector", "Named");
         assertHasConfigParam(routeNodeDef, "ruleName", "TestRule1");
         
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setEndedVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"setEndedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>ended</name><value>endedVariableValue</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"setEndedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>ended</name><value>endedVariableValue</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "ended");
         assertHasConfigParam(routeNodeDef, "value", "endedVariableValue");
         
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setGoogleVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"setGoogleVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>google</name><value>url:http://google.com</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"setGoogleVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>google</name><value>url:http://google.com</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "google");
         assertHasConfigParam(routeNodeDef, "value", "url:http://google.com");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setXPathVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"setXPathVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>xpath</name><value>xpath:concat(local-name(//documentContent),$ended)</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"setXPathVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>xpath</name><value>xpath:concat(local-name(//documentContent),$ended)</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "xpath");
         assertHasConfigParam(routeNodeDef, "value", "xpath:concat(local-name(//documentContent),$ended)");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "resetStartedVar");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"resetStartedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>started</name><value>aNewStartedVariableValue</value></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"resetStartedVar\"><type>org.kuali.rice.kew.engine.node.var.SetVarNode</type><name>started</name><value>aNewStartedVariableValue</value></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.var.SetVarNode");
         assertHasConfigParam(routeNodeDef, "name", "started");
         assertHasConfigParam(routeNodeDef, "value", "aNewStartedVariableValue");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "logNode");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"logNode\"><type>org.kuali.rice.kew.engine.node.LogNode</type><message>var:xpath</message></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"logNode\"><type>org.kuali.rice.kew.engine.node.LogNode</type><message>var:xpath</message></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.LogNode");
         assertHasConfigParam(routeNodeDef, "message", "var:xpath");
 
         routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "logNode2");
         assertNotNull(routeNodeDef);
-        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<simple name=\"logNode2\"><type>org.kuali.rice.kew.engine.node.LogNode</type><level>ErRoR</level><log>Custom.Logger.Name</log><message>THAT'S ALL FOLKS</message></simple>");
+        assertHasConfigParam(routeNodeDef, "contentFragment", "<simple name=\"logNode2\"><type>org.kuali.rice.kew.engine.node.LogNode</type><level>ErRoR</level><log>Custom.Logger.Name</log><message>THAT'S ALL FOLKS</message></simple>");
         assertHasConfigParam(routeNodeDef, "type", "org.kuali.rice.kew.engine.node.LogNode");
         assertHasConfigParam(routeNodeDef, "level", "ErRoR");
         assertHasConfigParam(routeNodeDef, "message", "THAT'S ALL FOLKS");

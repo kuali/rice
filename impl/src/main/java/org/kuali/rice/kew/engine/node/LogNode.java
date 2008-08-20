@@ -17,15 +17,19 @@
 package org.kuali.rice.kew.engine.node;
 
 import java.io.StringReader;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.var.PropertyScheme;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,7 +47,9 @@ public class LogNode implements SimpleNode {
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
         LOG.error("processing");
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
+        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("RouteNodeConfigParams");
+        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(context.getNodeInstance().getRouteNode().getConfigParams());
+        String contentFragment = cfgMap.get("contentFragment");
         LOG.error("contentFragment=" + contentFragment);
         Document d = db.parse(new InputSource(new StringReader(contentFragment)));
         Element e = d.getDocumentElement();

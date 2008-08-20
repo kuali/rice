@@ -19,14 +19,14 @@ EOL = '\r\n'
 // Just add comma separated values for ignored DDL
 IGNORES = ['FS_UNIVERSAL_USR_T','SH_CMP_TYP_T','SH_CAMPUS_T','SH_EMP_STAT_T','SH_EMP_TYP_T']
 MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom', 'kcb']
-MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
-MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
+MASTER_DESTROY_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_db_destroy.sql' 
+MASTER_CREATE_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_db_bootstrap.sql'
 
-SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql'
-SAMPLEAPP_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql'
+SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_sample_app_drops.sql'
+SAMPLEAPP_DATA_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_sample_app.sql'
 
-MASTERSAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sampleapp_destroy.sql' 
-MASTERSAMPLEAPP_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sampleapp_create.sql'
+MASTERSAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_sampleapp_destroy.sql' 
+MASTERSAMPLEAPP_CREATE_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_sampleapp_create.sql'
 
 // prompt and read user input
 println warningtext()
@@ -43,12 +43,12 @@ println "Creating master drop SQL: " + MASTER_DESTROY_SQL
 destroySql = getEmptyFile(MASTER_DESTROY_SQL)
 
 // concatenate all sequence and table drops
-MODULES.each() {
-    moduleName ->
-    println "Concatenating drop SQL for module " + moduleName 
-    createdrops(destroySql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences');
-    createdrops(destroySql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables');
-}
+//MODULES.each() {
+//   moduleName ->
+    println "Concatenating drop SQL for module " //+ moduleName 
+    createdrops(destroySql, PROJECT_DIR + '/impl/src/main/config/ddl/sequences');
+    createdrops(destroySql, PROJECT_DIR + '/impl/src/main/config/ddl/tables');
+//}
 
 println "Done."
 
@@ -60,21 +60,21 @@ println "Creating master bootstrap SQL: " + MASTER_CREATE_SQL
 bootstrapSql = getEmptyFile(MASTER_CREATE_SQL)
 
 println "Concatenating bootstrap tables, sequences, indexes, and constraints."
-MODULES.each() {
-    moduleName ->
-    println "Concatenating create SQL for module " + moduleName
-    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences')
-    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables')
-    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/indexes')
-    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/constraints')
-}
+//MODULES.each() {
+//    moduleName ->
+    println "Concatenating create SQL for module " //+moduleName
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/impl/src/main/config/ddl/sequences')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/impl/src/main/config/ddl/tables')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/impl/src/main/config/ddl/indexes')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/impl/src/main/config/ddl/constraints')
+//}
 
 println "Concatenating bootstrap data."
 
 MODULES.each() {
     moduleName ->
-    println "Concatenating bootstrap data for module " + moduleName
-    merge(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/sql/' + moduleName.toUpperCase() + 'Bootstrap.sql')
+    println "Concatenating bootstrap data for module " +moduleName
+    merge(bootstrapSql, PROJECT_DIR + '/impl/src/main/config/sql/' + moduleName.toUpperCase() + 'Bootstrap.sql')
 }
 
 println "Merging bootstrap and Sample App sql to create master Sample App sql: " + MASTERSAMPLEAPP_CREATE_SQL + ", " + MASTERSAMPLEAPP_DESTROY_SQL

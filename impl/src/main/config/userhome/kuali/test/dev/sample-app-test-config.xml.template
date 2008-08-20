@@ -100,8 +100,7 @@
 
     <param name="notification.basewebappurl">http://localhost:9912/${app.context.name}/ken</param>
     
-    <param name="notification.ojb.platform">Oracle</param>
-    
+       
     <!-- Email Plugin Properties -->
     <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
     

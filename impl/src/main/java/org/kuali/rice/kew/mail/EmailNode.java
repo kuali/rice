@@ -25,7 +25,6 @@ import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -114,7 +113,6 @@ public class EmailNode implements SimpleNode {
     }
     
     protected void loadConfiguration(RouteContext context) throws Exception {
-    DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("RouteNodeConfigParams");
     Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(context.getNodeInstance().getRouteNode().getConfigParams());
     String contentFragment = cfgMap.get("contentFragment");
 	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

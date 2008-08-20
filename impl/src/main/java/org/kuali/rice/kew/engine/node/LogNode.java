@@ -24,11 +24,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.var.PropertyScheme;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,8 +44,7 @@ public class LogNode implements SimpleNode {
 
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
         LOG.error("processing");
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("RouteNodeConfigParams");
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();      
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(context.getNodeInstance().getRouteNode().getConfigParams());
         String contentFragment = cfgMap.get("contentFragment");
         LOG.error("contentFragment=" + contentFragment);

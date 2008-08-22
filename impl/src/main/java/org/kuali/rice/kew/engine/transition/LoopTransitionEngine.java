@@ -20,7 +20,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.jdom.Document;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -30,7 +29,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 
 
@@ -54,9 +52,8 @@ public class LoopTransitionEngine extends TransitionEngine {
     protected List resolveNextNodeInstances(RouteNodeInstance nodeInstance, List nextRouteNodes) {
     	
     	try {
-    		Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(nodeInstance.getRouteNode().getConfigParams());
-            String contentFragment = cfgMap.get("contentFragment");
-            Document doc = XmlHelper.buildJDocument(new StringReader(contentFragment));		
+			Document doc = XmlHelper.buildJDocument(new StringReader(nodeInstance.getRouteNode().getContentFragment()));
+			
 			
 		} catch (InvalidXmlException e) {
 			throw new WorkflowRuntimeException(e);

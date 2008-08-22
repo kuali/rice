@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.engine.node.var;
 
 import java.io.StringReader;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,7 +30,6 @@ import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -60,8 +58,7 @@ public class SetVarNode implements SimpleNode {
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
         LOG.debug("processing");
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(context.getNodeInstance().getRouteNode().getConfigParams());
-        String contentFragment = cfgMap.get("contentFragment");
+        String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
         LOG.debug("contentFragment=" + contentFragment);
         Document d = db.parse(new InputSource(new StringReader(contentFragment)));
         Element e = d.getDocumentElement();

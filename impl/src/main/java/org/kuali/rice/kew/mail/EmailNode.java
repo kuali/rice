@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.mail;
 
 import java.io.StringReader;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,7 +34,6 @@ import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -113,10 +111,9 @@ public class EmailNode implements SimpleNode {
     }
     
     protected void loadConfiguration(RouteContext context) throws Exception {
-    Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(context.getNodeInstance().getRouteNode().getConfigParams());
-    String contentFragment = cfgMap.get("contentFragment");
+	String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
 	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    Document document = db.parse(new InputSource(new StringReader(contentFragment)));
+        Document document = db.parse(new InputSource(new StringReader(contentFragment)));
 	if (!isProduction()) {
 	    NodeList testAddresses = document.getElementsByTagName("testAddress");
 	    if (testAddresses.getLength() >= 1) {

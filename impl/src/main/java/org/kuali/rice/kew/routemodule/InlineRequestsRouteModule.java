@@ -19,7 +19,6 @@ package org.kuali.rice.kew.routemodule;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -43,7 +42,6 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.XmlConstants;
@@ -69,8 +67,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         // re-implement later
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
         RouteNodeInstance currentNode = context.getNodeInstance();
-        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(currentNode.getRouteNode().getConfigParams());
-        String contentFragment = cfgMap.get("contentFragment");
+        String contentFragment = currentNode.getRouteNode().getContentFragment();
         // parse with JDOM to reuse RuleXmlParser
         Document doc = XmlHelper.trimSAXXml(new ByteArrayInputStream(contentFragment.getBytes()));
         Element root = doc.getRootElement();

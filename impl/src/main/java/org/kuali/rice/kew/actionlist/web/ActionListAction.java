@@ -101,7 +101,7 @@ public class ActionListAction extends WorkflowAction {
         }
         else if ( !StringUtils.isEmpty(getUserSession(request).getSortOrder()))     {
         	sortOrder = parseSortOrder(getUserSession(request).getSortOrder());
-        	System.out.println("Session value for SortOrder "+sortOrder);
+     //   	System.out.println("Session value for SortOrder "+sortOrder);
         }
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
@@ -110,7 +110,7 @@ public class ActionListAction extends WorkflowAction {
         }
         else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
         	sortCriterion = getUserSession(request).getSortCriteria();
-            System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());        	
+     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());        	
         }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {

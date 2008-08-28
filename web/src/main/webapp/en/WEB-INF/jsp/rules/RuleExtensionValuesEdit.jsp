@@ -42,7 +42,9 @@
                }
            }
            pageContext.setAttribute("fullConversionFields", fullConversionFields);
-      e="${0}"/>
+  %>
+
+      <c:set var="fieldIndex" value="${0}"/>
       <c:set var="conversionFields" value=""/>
       <c:set var="isRowLabel" value="" />	
       <c:set var="previousRow" value="NoPrevious" />

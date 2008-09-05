@@ -28,7 +28,7 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 

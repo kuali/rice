@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**

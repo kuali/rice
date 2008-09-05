@@ -36,7 +36,7 @@ import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;

@@ -18,8 +18,8 @@ package org.kuali.rice.kew.rule.xmlrouting;
 
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.RuleAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**

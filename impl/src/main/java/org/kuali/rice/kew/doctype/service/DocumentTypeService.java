@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 
 

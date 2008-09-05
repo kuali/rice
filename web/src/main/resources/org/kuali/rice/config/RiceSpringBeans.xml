@@ -20,10 +20,10 @@
                     </property>
 				</bean>
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
-				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
 				<!-- <bean class="org.kuali.rice.kom.config.KOMConfigurer" /> -->
         <bean class="org.kuali.rice.ken.config.KENConfigurer" />

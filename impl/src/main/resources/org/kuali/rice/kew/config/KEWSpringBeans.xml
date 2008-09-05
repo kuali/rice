@@ -881,6 +881,18 @@
         </bean>
     </property>
   </bean>
+  
+  <bean id="kewModule" class="org.kuali.rice.kns.KualiModule">
+		<property name="moduleId" value="kew"/>
+		<property name="moduleName" value="KEW"/>
+		<property name="moduleCode" value="kew"/>
+		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryPackages">
+			<list>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
+            </list>
+		</property>
+	</bean>
 
   <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 

@@ -391,7 +391,7 @@
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType"
@@ -451,7 +451,7 @@
   </class-descriptor>
 
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleAttribute" table="EN_RULE_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleAttribute" table="EN_RULE_ATTRIB_T">
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_ATTRIB_NM" name="name" jdbc-type="VARCHAR" />
@@ -478,7 +478,7 @@
     <field-descriptor column="DSPL_ORD" name="displayOrder" jdbc-type="INTEGER" />
     <field-descriptor column="DFLT_VAL" name="defaultValue" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" locking="true" />
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleAttribute" name="ruleAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
@@ -933,7 +933,7 @@
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.workgroup.WorkgroupType" name="workgroupType">
       <foreignkey field-ref="workgroupTypeId"/>
     </reference-descriptor>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.rule.RuleAttribute" name="attribute">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="attribute">
       <foreignkey field-ref="attributeId"/>
     </reference-descriptor>
   </class-descriptor>
@@ -1051,7 +1051,7 @@
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="roleId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleAttribute" name="ruleAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="link">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>

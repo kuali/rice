@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 

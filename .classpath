@@ -84,7 +84,6 @@
 	<classpathentry kind="var" path="M2_REPO/nekohtml/nekohtml/0.9.5/nekohtml-0.9.5.jar" sourcepath="M2_REPO/nekohtml/nekohtml/0.9.5/nekohtml-0.9.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/java/dev/stax-utils/stax-utils/20040917/stax-utils-20040917.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/ognl/ognl/2.6.9/ognl-2.6.9.jar" sourcepath="M2_REPO/ognl/ognl/2.6.9/ognl-2.6.9-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/ojb/db-ojb/1.0.4-patch2/db-ojb-1.0.4-patch2.jar" sourcepath="M2_REPO/ojb/db-ojb/1.0.4-patch2/db-ojb-1.0.4-patch2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/opensymphony/oscache/2.3.2/oscache-2.3.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/opensymphony/quartz/1.6.0/quartz-1.6.0.jar"/>
@@ -111,13 +110,9 @@
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga.jar" sourcepath="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/3.0.0.ga/hibernate-validator-3.0.0.ga.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga.jar" sourcepath="M2_REPO/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/jasig/cas/cas-server-core/3.2-RC5-SNAPSHOT/cas-server-core-3.2-RC5-SNAPSHOT.jar" sourcepath="M2_REPO/org/jasig/cas/cas-server-core/3.2-RC5-SNAPSHOT/cas-server-core-3.2-RC5-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/jasig/service/person-directory/1.0.1/person-directory-1.0.1.jar" sourcepath="M2_REPO/org/jasig/service/person-directory/1.0.1/person-directory-1.0.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.1/jetty-util-6.1.1.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-util/6.1.1/jetty-util-6.1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.1/jetty-6.1.1.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.1/jetty-6.1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/objectweb/carol/carol/2.0.5/carol-2.0.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/ldap/spring-ldap-tiger/1.2.1/spring-ldap-tiger-1.2.1.jar" sourcepath="M2_REPO/org/springframework/ldap/spring-ldap-tiger/1.2.1/spring-ldap-tiger-1.2.1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/ldap/spring-ldap/1.2.1/spring-ldap-1.2.1.jar" sourcepath="M2_REPO/org/springframework/ldap/spring-ldap/1.2.1/spring-ldap-1.2.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/2.0.4/spring-aop-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.0.4/spring-beans-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.0.4/spring-context-2.0.4.jar"/>
@@ -130,7 +125,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-remoting/2.0.4/spring-remoting-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.4/spring-support-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.0.4/spring-web-2.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webflow/1.0.5/spring-webflow-1.0.5.jar" sourcepath="M2_REPO/org/springframework/spring-webflow/1.0.5/spring-webflow-1.0.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.0.4/spring-webmvc-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springmodules/spring-modules-ojb/0.8a/spring-modules-ojb-0.8a.jar" sourcepath="M2_REPO/org/springmodules/spring-modules-ojb/0.8a/spring-modules-ojb-0.8a-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/oro/oro/2.0.8/oro-2.0.8.jar" sourcepath="M2_REPO/oro/oro/2.0.8/oro-2.0.8-sources.jar"/>

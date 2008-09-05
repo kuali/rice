@@ -30,7 +30,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.lookupable.Column;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;

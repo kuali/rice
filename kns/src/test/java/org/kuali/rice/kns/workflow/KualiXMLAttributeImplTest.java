@@ -37,7 +37,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;

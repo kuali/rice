@@ -18,8 +18,8 @@
     <xsl:template match="immediateReminder">
         <xsl:variable name="docHandlerUrl" select="actionItem/documentType/docHandlerUrl"/>
         <email>
-            <subject>OneStart Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
-            <body>Your OneStart Action List has an eDoc(electronic document) that needs your attention: 
+            <subject>Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
+            <body>Your Action List has an eDoc(electronic document) that needs your attention: 
 
 Document ID:&tab;<xsl:value-of select="actionItem/actionItem/routeHeaderId"/>
 Initiator:&tab;&tab;<xsl:value-of select="actionItem/docInitiator/displayName"/>
@@ -59,8 +59,8 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemAuthenticationUse
 
     <xsl:template match="dailyReminder">
         <email>
-            <subject>OneStart Action List Reminder</subject>
-            <body>Your OneStart Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
+            <subject>Action List Reminder</subject>
+            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
@@ -98,8 +98,8 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
     
     <xsl:template match="weeklyReminder">
         <email>
-            <subject>OneStart Action List Reminder</subject>
-            <body>Your OneStart Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
+            <subject>Action List Reminder</subject>
+            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want

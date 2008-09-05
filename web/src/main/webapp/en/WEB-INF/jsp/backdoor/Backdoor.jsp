@@ -73,18 +73,6 @@
 	<tr>
 		<td><a href="Lookup.do?lookupableImplServiceName=EDocLiteLookupableService" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites</a></td>
 	</tr>
-<%--
-	<c:if test="${BackdoorForm.isWorkflowAdmin}">
-		<tr>
-			<td><a href="Administration.do?methodToCall=administration" target="<c:out value="${BackdoorForm.targetName}" />">Administration</a></td>
-		</tr>
-	</c:if>
-	--%>
-	<%--
-	<tr>
-		<td><br><a href="RuleQuickLinks.do?rootDocTypeName=EPICParentDoc" target="<c:out value="${BackdoorForm.targetName}" />">EPIC Rules</a></td>
-	</tr>
-	--%>
 </table>
 
 <c:if test="${BackdoorForm.backdoorLinksBackdoorLogin}">

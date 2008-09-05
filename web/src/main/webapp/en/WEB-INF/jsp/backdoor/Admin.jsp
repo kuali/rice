@@ -26,7 +26,10 @@
 			<td><a href="Ingester.do" target="<c:out value="${BackdoorForm.targetName}" />">XML Ingester</a></td>
 		</tr>
 		<tr>
-			<td><a href="Lookup.do?lookupableImplServiceName=RuleAttributeLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Rule Attribute</a></td>
+			<td><a href="Lookup.do?lookupableImplServiceName=RuleAttributeLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Rule Attribute Old</a></td>
+		</tr>
+		<tr>
+			<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.RuleAttribute&docFormKey=88888888&returnLocation=Administration.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Rule Attribute New</a></td>
 		</tr>
 		<tr>
 			<td><a href="Lookup.do?lookupableImplServiceName=RuleTemplateLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Rule Template</a></td>

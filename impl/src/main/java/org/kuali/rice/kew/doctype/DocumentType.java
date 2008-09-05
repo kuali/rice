@@ -59,7 +59,7 @@ import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.docsearch.xml;
 
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**

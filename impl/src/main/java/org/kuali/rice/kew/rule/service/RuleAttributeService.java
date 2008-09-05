@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 

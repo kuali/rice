@@ -19,7 +19,7 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**

@@ -14,9 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.rule;
+package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -31,8 +32,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -43,7 +44,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
  */
 @Entity
 @Table(name="EN_RULE_ATTRIB_T")
-public class RuleAttribute implements WorkflowPersistable  {
+public class RuleAttribute extends PersistableBusinessObjectBase implements WorkflowPersistable  {
 
 	private static final long serialVersionUID = 1027673603158346349L;
 	@Id
@@ -195,15 +196,18 @@ public class RuleAttribute implements WorkflowPersistable  {
 	public void setMessageEntity(String messageEntity) {
 		this.messageEntity = messageEntity;
 	}
-	
-	public String toString() {
-	    return new ToStringBuilder(this).append("name", name)
-	                                    .append("ruleAttributeId", ruleAttributeId)
-	                                    .append("className", className)
-	                                    .append("description", description)
-	                                    .append("label", label)
-	                                    .append("messageEntity", messageEntity)
-	                                    .append("lockVerNbr").toString();
+		
+	@Override
+	protected LinkedHashMap<String, Object> toStringMapper() {
+		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+	    propMap.put("ruleAttributeId", getRuleAttributeId());
+	    propMap.put("name", getName());
+	    propMap.put("label", getLabel());
+	    propMap.put("description", getDescription());
+	    propMap.put("type", getType());
+	    propMap.put("className", getClassName());
+	    propMap.put("messageEntity", getMessageEntity());
+	    return propMap;
 	}
-    
+
 }

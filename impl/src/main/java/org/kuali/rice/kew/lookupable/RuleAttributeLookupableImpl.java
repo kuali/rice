@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
-import org.kuali.rice.kew.rule.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -106,7 +106,7 @@ public class RuleAttributeLookupableImpl implements WorkflowLookupable, Exportab
         options.add(new KeyLabelPair(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE, "Document Search Generator Attribute"));
         options.add(new KeyLabelPair(KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor Attribute"));
         options.add(new KeyLabelPair(KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor XML Attribute"));
-        options.add(new KeyLabelPair(KEWConstants.DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE, "Document Search Security Filter Attribute"));
+        options.add(new KeyLabelPair(KEWConstants.DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE, "Document Search Security Filter Attribute"));
 
         fields = new ArrayList();
         fields.add(new Field(TYPE_FIELD_LABEL, TYPE_FIELD_HELP, Field.DROPDOWN, false, TYPE_PROPERTY_NAME, "", options, null));

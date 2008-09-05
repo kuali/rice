@@ -36,6 +36,7 @@ import javax.persistence.Version;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

@@ -21,7 +21,11 @@ body
 
 form { margin: 0; }
 
-li,td,div,th,table,span,body
+pre {
+	margin: 0;
+}
+
+li,td,div,th,table,span,body,pre
 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	list-style-type: square;

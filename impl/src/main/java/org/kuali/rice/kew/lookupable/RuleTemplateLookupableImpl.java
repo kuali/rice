@@ -26,12 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
-import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-
 
 /**
  * A {@link WorkflowLookupable} implementation for {@link RuleTemplate}.
@@ -61,7 +60,8 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplate.ruleTemplateId";
     private static final String BACK_LOCATION = "backLocation";
     private static final String DOC_FORM_KEY = "docFormKey";
-
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeLookupableImpl.class);
+  
     public RuleTemplateLookupableImpl() {
         rows = new ArrayList();
 
@@ -164,11 +164,11 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public String getReturnLocation() {
-        return returnLocation;
+    	return returnLocation;
     }
 
     public List getColumns() {
-        return columns;
+    	return columns;
     }
 
     public String getHtmlMenuBar() {
@@ -176,7 +176,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public List getRows() {
-        return rows;
+    	return rows;
     }
     
     public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception {
@@ -189,5 +189,5 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     public List getSupportedExportFormats() {
         return ExportFormat.STANDARD_FORMATS;
     }
-    
-}
+
+	}

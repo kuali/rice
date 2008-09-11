@@ -413,14 +413,14 @@
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleTemplate" table="EN_RULE_TMPL_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplate" table="EN_RULE_TMPL_T">
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_TMPL_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_TMPL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="DLGN_RULE_TMPL_ID" name="delegationTemplateId" jdbc-type="BIGINT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.rule.RuleTemplate"
+    <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="delegationTemplateId"/>
     </reference-descriptor>
@@ -444,7 +444,7 @@
     <field-descriptor column="RULE_TMPL_OPTN_VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
 
-    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateId"/>
     </reference-descriptor>
@@ -482,7 +482,7 @@
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleTemplate" name="ruleTemplate"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate" name="ruleTemplate"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateId" />
     </reference-descriptor>
@@ -513,7 +513,7 @@
     <field-descriptor column="RULE_BASE_VAL_DLGN_IND" name="delegateRule" jdbc-type="BIT" />
     <field-descriptor column="RULE_BASE_VAL_ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
         auto-delete="false" auto-retrieve="true" auto-update="false">
         <foreignkey field-ref="ruleTemplateId" />
     </reference-descriptor>

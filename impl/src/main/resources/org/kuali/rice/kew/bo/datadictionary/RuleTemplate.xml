@@ -90,8 +90,8 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="LockVerNbr" />
-    <property name="label" value="Lock VersionNumber" />
+    <property name="name" value="lockVerNbr" />
+    <property name="label" value="Lock Version Number" />
   </bean>
 
   <bean id="RuleTemplate-description" parent="RuleTemplate-description-parentBean" />
@@ -122,8 +122,8 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="DelegationTemplate" />
-    <property name="label" value="Delegation Template" />
+    <property name="name" value="delegationTemplate" />
+    <property name="label" value="Rule Template Delegate " />
   </bean>
  
   <!-- Business Object Inquiry Definition -->

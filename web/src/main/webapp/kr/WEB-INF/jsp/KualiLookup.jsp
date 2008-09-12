@@ -154,8 +154,7 @@
 								title="${column.columnTitle}" comparator="${column.comparator}">
 								<a href="<c:out value="${column.propertyURL}"/>" target="blank" title="${column.propertyValue}"><c:out
 									value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
-									/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a> &nbsp;
-                            </display:column>
+									/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a> &nbsp;</display:column>
 						</c:when>
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:when test="${column.columnTitle == 'Project Code'}">

@@ -30,11 +30,9 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.Routable;
-import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -404,7 +402,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     }
 
     protected void generateXmlContent(WorkflowDocument document, BaseWorkgroup workgroup) {
-    	ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+    	ExportDataSet dataSet = new ExportDataSet();
     	dataSet.getWorkgroups().add(workgroup);
     	Element element = KEWServiceLocator.getWorkgroupService().export(dataSet);
     	String xmlContent = XmlHelper.jotNode(element);

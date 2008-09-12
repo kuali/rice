@@ -30,7 +30,6 @@ import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.workgroup.Workgroup;
 
@@ -47,9 +46,9 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         List documentTypes = KEWServiceLocator.getDocumentTypeService().findAllCurrent();
         for (Iterator iterator = documentTypes.iterator(); iterator.hasNext();) {
             DocumentType existingDocType = (DocumentType) iterator.next();
-            ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+            ExportDataSet dataSet = new ExportDataSet();
             dataSet.getDocumentTypes().add(existingDocType);
-            byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(ExportFormat.XML, dataSet);
+            byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
             assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
             loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
             DocumentType newDocType = KEWServiceLocator.getDocumentTypeService().findByName(existingDocType.getName());

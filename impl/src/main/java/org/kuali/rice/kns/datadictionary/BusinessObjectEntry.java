@@ -19,6 +19,7 @@ package org.kuali.rice.kns.datadictionary;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Exporter;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -32,6 +33,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
     This map contains enties with the following keys
 
         * businessObjectClass (String)
+        * exporterClass (String)
         * inquiry (Map, optional)
         * lookup (Map, optional)
         * attributes (Map)
@@ -51,7 +53,8 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
     protected Class<? extends BusinessObject> businessObjectClass;
-
+    protected Class<? extends Exporter> exporterClass;
+    
     protected boolean boNotesEnabled = false;
     
     protected InquiryDefinition inquiryDefinition;
@@ -63,7 +66,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     protected String objectDescription;
 
     protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
-
+    
     public BusinessObjectEntry() {}
 
     /**
@@ -77,7 +80,6 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         return businessObjectClass.getSimpleName();
     }
 
-
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
@@ -89,8 +91,16 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
     }
+    
+    public Class<? extends Exporter> getExporterClass() {
+		return this.exporterClass;
+	}
 
-    public boolean isBoNotesEnabled() {
+	public void setExporterClass(Class<? extends Exporter> exporterClass) {
+		this.exporterClass = exporterClass;
+	}
+
+	public boolean isBoNotesEnabled() {
         return boNotesEnabled;
     }
 

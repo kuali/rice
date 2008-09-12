@@ -24,8 +24,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
@@ -68,7 +67,7 @@ public class RuleTemplateAction extends WorkflowAction {
     
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleTemplateForm ruleTemplateForm = (RuleTemplateForm) form;
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         if (ruleTemplateForm.getCurrentRuleTemplateId() != null) {
             RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateForm.getCurrentRuleTemplateId());
             dataSet.getRuleTemplates().add(ruleTemplate);

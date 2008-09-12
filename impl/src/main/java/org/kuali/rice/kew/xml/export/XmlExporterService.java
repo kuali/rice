@@ -16,11 +16,15 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.kuali.rice.kew.export.Exporter;
+import org.kuali.rice.kew.export.ExportDataSet;
 
 /**
  * A service which can export data to XML.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface XmlExporterService extends Exporter {}
+public interface XmlExporterService {
+	
+	public byte[] export(ExportDataSet dataSet);
+	
+}

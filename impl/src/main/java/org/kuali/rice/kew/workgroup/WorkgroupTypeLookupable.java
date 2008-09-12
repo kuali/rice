@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.lookupable.Field;
@@ -219,18 +218,14 @@ public class WorkgroupTypeLookupable implements WorkflowLookupable, Exportable {
         return rows;
     }
 
-    public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception {
+    public ExportDataSet export(Object exportCriteria) throws Exception {
         List searchResults = (List)exportCriteria;
-        ExportDataSet dataSet = new ExportDataSet(format);
+        ExportDataSet dataSet = new ExportDataSet();
         for (Iterator iterator = searchResults.iterator(); iterator.hasNext();) {
 			WorkgroupTypeLookupResult result = (WorkgroupTypeLookupResult) iterator.next();
 			dataSet.getWorkgroupTypes().add(result.getWorkgroupType());
 		}
         return dataSet;
-    }
-
-    public List getSupportedExportFormats() {
-        return ExportFormat.STANDARD_FORMATS;
     }
 
     public static class WorkgroupTypeLookupResult {

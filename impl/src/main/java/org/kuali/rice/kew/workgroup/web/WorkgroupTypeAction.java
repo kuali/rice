@@ -25,8 +25,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.WorkflowAction;
@@ -65,7 +64,7 @@ public class WorkgroupTypeAction extends WorkflowAction {
 
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         WorkgroupTypeForm workgroupTypeForm = (WorkgroupTypeForm) form;
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         if (workgroupTypeForm.getWorkgroupTypeId() != null) {
             WorkgroupType workgroupType = getWorkgroupTypeService().findById(workgroupTypeForm.getWorkgroupTypeId());
             dataSet.getWorkgroupTypes().add(workgroupType);

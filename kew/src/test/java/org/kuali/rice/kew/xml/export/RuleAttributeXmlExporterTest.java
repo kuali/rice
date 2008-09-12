@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -43,9 +42,9 @@ public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {
     protected void assertExport() throws Exception {
         // export all existing rule attributes
         List oldRuleAttributes = KEWServiceLocator.getRuleAttributeService().findAll();
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRuleAttributes().addAll(oldRuleAttributes);
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(ExportFormat.XML, dataSet);
+        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         
         // import the exported xml

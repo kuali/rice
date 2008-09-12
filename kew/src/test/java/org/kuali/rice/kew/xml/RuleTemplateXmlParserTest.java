@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;

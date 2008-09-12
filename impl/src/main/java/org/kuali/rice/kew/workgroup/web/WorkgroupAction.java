@@ -42,7 +42,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.lookupable.WorkflowLookupable;
@@ -542,7 +541,7 @@ public class WorkgroupAction extends WorkflowAction {
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         WorkgroupForm workgroupForm = (WorkgroupForm)form;
         Workgroup workgroup = workgroupForm.getExistingWorkgroup();
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getWorkgroups().add(workgroup);
         return exportDataSet(request, dataSet);
     }

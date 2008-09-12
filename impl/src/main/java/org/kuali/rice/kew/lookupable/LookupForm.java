@@ -38,7 +38,6 @@ public class LookupForm extends ActionForm {
     private String conversionFields;
     private Map fieldConversions;
     private String noReturnParams;
-    private List supportedExportFormats = new ArrayList();
     
     /**
      * @return Returns the lookupableImplServiceName.
@@ -132,14 +131,5 @@ public class LookupForm extends ActionForm {
     public void setFieldConversions(Map fieldConversions) {
         this.fieldConversions = fieldConversions;
     }
-
-    public List getSupportedExportFormats() {
-        return supportedExportFormats;
-    }
-
-    public void setSupportedExportFormats(List supportedExportFormats) {
-        this.supportedExportFormats = supportedExportFormats;
-    }
-
 
 }

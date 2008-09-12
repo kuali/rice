@@ -32,7 +32,6 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -373,15 +372,11 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         return rows;
     }
 
-    public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception {
+    public ExportDataSet export(Object exportCriteria) throws Exception {
         List searchResults = (List)exportCriteria;
-        ExportDataSet dataSet = new ExportDataSet(format);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().addAll(searchResults);
         return dataSet;
-    }
-
-    public List getSupportedExportFormats() {
-        return ExportFormat.STANDARD_FORMATS;
     }
 
 }

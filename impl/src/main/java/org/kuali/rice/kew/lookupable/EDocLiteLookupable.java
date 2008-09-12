@@ -27,7 +27,6 @@ import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KeyLabelPair;
@@ -125,15 +124,11 @@ public class EDocLiteLookupable implements WorkflowLookupable, Exportable {
 	public void changeIdToName(Map fieldValues) throws Exception {
 	}
 
-	public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception {
+	public ExportDataSet export(Object exportCriteria) throws Exception {
 		List searchResults = (List)exportCriteria;
-        ExportDataSet dataSet = new ExportDataSet(format);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getEdocLites().addAll(searchResults);
         return dataSet;
-	}
-
-	public List getSupportedExportFormats() {
-		return ExportFormat.STANDARD_FORMATS;
 	}
 
 	private static List establishColData() {

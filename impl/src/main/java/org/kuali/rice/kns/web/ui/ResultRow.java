@@ -18,6 +18,8 @@ package org.kuali.rice.kns.web.ui;
 import java.io.Serializable;
 import java.util.List;
 
+import org.kuali.rice.kns.bo.BusinessObject;
+
 
 /**
  * 
@@ -28,13 +30,15 @@ public class ResultRow implements Serializable {
     private String returnUrl;
     private String actionUrls;
     private String objectId;
+    private BusinessObject businessObject;
     /**
      * Whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
      * multiple value lookups)
      */
     private boolean rowReturnable;
 
-    public ResultRow(List<Column> columns, String returnUrl, String actionUrls) {
+    public ResultRow(BusinessObject businessObject, List<Column> columns, String returnUrl, String actionUrls) {
+    	this.businessObject = businessObject;
         this.columns = columns;
         this.returnUrl = returnUrl;
         this.actionUrls = actionUrls;
@@ -118,4 +122,22 @@ public class ResultRow implements Serializable {
     public void setRowReturnable(boolean rowReturnable) {
         this.rowReturnable = rowReturnable;
     }
+
+	/**
+	 * Returns the BusinessObject associated with this row.  This may be null
+	 * 
+	 * @return the businessObject, or null if the businessObject was not set
+	 */
+	public BusinessObject getBusinessObject() {
+		return this.businessObject;
+	}
+
+	/**
+	 * @param businessObject the businessObject to set
+	 */
+	public void setBusinessObject(BusinessObject businessObject) {
+		this.businessObject = businessObject;
+	}
+    
+    
 }

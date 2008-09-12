@@ -29,7 +29,6 @@ import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.web.WorkflowAction;
@@ -137,9 +136,9 @@ public class DocumentTypeAction extends WorkflowAction {
 
 		documentTypeForm.setDocumentType(docType);
 
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(docType);
-        byte[] data = KEWServiceLocator.getXmlExporterService().export(dataSet.getFormat(), dataSet);
+        byte[] data = KEWServiceLocator.getXmlExporterService().export(dataSet);
         documentTypeForm.setExportedXml(new String(data));
 
 		return mapping.findForward("report");
@@ -147,14 +146,14 @@ public class DocumentTypeAction extends WorkflowAction {
 
 	public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DocumentType docType = getDocumentTypeService().findById(new Long(request.getParameter("docTypeId")));
-		ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+		ExportDataSet dataSet = new ExportDataSet();
 		dataSet.getDocumentTypes().add(docType);
 		return exportDataSet(request, dataSet);
 	}
 
 	public ActionForward exportHierarchy(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DocumentType docType = getDocumentTypeService().findById(new Long(request.getParameter("docTypeId")));
-		ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+		ExportDataSet dataSet = new ExportDataSet();
 		List docTypes = dataSet.getDocumentTypes();
 		do {
 			docTypes.add(docType);

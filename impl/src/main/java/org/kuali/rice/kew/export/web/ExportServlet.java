@@ -27,9 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.export.Exporter;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.xml.export.XmlExporterService;
 
 
 /**
@@ -50,14 +49,9 @@ public class ExportServlet extends HttpServlet {
         if (dataSet == null) {
             throw new ServletException("No data set was specified.");
         }
-        String contentType = dataSet.getFormat().getMimeType();
-        Exporter exporter = null;
-        if (ExportFormat.XML.equals(dataSet.getFormat())) {
-            exporter = KEWServiceLocator.getXmlExporterService();
-        } else {
-            throw new ServletException("Cannot export for the given format " + dataSet.getFormat());
-        }
-        byte[] data = exporter.export(dataSet.getFormat(), dataSet);
+        String contentType = "application/xml";
+        XmlExporterService exporter = KEWServiceLocator.getXmlExporterService();
+        byte[] data = exporter.export(dataSet);
         response.setContentType(contentType);
         response.setContentLength(data.length);
         response.setHeader("Content-disposition", "attachment; filename="+extractFileName(request));
@@ -81,7 +75,7 @@ public class ExportServlet extends HttpServlet {
     public static final String generateExportPath(HttpServletRequest request, ExportDataSet dataSet) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh_mm_ss");
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        return basePath + "/export/wf-export-"+format.format(new Date())+dataSet.getFormat().getExtension();
+        return basePath + "/export/wf-export-"+format.format(new Date())+".xml";
     }
 
 }

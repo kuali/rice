@@ -43,7 +43,6 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -261,7 +260,7 @@ public class LookupAction extends WorkflowAction {
         }
         Exportable exportable = (Exportable)workflowLookupable;
         // for now just hardcode for XML
-        ExportDataSet dataSet = exportable.export(ExportFormat.XML, results);
+        ExportDataSet dataSet = exportable.export(results);
         return exportDataSet(request, dataSet);
     }
 
@@ -363,9 +362,6 @@ public class LookupAction extends WorkflowAction {
             try {
 
                 WorkflowLookupable workflowLookupable = getLookupable(lookupableName);//SpringServiceLocator.getExtensionService().getLookupable(lookupableName);
-                if (workflowLookupable instanceof Exportable) {
-                    lookupForm.setSupportedExportFormats(((Exportable)workflowLookupable).getSupportedExportFormats());
-                }
                 Map fieldValues = new HashMap();
                 for (Iterator iter = workflowLookupable.getRows().iterator(); iter.hasNext();) {
                     Row row = (Row) iter.next();

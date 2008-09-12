@@ -28,14 +28,12 @@ import java.util.Set;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase.ClearCacheLifecycle;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 
@@ -67,12 +65,12 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         List oldRules = KEWServiceLocator.getRuleService().fetchAllRules(true);
         assertAllRulesHaveUniqueNames(oldRules);
 
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRules().addAll(oldRules);
         dataSet.getDocumentTypes().addAll(KEWServiceLocator.getDocumentTypeService().findAllCurrent());
         dataSet.getRuleTemplates().addAll(KEWServiceLocator.getRuleTemplateService().findAll());
         dataSet.getRuleAttributes().addAll(KEWServiceLocator.getRuleAttributeService().findAll());
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(ExportFormat.XML, dataSet);
+        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         // now clear the tables

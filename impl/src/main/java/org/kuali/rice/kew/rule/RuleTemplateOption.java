@@ -27,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 
 
 /**

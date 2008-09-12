@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -54,9 +53,9 @@ public class HelpEntryXmlExporterTest extends XmlExporterTestCase {
     	entry.setHelpName("");
     	entry.setHelpText("");
         List oldHelpEntries = KEWServiceLocator.getHelpService().search(entry);
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getHelp().addAll(oldHelpEntries);
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(ExportFormat.XML, dataSet);
+        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         
         // import the exported xml

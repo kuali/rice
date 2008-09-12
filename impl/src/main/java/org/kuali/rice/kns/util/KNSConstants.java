@@ -375,6 +375,12 @@ public class KNSConstants extends JSTLConstants {
     // below field used in tag files
     public static final String DOCUMENT_NOTES_ERRORS = NEW_DOCUMENT_NOTE_PROPERTY_NAME + "*";
 
+    // export formats
+    
+    public static final String XML_FORMAT = "xml";
+    public static final String EXCEL_FORMAT = "xls";
+    public static final String CSV_FORMAT = "csv";
+    
     public enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");
         private String noteTypeCode;

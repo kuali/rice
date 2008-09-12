@@ -19,7 +19,16 @@ package org.kuali.rice.kew.export;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.help.HelpEntry;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
 
 
@@ -30,59 +39,47 @@ import org.kuali.rice.kew.workgroup.WorkgroupType;
  */
 public class ExportDataSet {
 
-    private ExportFormat format;
-
-    private List applicationConstants = new ArrayList();
-    private List documentTypes = new ArrayList();
-    private List workgroups = new ArrayList();
-    private List users = new ArrayList();
-    private List ruleAttributes = new ArrayList();
-    private List ruleTemplates = new ArrayList();
-    private List rules = new ArrayList();
-    private List help = new ArrayList();
-    private List edocLites = new ArrayList();
+    private List<ApplicationConstant> applicationConstants = new ArrayList<ApplicationConstant>();
+    private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
+    private List<Workgroup> workgroups = new ArrayList<Workgroup>();
+    private List<WorkflowUser> users = new ArrayList<WorkflowUser>();
+    private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
+    private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
+    private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
+    private List<HelpEntry> help = new ArrayList<HelpEntry>();
+    private List<EDocLiteAssociation> edocLites = new ArrayList<EDocLiteAssociation>();
     private List<EDocLiteStyle> styles = new ArrayList<EDocLiteStyle>();
     private List<WorkgroupType> workgroupTypes = new ArrayList<WorkgroupType>();
 
-    public ExportDataSet(ExportFormat format) {
-        this.format = format;
-    }
-
-    public ExportFormat getFormat() {
-        return format;
-    }
-    public List getApplicationConstants() {
+    public List<ApplicationConstant> getApplicationConstants() {
         return applicationConstants;
     }
-    public List getDocumentTypes() {
+    public List<DocumentType> getDocumentTypes() {
         return documentTypes;
     }
-    public List getHelp() {
+    public List<HelpEntry> getHelp() {
         return help;
     }
     public List<EDocLiteStyle> getStyles() {
         return styles;
     }
-    public List getRuleAttributes() {
+    public List<RuleAttribute> getRuleAttributes() {
         return ruleAttributes;
     }
-    public List getRules() {
+    public List<RuleBaseValues> getRules() {
         return rules;
     }
-    public List getRuleTemplates() {
+    public List<RuleTemplate> getRuleTemplates() {
         return ruleTemplates;
     }
-    public List getUsers() {
+    public List<WorkflowUser> getUsers() {
         return users;
     }
-    public List getWorkgroups() {
+    public List<Workgroup> getWorkgroups() {
         return workgroups;
     }
-	public List getEdocLites() {
+	public List<EDocLiteAssociation> getEdocLites() {
 		return edocLites;
-	}
-	public void setEdocLites(List edocLites) {
-		this.edocLites = edocLites;
 	}
 	public List<WorkgroupType> getWorkgroupTypes() {
 		return workgroupTypes;

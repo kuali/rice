@@ -24,7 +24,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.export.Exportable;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -179,15 +178,11 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     	return rows;
     }
     
-    public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception {
+    public ExportDataSet export(Object exportCriteria) throws Exception {
         List searchResults = (List)exportCriteria;
-        ExportDataSet dataSet = new ExportDataSet(format);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRuleTemplates().addAll(searchResults);
         return dataSet;
-    }
-
-    public List getSupportedExportFormats() {
-        return ExportFormat.STANDARD_FORMATS;
     }
 
 	}

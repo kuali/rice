@@ -877,7 +877,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 }
             }
 
-            ResultRow row = new ResultRow(columns, returnUrl, actionUrls);
+            ResultRow row = new ResultRow(element, columns, returnUrl, actionUrls);
             if ( element instanceof PersistableBusinessObject ) {
                 row.setObjectId(((PersistableBusinessObject)element).getObjectId());
             }
@@ -895,7 +895,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return displayList;
     }
 
-    
     protected void setReferencesToRefresh(String referencesToRefresh) {
         this.referencesToRefresh = referencesToRefresh;
     }

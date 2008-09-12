@@ -39,9 +39,12 @@ public class BusinessObjectEntryMapper {
         }
 
         ExportMap entryMap = new ExportMap(entry.getJstlKey());
-
+        
         // simple properties
         entryMap.set("businessObjectClass", entry.getBusinessObjectClass().getName());
+        if (entry.getExporterClass() != null) {
+        	entryMap.set("exporterClass", entry.getExporterClass().getName());
+        }
         final String objectLabel = entry.getObjectLabel();
         if (objectLabel != null) {
             entryMap.set("objectLabel", objectLabel);

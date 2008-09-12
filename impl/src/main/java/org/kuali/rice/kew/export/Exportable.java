@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.export;
 
-import java.util.List;
 
 /**
  * Identifies an object which can be exported.
@@ -25,8 +24,6 @@ import java.util.List;
  */
 public interface Exportable {
 
-    public ExportDataSet export(ExportFormat format, Object exportCriteria) throws Exception;
-    
-    public List getSupportedExportFormats();
+    public ExportDataSet export(Object exportCriteria) throws Exception;
     
 }

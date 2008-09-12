@@ -27,10 +27,9 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
-import org.kuali.rice.kew.export.ExportNotSupportedException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.XmlConstants;
+import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.springframework.beans.factory.BeanInitializationException;
 
 
@@ -44,16 +43,9 @@ public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants 
 
     private List serviceOrder;
 
-    public List getSupportedFormats() {
-        return ExportFormat.STANDARD_FORMATS;
-    }
-
-    public byte[] export(ExportFormat format, ExportDataSet dataSet) {
-        if (!getSupportedFormats().contains(format)) {
-            throw new ExportNotSupportedException("Xml Exporter does not support the format " + format.getFormatName());
-        }
+    public byte[] export(ExportDataSet dataSet) {
         if (dataSet == null) {
-            throw new ExportNotSupportedException("Xml Exporter cannot handle NULL data.");
+            throw new IllegalArgumentException("Xml Exporter cannot handle NULL data.");
         }
         Element rootElement = new Element(DATA_ELEMENT, WORKFLOW_NAMESPACE);
         rootElement.addNamespaceDeclaration(SCHEMA_NAMESPACE);

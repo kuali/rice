@@ -115,15 +115,12 @@
       <td>&nbsp;</td>
 </tr>
 
-<c:if test="${!empty reqSearchResults and !empty LookupForm.supportedExportFormats}">
+<c:if test="${!empty reqSearchResults}">
 <tr>
       <td>&nbsp;</td>
       <td>
         <div width="100%" align="right">Export results to: 
-          <c:forEach items="${LookupForm.supportedExportFormats}" var="format" varStatus="loopStat">
-            <a href="javascript:export_results('LookupForm', 'Lookup.do', '<c:out value="${format.formatName}"/>')">
-            <c:out value="${format.formatName}"/></a><c:if test="!loopStat.last">| </c:if>
-          </c:forEach>
+          <a href="javascript:export_results('LookupForm', 'Lookup.do', 'XML')">XML</a>
         </div>	
       </td>
       <td>&nbsp;</td>

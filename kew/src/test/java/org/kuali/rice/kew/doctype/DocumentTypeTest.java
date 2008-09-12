@@ -25,7 +25,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -33,7 +32,6 @@ import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -145,7 +143,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getDisplayName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
         assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches("(?s).*<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>.*"));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());

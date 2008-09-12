@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -158,7 +157,7 @@ public class HelpAction extends WorkflowAction {
         if(searchResults == null) {
         	searchResults = new ArrayList();
         }
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getHelp().addAll(searchResults);
         return exportDataSet(request, dataSet);
     }

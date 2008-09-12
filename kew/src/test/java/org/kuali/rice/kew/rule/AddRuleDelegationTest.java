@@ -27,7 +27,7 @@ import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.web.Rule2Form;
 import org.kuali.rice.kew.rule.web.WebRuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleResponsibility;

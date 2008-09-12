@@ -25,7 +25,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
 import org.kuali.rice.kew.removereplace.RuleTarget;
 import org.kuali.rice.kew.removereplace.WorkgroupTarget;
@@ -126,7 +125,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	    // add rules
 	    List<RuleBaseValues> rules = loadRules(document);
 	    if (!rules.isEmpty()) {
-		ExportDataSet ruleDataSet = new ExportDataSet(ExportFormat.XML);
+		ExportDataSet ruleDataSet = new ExportDataSet();
 		ruleDataSet.getRules().addAll(rules);
 		Element rulesElement = KEWServiceLocator.getRuleService().export(ruleDataSet);
 		removeReplaceElement.addContent(rulesElement);
@@ -135,7 +134,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	    // add workgroups
 	    List<Workgroup> workgroups = loadWorkgroups(document);
 	    if (!workgroups.isEmpty()) {
-		ExportDataSet workgroupDataSet = new ExportDataSet(ExportFormat.XML);
+		ExportDataSet workgroupDataSet = new ExportDataSet();
 		workgroupDataSet.getWorkgroups().addAll(workgroups);
 		Element workgroupsElement = KEWServiceLocator.getWorkgroupService().export(workgroupDataSet);
 		removeReplaceElement.addContent(workgroupsElement);

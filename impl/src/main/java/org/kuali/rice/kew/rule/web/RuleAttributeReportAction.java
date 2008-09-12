@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.WorkflowAction;
@@ -49,7 +48,7 @@ public class RuleAttributeReportAction extends WorkflowAction {
 
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleAttributeReportForm rarform = (RuleAttributeReportForm) form;
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRuleAttributes().add(rarform.getRuleAttribute());
         return exportDataSet(request, dataSet);
     }

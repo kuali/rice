@@ -26,7 +26,6 @@ import org.jdom.Document;
 import org.junit.Test;
 import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.ExportFormat;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.XmlHelper;
 
@@ -58,10 +57,10 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
 
         System.err.println("Styles: " + oldStyles.size());
 
-        ExportDataSet dataSet = new ExportDataSet(ExportFormat.XML);
+        ExportDataSet dataSet = new ExportDataSet();
         dataSet.getStyles().addAll(oldStyles);
 
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(ExportFormat.XML, dataSet);
+        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         // quick check to verify that not only is the XML non-empty, but that it might actually contain an attempt at an exported style
         // (otherwise the XML could not contain any styles, and the test would pass with a false positive even though the export never

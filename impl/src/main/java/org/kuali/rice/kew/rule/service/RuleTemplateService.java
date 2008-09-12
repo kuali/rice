@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 

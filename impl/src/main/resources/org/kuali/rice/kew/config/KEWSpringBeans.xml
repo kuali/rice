@@ -890,6 +890,8 @@
 		<property name="dataDictionaryPackages">
 			<list>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
             </list>
 		</property>
 	</bean>

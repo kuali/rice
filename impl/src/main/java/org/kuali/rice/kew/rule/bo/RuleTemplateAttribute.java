@@ -14,30 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.rule;
+package org.kuali.rice.kew.rule.bo;
 
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleValidationAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -48,7 +50,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="EN_RULE_TMPL_ATTRIB_T")
-public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
+public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
@@ -84,15 +86,11 @@ public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
 	this.active = Boolean.TRUE;
     }
 
-    public int compareTo(Object obj) {
-	if (obj instanceof RuleTemplateAttribute) {
-	    RuleTemplateAttribute comparedObject = (RuleTemplateAttribute) obj;
-
-	    if ((this.getDisplayOrder() != null) && (comparedObject.getDisplayOrder() != null)) {
-		return this.getDisplayOrder().compareTo(comparedObject.getDisplayOrder());
+    public int compareTo(RuleTemplateAttribute ruleTemplateAttribute) {
+    	if ((this.getDisplayOrder() != null) && (ruleTemplateAttribute.getDisplayOrder() != null)) {
+	    	return this.getDisplayOrder().compareTo(ruleTemplateAttribute.getDisplayOrder());
 	    }
-	}
-	return 0;
+    	return 0;
     }
 
     public Object getAttribute() {
@@ -235,6 +233,10 @@ public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
     public void setActive(Boolean active) {
         this.active = active;
     }
+    
+    public void setActive(boolean active) {
+    	this.active = active;
+    }
 
     public Long getRuleAttributeId() {
 	return ruleAttributeId;
@@ -282,4 +284,18 @@ public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
 	}
 	return ruleTemplateAttributeClone;
     }
+    
+    @Override
+	protected LinkedHashMap<String, Object> toStringMapper() {
+		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+	    propMap.put("ruleTemplateAttributeId", getRuleTemplateAttributeId());
+	    propMap.put("ruleTemplateId", getRuleTemplateId());
+	    propMap.put("ruleAttributeId", getRuleAttributeId());
+	    propMap.put("required", getRequired());
+	    propMap.put("active", getActive());
+	    propMap.put("displayOrder", getDisplayOrder());
+	    propMap.put("defaultValue", getDefaultValue());
+	    return propMap;
+	}
+    
 }

@@ -424,7 +424,7 @@
     	auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="delegationTemplateId"/>
     </reference-descriptor>
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleTemplateId" />
     </collection-descriptor>
@@ -462,13 +462,13 @@
     <field-descriptor column="RULE_ATTRIB_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTRIB_XML_RTE_TXT" name="xmlConfigData" jdbc-type="CLOB" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="true">
       <inverse-foreignkey field-ref="ruleAttributeId" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleTemplateAttribute" table="EN_RULE_TMPL_ATTRIB_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute" table="EN_RULE_TMPL_ATTRIB_T">
     <field-descriptor column="RULE_TMPL_ATTRIB_ID" name="ruleTemplateAttributeId" jdbc-type="BIGINT" primarykey="true"
         autoincrement="true" sequence-name="SEQ_ROUTE_TEMPLATE" />
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="BIGINT" />
@@ -588,7 +588,7 @@
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleBaseValuesId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleTemplateAttribute" name="ruleTemplateAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute" name="ruleTemplateAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateAttributeId" />
     </reference-descriptor>

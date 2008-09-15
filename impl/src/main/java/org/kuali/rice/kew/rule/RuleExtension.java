@@ -29,6 +29,7 @@ import javax.persistence.Entity;
 
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.util.Utilities;
 
 import java.util.ArrayList;

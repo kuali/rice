@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 

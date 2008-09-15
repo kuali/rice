@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.rule.dao;
 
-import org.kuali.rice.kew.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 
 
 public interface RuleTemplateAttributeDAO {

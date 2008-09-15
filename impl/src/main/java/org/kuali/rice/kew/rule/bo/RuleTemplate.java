@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,7 +38,6 @@ import javax.persistence.Version;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -85,7 +85,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 	private RuleTemplate delegationTemplate;
 
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleTemplateAttribute.class, mappedBy="ruleTemplate")
+           targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleTemplate")
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleTemplateOption.class, mappedBy="ruleTemplate")
@@ -189,18 +189,32 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
     }
 
     public List<RuleTemplateAttribute> getRuleTemplateAttributes() {
+    	Collections.sort(ruleTemplateAttributes);
         return ruleTemplateAttributes;
     }
 
+    /**
+     * Returns a List of only the active RuleTemplateAttributes on the RuleTemplate
+     * sorted according to display order (ascending).
+     */
     public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
-        List activeAttributes = new ArrayList();
+        List<RuleTemplateAttribute> activeAttributes = new ArrayList<RuleTemplateAttribute>();
         for (Iterator iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
             RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
             if (templateAttribute.isActive()) {
                 activeAttributes.add(templateAttribute);
             }
         }
+        Collections.sort(activeAttributes);
         return activeAttributes;
+    }
+    
+    /**
+     * This is implemented to allow us to use this collection on the inquiry for RuleTemplate.  In the
+     * KNS code it does an explicit check that the property is writable.
+     */
+    public void setActiveRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {
+    	throw new UnsupportedOperationException("setActiveRuleTemplateAttributes is not implemented");
     }
 
     public void setRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {

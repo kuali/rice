@@ -71,7 +71,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 	private String messageEntity;
     
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
+           targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
 	private List ruleTemplateAttributes;
     @Transient
     private List validValues;

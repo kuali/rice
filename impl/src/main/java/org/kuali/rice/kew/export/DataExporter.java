@@ -20,8 +20,18 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
+import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.edl.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.help.HelpEntry;
+import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
@@ -67,6 +77,26 @@ public class DataExporter implements Exporter {
 		for (BusinessObject businessObject : businessObjects) {
 			if (businessObjectClass.equals(RuleAttribute.class)) {
 				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
+			} else if (businessObjectClass.equals(RuleTemplate.class)) {
+				dataSet.getRuleTemplates().add((RuleTemplate)businessObject);
+			} else if (businessObjectClass.equals(ApplicationConstant.class)) {
+				dataSet.getApplicationConstants().add((ApplicationConstant)businessObject);
+			} else if (businessObjectClass.equals(DocumentType.class)) {
+				dataSet.getDocumentTypes().add((DocumentType)businessObject);
+			} else if (businessObjectClass.equals(EDocLiteAssociation.class)) {
+				dataSet.getEdocLites().add((EDocLiteAssociation)businessObject);
+			} else if (businessObjectClass.equals(HelpEntry.class)) {
+				dataSet.getHelp().add((HelpEntry)businessObject);
+			} else if (businessObjectClass.equals(RuleBaseValues.class)) {
+				dataSet.getRules().add((RuleBaseValues)businessObject);
+			} else if (businessObjectClass.equals(EDocLiteStyle.class)) {
+				dataSet.getStyles().add((EDocLiteStyle)businessObject);
+			} else if (businessObjectClass.equals(WorkflowUser.class)) {
+				dataSet.getUsers().add((WorkflowUser)businessObject);
+			} else if (businessObjectClass.equals(Workgroup.class)) {
+				dataSet.getWorkgroups().add((Workgroup)businessObject);
+			} else if (businessObjectClass.equals(WorkgroupType.class)) {
+				dataSet.getWorkgroupTypes().add((WorkgroupType)businessObject);
 			}
 		}
 		return dataSet;

@@ -29,7 +29,7 @@
     <class>org.kuali.rice.kew.rule.RuleTemplate</class>
     <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
     <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
-    <class>org.kuali.rice.kew.rule.RuleTemplateAttribute</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttribute</class>
     <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
     <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
     <class>org.kuali.rice.kew.rule.RuleDelegation</class>

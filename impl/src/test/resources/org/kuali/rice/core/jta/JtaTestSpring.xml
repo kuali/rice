@@ -3,7 +3,7 @@
 <beans>
 
 	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
-      <property name="defaultTimeout" value="${transaction.timeout}"/>
+      <property name="defaultTimeout" value="3600"/>
     </bean>
 
 	<bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
@@ -12,8 +12,8 @@
 		<property name="url" value="jdbc:derby://localhost:1573/target/JtaTest;create=true;user=jtatestuser;password=jtatestpassword"/>
 		<property name="maxSize" value="2" />
 		<property name="minSize" value="1" />
-		<property name="maxWait" value="${datasource.pool.maxWait}" />
-		<property name="validatingQuery" value="values(1)"/>
+		<property name="maxWait" value="10000" />
+		<property name="validationQuery" value="values(1)"/>
 		<property name="user" value="jtatestuser"/>
 		<property name="password" value="jtatestpassword"/>
 	</bean>

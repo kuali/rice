@@ -8,20 +8,21 @@
 
   <bean id="RuleTemplate-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplate" />
+    <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
     <property name="inquiryDefinition" >
       <ref bean="RuleTemplate-inquiryDefinition" />
     </property>
     <property name="lookupDefinition" >
       <ref bean="RuleTemplate-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="RuleTemplateId" />
+    <property name="titleAttribute" value="ruleTemplateId" />
     <property name="objectLabel" value="Rule Template" />
 	<property name="collections" >
       <list>
         <bean parent="CollectionDefinition"
               p:shortLabel="ruleTemplateAttributes"
               p:summary="Rule Template Attributes"
-              p:name="ruleTemplateAttributes"
+              p:name="activeRuleTemplateAttributes"
               p:label="Rule Template Attributes"
               p:description="Attributes assigned to this Rule Template" />
         <bean parent="CollectionDefinition"
@@ -34,10 +35,9 @@
     </property>
     <property name="attributes" >
       <list>
-        <ref bean="RuleTemplate-RuleTemplateId" />
+        <ref bean="RuleTemplate-ruleTemplateId" />
         <ref bean="RuleTemplate-name" />
         <ref bean="RuleTemplate-description" />
-        <ref bean="RuleTemplate-lockVerNbr" />
         <ref bean="RuleTemplate-delegationTemplate" />
       </list>
     </property>
@@ -46,9 +46,9 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="RuleTemplate-RuleTemplateId" parent="RuleTemplate-RuleTemplateId-parentBean" />
+  <bean id="RuleTemplate-ruleTemplateId" parent="RuleTemplate-ruleTemplateId-parentBean" />
 
-  <bean id="RuleTemplate-RuleTemplateId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="RuleTemplate-ruleTemplateId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
@@ -58,7 +58,7 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="RuleTemplateId" />
+    <property name="name" value="ruleTemplateId" />
     <property name="label" value="Id" />
   </bean>
 
@@ -66,7 +66,7 @@
 
   <bean id="RuleTemplate-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Name" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="250" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -78,27 +78,11 @@
     <property name="label" value="Name" />
   </bean>
 
-  <bean id="RuleTemplate-lockVerNbr" parent="RuleTemplate-lockVerNbr-parentBean" />
-
-  <bean id="RuleTemplate-lockVerNbr-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="LockVerNbr" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="lockVerNbr" />
-    <property name="label" value="Lock Version Number" />
-  </bean>
-
   <bean id="RuleTemplate-description" parent="RuleTemplate-description-parentBean" />
 
   <bean id="RuleTemplate-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Description" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="2000" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -113,17 +97,17 @@
   <bean id="RuleTemplate-delegationTemplate" parent="RuleTemplate-delegationTemplate-parentBean" />
 
   <bean id="RuleTemplate-delegationTemplate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="delegationTemplateId" />
-    <property name="maxLength" value="30" />
+    <property name="shortLabel" value="delegationTemplate" />
+    <property name="maxLength" value="250" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="30" />
+            p:size="250" />
     </property>
-    <property name="name" value="delegationTemplateId" />
-    <property name="label" value="Rule Template Delegate " />
+    <property name="name" value="delegationTemplate.name" />
+    <property name="label" value="Delegation Rule Template" />
   </bean>
  
   <!-- Business Object Inquiry Definition -->
@@ -139,16 +123,43 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition"
-                    p:attributeName="RuleTemplateId" />
+                    p:attributeName="ruleTemplateId" />
               <bean parent="FieldDefinition"
                     p:attributeName="name" />
               <bean parent="FieldDefinition"
                     p:attributeName="description" />
               <bean parent="FieldDefinition"
-                    p:attributeName="lockVerNbr" />                    
-              <bean parent="FieldDefinition"
-                    p:attributeName="delegationTemplateId"/>
-                 
+                    p:attributeName="delegationTemplate.name"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Rule Attributes"/>
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="activeRuleTemplateAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="summaryTitle" value="Rule Attribute"/>
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="ruleAttribute.name" />   
+                    <bean parent="FieldDefinition"
+                          p:attributeName="ruleAttribute.type" />                             
+                    <bean parent="FieldDefinition"
+                          p:attributeName="required" />                                                          
+                  </list>
+                </property>
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="ruleAttribute.name" />
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
@@ -171,30 +182,23 @@
         <bean parent="FieldDefinition"
               p:attributeName="name"
               p:forceLookup="true" />
-       
+        <bean parent="FieldDefinition"
+              p:attributeName="ruleTemplateId"
+              p:forceLookup="true" />       
         <bean parent="FieldDefinition"
               p:attributeName="description" />
-         <!-- bean parent="FieldDefinition"
-              p:attributeName="RuleTemplateId"
-              p:forceLookup="true" /-->
-        <!-- bean parent="FieldDefinition"
-              p:attributeName="lockVerNbr" /-->
-        <!-- bean parent="FieldDefinition"
-              p:attributeName="delegationTemplate"/-->
       </list>
     </property>
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="RuleTemplateId" />
+              p:attributeName="ruleTemplateId" />
         <bean parent="FieldDefinition"
               p:attributeName="name" />
         <bean parent="FieldDefinition"
               p:attributeName="description" />
         <bean parent="FieldDefinition"
-              p:attributeName="lockVerNbr"/>
-        <bean parent="FieldDefinition"
-              p:attributeName="delegationTemplateId"/>
+              p:attributeName="delegationTemplate.name"/>
 </list>
     </property>
     <property name="title" value="Rule Template Lookup" />

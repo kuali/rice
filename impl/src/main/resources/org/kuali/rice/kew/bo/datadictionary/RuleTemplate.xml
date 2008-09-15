@@ -113,7 +113,7 @@
   <bean id="RuleTemplate-delegationTemplate" parent="RuleTemplate-delegationTemplate-parentBean" />
 
   <bean id="RuleTemplate-delegationTemplate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="delegationTemplate" />
+    <property name="shortLabel" value="delegationTemplateId" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -122,7 +122,7 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="delegationTemplate" />
+    <property name="name" value="delegationTemplateId" />
     <property name="label" value="Rule Template Delegate " />
   </bean>
  
@@ -147,7 +147,7 @@
               <bean parent="FieldDefinition"
                     p:attributeName="lockVerNbr" />                    
               <bean parent="FieldDefinition"
-                    p:attributeName="delegationTemplate"/>
+                    p:attributeName="delegationTemplateId"/>
                  
             </list>
           </property>
@@ -194,7 +194,7 @@
         <bean parent="FieldDefinition"
               p:attributeName="lockVerNbr"/>
         <bean parent="FieldDefinition"
-              p:attributeName="delegationTemplate"/>
+              p:attributeName="delegationTemplateId"/>
 </list>
     </property>
     <property name="title" value="Rule Template Lookup" />

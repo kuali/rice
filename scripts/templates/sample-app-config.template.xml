@@ -55,7 +55,7 @@
 	<param name="message.persistence">true</param>
     <param name="message.delivery">asynchronous</param>
     <param name="message.off">false</param>
-    <param name="useQuartzDatabase">true</param>
+    <param name="useQuartzDatabase">false</param>
 	<param name="RouteQueue.maxRetryAttempts">1</param>
 	<param name="RouteQueue.timeIncrement">1000</param>
 

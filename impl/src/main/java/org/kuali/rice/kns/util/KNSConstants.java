@@ -381,6 +381,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String EXCEL_FORMAT = "xls";
     public static final String CSV_FORMAT = "csv";
     
+    public static final String XML_MIME_TYPE = "application/xml";
+    
     public enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");
         private String noteTypeCode;

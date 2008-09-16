@@ -30,6 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Exporter;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -48,7 +51,8 @@ public class InquiryForm extends KualiForm {
     private Map editingMode;
     private String backLocation;
     private String formKey;
-
+    private boolean canExport;
+    
     /**
      * The following map is used to pass primary key values between invocations of the inquiry screens after the start method has been called.  Values in this map will remain encrypted
      * if the value was passed in as encrypted 
@@ -104,6 +108,7 @@ public class InquiryForm extends KualiForm {
         populatePKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
 
         populateInactiveRecordsInIntoInquirable(inquirable, request);
+        populateExportCapabilities(request, getBusinessObjectClassName());
     }
 
     protected Inquirable getInquirable(String boClassName) {
@@ -193,6 +198,28 @@ public class InquiryForm extends KualiForm {
             throw new RuntimeException("Can't decrypt value");
         }
     }
+    
+    /**
+     * Examines the BusinessObject's data dictionary entry to determine if it supports
+     * XML export or not and set's canExport appropriately.
+     */
+    protected void populateExportCapabilities(HttpServletRequest request, String boClassName) {
+    	setCanExport(false);
+    	BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClassName);
+    	Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
+    	if (exporterClass != null) {
+    		try {
+    			Exporter exporter = exporterClass.newInstance();
+    			if (exporter.getSupportedFormats(businessObjectEntry.getBusinessObjectClass()).contains(KNSConstants.XML_FORMAT)) {
+    				setCanExport(true);
+    			}
+    		} catch (Exception e) {
+    			LOG.error("Failed to locate or create exporter class: " + exporterClass, e);
+    			throw new RuntimeException("Failed to locate or create exporter class: " + exporterClass);
+    		}
+    	}
+    }
+
 
     /**
      * @return Returns the fieldConversions.
@@ -329,4 +356,20 @@ public class InquiryForm extends KualiForm {
     public void setBackLocation(String backLocation) {
         this.backLocation = backLocation;
     }
+
+	/**
+	 * Returns true if this Inquiry supports XML export of the BusinessObject.
+	 */
+	public boolean isCanExport() {
+		return this.canExport;
+	}
+
+	/**
+	 * Sets whether or not this Inquiry supports XML export of it's BusinessObject.
+	 */
+	public void setCanExport(boolean canExport) {
+		this.canExport = canExport;
+	}
+    
+    
 }

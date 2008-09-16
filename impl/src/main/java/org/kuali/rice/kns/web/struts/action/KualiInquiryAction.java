@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,9 +28,12 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Exporter;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -149,6 +153,32 @@ public class KualiInquiryAction extends KualiAction {
         Inquirable kualiInquirable = inquiryForm.getInquirable();
         
         return super.toggleTab(mapping, form, request, response);
+    }
+    
+    /**
+     * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
+     */
+    public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	InquiryForm inquiryForm = (InquiryForm) form;
+    	if (inquiryForm.isCanExport()) {
+    		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+    		if (bo == null) {
+    			LOG.error("No records found in inquiry action.");
+    			GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+    			request.setAttribute("backLocation", request.getParameter("returnLocation"));
+    			return mapping.findForward("inquiryError");
+    		}        
+    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
+    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
+    		if (exporterClass != null) {
+    			Exporter exporter = exporterClass.newInstance();
+        		response.setContentType(KNSConstants.XML_MIME_TYPE);
+        		response.setHeader("Content-disposition", "attachment; filename=export.xml");
+        		exporter.export(businessObjectEntry.getBusinessObjectClass(), Collections.singletonList(bo), KNSConstants.XML_FORMAT, response.getOutputStream());
+        	}
+        }
+        
+        return null;
     }
 
     /**

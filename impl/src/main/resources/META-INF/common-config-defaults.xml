@@ -16,6 +16,12 @@
     <param name="dev.mode">false</param>
     <!-- by default bam is not enabled -->
     <param name="bam.enabled">false</param>
+	
+	<param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
+    <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
+    <param name="ksb.org.quartz.jobStore.isClustered">true</param>
+    <param name="ksb.org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
+	
 
     <!-- TODO: doc this param -->
     <param name="production.environment.code">PRD</param>

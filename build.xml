@@ -247,6 +247,13 @@
 		<maven goals="" options="-v"/>
 	</target>
 	
+	<target name="prepare-dev-environment" depends="init">
+		<property name="sample-app-config" value="${user.home}/kuali/main/${rice.environment}/sample-app-config.xml"/>
+		<available property="sample-app-config.exists" file="${sample-app-config}"/>
+		<fail if="sample-app-config.exists" message="The file ${sample-app-config} already exists!  You must delete it first if you want it to be recreated."/>
+		<copy file="scripts/templates/sample-app-config.template.xml" tofile="${sample-app-config}"/>
+	</target>
+	
 	<macrodef name="maven">
 		<attribute name="goals" />
 		<attribute name="options" default="" />

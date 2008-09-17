@@ -16,10 +16,10 @@
 package org.kuali.rice.kew.lookupable;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
@@ -32,14 +32,9 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+
 public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
-
-    	private static final String EDOC_LITE_NAME = "eDocLiteName_";
-    	private static final String EDOC_LITE_STYLE_NAME = "eDocLiteStyleName_";
-    	private static final String EDOC_LITE_DOC_TYPE_NAME = "eDocLiteDocName_";
-    	private static final String ACTIVE_IND_FIELD_LABEL = "Active Indicator";
-    	private static final String ACTIVE_IND_PROPERTY_NAME = "activeIndicator";
-
+    	
     /**
      * If the account is not closed or the user is an Administrator the "edit" link is added The "copy" link is added for Accounts
      *
@@ -48,30 +43,11 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
      */
   
     public List<String> getCustomActionUrls(BusinessObject businessObject, Map fieldValues) {
+    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
         EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
-        String activeInd = (String)fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
-		if (!Utilities.isEmpty(activeInd) && !activeInd.equals("all")) {
-			edocLite.setActiveInd(new Boolean(activeInd.trim()));
-		}
-		String definition = (String)fieldValues.get(EDOC_LITE_NAME);
-		if (!Utilities.isEmpty(definition)) {
-			edocLite.setDefinition(definition.trim());
-		}
-		String style = (String)fieldValues.get(EDOC_LITE_STYLE_NAME);
-		if (!Utilities.isEmpty(style)) {
-			edocLite.setStyle(style.trim());
-		}
-		String documentType = (String)fieldValues.get(EDOC_LITE_DOC_TYPE_NAME);
-		if (!Utilities.isEmpty(documentType)) {
-			edocLite.setEdlName(documentType.trim());
-		}
-		List results = KEWServiceLocator.getEDocLiteService().search(edocLite);;
-		for (Iterator iter = results.iterator(); iter.hasNext();) {
-			EDocLiteAssociation result = (EDocLiteAssociation) iter.next();
-			String actionsUrl = "<a href=\"EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + result.getEdlName() + "\">Create Document</a>";
-			result.setActionsUrl(actionsUrl);
-		}		
-        return results;
+        String actionsUrl = "<a href=\"EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
+        List<String> actionUrls = new ArrayList<String>(); 
+        actionUrls.add(actionsUrl); 
+        return actionUrls;
     }
-
 }

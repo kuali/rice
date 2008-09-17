@@ -7,7 +7,7 @@
   <bean id="EDocLiteAssociation" parent="EDocLiteAssociation-parentBean" />
 
   <bean id="EDocLiteAssociation-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.bo.EDocLiteAssociation" />
+    <property name="businessObjectClass" value="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" />
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
     <property name="inquiryDefinition" >
       <ref bean="EDocLiteAssociation-inquiryDefinition" />
@@ -15,24 +15,24 @@
     <property name="lookupDefinition" >
       <ref bean="EDocLiteAssociation-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="EDocLiteAssociationId" />
+    <property name="titleAttribute" value="eDocLiteAssocId" />
     <property name="attributes" >
       <list>
-        <ref bean="EDocLiteAssociation-EDocLiteAssociationId" />
+        <ref bean="EDocLiteAssociation-eDocLiteAssocId" />
         <ref bean="EDocLiteAssociation-edlName" />
         <ref bean="EDocLiteAssociation-definition" />
         <ref bean="EDocLiteAssociation-style" />
 		<ref bean="EDocLiteAssociation-activeInd" />
       </list>
-    </property>
+    </property>    
   </bean>
 
 <!-- Attribute Definitions -->
 
 
-  <bean id="EDocLiteAssociation-EDocLiteAssociationId" parent="EDocLiteAssociation-EDocLiteAssociationId-parentBean" />
+  <bean id="EDocLiteAssociation-eDocLiteAssocId" parent="EDocLiteAssociation-eDocLiteAssocId-parentBean" />
 
-  <bean id="EDocLiteAssociation-EDocLiteAssociationId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="EDocLiteAssociation-eDocLiteAssocId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
@@ -42,7 +42,7 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="EDocLiteAssociationId" />
+    <property name="name" value="eDocLiteAssocId" />
     <property name="label" value="Id" />
   </bean>
 
@@ -50,7 +50,7 @@
 
   <bean id="EDocLiteAssociation-definition-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Definition" />
-    <property name="maxLength" value="2000" />
+    <property name="maxLength" value="200" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -96,8 +96,17 @@
 
 <bean id="EDocLiteAssociation-activeInd" parent="EDocLiteAssociation-activeInd-parentBean" />
 
-  <bean id="EDocLiteAssociation-activeInd-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="EDocLiteAssociation-activeInd-parentBean" abstract="true" parent="AttributeDefinition"><!-- GenericAttributes-activeIndicator -->
     <property name="shortLabel" value="activeInd" />
+    <property name="maxLength" value="50" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+   
     <property name="name" value="activeInd" />
     <property name="label" value="Active Indicator" />
   </bean>
@@ -116,7 +125,7 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition"
-                    p:attributeName="EDocLiteAssociationId" />
+                    p:attributeName="eDocLiteAssocId" />
               <bean parent="FieldDefinition"
                     p:attributeName="edlName" />
               <bean parent="FieldDefinition"
@@ -137,7 +146,8 @@
   <bean id="EDocLiteAssociation-lookupDefinition" parent="EDocLiteAssociation-lookupDefinition-parentBean" />
 
   <bean id="EDocLiteAssociation-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="instructions" value="Lookup a Rule Template" />
+     <property name="lookupableID" value="edlLookupable" />
+     <property name="instructions" value="Lookup a Edoclite" />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
       </bean>
@@ -145,7 +155,7 @@
     <property name="lookupFields" >
       <list>         
         <bean parent="FieldDefinition"
-              p:attributeName="EDocLiteAssociationId"
+              p:attributeName="eDocLiteAssocId"
               p:forceLookup="true" />       
         <bean parent="FieldDefinition"
               p:attributeName="edlName"
@@ -161,7 +171,7 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="EDocLiteAssociationId" />
+              p:attributeName="eDocLiteAssocId" />
         <bean parent="FieldDefinition"
               p:attributeName="edlName" />
         <bean parent="FieldDefinition"

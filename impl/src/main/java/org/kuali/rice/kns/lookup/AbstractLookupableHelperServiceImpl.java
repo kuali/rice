@@ -150,7 +150,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(businessObject.getClass(), fieldNm);
+            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), fieldNm);
             if (StringUtils.isNotBlank(displayWorkgroup)) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
@@ -217,7 +217,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the dataDictionaryService.
      */
     public DataDictionaryService getDataDictionaryService() {
-        return dataDictionaryService;
+        return dataDictionaryService != null ? dataDictionaryService : KNSServiceLocator.getDataDictionaryService();
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the businessObjectDictionaryService.
      */
     public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-        return businessObjectDictionaryService;
+        return businessObjectDictionaryService != null ? businessObjectDictionaryService : KNSServiceLocator.getBusinessObjectDictionaryService();
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the businessObjectMetaDataService.
      */
     public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-        return businessObjectMetaDataService;
+        return businessObjectMetaDataService != null ? businessObjectMetaDataService : KNSServiceLocator.getBusinessObjectMetaDataService();
     }
 
     /**
@@ -266,7 +266,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the persistenceStructureService.
      */
     protected PersistenceStructureService getPersistenceStructureService() {
-        return persistenceStructureService;
+        return persistenceStructureService != null ? persistenceStructureService : KNSServiceLocator.getPersistenceStructureService();
     }
 
     /**
@@ -282,7 +282,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the encryptionService.
      */
     protected EncryptionService getEncryptionService() {
-        return encryptionService;
+        return encryptionService != null ? encryptionService : KNSServiceLocator.getEncryptionService();
     }
 
     /**
@@ -428,7 +428,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         String cacheKey = bo.getClass().getName()+"."+propertyName;
         Boolean noLookupResultFieldInquiry = noLookupResultFieldInquiryCache.get( cacheKey );
         if ( noLookupResultFieldInquiry == null ) {
-            noLookupResultFieldInquiry = businessObjectDictionaryService.noLookupResultFieldInquiry(bo.getClass(), propertyName);
+            noLookupResultFieldInquiry = getBusinessObjectDictionaryService().noLookupResultFieldInquiry(bo.getClass(), propertyName);
             if ( noLookupResultFieldInquiry == null ) {
         	noLookupResultFieldInquiry = Boolean.TRUE;
             }
@@ -438,7 +438,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             
             Class<Inquirable> inquirableClass = inquirableClassCache.get( bo.getClass() );
             if ( !inquirableClassCache.containsKey( bo.getClass() ) ) {
-        	inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
+        	inquirableClass = getBusinessObjectDictionaryService().getInquirableClass(bo.getClass());
         	inquirableClassCache.put(bo.getClass(), inquirableClass);
             }
             Inquirable inq = null;
@@ -453,7 +453,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 }
                 Boolean forceLookupResultFieldInquiry = forceLookupResultFieldInquiryCache.get( cacheKey );
                 if ( forceLookupResultFieldInquiry == null ) {
-                    forceLookupResultFieldInquiry = businessObjectDictionaryService.forceLookupResultFieldInquiry(bo.getClass(), propertyName);
+                    forceLookupResultFieldInquiry = getBusinessObjectDictionaryService().forceLookupResultFieldInquiry(bo.getClass(), propertyName);
                     if ( forceLookupResultFieldInquiry == null ) {
                 	forceLookupResultFieldInquiry = Boolean.FALSE;
                     }
@@ -479,14 +479,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             for (String attributeName : getBusinessObjectDictionaryService().getLookupResultFieldNames(getBusinessObjectClass())) {
                 Column column = new Column();
                 column.setPropertyName(attributeName);
-                String columnTitle = dataDictionaryService.getAttributeLabel(getBusinessObjectClass(), attributeName);
+                String columnTitle = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
                 if (StringUtils.isBlank(columnTitle)) {
-                    columnTitle = dataDictionaryService.getCollectionLabel(getBusinessObjectClass(), attributeName);
+                    columnTitle = getDataDictionaryService().getCollectionLabel(getBusinessObjectClass(), attributeName);
                 }
                 column.setColumnTitle(columnTitle);
                 column.setMaxLength(getColumnMaxLength(attributeName));
                 
-                Class formatterClass = dataDictionaryService.getAttributeFormatter(getBusinessObjectClass(), attributeName);
+                Class formatterClass = getDataDictionaryService().getAttributeFormatter(getBusinessObjectClass(), attributeName);
                 if (formatterClass != null) {
                     try {
                         column.setFormatter((Formatter) formatterClass.newInstance());
@@ -575,7 +575,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(bo.getClass(), fieldNm);
+            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(bo.getClass(), fieldNm);
 
             if (fieldConversions.containsKey(fieldNm)) {
                 fieldNm = (String) fieldConversions.get(fieldNm);
@@ -583,7 +583,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             if (StringUtils.isNotBlank(displayWorkgroup) && !GlobalVariables.getUserSession().getUniversalUser().isMember( displayWorkgroup )) {
                 try {
-                    fieldVal = encryptionService.encrypt(fieldVal);
+                    fieldVal = getEncryptionService().encrypt(fieldVal);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
@@ -659,7 +659,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the lookupService.
      */
     protected LookupService getLookupService() {
-        return lookupService;
+        return lookupService != null ? lookupService : KNSServiceLocator.getLookupService();
     }
 
     /**
@@ -728,7 +728,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     protected UniversalUserService getUniversalUserService() {
-        return universalUserService;
+        return universalUserService != null ? universalUserService : KNSServiceLocator.getUniversalUserService();
     }
 
     public void setUniversalUserService(UniversalUserService universalUserService) {
@@ -904,7 +904,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     protected SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService;
+        return sequenceAccessorService != null ? sequenceAccessorService : KNSServiceLocator.getSequenceAccessorService();
     }
 
     public void setSequenceAccessorService(SequenceAccessorService sequenceAccessorService) {
@@ -912,7 +912,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
     
     public BusinessObjectService getBusinessObjectService() {
-        return businessObjectService;
+        return businessObjectService != null ? businessObjectService : KNSServiceLocator.getBusinessObjectService();
     }
 
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
@@ -920,7 +920,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     protected LookupResultsService getLookupResultsService() {
-        return lookupResultsService;
+        return lookupResultsService != null ? lookupResultsService : KNSServiceLocator.getLookupResultsService();
     }
 
     public void setLookupResultsService(LookupResultsService lookupResultsService) {

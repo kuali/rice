@@ -386,7 +386,47 @@
     <bean id="WorkgroupTypeLookup" class="org.kuali.rice.kew.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
+<!-- KNS lookup 18/09/2008 
+<bean id="lookupableHelperService" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+<property name="targetClass"><value>org.kuali.rice.kns.service.KNSServiceLocator</value></property>
+<property name="targetMethod"><value>getNervousSystemContextBean</value></property>
+<property name="arguments"><list><value>org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl</value>
+								<value>lookupableHelperService</value></list></property>
+</bean>
+<bean id="kualiLookupable" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+<property name="targetClass"><value>org.kuali.rice.kns.service.KNSServiceLocator</value></property>
+<property name="targetMethod"><value>getLookupService</value></property>
+</bean>
 
+<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl"/>
+<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl"/>
+<bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype" parent="lookupableHelperService"/>
+	
+	<bean id="edlLookupable" parent="kualiLookupable" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="edlLookupHelperService" />
+	  </property>
+    </bean>
+ KNS lookup..-->
+<bean id="lookupableHelperServiceParent" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" scope="prototype">
+	  <property name="targetClass">
+	    <value>org.kuali.rice.kns.service.KNSServiceLocator</value>
+	  </property>
+	  <property name="targetMethod"><value>getService</value></property>
+	  <property name="arguments">
+		<list>
+		  <value>lookupableHelperService</value>
+		</list>
+	  </property>
+	</bean>
+
+    <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype" parent="lookupableHelperServiceParent"/>
+
+    <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="edlLookupHelperService" />
+	  </property>
+    </bean>
 <!--
     <bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
     <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl">
@@ -891,7 +931,11 @@
 			<list>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
             </list>
 		</property>
 	</bean>

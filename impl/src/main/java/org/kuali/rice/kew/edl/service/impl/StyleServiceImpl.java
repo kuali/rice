@@ -32,8 +32,8 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
 import org.kuali.rice.kew.edl.WidgetURIResolver;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;

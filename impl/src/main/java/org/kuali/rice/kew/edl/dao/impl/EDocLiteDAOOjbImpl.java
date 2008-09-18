@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.EDocLiteDefinition;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 

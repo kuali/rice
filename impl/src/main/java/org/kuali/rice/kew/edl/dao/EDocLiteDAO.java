@@ -18,9 +18,9 @@ package org.kuali.rice.kew.edl.dao;
 
 import java.util.List;
 
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.EDocLiteDefinition;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 
 
 public interface EDocLiteDAO {

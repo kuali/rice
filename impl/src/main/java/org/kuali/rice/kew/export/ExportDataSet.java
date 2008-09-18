@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.doctype.DocumentType;
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;

@@ -100,8 +100,23 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 
         return isMaintainable;
     }
+    
 
     /**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
+	 */
+	public Boolean isExportable(Class businessObjectClass) {
+		Boolean isExportable = null;
+		
+		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            isExportable = entry.getExporterClass() != null;
+        }
+
+        return isExportable;
+	}
+
+	/**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldNames(java.lang.Class)
      */
     public List getLookupFieldNames(Class businessObjectClass) {

@@ -37,8 +37,7 @@ public class ResultRow implements Serializable {
      */
     private boolean rowReturnable;
 
-    public ResultRow(BusinessObject businessObject, List<Column> columns, String returnUrl, String actionUrls) {
-    	this.businessObject = businessObject;
+    public ResultRow(List<Column> columns, String returnUrl, String actionUrls) {
         this.columns = columns;
         this.returnUrl = returnUrl;
         this.actionUrls = actionUrls;
@@ -138,6 +137,5 @@ public class ResultRow implements Serializable {
 	public void setBusinessObject(BusinessObject businessObject) {
 		this.businessObject = businessObject;
 	}
-    
-    
+
 }

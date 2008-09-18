@@ -877,9 +877,15 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 }
             }
 
-            ResultRow row = new ResultRow(element, columns, returnUrl, actionUrls);
+            ResultRow row = new ResultRow(columns, returnUrl, actionUrls);
             if ( element instanceof PersistableBusinessObject ) {
                 row.setObjectId(((PersistableBusinessObject)element).getObjectId());
+            }
+            
+        	// because of concerns of the BO being cached in session on the ResultRow,
+        	// let's only attach it when needed (currently in the case of export)
+            if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+            	row.setBusinessObject(element);
             }
             
             boolean rowReturnable = isResultReturnable(element);

@@ -50,6 +50,11 @@ public interface BusinessObjectDictionaryService {
 
 
     /**
+     * indicates whether business object has an exporter defined
+     */
+    public Boolean isExportable(Class businessObjectClass);
+    
+    /**
      * the list defined as lookup fields for the business object.
      */
     public List getLookupFieldNames(Class businessObjectClass);

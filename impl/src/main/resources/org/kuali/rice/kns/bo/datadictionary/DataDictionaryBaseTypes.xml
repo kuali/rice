@@ -46,6 +46,10 @@
         class="org.kuali.rice.kns.datadictionary.control.TextControlDefinition"
         abstract="true"
     />
+    <bean id="FileControlDefinition"
+        class="org.kuali.rice.kns.datadictionary.control.FileControlDefinition"
+        abstract="true"
+    />
     <bean id="RadioControlDefinition"
         class="org.kuali.rice.kns.datadictionary.control.RadioControlDefinition"
         abstract="true"

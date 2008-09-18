@@ -23,8 +23,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.UserAction;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.Exportable;

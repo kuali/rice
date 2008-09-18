@@ -802,7 +802,7 @@
   </class-descriptor>
 
 
-  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteStyle" table="en_edoclt_style_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteStyle" table="en_edoclt_style_t">
     <field-descriptor column="edoclt_style_id" name="eDocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_style_nm" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_style_xml" name="xmlContent" jdbc-type="CLOB"/>
@@ -810,7 +810,7 @@
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteDefinition" table="en_edoclt_def_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteDefinition" table="en_edoclt_def_t">
     <field-descriptor column="edoclt_def_id" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_def_nm" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_def_xml" name="xmlContent" jdbc-type="CLOB"/>
@@ -818,7 +818,7 @@
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.EDocLiteAssociation" table="en_edoclt_assoc_t">
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="en_edoclt_assoc_t">
     <field-descriptor column="edoclt_assoc_id" name="eDocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_assoc_doctype_nm" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_assoc_def_nm" name="definition" jdbc-type="VARCHAR"/>

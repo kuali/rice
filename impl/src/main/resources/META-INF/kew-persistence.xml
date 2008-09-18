@@ -45,9 +45,9 @@
     <class>org.kuali.rice.kew.engine.node.BranchState</class>
     <class>org.kuali.rice.kew.engine.node.NodeState</class>
     <class>org.kuali.rice.kew.engine.node.Process</class>
-    <class>org.kuali.rice.kew.edl.EDocLiteStyle</class>
-    <class>org.kuali.rice.kew.edl.EDocLiteDefinition</class>
-    <class>org.kuali.rice.kew.edl.EDocLiteAssociation</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
     <class>org.kuali.rice.kew.user.BaseWorkflowUser</class>
     <class>org.kuali.rice.kew.workgroup.BaseWorkgroup</class>
     <class>org.kuali.rice.kew.workgroup.BaseWorkgroupMember</class>

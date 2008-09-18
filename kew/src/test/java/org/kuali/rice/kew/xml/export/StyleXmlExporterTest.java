@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.junit.Test;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.XmlHelper;

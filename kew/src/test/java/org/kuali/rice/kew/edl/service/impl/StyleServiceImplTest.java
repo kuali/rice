@@ -32,9 +32,8 @@ import javax.xml.transform.stream.StreamSource;
 import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.StyleService;
-import org.kuali.rice.kew.edl.service.impl.StyleServiceImpl;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;

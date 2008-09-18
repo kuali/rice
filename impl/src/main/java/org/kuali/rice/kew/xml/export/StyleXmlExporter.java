@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.util.XmlHelper;

@@ -30,9 +30,9 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
-import org.kuali.rice.kew.edl.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.EDocLiteDefinition;
-import org.kuali.rice.kew.edl.EDocLiteStyle;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
+import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;

@@ -8,7 +8,7 @@
  * Additionally, the generated project can be imported into Eclipse.
  */
 
-if (args.length < 2 || args.length > 8) { 
+if (args.length < 2 || args.length > 9) { 
 	println 'usage: groovy createproject.groovy -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR] [-mdir MAVEN_HOME] [-sampleapp]'
 	System.exit(1)	
 }
@@ -70,21 +70,21 @@ def springTemplateFile = null;
 
 if (SAMPLEAPP) {
 	// copy the Sample Application Files
-	ant.copy(todir:PROJECT_PATH + '/src/main/java/edu') { 
-    	fileset(dir:RICE_DIR + '/server/src/test/java/edu')
+	ant.copy(todir:PROJECT_PATH + '/src/main/java/org') { 
+    	fileset(dir:RICE_DIR + '/web/src/test/java/org')
 	}
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources/edu') {
-		fileset(dir:RICE_DIR + '/server/src/test/resources/edu') 
+	ant.copy(todir:PROJECT_PATH + '/src/main/resources/org') {
+		fileset(dir:RICE_DIR + '/web/src/test/resources/org') 
 	}
 	
 	// copy sample-app-config.xml
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    	fileset(dir:RICE_DIR + '/server/src/main/resources', includes:'META-INF/*') 
+    	fileset(dir:RICE_DIR + '/web/src/main/resources', includes:'META-INF/*') 
 	}
 	
 	// copy other configuration files
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    	fileset(dir:RICE_DIR + '/server/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
+    	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
     }
     
 	springTemplateFile = new File(RICE_DIR + '/scripts/templates/createproject.SampleAppBeans.template.xml')
@@ -95,10 +95,10 @@ if (SAMPLEAPP) {
 		 
 	// copy configuration files
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    	fileset(dir:RICE_DIR + '/server/src/main/resources', includes:'configurationServiceData.xml, META-INF/*') 
+    	fileset(dir:RICE_DIR + '/web/src/main/resources', includes:'configurationServiceData.xml, META-INF/*') 
 	}
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    	fileset(dir:RICE_DIR + '/server/src/test/resources', includes:'KR-ApplicationResources.properties')
+    	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'KR-ApplicationResources.properties')
     }
     
 	springTemplateFile = new File(RICE_DIR + '/scripts/templates/createproject.SpringBeans.template.xml')
@@ -106,15 +106,15 @@ if (SAMPLEAPP) {
 
 // copy standard Rice Spring configuration files to project and rename
  
-ant.copy(file:RICE_DIR + "/server/src/main/resources/org/kuali/rice/config/RiceJTASpringBeans.xml",
+ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceJTASpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
-ant.copy(file:RICE_DIR + "/server/src/main/resources/org/kuali/rice/config/RiceDataSourceSpringBeans.xml",
+ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceDataSourceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml")
-ant.copy(file:RICE_DIR + "/server/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
+ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")
 
 if (SAMPLEAPP) {
-	ant.copy(file:RICE_DIR + "/server/src/main/resources/SampleAppModuleBeans.xml",
+	ant.copy(file:RICE_DIR + "/web/src/main/resources/SampleAppModuleBeans.xml",
 			 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-SampleAppModuleBeans.xml")
 }
 
@@ -124,21 +124,21 @@ new File(PROJECT_PATH + "/src/main/resources/SpringBeans.xml") << templateReplac
 // copy SQL and XML configuration files
 
 ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') { 
-    fileset(dir:RICE_DIR + '/kns/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/impl/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') { 
-    fileset(dir:RICE_DIR + '/kns/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/impl/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 
 // copy web application
 
 ant.copy(todir:PROJECT_PATH + '/src/main/webapp') { 
-    fileset(dir:RICE_DIR + '/server/src/main/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/web/src/main/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 
 // if this isn't the sample application, copy the index.html which doesn't include the sample app links
 if (!SAMPLEAPP) {
-	ant.copy(file:RICE_DIR + "/server/src/main/config/index.html",
+	ant.copy(file:RICE_DIR + "/web/src/main/config/index.html",
 		 tofile:PROJECT_PATH + "/src/main/webapp/index.html", overwrite:"true")
 }
 

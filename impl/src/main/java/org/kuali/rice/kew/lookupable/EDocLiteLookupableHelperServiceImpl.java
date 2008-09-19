@@ -15,16 +15,19 @@
  */
 package org.kuali.rice.kew.lookupable;
 
-import java.util.Iterator;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.UserAction;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - sp20369 don't forget to fill this in. 
@@ -33,21 +36,52 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
  *
  */
 
-public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
+public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelperServiceImpl{ //KualiLookupableHelperServiceImpl {
     	
     /**
-     * If the account is not closed or the user is an Administrator the "edit" link is added The "copy" link is added for Accounts
-     *
-     * @returns links to edit and copy maintenance action for the current maintenance record.
+     * 
+     * @returns links to action for the current edoclite
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
      */
   
-    public List<String> getCustomActionUrls(BusinessObject businessObject, Map fieldValues) {
+    public String getActionUrls(BusinessObject businessObject) {
     	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
         EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
         String actionsUrl = "<a href=\"EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
-        List<String> actionUrls = new ArrayList<String>(); 
-        actionUrls.add(actionsUrl); 
-        return actionUrls;
+        return actionsUrl;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSearchResults(java.util.Map)
+	 */
+	@Override
+	public List<? extends BusinessObject> getSearchResults(
+			Map<String, String> fieldValues) {
+		boolean unbounded=true;
+		setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
+        setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
+        setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
+        List searchResults;
+        if (UniversalUser.class.equals(getBusinessObjectClass())) {
+            searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
+        }
+        else if (getUniversalUserService().hasUniversalUserProperty(getBusinessObjectClass(), fieldValues)) {
+            // TODO WARNING: this does not support nested joins, because i don't have a test case
+            searchResults = (List) getUniversalUserService().findWithUniversalUserJoin(getBusinessObjectClass(), fieldValues, unbounded);
+        }
+        else {
+            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
+        }
+        // sort list if default sort column given
+        List defaultSortColumns = getDefaultSortColumns();
+        if (defaultSortColumns.size() > 0) {
+            Collections.sort(searchResults, new BeanPropertyComparator(getDefaultSortColumns(), true));
+        }
+        System.out.println("Inside getSearchResults--------------------");
+        return searchResults;
+
+		
+	}
 }

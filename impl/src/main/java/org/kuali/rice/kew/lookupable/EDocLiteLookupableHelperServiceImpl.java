@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.lookupable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 /**
  * This is a description of what this class does - sp20369 don't forget to fill this in. 
@@ -84,4 +86,18 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
 
 		
 	}
+
+	/**
+	 * Since we don't have a maintenance document for EDocLiteAssociations, we need to
+	 * set showMaintenanceLinks to true manually.  Otherwise our "Create Document" link
+	 * won't show up.
+	 */
+	@Override
+	public Collection performLookup(LookupForm lookupForm,
+			Collection resultTable, boolean bounded) {
+		lookupForm.setShowMaintenanceLinks(true);
+		return super.performLookup(lookupForm, resultTable, bounded);
+	}
+	
+	
 }

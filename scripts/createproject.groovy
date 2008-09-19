@@ -260,7 +260,13 @@ def detectMaven(mvnDir) {
 	if (!mvnPath) return null
 	return { params, workingDir ->
 		if (!params) params = ""
-		process = Runtime.getRuntime().exec(mvnPath + " " + params, null, workingDir)
+		paramArray = params.split(" ")
+		finalParams = new String[paramArray.length + 1]
+		finalParams[0] = mvnPath
+		for (i = 0; i < paramArray.length; i++) {
+			finalParams[i+1] = paramArray[i];
+		}
+		process = Runtime.getRuntime().exec(finalParams, null, workingDir)
 		writeProcessOutput(process)
 		process.waitFor()
 		return process.exitValue()

@@ -46,10 +46,9 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
      */
   
-    public String getActionUrls(BusinessObject businessObject) {
-    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
+    public String getActionUrls(BusinessObject businessObject) {//    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
         EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
-        String actionsUrl = "<a href=\"EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
+        String actionsUrl = "<a href=\"../kr-dev/en/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
         return actionsUrl;
     }
 
@@ -61,7 +60,7 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
 	@Override
 	public List<? extends BusinessObject> getSearchResults(
 			Map<String, String> fieldValues) {
-		boolean unbounded=true;
+		boolean unbounded=true;	//System.out.println("BackLocation==="+KNSConstants.BACK_LOCATION+"=="+fieldValues.get(KNSConstants.BACK_LOCATION)+"=="+fieldValues.values());
 		setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
         setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
         setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
@@ -80,8 +79,7 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
         List defaultSortColumns = getDefaultSortColumns();
         if (defaultSortColumns.size() > 0) {
             Collections.sort(searchResults, new BeanPropertyComparator(getDefaultSortColumns(), true));
-        }
-        System.out.println("Inside getSearchResults--------------------");
+        }	//  System.out.println("Inside getSearchResults--------------------");
         return searchResults;
 
 		

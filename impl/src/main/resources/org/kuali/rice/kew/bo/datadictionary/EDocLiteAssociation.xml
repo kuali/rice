@@ -50,7 +50,7 @@
 
   <bean id="EDocLiteAssociation-definition-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Definition" />
-    <property name="maxLength" value="200" />
+    <property name="maxLength" value="100" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -66,13 +66,13 @@
 
   <bean id="EDocLiteAssociation-style-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="style" />
-    <property name="maxLength" value="250" />
+    <property name="maxLength" value="100" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="250" />
+            p:size="30" />
     </property>
     <property name="name" value="style" />
     <property name="label" value="Style Name" />
@@ -82,7 +82,7 @@
 
   <bean id="EDocLiteAssociation-edlName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Name" />
-    <property name="maxLength" value="250" />
+    <property name="maxLength" value="100" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -102,11 +102,10 @@
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-   
+     <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>       
+    <property name="summary" value="activeInd" />
     <property name="name" value="activeInd" />
     <property name="label" value="Active Indicator" />
   </bean>

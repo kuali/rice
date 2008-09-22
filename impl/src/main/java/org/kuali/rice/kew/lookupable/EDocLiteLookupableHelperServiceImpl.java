@@ -48,7 +48,7 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
   
     public String getActionUrls(BusinessObject businessObject) {//    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
         EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
-        String actionsUrl = "<a href=\"../kr-dev/en/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
+        String actionsUrl = "<a href=\"../en/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
         return actionsUrl;
     }
 

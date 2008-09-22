@@ -74,7 +74,7 @@
 		<td><a href="Lookup.do?lookupableImplServiceName=EDocLiteLookupableService" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites Old</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites New</a></td>	
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites New</a></td>	
 	</tr>
 </table>
 

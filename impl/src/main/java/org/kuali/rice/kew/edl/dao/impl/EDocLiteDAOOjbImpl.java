@@ -131,7 +131,7 @@ public class EDocLiteDAOOjbImpl extends PersistenceBrokerDaoSupport implements E
 
 	public EDocLiteAssociation getEDocLiteAssociation(Long associationId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("eDocLiteAssocId", associationId);
+		crit.addEqualTo("edocLiteAssocId", associationId);
 		return (EDocLiteAssociation)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(EDocLiteAssociation.class, crit));
 	}
 }

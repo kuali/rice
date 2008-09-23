@@ -43,7 +43,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
      */
     @Id
 	@Column(name="edoclt_assoc_id")
-	private Long eDocLiteAssocId;
+	private Long edocLiteAssocId;
     /**
      * edoclt_assoc_doctype_nm
      */
@@ -73,11 +73,11 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
     @Transient
     private String actionsUrl;//for quickfinder
 
-    public Long getEDocLiteAssocId() {
-        return eDocLiteAssocId;
+    public Long getEdocLiteAssocId() {
+        return edocLiteAssocId;
     }
-    public void setEDocLiteAssocId(Long docLiteAssocId) {
-        eDocLiteAssocId = docLiteAssocId;
+    public void setEdocLiteAssocId(Long edocLiteAssocId) {
+        this.edocLiteAssocId = edocLiteAssocId;
     }
     public String getEdlName() {
         return edlName;
@@ -111,7 +111,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
     }
 
     public String toString() {
-        return "[EDocLiteAssociation: eDocLiteAssocId=" + eDocLiteAssocId
+        return "[EDocLiteAssociation: edocLiteAssocId=" + edocLiteAssocId
                                  + ", edlName=" + edlName
                                  + ", definition=" + definition
                                  + ", style=" + style
@@ -133,7 +133,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("eDocLiteAssocId", getEDocLiteAssocId());
+	    propMap.put("edocLiteAssocId", getEdocLiteAssocId());
 	    propMap.put("edlName", getEdlName());
 	    propMap.put("definition", getDefinition());
 	    propMap.put("style", getStyle());

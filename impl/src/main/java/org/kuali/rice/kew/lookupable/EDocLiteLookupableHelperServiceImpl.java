@@ -16,19 +16,11 @@
 package org.kuali.rice.kew.lookupable;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.UserAction;
+import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
-import org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.util.BeanPropertyComparator;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 /**
@@ -38,9 +30,11 @@ import org.kuali.rice.kns.web.struts.form.LookupForm;
  *
  */
 
-public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelperServiceImpl{ //KualiLookupableHelperServiceImpl {
+public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl{ //KualiLookupableHelperServiceImpl {
     	
-    /**
+    private static final long serialVersionUID = 3157354920258155881L;
+
+	/**
      * 
      * @returns links to action for the current edoclite
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
@@ -51,39 +45,6 @@ public class EDocLiteLookupableHelperServiceImpl  extends AbstractLookupableHelp
         String actionsUrl = "<a href=\"../en/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
         return actionsUrl;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSearchResults(java.util.Map)
-	 */
-	@Override
-	public List<? extends BusinessObject> getSearchResults(
-			Map<String, String> fieldValues) {
-		boolean unbounded=true;	//System.out.println("BackLocation==="+KNSConstants.BACK_LOCATION+"=="+fieldValues.get(KNSConstants.BACK_LOCATION)+"=="+fieldValues.values());
-		setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
-        setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
-        setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
-        List searchResults;
-        if (UniversalUser.class.equals(getBusinessObjectClass())) {
-            searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
-        }
-        else if (getUniversalUserService().hasUniversalUserProperty(getBusinessObjectClass(), fieldValues)) {
-            // TODO WARNING: this does not support nested joins, because i don't have a test case
-            searchResults = (List) getUniversalUserService().findWithUniversalUserJoin(getBusinessObjectClass(), fieldValues, unbounded);
-        }
-        else {
-            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
-        }
-        // sort list if default sort column given
-        List defaultSortColumns = getDefaultSortColumns();
-        if (defaultSortColumns.size() > 0) {
-            Collections.sort(searchResults, new BeanPropertyComparator(getDefaultSortColumns(), true));
-        }	//  System.out.println("Inside getSearchResults--------------------");
-        return searchResults;
-
-		
-	}
 
 	/**
 	 * Since we don't have a maintenance document for EDocLiteAssociations, we need to

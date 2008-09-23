@@ -819,11 +819,11 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="en_edoclt_assoc_t">
-    <field-descriptor column="edoclt_assoc_id" name="eDocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
+    <field-descriptor column="edoclt_assoc_id" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
     <field-descriptor column="edoclt_assoc_doctype_nm" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_assoc_def_nm" name="definition" jdbc-type="VARCHAR"/>
     <field-descriptor column="edoclt_assoc_style_nm" name="style" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_assoc_actv_ind" name="activeInd" jdbc-type="BIT"/>
+    <field-descriptor column="edoclt_assoc_actv_ind" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
     <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 

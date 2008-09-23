@@ -109,6 +109,10 @@
 			<param-value>/en/WEB-INF/struts-config.xml</param-value>
 		</init-param>
 		<init-param>
+			<param-name>config/kew</param-name>
+			<param-value>/kew/WEB-INF/struts-config.xml</param-value>
+		</init-param>
+		<init-param>
 			<param-name>config/kr</param-name>
 			<param-value>/kr/WEB-INF/struts-config.xml</param-value>
 		</init-param>

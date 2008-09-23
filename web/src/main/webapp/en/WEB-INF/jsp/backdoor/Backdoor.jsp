@@ -71,10 +71,13 @@
 	</tr>
 
 	<tr>
-		<td><a href="Lookup.do?lookupableImplServiceName=EDocLiteLookupableService" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites Old</a></td>
+		<td><a href="Lookup.do?lookupableImplServiceName=EDocLiteLookupableService" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites <b>OLD</b></a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites New</a></td>	
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites <b>NEW</b></a></td>	
+	</tr>
+	<tr>
+	  <td><a href="../kew/Rule.do?methodToCall=docHandler&command=initiate&docTypeName=EDENSERVICE-DOCS.RuleDocument" target="<c:out value="${BackdoorForm.targetName}"/>">Create Rule <b>NEW</b></a></td>
 	</tr>
 </table>
 

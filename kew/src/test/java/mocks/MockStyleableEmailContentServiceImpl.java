@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;

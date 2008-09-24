@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.test.services;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  * Defines an interface with methods that help us test distributed caching.

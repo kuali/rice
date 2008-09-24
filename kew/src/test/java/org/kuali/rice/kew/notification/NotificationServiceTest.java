@@ -19,7 +19,7 @@ package org.kuali.rice.kew.notification;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;

@@ -30,8 +30,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.doctype.SecuritySession;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;

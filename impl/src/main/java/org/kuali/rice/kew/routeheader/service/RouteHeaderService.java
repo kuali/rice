@@ -19,7 +19,7 @@ package org.kuali.rice.kew.routeheader.service;
 import java.util.Collection;
 import java.util.Set;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 

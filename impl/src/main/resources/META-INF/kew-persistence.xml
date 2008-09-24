@@ -21,7 +21,7 @@
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeLongValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>
-    <class>org.kuali.rice.kew.doctype.DocumentType</class>
+    <class>org.kuali.rice.kew.doctype.bo.DocumentType</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>

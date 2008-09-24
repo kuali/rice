@@ -19,7 +19,7 @@ package org.kuali.rice.kew.doctype.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;

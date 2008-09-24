@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.node.service;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
 import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;

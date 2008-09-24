@@ -22,7 +22,7 @@ import java.sql.Timestamp;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.doctype.dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 

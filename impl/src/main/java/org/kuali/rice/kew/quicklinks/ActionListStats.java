@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.quicklinks;
 
-import org.kuali.rice.kew.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  * Stores statistics about the number of times a particular {@link DocumentType}

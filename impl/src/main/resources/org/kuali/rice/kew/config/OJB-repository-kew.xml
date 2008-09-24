@@ -333,7 +333,7 @@
 
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentType" table="EN_DOC_TYP_T">
+  <class-descriptor class="org.kuali.rice.kew.doctype.bo.DocumentType" table="EN_DOC_TYP_T">
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"
          autoincrement="true" sequence-name="SEQ_DOCUMENT_ROUTE_HEADER" />
     <field-descriptor column="DOC_TYP_PARNT_ID" name="docTypeParentId" jdbc-type="BIGINT" />
@@ -380,7 +380,7 @@
     <field-descriptor column="DOC_PLCY_NM" name="policyName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_PLCY_VAL" name="policyValue" jdbc-type="BIT"/>
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
   </class-descriptor>
@@ -394,7 +394,7 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType"
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
@@ -634,7 +634,7 @@
     <field-descriptor column="BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>
 
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.BranchPrototype" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
@@ -793,7 +793,7 @@
   	<field-descriptor column="PROC_NM" name="name" jdbc-type="VARCHAR"/>
   	<field-descriptor column="INIT_IND" name="initial" jdbc-type="BIT"/>
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId"/>
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNode" name="initialRouteNode" auto-update="true" auto-delete="false" auto-retrieve="true">

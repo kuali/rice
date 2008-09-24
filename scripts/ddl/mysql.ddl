@@ -385,15 +385,9 @@ create table EN_HLP_T (EN_HLP_ID bigint not null, EN_HLP_KY varchar(255), EN_HLP
 create table EN_INIT_RTE_NODE_INSTN_T (DOC_HDR_ID bigint not null, RTE_NODE_INSTN_ID bigint not null) ;
 create table EN_MSG_PAYLOAD_T (MESSAGE_QUE_ID bigint not null, MESSAGE_PAYLOAD mediumtext, primary key (MESSAGE_QUE_ID)) ;
 create table EN_MSG_QUE_T (MESSAGE_QUE_ID bigint not null, MESSAGE_EXP_DT datetime, MESSAGE_QUE_IP_NBR varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), SERVICE_METHOD_NM varchar(255), MESSAGE_QUE_DT datetime, MESSAGE_QUE_PRIO_NBR integer, MESSAGE_QUE_STAT_CD varchar(255), MESSAGE_QUE_RTRY_CNT integer, MESSAGE_SERVICE_NM varchar(255), VAL_ONE varchar(255), VAL_TWO varchar(255), primary key (MESSAGE_QUE_ID)) ;
-create table EN_QUAL_ROLE_EXT_T (QUAL_ROLE_EXT_ID bigint not null, DB_LOCK_VER_NBR integer, QUAL_ROLE_ID bigint, ROLE_ATTRIB_ID bigint, primary key (QUAL_ROLE_EXT_ID)) ;
-create table EN_QUAL_ROLE_EXT_VAL_T (QUAL_ROLE_EXT_VAL_ID bigint not null, EXT_KEY varchar(255), DB_LOCK_VER_NBR integer, QUAL_ROLE_EXT_ID bigint, EXT_VAL varchar(255), primary key (QUAL_ROLE_EXT_VAL_ID)) ;
-create table EN_QUAL_ROLE_MBR_T (QUAL_ROLE_MBR_ID bigint not null, DB_LOCK_VER_NBR integer, MBR_ID varchar(255), MBR_TYP integer, QUAL_ROLE_ID bigint, RSP_ID bigint, primary key (QUAL_ROLE_MBR_ID)) ;
-create table EN_QUAL_ROLE_T (QUAL_ROLE_ID bigint not null, ACTVN_DT datetime, ACTV_IND char(1), CUR_IND char(1), DACTVN_DT datetime, QUAL_ROLE_DESC varchar(255), DOC_HDR_ID bigint, FRM_DT datetime, DB_LOCK_VER_NBR integer, PREV_VER_ID bigint, ROLE_ID bigint, TO_DT datetime, VER_NBR integer, primary key (QUAL_ROLE_ID)) ;
 create table EN_RMV_RPLC_DOC_T (DOC_HDR_ID bigint not null, DB_LOCK_VER_NBR integer, OPRN varchar(255), RPLC_PRSN_EN_ID varchar(255), PRSN_EN_ID varchar(255), primary key (DOC_HDR_ID)) ;
 create table EN_RMV_RPLC_RULE_T (DOC_HDR_ID bigint not null, RULE_ID bigint not null, primary key (DOC_HDR_ID, RULE_ID)) ;
 create table EN_RMV_RPLC_WRKGRP_T (DOC_HDR_ID bigint not null, WRKGRP_ID bigint not null, primary key (DOC_HDR_ID, WRKGRP_ID)) ;
-create table EN_ROLE_ATTRIB_T (ROLE_ATTRIB_ID bigint not null, DB_LOCK_VER_NBR integer, ROLE_ID bigint, RULE_ATTRIB_ID bigint, primary key (ROLE_ATTRIB_ID)) ;
-create table EN_ROLE_T (ROLE_ID bigint not null, ROLE_DESC varchar(255), DB_LOCK_VER_NBR integer, ROLE_NM varchar(255), primary key (ROLE_ID)) ;
 create table EN_RTE_BRCH_PROTO_T (RTE_BRCH_PROTO_ID bigint not null, DB_LOCK_VER_NBR integer, RTE_BRCH_PROTO_NM varchar(255), primary key (RTE_BRCH_PROTO_ID)) ;
 create table EN_RTE_BRCH_ST_T (RTE_BRCH_ST_ID bigint not null, ST_KEY varchar(255), ST_VAL_TXT varchar(255), DB_LOCK_VER_NBR integer, RTE_BRCH_ID bigint, primary key (RTE_BRCH_ST_ID)) ;
 create table EN_RTE_BRCH_T (RTE_BRCH_ID bigint not null, INIT_RTE_NODE_INSTN_ID bigint, DB_LOCK_VER_NBR integer, BRCH_NM varchar(255), PARNT_RTE_BRCH_ID bigint, SPLT_RTE_NODE_INSTN_ID bigint, JOIN_RTE_NODE_INSTN_ID bigint, primary key (RTE_BRCH_ID)) ;

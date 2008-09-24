@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,10 +34,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.role.QualifiedRole;
-import org.kuali.rice.kew.role.QualifiedRoleMember;
-import org.kuali.rice.kew.role.Role;
-import org.kuali.rice.kew.role.dao.RoleDAO;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.FlexRM;
@@ -61,68 +56,6 @@ public class RoleServiceImpl implements RoleService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleServiceImpl.class);
 
-	private RoleDAO dao;
-
-	public QualifiedRole findQualifiedRoleById(Long qualifiedRoleId) {
-		return dao.findQualifiedRoleById(qualifiedRoleId);
-	}
-
-	public Role findRoleById(Long roleId) {
-		return dao.findRoleById(roleId);
-	}
-
-	public Role findRoleByName(String roleName) {
-		return dao.findRoleByName(roleName);
-	}
-
-	public List<QualifiedRole> findQualifiedRolesForRole(String roleName, Timestamp effectiveDate) {
-		Collection qualifiedRoles = dao.findQualifiedRolesForRole(roleName);
-		List<QualifiedRole> filteredQualifiedRoles = new ArrayList<QualifiedRole>(qualifiedRoles.size());
-		if (effectiveDate != null) {
-			for (Iterator iterator = qualifiedRoles.iterator(); iterator.hasNext();) {
-				QualifiedRole qualifiedRole = (QualifiedRole) iterator.next();
-				boolean withinEffectiveDate = false;
-				// TODO this logic is crazy, there's got to be an easier way to do this
-				if (qualifiedRole.getActivationDate() == null || qualifiedRole.getActivationDate().compareTo(effectiveDate) <= 0) {
-					withinEffectiveDate = true;
-				}
-				if (qualifiedRole.getDeactivationDate() == null || qualifiedRole.getDeactivationDate().compareTo(effectiveDate) >= 0) {
-					withinEffectiveDate = withinEffectiveDate && true;
-				} else {
-					withinEffectiveDate = false;
-				}
-				if (withinEffectiveDate) {
-					filteredQualifiedRoles.add(qualifiedRole);
-				}
-			}
-		} else {
-			filteredQualifiedRoles.addAll(qualifiedRoles);
-		}
-		return filteredQualifiedRoles;
-	}
-
-	public void save(Role role) {
-		dao.save(role);
-	}
-
-	public void save(QualifiedRole qualifiedRole) {
-		dao.save(qualifiedRole);
-		updateResponsibilityIds(qualifiedRole);
-	}
-
-	protected void updateResponsibilityIds(QualifiedRole qualifiedRole) {
-		boolean updated = false;
-		for (QualifiedRoleMember member : qualifiedRole.getMembers()) {
-			if (member.getResponsibilityId() == null) {
-				member.setResponsibilityId(member.getQualifiedRoleMemberId());
-				updated = true;
-			}
-		}
-		if (updated) {
-			dao.save(qualifiedRole);
-		}
-	}
-
     public void reResolveRole(DocumentType documentType, String roleName) throws WorkflowException {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName;
         if (documentType == null ||
@@ -138,9 +71,6 @@ public class RoleServiceImpl implements RoleService {
     		QName rolePokerName = new QName(documentType.getMessageEntity(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
-
-//			String parameters = generateProcessorParameters(roleName, null);
-//			SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeaderId, KEWConstants.ROUTE_QUEUE_RERESOLVE_PRIORITY, new Long(0), RolePokerProcessor.class.getName(), parameters);
 		}
     }
 
@@ -324,9 +254,5 @@ public class RoleServiceImpl implements RoleService {
 			throw new WorkflowRuntimeException(e);
 		}
     }
-
-	public void setRoleDAO(RoleDAO dao) {
-		this.dao = dao;
-	}
 
 }

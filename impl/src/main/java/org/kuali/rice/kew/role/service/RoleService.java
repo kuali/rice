@@ -16,13 +16,8 @@
  */
 package org.kuali.rice.kew.role.service;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 import org.kuali.rice.kew.doctype.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.role.QualifiedRole;
-import org.kuali.rice.kew.role.Role;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
@@ -31,18 +26,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RoleService {
-
-	public Role findRoleById(Long roleId);
-
-	public Role findRoleByName(String roleName);
-
-	public QualifiedRole findQualifiedRoleById(Long qualifiedRoleId);
-
-	public List<QualifiedRole> findQualifiedRolesForRole(String roleName, Timestamp effectiveDate);
-
-	public void save(Role role);
-
-	public void save(QualifiedRole qualifiedRole);
 
 	/**
 	 * Re-resolves the given qualified role for all documents for the given document type (including children).

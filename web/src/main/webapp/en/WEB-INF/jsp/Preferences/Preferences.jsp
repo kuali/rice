@@ -8,54 +8,39 @@
 
 <html-el:html>
 <head>
-<link href="css/screen.css" rel="stylesheet" type="text/css">
+<link href="../kr/css/kuali.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="scripts/en-common.js"></script>
-<title>Workflow Preferences</title>
+<title class="pagetitle" >Workflow Preferences</title>
 </head>
 <body>
-<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
+<!-- table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1"-->
+<div class="headerarea-small">
+<table width="100%" >
   <tr>
     <td><img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5></td>
     <td width="90%"><html-el:link action="ActionList">Return to Action List</html-el:link></td>
   </tr>
 </table>
+</div>
 
 <br>
 <jsp:include page="../WorkflowMessages.jsp" flush="true" />
-
-<table width="100%" border=0 cellspacing=0 cellpadding=0>
-  <tr>
-    <td width="20" height="30">&nbsp;</td>
-    <td>&nbsp;</td>
-    <td width="20">&nbsp;</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
-      <strong>Action List Preferences</strong>
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td colspan="3">&nbsp;</td>
-  </tr>
-  <tr>
-  	<td></td>
-  	<td>
+<div class="workarea"><table><tr><td rowspan=3><strong>Action List Preferences</strong></td></tr></table></div>
+ 
 <html-el:form action="/Preferences.do">
 <html-el:hidden property="returnMapping"/>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" >
+<table width="100%" class="datatable-80" align="center">
 	<tr>
-		<td class="thnormal">Automatic Refresh Rate:(in whole minutes - 0 is no automatic refresh.)</td>
-        <td class="datacell"><html-el:text property="preferences.refreshRate" size="3" /></td>
+		<td class="infocell">Automatic Refresh Rate:(in whole minutes - 0 is no automatic refresh.)</td>
+        <td class="infocell"><html-el:text property="preferences.refreshRate" size="3" /></td>
 	</tr>
         <tr>
-          <td class="thnormal" width="50%">Action List Page Size</td>
-          <td class="datacell"><html-el:text property="preferences.pageSize" size="3" /></td>
+          <td class="infocell" width="50%">Action List Page Size</td>
+          <td class="infocell"><html-el:text property="preferences.pageSize" size="3" /></td>
         </tr>
         <tr>
-          <td class="thnormal">Email Notification</td>
-          <td class="datacell">
+          <td class="infocell">Email Notification</td>
+          <td class="infocell">
             <html-el:select property="preferences.emailNotification">
               <html-el:option value="${Constants.EMAIL_RMNDR_NO_VAL}">None</html-el:option>
               <html-el:option value="${Constants.EMAIL_RMNDR_DAY_VAL}">Daily</html-el:option>
@@ -66,118 +51,118 @@
           </td>
         </tr>
         <tr>
-          <td class="thnormal">Send Email Notifications for Documents where I am a Primary Delegate</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
+          <td class="infocell">Send Email Notifications for Documents where I am a Primary Delegate</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
                 No <html-el:radio property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_NO_VAL}"/>
           </td>
         </tr>
         <tr>
-          <td class="thnormal">Send Email Notifications for Documents where I am a Secondary Delegate</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
+          <td class="infocell">Send Email Notifications for Documents where I am a Secondary Delegate</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
                 No <html-el:radio property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_NO_VAL}"/>
           </td>
         </tr>
         <tr>
-          <td class="thnormal" width="50%">Delegator Filter</td>
-          <td class="datacell">
+          <td class="infocell" width="50%">Delegator Filter</td>
+          <td class="infocell">
 				<html-el:select property="preferences.delegatorFilter">
 				  <html-el:options collection="delegatorFilter" labelProperty="value" property="key"/>
 				</html-el:select>
           </td>
         </tr>
         <tr>
-          <td class="thnormal" colspan="2">Fields Displayed In Action List</td>
+          <td class="infocell" colspan="2">Fields Displayed In Action List</td>
         </tr>
 
         <tr>
-          <td class="thnormal">Document Type</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showDocType" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Document Type</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showDocType" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocType" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">Title</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showDocTitle" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Title</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showDocTitle" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocTitle" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">ActionRequested</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showActionRequested" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">ActionRequested</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showActionRequested" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showActionRequested" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">Initiator</td>
-			<td class="datacell">Yes <html-el:radio property="preferences.showInitiator" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Initiator</td>
+			<td class="infocell">Yes <html-el:radio property="preferences.showInitiator" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showInitiator" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         
         <tr>
-          <td class="thnormal">Delegator</td>
-			<td class="datacell">Yes <html-el:radio property="preferences.showDelegator" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Delegator</td>
+			<td class="infocell">Yes <html-el:radio property="preferences.showDelegator" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDelegator" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">Date Created</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Date Created</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 		<tr>
-          <td class="thnormal">Date Approved</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Date Approved</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         <tr>
-          <td class="thnormal">Current Route Node(s)</td>
-			<td class="datacell">Yes <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Current Route Node(s)</td>
+			<td class="infocell">Yes <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         <tr>
-          <td class="thnormal">WorkGroup Request</td>
-			<td class="datacell">Yes <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">WorkGroup Request</td>
+			<td class="infocell">Yes <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">Document Route Status</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Document Route Status</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="thnormal">Clear FYI</td>
-          <td class="datacell">Yes <html-el:radio property="preferences.showClearFyi" value="${Constants.PREFERENCES_YES_VAL }"/>
+          <td class="infocell">Clear FYI</td>
+          <td class="infocell">Yes <html-el:radio property="preferences.showClearFyi" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showClearFyi" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
 		<c:if test="${PreferencesForm.showOutbox }">
 	        <tr>
-	          <td class="thnormal">Use Outbox</td>
-	          <td class="datacell">Yes <html-el:radio property="preferences.useOutbox" value="${Constants.PREFERENCES_YES_VAL }"/>
+	          <td class="infocell">Use Outbox</td>
+	          <td class="infocell">Yes <html-el:radio property="preferences.useOutbox" value="${Constants.PREFERENCES_YES_VAL }"/>
 	          		No <html-el:radio property="preferences.useOutbox" value="${Constants.PREFERENCES_NO_VAL }"/>
 	          </td>
 	        </tr>
         </c:if>
         
         <tr>
-          <td colspan="2" class="thnormal">Document Route Status Colors for Actionlist Entries</td>
+          <td colspan="2" class="infocell">Document Route Status Colors for Actionlist Entries</td>
         </tr>
 		<tr>
-			<td class="thnormal">Saved</td>
-			<td class="datacell">
+			<td class="infocell">Saved</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -189,8 +174,8 @@
 		</tr>
 		
 		<tr>
-			<td class="thnormal">Initiated</td>
-			<td class="datacell">
+			<td class="infocell">Initiated</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -202,8 +187,8 @@
 		</tr>
 
 		<tr>
-			<td class="thnormal">Disapproved</td>
-			<td class="datacell">
+			<td class="infocell">Disapproved</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -214,8 +199,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Enroute</td>
-			<td class="datacell">
+			<td class="infocell">Enroute</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -226,8 +211,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Approved</td>
-			<td class="datacell">
+			<td class="infocell">Approved</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -238,8 +223,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Final</td>
-			<td class="datacell">
+			<td class="infocell">Final</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -250,8 +235,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Processed</td>
-			<td class="datacell">
+			<td class="infocell">Processed</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -262,8 +247,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Exception</td>
-			<td class="datacell">
+			<td class="infocell">Exception</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -274,8 +259,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="thnormal">Canceled</td>
-			<td class="datacell">
+			<td class="infocell">Canceled</td>
+			<td class="infocell">
 			  <table>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
@@ -287,10 +272,11 @@
 		</tr>
 		
 		<tr>
-			<td class="thnormal" colspan="2" align="center">
+			<td class="numbercell" colspan="2">
                 <html-el:image src="images/buttonsmall_save.gif" align="absmiddle" property="methodToCall.save" />&nbsp;
                 <a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
 			</td>
+			
 		</tr>
 	</table>
 
@@ -299,6 +285,7 @@
 <td></td>
 </tr>
 </table>
+
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
 
 </body>

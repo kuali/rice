@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
@@ -68,7 +69,7 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
         
-            assertTrue(mockServletContext.getAttribute("Constants") instanceof KEWConstants);
+            assertTrue(mockServletContext.getAttribute("Constants") instanceof JSTLConstants);
         
             // now destroy the context
             listener.contextDestroyed(sce);

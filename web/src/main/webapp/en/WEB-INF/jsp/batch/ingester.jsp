@@ -30,7 +30,7 @@
         Iterator it = list.iterator();
         while (it.hasNext()) {
 %>
-  <li class="info-message"><%= it.next().toString() %></li>
+  <li><%= it.next().toString() %></li>
 <%
         }
 %>

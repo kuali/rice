@@ -39,7 +39,7 @@
     }
 %>
 <html-el:form method="post" action="/Ingester" enctype="multipart/form-data">
-<table class="datatable-100">
+<table class="datatable-80">
   <tr><td>
     <html-el:file styleClass="infocell" name="IngesterForm" property="file[0]"/>
   </td></tr>

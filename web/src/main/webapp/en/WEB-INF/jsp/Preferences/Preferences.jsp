@@ -270,9 +270,9 @@
 			  </table>
 			</td>
 		</tr>
-		
-		<tr>
-			<td class="numbercell" colspan="2">
+	
+		<tr align=center>
+			<td class="infoline" colspan="2" align=center>
                 <html-el:image src="images/buttonsmall_save.gif" align="absmiddle" property="methodToCall.save" />&nbsp;
                 <a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
 			</td>

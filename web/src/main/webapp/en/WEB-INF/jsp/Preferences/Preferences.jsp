@@ -25,21 +25,21 @@
 
 <br>
 <jsp:include page="../WorkflowMessages.jsp" flush="true" />
-<div class="workarea"><table><tr><td rowspan=3><strong>Action List Preferences</strong></td></tr></table></div>
+<div class="lookup"><table><tr><td rowspan=3><strong>Action List Preferences</strong></td></tr></table></div>
  
 <html-el:form action="/Preferences.do">
 <html-el:hidden property="returnMapping"/>
 <table width="100%" class="datatable-80" align="center">
 	<tr>
-		<td class="infocell">Automatic Refresh Rate:(in whole minutes - 0 is no automatic refresh.)</td>
+		<td class="infoline">Automatic Refresh Rate:(in whole minutes - 0 is no automatic refresh.)</td>
         <td class="infocell"><html-el:text property="preferences.refreshRate" size="3" /></td>
 	</tr>
         <tr>
-          <td class="infocell" width="50%">Action List Page Size</td>
+          <td class="infoline" width="50%">Action List Page Size</td>
           <td class="infocell"><html-el:text property="preferences.pageSize" size="3" /></td>
         </tr>
         <tr>
-          <td class="infocell">Email Notification</td>
+          <td class="infoline">Email Notification</td>
           <td class="infocell">
             <html-el:select property="preferences.emailNotification">
               <html-el:option value="${Constants.EMAIL_RMNDR_NO_VAL}">None</html-el:option>
@@ -51,19 +51,19 @@
           </td>
         </tr>
         <tr>
-          <td class="infocell">Send Email Notifications for Documents where I am a Primary Delegate</td>
+          <td class="infoline">Send Email Notifications for Documents where I am a Primary Delegate</td>
           <td class="infocell">Yes <html-el:radio property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
                 No <html-el:radio property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_NO_VAL}"/>
           </td>
         </tr>
         <tr>
-          <td class="infocell">Send Email Notifications for Documents where I am a Secondary Delegate</td>
+          <td class="infoline">Send Email Notifications for Documents where I am a Secondary Delegate</td>
           <td class="infocell">Yes <html-el:radio property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/>
                 No <html-el:radio property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_NO_VAL}"/>
           </td>
         </tr>
         <tr>
-          <td class="infocell" width="50%">Delegator Filter</td>
+          <td class="infoline" width="50%">Delegator Filter</td>
           <td class="infocell">
 				<html-el:select property="preferences.delegatorFilter">
 				  <html-el:options collection="delegatorFilter" labelProperty="value" property="key"/>
@@ -71,78 +71,78 @@
           </td>
         </tr>
         <tr>
-          <td class="infocell" colspan="2">Fields Displayed In Action List</td>
+          <td class="infoline" colspan="2"><strong>Fields Displayed In Action List</strong></td>
         </tr>
 
         <tr>
-          <td class="infocell">Document Type</td>
+          <td class="infoline">Document Type</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showDocType" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocType" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">Title</td>
+          <td class="infoline">Title</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showDocTitle" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocTitle" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">ActionRequested</td>
+          <td class="infoline">ActionRequested</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showActionRequested" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showActionRequested" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">Initiator</td>
+          <td class="infoline">Initiator</td>
 			<td class="infocell">Yes <html-el:radio property="preferences.showInitiator" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showInitiator" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         
         <tr>
-          <td class="infocell">Delegator</td>
+          <td class="infoline">Delegator</td>
 			<td class="infocell">Yes <html-el:radio property="preferences.showDelegator" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDelegator" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">Date Created</td>
+          <td class="infoline">Date Created</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDateCreated" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 		<tr>
-          <td class="infocell">Date Approved</td>
+          <td class="infoline">Date Approved</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDateApproved" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         <tr>
-          <td class="infocell">Current Route Node(s)</td>
+          <td class="infoline">Current Route Node(s)</td>
 			<td class="infocell">Yes <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showCurrentNode" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
         <tr>
-          <td class="infocell">WorkGroup Request</td>
+          <td class="infoline">WorkGroup Request</td>
 			<td class="infocell">Yes <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showWorkgroupRequest" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">Document Route Status</td>
+          <td class="infoline">Document Route Status</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
         </tr>
 
         <tr>
-          <td class="infocell">Clear FYI</td>
+          <td class="infoline">Clear FYI</td>
           <td class="infocell">Yes <html-el:radio property="preferences.showClearFyi" value="${Constants.PREFERENCES_YES_VAL }"/>
           		No <html-el:radio property="preferences.showClearFyi" value="${Constants.PREFERENCES_NO_VAL }"/>
           </td>
@@ -150,7 +150,7 @@
 
 		<c:if test="${PreferencesForm.showOutbox }">
 	        <tr>
-	          <td class="infocell">Use Outbox</td>
+	          <td class="infoline">Use Outbox</td>
 	          <td class="infocell">Yes <html-el:radio property="preferences.useOutbox" value="${Constants.PREFERENCES_YES_VAL }"/>
 	          		No <html-el:radio property="preferences.useOutbox" value="${Constants.PREFERENCES_NO_VAL }"/>
 	          </td>
@@ -158,10 +158,10 @@
         </c:if>
         
         <tr>
-          <td colspan="2" class="infocell">Document Route Status Colors for Actionlist Entries</td>
+          <td colspan="2" class="infoline"><strong>Document Route Status Colors for Actionlist Entries</strong></td>
         </tr>
 		<tr>
-			<td class="infocell">Saved</td>
+			<td class="infoline">Saved</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -174,7 +174,7 @@
 		</tr>
 		
 		<tr>
-			<td class="infocell">Initiated</td>
+			<td class="infoline">Initiated</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -187,7 +187,7 @@
 		</tr>
 
 		<tr>
-			<td class="infocell">Disapproved</td>
+			<td class="infoline">Disapproved</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -199,7 +199,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Enroute</td>
+			<td class="infoline">Enroute</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -211,7 +211,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Approved</td>
+			<td class="infoline">Approved</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -223,7 +223,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Final</td>
+			<td class="infoline">Final</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -235,7 +235,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Processed</td>
+			<td class="infoline">Processed</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -247,7 +247,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Exception</td>
+			<td class="infoline">Exception</td>
 			<td class="infocell">
 			  <table>
 			    <tr>
@@ -259,7 +259,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="infocell">Canceled</td>
+			<td class="infoline">Canceled</td>
 			<td class="infocell">
 			  <table>
 			    <tr>

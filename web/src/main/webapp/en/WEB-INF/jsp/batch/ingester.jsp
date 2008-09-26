@@ -11,15 +11,16 @@
 <html>
 <head>
   <title>Ingester</title>
-  <link href="css/edoclite.css" rel="stylesheet" type="text/css"/>
-  <link href="css/screen.css" rel="stylesheet" type="text/css"/>
+  <link href="../kr/css/kuali.css" rel="stylesheet" type="text/css">  
 </head>
 
 <body>
+<div class="headerarea-small">
+<h2>Ingester</h2>
+</div>
 
-<h1>Ingester</h1>
-<div class="maindiv">
-<h2>Select files to upload</h2>
+<h4>Select files to upload</h4>
+<div id="lookup" align="center">
 <%
     List list = (List) request.getAttribute("messages");
     if (list != null) {
@@ -38,20 +39,20 @@
     }
 %>
 <html-el:form method="post" action="/Ingester" enctype="multipart/form-data">
-<table>
+<table class="datatable-100">
   <tr><td>
-    <html-el:file styleClass="dataCell" name="IngesterForm" property="file[0]"/>
+    <html-el:file styleClass="infocell" name="IngesterForm" property="file[0]"/>
   </td></tr>
   <tr><td>
-    <html-el:file styleClass="dataCell" name="IngesterForm" property="file[1]"/>
+    <html-el:file styleClass="infocell" name="IngesterForm" property="file[1]"/>
   </td></tr>
   <tr><td>
-    <html-el:file styleClass="dataCell" name="IngesterForm" property="file[2]"/>
+    <html-el:file styleClass="infocell" name="IngesterForm" property="file[2]"/>
   </td></tr>
   <tr><td>
-    <html-el:file styleClass="dataCell" name="IngesterForm" property="file[3]"/>
+    <html-el:file styleClass="infocell" name="IngesterForm" property="file[3]"/>
   </td></tr>
-  <tr><td align="center">
+  <tr><td align="center" class="infoline" >
     <html-el:submit value="Upload XML data"></html-el:submit>
   </td></tr>
 </table>

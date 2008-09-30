@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.group;
 
 import java.io.Serializable;
+import java.util.Map;
 
 
 /**
@@ -26,12 +27,15 @@ import java.io.Serializable;
  */
 public class GroupInfo implements KimGroup, Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	protected String groupId;
 	protected String groupName;
 	protected String groupDescription;
 	protected boolean active;
 	protected String kimTypeId;
 	protected String namespaceCode;
+	protected Map<String,String> attributes;
 	
 	
 	public String getGroupDescription() {
@@ -54,6 +58,10 @@ public class GroupInfo implements KimGroup, Serializable {
 		return this.namespaceCode;
 	}
 
+	public Map<String, String> getAttributes() {
+		return this.attributes;
+	}
+	
 	public void setGroupDescription(String groupDescription) {
 		this.groupDescription = groupDescription;
 	}
@@ -74,6 +82,10 @@ public class GroupInfo implements KimGroup, Serializable {
 		this.namespaceCode = namespaceCode;
 	}
 
+	public void setAttributes(Map<String, String> attributes) {
+		this.attributes = attributes;
+	}
+	
 	public boolean isActive() {
 		return this.active;
 	}

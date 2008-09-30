@@ -16,9 +16,11 @@
 package org.kuali.rice.kim.bo.group.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,12 +35,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.GroupAttribute;
 import org.kuali.rice.kim.bo.group.GroupGroup;
 import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -76,7 +78,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupAttribute> groupAttributes;
+	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 	
 	/**
 	 * This overridden method ...
@@ -91,6 +93,15 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		m.put( "namespaceCode", namespaceCode );
 		m.put( "groupName", groupName );
 		return m;
+	}
+
+	public Map<String, String> getAttributes() {
+        Map<String, String> attributes = new HashMap<String, String>( groupAttributes.size() );
+        for ( GroupAttributeDataImpl attr : groupAttributes ) {
+            attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
+        }
+        
+        return attributes;
 	}
 
 	public String getGroupId() {
@@ -182,11 +193,11 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		return new HashCodeBuilder( -460627871, 746615189 ).append( this.groupId ).toHashCode();
 	}
 
-	public List<GroupAttribute> getGroupAttributes() {
+	public List<GroupAttributeDataImpl> getGroupAttributes() {
 		return this.groupAttributes;
 	}
 
-	public void setGroupAttributes(List<GroupAttribute> groupAttributes) {
+	public void setGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
 		this.groupAttributes = groupAttributes;
 	}
 

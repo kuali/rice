@@ -17,6 +17,8 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.types.KimAttribute;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -491,6 +493,10 @@ public class GroupServiceImpl implements GroupService {
         KimGroupImpl group = new KimGroupImpl();
 
         copyInfoToGroup(groupInfo, group);
+        if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
+        	group.getGroupAttributes().addAll(copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId()));
+        }
+        
         saveGroup(group);
 
         return getGroupInfoByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
@@ -607,6 +613,8 @@ public class GroupServiceImpl implements GroupService {
             info.setGroupName(kimGroup.getGroupName());
             info.setKimTypeId(kimGroup.getKimTypeId());
             info.setNamespaceCode(kimGroup.getNamespaceCode());
+            
+            info.setAttributes(kimGroup.getAttributes());
         }
 
         return info;
@@ -621,6 +629,30 @@ public class GroupServiceImpl implements GroupService {
         group.setNamespaceCode(info.getNamespaceCode());
 
         return group;
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
+        // TODO - get primary key from sequence
+        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
+        
+        for(String key : infoMap.keySet()) {
+            Map<String,String> criteria = new HashMap<String,String>();
+            criteria.put("attributeName", key);
+            List<KimAttribute> kimAttrList = (List<KimAttribute>) getBusinessObjectService().findMatching(KimAttributeImpl.class, criteria);
+            KimAttribute kimAttr = kimAttrList.get(0);
+            
+            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
+            groupAttr.setKimAttributeId(kimAttr.getAttributeId());
+            groupAttr.setAttributeValue(infoMap.get(key));
+            groupAttr.setTargetPrimaryKey(groupId);
+            groupAttr.setKimTypeId(kimTypeId);
+            groupAttr.setAttributeDataId(groupId + "-" + kimAttr.getAttributeId());
+            
+            attrList.add(groupAttr);
+        }
+        
+        return attrList;
     }
 
 }

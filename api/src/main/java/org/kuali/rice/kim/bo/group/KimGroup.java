@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.bo.group;
 
-import java.util.List;
+import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
@@ -38,10 +37,6 @@ public interface KimGroup extends Inactivateable {
 	
 	String getNamespaceCode();
 	
-//	List<GroupMember> getMembers();
-//	List<GroupPrincipal> getMemberPrincipals();
-//	List<GroupGroup> getMemberGroups();
-//	List<GroupAttribute> getGroupAttributes();
-//
-//    boolean hasMember(Person person);
+	Map<String, String> getAttributes();
+	
 }

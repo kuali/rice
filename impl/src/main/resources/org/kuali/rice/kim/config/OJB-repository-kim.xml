@@ -600,7 +600,7 @@
     </reference-descriptor>
   </class-descriptor>     
 
-  <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl" table="KR_KIM_GROUP_ATTRIB_DATA_T">
+  <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl" table="KR_KIM_GROUP_ATTR_DATA_T">
     <field-descriptor name="attributeDataId" column="ATTRIB_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="targetPrimaryKey" column="TARGET_PRIMARY_KEY" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYPE_ID" jdbc-type="VARCHAR" />

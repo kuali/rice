@@ -91,6 +91,9 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getWorkgroup(org.kuali.rice.kew.workgroup.GroupId)
 	 */
 	public Workgroup getWorkgroup(GroupId groupId) {
+		if (groupId == null || groupId.isEmpty()) {
+			return null;
+		}
 		if (groupId instanceof WorkflowGroupId) {
 			KimGroup group = getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 			return convertToWorkgroup(group);

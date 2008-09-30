@@ -43,14 +43,6 @@ public interface EntityEntityType extends Inactivateable {
 	List<EntityAddress> getAddresses();
 
 	/**
-	 * Return the list of EntityName objects associated with this EntityType.
-	 * 
-	 * The returned list will never be null, the implementation will generate an
-	 * empty list as needed.
-	 */
-	List<EntityName> getNames();
-	
-	/**
 	 * Return the list of EntityEmail objects associated with this EntityType.
 	 * 
 	 * The returned list will never be null, the implementation will generate an
@@ -70,11 +62,6 @@ public interface EntityEntityType extends Inactivateable {
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
 	EntityAddress getDefaultAddress();
-
-	/** Returns the default name record for the entity.  If no default is defined, then
-	 * it returns the first one found.  If none are defined, it returns null.
-	 */
-	EntityName getDefaultName();
 
 	/** Returns the default email record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.

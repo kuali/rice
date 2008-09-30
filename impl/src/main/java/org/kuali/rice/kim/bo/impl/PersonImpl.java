@@ -127,7 +127,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateEntityInfo( KimEntity entity, String personEntityTypeCode ) {
 		EntityEntityType entityEntityType = entity.getEntityType( personEntityTypeCode );  
-		populateNameInfo( entityEntityType );
+		populateNameInfo( entity );
 		populateAddressInfo( entityEntityType );
 		populateEmailInfo( entityEntityType );
 		populatePhoneInfo( entityEntityType );
@@ -136,8 +136,8 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		populateExternalIdentifiers( entity );
 	}
 	
-	protected void populateNameInfo( EntityEntityType entityEntityType ) {
-		EntityName entityName = entityEntityType.getDefaultName();
+	protected void populateNameInfo( KimEntity entity ) {
+		EntityName entityName = entity.getDefaultName();
 		if ( entityName != null ) {
 			firstName = unNullify( entityName.getFirstName() );
 			middleName = unNullify( entityName.getMiddleName() );

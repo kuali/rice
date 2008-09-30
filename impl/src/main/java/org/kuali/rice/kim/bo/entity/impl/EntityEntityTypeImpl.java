@@ -60,10 +60,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
-	@OneToMany(targetEntity = EntityNameImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityName> names = new TypedArrayList(EntityNameImpl.class);
-	
 	@OneToMany(targetEntity = EntityEmailImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<EntityEmail> emailAddresses = new TypedArrayList(EntityEmailImpl.class);
@@ -95,13 +91,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	 */
 	public String getEntityEntityTypeId() {
 		return entityEntityTypeId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getNames()
-	 */
-	public List<EntityName> getNames() {
-		return names;
 	}
 
 	/**
@@ -158,10 +147,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 		this.entityTypeCode = entityTypeCode;
 	}
 
-	public void setNames(List<EntityName> entityNames) {
-		this.names = entityNames;
-	}
-
 	public void setEmailAddresses(List<EntityEmail> entityEmailAddresses) {
 		this.emailAddresses = entityEmailAddresses;
 	}
@@ -188,15 +173,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	 */
 	public EntityEmail getDefaultEmailAddress() {
 		return (EntityEmail)getDefaultItem( emailAddresses );
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getDefaultName()
-	 */
-	public EntityName getDefaultName() {
-		return (EntityName)getDefaultItem( names );
 	}
 	
 	/**

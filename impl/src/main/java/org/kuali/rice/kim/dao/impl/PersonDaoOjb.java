@@ -91,6 +91,7 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		return findPeople(entityCriteria, true);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<T> findPeople(Map<String,String> criteria, boolean unbounded ) {
 		// convert the criteria to a form that can be used by the ORM layer
 		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties( criteria );
@@ -134,9 +135,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		criteriaConversion.put( "entityId", "entityId" );
 		criteriaConversion.put( "principalId", "principals.principalId" );
 		criteriaConversion.put( "principalName", "principals.principalName" );
-		criteriaConversion.put( "firstName", "entityTypes.names.firstName" );
-		criteriaConversion.put( "lastName", "entityTypes.names.lastName" );
-		criteriaConversion.put( "middleName", "entityTypes.names.middleName" );
+		criteriaConversion.put( "firstName", "names.firstName" );
+		criteriaConversion.put( "lastName", "names.lastName" );
+		criteriaConversion.put( "middleName", "names.middleName" );
 		criteriaConversion.put( "emailAddress", "entityTypes.emailAddresses.emailAddress" );
 		criteriaConversion.put( "phoneNumber", "entityTypes.phoneNumbers.phoneNumber" );
 		criteriaConversion.put( "line1", "entityTypes.addresses.line1" );

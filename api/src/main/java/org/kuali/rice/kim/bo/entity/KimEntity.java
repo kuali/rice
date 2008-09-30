@@ -35,6 +35,15 @@ public interface KimEntity extends Inactivateable {
 	
 	List<EntityExternalIdentifier> getExternalIdentifiers();
 	List<EntityAffiliation> getAffiliations();
+
+	/**
+	 * Return the list of EntityName objects associated with this EntityType.
+	 * 
+	 * The returned list will never be null, the implementation will generate an
+	 * empty list as needed.
+	 */
+	List<EntityName> getNames();
+	
 	
 	/**
 	 * Returns the employment information object for this Entity.
@@ -72,4 +81,11 @@ public interface KimEntity extends Inactivateable {
 	EntityEmploymentInformation getPrimaryEmployment();
 	EntityAffiliation getDefaultAffiliation();
 	EntityExternalIdentifier getEntityExternalIdentifier( String externalIdentifierTypeCode );
+	
+	/** Returns the default name record for the entity.  If no default is defined, then
+	 * it returns the first one found.  If none are defined, it returns null.
+	 */
+	EntityName getDefaultName();
+
+	
 }

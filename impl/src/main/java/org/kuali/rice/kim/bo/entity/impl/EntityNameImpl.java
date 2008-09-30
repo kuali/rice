@@ -45,9 +45,6 @@ public class EntityNameImpl extends DefaultableEntityDataBase implements EntityN
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
-	@Column(name = "ENT_TYP_CD")
-	protected String entityTypeCode;
-
 	@Column(name = "NAME_TYP_CD")
 	protected String nameTypeCode ;
 
@@ -119,60 +116,28 @@ public class EntityNameImpl extends DefaultableEntityDataBase implements EntityN
 		return title;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setFirstName(java.lang.String)
-	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setLastName(java.lang.String)
-	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setMiddleName(java.lang.String)
-	 */
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setNameTypeCode(java.lang.String)
-	 */
 	public void setNameTypeCode(String nameTypeCode) {
 		this.nameTypeCode = nameTypeCode;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setSuffix(java.lang.String)
-	 */
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#setTitle(java.lang.String)
-	 */
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
-	 */
-	public String getEntityTypeCode() {
-		return entityTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
-	 */
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
 	}
 
 	/**

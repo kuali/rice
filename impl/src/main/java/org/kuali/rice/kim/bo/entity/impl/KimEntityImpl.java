@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.EntityFerpaPreferences;
+import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -55,7 +56,11 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
-	@OneToMany(targetEntity = EntityEntityTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityNameImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<EntityName> names = new TypedArrayList(EntityNameImpl.class);
+		
+	@OneToMany(targetEntity = EntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
 	protected List<EntityEntityType> entityTypes = new TypedArrayList(EntityEntityTypeImpl.class);
 
@@ -255,5 +260,25 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 			}
 		}
 		return null;
+	}
+
+	public List<EntityName> getNames() {
+		return this.names;
+	}
+
+	public void setNames(List<EntityName> names) {
+		this.names = names;
 	}	
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultName()
+	 */
+	public EntityName getDefaultName() {
+		return (EntityName)getDefaultItem( names );
+	}
+	
+	
+	
 }

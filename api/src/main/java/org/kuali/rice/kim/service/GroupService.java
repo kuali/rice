@@ -1,201 +1,126 @@
-/*
- * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.kuali.rice.kim.service;
 
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.dto.EntityDTO;
-import org.kuali.rice.kim.dto.GroupDTO;
-import org.kuali.rice.kim.dto.PersonDTO;
-import org.kuali.rice.kim.dto.PrincipalDTO;
-import org.kuali.rice.kim.dto.RoleDTO;
+import org.kuali.rice.kim.bo.group.GroupInfo;
 
-/**
- * Service API for accessing KIM Group services.  This contract should be used by all 
- * Kuali software which needs to leverage identity management features that require fine-grained
- * Group attributes. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- */
 public interface GroupService {
-    /**
-     * KIM service API method that returns a list of all Groups in the system
-     *  
-     * @return         List of all Groups in the system as GroupDTOs
+
+    /** Get all the groups for a given principal.
      * 
+     * This will include all groups directly assigned as well as those inferred
+     * by the fact that they are members of higher level groups.
      */
-    public List<GroupDTO> getAllGroups();
+    public List<GroupInfo> getGroupsForPrincipal(String principalId);
+
+    /**
+     * Get all the groups within a namespace for a given principal.
+     * 
+     * This is the same as the {@link #getGroupsForPrincipal(String)} method except that
+     * the results will be filtered by namespace after retrieval.
+     */
+    public List<GroupInfo> getGroupsForPrincipalByNamespace(String principalId, String namespaceCode);
+	
+    List<String> lookupGroupIds(Map<String, String> searchCriteria);
+    
+    GroupInfo getGroupInfo(String groupId);
+    
+    GroupInfo getGroupInfoByName(String namespaceCode, String groupName);
+
+    Map<String, GroupInfo> getGroupInfos(List<String> groupIds);
+    
+	/** 
+	 * Check whether the give principal is a member of the group.
+	 * 
+	 * This will also return true if the principal is a member of a groups assigned to this group.
+	 */
+	boolean isMemberOfGroup(String principalId, String groupId);
+
+	/** 
+	 * Check whether the give principal is a member of the group.
+	 * 
+	 * This will not recurse into contained groups.
+	 */
+	boolean isDirectMemberOfGroup(String principalId, String groupId);
+	
+	/**
+     * Get all the groups for the given principal.  Recurses into parent groups
+     * to provide a comprehensive list.
+     */
+	List<String> getGroupIdsForPrincipal(String principalId);
+
+	/**
+     * Get all the groups for the given principal in the given namespace.  Recurses into
+     *  parent groups to provide a comprehensive list.
+     */
+    List<String> getGroupIdsForPrincipalByNamespace(String principalId, String namespaceCode);
     
     /**
-     * KIM service API method that returns a collection of Groups in the system
-     *   
-     * @return         List of all Group names in the system
-     * 
+     * Get the groupIds in which the principal has direct membership only.
      */
-    public List<String> getAllGroupNames();
+    List<String> getDirectGroupIdsForPrincipal(String principalId);
+	
     
     /**
-     * KIM Group service API method that returns all Principal objects within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of PersonDTO objects
-     * 
+     * Check whether the group identified by groupMemberId is a member of the group
+     * identified by groupId.  This will recurse through all groups.
      */
-    public List<PrincipalDTO> getPrincipalMembers(String groupName);
+    boolean isGroupMemberOfGroup(String groupMemberId, String groupId);
+
+    boolean isGroupActive( String groupId );
     
     /**
-     * KIM Group service API method that returns all Principal names within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of Person objects
-     * 
+     * Get all the principals of the given group.  Recurses into contained groups
+     * to provide a comprehensive list.
      */
-    public List<String> getPrincipalMemberNames(String groupName);
+	List<String> getMemberPrincipalIds(String groupId);
+
+    /**
+     * Get all the principals directly assigned to the given group.
+     */
+	List<String> getDirectMemberPrincipalIds(String groupId);
+	
+	/**
+	 * Get all the groups contained by the given group.  Recurses into contained groups
+     * to provide a comprehensive list.
+	 */
+	List<String> getMemberGroupIds( String groupId );
+	
+    /**
+     * Get all the groups which are direct members of the given group.
+     */
+	List<String> getDirectMemberGroupIds( String groupId );
+	
+	/**
+     * Get the groups which are parents of the given group.
+     * 
+     * This will recurse into groups above the given group and build a complete
+     * list of all groups included above this group.
+     */
+    List<String> getParentGroupIds(String groupId);
     
     /**
-     * KIM Group service API method that returns all Person objects within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of PersonDTO objects
-     * 
+     * Get the groupIds which that are directly above this group.
      */
-    public List<PersonDTO> getPersonMembers(String groupName);
+    List<String> getDirectParentGroupIds(String groupId);
     
-    /**
-     * KIM Group service API method that returns all Person id within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of Person user names
-     * 
-     */
-    public List<Long> getPersonMemberIds(String groupName);
+
+	/**
+	 * Get all the attributes of the given group.
+	 */
+	Map<String,String> getGroupAttributes( String groupId );
+	
+	
+	GroupInfo createGroup(GroupInfo groupInfo);
     
-    /**
-     * KIM Group service API method that returns all Entity objects within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of EntityDTO objects
-     * 
-     */
-    public List<EntityDTO> getEntityMembers(String groupName);
+    GroupInfo updateGroup(String groupId, GroupInfo groupInfo);
     
-    /**
-     * KIM Group service API method that returns all Entity id within either a given Group, 
-     * or within any nested groups within that Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       unique (i.e. not replicated) List of Entity user names
-     * 
-     */
-    public List<Long> getEntityMemberIds(String groupName);
+    boolean addGroupToGroup(String childId, String parentId);
     
-    /**
-     * KIM Group service API method that returns all Group objects that are considered members 
-     * of a given group or within any nested Groups of those Groups - this is recursive.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of GroupDTO objects considered members of the group
-     * 
-     */
-    public List<GroupDTO> getGroupMembers(String groupName);
+    boolean removeGroupFromGroup(String childId, String parentId);
     
-    /**
-     * KIM Group service API method that returns all Group names that are considered members 
-     * of a given group or within any nested Groups of those Groups - this is recursive.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of Group names considered members of the group
-     * 
-     */
-    public List<String> getGroupMemberNames(String groupName);
+    boolean addPrincipalToGroup(String principalId, String groupId);
     
-    /**
-     * KIM Group service API method that returns all Group objects that are considered parent groups 
-     * of a given group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of GroupDTO objects considered parents of the group
-     * 
-     */
-    public List<GroupDTO> getGroupParents(String groupName);
-    
-    /**
-     * KIM Group service API method that returns all Group names that are considered parents 
-     * of a given group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of Group names considered parents of the group
-     * 
-     */
-    public List<String> getGroupParentNames(String groupName);
-    
-    /**
-     * KIM Group service API method that returns all Role objects associated 
-     * with a given Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of RoleDTO objects associated with the group
-     * 
-     */
-    public List<RoleDTO> getRolesForGroup(String groupName);
-    
-    /**
-     * KIM Group service API method that returns all Role names associated 
-     * with a given Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of Role names associated with the group
-     * 
-     */
-    public List<String> getRoleNamesForGroup(String groupName);
-    
-    /**
-     * KIM Group service API method that determines if a given group possesses all
-     * group attributes 
-     * 
-     * @param   groupName            name identifying Group
-     * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     * @return                       true if the Group possesses all group attributes 
-     * 
-     */
-    public boolean hasAttributes(String groupName, Map<String, String> groupAttributes);
-    
-    /**
-     * KIM Group service API method that returns all Group objects that possess
-     * a given set of group attributes 
-     * 
-     * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     * @return                       all GroupDTO objects that possess set of group attributes 
-     * 
-     */
-    public List<GroupDTO> getGroupsWithAttributes(Map<String, String> groupAttributes);
-    
-    /**
-     * KIM Group service API method that returns associated List of names for all Group objects 
-     * that possess a given set of group attributes 
-     * 
-     * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     * @return                       names of all Group objects that possess set of group attributes 
-     * 
-     */
-    public List<String> getGroupNamesWithAttributes(Map<String, String> groupAttributes);
+    boolean removePrincipalFromGroup(String principalId, String groupId);
 }

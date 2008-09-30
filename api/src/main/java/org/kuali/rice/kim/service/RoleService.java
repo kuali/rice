@@ -18,201 +18,116 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.dto.EntityDTO;
-import org.kuali.rice.kim.dto.GroupDTO;
-import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
-import org.kuali.rice.kim.dto.PermissionDTO;
-import org.kuali.rice.kim.dto.PersonDTO;
-import org.kuali.rice.kim.dto.PrincipalDTO;
-import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
-import org.kuali.rice.kim.dto.RoleDTO;
+import org.kuali.rice.kim.bo.role.KimRoleInfo;
 
 /**
- * Service API for accessing KIM Role services.  This contract should be used by all 
- * Kuali software which needs to leverage identity management features that require fine-grained
- * Role attributes. 
+ * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
 public interface RoleService {
-    /**
-     * KIM service API method that returns a complete collection of Role objects for the application.
-     * 
-     * @return         List of RoleDTO objects for the application
-     * 
-     */
-    public List<RoleDTO> getAllRoles();
+    // --------------------
+    // Role Data
+    // --------------------
+
+	/**
+	 * Get the KIM Role object with the given ID.
+	 * 
+	 * If the roleId is blank, this method returns <code>null</code>.
+	 */
+	KimRoleInfo getRole( String roleId );
+
+	/** Get the KIM Role object with the unique combination of namespace, component,
+	 * and role name.
+	 * 
+	 * If any parameter is blank, this method returns <code>null</code>.
+	 */
+    KimRoleInfo getRoleByName( String namespaceCode, String roleName );
+	
+	/** 
+	 * Return the Role ID for the given unique combination of namespace,
+	 * component and role name.
+	 */
+	String getRoleIdByName( String namespaceCode, String roleName );
+	
+
+	/**
+	 * Get the complete list of all roles which imply the given role.  This includes the role passed in.
+	 * 
+	 * I.e., where the given role is contained within a higher level role.
+	 */
+    List<String> getImplyingRoleIds( String roleId );    
     
-    /**
-     * KIM service API method that returns a complete collection of Role names for the application.
-     * 
-     * @return         List of Role names for the application
-     * 
-     */
-    public List<String> getAllRoleNames();
+	/**
+	 * Get all the roles implied by the given role.  This method will recurse down
+	 * through all role relationships to return a complete list of all roles that
+	 * a principal would have if they have the given role.
+	 * 
+	 * An empty list will be returned if the given role is invalid.
+	 * If the role has no contained roles, then this method will return a 
+	 * one-element list containing the given role.
+	 */
+    List<String> getImpliedRoleIds( String roleId );
     
-    /**
-     * KIM service API method that returns a RoleDTO object.
-     * @param roleName
-     * @return A RoleDTO object
-     * 
-     */
-    public RoleDTO getRole(String roleName);
+    boolean isRoleActive( String roleId );
+
+    // --------------------
+    // Role Membership Checks
+    // --------------------
+
+	/**
+	 * Return a list of all the principal IDs who have the passed role.  This will include
+	 * all principals assigned to roles which are contained within the given role.  It will
+	 * also have those principals who belong to groups (and their sub-groups)
+	 * which are assigned to this role. 
+	 */
+    List<String> getPrincipalIdsWithRole(String roleId);       
     
-    /**
-     * KIM service API method that returns a RoleDTO object.
-     * @param roleId
-     * @return A RoleDTO object
-     * 
-     */
-    public RoleDTO getRole(Long roleId);
+	/**
+	 * Return a list of all the principal IDs who have the passed role where the 
+	 * qualification matches the qualifier on their assignment to this role.  
+	 * 
+	 * The qualification is only matched against the role listed.  So, only principals
+	 * assigned to this role or in groups assigned to this role which match the
+	 * qualification will be returned.  
+	 */
+    List<String> getPrincipalIdsWithQualifiedRole(String roleId, Map<String,String> qualification);
     
-    /**
-     * KIM Role service API method that returns all PrincipalDTO objects within an application
-     * that belong to a given Role.
-     * 
-     * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all PrincipalDTO objects that are assigned to the Role
-     * 
-     */
-    public List<PrincipalDTO> getPrincipalsWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns principal names for all Principal objects 
-     * within an application that belong to a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of principal names associated with Principal objects 
-     *                               assigned to the Role
-     * 
-     */
-    public List<String> getPrincipalNamesWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns all PersonDTO objects within an application
-     * that belong to a given Role.
-     * 
-     * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all PersonDTO objects that are assigned to the Role
-     * 
-     */
-    public List<PersonDTO> getPersonsWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns person ids for all Person objects 
-     * within an application that belong to a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of person ids associated with Person objects 
-     *                               assigned to the Role
-     * 
-     */
-    public List<Long> getPersonIdsWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns all EntityDTO objects within an application
-     * that belong to a given Role.
-     * 
-     * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all EntityDTO objects that are assigned to the Role
-     * 
-     */
-    public List<EntityDTO> getEntitysWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns entity ids for all Entity objects 
-     * within an application that belong to a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of entity ids associated with Entity objects 
-     *                               assigned to the Role
-     * 
-     */
-    public List<Long> getEntityIdsWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns all GroupDTO objects within an application
-     * that have been assigned a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of all GroupDTO objects assigned to the Role
-     * 
-     */
-    public List<GroupDTO> getGroupsWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns group names identifying all Group objects within an 
-     * application that have been assigned a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of all Group names assigned to the Role
-     * 
-     */
-    public List<String> getGroupNamesWithRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns all PermissionDTO objects within an application
-     * that satisfy a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of all PermissionDTO objects that satisfy the Role
-     * 
-     */
-    public List<PermissionDTO> getPermissionsForRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns permissions names identifying all Permission objects within 
-     * an application that satisfy a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of all Permission names that satisfy the Role
-     * 
-     */
-    public List<String> getPermissionNamesForRole(String roleName);
-    
-    /**
-     * KIM Role service API method that returns all PrincipalQualifiedRoleDTO objects within an application
-     * that associate with a given Role.
-     * 
-     * @param   roleName             name of KIM Role
-     * @return                       List of all PrincipalQualifiedRoleDTO objects associated with the Role
-     * 
-     */
-    public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName);
+    // TODO: leave commented out unless we have a use case for checking groups in this way
+//    List<String> getGroupIdsWithRole(String roleId);
+//    List<String> getGroupIdsWithQualifiedRole(String roleId, Map<String,String> qualification);
 
     /**
-     * KIM Role service API method that returns all PrincipalQualifiedRoleDTO objects within an application
-     * that match a given Role and also match List of qualified role attributes.
-     * 
-     * @param   roleName                 String that identifies a unique KIM Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a person
-     * @return                           List of all PrincipalQualifiedRoleDTO objects that match 
-     *                                   the role and qualified role attributes
-     * 
+     * Check whether the principal has the given unqualified role.
      */
-     public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName, 
-	     Map<String, String> qualifiedRoleAttributes);
-    /**
-     * KIM Role service API method that returns all GroupQualifiedRoleDTO objects within an application
-     * that associate with a given Role.
-     * 
-     * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all GroupQualifiedRoleDTO objects associated with the Role 
-     */
-    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName);
-    /**
-     * KIM Role service API method that returns all GroupQualifiedRoleDTO objects within an application
-     * that match a given Role and also match List of qualified role attributes.
-     * 
-     * @param   roleName                 String that identifies a unique KIM Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a group
-     * @return                           List of all GroupQualifiedRoleDTO objects that match 
-     *                                   the role and qualified role attributes
-     * 
-     */
-    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName, 
-	    Map<String, String> qualifiedRoleAttributes);
+    boolean principalHasRole(String principalId, String roleId);
 
+    /** 
+     *  Check whether the principal has the given role within the context identified
+     *  by the passed qualification.
+     */
+    boolean principalHasQualifiedRole(String principalId, String roleId, Map<String,String> qualification);
+    
+    
+    /**
+     * Return the list of all roles that are assigned to a given principal.
+     * 
+     * This list will include the roles which are directly assigned to the
+     * principal or to a group to which they belong and all contained roles
+     * under those roles.
+     */
+    List<String> getRoleIdsForPrincipal(String principalId);
+    List<String> getRoleIdsInNamespaceForPrincipal(String principalId, String namespaceCode);
+    List<String> getRoleIdsMatchingQualification( String principalId, Map<String,String> qualification );
+    
+    // --------------------
+    // Persistence Methods
+    // --------------------
+        
+    void saveRole(KimRoleInfo role);   
+
+    void assignQualifiedRoleToPrincipal(String principalId, String roleId, Map<String,String> qualifier);
+    void assignQualifiedRoleToGroup(String groupId, String roleId, Map<String,String> qualifier);
+    
 }

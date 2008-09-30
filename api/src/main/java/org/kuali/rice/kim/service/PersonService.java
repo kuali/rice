@@ -15,115 +15,118 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.dto.PersonAttributeDTO;
-import org.kuali.rice.kim.dto.PersonDTO;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
- * Service API for accessing KIM Person services.  This contract should be used by all 
- * Kuali software which needs to leverage identity management features that require fine-grained
- * Person attributes. 
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
-public interface PersonService {
+public interface PersonService<T extends Person> {
+
+	/**
+	 * Retrieve a single Person object by Principal ID.
+	 */
+	T getPerson( String principalId );
+	
+	/**
+	 * Retrieve a person by an arbitrary external identifier.  This method could
+	 * potentially return multiple results as there is no guarantee of uniqueness
+	 * for external identifiers.
+	 * 
+	 * @param externalIdentifierTypeCode Type of external identifier to search for.
+	 * @param externalId The external identifier.
+	 * @return List of Person objects.
+	 */
+	List<T> getPersonByExternalIdentifier( String externalIdentifierTypeCode, String externalId );
+	
+	/**
+	 * Gets a single Person by their principal name (user ID).
+	 */
+	T getPersonByPrincipalName( String principalName );
+	
+	/**
+	 * Perform an unbounded search for person records.
+	 */
+	List<? extends Person> findPeople( Map<String, String> criteria );
+
+	/**
+	 * Perform a Person lookup.  If bounded, it will follow the configured KNS lookup limit.
+	 */
+	List<? extends Person> findPeople( Map<String, String> criteria, boolean unbounded );
+	
+	/**
+	 * Check whether the given person belongs to the given group.  This method will do deep inspection
+	 * (through the group service) of contained workgroups and return true if the user is in any of them.
+	 * 
+	 * @return <b>true</b> if the user is in the group or sub groups.  *false* if any parameter
+	 * is null or the group does not exist.
+	 */
+	boolean isMemberOfGroup( Person person, String namespaceCode, String groupName );
+
+	/**
+	 * Check whether the given person belongs to the given group.  This method will do deep inspection
+	 * (through the group service) of contained workgroups and return true if the user is in any of them.
+	 * 
+	 * @return <b>true</b> if the user is in the group or sub groups.  *false* if any parameter
+	 * is null or the group does not exist.
+	 */
+	boolean isMemberOfGroup( Person person, String groupId );
+	
+	/** Get all the groups to which a Person belongs within a given namespace.
+	 *  If the namespaceCode is null, then all namespaces are searched.
+	 *  
+	 *  @return List of KimGroup objects.  List will be empty if the Person object 
+	 *  is null or the person does not belong to any groups within the given namespace.
+	 */
+	List<? extends KimGroup> getPersonGroups( Person person, String namespaceCode );
+
+	/** Get all the groups to which a Person belongs across all namespaces.
+	 *  
+	 *  @return List of KimGroup objects.  List will be empty if the Person object 
+	 *  is null or the person does not belong to any groups.
+	 */
+	List<? extends KimGroup> getPersonGroups( Person person );
+		
+	/**
+	 * Get the class object which points to the class used by the underlying implementation.
+	 * 
+	 * This can be used by implementors who may need to construct Person objects without wishing to bind their code
+	 * to a specific implementation.
+	 */
+	Class<? extends Person> getPersonImplementationClass();
+	
+	/**
+	 * Get the entityTypeCode that is associated with a Person.  This will determine
+	 * where EntityType-related data is pulled from within the KimEntity object.
+	 */
+	String getPersonEntityTypeCode();
+	
+	/**
+     * This method takes a map on its way to populate a business object and replaces all 
+     * user identifiers with their corresponding universal users
+	 */
+	Map<String, String> resolvePrincipalNamesToPrincipalIds( BusinessObject businessObject, Map<String, String> fieldValues );
+	
     /**
-     * KIM service API method that returns a complete collection of Person objects for the application.
-     * 
-     * @return         List of Person objects for the application
-     * 
+     * Compares the Principal ID passed in with that in the Person object.  If they are the same, it returns the
+     * original object.  Otherwise, it pulls the Person from KIM based on the sourcePrincipalId.
      */
-    public List<PersonDTO> getAllPersons();
-    
-    /**
-     * KIM service API method that returns a complete collection of Person ids for the 
-     * application.
-     * 
-     * @return         List of Person ids for the application
-     * 
-     */
-    public List<Long> getAllPersonIds();
-    
-    /**
-     * KIM Person service API method that determines if a given user is member of a given
-     * group.
-     * 
-     * @param   personId             personId uniquely identifying a KIM Person
-     * @param   groupName            name identifying a unique Group
-     * @return                       boolean indicating if Person is member of Group
-     * 
-     */
-    public boolean isMemberOfGroup(Long personId, String groupName);
-    
-    /**
-     * KIM Person service API method that retrieves all Person Attribute DTOs for a given 
-     * person, and for a given Namespace.
-     * 
-     * @param personId               personId uniquely identifying a KIM Person
-     * @param namespaceName          the associated namespace to scope the attributes to
-     * @return                       A HashMap - the key being the name of the attribute, the 
-     *                               value being the actual PersonAttributeDTO object
-     */
-    public HashMap<String, PersonAttributeDTO> getPersonAttributesForNamespace(Long personId, String namespaceName);
-    
-    /**
-     * KIM Person service API method that retrieves all Person Attribute DTOs for a given 
-     * person, grouping them by Namespace.
-     * 
-     * @param personId               personId uniquely identifying a KIM Person
-     * @return                       A HashMap - the key being the name of the Namespace, the 
-     *                               value being a List of the actual PersonAttributeDTO objects
-     */
-    public HashMap<String, List<PersonAttributeDTO>> getPersonAttributesByNamespace(Long personId);
-    
-    /**
-     * KIM Person service API method that determines if a given user possesses all given Person
-     * attributes.
-     * 
-     * @param   personId             personId uniquely identifying a KIM Person
-     * @param   personAttributes     Map<String, String> of role attribute name/value pairs
-     *                               to match a Person
-     * @param   namespaceName        the associated namespace to scope the attributes to
-     * @return                       boolean indicating if Person possesses all given attributes
-     * 
-     */
-    public boolean hasAttributes(Long personId, Map<String, String> personAttributes, String namespaceName);
-    
-    /**
-     * KIM Person service API method that retrieves the value for a given person attribute.
-     * 
-     * @param   personId             Person id uniquely identifying a KIM Person
-     * @param   attributeName        Name of attribute
-     * @param   namespaceName        The associated namespace to scope the attribute to 
-     * @return                       String value associated with attribute
-     * 
-     */
-    public String getAttributeValue(Long personId, String attributeName, String namespaceName);
-    
-    /**
-     * KIM Person service API method that returns all PersonDTO objects matching all given Person
-     * attributes.
-     * 
-     * @param   personAttributes     Map<String, String> of role attribute name/value pairs
-     *                               to qualify a Person
-     * @param   namespaceName        The associated namespace to scope the attributes to
-     * @return                       List of PersonDTO objects possessing all given person attributes
-     * 
-     */
-    public List<PersonDTO> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName);
-    
-    /**
-     * KIM Person service API method that returns associated List of usernames for all Person objects
-     * matching all given Person attributes.
-     * 
-     * @param   personAttributes     Map<String, String> of role attribute name/value pairs
-     *                               to qualify a Person
-     * @param   namespaceName        The associated namespace to scope the attribute to
-     * @return                       boolean indicating if Person possesses all given Role attributes
-     * 
-     */
-    public List<Long> getPersonIdsWithAttributes(Map<String, String> personAttributes, String namespaceName);
+	Person updatePersonIfNecessary(String sourcePrincipalId, Person currentPerson );
+	
+	/**
+	 * Checks whether the given set of search criteria contain any non-blank properties which need to be applied against
+	 * a related Person object.  This would be used by the lookup service to determine if special steps need
+	 * to be taken when performing a search.
+	 */
+	boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues);
+	
+	boolean canAccessAnyModule( Person person );
+	
 }

@@ -70,10 +70,9 @@ public class ExportViewHelper {
 		List<Row> rowList = tableModel.getRowListFull();
 		for (Row row : rowList) {
 			ResultRow resultRow = (ResultRow)row.getObject();
-			if (resultRow.getBusinessObject() == null) {
-				throw new KualiException("Failed to locate a BusinessObject on the given lookup ResultRow");
+			if (resultRow.getBusinessObject() != null) {
+				businessObjects.add(resultRow.getBusinessObject());
 			}
-			businessObjects.add(resultRow.getBusinessObject());
 		}
 		return businessObjects;
 	}
@@ -95,8 +94,8 @@ public class ExportViewHelper {
 				throw new KualiException("Failed to load export class: " + businessObjectEntry.getExporterClass());
 			}
 			List<String> supportedFormats = exporter.getSupportedFormats(businessObjectEntry.getBusinessObjectClass());
-			if (supportedFormats.contains(exportFormat)) {		
-				exporter.export(businessObjectEntry.getBusinessObjectClass(), businessObjects, exportFormat, outputStream);
+			if (supportedFormats.contains(exportFormat)) {
+				exporter.export(businessObjectEntry.getBusinessObjectClass(), getBusinessObjects(), exportFormat, outputStream);
 				return true;
 			}
 		}

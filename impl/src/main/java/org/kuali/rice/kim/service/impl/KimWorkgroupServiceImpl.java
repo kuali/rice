@@ -142,6 +142,10 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		for (String id : getIdentityManagementService().getMemberGroupIds(kimGroup.getGroupId())) {
 			members.add(convertToWorkgroup(getIdentityManagementService().getGroup(id)));
 		}
+		for (String id: getIdentityManagementService().getGroupMemberPrincipalIds(kimGroup.getGroupId())) {
+			Person person = getPersonService().getPerson(id);
+			members.add(KimUserServiceImpl.convertPersonToWorkflowUser(person));
+		}
 		workgroup.setMembers(members);
 		workgroup.setVersionNumber(0);
 		workgroup.setWorkgroupId(new Long(kimGroup.getGroupId()));

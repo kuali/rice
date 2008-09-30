@@ -124,7 +124,7 @@ public class KimUserServiceImpl extends BaseUserService {
 		return workflowUsers;
 	}
 
-	private WorkflowUser convertPersonToWorkflowUser(Person person) {
+	public static WorkflowUser convertPersonToWorkflowUser(Person person) {
 		BaseWorkflowUser user = new org.kuali.rice.kns.workflow.bo.WorkflowUser();
 		user.setWorkflowUserId(new WorkflowUserId(person.getPrincipalId()));
 		user.setLockVerNbr(1);

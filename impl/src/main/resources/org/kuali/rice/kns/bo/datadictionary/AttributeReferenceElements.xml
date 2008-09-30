@@ -14,6 +14,7 @@
         <ref bean="AttributeReferenceElements-extendedTextArea" />
       </list>
     </property>
+    <property name="objectLabel" value="Attribute Reference Elements"/>
   </bean>
 
 <!-- Attribute Definitions -->

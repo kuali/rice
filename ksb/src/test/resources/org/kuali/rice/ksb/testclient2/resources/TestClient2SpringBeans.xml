@@ -69,48 +69,46 @@
 				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
-		<property name="modules">
-			<list>
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="http://localhost:${ksb.client2.port}/TestClient2/remoting" />
-					<property name="services">
-						<list>
-							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-								<property name="service">
-									<ref bean="soapService" />
-								</property>
-								<property name="localServiceName" value="soap-cluster-test" />
-								<property name="serviceNameSpaceURI" value="testNameSpace" />
-								<property name="priority" value="3" />
-								<property name="retryAttempts" value="1" />
-								<property name="busSecurity" value="false"></property>
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testServiceFailover" />
-								</property>
-								<property name="localServiceName" value="testServiceFailover" />
-								<property name="serviceNameSpaceURI" value="KEW" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service" ref="echoService" />
-								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
-								<property name="localServiceName" value="echoService" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service" ref="chainedRequestService" />
-								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
-								<property name="localServiceName" value="chainedRequestService2" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service" ref="sharedQueue" />
-								<property name="localServiceName" value="sharedQueue" />
-								<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
-							</bean>
-						</list>
-					</property>
-				</bean>
-			</list>
+		<property name="ksbConfigurer">
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+				<property name="serviceServletUrl" value="http://localhost:${ksb.client2.port}/TestClient2/remoting" />
+				<property name="services">
+					<list>
+						<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+							<property name="service">
+								<ref bean="soapService" />
+							</property>
+							<property name="localServiceName" value="soap-cluster-test" />
+							<property name="serviceNameSpaceURI" value="testNameSpace" />
+							<property name="priority" value="3" />
+							<property name="retryAttempts" value="1" />
+							<property name="busSecurity" value="false"></property>
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testServiceFailover" />
+							</property>
+							<property name="localServiceName" value="testServiceFailover" />
+							<property name="serviceNameSpaceURI" value="KEW" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service" ref="echoService" />
+							<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
+							<property name="localServiceName" value="echoService" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service" ref="chainedRequestService" />
+							<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
+							<property name="localServiceName" value="chainedRequestService2" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service" ref="sharedQueue" />
+							<property name="localServiceName" value="sharedQueue" />
+							<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
+						</bean>
+					</list>
+				</property>
+			</bean>
 		</property>
 	</bean>
 </beans>

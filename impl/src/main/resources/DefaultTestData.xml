@@ -18,7 +18,7 @@
 		</property>
 	</bean>
 
-	<bean id="komDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
+	<bean id="testDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
 	
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
 		<property name="transactionManager">
@@ -49,18 +49,4 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
-		<property name="interceptorNames">
-			<list>
-				<idref local="matchAllTxInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>				
-				<idref local="komService" />
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="komService" class="org.kuali.rice.kom.service.impl.KOMServiceImpl" />
 </beans>

@@ -21,7 +21,7 @@ package org.kuali.rice.kns.exception;
  * 
  * 
  */
-public class DuplicateKeyException extends RuntimeException {
+public class DuplicateKeyException extends KualiException {
 
     private static final long serialVersionUID = 6111570264943143198L;
 

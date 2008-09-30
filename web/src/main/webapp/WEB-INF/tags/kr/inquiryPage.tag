@@ -46,7 +46,6 @@
 		<c:forEach items="${KualiForm.inquiryPrimaryKeys}" var="primaryKey">
 			<input type="hidden" name="previousPkValue_${primaryKey.key}" value="<c:out value="${primaryKey.value}"/>"/>
 		</c:forEach>
-		<html:hidden property="encryptedValues"/>
 		<c:forEach items="${KualiForm.inactiveRecordDisplay}" var="entry">
 			<input type="hidden" name="${Constants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX}${entry.key}" value="${entry.value}"/>
 		</c:forEach>

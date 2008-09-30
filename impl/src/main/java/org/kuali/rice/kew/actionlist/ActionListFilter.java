@@ -53,6 +53,7 @@ public class ActionListFilter implements Serializable {
     private Date lastAssignedDateTo;
     private boolean excludeLastAssignedDate;
     private String delegatorId = "";
+    private String primaryDelegateId = "";
     private boolean excludeDelegatorId;
     private String delegationType;
     private boolean excludeDelegationType;
@@ -160,6 +161,14 @@ public class ActionListFilter implements Serializable {
     public void setDelegatorId(String delegatorId) {
         this.delegatorId = delegatorId;
     }
+
+    public String getPrimaryDelegateId() {
+		return this.primaryDelegateId;
+	}
+
+    public void setPrimaryDelegateId(String primaryDelegateId) {
+		this.primaryDelegateId = primaryDelegateId;
+	}
 
     public String getWorkgroupName() {
         return workgroupName;

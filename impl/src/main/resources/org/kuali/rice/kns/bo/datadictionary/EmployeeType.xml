@@ -24,6 +24,7 @@
         <ref bean="EmployeeType-objectId" />
       </list>
     </property>
+    <property name="objectLabel" value="Employee Type" />
   </bean>
 
 <!-- Attribute Definitions -->

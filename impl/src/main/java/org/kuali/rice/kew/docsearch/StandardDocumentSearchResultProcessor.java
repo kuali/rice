@@ -257,7 +257,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		if (documentType != null) {
             List<Field> allFields = new ArrayList<Field>();
             for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
-                List<Row> searchRows = searchableAttribute.getSearchingRows();
+                List<Row> searchRows = searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
                 if (searchRows == null) {
                     continue;
                 }
@@ -354,7 +354,11 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			}
 		}
 		if (fieldValue != null) {
-		    returnValue = new KeyValueSort(columnKeyName,fieldValue.htmlValue,fieldValue.userDisplayValue,(sortFieldValue != null) ? sortFieldValue : fieldValue, attributeValue);
+			String userDisplaySortValue = fieldValue.userDisplayValue;
+			if (StringUtils.isBlank(userDisplaySortValue)) {
+				userDisplaySortValue = fieldValue.htmlValue;
+			}
+		    returnValue = new KeyValueSort(columnKeyName,fieldValue.htmlValue,fieldValue.userDisplayValue,(sortFieldValue != null) ? sortFieldValue : userDisplaySortValue, attributeValue);
 		}
 		return returnValue;
 	}

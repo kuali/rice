@@ -19,7 +19,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.SetUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -32,6 +35,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -107,7 +111,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         this.getPersistenceBrokerTemplate().store(actionItem);
     }
 
-    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws KEWUserNotFoundException {
+    public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException {
         Criteria notNullWorkflowCriteria = new Criteria();
         notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria();
@@ -117,9 +121,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         orCriteria.addOrCriteria(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria();
         criteria.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-        if (delegationType != null && !"".equals(delegationType)) {
-            criteria.addEqualTo("delegationType", delegationType);
-        }
+        criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
 
@@ -135,6 +137,42 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 if (!delegators.containsKey(workgroupId)) {
                     delegators.put(workgroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)));
                 }
+            }
+        }
+        return delegators.values();
+    }
+
+    public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException {
+    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+        Criteria orCriteria = new Criteria();
+        Criteria delegatorWorkflowIdCriteria = new Criteria();
+        delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+        if (CollectionUtils.isNotEmpty(workgroupIds)) {
+            Criteria delegatorWorkgroupCriteria = new Criteria();
+            delegatorWorkgroupCriteria.addIn("delegatorWorkgroupId", workgroupIds);
+            orCriteria.addOrCriteria(delegatorWorkgroupCriteria);
+            orCriteria.addOrCriteria(delegatorWorkflowIdCriteria);
+        }
+        else {
+            orCriteria.addAndCriteria(delegatorWorkflowIdCriteria);
+        }
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+        criteria.addAndCriteria(orCriteria);
+        ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria, true);
+
+        query.setAttributes(new String[]{"workflowId"});
+        Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
+        Iterator iterator = this.getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+        while (iterator.hasNext()) {
+            Object[] ids = (Object[]) iterator.next();
+            if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
+                delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
+//            } else if (ids[1] != null) {
+//                Long workgroupId = new Long(ids[1].toString());
+//                if (!delegators.containsKey(workgroupId)) {
+//                    delegators.put(workgroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)));
+//                }
             }
         }
         return delegators.values();

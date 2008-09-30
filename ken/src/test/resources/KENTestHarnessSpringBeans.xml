@@ -16,21 +16,25 @@
         <property name="transactionManager" ref="jotm" />
         <property name="userTransaction" ref="jotm" />
         <property name="rootConfig" ref="config" />
-        <property name="modules">
-            <list>
+		<property name="ksbConfigurer">
             <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
                     <property name="serviceServletUrl" value="${serviceServletUrl}" />
-                </bean>
-                <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
-                    <property name="testMode" value="true"/>
-                </bean>
-                <bean class="org.kuali.rice.kew.config.KEWConfigurer">
-                    <property name="clientProtocol" value="local" />
-                </bean>
-                <bean class="org.kuali.rice.ken.config.KENConfigurer">
-                    <property name="testMode" value="true"/>
-                </bean>
-            </list>
+            </bean>
+        </property>
+		<property name="kcbConfigurer">
+            <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
+                <property name="testMode" value="true"/>
+            </bean>
+        </property>
+		<property name="kewConfigurer">
+            <bean class="org.kuali.rice.kew.config.KEWConfigurer">
+                <property name="clientProtocol" value="local" />
+            </bean>
+        </property>
+		<property name="kenConfigurer">
+            <bean class="org.kuali.rice.ken.config.KENConfigurer">
+                <property name="testMode" value="true"/>
+            </bean>
         </property>
     </bean>
 </beans>

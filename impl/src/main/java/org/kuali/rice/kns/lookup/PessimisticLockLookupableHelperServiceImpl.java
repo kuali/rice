@@ -35,36 +35,38 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This class is the lookup helper for {@link org.kuali.rice.kns.document.authorization.PessimisticLock} objects 
- * 
+ * This class is the lookup helper for {@link org.kuali.rice.kns.document.authorization.PessimisticLock} objects
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockLookupableHelperServiceImpl.class);
-    
+
     private static final long serialVersionUID = -5839142187907211804L;
-    
+
     private List<Row> localRows;
-    
+
     /**
      * Hides the applicable links when the PessimisticLock is not owned by the current user
-     * 
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
+     *
+     * @see org.kuali.rice.kns.lookup.LookupableHelperService#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List, java.util.List pkNames)
      */
     @Override
-    public String getActionUrls(BusinessObject businessObject) {
+    public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         PessimisticLock lock = (PessimisticLock)businessObject;
         if ( (lock.isOwnedByUser(GlobalVariables.getUserSession().getUniversalUser())) || (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(GlobalVariables.getUserSession().getUniversalUser())) ) {
-            return getMaintenanceUrl(businessObject, KNSConstants.DELETE_METHOD);
+            List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+            anchorHtmlDataList.add(getUrlData(businessObject, KNSConstants.DELETE_METHOD, pkNames));
+            return anchorHtmlDataList;
         } else {
-            return "";
+            return super.getEmptyActionUrls();
         }
     }
 
     /**
      * This overridden method checks whether the user is an admin user according to {@link PessimisticLockService#isPessimisticLockAdminUser(UniversalUser)} and if the user is not an admin user the user field is set to Read Only and the lookup field
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
      */
     @Override
@@ -97,7 +99,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
 
     /**
      * This method implementation is used to search for objects
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSearchResults(java.util.Map)
      */
     @Override
@@ -123,5 +125,5 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         }
         return searchResults;
     }
-    
+
 }

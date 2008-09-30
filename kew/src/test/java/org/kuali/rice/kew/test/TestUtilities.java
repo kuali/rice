@@ -43,6 +43,7 @@ import org.apache.commons.lang.SystemUtils;
 import org.apache.ojb.broker.PBKey;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -130,7 +131,8 @@ public class TestUtilities {
 //	}
 
     public static TransactionTemplate getTransactionTemplate() {
-		return (TransactionTemplate)SpringLoader.getInstance().getBean(KEWServiceLocator.TRANSACTION_TEMPLATE);
+		return (TransactionTemplate)
+					RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(KEWServiceLocator.TRANSACTION_TEMPLATE);
 	}
 
     public static void verifyTestEnvironment(DataSource dataSource) {

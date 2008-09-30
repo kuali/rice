@@ -23,8 +23,6 @@
 
     <param name="kns.test.port">9916</param>
 
-    <param name="rice.user">true</param>
-
 	<param name="log4j.reload.minutes">5</param>
 	<param name="log4j.settings.path">classpath:log4j.properties</param>
 

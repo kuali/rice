@@ -60,7 +60,7 @@ public class KualiLookupableTest extends TestBase {
         lookupableImpl.setDocFormKey("8888888");
         lookupableImpl.setBackLocation(TestConstants.BASE_PATH + "ib.do");
 
-        String returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable");
+        String returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable").constructCompleteHtmlTag();
 
         // check url has our doc form key
         checkURLContains("Lookup return url does not contain docFormKey", KNSConstants.DOC_FORM_KEY + "=8888888", returnUrl);
@@ -73,7 +73,7 @@ public class KualiLookupableTest extends TestBase {
         // check that field conversions are working correctly for keys
         fieldConversions.put("number", "myAccount[0].chartCode");
 
-        returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable");
+        returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable").constructCompleteHtmlTag();
 
         // check keys have been mapped properly
         checkURLContains("Lookup return url does not map key", "myAccount[0].chartCode=a1", returnUrl);

@@ -19,6 +19,7 @@
         <ref bean="DocumentHeader-objectId" />
       </list>
     </property>
+    <property name="objectLabel" value="Doucment Header" />
   </bean>
 
 <!-- Attribute Definitions -->

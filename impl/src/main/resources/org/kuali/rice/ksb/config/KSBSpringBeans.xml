@@ -25,23 +25,18 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
-
-	<bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
-
-	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
-		<property name="transactionManager" ref="jtaTransactionManager" />
-	</bean>
-
-	<bean id="transactionManager" class="org.kuali.rice.core.config.spring.PlatformTransactionManagerFactoryBean" lazy-init="true">
-		<property name="userTransaction">
-			<ref local="userTransaction" />
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	
+	<bean id="ksbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>ksbMessageDataSource</value>
+				<value>ksbRegistryDataSource</value>
+			</list>
 		</property>
-		<property name="transactionManager">
-			<ref local="jtaTransactionManager" />
-		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml" />
 	</bean>
-
+	
 	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
@@ -143,8 +138,11 @@
 
 	<bean id="enMessageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />
 
-	<bean id="enServiceInvoker" class="org.kuali.rice.ksb.messaging.RemotedServiceRegistryImpl" lazy-init="true" />
-
+	<bean id="enServiceInvoker" class="org.kuali.rice.ksb.messaging.RemotedServiceRegistryImpl" lazy-init="true" >
+		<property name="enRoutingTableService" ref="enRoutingTableService"></property>
+		<property name="serviceLocator" ref="ksbContextServiceLocator"></property>
+	</bean>
+	
 	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.service.impl.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDAO">
 			<bean class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl">
@@ -154,6 +152,7 @@
 	</bean>
 
 	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.service.impl.ServiceRegistryImpl" lazy-init="true">
+		<property name="serviceLocator" ref="ksbContextServiceLocator"></property>
 		<property name="dao">
 			<bean class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
@@ -297,5 +296,17 @@
   -->
   
   <!-- END JPA CONFIGURATION -->
+
+	<bean id="ksbContextServiceLocator" class="org.kuali.rice.ksb.service.KSBContextServiceLocator">
+		<property name="services">
+			<map>
+				<entry key="enMessageHelper"><ref bean="enMessageHelper"/></entry>
+				<entry key="enThreadPool"><ref bean="enThreadPool"/></entry>
+				<entry key="enScheduledThreadPool"><ref bean="enScheduledThreadPool"/></entry>
+				<entry key="xfire.serviceFactory"><ref bean="xfire.serviceFactory"/></entry>
+				<entry key="xfire"><ref bean="xfire"/></entry>
+			</map>
+		</property>
+	</bean>
 
 </beans>

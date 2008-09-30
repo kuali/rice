@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.config;
 
-import junit.framework.Assert;
-
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDetail;
@@ -39,8 +37,9 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
     private BeanFactory beanFactory;
     private Trigger messageProcessingTrigger;
     private JobDetail messageProcessingJobDetail;
-
-    /**
+    protected Scheduler scheduler;
+    
+	/**
      * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
      */
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -73,7 +72,7 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         // kill the reference, our job is done
         beanFactory = null;
 
-        Scheduler scheduler = KSBServiceLocator.getScheduler();
+        Scheduler scheduler = getScheduler()==null?KSBServiceLocator.getScheduler():getScheduler();
         if (scheduler.getJobDetail(messageProcessingJobDetail.getName(), messageProcessingJobDetail.getGroup()) == null) {
             scheduler.addJob(messageProcessingJobDetail, true);
         }
@@ -86,4 +85,19 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         // our module's lifecycle is tied to the Spring context lifecycle for now
         GlobalKCBServiceLocator.destroy();
     }
+
+	/**
+	 * @return the scheduler
+	 */
+	public Scheduler getScheduler() {
+		return this.scheduler;
+	}
+
+	/**
+	 * @param scheduler the scheduler to set
+	 */
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+    
 }

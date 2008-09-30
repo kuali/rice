@@ -20,6 +20,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -256,6 +258,31 @@ public class DataDictionary {
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
 	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
+		BusinessObjectEntry entry = getBusinessObjectEntryForConcreteClass(className);
+		if (entry == null) {
+			Class boClass = null;
+			try{
+				boClass = Class.forName(className);
+				ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+				if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)) {
+					return responsibleModuleService.getExternalizableBusinessObjectDictionaryEntry(boClass);
+				}
+			} catch(ClassNotFoundException cnfex){
+			}
+			return null;
+		}
+		else {
+			return entry;
+		}
+	}
+
+	/**
+	 * This method gets the business object entry for a concrete class
+	 * 
+	 * @param className
+	 * @return
+	 */
+	public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(String className){
 		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("invalid (blank) className");
 		}
@@ -266,11 +293,9 @@ public class DataDictionary {
 		if (index >= 0) {
 			className = className.substring(0, index);
 		}
-		// LOG.info("calling getBusinessObjectEntry truncated '" + className + "'");
-
 		return businessObjectEntries.get(className);
 	}
-
+	
 	/**
 	 * @return List of businessObject classnames
 	 */
@@ -431,32 +456,97 @@ public class DataDictionary {
      */
     public static Class getAttributeClass(Class boClass, String attributeName) {
 
-        Class attributeClass = null;
-
         // fail loudly if the attributeName isnt a member of rootClass
         if (!isPropertyOf(boClass, attributeName)) {
             throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootClass '" + boClass.getName() + "'");
         }
 
-        BusinessObject boInstance;
+    	//Implementing Externalizable Business Object Services...
+        //The boClass can be an interface, hence handling this separately, 
+        //since the original method was throwing exception if the class could not be instantiated.
+        if(boClass.isInterface())
+        	return getAttributeClassWhenBOIsInterface(boClass, attributeName);
+        else
+        	return getAttributeClassWhenBOIsClass(boClass, attributeName);        	
+
+    }
+
+    /**
+     * 
+     * This method gets the property type of the given attributeName when the bo class is a concrete class
+     * 
+     * @param boClass
+     * @param attributeName
+     * @return
+     */
+    private static Class getAttributeClassWhenBOIsClass(Class boClass, String attributeName){
+    	BusinessObject boInstance;
         try {
             boInstance = (BusinessObject) boClass.newInstance();
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+        	throw new RuntimeException(e);
         }
 
         // attempt to retrieve the class of the property
         try {
-            attributeClass = ObjectUtils.getPropertyType(boInstance, attributeName, getPersistenceStructureService());
+            return ObjectUtils.getPropertyType(boInstance, attributeName, getPersistenceStructureService());
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return attributeClass;
     }
 
+    /**
+     * 
+     * This method gets the property type of the given attributeName when the bo class is an interface
+     * This method will also work if the bo class is not an interface, 
+     * but that case requires special handling, hence a separate method getAttributeClassWhenBOIsClass 
+     * 
+     * @param boClass
+     * @param attributeName
+     * @return
+     */
+    private static Class getAttributeClassWhenBOIsInterface(Class boClass, String attributeName){
+        if (boClass == null) {
+            throw new IllegalArgumentException("invalid (null) boClass");
+        }
+        if (StringUtils.isBlank(attributeName)) {
+            throw new IllegalArgumentException("invalid (blank) attributeName");
+        }
+
+        PropertyDescriptor propertyDescriptor = null;
+
+        String[] intermediateProperties = attributeName.split("\\.");
+        int lastLevel = intermediateProperties.length - 1;
+        Class currentClass = boClass;
+
+        for (int i = 0; i <= lastLevel; ++i) {
+
+            String currentPropertyName = intermediateProperties[i];
+            propertyDescriptor = buildSimpleReadDescriptor(currentClass, currentPropertyName);
+
+            if (propertyDescriptor != null) {
+
+                Class propertyType = propertyDescriptor.getPropertyType();
+                if ( propertyType.equals( PersistableBusinessObjectExtension.class ) ) {
+                    propertyType = getPersistenceStructureService().getBusinessObjectAttributeClass( currentClass, currentPropertyName );                    
+                }
+                if (Collection.class.isAssignableFrom(propertyType)) {
+                	// TODO: determine property type using generics type definition
+                	throw new AttributeValidationException("Can't determine the Class of Collection elements because when the business object is an (possibly ExternalizableBusinessObject) interface.");
+                }
+                else {
+                    currentClass = propertyType;
+                }
+            }
+            else {
+            	throw new AttributeValidationException("Can't find getter method of " + boClass.getName() + " for property " + attributeName);
+            }
+        }
+        return currentClass;
+    }
+    
     /**
      * This method determines the Class of the elements in the collectionName passed in.
      * 
@@ -667,5 +757,4 @@ public class DataDictionary {
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(Class blockedClass) {
         return inactivationBlockersForClass.get(blockedClass);
     }
-
 }

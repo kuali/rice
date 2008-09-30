@@ -20,8 +20,10 @@ import java.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
 
 /**
  * AttributesMapBuilder
@@ -59,6 +61,7 @@ public class AttributesMapBuilder {
         attributeMap.set("forceUppercase", attribute.getForceUppercase().toString());
         attributeMap.set("label", attribute.getLabel());
         attributeMap.set("shortLabel", attribute.getShortLabel());
+       
         attributeMap.set("maxLength", attribute.getMaxLength().toString());
         final BigDecimal exclusiveMin = attribute.getExclusiveMin();
         if (exclusiveMin != null) {
@@ -161,6 +164,25 @@ public class AttributesMapBuilder {
         }
         else if (control.isLookupReadonly()) {
             controlMap.set("lookupReadonly", "true");
+        }else if (control.isButton()) {
+            controlMap.set("button", "true");
+            if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getImageSrc())) {
+            	controlMap.set("imageSrc", ((ButtonControlDefinition) control).getImageSrc());
+            }
+            if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getStyleClass())) {
+            	controlMap.set("styleClass", ((ButtonControlDefinition) control).getStyleClass() );
+            }
+        }else if (control.isLink()) {
+            controlMap.set("link", "true");
+            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getTarget())) {
+            	controlMap.set("target", ((LinkControlDefinition) control).getTarget());
+            }
+            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getStyleClass())) {
+            	controlMap.set("styleClass", ((LinkControlDefinition) control).getStyleClass() );
+            }
+            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getHrefText())) {
+            	controlMap.set("hrefText", ((LinkControlDefinition) control).getHrefText());
+            }
         }
 
         return controlMap;

@@ -46,6 +46,9 @@
         if present"%>
 <%@ attribute name="forceRequired" required="false" %>
 
+
+<c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
+
 <%-- Define variable that will hold the Title of the html control --%>
 <c:set var="accessibleTitle" value="${attributeEntry.label}"/>
 <c:if test="${(attributeEntry.required == true || forceRequired) && readOnly != true}">
@@ -113,12 +116,27 @@
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          </logic:empty>
          <c:if test="${!empty extraReadOnlyProperty}">
-           <html:hidden write="false" property="${property}" style="${textStyle}" />
-           <html:hidden write="true" property="${extraReadOnlyProperty}" style="${textStyle}" />
+			<c:choose>
+			<c:when test="${sessionDocument}">
+				<bean:write name="KualiForm" property="${extraReadOnlyProperty}"/>
+			</c:when>
+			<c:otherwise>
+				<html:hidden write="false" property="${property}" style="${textStyle}" />
+           		<html:hidden write="true" property="${extraReadOnlyProperty}" style="${textStyle}" />
+			</c:otherwise>
+		  </c:choose>
          </c:if>
          <c:if test="${empty extraReadOnlyProperty}">
-           <html:hidden write="${empty readOnlyAlternateDisplay ? 'true' : 'false'}" property="${property}" style="${textStyle}" />
-           ${readOnlyAlternateDisplay}
+         <c:choose>
+			<c:when test="${sessionDocument}">
+		      <bean:write name="KualiForm" property="${property}"/>
+              ${readOnlyAlternateDisplay}
+			</c:when>
+			<c:otherwise>
+              <html:hidden write="${empty readOnlyAlternateDisplay ? 'true' : 'false'}" property="${property}" style="${textStyle}" />
+              ${readOnlyAlternateDisplay}
+            </c:otherwise>
+		  </c:choose>
          </c:if>
      </c:otherwise>
    </c:choose>

@@ -9,8 +9,7 @@
 		<property name="userTransaction" ref="jtaUserTransaction" />
 		<property name="rootConfig" ref="config" />
         <property name="environment" value="${environment}"/>
-		<property name="modules">
-			<list>
+		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
                     <property name="authorizationService">
@@ -19,15 +18,23 @@
                       </bean>
                     </property>
 				</bean>
+		</property>
+		<property name="knsConfigurer">
+	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+		</property>
+		<property name="kimConfigurer">
+	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+		</property>
+		<property name="kcbConfigurer">
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
-				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+        </property>
+		<property name="kewConfigurer">
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
-				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-				<!-- <bean class="org.kuali.rice.kom.config.KOMConfigurer" /> -->
-        <bean class="org.kuali.rice.ken.config.KENConfigurer" />
-			</list>
+		</property>
+		<property name="kenConfigurer">
+        	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
 		</property>
 	</bean>
 </beans>

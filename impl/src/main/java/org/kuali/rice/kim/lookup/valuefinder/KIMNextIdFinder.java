@@ -26,16 +26,18 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public abstract class KIMNextIdFinder implements ValueFinder {
     
-    protected String sequenceName;
+    private String sequenceName;
+    
+	public KIMNextIdFinder( String sequenceName ) {
+		this.sequenceName = sequenceName;
+	}
     
     /**
      * Get the next sequence number value as a Long.
-     * 
-     * @return
      */
     public Long getLongValue() {
         // no constant because this is the only place the sequence name is used
-        return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(this.sequenceName);
+        return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
     }
 
     /**
@@ -44,4 +46,8 @@ public abstract class KIMNextIdFinder implements ValueFinder {
     public String getValue() {
         return getLongValue().toString();
     }
+
+	public final String getSequenceName() {
+		return sequenceName;
+	}
 }

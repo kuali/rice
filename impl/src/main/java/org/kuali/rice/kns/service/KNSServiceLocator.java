@@ -24,8 +24,8 @@ import java.util.Set;
 import javax.persistence.EntityManagerFactory;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.config.KNSResourceLoaderFactory;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -64,21 +64,21 @@ public class KNSServiceLocator<T extends Object> {
 
     @SuppressWarnings("unchecked")
     public static <T> T getNervousSystemContextBean(Class<T> type, String name) {
-	return (T) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
+	return (T) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
     }
 
     @SuppressWarnings("unchecked")
     public static <T> Map<String, T> getBeansOfType(Class<T> type) {
-	return new HashMap((Map) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
+	return new HashMap((Map) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
     }
 
     public static String[] getBeanNames() {
-	return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
+	return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
     }
 
     public static Set<String> getSingletonNames() {
 	Set<String> singletonNames = new HashSet<String>();
-	Collections.addAll(singletonNames, KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
+	Collections.addAll(singletonNames, RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
 		.getSingletonNames());
 	return singletonNames;
     }
@@ -86,7 +86,7 @@ public class KNSServiceLocator<T extends Object> {
     public static Set<Class> getSingletonTypes() {
 	Set<Class> singletonTypes = new HashSet<Class>();
 	for (String singletonName : getSingletonNames()) {
-	    singletonTypes.add(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
+	    singletonTypes.add(RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
 		    singletonName));
 	}
 	return singletonTypes;
@@ -94,7 +94,7 @@ public class KNSServiceLocator<T extends Object> {
 
     public static boolean isSingleton( String beanName ) {
     	try {
-    	    return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
+    	    return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
     	} catch ( NoSuchBeanDefinitionException ex ) {
     	    // service is not in Spring so we can't assume
     	    return false;
@@ -103,7 +103,7 @@ public class KNSServiceLocator<T extends Object> {
             
     public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
 	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-	for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
+	for (Object namedOrderedListBean : RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
 		NamedOrderedListBean.class).values()) {
 	    if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
 		namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
@@ -194,12 +194,6 @@ public class KNSServiceLocator<T extends Object> {
 
     public static KualiModuleService getKualiModuleService() {
 	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
-    }
-
-    public static final String MODULE_USER_PROPERTY_SERVICE = "kualiModuleUserPropertyService";
-
-    public static KualiModuleUserPropertyService getKualiModuleUserPropertyService() {
-	return (KualiModuleUserPropertyService) getService(MODULE_USER_PROPERTY_SERVICE);
     }
 
     public static final String KUALI_GROUP_SERVICE = "kualiGroupService";

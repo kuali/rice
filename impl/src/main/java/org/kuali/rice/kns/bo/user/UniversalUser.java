@@ -33,13 +33,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.EmployeeStatus;
 import org.kuali.rice.kns.bo.EmployeeType;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.UniversalUserService;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -112,21 +112,8 @@ public class UniversalUser extends PersistableBusinessObjectBase {
 	private EmployeeType employeeType;
 
     @Transient
-    private Map<String,KualiModuleUser> moduleUsers;
-    @Transient
-    private boolean activeForAnyModule = false;
-    @Transient
     private List<KualiGroup> groups;
-    
-    // TODO this shouldn't really be here
-    // need to push a list of changed module codes into workflow - doing this in the UniversalUserPreRules
-    // - ideally this would go on the doc, since it relates to the old and new maintainable, but no option for extending document implementation in the maint framework
-    // - so, we could put it on the maintainable, but properties of the maintainable don't get put in the main doc xml in populateXmDocumentContentsFromMaintainables
-    // - so, we could derive and set after populateMaintainablesFromXmlDocumentContents, but i don't see a hook - have processAfterRetrieve called then on the new maintainable, but we need the od maintainable to derive
-    // - so, i could modify the framework - e.g. implement handleRouteLevelChange on maintenance document and call a method on the maintainable, where i pass the prior row - seems like a big change for this need
-    @Transient
-    private Set<String> changedModuleCodes;
-    
+       
     /**
      * Default no-arg constructor.
      */
@@ -442,110 +429,6 @@ public class UniversalUser extends PersistableBusinessObjectBase {
         this.financialSystemsEncryptedPasswordText = financialSystemsEncryptedPasswordText;
     }    
 
-    private void initModuleUsers() {
-        if ( universalUserService == null ) {
-            universalUserService = KNSServiceLocator.getUniversalUserService();
-        }
-        moduleUsers = universalUserService.getModuleUsers( this );
-    }
-    
-    
-    public KualiModuleUser getModuleUser( String moduleId ) {
-        if ( moduleUsers == null ) {
-            initModuleUsers();
-        }
-        refreshModuleUsersToUniversalUserReferences();
-        KualiModuleUser kualiModuleUser = moduleUsers.get( moduleId );
-        return kualiModuleUser;
-    }
-    
-    public Map<String,KualiModuleUser> getModuleUsers() {
-        if ( moduleUsers == null ) {
-            initModuleUsers();
-        }
-        refreshModuleUsersToUniversalUserReferences();
-        return moduleUsers;
-    }
-
-    /**
-     * sometimes there are problems w/ the serialization when coming back from struts when retrieving the actionform from struts.
-     * 
-     * the module user is not linked to "this" universal user, so this code fixes that
-     */
-    protected void refreshModuleUsersToUniversalUserReferences() {
-        for (KualiModuleUser kualiModuleUser : moduleUsers.values()) {
-            if (kualiModuleUser instanceof KualiModuleUserBase) {
-                ((KualiModuleUserBase) kualiModuleUser).setUniversalUser(this);
-            }
-        }
-    }
-
-    public boolean isActiveForModule( String moduleId ) {
-        KualiModuleUser user = getModuleUser( moduleId );
-        if ( user == null ) return false;
-        return user.isActive();
-    }
-
-    public boolean isActiveForAnyModule() {
-        if ( activeForAnyModule == false ) {
-            for ( KualiModuleUser user : getModuleUsers().values() ) {
-                if ( user != null && user.isActive() ) {
-                    activeForAnyModule = true;
-                }
-            }
-        }
-        return activeForAnyModule;
-    }
-    
-    /**
-     * Returns a comma-delimited string of the KualiModule codes for which this person is an active user. 
-     * 
-     * @return
-     */
-    public String getActiveModuleCodeString() {
-        if ( kualiModuleService == null ) {
-            kualiModuleService = KNSServiceLocator.getKualiModuleService();
-        }
-        StringBuffer sb = new StringBuffer( 40 );
-        for ( KualiModule module : kualiModuleService.getInstalledModules() ) {
-            if ( isActiveForModule( module.getModuleId() ) ) {
-                if ( sb.length() > 0 ) {
-                    sb.append( ", " );
-                }
-                sb.append( module.getModuleCode() );
-            }
-        }
-        return sb.toString();
-    }
-    
-
-    @Transient
-    private Map<String,Map<String,String>> moduleProperties;
-
-    public Map<String,Map<String,String>> getModuleProperties() {
-        if ( moduleProperties == null ) {
-            loadModuleProperties();
-        }
-        return moduleProperties;
-    }
-    
-    public Map<String,String> getModuleProperties( String moduleId ) {
-        if ( moduleProperties == null ) {
-            loadModuleProperties();
-        }
-        if ( moduleProperties.get( moduleId ) == null ) {
-            moduleProperties.put( moduleId, new HashMap<String,String>() );
-        }
-        return moduleProperties.get( moduleId );
-    }
-
-    private void loadModuleProperties() {
-        if ( universalUserService == null ) {
-            universalUserService = KNSServiceLocator.getUniversalUserService();
-        }
-        moduleProperties = universalUserService.loadModuleUserProperties( this );
-    }
-    
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
@@ -734,27 +617,4 @@ public class UniversalUser extends PersistableBusinessObjectBase {
         this.employeeType = employeeType;
     }
 
-    /* added for XStream de-serialization purposes */ 
-    @Deprecated
-    @Transient
-    private transient String emplid;    
-    @Deprecated
-    @Transient
-    private transient String deptid;
-
-    /**
-     * Gets the changedModuleCodes attribute. 
-     * @return Returns the changedModuleCodes.
-     */
-    public Set<String> getChangedModuleCodes() {
-        return changedModuleCodes;
-    }
-
-    /**
-     * Sets the changedModuleCodes attribute value.
-     * @param changedModuleCodes The changedModuleCodes to set.
-     */
-    public void setChangedModuleCodes(Set<String> changedModuleCodes) {
-        this.changedModuleCodes = changedModuleCodes;
-    }
 }

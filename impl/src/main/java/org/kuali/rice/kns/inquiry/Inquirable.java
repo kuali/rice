@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.HtmlData;
 
 /**
  * This interface defines the methods for inquirables.
@@ -58,5 +59,5 @@ public interface Inquirable {
      */
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
-    public String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry);
+    public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry);
 }

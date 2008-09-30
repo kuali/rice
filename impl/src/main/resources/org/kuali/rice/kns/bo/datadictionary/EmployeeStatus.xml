@@ -24,6 +24,7 @@
         <ref bean="EmployeeStatus-objectId" />
       </list>
     </property>
+    <property name="objectLabel" value="Employee Status" />
   </bean>
 
 <!-- Attribute Definitions -->

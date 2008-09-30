@@ -15,6 +15,7 @@
         <ref bean="TravelAccountExtension-accountTypeCode" />
       </list>
     </property>
+    <property name="objectLabel" value="Travel Account Extension"/>
   </bean>
 
 <!-- Attribute Definitions -->

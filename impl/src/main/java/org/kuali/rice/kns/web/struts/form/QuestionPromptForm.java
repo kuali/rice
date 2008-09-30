@@ -146,6 +146,11 @@ public class QuestionPromptForm extends KualiForm {
         else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null) {
             this.setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
         }
+        
+        if (request.getAttribute(KNSConstants.DOC_NUM) != null) {
+            this.setFormKey((String) request.getAttribute(KNSConstants.DOC_NUM));
+        }
+        
 
         if (request.getParameter(KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
             this.setBackLocation(request.getParameter(KNSConstants.RETURN_LOCATION_PARAMETER));

@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathFactory;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
@@ -870,7 +871,10 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         Map paramMap = new HashMap();
         paramMap.put(keyName, value);
         attribute.setParamMap(paramMap);
-        String searchContent = attribute.getSearchContent();
+        //Filling in a random document type name... Revisit
+        String documentTypeName = "SearchDocType";
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
+        String searchContent = attribute.getSearchContent(context);
         assertTrue("searchContent was not found.", searchContent != null && searchContent.length() > 0);
         XPath xpath = XPathFactory.newInstance().newXPath();
         Element foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
@@ -883,7 +887,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         paramMap = new HashMap();
         paramMap.put(keyName, value);
         attribute.setParamMap(paramMap);
-        searchContent = attribute.getSearchContent();
+        searchContent = attribute.getSearchContent(context);
         assertTrue("searchContent was not found.", searchContent != null && searchContent.length() > 0);
         xpath = XPathFactory.newInstance().newXPath();
         foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
@@ -896,7 +900,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         paramMap = new HashMap();
         paramMap.put(keyName, value);
         attribute.setParamMap(paramMap);
-        searchContent = attribute.getSearchContent();
+        searchContent = attribute.getSearchContent(context);
         assertTrue("searchContent was not found.", searchContent != null && searchContent.length() > 0);
         xpath = XPathFactory.newInstance().newXPath();
         foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
@@ -909,7 +913,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         paramMap = new HashMap();
         paramMap.put(keyName, value);
         attribute.setParamMap(paramMap);
-        searchContent = attribute.getSearchContent();
+        searchContent = attribute.getSearchContent(context);
         assertTrue("searchContent was not found.", searchContent != null && searchContent.length() > 0);
         xpath = XPathFactory.newInstance().newXPath();
         foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
@@ -922,7 +926,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         paramMap = new HashMap();
         paramMap.put(keyName, value);
         attribute.setParamMap(paramMap);
-        searchContent = attribute.getSearchContent();
+        searchContent = attribute.getSearchContent(context);
         assertTrue("searchContent was not found.", searchContent != null && searchContent.length() > 0);
         xpath = XPathFactory.newInstance().newXPath();
         foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
@@ -939,7 +943,10 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String value = "jack";
     	String documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         StandardGenericXMLSearchableAttribute attribute = getAttribute(attributeName);
-        List values = attribute.getSearchStorageValues(documentcontent);
+        //Filling in a random document type name... Revisit
+        String documentTypeName = "SearchDocType";
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
+        List values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -953,7 +960,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "123458";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -967,7 +974,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "123458";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + " " + value + " " + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -980,7 +987,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "2568.204154796";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -995,7 +1002,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "2238.2";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -1008,7 +1015,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "2157238.2";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -1021,7 +1028,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -1034,7 +1041,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         String returnValue = "02/20/2007";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(documentcontent);
+        values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
@@ -1069,10 +1076,13 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
      */
     @Test public void testGetSearchingRows() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute(null);
-        assertTrue("Invalid number of search rows", searchAttribute.getSearchingRows().size() == 1);
+        //Filling in a random document type name... Revisit
+        String documentTypeName = "SearchDocType";
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
+        assertTrue("Invalid number of search rows", searchAttribute.getSearchingRows(context).size() == 1);
 
         //we really just want this to load without exploding
-        List searchRows = getAttribute("BlankDropDownSearchAttribute").getSearchingRows();
+        List searchRows = getAttribute("BlankDropDownSearchAttribute").getSearchingRows(context);
         assertEquals("Invalid number of search rows", 1, searchRows.size());
         Row row = (Row) searchRows.get(0);
         Field field = row.getField(0);
@@ -1088,33 +1098,36 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttribute");
         Map paramMap = new HashMap();
         paramMap.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack");
-        List validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        String documentTypeName = "SearchDocType";
+        //TODO: put document content here?
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
+        List validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack.jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         WorkflowAttributeValidationError error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertEquals("Validation error should match xml attribute message", "Invalid first name", error.getMessage());
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 0, validationErrors.size());
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLong");
         paramMap = new HashMap();
         paramMap.put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "jack*jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
@@ -1122,17 +1135,17 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloat");
         paramMap = new HashMap();
         paramMap.put(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
@@ -1142,17 +1155,17 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         Float value = Float.valueOf("5486.25");
         paramMap = new HashMap();
         paramMap.put(key, value.toString());
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(key, value.toString() + "a");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(key, value.toString() + "*");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
@@ -1160,17 +1173,17 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         searchAttribute = getAttribute("XMLSearchableAttributeStdDateTime");
         paramMap = new HashMap();
         paramMap.put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "001/5/08");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "01/02/20*");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));

@@ -41,6 +41,7 @@ import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -167,7 +168,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 throw new RuntimeException("error populating documentHeader.workflowDocument", e);
             }
         } 
-
         //Populate Document Header attributes
         populateHeaderFields(workflowDocument);
     }
@@ -177,14 +177,16 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         
         if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
             UniversalUser user = new UniversalUser();
+            AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, false);
             user.setPersonUniversalIdentifier(id);
-            String inquiryUrlSection = KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, false);
+            String inquiryUrlSection = inquiryHref.getHref();
             urlBuffer.append("<a href='");
             urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
             urlBuffer.append("/kr/");
             urlBuffer.append(inquiryUrlSection);
             urlBuffer.append("' ");
-            urlBuffer.append("target='_blank'>");
+            urlBuffer.append("target='_blank'");
+            urlBuffer.append("title='" + inquiryHref.getTitle() + "'>");
             urlBuffer.append(linkBody);
             urlBuffer.append("</a>");
         }
@@ -215,7 +217,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 * 
 	 * @param workflowDocument - the workflow document of the document being displayed (null is allowed)
 	 */
-	protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+	public void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
 		getDocInfo().clear();
 		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
 	}
@@ -230,6 +232,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 */
     protected List<HeaderField> getStandardHeaderFields(KualiWorkflowDocument workflowDocument) {
     	List<HeaderField> headerFields = new ArrayList<HeaderField>();
+    	setNumColumns(2);
     	// check for a document template number as that will dictate column numbering
     	HeaderField docTemplateNumber = null;
         if ((ObjectUtils.isNotNull(getDocument())) && (ObjectUtils.isNotNull(getDocument().getDocumentHeader())) && (StringUtils.isNotBlank(getDocument().getDocumentHeader().getDocumentTemplateNumber()))) {

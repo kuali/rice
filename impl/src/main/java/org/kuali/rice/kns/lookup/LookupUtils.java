@@ -41,7 +41,9 @@ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
@@ -151,7 +153,7 @@ public class LookupUtils {
         if (boClass == null) {
             throw new IllegalArgumentException("Parameter boClass passed in with null value.");
         }
-        else if (!PersistableBusinessObject.class.isAssignableFrom(boClass)) {
+        else if (!BusinessObject.class.isAssignableFrom(boClass)) {
             throw new IllegalArgumentException("Parameter boClass value passed in [" + boClass.getName() + "] " + "was not a descendent of BusinessObject.");
         }
         if (fieldValues == null) {
@@ -472,7 +474,7 @@ public class LookupUtils {
         for (Iterator iter = referenceClasses.keySet().iterator(); iter.hasNext();) {
             String attr = (String) iter.next();
             Class clazz = (Class) referenceClasses.get(attr);
-            List pkNames = persistenceStructureService.listPrimaryKeyFieldNames(clazz);
+            List pkNames = businessObjectMetaDataService.listPrimaryKeyFieldNames(clazz);
 
             // Compare based on key size.
             if (pkNames.size() < minKeys) {
@@ -521,7 +523,7 @@ public class LookupUtils {
 
                 if (clazz != null && BusinessObject.class.isAssignableFrom(clazz)) {
                     try {
-                        childBO = (BusinessObject) clazz.newInstance();
+                    	childBO = (BusinessObject) ObjectUtils.createNewObjectFromClass(clazz);
                     }
                     catch (Exception e) {
                         return null;

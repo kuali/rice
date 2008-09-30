@@ -16,7 +16,10 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -34,6 +38,8 @@ import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -55,7 +61,7 @@ public class KualiInquiryAction extends KualiAction {
                 // check if the inquiry is allowed
                 if (!getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), inquiryAuthType)) {
                     LOG.error("User not authorized for inquiry action for this object: " + businessObjectClass.getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), inquiryAuthType, getKualiModuleService().getResponsibleModule(businessObjectClass));
+                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), inquiryAuthType, getKualiModuleService().getResponsibleModuleService(businessObjectClass));
                 }
             }
             catch (ClassNotFoundException ex) {
@@ -72,7 +78,7 @@ public class KualiInquiryAction extends KualiAction {
 
     /**
      * Gets an inquirable impl from the impl service name parameter. Then calls lookup service to retrieve the record from the
-     * key/value parameters. Finally gets a list of Rows from the inquirab
+     * key/value parameters. Finally gets a list of Rows from the inquirable
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         InquiryForm inquiryForm = (InquiryForm) form;
@@ -81,6 +87,26 @@ public class KualiInquiryAction extends KualiAction {
             throw new RuntimeException("Business object name not given.");
         }
         
+        Class boClass = Class.forName(inquiryForm.getBusinessObjectClassName());
+        ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
+			String redirectUrl = responsibleModuleService.getExternalizableBusinessObjectInquiryUrl(boClass, (Map<String, String[]>) request.getParameterMap());
+			ActionForward redirectingActionForward = new RedirectingActionForward(redirectUrl);
+			redirectingActionForward.setModule("/");
+			return redirectingActionForward;
+		}
+
+		return continueWithInquiry(mapping, form, request, response);
+    }
+    
+    public ActionForward continueWithInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	InquiryForm inquiryForm = (InquiryForm) form;
+    	
+    	if (inquiryForm.getBusinessObjectClassName() == null) {
+    		LOG.error("Business object name not given.");
+    		throw new RuntimeException("Business object name not given.");
+    	}
+    	
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
@@ -90,8 +116,6 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         populateSections(mapping, request, inquiryForm, bo);
-        
-        Inquirable kualiInquirable = inquiryForm.getInquirable();
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

@@ -28,7 +28,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
@@ -47,7 +48,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -455,7 +455,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public boolean validateReferenceExists(PersistableBusinessObject bo, String referenceName) {
 
         // attempt to retrieve the specified object from the db
-        PersistableBusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
+        BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
 
         // if it isnt there, then it doesnt exist, return false
         if (ObjectUtils.isNotNull(referenceBo)) {
@@ -484,7 +484,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public boolean validateReferenceIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed) {
 
         // attempt to retrieve the specified object from the db
-        PersistableBusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
+        BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
 
         // if the retrieved referenceBo is null, then we're done, return negative
         if (referenceBo == null) {
@@ -587,8 +587,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
      */
-    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName) {
 
+    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName) {
         boolean success = true;
         boolean exists;
         boolean active;
@@ -637,7 +637,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exists) {
 
                 // do the active test, if appropriate
-                if (activeIndicatorSet) {
+                if (activeIndicatorSet && (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive())) {
                     active = validateReferenceIsActive(bo, referenceName, activeIndicatorAttributeName, activeIndicatorReversed);
                     if (!active) {
                         GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);

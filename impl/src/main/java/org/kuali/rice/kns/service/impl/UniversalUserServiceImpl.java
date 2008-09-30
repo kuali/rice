@@ -39,13 +39,10 @@ import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.UserCapabilities;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.KualiGroup;
-import org.kuali.rice.kns.bo.user.KualiModuleUser;
-import org.kuali.rice.kns.bo.user.KualiModuleUserProperty;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.bo.user.UserId;
 import org.kuali.rice.kns.bo.user.UuId;
@@ -59,8 +56,8 @@ import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiGroupService;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.KualiModuleUserPropertyService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.UniversalUserService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.spring.Cached;
@@ -78,8 +75,6 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     private static final String RESOLVE_USER_IDENTIFIERS_TO_UNIVERSAL_IDENTIFIERS_METHOD_ERROR = "UniversalUserServiceImpl encountered an exception while attempting to result user identifier to universal identifier - propertyName: ";
 
     private UniversalUserDao universalUserDao;
-    private KualiModuleUserPropertyService moduleUserPropertyService;
-    private KualiGroupService kualiGroupService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private DataDictionaryService dataDictionaryService;
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -151,13 +146,15 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
      * @see org.kuali.rice.kns.service.UniversalUserService#findUniversalUsers(java.util.Map)
      */
     public Collection findUniversalUsers(Map formFields) {
-        String moduleCode = (String)formFields.get( "activeModuleCodeString" );
-        if ( StringUtils.isNotBlank( moduleCode ) ) {
-            KualiModule module = kualiModuleService.getModuleByCode( moduleCode );
-            if ( module != null ) {
-                return lookupDao.findCollectionBySearchHelper(UniversalUser.class, formFields, false, KNSServiceLocator.getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(UniversalUser.class, formFields), module.getModuleUserService().getUserActiveCriteria());
-            }
-        }
+//        String moduleCode = (String)formFields.get( "activeModuleCodeString" );
+//        if ( StringUtils.isNotBlank( moduleCode ) ) {
+//            ModuleService moduleService = kualiModuleService.getModuleServiceByNamespaceCode( moduleCode );
+//            if ( moduleService != null ) {
+//                return lookupDao.findCollectionBySearchHelper(UniversalUser.class, formFields, false, 
+//                		KNSServiceLocator.getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(UniversalUser.class, formFields), 
+//                		moduleService.getModuleConfiguration().getModuleUserService().getUserActiveCriteria());
+//            }
+//        }
         return lookupDao.findCollectionBySearchHelper(UniversalUser.class, formFields, false, KNSServiceLocator.getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(UniversalUser.class, formFields));
     }
 
@@ -329,7 +326,8 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
             return (propertyName.indexOf(".") > 0) && !(StringUtils.contains(propertyName, "add.")) && UniversalUser.class.equals(PropertyUtils.getPropertyType(businessObjectClass.newInstance(), propertyName.substring(0, propertyName.lastIndexOf("."))));
         }
         catch (Exception e) {
-        	LOG.warn(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e );
+        	// This has been removed: See KFSMI-1277
+        	// LOG.warn(IS_UNIVERSAL_USER_PROPERTY_METHOD_ERROR + propertyName, e );
         }
         return false;
     }
@@ -337,16 +335,6 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     public void setUniversalUserDao(UniversalUserDao userDao) {
         this.universalUserDao = userDao;
     }
-
-    /**
-     * setter for spring injected group service
-     * 
-     * @param kualiGroupService The kualiGroupService to set.
-     */
-    public void setKualiGroupService(KualiGroupService kualiGroupService) {
-        this.kualiGroupService = kualiGroupService;
-    }
-
 
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
@@ -424,10 +412,6 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         LOG.warn("KualiUserService cannot import XML");
     }
 
-    public Map<String, KualiModuleUser> getModuleUsers(UniversalUser user) {
-        return kualiModuleService.getModuleUsers(user);
-    }
-        
     /**
      * boolean to indicate if the user is a member of a kuali group
      * 
@@ -454,7 +438,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     }
 
     public List<KualiGroup> getUsersGroups(UniversalUser user) {
-        return kualiGroupService.getUsersGroups(user);
+        return KNSServiceLocator.getKualiGroupService().getUsersGroups(user);
     }
 
     /**
@@ -515,29 +499,6 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     public void setDateTimeService(DateTimeService dateTimeService) {
         this.dateTimeService = dateTimeService;
     }
-
-    public Map<String,Map<String,String>> loadModuleUserProperties( UniversalUser user ) {
-        // load the property objects from the DAO
-        Collection<KualiModuleUserProperty> props = moduleUserPropertyService.getPropertiesForUser( user );
-        
-        Map<String,Map<String,String>> moduleProps = new HashMap<String,Map<String,String>>();
-        // iterate over the DB objects and build the map
-        for ( KualiModuleUserProperty prop : props ) {
-            if ( moduleProps.get( prop.getModuleId() ) == null ) {
-                moduleProps.put( prop.getModuleId(), new HashMap<String,String>() );
-            }
-            moduleProps.get( prop.getModuleId() ).put( prop.getName(), prop.getValue() );
-        }
-        return moduleProps;
-    }
-
-    public KualiModuleUserPropertyService getModuleUserPropertyService() {
-        return moduleUserPropertyService;
-    }
-
-    public void setModuleUserPropertyService(KualiModuleUserPropertyService moduleUserPropertyService) {
-        this.moduleUserPropertyService = moduleUserPropertyService;
-    }
     
     public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
         return this.maintenanceDocumentDictionaryService;
@@ -555,4 +516,14 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         this.businessObjectMetaDataService = boms;
     }
 
+    public boolean canAccessAnyModule( UniversalUser user ) {
+    	for ( ModuleService module : kualiModuleService.getInstalledModuleServices() ) {
+    		if ( module.canAccessModule(user) ) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    
 }

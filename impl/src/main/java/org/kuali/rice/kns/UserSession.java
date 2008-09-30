@@ -79,7 +79,7 @@ public class UserSession implements Serializable {
      * @throws ResourceUnavailableException
      */
     public UserSession(String networkId) throws UserNotFoundException, WorkflowException {
-        this.universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(networkId));
+        this.universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
         this.workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.nextObjectKey = 0;
         this.objectMap = new HashMap();
@@ -144,7 +144,7 @@ public class UserSession implements Serializable {
     public void setBackdoorUser(String networkId) throws UserNotFoundException, WorkflowException {
        // only allow backdoor in non-production environments
        if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
-        this.backdoorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(networkId));
+        this.backdoorUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
         this.backdoorWorkflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.workflowDocMap = new HashMap();
        }

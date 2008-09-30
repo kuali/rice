@@ -261,6 +261,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 }
                 
                 Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
+                setGenerateDefaultValues(false);
                 
                 // add to section list
                 sections.add(section);

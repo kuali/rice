@@ -21,8 +21,9 @@
   <c:if test="${!empty radio.label}">
     <input type="radio"
         ${field.propertyValue eq radio.key ? 'checked="checked"' : ''}
-           name='${field.propertyName}'
-           value='<c:out value="${radio.key}"/>'
+        name='${field.propertyName}'
+        value='<c:out value="${radio.key}" />'
+		title='${field.fieldLabel} - ${radio.label}'
         ${onblurcall} />
     <c:out value="${radio.label}"/>
   </c:if>

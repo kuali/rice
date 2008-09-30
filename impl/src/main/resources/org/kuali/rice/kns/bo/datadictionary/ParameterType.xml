@@ -25,6 +25,7 @@
         <ref bean="ParameterType-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Parameter Type"/>
   </bean>
 
 <!-- Attribute Definitions -->

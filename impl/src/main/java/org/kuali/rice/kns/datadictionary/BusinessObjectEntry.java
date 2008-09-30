@@ -18,8 +18,10 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -211,6 +213,12 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
     public void completeValidation() {
+        
+    	//KFSMI-1340 - Object label should never be blank
+        if (StringUtils.isBlank(getObjectLabel())) {
+            throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
+        }
+
         super.completeValidation();
 
         if (hasInquiryDefinition()) {

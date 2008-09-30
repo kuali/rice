@@ -1,0 +1,126 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kim.bo.types.impl;
+
+import java.util.LinkedHashMap;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.kuali.rice.kim.bo.types.KimAttribute;
+import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.bo.types.KimType;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+/**
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+@Entity
+@Table(name="KR_KIM_ATTRIBUTE_DATA_T")
+public class KimAttributeDataImpl extends PersistableBusinessObjectBase implements KimAttributeData {
+
+	@Id
+	@Column(name="ATTRIB_DATA_ID")
+	protected String attributeDataId;
+	
+	@Column(name="TARGET_PRIMARY_KEY")
+	protected String targetPrimaryKey;
+	
+	@Column(name="KIM_TYPE_ID")
+	protected String kimTypeId;
+
+	@Column(name="KIM_ATTRIB_ID")
+	protected String kimAttributeId;
+	
+	@Column(name="ATTRIB_VAL")
+	protected String attributeValue;	
+
+	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
+	protected KimAttribute kimAttribute;
+	
+	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
+	protected KimType kimType;
+	
+	public String getAttributeDataId() {
+		return this.attributeDataId;
+	}
+	public void setAttributeDataId(String attributeDataId) {
+		this.attributeDataId = attributeDataId;
+	}
+	public String getTargetPrimaryKey() {
+		return this.targetPrimaryKey;
+	}
+	public void setTargetPrimaryKey(String targetPrimaryKey) {
+		this.targetPrimaryKey = targetPrimaryKey;
+	}
+	public String getAttributeValue() {
+		return this.attributeValue;
+	}
+	public void setAttributeValue(String attributeValue) {
+		this.attributeValue = attributeValue;
+	}
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
+	public String getKimAttributeId() {
+		return this.kimAttributeId;
+	}
+	public void setKimAttributeId(String kimAttributeId) {
+		this.kimAttributeId = kimAttributeId;
+	}
+	public KimAttribute getKimAttribute() {
+		return this.kimAttribute;
+	}
+	public void setKimAttribute(KimAttribute kimAttribute) {
+		this.kimAttribute = kimAttribute;
+	}
+	public KimType getKimType() {
+		return this.kimType;
+	}
+	public void setKimType(KimType kimType) {
+		this.kimType = kimType;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = new LinkedHashMap();
+		m.put( "attributeDataId", attributeDataId );
+		m.put( "targetPrimaryKey", targetPrimaryKey );
+		m.put( "kimTypeId", kimTypeId );
+		m.put( "kimAttributeId", kimAttributeId );
+		m.put( "attributeValue", attributeValue );
+		return m;
+	}
+	
+}

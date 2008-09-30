@@ -36,6 +36,7 @@ import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
+import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -54,12 +55,16 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 	private ScheduledFuture future;
 
+	protected ServiceRegistry enRoutingTableService;
+	
+	protected KSBContextServiceLocator serviceLocator;
+	
 	public void handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		((Controller) handler).handleRequest(request, response);
 	}
 
 	private void registerService(ServiceInfo entry, Object serviceImpl) throws Exception {
-		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry).getServiceExporter(serviceImpl);
+		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry, serviceLocator).getServiceExporter(serviceImpl);
 		this.publishedServices.put(entry.getQname(), serviceHolder);
 
 	}
@@ -110,7 +115,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			throw new RuntimeException("Service with that name is already registered");
 		}
 		try {
-			ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(serviceInfo).getServiceExporter(service);
+			ServerSideRemotedServiceHolder serviceHolder = 
+				ServiceExporterFactory.getServiceExporter(serviceInfo, serviceLocator).getServiceExporter(service);
 			this.publishedTempServices.put(serviceInfo.getQname(), serviceHolder);
 			LOG.debug("Registered temp service " + serviceDefinition.getServiceName());
 		} catch (Exception e) {
@@ -199,6 +205,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		}
 
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
+		diffCalc.setEnMessageHelper(serviceLocator.getMessageHelper());
 		boolean needUpdated = diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 		if (needUpdated) {
 			if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
@@ -216,7 +223,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	private void publishServiceList(List<ServiceInfo> services) {
 		for (ServiceInfo serviceInfo : services) {
 			try {
-				registerService(serviceInfo, serviceInfo.getServiceDefinition().getService());
+				registerService(serviceInfo, serviceInfo.getServiceDefinition(serviceLocator.getMessageHelper()).getService());
 			} catch (Exception e) {
 				LOG.error("Encountered error registering service " + serviceInfo.getQname(), e);
 				this.publishedServices.remove(serviceInfo);
@@ -236,7 +243,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		run();
 		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
 			int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
-			this.future = KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
+			this.future = serviceLocator.getScheduledPool()==null?KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS)
+							:serviceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		}
 		this.started = true;
 	}
@@ -270,7 +278,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public ServiceRegistry getServiceInfoService() {
-		return KSBServiceLocator.getIPTableService();
+		return enRoutingTableService==null?KSBServiceLocator.getIPTableService():enRoutingTableService;
 	}
 
 	public Map<QName, ServerSideRemotedServiceHolder> getPublishedServices() {
@@ -287,4 +295,33 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	public Map<QName, ServerSideRemotedServiceHolder> getPublishedTempServices() {
 		return this.publishedTempServices;
 	}
+
+	/**
+	 * @return the enRoutingTableService
+	 */
+	public ServiceRegistry getEnRoutingTableService() {
+		return this.enRoutingTableService;
+	}
+
+	/**
+	 * @param enRoutingTableService the enRoutingTableService to set
+	 */
+	public void setEnRoutingTableService(ServiceRegistry enRoutingTableService) {
+		this.enRoutingTableService = enRoutingTableService;
+	}
+
+	/**
+	 * @return the serviceLocator
+	 */
+	public KSBContextServiceLocator getServiceLocator() {
+		return this.serviceLocator;
+	}
+
+	/**
+	 * @param serviceLocator the serviceLocator to set
+	 */
+	public void setServiceLocator(KSBContextServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
+	}
+
 }

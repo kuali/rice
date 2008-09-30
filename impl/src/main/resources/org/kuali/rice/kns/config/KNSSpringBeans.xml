@@ -25,25 +25,17 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
-
-	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
-
-	<bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
-
-	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
-		<property name="transactionManager" ref="jtaTransactionManager" />
-	</bean>
-
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
-		<property name="userTransaction">
-			<ref local="userTransaction" />
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	
+	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>knsDataSource</value>
+			</list>
 		</property>
-		<property name="transactionManager">
-			<ref local="jtaTransactionManager" />
-		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
 	</bean>
-
+	
 	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
 
 	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
@@ -100,8 +92,7 @@
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
 		<property name="authorizationService" ref="authorizationService" />
-		<property name="kualiGroupService" ref="kualiGroupService" />
-		<property name="kualiModuleService" ref="kualiModuleService" />
+  	<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="baselinePackages">
 			<list>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
@@ -128,7 +119,6 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/UniversalUser.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/RiceUser.xml</value>
 
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
@@ -141,7 +131,6 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeStatusMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeTypeMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
-				<value>classpath:org/kuali/rice/kns/document/datadictionary/RiceUserMaintenanceDocument.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -475,9 +464,6 @@
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
-		<property name="kualiGroupService">
-			<ref bean="kualiGroupService" />
-		</property>
 		<property name="lookupDao">
 			<ref bean="lookupDao" />
 		</property>
@@ -487,9 +473,6 @@
 		<property name="dateTimeService">
 			<ref bean="dateTimeService" />
 		</property>
-		<property name="moduleUserPropertyService">
-			<ref bean="kualiModuleUserPropertyService" />
-		</property>
 		<property name="businessObjectMetaDataService">
 			<ref bean="businessObjectMetaDataService" />
 		</property>
@@ -497,31 +480,6 @@
 			<ref bean="maintenanceDocumentDictionaryService" />
 		</property>
 	</bean>
-
-	<bean id="kualiModuleUserPropertyService" class="org.kuali.rice.kns.service.impl.KualiModuleUserPropertyServiceImpl">
-		<property name="moduleUserPropertyDao">
-			<ref bean="moduleUserPropertyDao" />
-		</property>
-	</bean>
-
-	<bean id="kualiModuleUserServiceBase" class="org.kuali.rice.kns.service.impl.KualiModuleUserServiceBaseImpl" abstract="true">
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
-		</property>
-		<property name="configService">
-			<ref bean="kualiConfigurationService" />
-		</property>
-		<property name="kualiModuleUserDao" ref="kualiModuleUserDao" />
-	</bean>
-
-  <bean id="kualiModuleUserDao" class="org.kuali.rice.kns.dao.proxy.KualiModuleUserDaoProxy">
-    <property name="kualiModuleUserDaoJpa" ref="kualiModuleUserDaoJpa" />
-    <property name="kualiModuleUserDaoOjb" ref="kualiModuleUserDaoOjb" />
-  </bean>
-  
-  <bean id="kualiModuleUserDaoJpa" class="org.kuali.rice.kns.dao.impl.KualiModuleUserDaoJpa" />
-	
-	<bean id="kualiModuleUserDaoOjb" class="org.kuali.rice.kns.dao.impl.KualiModuleUserDaoOjb" />
 
 	<bean id="ojbCollectionHelper" class="org.kuali.rice.kns.util.OjbCollectionHelper" />
 
@@ -581,7 +539,7 @@
   
 	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoJpa" />
   
-  <bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoOjb" />
+	<bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoOjb" />
 	<bean id="businessObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
 		<property name="businessObjectDictionaryService">
 			<ref bean="businessObjectDictionaryService" />
@@ -592,11 +550,14 @@
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
+		<property name="kualiModuleService">
+			<ref bean="kualiModuleService" />
+		</property>
 	</bean>
 
 	<bean id="universalUserLookupable" class="org.kuali.rice.kns.lookup.UniversalUserLookupableImpl" parent="kualiLookupable">
 		<property name="lookupableHelperService">
-			<bean id="universalUserLookupableHelperService" class="org.kuali.rice.kns.lookup.UniversalUserLookupableHelperServiceImpl"
+			<bean class="org.kuali.rice.kns.lookup.UniversalUserLookupableHelperServiceImpl"
 				parent="lookupableHelperService">
 				<property name="configService" ref="kualiConfigurationService" />
 			</bean>
@@ -605,7 +566,7 @@
 
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
-            <bean id="parameterLookupableHelperService" class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
+            <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
             </bean>
         </property>
@@ -614,7 +575,7 @@
     <!-- placeholder so applications can override without making DD changes -->
     <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
-            <bean id="parameterDetailTypeLookupableHelperService" class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
+            <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
             </bean>
         </property>
@@ -789,15 +750,6 @@
 
 	<bean id="universalUserDao" class="org.kuali.rice.kns.dao.RiceKNSDefaultUserDAOImpl" />
  
-  <bean id="moduleUserPropertyDao" class="org.kuali.rice.kns.dao.proxy.KualiModuleUserPropertyDaoProxy">
-    <property name="moduleUserPropertyDaoJpa" ref="moduleUserPropertyDaoJpa" />
-    <property name="moduleUserPropertyDaoOjb" ref="moduleUserPropertyDaoOjb" />
-  </bean>
-
-	<bean id="moduleUserPropertyDaoJpa" class="org.kuali.rice.kns.dao.impl.KualiModuleUserPropertyDaoJpa" />
-
-  <bean id="moduleUserPropertyDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.KualiModuleUserPropertyDaoOjb" />
-
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
     <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb" />
@@ -891,7 +843,6 @@
         <idref local="lookupDaoJpa"/>
         <idref local="persistenceDaoJpa"/>
         <idref local="maintenanceDocumentDao"/>
-        <idref local="moduleUserPropertyDao"/>
         <idref local="noteDao"/>
         <idref local="persistedLookupMetadataDao"/>
         <idref local="sessionDocumentDao"/>        

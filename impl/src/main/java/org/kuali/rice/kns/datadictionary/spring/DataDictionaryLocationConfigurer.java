@@ -18,6 +18,7 @@ package org.kuali.rice.kns.datadictionary.spring;
 import java.util.List;
 
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -30,11 +31,20 @@ public class DataDictionaryLocationConfigurer implements InitializingBean {
 
 	private List<String> dataDictionaryPackages;
 	
+	private DataDictionaryService dataDictionaryService;
+	
+	public DataDictionaryLocationConfigurer(DataDictionaryService dataDictionaryService){
+		this.dataDictionaryService = dataDictionaryService;
+	}
+	
 	public void afterPropertiesSet() throws Exception {
 		if (dataDictionaryPackages == null || dataDictionaryPackages.isEmpty()) {
 			throw new ConfigurationException("datatDictionaryPackages empty when initializing DataDictionaryLocation bean.");
 		}
-		KNSServiceLocator.getDataDictionaryService().addDataDictionaryLocations(getDataDictionaryPackages());
+		if(dataDictionaryService!=null)
+			dataDictionaryService.addDataDictionaryLocations(getDataDictionaryPackages());
+		else
+			KNSServiceLocator.getDataDictionaryService().addDataDictionaryLocations(getDataDictionaryPackages());
 	}
 
 	public List<String> getDataDictionaryPackages() {

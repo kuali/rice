@@ -227,6 +227,7 @@ public class KEWConstants {
     public static final String ALL_CODE = "All";
     public static final String NO_FILTERING = "No Filtering";
     public static final String DELEGATION_DEFAULT = "Choose Secondary Delegation";
+    public static final String PRIMARY_DELEGATION_DEFAULT = "Choose Primary Delegate";
 
     public static final String ACTIVE_CD = "Y";
     public static final String ACTIVE_LABEL = "ACTIVE";

@@ -183,7 +183,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             try {
 	            for (Iterator iter = documentType.getSearchableAttributes().iterator(); iter.hasNext();) {
 	            	SearchableAttribute searchableAttribute = (SearchableAttribute) iter.next();
-	                List searchableErrors = validateSearchableAttribute(searchableAttribute, paramMap);
+	                List searchableErrors = validateSearchableAttribute(
+	                		searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 	                if(!Utilities.isEmpty(searchableAttributes)){
 	                    for (Iterator iterator = searchableErrors.iterator(); iterator.hasNext();) {
 	                        WorkflowAttributeValidationError error = (WorkflowAttributeValidationError) iterator.next();
@@ -198,8 +199,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return errors;
     }
 
-    public List<WorkflowAttributeValidationError> validateSearchableAttribute(SearchableAttribute searchableAttribute, Map searchAttributesParameterMap) {
-        return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap);
+    public List<WorkflowAttributeValidationError> validateSearchableAttribute(
+    		SearchableAttribute searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
+        return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
     }
 
     protected QueryComponent getSearchableAttributeSql(List searchableAttributes, String whereClausePredicatePrefix) {

@@ -4,7 +4,6 @@
 	<param name="version">03/19/2007 01:59 PM</param>
 
     <param name="kns.test.port">9916</param>
-    <param name="rice.user">true</param>
 
 	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="workflow.url">${application.url}/en</param>

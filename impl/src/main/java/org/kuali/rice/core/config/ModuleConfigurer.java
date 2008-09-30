@@ -17,10 +17,31 @@ package org.kuali.rice.core.config;
 
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer {
 
 	public abstract Config loadConfig(Config parentConfig) throws Exception;
+
+	/**
+	 * 
+	 * This method returns a comma separated string of spring file locations for this module.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract String getSpringFileLocations() throws Exception;
+	
+	/**
+	 * 
+	 * This method returns a resource loader that this module might want to register with the global resource loader.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+		return null;
+	}
 	
 	public void onEvent(RiceConfigEvent event) throws Exception {
 	}

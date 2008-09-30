@@ -257,7 +257,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
     
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
-        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(routeHeaderId, null);
+        Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(routeHeaderId);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {

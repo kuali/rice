@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 /**
@@ -173,7 +174,7 @@ public interface BusinessObjectService {
      * @return A populated object from the DB, if it exists
      * 
      */
-    public PersistableBusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName);
+    public BusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName);
 
     /**
      * 

@@ -8,7 +8,7 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.NodeSettings;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -231,6 +231,9 @@ public final class KEWServiceLocator {
 	 * @return the service
 	 */
 	public static Object getService(String serviceName) {
+//		if (USER_SERVICE.equals(serviceName)) {
+//			return getUserService();
+//		}
 		return getBean(serviceName);
 	}
 
@@ -261,6 +264,7 @@ public final class KEWServiceLocator {
 	}
 
 	public static UserService getUserService() {
+		//return KIMServiceLocator.getUserService();
 		return (UserService) getBean(USER_SERVICE);
 	}
 
@@ -446,10 +450,10 @@ public final class KEWServiceLocator {
      */
 
     public static DataSource getDataSource() {
-	return (DataSource) SpringLoader.getInstance().getBean(DATASOURCE);
+	return (DataSource) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(DATASOURCE);
     }
 
     public static PlatformTransactionManager getPlatformTransactionManager() {
-	return (PlatformTransactionManager) SpringLoader.getInstance().getBean(TRANSACTION_MANAGER);
+	return (PlatformTransactionManager) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(TRANSACTION_MANAGER);
     }
 }

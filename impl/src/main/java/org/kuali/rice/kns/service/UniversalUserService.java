@@ -22,7 +22,6 @@ import java.util.Map;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.user.KualiGroup;
-import org.kuali.rice.kns.bo.user.KualiModuleUser;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.bo.user.UserId;
 import org.kuali.rice.kns.exception.UserNotFoundException;
@@ -87,8 +86,6 @@ public interface UniversalUserService extends UserService {
      * @return
      */
     public Map resolveUserIdentifiersToUniversalIdentifiers(PersistableBusinessObject businessObject, Map fieldValues);
- 
-    public Map<String,KualiModuleUser> getModuleUsers( UniversalUser user );
 
     /**
      * Checks if the user is a member of a given KualiGroup (workgroup)
@@ -114,10 +111,7 @@ public interface UniversalUserService extends UserService {
      * Checks if the user belongs to the established workflow exception workgroup.
      */
     public boolean isWorkflowExceptionUser( UniversalUser user );
-    
-    /**
-     * Loads a map of all the user's KualiModuleUser properties.
-     */
-    public Map<String,Map<String,String>> loadModuleUserProperties( UniversalUser user );
      
+    
+    public boolean canAccessAnyModule( UniversalUser user );
 }

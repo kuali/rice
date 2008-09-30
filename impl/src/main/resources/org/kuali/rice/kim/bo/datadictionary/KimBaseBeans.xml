@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="KimBaseBeans-id" parent="KimBaseBeans-id-parentBean" />
+  <bean id="KimBaseBeans-id-parentBean" parent="AttributeDefinition" abstract="true"
+        p:forceUppercase="true"
+        p:label="ID"
+        p:shortLabel="ID"
+        p:maxLength="40"
+        p:required="true" >
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="15" />
+    </property>
+  </bean>
+
+  <bean id="KimBaseBeans-entityId" parent="KimBaseBeans-entityId-parentBean" />
+  <bean id="KimBaseBeans-entityId-parentBean" parent="KimBaseBeans-id" abstract="true"
+        p:name="entityId"
+        p:label="Entity ID"
+        p:shortLabel="Entity ID" />
+        
+  <bean id="KimBaseBeans-principalId" parent="KimBaseBeans-principalId-parentBean" />
+  <bean id="KimBaseBeans-principalId-parentBean" parent="KimBaseBeans-id" abstract="true"
+        p:name="principalId"
+        p:label="Principal ID"
+        p:shortLabel="Principal ID" />
+        
+  <bean id="KimBaseBeans-principalName" parent="KimBaseBeans-principalName-parentBean" />
+  <bean id="KimBaseBeans-principalName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="principalName"
+        p:forceUppercase="false"
+        p:label="Principal Name"
+        p:shortLabel="Principal Name"
+        p:maxLength="40"
+        p:required="true" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+        
+</beans>

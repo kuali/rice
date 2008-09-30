@@ -37,7 +37,7 @@ public class RootResourceLoaderLifecycle extends BaseLifecycle {
 		    this.rootResourceLoader = new BaseResourceLoader(new QName(getMessageEntity(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
 		}
 		container.addResourceLoader(this.rootResourceLoader);
-		GlobalResourceLoader.addResourceLoaderFirst(container);
+		GlobalResourceLoader.addResourceLoader(container);
 		GlobalResourceLoader.start();
 	}
 

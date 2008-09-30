@@ -465,7 +465,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
                 setRequired(Boolean.FALSE);
             }
         } catch ( RuntimeException ex ) {
-            LogFactory.getLog(getClass()).fatal( "Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage() );
+            LogFactory.getLog(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );
             throw ex;
         }
     }

@@ -17,6 +17,8 @@ package org.kuali.rice.kns.web.ui;
 
 import java.util.Comparator;
 
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -32,6 +34,7 @@ public class Column implements java.io.Serializable {
     private String propertyName;
     private String propertyValue;
     private String propertyURL;
+    private HtmlData columnAnchor;
     private Formatter formatter;
     private Comparator comparator;
     
@@ -145,8 +148,23 @@ public class Column implements java.io.Serializable {
         this.propertyURL = propertyURL;
     }
 
+	/**
+	 * @return the columnAnchor
+	 */
+	public HtmlData getColumnAnchor() {
+		return this.columnAnchor;
+	}
 
-    /**
+	/**
+	 * @param columnAnchor the columnAnchor to set
+	 */
+	public void setColumnAnchor(HtmlData columnAnchor) {
+		this.columnAnchor = columnAnchor;
+		if(columnAnchor!=null) 
+			setPropertyURL(((AnchorHtmlData)columnAnchor).getHref());
+	}
+
+	/**
      * @return Returns the propertyValue.
      */
     public String getPropertyValue() {

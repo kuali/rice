@@ -45,12 +45,6 @@
 		<config>kim/src/main/resources/org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/Note.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/NoteType.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/bo/datadictionary/Organization.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</config>
-		<config>kom/src/main/resources/org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/Parameter.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/ParameterDetailType.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</config>
@@ -64,8 +58,6 @@
 		<config>kim/src/main/resources/org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</config>
 		<config>kim/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PrincipalQualifiedRole.xml</config>
 		<config>kim/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PrincipalQualifiedRoleAttribute.xml</config>
-		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/RiceUser.xml</config>
-		<config>kns/src/main/resources/org/kuali/core/document/datadictionary/RiceUserMaintenanceDocument.xml</config>
 		<config>kim/src/main/resources/org/kuali/rice/kim/bo/datadictionary/Role.xml</config>
 		<config>kim/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleAttribute.xml</config>
 		<config>kim/src/main/resources/org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</config>

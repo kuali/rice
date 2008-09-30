@@ -128,7 +128,17 @@ public interface BusinessObjectMetaDataService {
     
     public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly );
     
+    /**
+     * Get all the business object relationships for the given business object.  These relationships may be defined
+     * at the ORM-layer or within the data dictionary.
+     */
     public List<BusinessObjectRelationship> getBusinessObjectRelationships( BusinessObject bo );
+    
+    /**
+     * Get all the business object relationships for the given class.  These relationships may be defined
+     * at the ORM-layer or within the data dictionary.
+     */
+    public List<BusinessObjectRelationship> getBusinessObjectRelationships( Class<? extends BusinessObject> boClass );
 
     /**
      * This method accepts a business object and one of its foreign key attribute names.
@@ -141,4 +151,23 @@ public interface BusinessObjectMetaDataService {
      */
     public Map<String, Class> getReferencesForForeignKey(BusinessObject businessObject, String attributeName);
 
+    /**
+     * 
+     * This method returns a list of primary keys for the passed in class.
+     * 
+     * @param clazz
+     * @return
+     */
+    public List listPrimaryKeyFieldNames(Class clazz);
+    
+    /**
+     * 
+     * This method ...
+     * 
+     * @param businessObjectClass
+     * @param attributeName
+     * @param targetName
+     * @return
+     */
+    public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName);
 }

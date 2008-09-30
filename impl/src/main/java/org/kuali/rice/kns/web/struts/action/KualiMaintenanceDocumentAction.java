@@ -17,7 +17,6 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +101,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 AuthorizationType documentAuthorizationType = new AuthorizationType.Document(document.getDocumentBusinessObject().getClass(), ((KualiMaintenanceForm) form).getDocument());
                 if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType)) {
                     LOG.error("User not authorized to use this document: " + ((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass().getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModule(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
+                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModuleService(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
                 }
             }
         }
@@ -118,7 +117,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * Calls setup Maintenance for new action.
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return setupMaintenance(mapping, form, request, response, KNSConstants.MAINTENANCE_NEW_ACTION);
+    	request.setAttribute(KNSConstants.MAINTENANCE_ACTN, KNSConstants.MAINTENANCE_NEW_ACTION);
+    	return setupMaintenance(mapping, form, request, response, KNSConstants.MAINTENANCE_NEW_ACTION);
     }
 
     /**
@@ -485,7 +485,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
         refreshAdHocRoutingWorkgroupLookups(request, maintenanceForm);
         MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();
-
+        
         // call refresh on new maintainable
         Map<String, String> requestParams = new HashMap<String, String>();
         for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
@@ -539,6 +539,17 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         document.getNewMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);
         
+        //pass out customAction from methodToCall parameter. Call processAfterPost
+        String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        if(StringUtils.contains(fullParameter, KNSConstants.CUSTOM_ACTION)){
+        	String customAction = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+        	String[] actionValue = new String[1];
+        	actionValue[0]= StringUtils.substringAfter(customAction, ".");
+        	Map<String,String[]> paramMap = request.getParameterMap();
+        	paramMap.put(KNSConstants.CUSTOM_ACTION, actionValue);
+        	 doProcessingAfterPost( (KualiMaintenanceForm) form, paramMap );
+        }
+       
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -558,18 +569,16 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             }
         }
         else {
-            keyFieldNames = KNSServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
+            keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
         }
 
         Map requestParameters = new HashMap();
 
 
-        // List of encrypted values
-        String encryptedString = request.getParameter(KNSConstants.ENCRYPTED_LIST_PREFIX);
-        List encryptedList = new ArrayList();
-        if (StringUtils.isNotBlank(encryptedString)) {
-            encryptedList = Arrays.asList(StringUtils.split(encryptedString, KNSConstants.FIELD_CONVERSIONS_SEPERATOR));
-        }
+        // List of encrypted fields - Change for KFSMI-1374 -
+        // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
+        List encryptedList = 
+        	KNSServiceLocator.getDataDictionaryService().getEncryptedFieldsList(maintainable.getBusinessObject().getClass().getName());
 
 
         for (Iterator iter = keyFieldNames.iterator(); iter.hasNext();) {
@@ -897,8 +906,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     private void clearPrimaryKeyFields(MaintenanceDocument document) {
         // get business object being maintained and its keys
         PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
-        PersistenceStructureService psService = KNSServiceLocator.getPersistenceStructureService();
-        List<String> keyFieldNames = psService.listPrimaryKeyFieldNames(bo.getClass());
+        List<String> keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(bo.getClass());
 
         for (String keyFieldName : keyFieldNames) {
             try {
@@ -969,5 +977,15 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
 
         maintainable.processAfterPost(document, request.getParameterMap() );
+    }
+    
+    private void doProcessingAfterPost( KualiMaintenanceForm form, Map<String,String[]> parameters ) {
+        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+        Maintainable maintainable = document.getNewMaintainableObject();
+        PersistableBusinessObject bo = maintainable.getBusinessObject();
+        
+        KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
+
+        maintainable.processAfterPost(document, parameters );
     }
 }

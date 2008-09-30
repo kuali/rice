@@ -23,34 +23,37 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 
-
 /**
  * Data Access Object for {@link ActionItem}s.
  * 
  * @see ActionItem
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionItemDAO {
 
-    public ActionItem findByActionItemId(Long actionItemId);
-    
-    public void deleteActionItem(ActionItem actionItem);
+	public ActionItem findByActionItemId(Long actionItemId);
 
-    public void deleteByRouteHeaderId(Long routeHeaderId);
+	public void deleteActionItem(ActionItem actionItem);
 
-    public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId, String workflowUserId);
+	public void deleteByRouteHeaderId(Long routeHeaderId);
 
-    public void saveActionItem(ActionItem actionItem);
+	public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId,
+			String workflowUserId);
 
-    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser);
+	public void saveActionItem(ActionItem actionItem);
 
-    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
-    
-    public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
+	public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser);
 
-    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
-    
-    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws KEWUserNotFoundException;
-    
+	public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
+
+	public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
+
+	public Collection<ActionItem> findByWorkflowUserRouteHeaderId(
+			String workflowUserId, Long routeHeaderId);
+
+	public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException;
+
+	public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException;
+
 }

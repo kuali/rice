@@ -174,7 +174,11 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
         }
         while (searchResultItr.hasNext()) {
             BusinessObject businessObject = (BusinessObject) searchResultItr.next();
-            workflowLookupableResults.add(Enhancer.create(businessObject.getClass(), new Class[] { WorkflowLookupableResult.class }, new WorkflowLookupableInvocationHandler(businessObject, new StringBuffer("<a href=\"").append(lookupable.getReturnUrl(businessObject, combinedFieldConversions, lookupableImplName)).append(" \">return value</a>").toString(), getLookupableClassLoader())));
+            workflowLookupableResults.add(Enhancer.create(businessObject.getClass(), new Class[] { WorkflowLookupableResult.class }, 
+	    		new WorkflowLookupableInvocationHandler(
+    				businessObject, 
+    				lookupable.getReturnUrl(businessObject, combinedFieldConversions, lookupableImplName).constructCompleteHtmlTag(), 
+    				getLookupableClassLoader())));
         }
         return workflowLookupableResults;
     }

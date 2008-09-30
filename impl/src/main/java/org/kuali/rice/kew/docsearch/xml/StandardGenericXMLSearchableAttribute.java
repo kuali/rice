@@ -34,6 +34,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -82,7 +83,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		return paramMap;
 	}
 
-	public String getSearchContent() {
+	public String getSearchContent(DocumentSearchContext documentSearchContext) {
 		XPath xpath = XPathHelper.newXPath();
 		String findDocContent = "//searchingConfig/xmlSearchContent";
 		try {
@@ -139,18 +140,19 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		}
 	}
 
-	public List getSearchStorageValues(String docContent) {
+	public List getSearchStorageValues(DocumentSearchContext documentSearchContext) {
 		List searchStorageValues = new ArrayList();
 		Document document;
-        if (StringUtils.isBlank(docContent)) {
-            LOG.warn("Empty Document Content found '" + docContent + "'");
+        if (StringUtils.isBlank(documentSearchContext.getDocumentContent())) {
+            LOG.warn("Empty Document Content found '" + documentSearchContext.getDocumentContent() + "'");
             return searchStorageValues;
         }
 		try {
-			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(docContent))));
+			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+					new InputSource(new BufferedReader(new StringReader(documentSearchContext.getDocumentContent()))));
 		} catch (Exception e){
-			LOG.error("error parsing docContent: "+docContent, e);
-			throw new RuntimeException("Error trying to parse docContent: "+docContent, e);
+			LOG.error("error parsing docContent: "+documentSearchContext.getDocumentContent(), e);
+			throw new RuntimeException("Error trying to parse docContent: "+documentSearchContext.getDocumentContent(), e);
 		}
 		XPath xpath = XPathHelper.newXPath(document);
 		String findField = "//searchingConfig/" + FIELD_DEF_E;
@@ -203,7 +205,8 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
                                 //try for a string being returned from the expression.  This 
                                 //seems like a poor way to determine our expression return type but 
                                 //it's all I can come up with at the moment.
-                                String searchValue = (String) xpath.evaluate(xpathExpression, DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(docContent)))).getDocumentElement(), XPathConstants.STRING);
+                                String searchValue = (String) xpath.evaluate(xpathExpression, DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                                		new InputSource(new BufferedReader(new StringReader(documentSearchContext.getDocumentContent())))).getDocumentElement(), XPathConstants.STRING);
                                 String value = null;
                                 if (StringUtils.isNotBlank(searchValue)) {
                                     value = searchValue;
@@ -218,8 +221,8 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     					LOG.error("error in isMatch ", e);
     					throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression + " or " + xpathExpression, e);
     				} catch (Exception e){
-    					LOG.error("error parsing docContent: "+docContent, e);
-    					throw new RuntimeException("Error trying to parse docContent: "+docContent, e);
+    					LOG.error("error parsing docContent: "+documentSearchContext.getDocumentContent(), e);
+    					throw new RuntimeException("Error trying to parse docContent: "+documentSearchContext.getDocumentContent(), e);
     				}
                 }
 			}
@@ -248,7 +251,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     	return attValue;
 	}
 
-	public List getSearchingRows() {
+	public List getSearchingRows(DocumentSearchContext documentSearchContext) {
 		if (searchRows.isEmpty()) {
 			List searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
 			List rows = new ArrayList();
@@ -644,7 +647,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		throw new IllegalArgumentException("Illegal field type found: " + type);
 	}
 	
-	public List validateUserSearchInputs(Map paramMap) {
+	public List validateUserSearchInputs(Map paramMap, DocumentSearchContext documentSearchContext) {
 		this.paramMap = paramMap;
 		List errors = new ArrayList();
 

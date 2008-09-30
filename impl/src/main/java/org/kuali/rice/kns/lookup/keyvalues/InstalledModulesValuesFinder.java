@@ -18,9 +18,9 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -34,8 +34,10 @@ public class InstalledModulesValuesFinder extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
         KualiModuleService kms = KNSServiceLocator.getKualiModuleService();
-        for ( KualiModule module : kms.getInstalledModules() ) {
-            keyValues.add(new KeyLabelPair(module.getModuleCode(), module.getModuleCode() + " - " + module.getModuleName()));            
+        for ( ModuleService moduleService : kms.getInstalledModuleServices() ) {
+            keyValues.add(new KeyLabelPair(moduleService.getModuleConfiguration().getNamespaceCode(), 
+            		moduleService.getModuleConfiguration().getNamespaceCode() + " - " + 
+            		kms.getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode()))); 
         }
 
         return keyValues;

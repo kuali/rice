@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +28,12 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.CollectionDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
@@ -51,7 +47,6 @@ import org.kuali.rice.kns.rule.PreRulesCheck;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiGroupService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -65,7 +60,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
     private KualiConfigurationService kualiConfigurationService;
-    private KualiGroupService kualiGroupService;
     private KualiModuleService kualiModuleService;
     private AuthorizationService authorizationService;
 
@@ -833,17 +827,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             addDataDictionaryLocation(location);
         }
     }
-
+    
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;
-    }
-
-    public void setKualiGroupService(KualiGroupService kualiGroupService) {
-        this.kualiGroupService = kualiGroupService;
-    }
-
-    public KualiGroupService getKualiGroupService() {
-        return kualiGroupService;
     }
 
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
@@ -882,4 +868,20 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
         return blockingClasses;
     }
+    
+    /***
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getEncryptedValuesList(java.lang.String)
+     */
+    public List<String> getEncryptedFieldsList(String entryClassName){
+    	BusinessObjectEntry boEntry = getDataDictionary().getBusinessObjectEntry(entryClassName);
+    	List<String> encryptedFieldsList = new ArrayList<String>();
+    	Mask displayMask;
+    	for(AttributeDefinition attributeDefinition: boEntry.getAttributes()){
+    		displayMask = attributeDefinition.getDisplayMask();
+        	if(displayMask != null)
+        		encryptedFieldsList.add(attributeDefinition.getName());
+    	}
+    	return encryptedFieldsList;
+    }
+    
 }

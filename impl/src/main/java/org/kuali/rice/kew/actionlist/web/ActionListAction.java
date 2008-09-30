@@ -166,6 +166,11 @@ public class ActionListAction extends WorkflowAction {
                 actionList = null;
             }
 
+            if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
+                uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
+                actionList = null;
+            }
+
             // if the user has changed, we need to refresh the action list
             if (!workflowUser.getWorkflowId().equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
@@ -196,8 +201,12 @@ public class ActionListAction extends WorkflowAction {
             
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
-                form.setDelegators(getDelegators(actionListSrv, workflowUser, KEWConstants.DELEGATION_SECONDARY));
+                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser);
+                form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
+                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser);
+                form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
+                form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
 
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
@@ -488,11 +497,6 @@ public class ActionListAction extends WorkflowAction {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
     		errors.add(Globals.ERROR_KEY, new ActionMessage(errorKey, documentIdsString));
     	}
-    }
-
-    public List getDelegators(ActionListService actionListSrv, WorkflowUser workflowUser, String delegationType) throws Exception {
-        Collection delegators = actionListSrv.findUserDelegators(workflowUser, delegationType);
-        return getWebFriendlyRecipients(delegators);
     }
 
     public ActionForward takeMassActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

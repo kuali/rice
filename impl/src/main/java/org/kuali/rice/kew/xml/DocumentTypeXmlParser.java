@@ -40,6 +40,8 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.NodeType;
+import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
@@ -751,6 +753,8 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 nodeType = "org.kuali.rice.kew.engine.node.RequestsNode";
             } else if ("process".equalsIgnoreCase(localName)) {
                 nodeType = "org.kuali.rice.kew.engine.node.SimpleSubProcessNode";
+            } else if (NodeType.ROLE.getName().equalsIgnoreCase(localName)) {
+            	nodeType = RoleNode.class.getName();
             }
         }
         if (Utilities.isEmpty(nodeType)) {

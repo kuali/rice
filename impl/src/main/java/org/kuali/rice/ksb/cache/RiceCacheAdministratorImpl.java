@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -39,6 +40,22 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	private boolean started;
 	private boolean forceRegistryRefresh;
 	private String serviceName;
+	protected RemotedServiceRegistry remotedServiceRegistry;
+	
+	/**
+	 * @return the remotedServiceRegistry
+	 */
+	public RemotedServiceRegistry getRemotedServiceRegistry() {
+		return this.remotedServiceRegistry;
+	}
+
+	/**
+	 * @param remotedServiceRegistry the remotedServiceRegistry to set
+	 */
+	public void setRemotedServiceRegistry(
+			RemotedServiceRegistry remotedServiceRegistry) {
+		this.remotedServiceRegistry = remotedServiceRegistry;
+	}
 
 	public boolean isStarted() {
 		return this.started;
@@ -112,6 +129,7 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 			properties.put(AbstractCacheAdministrator.CACHE_BLOCKING_KEY, "false");
 		}
 		properties.put(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY, new Boolean(this.forceRegistryRefresh));
+		properties.put(RiceCacheAdministrator.REMOTED_SERVICE_REGISTRY, remotedServiceRegistry);
 		if (StringUtils.isBlank(this.serviceName)) {
 		    this.serviceName = DEFAULT_SERVICE_NAME;
 		}

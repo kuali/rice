@@ -21,6 +21,7 @@
         <ref bean="FiscalOfficer-userName" />
       </list>
     </property>
+    <property name="objectLabel" value="Fiscal Officer"/>
   </bean>
 
 <!-- Attribute Definitions -->

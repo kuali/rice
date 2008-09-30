@@ -303,14 +303,6 @@ public class DocumentSearchAction extends WorkflowAction {
         request.setAttribute("currentSearchState", state);
     }
     
-//    private void setStateForUse(HttpServletRequest request, State state) {
-//        request.setAttribute("searchStateKey", getUserSession(request).addObject(state));
-//    }
-//
-//    private void setupState(HttpServletRequest request, DocumentSearchForm form) {
-//        setStateForUse(request, buildState(getCurrentState(request), form, getUserSession(request)));
-//    }
-
     private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, UserSession userSession) {
         State state = new State(docSearchForm);
         if (currentState != null) {

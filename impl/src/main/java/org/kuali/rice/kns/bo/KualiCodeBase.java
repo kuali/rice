@@ -29,7 +29,9 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
 
     // Code and Name will be overridden by Column annotations in their children classes
     @Id
+    @Column(name="CODE")
     protected String code;
+    @Column(name="NAME")
     protected String name;
     @Type(type="yes_no")
     @Column(name="ACTIVE_IND")

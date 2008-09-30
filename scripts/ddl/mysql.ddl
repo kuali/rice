@@ -484,10 +484,6 @@ CREATE TABLE KIM_GROUPS_GROUPS_T (
         PRIMARY KEY (PARENT_GROUP_ID, MEMBER_GROUP_ID)
 )
 ;
-create table KOM_ORGANIZATIONS_CONTEXTS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE varchar(255), CONTEXT_ID bigint, ORGANIZATION_ID bigint, primary key (ID)) ;
-create table KOM_ORGANIZATIONS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE varchar(255), CATEGORY_ID bigint, NAME varchar(255), PARENT_ORGANIZATION_ID bigint, SHORT_NAME varchar(255), primary key (ID)) ;
-create table KOM_ORGANIZATION_CATEGORIES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, NAME varchar(255), primary key (ID)) ;
-create table KOM_ORGANIZATION_CONTEXTS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, DESCRIPTION varchar(255), NAME varchar(255), organizations tinyblob, primary key (ID)) ;
 create table NOTIFICATIONS (ID bigint not null, AUTO_REMOVE_DATETIME datetime, CONTENT mediumtext not null, CREATED_DATETIME datetime not null, DELIVERY_TYPE varchar(255) not null, DB_LOCK_VER_NBR integer, LOCKED_DATE datetime, PROCESSING_FLAG varchar(255) not null, SEND_DATETIME datetime, TITLE varchar(255), NOTIFICATION_CHANNEL_ID bigint, PRIORITY_ID bigint, CONTENT_TYPE_ID bigint, PRODUCER_ID bigint, primary key (ID)) ;
 create table NOTIFICATION_CHANNELS (ID bigint not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, SUBSCRIBABLE char(1) not null, primary key (ID)) ;
 create table NOTIFICATION_CHANNEL_PRODUCERS (PRODUCER_ID bigint not null, CHANNEL_ID bigint not null) ;
@@ -1175,7 +1171,30 @@ INSERT INTO KIM_ROLES_GROUPS_T (ROLE_ID, GROUP_ID) VALUES (191, 302);
 
 
 
+CREATE TABLE kr_kim_principal_t
+(
+    prncpl_id VARCHAR(40) NOT NULL,
+    obj_id VARCHAR(36) NOT NULL,
+    ver_nbr bigint NOT NULL,
+    prncpl_nm VARCHAR(100) NOT NULL,
+    entity_id VARCHAR(40),
+    prncpl_pswd VARCHAR(400),
+    actv_ind VARCHAR(1),
+    PRIMARY KEY ( prncpl_id )
+)
+;
 
+insert into kr_kim_principal_t values ('1', '324sfeds4523fs', '1', 'admin', '1', 'pw', 'Y')
+;
+
+CREATE TABLE KR_KNS_SESN_DOC_T (
+        SESSION_ID                     VARCHAR(40) NOT NULL,
+        FDOC_NBR                       VARCHAR(14) NOT NULL,
+        SERIALIZED_DOC_FRM             BLOB,
+        LST_UPDATE_DT                  DATE,
+     PRIMARY KEY (SESSION_ID, FDOC_NBR) 
+)
+;
 
 
 commit

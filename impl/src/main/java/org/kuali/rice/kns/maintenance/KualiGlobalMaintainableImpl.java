@@ -75,7 +75,9 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         // This whole mess is to fail-fast if my assumptions about the nature of the parent bo of all
         // global-maintenance-documents is wrong
         boolean assumptionIsWrong = false;
-        List primaryKeys = KNSServiceLocator.getPersistenceStructureService().getPrimaryKeys(gboClass);
+        //TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
+        //May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
+        List primaryKeys = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(gboClass);
         if (primaryKeys == null) {
             assumptionIsWrong = true;
         }

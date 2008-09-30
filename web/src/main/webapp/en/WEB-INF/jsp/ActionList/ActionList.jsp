@@ -66,6 +66,15 @@
 			  </c:forEach>
             </html-el:select>
 		</c:if>
+		<c:if test="${! empty ActionListForm.primaryDelegates}">
+            <html-el:select property="primaryDelegateId" onchange="document.forms[0].methodToCall.value='start';document.forms[0].submit();">
+              <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
+              <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
+			  <c:forEach var="delegatee" items="${ActionListForm.primaryDelegates}">
+				<html-el:option value="${delegatee.recipientId}"><c:out value="${delegatee.displayName}" /></html-el:option>
+			  </c:forEach>
+            </html-el:select>
+		</c:if>
     </td>
     <c:if test="${ActionListForm.logoAlign == 'right'}">
     <td align="right">

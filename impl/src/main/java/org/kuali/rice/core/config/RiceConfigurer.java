@@ -36,8 +36,18 @@ import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.RootResourceLoaderLifecycle;
+import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.kcb.config.KCBConfigurer;
+import org.kuali.rice.ken.config.KENConfigurer;
+import org.kuali.rice.kew.config.KEWConfigurer;
+import org.kuali.rice.kew.lifecycle.WebApplicationGlobalResourceLifecycle;
+import org.kuali.rice.kim.config.KIMConfigurer;
+import org.kuali.rice.kns.config.KNSConfigurer;
+import org.kuali.rice.ksb.messaging.config.KSBConfigurer;
+import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationEvent;
@@ -74,48 +84,136 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private Properties properties;
 	private List<String> configLocations;
 
+	private KSBConfigurer ksbConfigurer;
+	private KNSConfigurer knsConfigurer;
+	private KIMConfigurer kimConfigurer;
+	private KCBConfigurer kcbConfigurer;
+	private KEWConfigurer kewConfigurer;
+	private KENConfigurer kenConfigurer;
+	
 	private List<ModuleConfigurer> modules = new LinkedList<ModuleConfigurer>();
 
+	/***
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
 	public void afterPropertiesSet() throws Exception {
 		start();
 	}
 
+	/***
+	 * @see org.springframework.beans.factory.DisposableBean#destroy()
+	 */
 	public void destroy() throws Exception {
 		stop();
 	}
 
+	/***
+	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
+	 */
 	public void start() throws Exception {
+		//Add the configurers to modules list in the desired sequence.
+		if(getKsbConfigurer()!=null) modules.add(getKsbConfigurer());
+		if(getKnsConfigurer()!=null) modules.add(getKnsConfigurer());
+		if(getKimConfigurer()!=null) modules.add(getKimConfigurer());
+		if(getKcbConfigurer()!=null) modules.add(getKcbConfigurer());
+		if(getKewConfigurer()!=null) modules.add(getKewConfigurer());
+		if(getKenConfigurer()!=null) modules.add(getKenConfigurer());
+
 	    notify(new BeforeStartEvent());
 		initializeConfiguration();
+		initializeResourceLoaders();
 		super.start();
+		addModulesResourceLoaders();
 		if (getRootResourceLoader() != null	) {
 			if (!getRootResourceLoader().isStarted()) {
 				getRootResourceLoader().start();
 			}
-			GlobalResourceLoader.addResourceLoaderFirst(getRootResourceLoader());
+			GlobalResourceLoader.addResourceLoader(getRootResourceLoader());
 		}
 	}
 	
+	/**
+	 * 
+	 * This method initializes root resource loader and spring context.
+	 * 
+	 * @throws Exception
+	 */
+	private void initializeResourceLoaders() throws Exception {
+		(new RootResourceLoaderLifecycle(getRootResourceLoader())).start();
+		loadSpringContext();
+	}
+
+	/**
+	 * 
+	 * This method decides the sequence of module resource loaders to be added to global resource loader (GRL).
+	 * It asks the individual module configurers for the resource loader they want to register and adds them to GRL.
+	 * 
+	 * @throws Exception
+	 */
+	private void addModulesResourceLoaders() throws Exception {
+		if(getKewConfigurer()!=null){
+			// TODO: Check - In the method getResourceLoaderToRegister of KewConfigurer, 
+			// does the call registry.start() depend on the preceding line GlobalResourceLoader.addResourceLoader(coreResourceLoader)?
+			// Ideally we would like to register the resource loader into GRL over here
+			getKewConfigurer().getResourceLoaderToRegister();
+		}
+		if(getKsbConfigurer()!=null){
+			GlobalResourceLoader.addResourceLoader(getKsbConfigurer().getResourceLoaderToRegister());
+		}
+	}
+
+	/**
+	 * 
+	 * This method:
+	 * 1) Creates a spring application context, using the spring files from the modules. 
+	 * 2) Wraps the context in a ResourceLoader and adds it to GRL. 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public ResourceLoader loadSpringContext() throws Exception {
+		String springFileLocations = "";
+		for(ModuleConfigurer module: modules){
+			if(StringUtils.isNotBlank(module.getSpringFileLocations())) 
+				springFileLocations += module.getSpringFileLocations()+SpringLoader.SPRING_SEPARATOR_CHARACTER;
+		}
+		ResourceLoader resourceLoader = RiceResourceLoaderFactory.createRootRiceResourceLoader(springFileLocations);
+		resourceLoader.start();
+		GlobalResourceLoader.addResourceLoader(resourceLoader);
+		return resourceLoader;
+	}
+
+	/***
+	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#stop()
+	 */
 	public void stop() throws Exception {
 	    notify(new BeforeStopEvent());
 	    super.stop();
 	    GlobalResourceLoader.stop();
 	}
 
-	protected List<Lifecycle> loadLifecycles() {
+	/***
+	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+	 */
+	protected List<Lifecycle> loadLifecycles() throws Exception {
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		 lifecycles.add(new RootResourceLoaderLifecycle(getRootResourceLoader()));
 		 for (ModuleConfigurer module : this.modules) {
 			 lifecycles.add(module);
 		 }
 		 return lifecycles;
 	}
 	
+	/***
+	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 */
     public void onApplicationEvent(ApplicationEvent event) {
         try {
+        	//Event raised when an ApplicationContext gets initialized or refreshed. 
             if (event instanceof ContextRefreshedEvent) {
                 notify(new AfterStartEvent());
-            } else if (event instanceof ContextClosedEvent) {
+            }
+            //Event raised when an ApplicationContext gets closed. 
+            else if (event instanceof ContextClosedEvent) {
                 notify(new AfterStopEvent());
             }
         } catch (Exception e) {
@@ -180,10 +278,10 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 			// TODO should there be a hierarchy here?
 			Config moduleConfig = module.loadConfig(rootConfig);
 			if (moduleConfig != null) {
-			rootConfig.getProperties().putAll(moduleConfig.getProperties());
-			rootConfig.getObjects().putAll(moduleConfig.getObjects());
+				rootConfig.getProperties().putAll(moduleConfig.getProperties());
+				rootConfig.getObjects().putAll(moduleConfig.getObjects());
+			}
 		}
-	}
 	}
 
 	protected void configureEnvironment(Config config) {
@@ -351,14 +449,6 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		this.userTransactionJndiLocation = userTransactionJndiLocation;
 	}
 
-	public List<ModuleConfigurer> getModules() {
-		return this.modules;
-	}
-
-	public void setModules(List<ModuleConfigurer> modules) {
-		this.modules = modules;
-	}
-
 	public Config getRootConfig() {
 		return this.rootConfig;
 	}
@@ -374,6 +464,104 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	public void setCredentialsSourceFactory(
 			final CredentialsSourceFactory credentialsSourceFactory) {
 		this.credentialsSourceFactory = credentialsSourceFactory;
+	}
+
+	/**
+	 * @return the kcbConfigurer
+	 */
+	public KCBConfigurer getKcbConfigurer() {
+		return this.kcbConfigurer;
+	}
+
+	/**
+	 * @param kcbConfigurer the kcbConfigurer to set
+	 */
+	public void setKcbConfigurer(KCBConfigurer kcbConfigurer) {
+		this.kcbConfigurer = kcbConfigurer;
+	}
+
+	/**
+	 * @return the kenConfigurer
+	 */
+	public KENConfigurer getKenConfigurer() {
+		return this.kenConfigurer;
+	}
+
+	/**
+	 * @param kenConfigurer the kenConfigurer to set
+	 */
+	public void setKenConfigurer(KENConfigurer kenConfigurer) {
+		this.kenConfigurer = kenConfigurer;
+	}
+
+	/**
+	 * @return the kewConfigurer
+	 */
+	public KEWConfigurer getKewConfigurer() {
+		return this.kewConfigurer;
+	}
+
+	/**
+	 * @param kewConfigurer the kewConfigurer to set
+	 */
+	public void setKewConfigurer(KEWConfigurer kewConfigurer) {
+		this.kewConfigurer = kewConfigurer;
+	}
+
+	/**
+	 * @return the kimConfigurer
+	 */
+	public KIMConfigurer getKimConfigurer() {
+		return this.kimConfigurer;
+	}
+
+	/**
+	 * @param kimConfigurer the kimConfigurer to set
+	 */
+	public void setKimConfigurer(KIMConfigurer kimConfigurer) {
+		this.kimConfigurer = kimConfigurer;
+	}
+
+	/**
+	 * @return the knsConfigurer
+	 */
+	public KNSConfigurer getKnsConfigurer() {
+		return this.knsConfigurer;
+	}
+
+	/**
+	 * @param knsConfigurer the knsConfigurer to set
+	 */
+	public void setKnsConfigurer(KNSConfigurer knsConfigurer) {
+		this.knsConfigurer = knsConfigurer;
+	}
+
+	/**
+	 * @return the ksbConfigurer
+	 */
+	public KSBConfigurer getKsbConfigurer() {
+		return this.ksbConfigurer;
+	}
+
+	/**
+	 * @param ksbConfigurer the ksbConfigurer to set
+	 */
+	public void setKsbConfigurer(KSBConfigurer ksbConfigurer) {
+		this.ksbConfigurer = ksbConfigurer;
+	}
+
+	/**
+	 * @return the modules
+	 */
+	public List<ModuleConfigurer> getModules() {
+		return this.modules;
+	}
+
+	/**
+	 * @param modules the modules to set
+	 */
+	public void setModules(List<ModuleConfigurer> modules) {
+		this.modules = modules;
 	}	
 
 }

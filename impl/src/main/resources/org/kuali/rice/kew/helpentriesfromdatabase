@@ -644,6 +644,12 @@
 		</helpEntry>
 		
 		<helpEntry>
+			<helpName>Primary Delegate ID</helpName>
+			<helpText>Network ID of the user who was designated as a primary delegate.</helpText>
+			<helpKey>DelegateID</helpKey>
+		</helpEntry>
+		
+		<helpEntry>
 			<helpName>Action Request Workgroup</helpName>
 			<helpText>A workgroup that an action can be requested of.</helpText>
 			<helpKey>ActionRequestWorkgroup</helpKey>

@@ -26,6 +26,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
@@ -78,7 +80,8 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 
 		for (Iterator iterator = docType.getSearchableAttributes().iterator(); iterator.hasNext();) {
 			SearchableAttribute searchableAttribute = (SearchableAttribute) iterator.next();
-			List searchStorageValues = searchableAttribute.getSearchStorageValues(docContent);
+			List searchStorageValues = searchableAttribute.getSearchStorageValues(
+					DocSearchUtils.getDocumentSearchContext(document.getAppDocId(), docType.getName(), docContent));
 			if (searchStorageValues != null) {
 				for (Iterator iterator2 = searchStorageValues.iterator(); iterator2.hasNext();) {
 					SearchableAttributeValue searchableAttributeValue = (SearchableAttributeValue) iterator2.next();

@@ -22,9 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
@@ -33,7 +31,8 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMConfigurer extends ModuleConfigurer {
-    	private static final Logger LOG = Logger.getLogger(KIMConfigurer.class);
+	private static final Logger LOG = Logger.getLogger(KIMConfigurer.class);
+	private static final String KIM_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMSpringBeans.xml";
 	
 	/**
 	 * This overridden method handles setting up the KIM specific configuration.
@@ -41,15 +40,20 @@ public class KIMConfigurer extends ModuleConfigurer {
 	 * @see org.kuali.rice.core.config.ModuleConfigurer#loadConfig(org.kuali.rice.core.config.Config)
 	 */
 	@Override
-    	public Config loadConfig(Config parentConfig) throws Exception {
-    	    	LOG.info("Starting configuration of KIM for message entity " + parentConfig.getMessageEntity());
-    		
-    		Config currentConfig = ConfigContext.getCurrentContextConfig();
-    		
-    		// ANY NEW CONFIG ELEMENTS NEED TO BE ADDED HERE
-    
-    		return currentConfig;
-    	}
+	public Config loadConfig(Config parentConfig) throws Exception {
+	    	LOG.info("Starting configuration of KIM for message entity " + parentConfig.getMessageEntity());
+		
+		Config currentConfig = ConfigContext.getCurrentContextConfig();
+		
+		// ANY NEW CONFIG ELEMENTS NEED TO BE ADDED HERE
+
+		return currentConfig;
+	}
+
+	@Override
+	public String getSpringFileLocations(){
+		return KIM_SPRING_BEANS_PATH;
+	}
 	
 	/**
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
@@ -59,8 +63,8 @@ public class KIMConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		lifecycles.add(new KIMOjbConfigurer());
-		lifecycles.add(KIMResourceLoaderFactory.createRootKIMResourceLoader());
+		//lifecycles.add(new KIMOjbConfigurer());
+		//lifecycles.add(KIMResourceLoaderFactory.createRootKIMResourceLoader());
 		return lifecycles;
 	}
 }

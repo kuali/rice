@@ -34,7 +34,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface ActionListDAO {
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter);
-    public Collection<ActionItem> getActionList(Long routeHeaderId, ActionListFilter filter);
+    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
     public int getCount(String workflowId);
     
     /**

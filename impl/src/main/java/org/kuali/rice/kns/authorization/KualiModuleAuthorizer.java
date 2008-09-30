@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.service.ModuleService;
 
 /**
  * Interface implemented by each module in the system to control access to the module resources as a whole.
@@ -26,9 +26,9 @@ import org.kuali.rice.kns.bo.user.UniversalUser;
 public interface KualiModuleAuthorizer {
     public boolean isAuthorized(UniversalUser user, AuthorizationType authType);
     
-    public KualiModule getModule();
+    public ModuleService getModuleService();
     
-    public void setModule( KualiModule module );
+    public void setModuleService( ModuleService moduleService );
 
     /** Tests if this authorizer is responsible for an attempt to use/access the given class 
      * 

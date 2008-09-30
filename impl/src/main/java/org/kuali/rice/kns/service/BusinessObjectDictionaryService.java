@@ -147,6 +147,10 @@ public interface BusinessObjectDictionaryService {
      */
     public Boolean noInquiryFieldInquiry(Class businessObjectClass, String attributeName);
 
+    /**
+     * returns boolean indicating whether lookup result field to use shortLabel
+     */
+    public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass, String attributeName);
 
     /**
      * returns String indicating the default search value for the lookup field

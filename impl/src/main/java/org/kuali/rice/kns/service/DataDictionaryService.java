@@ -439,4 +439,13 @@ public interface DataDictionaryService {
      * @return a set of all registered inactivation blocks for a particular business object
      */
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass);
+
+    /**
+     * 
+     * This method returns the list of all attributes that should be encrypted for a business object DD entry
+     * 
+     * @param entryClassName
+     * @return
+     */
+    public List<String> getEncryptedFieldsList(String entryClassName);
 }

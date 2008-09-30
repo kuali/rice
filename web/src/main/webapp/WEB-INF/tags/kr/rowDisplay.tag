@@ -179,19 +179,12 @@
 					  		<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
 				  		</c:when>
 				  		<c:otherwise>
-				  			<c:choose>
-								<c:when test="${KualiForm.document.sessionDocument || sessionDocument}" >
-									<c:if test="${not fn:contains(field.propertyName, constants.MAINTENANCE_OLD_MAINTAINABLE)}">
-										<input type="hidden" name="${field.propertyName}" 
-										value='<c:out value="${fieldValue}"/>' />
-									</c:if>
-								</c:when>
-								<c:otherwise>
-								<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
-								</c:otherwise>	
-							</c:choose>
-				  		</c:otherwise>	
-				  	</c:choose>
+							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
+								<input type="hidden" name="${field.propertyName}" 
+									   value='<c:out value="${fieldValue}"/>' />
+							</c:if>
+						</c:otherwise>
+				  	 </c:choose>
 				</c:when>
 
 			</c:choose>
@@ -770,6 +763,61 @@
 						<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
 					</th>
 				</c:when>
+			<c:when
+				test="${field.fieldType eq field.BUTTON && isMaintenance && not isFormReadOnly}">
+				<c:choose>
+					<c:when
+						test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
+						<kul:fieldDefaultLabel isLookup="false"
+							isRequired="false"
+							isReadOnly="true" cellWidth="${dataCellWidth}%"
+							fieldName="${field.propertyName}" fieldType="${field.fieldType}"
+							fieldLabel="${field.fieldLabel}" />
+						<td class="grid" width="${dataCellWidth}%">
+						<html:image
+							src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}"
+							styleClass="${field.styleClass}"
+							property="${Constants.DISPATCH_REQUEST_PARAMETER}.${Constants.RETURN_METHOD_TO_CALL}.${Constants.METHOD_TO_CALL_PARM1_LEFT_DEL}${Constants.CUSTOM_ACTION}.${fn:substringAfter(field.propertyName, Constants.MAINTENANCE_NEW_MAINTAINABLE)}${Constants.METHOD_TO_CALL_PARM1_RIGHT_DEL}"
+							title="${field.fieldLabel}" alt="${field.fieldLabel}" />
+						</td>
+					</c:when>
+					<c:otherwise>
+						<kul:fieldDefaultLabel isLookup="false"
+							isRequired="false"
+							isReadOnly="true" cellWidth="${dataCellWidth}%"
+							fieldName="${field.propertyName}" fieldType="${field.fieldType}"
+							fieldLabel="" />
+						<td class="grid" width="${dataCellWidth}%">&nbsp;</td>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+
+			<c:when test="${field.fieldType eq field.LINK}">
+
+				<c:choose>
+					<c:when
+						test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
+						<kul:fieldDefaultLabel isLookup="false"
+							isRequired="false"
+							isReadOnly="true" cellWidth="${dataCellWidth}%"
+							fieldName="${field.propertyName}" fieldType="${field.fieldType}"
+							fieldLabel="${field.fieldLabel}" />
+						<td class="grid" width="${dataCellWidth}%">
+						<html:link href="${field.propertyValue}" target="${field.target}" styleClass="${field.styleClass}">${field.hrefText}
+
+								</html:link>
+						</td>
+					</c:when>
+					<c:otherwise>
+						<kul:fieldDefaultLabel isLookup="false"
+							isRequired="false"
+							isReadOnly="true" cellWidth="${dataCellWidth}%"
+							fieldName="${field.propertyName}" fieldType="${field.fieldType}"
+							fieldLabel="" />
+						<td class="grid" width="${dataCellWidth}%">&nbsp;</td>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
 	                
 			</c:choose>
 				

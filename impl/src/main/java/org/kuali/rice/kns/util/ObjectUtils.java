@@ -36,9 +36,11 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.format.FormatException;
@@ -174,9 +176,13 @@ public class ObjectUtils {
     public static BusinessObject createHybridBusinessObject(Class businessObjectClass, BusinessObject source, Map<String, String> template) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         BusinessObject obj = null;
         try {
-            obj = (BusinessObject) businessObjectClass.newInstance();
+    		ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+    		if (moduleService != null && moduleService.isExternalizable(businessObjectClass))
+    			obj = (BusinessObject)moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
+    		else
+    			obj = (BusinessObject) businessObjectClass.newInstance();
         }
-        catch (InstantiationException e) {
+        catch (Exception e) {
             throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
         }
 
@@ -937,28 +943,31 @@ public class ObjectUtils {
     }
     
     /**
-     * 
      * This method safely creates a object from a class
      * Convenience method to create new object and throw a runtime exception if it cannot
+     * If the class is an {@link ExternalizableBusinessObject}, this method will determine the interface for the EBO and query the
+	 * appropriate module service to create a new instance.
      * 
      * @param boClass
      * 
      * @return a newInstance() of clazz
      */
     public static Object createNewObjectFromClass(Class clazz) {
-        Object obj = null;
-        try {
-            obj = clazz.newInstance();
-        }
-        catch (InstantiationException ite) {
-            LOG.info(ite);
-            throw new RuntimeException("ObjectUtils had a problem creating a new object of " + clazz.getName(), ite);
-        }
-        catch (IllegalAccessException iae) {
-            LOG.info(iae);
-            throw new RuntimeException("ObjectUtils had a problem creating a new object of " + clazz.getName(), iae);
-        }
-        return obj;
+		if (clazz == null) {
+			throw new RuntimeException("BO class was passed in as null");
+		}
+		try {
+			if (ExternalizableBusinessObject.class.isAssignableFrom(clazz)) {
+				Class eboInterface = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(clazz);
+				ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(eboInterface);
+				return moduleService.createNewObjectFromExternalizableClass(eboInterface);
+			}
+			else {
+				return clazz.newInstance();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz);
+		}
     }
 
 }

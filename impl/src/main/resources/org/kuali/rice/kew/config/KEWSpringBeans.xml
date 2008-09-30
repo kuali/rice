@@ -10,24 +10,17 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-  <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer"/>
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
-  <bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
-    <property name="transactionManager" ref="jtaTransactionManager"/>
-  </bean>
-
-  <bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean"/>
-  <bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean"/>
-
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
-		<property name="userTransaction">
-			<ref local="userTransaction" />
-   		</property>
-		<property name="transactionManager">
-			<ref local="jtaTransactionManager" />
-    </property>
+	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>enWorkflowDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/config/OJB-repository-kew.xml" />
 	</bean>
-  
+	
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
@@ -405,7 +398,9 @@
         <property name="emailContentGenerator" ref="enEmailContentService"/>
     </bean>
 
-<!--	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/> -->
+<!--
+	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/>
+-->
     <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>
 
 	<!-- db platform -->
@@ -587,12 +582,9 @@
 
   <bean id="enWebAuthorizationService" class="org.kuali.rice.kew.web.service.impl.DefaultWebAuthorizationService"/>
 
-  <bean id="enUserService" class="org.kuali.rice.kew.user.BaseUserService">
-    <property name="userDAO">
-      <ref local="enUserDAO" />
-    </property>
-    </bean>
-
+  <bean id="enUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
+  <bean id="enWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
+ 
   <bean id="enUserDAO" class="org.kuali.rice.kew.user.dao.impl.BaseUserDAOOjbImpl">
       <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
@@ -605,6 +597,7 @@
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
+  <!-- 
   <bean id="enWorkgroupService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupService">
     <property name="workgroupDAO">
       <ref local="enWorkgroupDAO" />
@@ -613,7 +606,7 @@
       <ref local="enWorkgroupMemberDAO" />
     </property>
     </bean>
-
+   -->
     <bean id="enWorkgroupRoutingService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupRoutingService">
     <property name="workgroupDAO">
       <ref local="enWorkgroupDAO" />
@@ -647,6 +640,7 @@
     <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.webservice.impl.SimpleDocumentActionsWebServiceImpl"/>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -661,6 +655,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -675,6 +670,7 @@
     </bean>
 
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
       <property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
           <property name="service">
@@ -690,6 +686,7 @@
     </bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -739,6 +736,7 @@
 -->
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -754,6 +752,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -767,6 +766,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -780,6 +780,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -794,6 +795,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -809,6 +811,7 @@
 
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -825,6 +828,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -839,6 +843,7 @@
 	</bean>
 	
 	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -855,6 +860,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -869,6 +875,7 @@
 	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
@@ -882,11 +889,11 @@
     </property>
   </bean>
   
-  <bean id="kewModule" class="org.kuali.rice.kns.KualiModule">
-		<property name="moduleId" value="kew"/>
-		<property name="moduleName" value="KEW"/>
-		<property name="moduleCode" value="kew"/>
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+		<property name="namespaceCode" value="KR-KEW" />
 		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+		<property name="persistenceService" ref="persistenceServiceOjb" />
 		<property name="dataDictionaryPackages">
 			<list>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
@@ -899,9 +906,16 @@
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
             </list>
 		</property>
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice.kew.</value>
+            </list>
+        </property>
 	</bean>
-
-  <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
+  
+  <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" >
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  </bean>
 
 
 

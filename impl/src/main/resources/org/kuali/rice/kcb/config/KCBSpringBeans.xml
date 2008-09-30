@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
-
-    <bean name="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
-        <property name="properties">
-            <props>
-                <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>
-                <prop key="kcb.smtp.host">localhost</prop>
-                <prop key="kcb.messaging.synchronous">false</prop>
-                <prop key="kcb.messageprocessing.startDelayMS">50000</prop>
-                <prop key="kcb.messageprocessing.repeatIntervalMS">30000</prop>
-                <prop key="kcb.quartz.group">KCB-Delivery</prop>
-                <prop key="kcb.quartz.job.name">MessageProcessingJobDetail</prop>
-                <prop key="kcb.maxProcessAttempts">3</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
-    <bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
-
-    <bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
-        <property name="transactionManager" ref="jtaTransactionManager" />
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
-        <property name="userTransaction">
-            <ref local="userTransaction" />
-        </property>
-        <property name="transactionManager">
-            <ref local="jtaTransactionManager" />
-        </property>
-    </bean>
 
     <bean id="kcbDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
@@ -52,6 +23,7 @@
     <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
         <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
         <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
+		<property name="scheduler" ref="ksbScheduler"></property>
     </bean>
 
     <!-- Applies a transaction template to the actual transaction manager bean -->
@@ -223,6 +195,7 @@
     <!-- export our KCB service -->
 
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="priority" value="1"/>
@@ -256,6 +229,7 @@
     -->
  
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
                 <property name="priority" value="1"/>

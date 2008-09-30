@@ -17,24 +17,24 @@ package org.kuali.rice.kns.authorization;
 
 import java.util.List;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.service.ModuleService;
 
 public class KualiModuleAuthorizerBase implements KualiModuleAuthorizer {
 
-    private KualiModule module;
+    private ModuleService moduleService;
     private List<String> packagePrefixes;
     
     public boolean isAuthorized(UniversalUser user, AuthorizationType authType) {
-        return user.isActiveForAnyModule();
+        return moduleService.canAccessModule(user);
     }
 
-    public final KualiModule getModule() {
-        return module;
+    public final ModuleService getModuleService() {
+        return moduleService;
     }
 
-    public final void setModule(KualiModule module) {
-        this.module = module;
+    public final void setModuleService(ModuleService moduleService) {
+        this.moduleService = moduleService;
     }
 
     public List<String> getPackagePrefixes() {

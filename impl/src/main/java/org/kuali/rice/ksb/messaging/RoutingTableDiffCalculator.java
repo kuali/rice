@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 
 /**
@@ -37,7 +38,8 @@ public class RoutingTableDiffCalculator {
 	private List<ServiceInfo> servicesNeedUpdated = new ArrayList<ServiceInfo>();
 	private List<ServiceInfo> servicesNeedRemoved = new ArrayList<ServiceInfo>();
 	private List<ServiceInfo> masterServiceList = new ArrayList<ServiceInfo>();
-
+	protected MessageHelper enMessageHelper;
+	
 	public boolean calculateClientSideUpdate(Map<QName, List<RemotedServiceHolder>> clients, List<ServiceInfo> fetchedServiceInfos) {
 		List<ServiceInfo> clientServiceList = deconstructRemoteServiceLocatorClientMap(clients);
 		if (clientServiceList.isEmpty() && ! fetchedServiceInfos.isEmpty()) {
@@ -130,7 +132,7 @@ public class RoutingTableDiffCalculator {
 		deployedServiceInfo.setQname(configuredServiceInfo.getQname());
 		deployedServiceInfo.setMessageEntity(configuredServiceInfo.getMessageEntity());
 		deployedServiceInfo.setServerIp(configuredServiceInfo.getServerIp());
-		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition());
+		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition(getEnMessageHelper()));
 	}
 	
 	private boolean isSame(ServiceInfo configured, ServiceInfo deployed) {
@@ -138,7 +140,7 @@ public class RoutingTableDiffCalculator {
 				configured.getQname().equals(deployed.getQname()) &&
 				configured.getServerIp().equals(deployed.getServerIp()) && 
 				configured.getMessageEntity().equals(deployed.getMessageEntity()) &&
-				configured.getServiceDefinition().isSame(deployed.getServiceDefinition());
+				configured.getServiceDefinition(getEnMessageHelper()).isSame(deployed.getServiceDefinition(getEnMessageHelper()));
 	}
 
 	public List<ServiceInfo> getServicesNeedRemoved() {
@@ -164,4 +166,20 @@ public class RoutingTableDiffCalculator {
 	public void setMasterServiceList(List<ServiceInfo> masterServiceList) {
 		this.masterServiceList = masterServiceList;
 	}
+	
+
+	/**
+	 * @return the enMessageHelper
+	 */
+	public MessageHelper getEnMessageHelper() {
+		return this.enMessageHelper;
+	}
+
+	/**
+	 * @param enMessageHelper the enMessageHelper to set
+	 */
+	public void setEnMessageHelper(MessageHelper enMessageHelper) {
+		this.enMessageHelper = enMessageHelper;
+	}
+
 }

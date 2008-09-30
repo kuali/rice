@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.kns.rules;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.KualiModule;
-import org.kuali.rice.kns.bo.user.KualiModuleUser;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -53,30 +47,8 @@ public class UniversalUserPreRules extends PreRulesContinuationBase {
             }
         }
         boolean success = true;
-        List<KualiModule> modules = KNSServiceLocator.getKualiModuleService().getInstalledModules();
-        PreRulesContinuationBase rule = null;
-        for ( KualiModule module : modules ) {
-            rule = (PreRulesContinuationBase) module.getModuleUserPreRules();
-            if ( rule != null ) {
-                success &= rule.doRules( document );
-            }
-        }
-        
-        // determine what modules user data has changed for and set that info on the new maintainable for use in workflow
-        // see TODO associated with this property in universal user
-        deriveChangedModuleCodes(maintenanceDocument);
         
         return success;
     }
     
-    private void deriveChangedModuleCodes(MaintenanceDocument document) {
-        Set<String> changedModuleCodes = new HashSet<String>();
-        UniversalUser newUser = (UniversalUser) document.getNewMaintainableObject().getBusinessObject();
-        for (KualiModuleUser newModuleUser : newUser.getModuleUsers().values()) {
-            if (newModuleUser.isModified(document.isEdit() ? (UniversalUser) document.getOldMaintainableObject().getBusinessObject(): null, newUser)) {
-                changedModuleCodes.add(KNSServiceLocator.getKualiModuleService().getModule(newModuleUser.getModuleId()).getModuleCode());
-            }
-        }
-        newUser.setChangedModuleCodes(changedModuleCodes);
-    }
 }

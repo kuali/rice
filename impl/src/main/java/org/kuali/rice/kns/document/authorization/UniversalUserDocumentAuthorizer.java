@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.v2.service.AuthenticationService;
+import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kns.authorization.UniversalUserAuthorizationConstants;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;

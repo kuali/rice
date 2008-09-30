@@ -39,11 +39,10 @@
         <ref bean="UniversalUser-personTaxIdentifierTypeCode" />
         <ref bean="UniversalUser-financialSystemsEncryptedPasswordText" />
         <ref bean="UniversalUser-campusCode" />
-        <ref bean="UniversalUser-activeForAnyModule" />
-        <ref bean="UniversalUser-activeModuleCodeString" />
         <ref bean="UniversalUser-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Universal User" />
   </bean>
 
 <!-- Attribute Definitions -->
@@ -405,35 +404,6 @@
     <property name="required" value="false" />
     <property name="description" value="The code for the Campus of the user." />
   </bean>
-  <bean id="UniversalUser-activeForAnyModule" parent="UniversalUser-activeForAnyModule-parentBean" />
-
-  <bean id="UniversalUser-activeForAnyModule-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
-    <property name="shortLabel" value="ActiveKualiUser" />
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="activeForAnyModule" />
-    <property name="label" value="Active Kuali User" />
-    <property name="description" value="Indicates whether or not this UniversalUser is also an active user for any module of the application." />
-  </bean>
-  <bean id="UniversalUser-activeModuleCodeString" parent="UniversalUser-activeModuleCodeString-parentBean" />
-
-  <bean id="UniversalUser-activeModuleCodeString-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Modules" />
-    <property name="maxLength" value="200" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern"
-            p:allowWhitespace="true" />
-    </property>
-    <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.InstalledModulesValuesFinder"
-            p:includeKeyInLabel="false" />
-    </property>
-    <property name="summary" value="List of module codes for which this person is an active user." />
-    <property name="name" value="activeModuleCodeString" />
-    <property name="label" value="Active Module List" />
-    <property name="description" value="A comma-delimited list representing the modules to which this UniversalUser has access." />
-  </bean>
   <bean id="UniversalUser-versionNumber" parent="UniversalUser-versionNumber-parentBean" />
 
   <bean id="UniversalUser-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
@@ -478,8 +448,6 @@
                     p:attributeName="employeeTypeCode" />
               <bean parent="FieldDefinition"
                     p:attributeName="personEmailAddress" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="activeModuleCodeString" />
             </list>
           </property>
           <property name="title" value="" />
@@ -536,8 +504,6 @@
               p:attributeName="employeeStatusCode" />
         <bean parent="FieldDefinition"
               p:attributeName="employeeTypeCode" />
-        <bean parent="FieldDefinition"
-              p:attributeName="activeModuleCodeString" />
       </list>
     </property>
     <property name="resultFields" >
@@ -558,8 +524,6 @@
               p:attributeName="employeeStatusCode" />
         <bean parent="FieldDefinition"
               p:attributeName="employeeTypeCode" />
-        <bean parent="FieldDefinition"
-              p:attributeName="activeModuleCodeString" />
       </list>
     </property>
     <property name="title" value="User Lookup" />

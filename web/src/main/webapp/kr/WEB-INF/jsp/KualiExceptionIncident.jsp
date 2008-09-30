@@ -32,6 +32,7 @@ request.setAttribute("test", incident);
 	<c:set var="documentId"       value="${parameters.documentId}" />
 	<c:set var="userEmail"        value="${parameters.userEmail}" />
 	<c:set var="userName"         value="${parameters.userName}" />
+	<c:set var="personUserIdentifier"         value="${parameters.personUserIdentifier}" />
 	<c:set var="componentName"    value="${parameters.componentName}" />
 	<c:set var="exceptionReportSubject" value="${parameters.exceptionReportSubject}" />
 	<c:set var="exceptionMessage" value="${parameters.exceptionMessage}" />
@@ -49,6 +50,10 @@ request.setAttribute("test", incident);
 <c:if test="${empty userName}">
 	<c:set var="userName"
        value="<%=request.getParameter(KualiExceptionIncident.USER_NAME)%>" />
+</c:if>
+<c:if test="${empty personUserIdentifier}">
+	<c:set var="personUserIdentifier"
+       value="<%=request.getParameter(KualiExceptionIncident.UUID)%>" />
 </c:if>
 <c:if test="${empty componentName}">
 	<c:set var="componentName"
@@ -72,8 +77,8 @@ request.setAttribute("test", incident);
 </c:if>
 
 <kul:page showDocumentInfo="false"
-	headerTitle="Exception Incident"
-	docTitle="Exception Incident"
+	headerTitle="Incident Report"
+	docTitle="Incident Report"
 	transactionalDocument="false"
 	htmlFormAction="kualiExceptionIncidentReport"
 	defaultMethodToCall="notify"
@@ -81,6 +86,7 @@ request.setAttribute("test", incident);
   <html:hidden property="documentId"       write="false" value="${documentId}" />
   <html:hidden property="userEmail"        write="false" value="${userEmail}" />
   <html:hidden property="userName"         write="false" value="${userName}" />
+  <html:hidden property="personUserIdentifier"         write="false" value="${personUserIdentifier}" />
   <html:hidden property="componentName"    write="false" value="${componentName}" />
   <html:hidden property="exceptionReportSubject" write="false" value="${exceptionReportSubject}" />
   <html:hidden property="exceptionMessage" write="false" value="${exceptionMessage}" />
@@ -172,7 +178,7 @@ request.setAttribute("test", incident);
 			<tr>
 				<td align="left" valign="top" colspan="2">
 					<div align="left">
-						${stackTrace}
+						<pre>${stackTrace}</pre>
 					</div>
 				</td>
 			</tr>

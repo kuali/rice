@@ -27,6 +27,7 @@ import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
+import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
@@ -37,16 +38,19 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 public class SOAPServiceExporter implements ServiceExporter {
 
 	private ServiceInfo serviceInfo;
+	private KSBContextServiceLocator serviceLocator;
 
-	public SOAPServiceExporter(ServiceInfo serviceInfo) {
+	public SOAPServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
 		this.serviceInfo = serviceInfo;
+		this.serviceLocator = serviceLocator;
 	}
 
 	public ServerSideRemotedServiceHolder getServiceExporter(Object serviceImpl) {
 		try {
 			XFireExporter serviceExporter = new XFireExporter();
-			serviceExporter.setServiceFactory(KSBServiceLocator.getXFireServiceFactory());
-			serviceExporter.setXfire(KSBServiceLocator.getXFire());
+			serviceExporter.setServiceFactory(
+					serviceLocator==null?KSBServiceLocator.getXFireServiceFactory():serviceLocator.getXFireServiceFactory());
+			serviceExporter.setXfire(serviceLocator==null?KSBServiceLocator.getXFire():serviceLocator.getXFire());
 			serviceExporter.setName(getServiceInfo().getQname().toString());
 			serviceExporter.setServiceBean(serviceImpl);
 			//when xfire supports service by service level securing

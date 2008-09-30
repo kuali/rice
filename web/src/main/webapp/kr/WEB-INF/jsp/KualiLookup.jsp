@@ -140,6 +140,23 @@
 				id="row" export="true" pagesize="100"
 				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}">
 
+				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
+				<c:if test="${param['d-16544-e'] == null}">
+					<logic:present name="KualiForm" property="formKey">
+						<c:if
+							test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
+							<display:column class="infocell" title="Return value">
+								<c:if test="${row.rowReturnable}">
+									<display:column class="infocell" property="returnUrl" media="html" />
+								</c:if>
+							</display:column>
+						</c:if>
+						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
+							<display:column class="infocell" property="actionUrls"
+								title="Actions" media="html" />
+						</c:if>						</logic:present>
+				</c:if>
+
 				<c:forEach items="${row.columns}" var="column" varStatus="loopStatus">
           <c:set var="colClass" value="${ fn:startsWith(column.formatter, 'org.kuali.rice.kns.web.format.CurrencyFormatter') ? 'numbercell' : 'infocell' }" />
 					<c:choose>
@@ -149,10 +166,10 @@
 									title="${column.columnTitle}" comparator="${column.comparator}"
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
-						<c:when	test="${!empty column.propertyURL}">
+						<c:when	test="${!empty column.columnAnchor.href}">
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}">
-								<a href="<c:out value="${column.propertyURL}"/>" target="blank" title="${column.propertyValue}"><c:out
+								<a href="<c:out value="${column.columnAnchor.href}"/>" target="blank" title="${column.columnAnchor.title}"><c:out
 									value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
 									/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a> &nbsp;</display:column>
 						</c:when>
@@ -170,24 +187,7 @@
 					</c:choose>
 				</c:forEach>
 
-				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
-				<c:if test="${param['d-16544-e'] == null}">
-					<logic:present name="KualiForm" property="formKey">
-						<c:if
-							test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
-							<display:column class="infocell" title="Return value">
-								<c:if test="${row.rowReturnable}">
-									<a href='<c:out value="${row.returnUrl}"/>&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}' title="return value">return value</a>
-								</c:if>
-							</display:column>
-						</c:if>
-						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
-							<display:column class="infocell" property="actionUrls"
-								title="Actions" media="html" />
-						</c:if>
-					</logic:present>
-				</c:if>
-			</display:table>
+												</display:table>
 			</c:if></td>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
 				height="20"></td>

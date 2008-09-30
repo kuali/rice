@@ -27,6 +27,7 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -59,8 +60,24 @@ public class LookupForm extends KualiForm {
     private String primaryKeyFieldLabels;
     private boolean showMaintenanceLinks;
     private String docNum;
+    private String htmlDataType;
+    private String lookupObjectId;
     
     /**
+	 * @return the htmlDataType
+	 */
+	public String getHtmlDataType() {
+		return this.htmlDataType;
+	}
+
+	/**
+	 * @param htmlDataType the htmlDataType to set
+	 */
+	public void setHtmlDataType(String htmlDataType) {
+		this.htmlDataType = htmlDataType;
+	}
+
+	/**
 	 * @return the docNum
 	 */
 	public String getDocNum() {
@@ -105,6 +122,10 @@ public class LookupForm extends KualiForm {
             if (StringUtils.isBlank(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
                 // get the business object class for the lookup
                 String localBusinessObjectClassName = request.getParameter(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+                if ( ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(localBusinessObjectClassName) ) {
+                	Class localBusinessObjectClass = Class.forName(localBusinessObjectClassName);
+                	localBusinessObjectClassName = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(localBusinessObjectClass).getExternalizableBusinessObjectImplementation(localBusinessObjectClass).getName();
+                }
                 setBusinessObjectClassName(localBusinessObjectClassName);
                 if (StringUtils.isBlank(localBusinessObjectClassName)) {
                     LOG.error("Business object class not passed to lookup.");
@@ -554,4 +575,18 @@ public class LookupForm extends KualiForm {
     public void setHasReturnableRow(boolean hasReturnableRow) {
         this.hasReturnableRow = hasReturnableRow;
     }
+
+	/**
+	 * @return the lookupObjectId
+	 */
+	public String getLookupObjectId() {
+		return this.lookupObjectId;
+	}
+
+	/**
+	 * @param lookupObjectId the lookupObjectId to set
+	 */
+	public void setLookupObjectId(String lookupObjectId) {
+		this.lookupObjectId = lookupObjectId;
+	}
 }

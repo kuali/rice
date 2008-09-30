@@ -56,108 +56,106 @@
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
-		<property name="modules">
-			<list>
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
-					<property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource" />
-					<property name="overrideServices">
-						<list>
-							<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">
-								<property name="localServiceName" value="exceptionMessagingService" />
-								<property name="service" ref="testExceptionHandlerService" />
-							</bean>
-						</list>
-					</property>
-					<property name="cache">
-						<ref bean="cache"/>
-					</property>
-					<property name="services">
-						<list>
-							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-								<property name="service">
-									<ref bean="soapService" />
-								</property>
-								<property name="localServiceName" value="soap-Queue" />
-								<property name="serviceNameSpaceURI" value="testNameSpace" />
-								<property name="priority" value="3" />
-								<property name="retryAttempts" value="1" />
-								<property name="busSecurity" value="false"></property>
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-								<property name="service">
-									<ref bean="soapService" />
-								</property>
-								<property name="localServiceName" value="soap-repeatTopic" />
-								<property name="serviceNameSpaceURI" value="testNameSpace" />
-								<property name="priority" value="3" />
-								<property name="queue" value="false" />
-								<property name="retryAttempts" value="1" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testLocalServiceFavoriteCall" />
-								</property>
-								<property name="localServiceName" value="testLocalServiceFavoriteCall" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testExplodingServiceWithDefaults" />
-								</property>
-								<property name="localServiceName" value="testExplodingServiceWithDefaults" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testJavaSecurityManagementService" />
-								</property>
-								<property name="localServiceName" value="testJavaSecurityManagementService" />
-								<property name="serviceNameSpaceURI" value="KEW" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testExplodingRetryCount" />
-								</property>
-								<property name="localServiceName" value="testExplodingRetryCount" />
-								<property name="retryAttempts" value="2" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testExplodingQueueTimeLimit" />
-								</property>
-								<property name="localServiceName" value="explodingQueueTimeLimit" />
-								<property name="millisToLive" value="2000" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testHarnessSharedTopic" />
-								</property>
-								<property name="localServiceName" value="repeatTopic" />
-								<property name="priority" value="3" />
-								<property name="queue" value="false" />
-								<property name="retryAttempts" value="1" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testHarnessSharedTopic" />
-								</property>
-								<property name="serviceNameSpaceURI" value="testAppsSharedTopic" />
-								<property name="localServiceName" value="sharedTopic" />
-								<property name="priority" value="3" />
-								<property name="queue" value="false" />
-								<property name="retryAttempts" value="1" />
-							</bean>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-								<property name="service">
-									<ref bean="testRepeatMessageQueue" />
-								</property>
-								<property name="localServiceName" value="testRepeatMessageQueue" />
-								<property name="priority" value="3" />
-								<property name="retryAttempts" value="1" />
-							</bean>
-						</list>
-					</property>
-				</bean>
-			</list>
+		<property name="ksbConfigurer">
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+				<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
+				<property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource" />
+				<property name="overrideServices">
+					<list>
+						<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">
+							<property name="localServiceName" value="exceptionMessagingService" />
+							<property name="service" ref="testExceptionHandlerService" />
+						</bean>
+					</list>
+				</property>
+				<property name="cache">
+					<ref bean="cache"/>
+				</property>
+				<property name="services">
+					<list>
+						<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+							<property name="service">
+								<ref bean="soapService" />
+							</property>
+							<property name="localServiceName" value="soap-Queue" />
+							<property name="serviceNameSpaceURI" value="testNameSpace" />
+							<property name="priority" value="3" />
+							<property name="retryAttempts" value="1" />
+							<property name="busSecurity" value="false"></property>
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+							<property name="service">
+								<ref bean="soapService" />
+							</property>
+							<property name="localServiceName" value="soap-repeatTopic" />
+							<property name="serviceNameSpaceURI" value="testNameSpace" />
+							<property name="priority" value="3" />
+							<property name="queue" value="false" />
+							<property name="retryAttempts" value="1" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testLocalServiceFavoriteCall" />
+							</property>
+							<property name="localServiceName" value="testLocalServiceFavoriteCall" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testExplodingServiceWithDefaults" />
+							</property>
+							<property name="localServiceName" value="testExplodingServiceWithDefaults" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testJavaSecurityManagementService" />
+							</property>
+							<property name="localServiceName" value="testJavaSecurityManagementService" />
+							<property name="serviceNameSpaceURI" value="KEW" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testExplodingRetryCount" />
+							</property>
+							<property name="localServiceName" value="testExplodingRetryCount" />
+							<property name="retryAttempts" value="2" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testExplodingQueueTimeLimit" />
+							</property>
+							<property name="localServiceName" value="explodingQueueTimeLimit" />
+							<property name="millisToLive" value="2000" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testHarnessSharedTopic" />
+							</property>
+							<property name="localServiceName" value="repeatTopic" />
+							<property name="priority" value="3" />
+							<property name="queue" value="false" />
+							<property name="retryAttempts" value="1" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testHarnessSharedTopic" />
+							</property>
+							<property name="serviceNameSpaceURI" value="testAppsSharedTopic" />
+							<property name="localServiceName" value="sharedTopic" />
+							<property name="priority" value="3" />
+							<property name="queue" value="false" />
+							<property name="retryAttempts" value="1" />
+						</bean>
+						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+							<property name="service">
+								<ref bean="testRepeatMessageQueue" />
+							</property>
+							<property name="localServiceName" value="testRepeatMessageQueue" />
+							<property name="priority" value="3" />
+							<property name="retryAttempts" value="1" />
+						</bean>
+					</list>
+				</property>
+			</bean>
 		</property>
 	</bean>
 

@@ -343,7 +343,9 @@ public class DocSearchUtils {
                 throw new RuntimeException(errorMsg);
             }
             for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-                for (Row row : searchableAttribute.getSearchingRows()) {
+            	//KFSMI-1466 - DocumentSearchContext
+                for (Row row : searchableAttribute.getSearchingRows(
+                		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                     for (Field field : row.getFields()) {
                         SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
                         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getSavablePropertyName(), searchableAttributeValue);
@@ -514,7 +516,9 @@ public class DocSearchUtils {
             if (!propertyFields.isEmpty()) {
                 Map criteriaComponentsByFormKey = new HashMap();
                 for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-                    for (Row row : searchableAttribute.getSearchingRows()) {
+                	//KFSMI-1466 - DocumentSearchContext
+                    for (Row row : searchableAttribute.getSearchingRows(
+                    		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                         for (Field field : row.getFields()) {
                             SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
                             SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getSavablePropertyName(), searchableAttributeValue);
@@ -603,4 +607,11 @@ public class DocSearchUtils {
         return null;
     }
 
+    public static DocumentSearchContext getDocumentSearchContext(String documentId, String documentTypeName, String documentContent){
+    	DocumentSearchContext documentSearchContext = new DocumentSearchContext();
+    	documentSearchContext.setDocumentId(documentId);
+    	documentSearchContext.setDocumentTypeName(documentTypeName);
+    	documentSearchContext.setDocumentContent(documentContent);
+    	return documentSearchContext;
+    }
 }

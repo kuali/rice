@@ -54,25 +54,27 @@
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
-		<property name="modules">
-			<list>
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="${serviceServletUrl}" />
-				</bean>
-				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
-					<property name="dataDictionaryPackages">
-						<list>
-							<value>org/kuali/rice/kim/bo/datadictionary/test</value>
-						</list>
-					</property>
-					<property name="databaseRepositoryFilePaths">
-						<list>
-							<value>org/kuali/rice/kim/config/OJB-repository-kim.xml</value>
-						</list>
-					</property>
-				</bean>
-				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-			</list>
+		<property name="ksbConfigurer">
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+				<property name="serviceServletUrl" value="${serviceServletUrl}" />
+			</bean>
+        </property>
+		<property name="knsConfigurer">
+			<bean class="org.kuali.rice.kns.config.KNSConfigurer">
+				<property name="dataDictionaryPackages">
+					<list>
+						<value>org/kuali/rice/kim/bo/datadictionary/test</value>
+					</list>
+				</property>
+				<property name="databaseRepositoryFilePaths">
+					<list>
+						<value>org/kuali/rice/kim/config/OJB-repository-kim.xml</value>
+					</list>
+				</property>
+			</bean>
+        </property>
+		<property name="kimConfigurer">
+			<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
 		</property>
 	</bean>
 	

@@ -42,6 +42,7 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.role.KimResponsibility;
 
 
 /**
@@ -258,6 +259,11 @@ public class ActionRequestFactory {
     	}
     	requestGraphs.add(requestGraph);
     	return requestGraph;
+    }
+    
+    public ActionRequestValue addResponsibilityRequest(KimResponsibility responsibility) {
+    	// TODO implement me
+    	throw new UnsupportedOperationException("Implement me!!!");
     }
 
     public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {

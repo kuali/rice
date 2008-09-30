@@ -137,7 +137,8 @@ public class DocumentSearchForm extends ActionForm {
 			if (searchableAttributeRows.isEmpty() && searchableAttributeColumns.isEmpty() && propertyFields.isEmpty()) {
 				Set alreadyProcessedFieldKeys = new HashSet();
 				for (SearchableAttribute searchableAttribute : searchableAttributes) {
-					List<Row> searchRows = searchableAttribute.getSearchingRows();
+					List<Row> searchRows = searchableAttribute.getSearchingRows(
+							DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 					if (searchRows == null) {
 						continue;
 					}
@@ -188,7 +189,7 @@ public class DocumentSearchForm extends ActionForm {
 		// searchableAttributeRows is a List containing rows from all attributes, so we need to keep a global row count
 		int totalRowIndex = 0;
 		for (SearchableAttribute searchableAttribute : searchableAttributes) {
-			List<Row> rows = searchableAttribute.getSearchingRows();
+			List<Row> rows = searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 			for (Row row : rows) {
 				Row existingRow = (Row)getSearchableAttributeRows().get(totalRowIndex++);
 				int fieldIndex = 0;

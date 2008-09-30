@@ -21,7 +21,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 /**
@@ -77,7 +76,12 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
         LOG.info("Starting configuration of " + getModuleName() + " for message entity " + parentConfig.getMessageEntity());
         return ConfigContext.getCurrentContextConfig();
     }
-
+    
+    @Override
+	public String getSpringFileLocations(){
+		return "";
+	}
+	
     /**
      * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
      * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
@@ -86,14 +90,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
     protected List<Lifecycle> loadLifecycles() throws Exception {
         LOG.info("Loading " + getModuleName() + " module lifecycles");
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-
         lifecycles.add(new BaseOjbConfigurer(getModuleName()));
-        ResourceLoader rl = createResourceLoader();
-        if (rl != null) {
-            GlobalResourceLoader.addResourceLoaderFirst(rl);
-            lifecycles.add(rl);
-        }
-
         return lifecycles;
     }
 

@@ -153,7 +153,7 @@ public interface Lookupable extends Serializable {
      * @param lookupImpl - Current lookup impl name
      * @return String url called when selecting a row from the result set
      */
-    public String getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl);
+    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl);
 
     /**
      * Builds the Url for a maintenance new document for the lookup business object class

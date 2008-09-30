@@ -18,7 +18,7 @@ EOL = '\r\n'
 // set up variables based on PROJECT_DIR
 // Just add comma separated values for ignored DDL
 IGNORES = ['FS_UNIVERSAL_USR_T','SH_CMP_TYP_T','SH_CAMPUS_T','SH_EMP_STAT_T','SH_EMP_TYP_T']
-MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom', 'kcb']
+MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kcb']
 MASTER_DESTROY_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_db_destroy.sql' 
 MASTER_CREATE_SQL = PROJECT_DIR + '/impl/src/main/config/sql/rice_db_bootstrap.sql'
 

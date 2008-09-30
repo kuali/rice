@@ -61,19 +61,22 @@
 				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
-		<property name="modules">
-			<list>
+		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
 				</bean>
+        </property>
+		<property name="kcbConfigurer">
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
+        <property name="knsConfigurer">
                 <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+        </property>
+		<property name="kewConfigurer">
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
-			</list>
 		</property>
 	</bean>
 

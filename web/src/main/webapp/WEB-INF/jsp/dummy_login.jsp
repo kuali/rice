@@ -1,3 +1,5 @@
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
+
 <html>
   <head>
     <title>Login</title>
@@ -33,8 +35,18 @@
         <table border="0" cellpadding="0" cellspacing="0" summary="">
           <tbody>
             <tr>
-              <td align="right">Username: </td><td align="left"><input type="text" name="__login_user" value="admin" size="20"/>
+              <td align="right">Username: </td><td align="left"><input type="text" name="__login_user" value="khuntley" size="20"/></td>
             </tr>
+            <c:if test="${requestScope.showPasswordField}">
+            <tr>
+              <td align="right">Password: </td><td align="left"><input type="password" name="__login_pw" value="admin" size="20"/></td>
+            </tr>
+            </c:if>
+            <c:if test="${requestScope.invalidPassword}">
+            <tr>
+              <td align="center" colspan="2"><strong>Invalid username or password</strong></td>
+            </tr>
+            </c:if>
             <tr>
               <td align="center" colspan="2"><input type="submit" value="Login"/></td>
               <td><img src="${pageContext.request.contextPath}/en/images/transparent_002.gif" height="1" width="1"></td>

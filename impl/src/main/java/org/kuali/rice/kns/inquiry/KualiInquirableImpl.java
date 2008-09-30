@@ -18,27 +18,38 @@ package org.kuali.rice.kns.inquiry;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -58,6 +69,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     private LookupService lookupService;
     private BusinessObjectDictionaryService businessObjectDictionaryService;
+    private BusinessObjectMetaDataService businessObjectMetaDataService;
     private PersistenceStructureService persistenceStructureService;
     private DataDictionaryService dataDictionaryService;
     private EncryptionService encryptionService;
@@ -94,11 +106,19 @@ public class KualiInquirableImpl implements Inquirable {
 
         CollectionIncomplete searchResults = null;
         // user inquiries need to go through user service
+        // TODO: Remove with Universal user changes
         if (UniversalUser.class.equals(getBusinessObjectClass())) {
             searchResults = (CollectionIncomplete) getUniversalUserService().findUniversalUsers(fieldValues);
         }
         else {
-            searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
+    		ModuleService moduleService = 
+    			KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
+    		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
+    			List<BusinessObject> list = moduleService.getExternalizableBusinessObjectsList(getBusinessObjectClass(), fieldValues);
+    			if(list!=null)
+    				searchResults = new CollectionIncomplete((Collection)list, new Long(list.size()));
+    		} else
+    			searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
         }
 
         BusinessObject foundObject = null;
@@ -139,8 +159,9 @@ public class KualiInquirableImpl implements Inquirable {
      * @param propertyName the property which links to an inquirable
      * @return String url to inquiry
      */
-    public String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
+    public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
         Properties parameters = new Properties();
+        AnchorHtmlData hRef = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
 
         Class inquiryBusinessObjectClass = null;
@@ -169,17 +190,25 @@ public class KualiInquirableImpl implements Inquirable {
                     nestedBusinessObject = (BusinessObject) nestedReferenceObject;
                     String nestedAttributePrimitive = ObjectUtils.getNestedAttributePrimitive(attributeName);
                     
-                    Map primitiveReference = LookupUtils.getPrimitiveReference(nestedBusinessObject, nestedAttributePrimitive);
-                    if (primitiveReference != null && !primitiveReference.isEmpty()) {
-                        attributeRefName = (String) primitiveReference.keySet().iterator().next();
-                        inquiryBusinessObjectClass = (Class) primitiveReference.get(attributeRefName);
-                        doesNestedReferenceHaveOwnPrimitiveReference = true;
+                    if (nestedAttributePrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(nestedBusinessObject.getClass()))) {
+                    	// we are going to inquiry the record that contains the attribute we're rendering an inquiry URL for
+                    	inquiryBusinessObjectClass = nestedBusinessObject.getClass();
+                        // I know it's already set to false, just to show how this variable is set
+                        doesNestedReferenceHaveOwnPrimitiveReference = false;
                     }
                     else {
-                        inquiryBusinessObjectClass = nestedBusinessObject.getClass();
-                        
-                        // I know it's already set to null, just to show how this variable is set
-                        doesNestedReferenceHaveOwnPrimitiveReference = false;
+	                    Map primitiveReference = LookupUtils.getPrimitiveReference(nestedBusinessObject, nestedAttributePrimitive);
+	                    if (primitiveReference != null && !primitiveReference.isEmpty()) {
+	                        attributeRefName = (String) primitiveReference.keySet().iterator().next();
+	                        inquiryBusinessObjectClass = (Class) primitiveReference.get(attributeRefName);
+	                        doesNestedReferenceHaveOwnPrimitiveReference = true;
+	                    }
+	                    else {
+	                    	// we are going to inquiry the record that contains the attribute we're rendering an inquiry URL for
+	                		inquiryBusinessObjectClass = nestedBusinessObject.getClass();
+	                        // I know it's already set to false, just to show how this variable is set
+	                        doesNestedReferenceHaveOwnPrimitiveReference = false;
+	                    }
                     }
                 }
             }
@@ -198,13 +227,13 @@ public class KualiInquirableImpl implements Inquirable {
                 // if NullPointerException on the following line, maybe the Spring bean wasn't injected w/ KualiConfigurationException, or if 
                 // instances of a sub-class of this class are not Spring created, then override getKualiConfigurationService() in the subclass
                 // to return the configuration service from a Spring service locator (or set it).
-                return getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + KNSConstants.DOCHANDLER_DO_URL + documentNumber + KNSConstants.DOCHANDLER_URL_CHUNK;
+                hRef.setHref(getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + KNSConstants.DOCHANDLER_DO_URL + documentNumber + KNSConstants.DOCHANDLER_URL_CHUNK);
             }
-            return KNSConstants.EMPTY_STRING;
+            return hRef;
         }
         
         if (inquiryBusinessObjectClass == null || getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass) == null || !getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass).booleanValue()) {
-            return KNSConstants.EMPTY_STRING;
+            return hRef;
         }
 
         synchronized (SUPER_CLASS_TRANSLATOR_LIST) {
@@ -216,25 +245,29 @@ public class KualiInquirableImpl implements Inquirable {
             }    
         }
         
+        if (!inquiryBusinessObjectClass.isInterface() && ExternalizableBusinessObject.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+        	inquiryBusinessObjectClass = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(inquiryBusinessObjectClass);
+        }
+        
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
-
-        List keys = new ArrayList();
-        if (getPersistenceStructureService().isPersistable(inquiryBusinessObjectClass)) {
-            keys = getPersistenceStructureService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
+    
+        List keys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
+        if (keys == null) {
+        	keys = Collections.emptyList();
         }
 
         // build key value url parameters used to retrieve the business object
         String keyName = null;
         String keyConversion = null;
-        String encryptedList = "";
+        Map<String, String> fieldList = new HashMap<String,String>();
         for (Iterator iter = keys.iterator(); iter.hasNext();) {
             keyName = (String) iter.next();
             keyConversion = keyName;
             if (ObjectUtils.isNestedAttribute(attributeName)) {
                 if (doesNestedReferenceHaveOwnPrimitiveReference) {
                     String nestedAttributePrefix = ObjectUtils.getNestedAttributePrefix(attributeName);
-                    String foreignKeyFieldName = getPersistenceStructureService().getForeignKeyFieldName(nestedBusinessObject.getClass(), attributeRefName, keyName);
-
+                    String foreignKeyFieldName = getBusinessObjectMetaDataService().getForeignKeyFieldName(
+                    								nestedBusinessObject.getClass(), attributeRefName, keyName);
                     keyConversion = nestedAttributePrefix + "." + foreignKeyFieldName;
                 }
                 else {
@@ -246,7 +279,16 @@ public class KualiInquirableImpl implements Inquirable {
                     keyConversion = keyName;
                 }
                 else {
-                    keyConversion = getPersistenceStructureService().getForeignKeyFieldName(businessObject.getClass(), attributeRefName, keyName);
+                	//Using BusinessObjectMetaDataService instead of PersistenceStructureService
+                	//since otherwise, relationship information from datadictionary is not used at all
+                	//Also, BOMDS.getBusinessObjectRelationship uses PersistenceStructureService, 
+                	//so both datadictionary and the persistance layer get covered
+                	BusinessObjectRelationship businessObjectRelationship = 
+                		KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+                				businessObject, attributeRefName);
+                	BidiMap bidiMap = new DualHashBidiMap(businessObjectRelationship.getParentToChildReferences());
+                	keyConversion = (String)bidiMap.getKey(keyName);
+                    //keyConversion = getPersistenceStructureService().getForeignKeyFieldName(businessObject.getClass(), attributeRefName, keyName);
                 }
             }
             Object keyValue = null;
@@ -266,8 +308,10 @@ public class KualiInquirableImpl implements Inquirable {
             }
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
-            if (StringUtils.isNotBlank(displayWorkgroup)) {
+            //String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
+            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(
+					GlobalVariables.getUserSession().getUniversalUser(), businessObject.getClass().getName(), keyName);
+            if (!viewAuthorized) {
                 try {
                     keyValue = getEncryptionService().encrypt(keyValue);
                 }
@@ -276,24 +320,24 @@ public class KualiInquirableImpl implements Inquirable {
                     throw new RuntimeException(e);
                 }
 
-                // add to parameter list so that KualiInquiryAction can identify which parameters are encrypted
-                if (encryptedList.equals("")) {
-                    encryptedList = keyName;
-                }
-                else {
-                    encryptedList = encryptedList + KNSConstants.FIELD_CONVERSIONS_SEPERATOR + keyName;
-                }
             }
 
             parameters.put(keyName, keyValue);
+            fieldList.put(keyName, keyValue.toString());
         }
 
-        // if we did encrypt a value (or values), add the list of those that are encrypted to the parameters
-        if (!encryptedList.equals("")) {
-            parameters.put(KNSConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
-        }
-
-        return UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters);
+        return getHyperLink(inquiryBusinessObjectClass, fieldList, UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters));
+    }
+    
+    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
+    protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String,String> fieldList, String inquiryUrl){
+    	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING);
+    	a.setTitle(AnchorHtmlData.getTitleText(
+                KNSServiceLocator.getKualiConfigurationService().getPropertyString(
+                        INQUIRY_TITLE_PREFIX) + " " + 
+                        getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName()).getObjectLabel() +
+                        " ", inquiryClass, fieldList));
+    	return a;
     }
 
     public void addAdditionalSections(List columns, BusinessObject bo) {
@@ -432,6 +476,18 @@ public class KualiInquirableImpl implements Inquirable {
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
+
+	public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+		if (businessObjectMetaDataService == null) {
+			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+		}
+		return this.businessObjectMetaDataService;
+	}
+
+	public void setBusinessObjectMetaDataService(
+			BusinessObjectMetaDataService businessObjectMetaDataService) {
+		this.businessObjectMetaDataService = businessObjectMetaDataService;
+	}
     
     
 }

@@ -29,10 +29,6 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 public class SpringModuleConfigurer extends BaseModuleConfigurer {
 	
     /**
-     * The resource path of the Spring context to use (when not in test mode)
-     */
-    protected final String springResource;
-    /**
      * The resource path of the Spring context to use in test
      */
     protected final String springResourceTest;
@@ -41,6 +37,14 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
      */
     protected final String resourceLoaderName;
 
+    @Override
+	public String getSpringFileLocations(){
+    	if(isTestMode())
+    		return getDefaultSpringBeansTestPath(getConfigPackagePath(moduleName), moduleName);
+    	else
+    		return getDefaultSpringBeansPath(getConfigPackagePath(moduleName), moduleName);
+	}
+	
     /* helper methods for constructors */
     private static final String getConfigPackagePath(String moduleName) {
     	return "org/kuali/rice/" + moduleName.toLowerCase() + "/config/";
@@ -101,7 +105,6 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     public SpringModuleConfigurer(String moduleName, String resourceLoaderName, String springResource, String testSpringResource) {
         super(moduleName);
         this.resourceLoaderName = resourceLoaderName;
-        this.springResource = springResource;
         this.springResourceTest = testSpringResource;
     }
 
@@ -125,15 +128,8 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
      */
     @Override
     protected ResourceLoader createResourceLoader() {
-        String context;
-        if (isTestMode()) {
-            context = springResourceTest;
-        } else {
-            context = springResource;
-        }
-
+        String context = springResourceTest;
         ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), resourceLoaderName), context);
-
         return resourceLoader;
     }
     

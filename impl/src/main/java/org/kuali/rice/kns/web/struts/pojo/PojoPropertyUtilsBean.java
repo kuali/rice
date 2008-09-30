@@ -32,6 +32,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 
 
@@ -219,16 +222,12 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             else {
                 propBean = getSimpleProperty(bean, next);
             }
-            if (propBean == null) {
+            if (ObjectUtils.isNull(propBean)) {
                 Class propertyType = getPropertyType(bean, next);
                 if (propertyType != null) {
-                    try {
-                        setSimpleProperty(bean, next, propertyType.newInstance());
-                        propBean = getSimpleProperty(bean, next);
-                    }
-                    catch (InstantiationException e) {
-                        throw new IllegalArgumentException("Null property value for '" + name.substring(0, delim) + "'");
-                    }
+                	Object newInstance = ObjectUtils.createNewObjectFromClass(propertyType);
+                    setSimpleProperty(bean, next, newInstance);
+                    propBean = getSimpleProperty(bean, next);
                 }
             }
             bean = propBean;
@@ -314,16 +313,12 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                         propBean = getSimpleProperty(bean, next);
                     }
                 }
-                if (propBean == null) {
+                if (ObjectUtils.isNull(propBean)) {
                     Class propertyType = getPropertyType(bean, next);
                     if (propertyType != null) {
-                        try {
-                            setSimpleProperty(bean, next, propertyType.newInstance());
-                            propBean = getSimpleProperty(bean, next);
-                        }
-                        catch (InstantiationException e) {
-                            throw new IllegalArgumentException("Null property value for '" + name.substring(0, delim) + "'");
-                        }
+                    	Object newInstance = ObjectUtils.createNewObjectFromClass(propertyType);
+                        setSimpleProperty(bean, next, newInstance);
+                        propBean = getSimpleProperty(bean, next);
                     }
                 }
                 bean = propBean;

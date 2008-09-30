@@ -20,7 +20,7 @@ package org.kuali.rice.kns.bo;
  * Transient Business Object Base Business Object
  */
 public abstract class TransientBusinessObjectBase extends BusinessObjectBase {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransientBusinessObjectBase.class);
+    //private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransientBusinessObjectBase.class);
 
     /**
      * Constructs a TransientBusinessObjectBase.java.

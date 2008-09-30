@@ -148,6 +148,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         }
         // TODO: catch exception if service locator call fails
         this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+        this.menubar = this.menubar.replace("${application.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
     }
 
 

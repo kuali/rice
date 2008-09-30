@@ -37,7 +37,6 @@
     <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
     <class>org.kuali.rice.kns.bo.Campus</class>
     <class>org.kuali.rice.kns.bo.CampusType</class>
-    <class>org.kuali.rice.kns.bo.user.RiceUser</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

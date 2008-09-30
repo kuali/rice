@@ -23,9 +23,6 @@
 	   	<convert converter="bean" match="org.kuali.rice.kns.bo.user.UniversalUser">
 	   		<param name="include" value="personUniversalIdentifier,personUserIdentifier,personName,personFirstName,personLastName,primaryDepartmentCode,campusCode,personMiddleName,personEmailAddress" />
 	   	</convert>
-	   	<convert converter="bean" match="org.kuali.rice.kns.bo.user.RiceUser">
-	   		<param name="include" value="personUniversalIdentifier,universityId,personUserIdentifier,personName,emailAddress" />
-	   	</convert>
 	    <create creator="spring" javascript="UserService">
 	    	<param name="beanName" value="universalUserService" />
 	    	<include method="getUniversalUserByAuthenticationUserId" />

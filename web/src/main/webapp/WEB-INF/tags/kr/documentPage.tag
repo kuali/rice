@@ -31,6 +31,12 @@
 
 <%@ variable name-given="documentEntry" scope="NESTED" %>
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
+<c:set var="sessionDocument" value="${documentEntry.sessionDocument}" />
+
+<!--  pass documentTypeName into htmlControlAttribute -->
+<c:if test="${KualiForm.document.sessionDocument || sessionDocument}">
+<% request.setAttribute("sessionDoc", true); %>
+</c:if>
 
 <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
 	<script type="text/javascript">

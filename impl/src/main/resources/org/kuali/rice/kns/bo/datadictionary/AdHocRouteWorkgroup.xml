@@ -15,6 +15,7 @@
         <ref bean="AdHocRouteWorkgroup-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Ad Hoc Route Workgroup" />
   </bean>
 
 <!-- Attribute Definitions -->

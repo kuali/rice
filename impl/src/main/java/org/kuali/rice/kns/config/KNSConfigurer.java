@@ -19,16 +19,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kns.KualiModule;
-import org.kuali.rice.kns.authorization.KualiModuleAuthorizerBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -46,17 +42,24 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 	
 	private BeanFactory beanFactory;
 
+	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
+	
 	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
 		return null;
 	}
 
 	@Override
+	public String getSpringFileLocations(){
+		return KNS_SPRING_BEANS_PATH;
+	}
+	
+	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 		GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
-		lifecycles.add(new OJBConfigurer());
-		lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
+		//lifecycles.add(new OJBConfigurer());
+		//lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
 		if (!isSuppressAutoModuleConfiguration()) {
 			lifecycles.add(new Lifecycle() {
 				boolean started = false;
@@ -66,17 +69,17 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 				}
 
 				public void start() throws Exception {
-					KualiModule kualiModule = new KualiModule();
-					kualiModule.setDatabaseRepositoryFilePaths(getDatabaseRepositoryFilePaths());
-					if (getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty()) {
-						kualiModule.setDataDictionaryPackages(getDataDictionaryPackages());
-						kualiModule.setInitializeDataDictionary(true);
-					}
-					kualiModule.setModuleAuthorizer(new KualiModuleAuthorizerBase());
-					kualiModule.setModuleCode(ConfigContext.getCurrentContextConfig().getMessageEntity());
-					kualiModule.setModuleId(ConfigContext.getCurrentContextConfig().getMessageEntity());
-					kualiModule.setModuleName(ConfigContext.getCurrentContextConfig().getMessageEntity());
-					kualiModule.afterPropertiesSet();
+					//ModuleConfiguration moduleConfiguration = new ModuleConfiguration();
+					//moduleConfiguration.setNamespaceCode(ConfigContext.getCurrentContextConfig().getMessageEntity());
+					//moduleConfiguration.setDatabaseRepositoryFilePaths(getDatabaseRepositoryFilePaths());
+					//if (getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty()) {
+					//	moduleConfiguration.setDataDictionaryPackages(getDataDictionaryPackages());
+					//	moduleConfiguration.setInitializeDataDictionary(true);
+					//}					
+					//ModuleServiceBase moduleService = new ModuleServiceBase();
+					//moduleService.setModuleConfiguration(moduleConfiguration);					
+					//moduleService.afterPropertiesSet();
+					
 					KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
 					this.started = true;
 				}

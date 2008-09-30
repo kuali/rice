@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kns.exception;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -24,8 +25,11 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class ModuleAuthorizationException extends AuthorizationException {
 
-    public ModuleAuthorizationException(String userId, AuthorizationType authType, KualiModule module ) {
-        super(userId, authType.getName(), module.getModuleName(), "user '" + userId + "' is not authorized to use the '" + authType + "' within module: '" + module.getModuleName() + "'");
+    public ModuleAuthorizationException(String userId, AuthorizationType authType, ModuleService moduleService) {
+        super(userId, authType.getName(), 
+    		KNSServiceLocator.getKualiModuleService().getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode()), 
+    		"user '" + userId + "' is not authorized to use the '" + authType + "' within module: '" + 
+    		KNSServiceLocator.getKualiModuleService().getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode()) + "'");
     }
 
     /**

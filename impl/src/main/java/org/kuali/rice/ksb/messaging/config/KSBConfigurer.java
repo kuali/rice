@@ -35,6 +35,7 @@ import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
@@ -42,7 +43,6 @@ import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.ojb.OjbConfigurer;
 import org.kuali.rice.ksb.service.AuthorizationService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -120,6 +120,18 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	@Override
+	public String getSpringFileLocations(){
+		return "classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml";
+	}
+	
+	@Override
+	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
+		ksbRemoteResourceLoader.start();
+		return ksbRemoteResourceLoader;
+	}
+	
+	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 
@@ -148,8 +160,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 				this.started = false;
 			}
 		});
-		lifecycles.add(new OjbConfigurer());
-		lifecycles.add(KSBResourceLoaderFactory.createRootKSBResourceLoader());
+		//lifecycles.add(new OjbConfigurer());
 		lifecycles.add(new ServicesOverrideLifecycle(this.getOverrideServices()));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.SCHEDULED_THREAD_POOL_SERVICE));

@@ -220,5 +220,18 @@
         class="org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition"
         abstract="true"
     />
+    <bean id="ExternalizableAttributeDefinitionProxy"
+        class="org.kuali.rice.kns.datadictionary.ExternalizableAttributeDefinitionProxy"
+        abstract="true"
+    />
+    
+    <bean id="ButtonControlDefinition"
+        class="org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition"
+        abstract="true"
+    />
+    <bean id="LinkControlDefinition"
+        class="org.kuali.rice.kns.datadictionary.control.LinkControlDefinition"
+        abstract="true"
+    />
 </beans>
 

@@ -36,6 +36,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected boolean noInquiry = false;
     protected boolean forceLookup = false;
     protected boolean noLookup = false;
+    protected boolean useShortLabel = false;
     protected String defaultValue;
     protected Class<? extends ValueFinder> defaultValueFinderClass;
 
@@ -146,6 +147,22 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
+	 * @return the useShortLabel
+	 */
+	public boolean isUseShortLabel() {
+		return this.useShortLabel;
+	}
+
+
+	/**
+	 * @param useShortLabel the useShortLabel to set
+	 */
+	public void setUseShortLabel(boolean useShortLabel) {
+		this.useShortLabel = useShortLabel;
+	}
+
+
+	/**
      * @return Returns the defaultValue.
      */
     public String getDefaultValue() {

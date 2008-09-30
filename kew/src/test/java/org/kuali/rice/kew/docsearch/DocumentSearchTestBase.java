@@ -82,7 +82,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
             return null;
         }
         for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-            for (Row row : searchableAttribute.getSearchingRows()) {
+            for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                 for (Field field : row.getFields()) {
                     if (field.getPropertyName().equals(formKey)) {
                         return field;

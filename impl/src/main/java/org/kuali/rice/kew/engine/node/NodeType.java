@@ -46,6 +46,7 @@ public class NodeType {
     private static final String START_NAME = "start";
     private static final String REQUEST_ACTIVATION_NAME = "requestActivation";
     private static final String REQUESTS_NAME = "requests";
+    private static final String ROLE_NAME = "role";
 
     /**
      * A Sorted List containing the NodeTypes in order sorted by largest extension depth first, i.e. in bottom-up extension order.
@@ -65,6 +66,7 @@ public class NodeType {
     public static final NodeType REQUEST_ACTIVATION = new NodeType(SIMPLE, REQUEST_ACTIVATION_NAME, RequestActivationNode.class, RequestActivationNode.class);
     public static final NodeType START = new NodeType(REQUEST_ACTIVATION, START_NAME, InitialNode.class, InitialNode.class);
     public static final NodeType REQUESTS = new NodeType(REQUEST_ACTIVATION, REQUESTS_NAME, RequestsNode.class, RequestsNode.class);
+    public static final NodeType ROLE = new NodeType(REQUESTS, ROLE_NAME, RoleNode.class, RoleNode.class);
 
     private NodeType extensionBase;
     private String name;

@@ -50,9 +50,14 @@ public class KSBThinClientConfigurer extends ModuleConfigurer {
 	}
 
 	@Override
+	public String getSpringFileLocations(){
+		return "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml";
+	}
+	
+	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 	    List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-	    lifecycles.add(KSBResourceLoaderFactory.createThinClientKSBResourceLoader());
+	    //lifecycles.add(KSBResourceLoaderFactory.createThinClientKSBResourceLoader());
 	    return lifecycles;
 	}
 

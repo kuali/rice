@@ -55,7 +55,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
         if ( universalUser == null || universalUser.getPersonUserIdentifier() == null || !universalUser.getPersonUserIdentifier().equalsIgnoreCase( getId() ) ) {
             universalUser = null;
             try {
-                universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUser( new AuthenticationUserId( getId() ) );
+                universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId( getId() );
             } catch ( UserNotFoundException ex ) {
                 // do nothing, leave UU as null
             }

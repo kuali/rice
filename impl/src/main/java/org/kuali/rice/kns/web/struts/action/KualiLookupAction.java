@@ -63,7 +63,8 @@ public class KualiLookupAction extends KualiAction {
                 // check if the lookup is allowed
                 if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), lookupAuthorizationType ) ) {                
                     LOG.error("User not authorized for lookup action for this object: " + businessObjectClass.getName() );
-                    throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), lookupAuthorizationType, getKualiModuleService().getResponsibleModule( businessObjectClass ) );
+                    throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), 
+                    		lookupAuthorizationType, getKualiModuleService().getResponsibleModuleService( businessObjectClass ) );
                 }
             } catch ( ClassNotFoundException ex ) {
                 super.checkAuthorization(form, methodToCall);

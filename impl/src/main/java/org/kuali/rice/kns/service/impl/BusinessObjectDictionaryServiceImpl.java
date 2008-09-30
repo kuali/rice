@@ -384,7 +384,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
                 }
                 else {
                     Object nestedObject = ObjectUtils.getPropertyValue(bo, descriptors[i].getName());
-                    if (nestedObject instanceof BusinessObject) {
+                    if (ObjectUtils.isNotNull(nestedObject) && nestedObject instanceof BusinessObject) {
                         if (persistenceStructureService.isPersistable(nestedObject.getClass())) {
                                 try {
                                 if (persistenceStructureService.hasReference(bo.getClass(), descriptors[i].getName())) {
@@ -406,7 +406,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
                         }
                     }
                     else {
-                        if (nestedObject instanceof Collection) {
+                        if (ObjectUtils.isNotNull(nestedObject) && nestedObject instanceof Collection) {
                             if (persistenceStructureService.hasCollection(bo.getClass(), descriptors[i].getName())) {
                                 if (persistenceStructureService.isCollectionUpdatable(bo.getClass(), descriptors[i].getName())) {
                             Iterator iter = ((Collection) nestedObject).iterator();
@@ -655,6 +655,18 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     }
 
     /**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldUseShortLabel(java.lang.Class, java.lang.String)
+	 */
+	public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass, String attributeName) {
+        Boolean useShortLabel = null;
+        if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+            useShortLabel = Boolean.valueOf(getLookupResultFieldDefinition(businessObjectClass, attributeName).isUseShortLabel());
+        }
+
+        return useShortLabel;
+	}
+
+	/**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class, java.lang.String)
      */
     public Boolean forceInquiryFieldInquiry(Class businessObjectClass, String attributeName) {

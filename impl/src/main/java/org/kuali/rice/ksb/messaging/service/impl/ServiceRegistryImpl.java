@@ -21,21 +21,40 @@ import java.util.List;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.DataAccessUtils;
+import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
+import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class ServiceRegistryImpl implements ServiceRegistry {
 
 	private ServiceInfoDAO dao;
+	protected KSBContextServiceLocator serviceLocator;
+	
+	/**
+	 * @return the serviceLocator
+	 */
+	public KSBContextServiceLocator getServiceLocator() {
+		return this.serviceLocator;
+	}
+
+	/**
+	 * @param serviceLocator the serviceLocator to set
+	 */
+	public void setServiceLocator(KSBContextServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
+	}
 
 	public void saveEntry(ServiceInfo entry) {
 		try {
 			Object service = entry.getServiceDefinition().getService();
 			entry.getServiceDefinition().setService(null);
-			entry.setSerializedMessageEntity(KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()));
+			entry.setSerializedMessageEntity(serviceLocator==null?
+					KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()):
+						serviceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()));
 			entry.getServiceDefinition().setService(service);
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);

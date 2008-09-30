@@ -24,6 +24,7 @@
   <bean id="fakeService" class="org.kuali.rice.kew.test.FakeServiceImpl"/>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>  
     <property name="serviceDefinition">
       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
         <property name="serviceInterface"><value>org.kuali.rice.kew.test.FakeService</value></property>

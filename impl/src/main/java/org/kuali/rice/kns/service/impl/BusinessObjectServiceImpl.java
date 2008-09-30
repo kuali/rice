@@ -27,7 +27,9 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.UniversalUser;
@@ -188,7 +190,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
      */
-    public PersistableBusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName) {
+    public BusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName) {
 
         PersistableBusinessObject referenceBo = null;
         boolean allFkeysHaveValues = true;
@@ -220,11 +222,11 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
 
         /*
-         * check for UniversalUser references in which case we can just get the reference through propertyutils
+         * check for UniversalUser or EBO references in which case we can just get the reference through propertyutils
          */
-        if (UniversalUser.class.isAssignableFrom(referenceClass)) {
+        if (UniversalUser.class.isAssignableFrom(referenceClass) || ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
             try {
-                return (PersistableBusinessObject) PropertyUtils.getProperty(bo, referenceName);
+                return (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
             }
             catch (IllegalAccessException e) {
                 throw new RuntimeException(e.getMessage());
@@ -424,9 +426,8 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private UniversalUser getUniversalUserFromUserName(String userName) {
         UniversalUser user = null;
         try {
-            user = universalUserService.getUniversalUser(new AuthenticationUserId(userName));
-        }
-        catch (UserNotFoundException e) {
+            user = universalUserService.getUniversalUserByAuthenticationUserId(userName);
+        } catch (UserNotFoundException e) {
             // do nothing, return a null object
         }
         return user;

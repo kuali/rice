@@ -15,30 +15,33 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.util.List;
+
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
     /**
-     * Hides the edit/copy links when not valid for the current user. 
-     * 
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
+     * Hides the edit/copy links when not valid for the current user.
+     *
+     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.lang.List)
      */
     @Override
-    public String getActionUrls(BusinessObject businessObject) {
+    public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         Parameter parm = (Parameter)businessObject;
         if ( GlobalVariables.getUserSession().getUniversalUser().isMember( parm.getParameterWorkgroupName() ) ) {
-            return super.getActionUrls(businessObject);
+            return super.getCustomActionUrls(businessObject, pkNames);
         } else {
-            return "&nbsp;";
+            return super.getEmptyActionUrls();
         }
     }
 }

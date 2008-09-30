@@ -70,16 +70,22 @@ public class ActionListServiceImpl implements ActionListService {
 
     private ActionItemDAO actionItemDAO;
 
-    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws KEWUserNotFoundException {
-        return getActionItemDAO().findDelegators(workflowUser, delegationType);
+    public Collection<Recipient> findUserSecondaryDelegators(WorkflowUser workflowUser) throws KEWUserNotFoundException {
+        return getActionItemDAO().findSecondaryDelegators(workflowUser);
+    }
+
+    public Collection<Recipient> findUserPrimaryDelegations(WorkflowUser workflowUser) throws KEWUserNotFoundException {
+        return getActionItemDAO().findPrimaryDelegationRecipients(workflowUser);
     }
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
+    	// TODO: delyea here
         return getActionListDAO().getActionList(workflowUser, filter);
     }
 
-    public Collection getActionList(Long routeHeaderId, ActionListFilter filter) {
-        return getActionListDAO().getActionList(routeHeaderId, filter);
+    public Collection getActionListForSingleDocument(Long routeHeaderId) {
+    	// TODO: delyea here
+        return getActionListDAO().getActionListForSingleDocument(routeHeaderId);
     }
 
     public void setActionListDAO(ActionListDAO actionListDAO) {
@@ -432,6 +438,7 @@ public class ActionListServiceImpl implements ActionListService {
      *      org.kuali.rice.kew.actionlist.ActionListFilter)
      */
     public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
+    	// TODO: delyea here
         return this.getActionListDAO().getOutbox(workflowUser, filter);
     }
 

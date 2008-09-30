@@ -430,17 +430,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
-        DocumentInitiator initiatior = new DocumentInitiator();
+        DocumentInitiator initiator = new DocumentInitiator();
         String initiatorNetworkId = getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId();
         try {
-            UniversalUser initiatorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(initiatorNetworkId));
-            initiatorUser.getModuleUsers(); // init the module users map for serialization
-            initiatior.setUniversalUser(initiatorUser);
+            UniversalUser initiatorUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(initiatorNetworkId);
+            initiator.setUniversalUser(initiatorUser);
         }
         catch (UserNotFoundException e) {
             throw new RuntimeException(e);
         }
-        transInfo.setDocumentInitiator(initiatior);
+        transInfo.setDocumentInitiator(initiator);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
         xmlWrapper.setDocument(this);
         xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);

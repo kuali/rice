@@ -43,7 +43,6 @@ import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
 public class KSBResourceLoaderFactory {
 
 	private static final String KSB_ROOT_RESOURCE_LOACER_NAME = "KSB_ROOT_RESOURCE_LOADER";
-	private static final String KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME = "KSB_SPRING_RESOURCE_LOADER";
 	private static final String KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME = "KSB_REMOTE_RESOURCE_LOADER";
 
 	private static void initialize() {
@@ -54,21 +53,14 @@ public class KSBResourceLoaderFactory {
 		if (getRootResourceLoaderName() == null) {
 			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_ROOT_RESOURCE_LOACER_NAME));
 		}
-		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME));
-		}
 		if (getRemoteResourceLoaderName() == null) {
 			setRemoteResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 
-	public static ResourceLoader createRootKSBResourceLoader() {
+	public static ResourceLoader createRootKSBRemoteResourceLoader() {
 		initialize();
 		ResourceLoader rootResourceLoader = new BaseResourceLoader(getRootResourceLoaderName(), new SimpleServiceLocator());
-		ResourceLoader springResourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(),
-				"classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml");
-		GlobalResourceLoader.addResourceLoader(rootResourceLoader);
-		rootResourceLoader.addResourceLoader(springResourceLoader);
 		rootResourceLoader.addResourceLoader(new RemoteResourceServiceLocatorImpl(getRemoteResourceLoaderName()));
 		return rootResourceLoader;
 	}
@@ -83,10 +75,6 @@ public class KSBResourceLoaderFactory {
 		return (BaseResourceLoader)GlobalResourceLoader.getResourceLoader(getRootResourceLoaderName());
 	}
 
-	public static SpringResourceLoader getSpringResourceLoader() {
-		return (SpringResourceLoader)GlobalResourceLoader.getResourceLoader(getSpringResourceLoaderName());
-	}
-
 	public static RemoteResourceServiceLocator getRemoteResourceLocator() {
 		return (RemoteResourceServiceLocator)GlobalResourceLoader.getResourceLoader(getRemoteResourceLoaderName());
 	}
@@ -97,14 +85,6 @@ public class KSBResourceLoaderFactory {
 
 	public static void setRootResourceLoaderName(QName name) {
 		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_ROOT_RESOURCE_LOACER_NAME, name);
-	}
-
-	public static QName getSpringResourceLoaderName() {
-		return (QName)ConfigContext.getCurrentContextConfig().getObject(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME);
-	}
-
-	public static void setSpringResourceLoaderName(QName ksbRsourceLoaderName) {
-		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME, ksbRsourceLoaderName);
 	}
 
 	public static QName getRemoteResourceLoaderName() {

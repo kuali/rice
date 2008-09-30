@@ -68,6 +68,10 @@ public class KualiExceptionIncidentForm extends KualiForm {
      /**
       * Session user name
       */
+     private String personUserIdentifier="";
+     /**
+      * Session user name
+      */
      private String userName="";
      /**
       * Detail message not for displaying
@@ -114,6 +118,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
         this.stackTrace=null;
         this.userEmail=null;
         this.userName=null;
+        this.personUserIdentifier=null;
 
     }
     
@@ -145,6 +150,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
         map.put(ExceptionIncident.DOCUMENT_ID, this.documentId);
         map.put(ExceptionIncident.USER_EMAIL, this.userEmail);
         map.put(ExceptionIncident.USER_NAME, this.userName);
+        map.put(ExceptionIncident.UUID, this.personUserIdentifier);
         map.put(ExceptionIncident.COMPONENT_NAME, this.componentName);
         map.put(ExceptionIncident.DESCRIPTION, this.description);
         map.put(ExceptionIncident.EXCEPTION_REPORT_SUBJECT, this.exceptionReportSubject);
@@ -253,6 +259,20 @@ public class KualiExceptionIncidentForm extends KualiForm {
     }
 
     /**
+	 * @return the personUserIdentifier
+	 */
+	public String getPersonUserIdentifier() {
+		return this.personUserIdentifier;
+	}
+
+	/**
+	 * @param personUserIdentifier the personUserIdentifier to set
+	 */
+	public void setPersonUserIdentifier(String personUserIdentifier) {
+		this.personUserIdentifier = personUserIdentifier;
+	}
+
+	/**
      * @return the userName
      */
     public final String getUserName() {

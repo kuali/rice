@@ -47,6 +47,7 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String CAMPUS_SHORT_NAME = "campusShortName";
 	public static final String CAMPUS_TYPE_CODE = "campusTypeCode";
 	public static final String CREATE_DATE = "createDate";
+	public static final String CODE = "code";
 	public static final String DATA_OBJECT_MAINTENANCE_CODE_ACTIVE_INDICATOR = "dataObjectMaintenanceCodeActiveIndicator";
 	public static final String DESCRIPTION = "description";
 	public static final String DICTIONARY_BUSINESS_OBJECT_NAME = "dictionaryBusinessObjectName";
@@ -101,6 +102,5 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String VERSION_NUMBER = "versionNumber";
 	public static final String WORKFLOW_DOCUMENT = "workflowDocument";
 	public static final String XML_DOCUMENT_CONTENTS = "xmlDocumentContents";
-	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";
-
+	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
 }

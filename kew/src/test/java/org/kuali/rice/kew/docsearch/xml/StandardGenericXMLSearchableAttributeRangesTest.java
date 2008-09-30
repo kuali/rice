@@ -26,6 +26,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
@@ -39,7 +40,6 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -120,7 +120,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
      */
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
-        List searchRows = searchAttribute.getSearchingRows();
+        String documentTypeName = "SearchDocType";
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
+        List searchRows = searchAttribute.getSearchingRows(context);
         if ((new SearchableAttributeStringValue()).allowsRangeSearches()) {
         	fail("Cannot perform range search on string field at database level");
 //            assertEquals("Invalid number of search rows", 2, searchRows.size());
@@ -141,7 +143,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         // range def  :
         // upper def  :
         // lower def  :
-        searchRows = searchAttribute.getSearchingRows();
+        searchRows = searchAttribute.getSearchingRows(context);
         if ((new SearchableAttributeLongValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 1; i <= searchRows.size(); i++) {
@@ -167,7 +169,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         // range def  :  inclusive=false
         // upper def  :  label=ending
         // lower def  :  label=starting
-        searchRows = searchAttribute.getSearchingRows();
+        searchRows = searchAttribute.getSearchingRows(context);
         if ((new SearchableAttributeFloatValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 1; i <= searchRows.size(); i++) {
@@ -201,7 +203,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         // range def  :  inclusive=false
         // upper def  :  inclusvie=true - datePicker=true
         // lower def  :
-        searchRows = searchAttribute.getSearchingRows();
+        searchRows = searchAttribute.getSearchingRows(context);
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 0; i < searchRows.size(); i++) {
@@ -239,34 +241,37 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     	// upper bound and lower bound fields should be using same validation... we just altername which formKey we use here
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
         Map paramMap = new HashMap();
+        String documentTypeName = "SearchDocType";
+        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack");
-        List validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        
+        List validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack.jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         WorkflowAttributeValidationError error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertEquals("Validation error should match xml attribute message", "Invalid first name", error.getMessage());
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 0, validationErrors.size());
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
         paramMap = new HashMap();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "jack*jack");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
@@ -274,17 +279,17 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
         paramMap = new HashMap();
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
@@ -292,17 +297,17 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         searchAttribute = getAttribute("XMLSearchableAttributeStdDateTimeRange");
         paramMap = new HashMap();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "001/5/08");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "01/02/20*");
-        validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));

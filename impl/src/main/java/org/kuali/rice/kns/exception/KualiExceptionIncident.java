@@ -62,6 +62,11 @@ public interface KualiExceptionIncident {
       */
      public static final String USER_EMAIL="userEmail";
      /**
+      * Session user login name
+      * <p>Value is personUserIdentifier
+      */
+     public static final String UUID="personUserIdentifier";
+     /**
       * Session user name
       * <p>Value is userName
       */

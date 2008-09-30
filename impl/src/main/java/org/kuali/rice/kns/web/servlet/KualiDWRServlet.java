@@ -24,8 +24,8 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -39,7 +39,7 @@ public class KualiDWRServlet extends DWRServlet {
 	 */
 	private static final long serialVersionUID = -3903455224197903186L;
 
-	private static final String CLASSPATH_RESOURCE_PREFIX = "WEB-INF/classes/";
+	private static final String CLASSPATH_RESOURCE_PREFIX = "classpath.resource.prefix";
 	
 	public static List<String> HACK_ADDITIONAL_FILES = new ArrayList<String>();
 
@@ -60,6 +60,7 @@ public class KualiDWRServlet extends DWRServlet {
 	 */
 	@Override
 	public void configure(ServletConfig servletConfig, Configuration configuration) throws ServletException {
+		String classpathResourcePrefix = KNSServiceLocator.getKualiConfigurationService().getPropertyString(CLASSPATH_RESOURCE_PREFIX);
 		for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(KNSConstants.SCRIPT_CONFIGURATION_FILES_LIST_NAME)) {
 			for (String scriptConfigurationFilePath : namedOrderedListBean.getList()) {
 				if (getSpringBasedConfigPath()) {
@@ -71,19 +72,20 @@ public class KualiDWRServlet extends DWRServlet {
 						throw new ServletException(e);
 					}
 				} else {
-					super.readFile(CLASSPATH_RESOURCE_PREFIX + scriptConfigurationFilePath, configuration);
+					super.readFile(classpathResourcePrefix + 
+							scriptConfigurationFilePath, configuration);
 				}
 			}
 		}
-		for (KualiModule module : KNSServiceLocator.getKualiModuleService().getInstalledModules()) {
-			for (String scriptConfigurationFilePath : module.getScriptConfigurationFilePaths()) {
+		for (ModuleService moduleService : KNSServiceLocator.getKualiModuleService().getInstalledModuleServices()) {
+			for (String scriptConfigurationFilePath : moduleService.getModuleConfiguration().getScriptConfigurationFilePaths()) {
 				if (!StringUtils.isBlank(scriptConfigurationFilePath))
-					super.readFile(CLASSPATH_RESOURCE_PREFIX + scriptConfigurationFilePath, configuration);
+					super.readFile(classpathResourcePrefix + scriptConfigurationFilePath, configuration);
 			}	
 		}
 		
 		for (String configFile : HACK_ADDITIONAL_FILES) {
-			super.readFile(CLASSPATH_RESOURCE_PREFIX + configFile, configuration);
+			super.readFile(classpathResourcePrefix + configFile, configuration);
 		}
 	}
 

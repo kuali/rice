@@ -84,7 +84,6 @@ public class Note extends PersistableBusinessObjectBase {
         // for now just do this
         this.setNoteTypeCode("DH");
 
-        this.authorUniversal = new UniversalUser();
         this.setAdHocRouteRecipient(new AdHocRoutePerson());
     }
 

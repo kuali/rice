@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -352,7 +351,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	    UniversalUser user = null;
 	    // validate that they are a user from the user service by looking them up
 	    try {
-		user = getUniversalUserService().getUniversalUser(new AuthenticationUserId(person.getId()));
+		user = getUniversalUserService().getUniversalUserByAuthenticationUserId(person.getId());
 	    } catch (UserNotFoundException userNotFoundException) {
 		LOG.warn("isAddHocRoutePersonValid(AdHocRoutePerson) - exception ignored", userNotFoundException);
 	    }
@@ -360,12 +359,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
 	    }
-	    else if (!user.isActiveForAnyModule()) {
+	    else if (!universalUserService.canAccessAnyModule( user )) {
 		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
 	    } else {
-		// determine the module for the document
-		KualiModule module = null;
 		Class docOrBoClass = null;
 		if (document instanceof MaintenanceDocument) {
 		    docOrBoClass = ((MaintenanceDocument) document).getNewMaintainableObject().getBoClass();

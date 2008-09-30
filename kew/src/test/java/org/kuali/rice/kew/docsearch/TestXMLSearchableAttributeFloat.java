@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
@@ -36,11 +33,11 @@ public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
     public static final String SEARCH_STORAGE_KEY = "testFloatKey";
     public static final BigDecimal SEARCH_STORAGE_VALUE = new BigDecimal("123456.3456");
 
-    public String getSearchContent() {
+    public String getSearchContent(DocumentSearchContext documentSearchContext) {
 		return "TestXMLSearchableAttributeFloat";
 	}
 
-	public List<SearchableAttributeValue> getSearchStorageValues(String docContent) {
+	public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
 		List<SearchableAttributeValue> savs = new ArrayList<SearchableAttributeValue>();
         SearchableAttributeFloatValue sav = new SearchableAttributeFloatValue();
 		sav.setSearchableAttributeKey(SEARCH_STORAGE_KEY);
@@ -49,7 +46,7 @@ public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
 		return savs;
 	}
 
-	public List<Row> getSearchingRows() {
+	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
 		List fields = new ArrayList();
 		Field myField = new Field("title", "", "", false, SEARCH_STORAGE_KEY, "", null, "");
 		myField.setFieldDataType((new SearchableAttributeFloatValue()).getAttributeDataType());
@@ -60,7 +57,7 @@ public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
 		return rows;
 	}
 
-	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap) {
+	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext documentSearchContext) {
 		List<WorkflowAttributeValidationError> waves = new ArrayList<WorkflowAttributeValidationError>();
 //		WorkflowAttributeValidationError wave = new WorkflowAttributeValidationError("key1", "message1");
 //		waves.add(wave);

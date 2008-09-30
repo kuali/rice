@@ -37,11 +37,11 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
     public static final Long SEARCH_STORAGE_VALUE_IN_MILLS = (new Long("1173995646535"));
     public static final Timestamp SEARCH_STORAGE_VALUE = new Timestamp(SEARCH_STORAGE_VALUE_IN_MILLS.longValue());
 
-    public String getSearchContent() {
+    public String getSearchContent(DocumentSearchContext documentSearchContext) {
 		return "TestXMLSearchableAttributeDateTime";
 	}
 
-	public List<SearchableAttributeValue> getSearchStorageValues(String docContent) {
+	public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
 		List<SearchableAttributeValue> savs = new ArrayList<SearchableAttributeValue>();
         SearchableAttributeDateTimeValue sav = new SearchableAttributeDateTimeValue();
         sav.setSearchableAttributeKey(SEARCH_STORAGE_KEY);
@@ -50,7 +50,7 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
 		return savs;
 	}
 
-	public List<Row> getSearchingRows() {
+	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
 		List fields = new ArrayList();
 		Field myField = new Field("title", "", "", false, SEARCH_STORAGE_KEY, "", null, "");
 		myField.setColumnVisible(true);
@@ -62,7 +62,7 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
 		return rows;
 	}
 
-	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap) {
+	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext documentSearchContext) {
 		List<WorkflowAttributeValidationError> waves = new ArrayList<WorkflowAttributeValidationError>();
 //		WorkflowAttributeValidationError wave = new WorkflowAttributeValidationError("key1", "message1");
 //		waves.add(wave);

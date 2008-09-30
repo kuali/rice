@@ -26,6 +26,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 
@@ -40,10 +41,10 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		config.parseConfig();
 		ConfigContext.init(config);
 		
-		ResourceLoader rl = KSBResourceLoaderFactory.createRootKSBResourceLoader();
-		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getSpringResourceLoaderName()));
+		ResourceLoader rl = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
+		assertNotNull(rl.getResourceLoader(RiceResourceLoaderFactory.getSpringResourceLoaderName()));
 		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getRemoteResourceLoaderName()));
-		assertNotNull(GlobalResourceLoader.getResourceLoader(KSBResourceLoaderFactory.getSpringResourceLoaderName()));
+		assertNotNull(GlobalResourceLoader.getResourceLoader(RiceResourceLoaderFactory.getSpringResourceLoaderName()));
 		assertNotNull(GlobalResourceLoader.getResourceLoader(KSBResourceLoaderFactory.getRemoteResourceLoaderName()));
 	}
 	
@@ -56,7 +57,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		
 		boolean errorThrown = false;
 		try {
-			KSBResourceLoaderFactory.createRootKSBResourceLoader();
+			KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 			fail("should have thrown configuration exception with no message entity present");
 		} catch (ConfigurationException ce) {
 			errorThrown = true;

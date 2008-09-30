@@ -27,7 +27,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
@@ -38,6 +40,7 @@ import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
@@ -54,36 +57,36 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOOjbImpl.class);
 
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Criteria crit = new Criteria();
-        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-        Collection<ActionItem> collection = getActionList(crit, filter);
-        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        return createActionListForUser(collection);
+        return getActionItemsInActionList(ActionItemActionListExtension.class, workflowUser, filter);
+//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+//        Criteria crit = null;
+//        if (filter == null) {
+//            crit = new Criteria();
+//            crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+//        } else {
+//            crit = setUpActionListCriteria(workflowUser, filter);
+//        }
+//        LOG.debug("running query to get action list for criteria " + crit);
+//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
+//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+//        return createActionListForUser(collection);
     }
     
-    public Collection<ActionItem> getActionList(Long routeHeaderId, ActionListFilter filter) {
+    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
         LOG.debug("getting action list for route header id " + routeHeaderId);
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        Collection<ActionItem> collection = getActionList(crit, filter);
+        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
         return createActionListForRouteHeader(collection);
     }
     
-    private Collection<ActionItem> getActionList(Criteria crit, ActionListFilter filter) {
-        if (filter != null) {
-            setUpActionListCriteria(crit, filter);
-        }
-        LOG.debug("running query to get action list for criteria " + crit);
-        return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-    }
-    
-
-    private void setUpActionListCriteria(Criteria crit, ActionListFilter filter) {
+    private Criteria setUpActionListCriteria(WorkflowUser user, ActionListFilter filter) {
         LOG.debug("setting up Action List criteria");
+        Criteria crit = new Criteria();
         boolean filterOn = false;
         String filteredByItems = "";
+        
         if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KEWConstants.ALL_CODE)) {
             if (filter.isExcludeActionRequestCd()) {
                 crit.addNotEqualTo("actionRequestCd", filter.getActionRequestCd());
@@ -193,59 +196,312 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (filteredByItems.length() > 0) {
             filterOn = true;
         }
-
-        if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
-                && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-            filter.setExcludeDelegationType(false);
-            Criteria userCrit = new Criteria();
-            Criteria groupCrit = new Criteria();
-            if (filter.isExcludeDelegatorId()) {
-                Criteria userNull = new Criteria();
-                userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-                userNull.addIsNull("delegatorWorkflowId");
-                userCrit.addOrCriteria(userNull);
-                Criteria groupNull = new Criteria();
-                groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
-                groupNull.addIsNull("delegatorWorkgroupId");
-                groupCrit.addOrCriteria(groupNull);
-                crit.addAndCriteria(userCrit);
-                crit.addAndCriteria(groupCrit);
-            } else {
+        
+        boolean addedDelegationCriteria = false;
+        if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
+            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+            addedDelegationCriteria = true;
+        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_PRIMARY.equals(filter.getDelegationType()))
+                || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
+            // using a primary delegation
+            if ((StringUtils.isBlank(filter.getPrimaryDelegateId())) || (filter.getPrimaryDelegateId().trim().equals(KEWConstants.ALL_CODE))) {
+                // user wishes to see all primary delegations
+                Criteria userCrit = new Criteria();
+                Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
-                userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-                groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+                userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+                groupCrit.addIn("delegatorWorkgroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user));
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
+                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                filter.setExcludeDelegationType(false);
+                addToFilterDescription(filteredByItems, "Primary Delegator Id");
+                addedDelegationCriteria = true;
+                filterOn = true;
+            } else if (!filter.getPrimaryDelegateId().trim().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT)) {
+                // user wishes to see primary delegation for a single user
+                crit.addEqualTo("workflowId", filter.getPrimaryDelegateId());
+                Criteria userCrit = new Criteria();
+                Criteria groupCrit = new Criteria();
+                Criteria orCrit = new Criteria();
+                userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+                groupCrit.addIn("delegatorWorkgroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user));
+                orCrit.addOrCriteria(userCrit);
+                orCrit.addOrCriteria(groupCrit);
+                crit.addAndCriteria(orCrit);
+                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                filter.setExcludeDelegationType(false);
+                addToFilterDescription(filteredByItems, "Primary Delegator Id");
+                addedDelegationCriteria = true;
+                filterOn = true;
             }
-            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-            filteredByItems += "Delegator Id";
-            filterOn = true;
-        } else if (filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)) {
+        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+                || StringUtils.isNotBlank(filter.getDelegatorId())) {
+            // using a secondary delegation
+            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+            if (StringUtils.isBlank(filter.getDelegatorId())) {
+                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
+                if (!filter.isExcludeDelegationType()) {
+                    crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+                    addToFilterDescription(filteredByItems, "Secondary Delegator Id");
+                    addedDelegationCriteria = true;
+                    filterOn = true;
+                }
+            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+                // user wishes to see all secondary delegations
+                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setExcludeDelegationType(false);
+                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
+                addedDelegationCriteria = true;
+                filterOn = true;
+            } else if (!filter.getDelegatorId().trim().equals(
+                    KEWConstants.DELEGATION_DEFAULT)) {
+                // user has specified an id to see for secondary delegation
+                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setExcludeDelegationType(false);
+                Criteria userCrit = new Criteria();
+                Criteria groupCrit = new Criteria();
+                if (filter.isExcludeDelegatorId()) {
+                    Criteria userNull = new Criteria();
+                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+                    userNull.addIsNull("delegatorWorkflowId");
+                    userCrit.addOrCriteria(userNull);
+                    Criteria groupNull = new Criteria();
+                    groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+                    groupNull.addIsNull("delegatorWorkgroupId");
+                    groupCrit.addOrCriteria(groupNull);
+                    crit.addAndCriteria(userCrit);
+                    crit.addAndCriteria(groupCrit);
+                } else {
+                    Criteria orCrit = new Criteria();
+                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+                    groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+                    orCrit.addOrCriteria(userCrit);
+                    orCrit.addOrCriteria(groupCrit);
+                    crit.addAndCriteria(orCrit);
+                }
+                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
+                addedDelegationCriteria = true;
+                filterOn = true;
+            }
+//            } else if ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_DEFAULT.equals(filter.getDelegationType())) || 
+//                    StringUtils.isNotBlank(filter.getDelegatorId()) ) {
+//            // not using a primary delegation so we can assume the action item will be assigned to the given user
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
+//                    && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setExcludeDelegationType(false);
+//                Criteria userCrit = new Criteria();
+//                Criteria groupCrit = new Criteria();
+//                if (filter.isExcludeDelegatorId()) {
+//                    Criteria userNull = new Criteria();
+//                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                    userNull.addIsNull("delegatorWorkflowId");
+//                    userCrit.addOrCriteria(userNull);
+//                    Criteria groupNull = new Criteria();
+//                    groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    groupNull.addIsNull("delegatorWorkgroupId");
+//                    groupCrit.addOrCriteria(groupNull);
+//                    crit.addAndCriteria(userCrit);
+//                    crit.addAndCriteria(groupCrit);
+//                } else {
+//                    Criteria orCrit = new Criteria();
+//                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                    groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    orCrit.addOrCriteria(userCrit);
+//                    orCrit.addOrCriteria(groupCrit);
+//                    crit.addAndCriteria(orCrit);
+//                }
+//                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
+//                addedDelegationCriteria = true;
+//            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setExcludeDelegationType(false);
+//                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
+//                addedDelegationCriteria = true;
+//            }
+        }
+        
+        // if we haven't added delegation criteria then use the default criteria below
+        if (!addedDelegationCriteria) {
+            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
             filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(true);
-        } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-            filter.setExcludeDelegationType(false);
-            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-            filteredByItems += "Delegator Id";
-            filterOn = true;
+            Criteria critNotEqual = new Criteria();
+            Criteria critNull = new Criteria();
+            critNotEqual.addNotEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+            critNull.addIsNull("delegationType");
+            critNotEqual.addOrCriteria(critNull);
+            crit.addAndCriteria(critNotEqual);
         }
 
-        //must come after delegation id since the delegation choices are all secondary delegations
-        if (filter.getDelegationType() != null && !"".equals(filter.getDelegationType().trim())) {
-            if (filter.isExcludeDelegationType()) {
-                Criteria critNotEqual = new Criteria();
-                Criteria critNull = new Criteria();
-                critNotEqual.addNotEqualTo("delegationType", filter.getDelegationType());
-                critNull.addIsNull("delegationType");
-                critNotEqual.addOrCriteria(critNull);
-                crit.addAndCriteria(critNotEqual);
-            } else {
-                crit.addEqualTo("delegationType", filter.getDelegationType());
-            }
-        }
+                
+//        if (filter.getPrimaryDelegateId().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT) && filter.getDelegatorId().equals(KEWConstants.DELEGATION_DEFAULT)) {
+//            // no secondary or primary delegation displayed
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            Criteria critNotEqual = new Criteria();
+//            Criteria critNull = new Criteria();
+//            critNotEqual.addNotEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+//            critNull.addIsNull("delegationType");
+//            critNotEqual.addOrCriteria(critNull);
+//            crit.addAndCriteria(critNotEqual);
+//            filter.setExcludeDelegationType(true);
+//        } else if (filter.getPrimaryDelegateId().trim().equals(KEWConstants.ALL_CODE)) {
+//            // user wishes to see all primary delegations
+//            Criteria userCrit = new Criteria();
+//            Criteria groupCrit = new Criteria();
+//            Criteria orCrit = new Criteria();
+//            userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+//            groupCrit.addEqualTo("delegatorWorkgroupId", filter.getPrimaryDelegateId()); // TODO delyea: add all workgroups here?
+//            orCrit.addOrCriteria(userCrit);
+//            orCrit.addOrCriteria(groupCrit);
+//            crit.addAndCriteria(orCrit);
+//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            filter.setExcludeDelegationType(false);
+//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//            filteredByItems += "Primary Delegator Id";
+//            filterOn = true;
+//        } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+//            // user wishes to see all secondary delegations
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            filter.setExcludeDelegationType(false);
+//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//            filteredByItems += "Secondary Delegator Id";
+//            filterOn = true;
+//        } else if (filter.getPrimaryDelegateId() != null && !"".equals(filter.getPrimaryDelegateId().trim())) {
+//            // user wishes to see primary delegation for a single user
+//            Criteria userCrit = new Criteria();
+//            Criteria groupCrit = new Criteria();
+//            Criteria orCrit = new Criteria();
+//            userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+//            groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId()); // TODO delyea: add all workgroups here?
+//            orCrit.addOrCriteria(userCrit);
+//            orCrit.addOrCriteria(groupCrit);
+//            crit.addAndCriteria(orCrit);
+//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            filter.setExcludeDelegationType(false);
+//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//            filteredByItems += "Primary Delegator Id";
+//            filterOn = true;
+//        } else if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim())) {
+//            // user wishes to see secondary delegation for a single user
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            filter.setExcludeDelegationType(false);
+//            Criteria userCrit = new Criteria();
+//            Criteria groupCrit = new Criteria();
+//            if (filter.isExcludeDelegatorId()) {
+//                Criteria userNull = new Criteria();
+//                userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                userNull.addIsNull("delegatorWorkflowId");
+//                userCrit.addOrCriteria(userNull);
+//                Criteria groupNull = new Criteria();
+//                groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                groupNull.addIsNull("delegatorWorkgroupId");
+//                groupCrit.addOrCriteria(groupNull);
+//                crit.addAndCriteria(userCrit);
+//                crit.addAndCriteria(groupCrit);
+//            } else {
+//                Criteria orCrit = new Criteria();
+//                userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                orCrit.addOrCriteria(userCrit);
+//                orCrit.addOrCriteria(groupCrit);
+//                crit.addAndCriteria(orCrit);
+//            }
+//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//            filteredByItems += "SeDelegator Id";
+//            filterOn = true;
+//        } else if (StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            if (filter.getDelegationType() != null && !"".equals(filter.getDelegationType().trim())) {
+//                if (filter.isExcludeDelegationType()) {
+//                    Criteria critNotEqual = new Criteria();
+//                    Criteria critNull = new Criteria();
+//                    critNotEqual.addNotEqualTo("delegationType", filter.getDelegationType());
+//                    critNull.addIsNull("delegationType");
+//                    critNotEqual.addOrCriteria(critNull);
+//                    crit.addAndCriteria(critNotEqual);
+//                } else {
+//                    crit.addEqualTo("delegationType", filter.getDelegationType());
+//                }
+//            }
+//        }
+
+        
+//        if (primary delegation) {
+//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            crit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+//            
+//        } else {
+//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+//            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
+//                    && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setExcludeDelegationType(false);
+//                Criteria userCrit = new Criteria();
+//                Criteria groupCrit = new Criteria();
+//                if (filter.isExcludeDelegatorId()) {
+//                    Criteria userNull = new Criteria();
+//                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                    userNull.addIsNull("delegatorWorkflowId");
+//                    userCrit.addOrCriteria(userNull);
+//                    Criteria groupNull = new Criteria();
+//                    groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    groupNull.addIsNull("delegatorWorkgroupId");
+//                    groupCrit.addOrCriteria(groupNull);
+//                    crit.addAndCriteria(userCrit);
+//                    crit.addAndCriteria(groupCrit);
+//                } else {
+//                    Criteria orCrit = new Criteria();
+//                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+//                    groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    orCrit.addOrCriteria(userCrit);
+//                    orCrit.addOrCriteria(groupCrit);
+//                    crit.addAndCriteria(orCrit);
+//                }
+//                filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//                filteredByItems += "Delegator Id";
+//                filterOn = true;
+//            } else if (filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)) {
+//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setExcludeDelegationType(true);
+//            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setExcludeDelegationType(false);
+//                filteredByItems += filteredByItems.length() > 0 ? ", " : "";
+//                filteredByItems += "Delegator Id";
+//                filterOn = true;
+//            }
+//            
+//        }
+//
+//
+//        //must come after delegation id since the delegation choices are all secondary delegations
+//        if (filter.getDelegationType() != null && !"".equals(filter.getDelegationType().trim())) {
+//            if (filter.isExcludeDelegationType()) {
+//                Criteria critNotEqual = new Criteria();
+//                Criteria critNull = new Criteria();
+//                critNotEqual.addNotEqualTo("delegationType", filter.getDelegationType());
+//                critNull.addIsNull("delegationType");
+//                critNotEqual.addOrCriteria(critNull);
+//                crit.addAndCriteria(critNotEqual);
+//            } else {
+//                crit.addEqualTo("delegationType", filter.getDelegationType());
+//            }
+//        }
 
         if (! "".equals(filteredByItems)) {
             filteredByItems = "Filtered by " + filteredByItems;
@@ -254,6 +510,12 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         filter.setFilterOn(filterOn);
 
         LOG.debug("returning from Action List criteria");
+        return crit;
+    }
+    
+    private void addToFilterDescription(String filterDescription, String labelToAdd) {
+        filterDescription += filterDescription.length() > 0 ? ", " : "";
+        filterDescription += labelToAdd;
     }
 
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from en_actn_itm_t ai where ai.actn_itm_prsn_en_id = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
@@ -329,18 +591,34 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         }
         return actionItemMap.values();
     }
+    
+    private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, WorkflowUser workflowUser, ActionListFilter filter) {
+        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        Criteria crit = null;
+        if (filter == null) {
+            crit = new Criteria();
+            crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+        } else {
+            crit = setUpActionListCriteria(workflowUser, filter);
+        }
+        LOG.debug("running query to get action list for criteria " + crit);
+        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectsToRetrieve, crit));
+        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        return createActionListForUser(collection);
+    }
 
     public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
-        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Criteria crit = new Criteria();
-        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-        if (filter != null) {
-            setUpActionListCriteria(crit, filter);
-        }
-        LOG.debug("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
-        LOG.debug("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        return createActionListForUser(collection);
+        return getActionItemsInActionList(OutboxItemActionListExtension.class, workflowUser, filter);
+//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+//        Criteria crit = new Criteria();
+//        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+//        if (filter != null) {
+//            setUpActionListCriteria(workflowUser, filter);
+//        }
+//        LOG.debug("running query to get action list for criteria " + crit);
+//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+//        return createActionListForUser(collection);
     }
 
     /**

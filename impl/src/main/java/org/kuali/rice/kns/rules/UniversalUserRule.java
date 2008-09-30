@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRule;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -39,7 +39,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
     private static final PhoneNumberFormatter phoneNumberFormatter = new PhoneNumberFormatter();
 
     private static String userEditWorkgroupName;
-    private static List<KualiModule> installedModules;
+    private static List<ModuleService> installedModuleServices;
 
     protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
         boolean success = true;
@@ -49,13 +49,6 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         if ( GlobalVariables.getUserSession().getUniversalUser().isMember( userEditWorkgroupName ) ) {
             success &= checkGeneralRules(document);
         }
-        MaintenanceDocumentRule rule = null;
-        for ( KualiModule module : installedModules ) {
-            rule = module.getModuleUserRule();
-            if ( rule != null ) {
-                success &= rule.processRouteDocument( document );
-            }
-        }        
         return success;
     }
 
@@ -65,14 +58,6 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         // only check if the user can modify the universal user attributes
         if ( GlobalVariables.getUserSession().getUniversalUser().isMember( userEditWorkgroupName ) ) {
             success &= checkGeneralRules(document);
-        }
-        // save always succeeds even if there are rule violations
-        MaintenanceDocumentRule rule = null;
-        for ( KualiModule module : installedModules ) {
-            rule = module.getModuleUserRule();
-            if ( rule != null ) {
-                success &= rule.processSaveDocument( document );
-            }
         }
         return true;
     }
@@ -104,7 +89,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
 
         if ( userEditWorkgroupName == null ) {
             userEditWorkgroupName = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
-            installedModules = KNSServiceLocator.getKualiModuleService().getInstalledModules();
+            installedModuleServices = KNSServiceLocator.getKualiModuleService().getInstalledModuleServices();
         }
     }
 
@@ -163,21 +148,12 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         
     @Override
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
-	boolean success = super.processApproveDocument(approveEvent);
+    	boolean success = super.processApproveDocument(approveEvent);
 
         // remove all items from the errorPath temporarily (because it may not
         // be what we expect, or what we need)
         clearErrorPath();
         
-        // loop over all installed modules and run their user rules
-        MaintenanceDocumentRule rule = null;
-        for ( KualiModule module : installedModules ) {
-            rule = module.getModuleUserRule();
-            if ( rule != null ) {
-                success &= rule.processApproveDocument( approveEvent );            
-            }
-        }
-
         // return the original set of items to the errorPath, to ensure no impact
         // on other upstream or downstream items that rely on the errorPath
         resumeErrorPath();

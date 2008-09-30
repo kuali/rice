@@ -69,6 +69,20 @@
         </td>
       </tr>
     </c:if>
+    <c:if test="${! empty primaryDelegates}">
+      <tr>
+	    <td class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.primaryDelegateId"/> <bean-el:message key="general.help.primaryDelegateId"/></td>
+	    <td class="datacell">
+		     <html-el:select property="filter.primaryDelegateId">
+			   <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
+			   <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
+			   <c:forEach var="delegatee" items="${primaryDelegates}">
+				 <html-el:option value="${delegatee.recipientId}"><c:out value="${delegatee.displayName}" /></html-el:option>
+			   </c:forEach>
+		     </html-el:select>
+        </td>
+      </tr>
+    </c:if>
 	<tr>
 		<td class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentTitle"/> <bean-el:message key="general.help.documentTitle"/></td>
 		<td class="datacell"><html-el:text property="filter.documentTitle"/>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentTitle"/></td>

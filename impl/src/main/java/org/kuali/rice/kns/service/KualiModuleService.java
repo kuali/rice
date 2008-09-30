@@ -16,65 +16,55 @@
 package org.kuali.rice.kns.service;
 
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.bo.user.KualiModuleUser;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 
 public interface KualiModuleService {
 
     /**
-     * get the list of all installed modules
+     * get the list of all installed module services
      * 
      * @return
      */
-    List<KualiModule> getInstalledModules();
+    List<ModuleService> getInstalledModuleServices();
 
     /**
-     * Returns a map of all KualiModuleUser objects for the given user keyed by the module ID.
-     * 
-     * @param user
-     * @return
-     */
-    Map<String, KualiModuleUser> getModuleUsers(UniversalUser user);
-
-    /**
-     * Returns a list of all KualiModuleUser objects.
-     * 
-     * @param user
-     * @return
-     */
-    List<KualiModuleUser> getModuleUserList(UniversalUser user);
-
-    /**
-     * Returns the module with the given ID or null if the module ID is not found.
+     * Returns the module service with the given ID or null if the module ID is not found.
      * 
      * @param moduleId
      * @return
      */
-    KualiModule getModule(String moduleId);
-
-    /**
-     * Returns the module with the given moduleCode or null if the moduleCode is not found.
-     * 
-     * @param moduleId
-     * @return
-     */
-    KualiModule getModuleByCode(String moduleCode);
+    ModuleService getModuleService(String moduleId);
     
-    boolean isModuleInstalled(String moduleId);
+    /**
+     * Returns the module service with the given moduleCode or null if the moduleCode is not found.
+     * 
+     * @param moduleId
+     * @return
+     */
+    ModuleService getModuleServiceByNamespaceCode(String namespaceCode);
+    
+    boolean isModuleServiceInstalled(String namespaceCode);
 
     /**
-     * Given a class, this method will return the module which is responsible for authorizing access to it. It returns null if no
+     * Given a class, this method will return the module service which is responsible for authorizing access to it. It returns null if no
      * module is found.
      * 
      * @param boClass
      * @return
      */
-    KualiModule getResponsibleModule(Class boClass);
-
+    ModuleService getResponsibleModuleService(Class boClass);
+    
+    /**
+     * Given a job name, this method will return the module service which is responsible for handling it. It returns null if no
+     * module is found.
+     * 
+     * @param boClass
+     * @return
+     */
+    ModuleService getResponsibleModuleServiceForJob(String jobName);
+    
     /**
      * Checks whether the user can perform the requested operation.
      * 
@@ -84,7 +74,17 @@ public interface KualiModuleService {
      */
     public boolean isAuthorized(UniversalUser user, AuthorizationType authType);
 
-    public void setInstalledModules(List<KualiModule> modules);
+    public void setInstalledModuleServices(List<ModuleService> moduleServices);
     
     public List<String> getDataDictionaryPackages();
+
+    /**
+     * 
+     * This method gets namespace name for the given namespace code
+     * 
+     * @param namespaceCode
+     * @return
+     */
+    public String getNamespaceName(String namespaceCode);
+    
 }

@@ -68,7 +68,7 @@ import org.xml.sax.SAXException;
  */
 @Entity
 @Table(name="FP_MAINTENANCE_DOCUMENT_T")
-public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument {
+public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument , SessionDocument{
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
     public static final String MAINTAINABLE_IMPL_CLASS = "maintainableImplClass";

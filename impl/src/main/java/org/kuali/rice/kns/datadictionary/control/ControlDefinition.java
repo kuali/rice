@@ -100,7 +100,17 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      * @return true if the ControlDefinition instance represents a lookupReadonly control
      */
     public boolean isLookupReadonly();
-
+    
+    /**
+     * @return true if the ControlDefinition instance represents a button control
+     */
+    public boolean isButton();
+    
+    /**
+     * @return true if the ControlDefinition instance represents a link control
+     */
+    public boolean isLink();
+    
     /**
      * Sets the Class used to retrieve the complete range of values for radiobutton and select controls.
      *

@@ -61,9 +61,11 @@ public class SpringResourceLoader extends BaseResourceLoader {
 
 	@Override
 	public void start() throws Exception {
-		LOG.info("Creating Spring context " + StringUtils.join(this.fileLocs, ","));
-		this.context = new ClassPathXmlApplicationContext(this.fileLocs);
-		super.start();
+		if(!isStarted()){
+			LOG.info("Creating Spring context " + StringUtils.join(this.fileLocs, ","));
+			this.context = new ClassPathXmlApplicationContext(this.fileLocs);
+			super.start();
+		}
 	}
 
 	@Override

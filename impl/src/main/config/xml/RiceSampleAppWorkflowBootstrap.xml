@@ -1964,90 +1964,7 @@
                     <ruleTemplate>NotificationRouting</ruleTemplate>
                 </requests>
             </routeNodes>
-        </documentType>
-    
-
-
-        <!-- documentTypes elements from ..\/kom/src/main/config/xml/KOMBootstrap.xml -->
-
-   <documentType>
-      <name>KualiOrganizationMaintenanceDocument</name>
-      <description>Create or Update a Organization</description>
-      <label>Kuali Organization Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-   <documentType>
-      <name>KualiOrganizationCategoryMaintenanceDocument</name>
-      <description>Create or Update a Organization Category</description>
-      <label>Kuali Organization Category Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-   <documentType>
-      <name>KualiOrganizationContextMaintenanceDocument</name>
-      <description>Create or Update a Organization Context</description>
-      <label>Kuali Organization Context Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-  
-
-    
+        </documentType> 
 
 
         <!-- documentTypes elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -2246,28 +2163,6 @@
       </routeNodes>
     </documentType>
 
-
-        <documentType>
-            <name>RiceUserMaintenanceDocument</name>
-            <description>Create a Rice User</description>
-            <label>Create a Rice User</label>
-            <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-            <routePaths>
-                <routePath>
-                    <start name="Initiated" />
-                </routePath>
-            </routePaths>
-            <routeNodes>
-                <start name="Initiated">
-                    <activationType>P</activationType>
-                </start>
-            </routeNodes>
-        </documentType>
-    
 
     </documentTypes>
 

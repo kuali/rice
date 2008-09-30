@@ -153,6 +153,21 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public boolean isLookupReadonly() {
         return false;
     }
+    
+    /**
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isButton()
+     */
+    public boolean isButton() {
+        return false;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isLink()
+     */
+    public boolean isLink() {
+        return false;
+    }
+    
 
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#setKeyValuesFinder(java.lang.String)
@@ -300,7 +315,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()) {
+        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
         }
     }

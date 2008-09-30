@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -48,6 +49,8 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 
 	private String serviceName;
 	
+	protected RemotedServiceRegistry remotedServiceRegistry;
+	
 	@Override
 	public void initialize(Cache cache, Config config) throws InitializationException {
 
@@ -57,6 +60,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		// cache configuration
 		this.serviceName = config.getProperty(RiceCacheAdministrator.SERVICE_NAME_KEY);
 		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY));
+		remotedServiceRegistry = (RemotedServiceRegistry)config.getProperties().get(RiceCacheAdministrator.REMOTED_SERVICE_REGISTRY);
 		if (StringUtils.isBlank(this.serviceName)) {
 			throw new RiceRuntimeException("Cannot create DistributedCacheListener with empty serviceName");
 		}
@@ -73,7 +77,10 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
 		}
-		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, forceRegistryRefresh);
+		if(remotedServiceRegistry!=null)
+			remotedServiceRegistry.registerService(serviceDef, forceRegistryRefresh);
+		else
+			KSBServiceLocator.getServiceDeployer().registerService(serviceDef, forceRegistryRefresh);
 	}
 
 	@Override

@@ -251,22 +251,22 @@ public class ExceptionIncident implements KualiExceptionIncident {
                 
         String documentId=properties.get(DOCUMENT_ID);
         String userEmail=properties.get(USER_EMAIL);
-        String userName=properties.get(USER_NAME);
+        String uuid=properties.get(UUID);
         String description=properties.get(DESCRIPTION);
 //        String component=properties.get(COMPONENT_NAME);
 //        String exceptionMessage=properties.get(EXCEPTION_MESSAGE);
         String stackTrace=properties.get(STACK_TRACE);
-        String format="documentId: %s%n"+
-                      "userEmail: %s%n"+
-                      "userName: %s%n"+
-                      "description: %s%n"+
+        String format="Document Id: %s%n"+
+//                      "User Email: %s%n"+
+                      "Person User Identifier: %s%n"+
+                      "User Input: %s%n"+
 //                      "component: %s%n"+
 //                      "errorMessage: %s%n"+
-                      "stackTrace: %s%n";
+                      "%s%n";
         String message=String.format(format,
                 (documentId==null)?"":documentId,
-                (userEmail==null)?"":userEmail,
-                (userName==null)?"":userName,
+//                (userEmail==null)?"":userEmail,
+                (uuid==null)?"":uuid,
                 (description==null)?"":description,
 //                (component==null)?"":component,
 //                (exceptionMessage==null)?"":exceptionMessage,

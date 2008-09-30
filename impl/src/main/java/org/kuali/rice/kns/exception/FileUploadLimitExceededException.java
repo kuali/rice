@@ -21,7 +21,7 @@ package org.kuali.rice.kns.exception;
  * 
  */
 
-public class FileUploadLimitExceededException extends RuntimeException {
+public class FileUploadLimitExceededException extends KualiException {
 
     /**
      * Create an FileUploadLimitExceededException with the given message

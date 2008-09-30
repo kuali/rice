@@ -55,7 +55,7 @@ public interface SearchableAttribute extends Serializable {
      * 
      * @return
      */
-    public String getSearchContent();
+    public String getSearchContent(DocumentSearchContext documentSearchContext);
 
     /**
      * this will return the loaded data objects for storage in workflow’s database to be related to the document the
@@ -63,19 +63,20 @@ public interface SearchableAttribute extends Serializable {
      * 
      * @return
      */
-    public List<SearchableAttributeValue> getSearchStorageValues(String docContent);
+    public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext);
 
     /**
      * this will return a list of field objects to be rendered in the docsearch interface
      * 
      * @return
      */
-    public List<Row> getSearchingRows();
+    public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext);
 
     /**
      * this will return a list of error objects if the user has made an input error
      * 
      * @return
      */
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap);
+    public List<WorkflowAttributeValidationError> validateUserSearchInputs(
+    		Map<Object, String> paramMap, DocumentSearchContext searchContext);
 }

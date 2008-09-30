@@ -17,7 +17,7 @@ package org.kuali.rice.kns.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
@@ -44,7 +44,7 @@ public class KualiInquirableTest extends KNSTestBase {
      * Tests the inquiry url output for a given bo and property name.
      */
     @Test public final void testBuildInquiryUrl() {
-        String inquiryUrl = new KualiInquirableImpl().getInquiryUrl(am, "amId", true);
+    	String inquiryUrl = ((AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();
         assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "amId=1"));
         assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "businessObjectClassName=" + AccountManager.class.getName()));
     }

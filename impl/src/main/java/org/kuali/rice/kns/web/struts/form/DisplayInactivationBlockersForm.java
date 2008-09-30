@@ -67,7 +67,7 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 		DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
 		
-		List primaryKeyFieldNames = KNSServiceLocator.getPersistenceStructureService().getPrimaryKeys(businessObjectClass);
+		List primaryKeyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 		for (Iterator i = primaryKeyFieldNames.iterator(); i.hasNext();) {
 			String primaryKeyFieldName = (String) i.next();
 			

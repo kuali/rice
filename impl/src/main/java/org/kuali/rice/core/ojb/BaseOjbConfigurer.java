@@ -44,6 +44,8 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,7 +57,7 @@ import org.xml.sax.InputSource;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class BaseOjbConfigurer extends BaseLifecycle {
+public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean {
 
     private static final Logger LOG = Logger.getLogger(BaseOjbConfigurer.class);
 
@@ -238,46 +240,25 @@ public class BaseOjbConfigurer extends BaseLifecycle {
         return metadataLocation;
     }
 
-//	protected void establishConnectionMetaData(MetadataManager mm) throws Exception {
-//	ConnectionRepository repository = getConnectionRepository();
-//	if (repository == null) {
-//		throw new ConfigurationException("Could not load OJB connection repository");
-//	}
-//	mm.mergeConnectionRepository(repository);
-//}
+	/***
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	public void afterPropertiesSet() throws Exception {
+		this.start();
+	}
 
-//protected ConnectionRepository getConnectionRepository() {
-//	ConnectionRepository repository = new ConnectionRepository();
-//	JdbcConnectionDescriptor descriptor = new JdbcConnectionDescriptor();
-//	descriptor.setJdbcLevel("3.0");
-//	descriptor.setEagerRelease(false);
-//	descriptor.setBatchMode(false);
-//	descriptor.setUseAutoCommit(0);
-//	descriptor.setIgnoreAutoCommitExceptions(false);
-//	descriptor.setJcdAlias(getJcdAlias());
-//	descriptor.setDefaultConnection(false);
-//	String ojbPlatform = ConfigContext.getCurrentContextConfig().getProperty(Config.OJB_PLATFORM);
-//	if (StringUtils.isEmpty(ojbPlatform)) {
-//		throw new ConfigurationException("Could not configure OJB, the '" + Config.OJB_PLATFORM + "' configuration property was not set.");
-//	}
-//	if (StringUtils.isBlank(descriptor.getDbms())) {
-//		log.info("Setting " + descriptor.getJcdAlias() + " OJB connection descriptor database platform to '" + ojbPlatform + "'");
-//		descriptor.setDbms(ojbPlatform);
-//	}
-//
-//	SequenceDescriptor sequenceDescriptor = new SequenceDescriptor(descriptor);
-//	sequenceDescriptor.addAttribute("property.prefix", "datasource.ojb.sequenceManager");
-//	sequenceDescriptor.setSequenceManagerClass(ConfigurableSequenceManager.class);
-//	descriptor.setSequenceDescriptor(sequenceDescriptor);
-//
-//	ObjectCacheDescriptor cacheDescriptor = descriptor.getObjectCacheDescriptor();
-//	cacheDescriptor.setObjectCache(ObjectCachePerBrokerImpl.class);
-//
-//	repository.addDescriptor(descriptor);
-//	return repository;
-//
-//
-//}
+	/**
+	 * @param jcdAliases the jcdAliases to set
+	 */
+	public void setJcdAliases(String[] jcdAliases) {
+		this.jcdAliases = jcdAliases;
+	}
 
+	/**
+	 * @param metadataLocation the metadataLocation to set
+	 */
+	public void setMetadataLocation(String metadataLocation) {
+		this.metadataLocation = metadataLocation;
+	}
 
 }

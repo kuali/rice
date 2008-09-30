@@ -21,20 +21,20 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * This class represents an exception that is thrown when a given user is not authorized to initiate a
  * certain document type.
  */
-public class DocumentInitiationAuthorizationException extends RuntimeException {
+public class DocumentInitiationAuthorizationException extends KualiException {
     private static final long serialVersionUID = -3874239711783179351L;
     
     private String errorMessageKey;
     private String[] messageParameters;
 
     public DocumentInitiationAuthorizationException(String errorMessageKey, String[] messageParameters) {
+       super("Only members of workgroup(s) " + messageParameters[0] + " have access to initiate documents of type '" + messageParameters[1] + "'");
        this.errorMessageKey = errorMessageKey;
        this.messageParameters = messageParameters;
     }
     
     public DocumentInitiationAuthorizationException(String[] messageParameters) {
-        this.errorMessageKey = RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP;
-        this.messageParameters = messageParameters;
+        this(RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP, messageParameters);
      }
 
     /**

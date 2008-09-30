@@ -53,8 +53,7 @@
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
 		<property name="messageEntity" value="TEST" />
-		<property name="modules">
-			<list>
+		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
                     <property name="authorizationService">
@@ -63,6 +62,13 @@
                       </bean>
                     </property>
 				</bean>
+        </property>
+		<property name="kewConfigurer">
+			<bean class="org.kuali.rice.kew.config.KEWConfigurer">
+				<property name="clientProtocol" value="local" />
+			</bean>
+        </property>
+		<property name="knsConfigurer">
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
 					<property name="dataDictionaryPackages">
 						<list>
@@ -75,10 +81,10 @@
 						</list>
 					</property>
 				</bean>
+		<property name="kewConfigurer">
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
-			</list>
 		</property>
 	</bean>
 

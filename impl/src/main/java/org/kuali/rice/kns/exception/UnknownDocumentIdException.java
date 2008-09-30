@@ -20,7 +20,7 @@ package org.kuali.rice.kns.exception;
  * 
  * 
  */
-public class UnknownDocumentIdException extends RuntimeException {
+public class UnknownDocumentIdException extends KualiException {
     private static final long serialVersionUID = -7973140950936642618L;
 
     /**

@@ -21,7 +21,7 @@ package org.kuali.rice.kns.exception;
  * 
  */
 
-public class BeanComparisonException extends RuntimeException {
+public class BeanComparisonException extends KualiException{
     private static final long serialVersionUID = 2622379680100640029L;
 
     /**

@@ -90,7 +90,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorized(org.kuali.rice.kns.bo.user.KualiUser, java.lang.String,
+     * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedWithQualification(org.kuali.rice.kns.bo.user.KualiUser, java.lang.String,
      *      java.lang.String)
      */
     public boolean isAuthorized(UniversalUser user, String action, String targetType) {

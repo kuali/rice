@@ -15,15 +15,28 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -32,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableHelperServiceImpl.class);
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableHelperServiceImpl.class);
     private boolean searchUsingOnlyPrimaryKeyValues = false;
 
 
@@ -61,6 +74,134 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         return getSearchResultsHelper(LookupUtils.forceUppercase(getBusinessObjectClass(), fieldValues), true);
     }
 
+    // TODO: Fix? - this does not handle nested properties within the EBO.
+    
+    /**
+     * Check whether the given property represents a property within an EBO starting
+     * with the sampleBo object given.  This is used to determine if a criteria needs
+     * to be applied to the EBO first, before sending to the normal lookup DAO.
+     */
+    protected boolean isExternalBusinessObjectProperty(Object sampleBo, String propertyName) {
+        try {
+        	if ( propertyName.indexOf( "." ) > 0 && !StringUtils.contains( propertyName, "add." ) ) {
+	        	Class propertyClass = PropertyUtils.getPropertyType(
+						sampleBo, StringUtils.substringBeforeLast( propertyName, "." ) );
+	        	if ( propertyClass != null ) {
+	        		return ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface( propertyClass );
+	        	} else {
+	        		if ( LOG.isDebugEnabled() ) {
+	        			LOG.debug( "unable to get class for " + StringUtils.substringBeforeLast( propertyName, "." ) + " on " + sampleBo.getClass().getName() );
+	        		}
+	        	}
+        	}
+        } catch (Exception e) {
+        	LOG.debug("Unable to determine type of property for " + sampleBo.getClass().getName() + "/" + propertyName, e );
+        }
+        return false;
+    }
+
+    /**
+     * Get the name of the property which represents the ExternalizableBusinessObject for the given property.
+     * 
+     * This method can not handle nested properties within the EBO.
+     * 
+     * Returns null if the property is not a nested property or is part of an add line.
+     */
+    protected String getExternalBusinessObjectProperty(Object sampleBo, String propertyName) {
+    	if ( propertyName.indexOf( "." ) > 0 && !StringUtils.contains( propertyName, "add." ) ) {
+    		return StringUtils.substringBeforeLast( propertyName, "." );
+    	}
+        return null;
+    }
+    
+    /**
+     * Checks whether any of the fieldValues being passed refer to a property within an ExternalizableBusinessObject.
+     */
+    protected boolean hasExternalBusinessObjectProperty(Class boClass, Map<String,String> fieldValues ) {
+    	try {
+	    	Object sampleBo = boClass.newInstance();
+	    	for ( String key : fieldValues.keySet() ) {
+	    		if ( isExternalBusinessObjectProperty( sampleBo, key )) {
+	    			return true;
+	    		}
+	    	}
+    	} catch ( Exception ex ) {
+        	LOG.debug("Unable to check " + boClass + " for EBO properties.", ex );
+    	}
+    	return false;
+    }
+
+    /**
+     * Returns a map stripped of any properties which refer to ExternalizableBusinessObjects.  These values may not be passed into the
+     * lookup service, since the objects they refer to are not in the local database.
+     */
+    protected Map<String,String> removeExternalizableBusinessObjectFieldValues(Class boClass, Map<String,String> fieldValues ) {
+    	Map<String,String> eboFieldValues = new HashMap<String,String>();
+    	try {
+	    	Object sampleBo = boClass.newInstance();
+	    	for ( String key : fieldValues.keySet() ) {
+	    		if ( !isExternalBusinessObjectProperty( sampleBo, key )) {	    			
+	    			eboFieldValues.put( key, fieldValues.get( key ) );
+	    		}
+	    	}
+    	} catch ( Exception ex ) {
+        	LOG.debug("Unable to check " + boClass + " for EBO properties.", ex );
+    	}
+    	return eboFieldValues;
+    }
+
+    /**
+     * Return the EBO fieldValue entries explicitly for the given eboPropertyName.  (I.e., any properties with the given
+     * property name as a prefix.
+     */
+    protected Map<String,String> getExternalizableBusinessObjectFieldValues(String eboPropertyName, Map<String,String> fieldValues ) {
+    	Map<String,String> eboFieldValues = new HashMap<String,String>();
+    	for ( String key : fieldValues.keySet() ) {
+    		if ( key.startsWith( eboPropertyName + "." ) ) {
+    			eboFieldValues.put( StringUtils.substringAfterLast( key, "." ), fieldValues.get( key ) );
+    		}
+    	}
+    	return eboFieldValues;
+    }
+
+    /**
+     * Get the complete list of all properties referenced in the fieldValues that are ExternalizableBusinessObjects.
+     * 
+     * This is a list of the EBO object references themselves, not of the properties within them.
+     */
+    protected List<String> getExternalizableBusinessObjectProperties(Class boClass, Map<String,String> fieldValues ) {
+    	Set<String> eboPropertyNames = new HashSet<String>();
+    	try {
+	    	Object sampleBo = boClass.newInstance();
+	    	for ( String key : fieldValues.keySet() ) {
+	    		if ( isExternalBusinessObjectProperty( sampleBo, key )) {
+	    			eboPropertyNames.add( StringUtils.substringBeforeLast( key, "." ) );
+	    		}
+	    	}
+    	} catch ( Exception ex ) {
+        	LOG.debug("Unable to check " + boClass + " for EBO properties.", ex );
+    	}
+    	return new ArrayList<String>(eboPropertyNames);
+    }
+
+    /**
+     * Given an property on the main BO class, return the defined type of the ExternalizableBusinessObject.  This will be used
+     * by other code to determine the correct module service to call for the lookup.
+     * 
+     * @param boClass
+     * @param propertyName
+     * @return
+     */
+    protected Class<? extends ExternalizableBusinessObject> getExternalizableBusinessObjectClass(Class boClass, String propertyName) {
+        try {
+        	return PropertyUtils.getPropertyType(
+					boClass.newInstance(), StringUtils.substringBeforeLast( propertyName, "." ) );
+        } catch (Exception e) {
+        	LOG.debug("Unable to determine type of property for " + boClass.getName() + "/" + propertyName, e );
+        }
+        return null;
+    }
+    
     /**
      * 
      * This method does the actual search, with the parameters specified, and returns the result.
@@ -83,20 +224,124 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
         setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
         List searchResults;
-        if (UniversalUser.class.equals(getBusinessObjectClass())) {
-            searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
+        
+        // If this class is an EBO, just call the module service to get the results
+        if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
+        	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
+        	Map<String,String> filteredFieldValues = new HashMap<String, String>();
+        	for (String fieldName : fieldValues.keySet()) {
+        		if (StringUtils.isNotBlank(fieldValues.get(fieldName)) && ddEntry.getAttributeNames().contains(fieldName)) {
+        			filteredFieldValues.put(fieldName, fieldValues.get(fieldName));
+        		}
+        	}
+        	searchResults = eboModuleService.getExternalizableBusinessObjectsList( getBusinessObjectClass(), (Map)filteredFieldValues );
+        // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
+        } else if ( hasExternalBusinessObjectProperty( getBusinessObjectClass(), fieldValues ) ) {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "has EBO reference: " + getBusinessObjectClass() );
+        		LOG.debug( "properties: " + fieldValues );
+        	}
+        	// remove the EBO criteria
+        	Map<String,String> nonEboFieldValues = removeExternalizableBusinessObjectFieldValues( getBusinessObjectClass(), fieldValues );
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "Non EBO properties removed: " + nonEboFieldValues );
+        	}
+        	// get the list of EBO properties attached to this object
+        	List<String> eboPropertyNames = getExternalizableBusinessObjectProperties( getBusinessObjectClass(), fieldValues );
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "EBO properties: " + eboPropertyNames );
+        	}
+        	// loop over those properties
+        	for ( String eboPropertyName : eboPropertyNames ) {
+        		// extract the properties as known to the EBO
+        		Map<String,String> eboFieldValues = getExternalizableBusinessObjectFieldValues( eboPropertyName, fieldValues );
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug( "EBO properties for master EBO property: " + eboPropertyName );
+            		LOG.debug( "properties: " + eboFieldValues );
+            	}
+            	// run search against attached EBO's module service
+            	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
+        		List eboResults = eboModuleService.getExternalizableBusinessObjectsList( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues );
+        		// get the mapping/relationship between the EBO object and it's parent object
+        		// use that to adjust the fieldValues
+        		
+        		// get the parent property type
+        		Class eboParentClass;
+        		String eboParentPropertyName;
+        		if ( ObjectUtils.isNestedAttribute( eboPropertyName ) ) {
+        			eboParentPropertyName = StringUtils.substringBeforeLast( eboPropertyName, "." );
+	        		try {
+	        			eboParentClass = PropertyUtils.getPropertyType( getBusinessObjectClass().newInstance(), eboParentPropertyName );
+	        		} catch ( Exception ex ) {
+	        			throw new RuntimeException( "Unable to create an instance of the business object class: " + getBusinessObjectClass().getName(), ex );
+	        		}
+        		} else {
+        			eboParentClass = getBusinessObjectClass();
+        			eboParentPropertyName = null;
+        		}
+        		if ( LOG.isDebugEnabled() ) {
+        			LOG.debug( "determined EBO parent class/property name: " + eboParentClass + "/" + eboParentPropertyName );
+        		}
+        		// look that up in the DD (BOMDS)
+        		// find the appropriate relationship
+        		// CHECK THIS: what if eboPropertyName is a nested attribute - need to strip off the eboParentPropertyName if not null
+        		RelationshipDefinition rd = getBusinessObjectMetaDataService().getBusinessObjectRelationshipDefinition( eboParentClass, eboPropertyName );
+        		if ( LOG.isDebugEnabled() ) {
+        			LOG.debug( "Obtained RelationshipDefinition for " + eboPropertyName );
+        			LOG.debug( rd );
+        		}
+        		// copy the needed properties (primary only) to the field values
+        		// NOTE: this will work only for single-field PK unless the ORM layer is directly involved
+        		// (can't make (field1,field2) in ( (v1,v2),(v3,v4) ) style queries in the lookup framework
+        		if ( rd.getPrimitiveAttributes().size() > 1 ) {
+        			throw new RuntimeException( "EBO Links don't work for relationships with multiple-field primary keys." );
+        		}
+        		String eboProperty = rd.getPrimitiveAttributes().get( 0 ).getSourceName();
+        		String boProperty = rd.getPrimitiveAttributes().get( 0 ).getTargetName();
+        		StringBuffer boPropertyValue = new StringBuffer();
+        		// loop over the results, making a string that the lookup DAO will convert into an
+        		// SQL "IN" clause
+        		for ( Object ebo : eboResults ) {
+        			if ( boPropertyValue.length() != 0 ) {
+        				boPropertyValue.append( "|" );
+        			}
+        			try {
+        				boPropertyValue.append( PropertyUtils.getProperty( ebo, eboProperty ).toString() );
+        			} catch ( Exception ex ) {
+        				LOG.warn( "Unable to get value for " + eboProperty + " on " + ebo );
+        			}
+        		}
+        		if ( eboParentPropertyName == null ) {
+        			// non-nested property containing the EBO
+        			nonEboFieldValues.put( boProperty, boPropertyValue.toString() );
+        		} else {
+        			// property nested within the main searched-for BO that contains the EBO
+        			nonEboFieldValues.put( eboParentPropertyName + "." + boProperty, boPropertyValue.toString() );
+        		}
+        	}
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "Passing these results into the lookup service: " + nonEboFieldValues );
+        	}
+        	// add those results as criteria
+        	// run the normal search (but with the EBO critieria added)
+    		searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonEboFieldValues, unbounded);
+        } else {
+        	// TODO: remove the UU portions of this section, leaving only the contents of the final else clause
+            if (UniversalUser.class.equals(getBusinessObjectClass())) {
+                searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
+            } else if (getUniversalUserService().hasUniversalUserProperty(getBusinessObjectClass(), fieldValues)) {
+                // TODO WARNING: this does not support nested joins, because i don't have a test case
+                searchResults = (List) getUniversalUserService().findWithUniversalUserJoin(getBusinessObjectClass(), fieldValues, unbounded);
+            } else {
+                searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
+            }
         }
-        else if (getUniversalUserService().hasUniversalUserProperty(getBusinessObjectClass(), fieldValues)) {
-            // TODO WARNING: this does not support nested joins, because i don't have a test case
-            searchResults = (List) getUniversalUserService().findWithUniversalUserJoin(getBusinessObjectClass(), fieldValues, unbounded);
-        }
-        else {
-            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
-        }
+        
         // sort list if default sort column given
         List defaultSortColumns = getDefaultSortColumns();
         if (defaultSortColumns.size() > 0) {
-            Collections.sort(searchResults, new BeanPropertyComparator(getDefaultSortColumns(), true));
+            Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
         }
         return searchResults;
     }
@@ -123,7 +368,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     @Override
     public String getPrimaryKeyFieldLabels() {
         StringBuilder buf = new StringBuilder();
-        List primaryKeyFieldNames = getPersistenceStructureService().getPrimaryKeys(getBusinessObjectClass());
+        List primaryKeyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Iterator pkIter = primaryKeyFieldNames.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();

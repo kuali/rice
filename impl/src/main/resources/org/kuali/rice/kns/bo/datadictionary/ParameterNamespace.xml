@@ -25,6 +25,7 @@
         <ref bean="ParameterNamespace-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="org.kuali.rice.kns.bo.ParameterNamespace"/>
   </bean>
 
 <!-- Attribute Definitions -->

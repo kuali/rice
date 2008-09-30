@@ -25,6 +25,7 @@
         <ref bean="Attachment-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Attachment" />
   </bean>
 
 <!-- Attribute Definitions -->

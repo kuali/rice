@@ -72,9 +72,7 @@
 	<param name="mail.relay.server">mail.relay.server</param>
 	<param name="mailing.list.batch">mailing.list.batch</param>
 	<param name="encryption.key">7IC64w6ksLU</param>
-<!--
-	<param name="rice.user">true</param>
--->	
+
 	<param name="kns.test.port">9916</param>
 	<!-- ?? - two keystore properties below are duplicates from above -->
 	<param name="keystore.alias">kul</param>

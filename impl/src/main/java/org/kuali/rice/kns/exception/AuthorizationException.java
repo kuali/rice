@@ -21,7 +21,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * This class represents an exception that is thrown when a given user is not authorized to take the given action on the given
  * target type.
  */
-public class AuthorizationException extends RuntimeException {
+public class AuthorizationException extends KualiException{
     private static final long serialVersionUID = -3874239711783179351L;
     protected final String userId;
     protected final String action;

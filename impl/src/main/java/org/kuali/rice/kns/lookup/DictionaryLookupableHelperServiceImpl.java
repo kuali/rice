@@ -32,6 +32,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
     private static final long serialVersionUID = 970484069493741447L;
@@ -127,15 +128,17 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      * @see org.kuali.rice.kns.lookup.Lookupable#getReturnUrl(java.lang.Object, java.util.Map, java.lang.String)
      */
     @Override
-    public String getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
-        return KNSConstants.EMPTY_STRING;
+    public HtmlData getReturnUrl(BusinessObject bo, LookupForm lookupForm, List returnKeys) {
+        return getEmptyAnchorHtmlData();
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getMaintenanceUrl(java.lang.Object, java.lang.String)
-     */
+	/***
+     * TODO: Revisit whether this method is needed here at all
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getActionUrlHref(org.kuali.rice.kns.bo.BusinessObject, java.lang.String, java.util.List)
+	 */
     @Override
-    public String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
+    protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
         return KNSConstants.EMPTY_STRING;
     }
 

@@ -343,7 +343,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     protected UniversalUser getWorkflowPessimisticLockOwnerUser() {
         String networkId = KNSConstants.SYSTEM_USER;
         try {
-            return KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(networkId));
+            return KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
         } catch (UserNotFoundException e) {
             LOG.error("Cannot find user with network id '" + networkId + "'", e);
             throw new RuntimeException("Cannot find user with network id '" + networkId + "'", e);

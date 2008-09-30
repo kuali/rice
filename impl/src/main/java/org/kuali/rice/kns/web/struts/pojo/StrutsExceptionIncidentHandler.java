@@ -96,6 +96,7 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
         properties.put(KualiExceptionIncident.DOCUMENT_ID, documentId);
         String userEmail="";
         String userName="";
+        String uuid = "";
         // No specific forward for the caught exception, use default logic
         // Get user information
         UserSession userSession = (UserSession)
@@ -107,9 +108,11 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
         if (sessionUser != null) {
             userEmail=sessionUser.getPersonEmailAddress();
             userName=sessionUser.getPersonName();
+            uuid = sessionUser.getPersonUserIdentifier();
         }
         properties.put(KualiExceptionIncident.USER_EMAIL, userEmail);
         properties.put(KualiExceptionIncident.USER_NAME, userName);
+        properties.put(KualiExceptionIncident.UUID, uuid);
         properties.put(KualiExceptionIncident.COMPONENT_NAME,
                 form.getClass().getSimpleName());
         properties.put(KualiExceptionIncident.CUSTOM_CONTEXTUAL_INFO, "?");

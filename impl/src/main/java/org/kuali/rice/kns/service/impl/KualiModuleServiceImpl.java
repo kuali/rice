@@ -18,53 +18,31 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kns.KualiModule;
 import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.bo.user.KualiModuleUser;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.bo.user.UniversalUser;
-import org.kuali.rice.kns.exception.UserNotFoundException;
+import org.kuali.rice.kns.exception.KualiException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.springframework.beans.factory.InitializingBean;
 
-public class KualiModuleServiceImpl implements KualiModuleService {
+public class KualiModuleServiceImpl implements KualiModuleService, InitializingBean {
 
-    private List<KualiModule> installedModules = new ArrayList<KualiModule>();;
+    private List<ModuleService> installedModuleServices = new ArrayList<ModuleService>();;
+    private boolean loadRiceInstalledModuleServices;
     
-    public List<KualiModule> getInstalledModules() {
-        return installedModules;
+    public List<ModuleService> getInstalledModuleServices() {
+        return installedModuleServices;
     }
 
-    public Map<String,KualiModuleUser> getModuleUsers(UniversalUser user) {
-        Map<String, KualiModuleUser> moduleUsers = new HashMap<String, KualiModuleUser>();
-        for (KualiModule module : installedModules) {
-            try {
-                moduleUsers.put(module.getModuleId(), module.getModuleUserService().getModuleUser(user));
-            }
-            catch (UserNotFoundException e) {
-                // if the user does not exist, create an empty one and set as inactive
-            }
-        }
-        return moduleUsers;
-    }
-
-    public List<KualiModuleUser> getModuleUserList(UniversalUser user) {
-        List<KualiModuleUser> moduleUsers = new ArrayList<KualiModuleUser>();
-        for (KualiModule module : installedModules) {
-            try {
-                moduleUsers.add( module.getModuleUserService().getModuleUser(user) );
-            }
-            catch (UserNotFoundException e) {
-                // ignore, if the user does not exist, skip it
-            }
-        }
-        return moduleUsers;
-    }
-
-    public KualiModule getModule(String moduleId) {
-        for (KualiModule module : installedModules) {
-            if ( module.getModuleId().equals( moduleId ) ) {
-                return module;
+    public ModuleService getModuleService(String moduleId) {
+        for (ModuleService moduleService : installedModuleServices) {
+            if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( moduleId ) ) {
+                return moduleService;
             }
         } 
         return null;
@@ -72,49 +50,68 @@ public class KualiModuleServiceImpl implements KualiModuleService {
 
     
     /**
-     * @see org.kuali.rice.kns.service.KualiModuleService#getModuleByCode(java.lang.String)
+     * @see org.kuali.rice.kns.service.KualiModuleService#getModuleServiceByCode(java.lang.String)
      */
-    public KualiModule getModuleByCode(String moduleCode) {
-        for (KualiModule module : installedModules) {
-            if ( module.getModuleCode().equals( moduleCode ) ) {
-                return module;
+    public ModuleService getModuleServiceByNamespaceCode(String namespaceCode) {
+        for (ModuleService moduleService : installedModuleServices) {
+            if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( namespaceCode ) ) {
+                return moduleService;
             }
         } 
         return null;
     }
 
-    public boolean isModuleInstalled(String moduleId) {
-        for (KualiModule module : installedModules) {
-            if ( module.getModuleId().equals( moduleId ) ) {
+    public boolean isModuleServiceInstalled(String namespaceCode) {
+        for (ModuleService moduleService : installedModuleServices) {
+            if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( namespaceCode ) ) {
                 return true;
             }
         } 
         return false;
     }
 
-    public KualiModule getResponsibleModule(Class boClass) {
-        for (KualiModule module : installedModules) {
-            if ( module.getModuleAuthorizer() != null ) {
-                if ( module.getModuleAuthorizer().isResponsibleFor( boClass ) ) {
-                    return module;
-                }
+    public ModuleService getResponsibleModuleService(Class boClass) {
+    	if(boClass==null) return null;
+    	for (ModuleService moduleService : installedModuleServices) {
+    	    if ( moduleService.isResponsibleFor( boClass ) ) {
+    	        return moduleService;
+    	    }
+    	}
+    	//Throwing exception only for externalizable business objects
+    	if(ExternalizableBusinessObject.class.isAssignableFrom(boClass)){
+    	    String message;
+    		if(!boClass.isInterface())
+    			message = "There is no responsible module for the externalized business object class: "+boClass;
+    		else
+    			message = "There is no responsible module for the externalized business object interface: "+boClass;
+    		throw new KualiException(message);
+    	} 
+    	//Returning null for business objects other than externalizable to keep the framework backward compatible
+    	return null;
+    }
+
+    /***
+     * @see org.kuali.core.service.KualiModuleService#getResponsibleModuleServiceForJob(java.lang.String)
+     */
+    public ModuleService getResponsibleModuleServiceForJob(String jobName){
+        for(ModuleService moduleService : installedModuleServices){
+            if(moduleService.isResponsibleForJob(jobName)){
+                return moduleService;
             }
         }
         return null;
     }
-
-    public void setInstalledModules(List<KualiModule> installedModules) {
-        this.installedModules = installedModules;
+    
+    public void setInstalledModuleServices(List<ModuleService> installedModuleServices) {
+        this.installedModuleServices = installedModuleServices;
     }
 
     public boolean isAuthorized( UniversalUser user, AuthorizationType authType ) {
         if ( user != null && authType != null ) {
-            KualiModule module = getResponsibleModule( authType.getTargetObjectClass() );
-            if ( module != null ) {
-                if ( module.getModuleAuthorizer() != null ) {
-                    if ( !module.getModuleAuthorizer().isAuthorized( user, authType ) ) {
-                        return false;
-                    }
+            ModuleService moduleService = getResponsibleModuleService( authType.getTargetObjectClass() );
+            if ( moduleService != null ) {
+                if ( !moduleService.isAuthorized( user, authType ) ) {
+                    return false;
                 }
             }
         }
@@ -123,11 +120,43 @@ public class KualiModuleServiceImpl implements KualiModuleService {
 
     public List<String> getDataDictionaryPackages() {
         List<String> packages  = new ArrayList<String>();
-        for ( KualiModule module : installedModules ) {
-            if ( module.getDataDictionaryPackages() != null ) {
-                packages.addAll( module.getDataDictionaryPackages() );
+        for ( ModuleService moduleService : installedModuleServices ) {
+            if ( moduleService.getModuleConfiguration().getDataDictionaryPackages() != null ) {
+                packages.addAll( moduleService.getModuleConfiguration().getDataDictionaryPackages() );
             }
         }
         return packages;
     }
+
+	/***
+     * 
+     * This method uses BusinessObjectService to get the namespace name
+     * 
+     * @see org.kuali.core.service.KualiModuleService#getNamespaceName(java.lang.String)
+     */
+    public String getNamespaceName(final String namespaceCode){
+    	ParameterNamespace parameterNamespace = (ParameterNamespace) 
+			KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
+					ParameterNamespace.class, new HashMap() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
+    	return parameterNamespace==null ? "" : parameterNamespace.getName();
+    }
+    
+	/**
+	 * @param loadRiceInstalledModuleServices the loadRiceInstalledModuleServices to set
+	 */
+	public void setLoadRiceInstalledModuleServices(
+			boolean loadRiceInstalledModuleServices) {
+		this.loadRiceInstalledModuleServices = loadRiceInstalledModuleServices;
+	}
+
+	/***
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	public void afterPropertiesSet() throws Exception {
+		if(loadRiceInstalledModuleServices){
+			installedModuleServices.addAll(
+					KNSServiceLocator.getNervousSystemContextBean(KualiModuleService.class).getInstalledModuleServices());
+		}
+	}
+
 }

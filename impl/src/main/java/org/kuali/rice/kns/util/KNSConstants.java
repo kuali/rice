@@ -78,6 +78,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String EXTERNALIZABLE_IMAGES_URL_KEY = "kr.externalizable.images.url";
 //    public static final String REPORTS_DIRECTORY_KEY = "reports.directory";
     public static final String WORKFLOW_URL_KEY = "workflow.url";
+    public static final String KUALI_RICE_URL_KEY = "kr.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
     public static final String MAINTAIN_USERS_LOCALLY_KEY = "maintain.users.locally";
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
@@ -116,6 +117,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
+    public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
@@ -203,6 +205,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String INQUIRABLE_ATTRIBUTE_NAME = "kualiInquirable";
     public static final String INQUIRY_ACTION = "inquiry.do";
     public static final String DIRECT_INQUIRY_ACTION = "directInquiry.do";
+    public static final String CONTINUE_WITH_INQUIRY_METHOD_TO_CALL = "continueWithInquiry";
 //    public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
@@ -234,9 +237,9 @@ public class KNSConstants extends JSTLConstants {
     public static final String MAINTENANCE_EDIT_METHOD_TO_CALL = "edit";
     public static final String MAINTENANCE_NEW_METHOD_TO_CALL = "start";
     public static final String MAINTENANCE_NEWWITHEXISTING_ACTION = "newWithExisting";
+    public static final String MAINTENANCE_ACTN = "maintenanceAction";
     public static final String MAINTENANCE_NEW_MAINTAINABLE = "document.newMaintainableObject.";
     public static final String MAINTENANCE_OLD_MAINTAINABLE = "document.oldMaintainableObject.";
-    public static final String ENCRYPTED_LIST_PREFIX = "encryptedValues";
     public static final String MAPPING_CANCEL = "cancel";
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";

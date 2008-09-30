@@ -47,12 +47,16 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  */
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 
-    protected String objectAttributeName;
-    protected Class<? extends BusinessObject> sourceClass;
-    protected Class<? extends BusinessObject> targetClass;
+    protected String objectAttributeName; //Same as parentAttributeName of BusinessObjectRelationship
+    protected Class<? extends BusinessObject> sourceClass; //parentClass
+    /**
+     * For 1:1 relationships, this class represents the type of the reference class.  For 1:n references, this class represents the type of the element
+     * of the collection
+     */
+    protected Class<? extends BusinessObject> targetClass; //relatedClass
 
-    protected List<PrimitiveAttributeDefinition> primitiveAttributes = new ArrayList<PrimitiveAttributeDefinition>();
-    protected List<SupportAttributeDefinition> supportAttributes = new ArrayList<SupportAttributeDefinition>();
+	protected List<PrimitiveAttributeDefinition> primitiveAttributes = new ArrayList<PrimitiveAttributeDefinition>(); //parentToChildReferences
+    protected List<SupportAttributeDefinition> supportAttributes = new ArrayList<SupportAttributeDefinition>(); //parentToChildReferences
 
 
     public RelationshipDefinition() {}
@@ -65,10 +69,23 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         return sourceClass;
     }
 
+    /**
+     * Returns the {@link #targetClass}
+     * 
+     * @param targetClass
+     */
     public Class<? extends BusinessObject> getTargetClass() {
         return targetClass;
     }
 
+    /**
+     * Sets the {@link #targetClass}
+     * 
+     * @param targetClass
+     */
+    public void setTargetClass(Class<? extends BusinessObject> targetClass) {
+		this.targetClass = targetClass;
+	}
 
     /**
      * Name of the business object property on the containing business object that is linked
@@ -118,22 +135,27 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, propertyName)) {
             throw new AttributeValidationException("property '" + propertyName + "' is not an attribute of class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
-        Class propertyClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, propertyName);
-        if (propertyClass == null) {
-            throw new AttributeValidationException("cannot get valid class for property '" + propertyName + "' as an attribute of '" + rootBusinessObjectClass + "'");
-        }
-        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
-            throw new AttributeValidationException("property '" + propertyName + "' is not a BusinessObject (" + "" + ")");
-        }
-
+        
         sourceClass = rootBusinessObjectClass;
-        targetClass = propertyClass;
+        
+        if (targetClass == null) {
+	        Class propertyClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, propertyName);
+	        if (propertyClass == null) {
+	            throw new AttributeValidationException("cannot get valid class for property '" + propertyName + "' as an attribute of '" + rootBusinessObjectClass + "'");
+	        }
+	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
+	            throw new AttributeValidationException("property '" + propertyName + "' is not a BusinessObject (" + "" + ")");
+	        }
+	
+	
+	        targetClass = propertyClass;
+        }
 
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
-            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass);
+            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
         }
         for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
-            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass);
+            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
         }
     }
 

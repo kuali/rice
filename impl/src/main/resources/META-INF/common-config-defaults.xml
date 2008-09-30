@@ -10,7 +10,7 @@
     <param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
     <param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
     <param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.url">/${app.context.name}/kr</param>
+    <param name="kr.url">/kr</param>
 
     <!-- by default non-tests are not in "dev.mode" -->
     <param name="dev.mode">false</param>
@@ -36,8 +36,6 @@
     <param name="mail.relay.server">mail.relay.server</param>
     <param name="mailing.list.batch">mailing.list.batch</param>
     <param name="kfsLocator.useAppContext">true</param>
-
-    <param name="rice.user">true</param>
 
     <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/UserService.js,kr/scripts/objectInfo.js</param>
     <param name="css.files">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
@@ -115,4 +113,7 @@
         
     <!-- Configuration for Session Document Cache Size -->
     <param name="session.document.cache.size">100</param>
+    
+    <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
+    
 </config>

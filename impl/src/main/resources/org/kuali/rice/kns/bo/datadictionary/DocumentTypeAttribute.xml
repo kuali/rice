@@ -20,6 +20,7 @@
         <ref bean="DocumentTypeAttribute-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Document Type Attribute"/>
   </bean>
 
 <!-- Attribute Definitions -->

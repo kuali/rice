@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -36,6 +37,7 @@ import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -465,7 +467,24 @@ public abstract class KualiAction extends DispatchAction {
 				parameters.put(KNSConstants.DOC_NUM, ((LookupForm) form).getDocNum());
 			}
     	}
-    	
+
+		Class boClass = null;
+		try{
+			boClass = Class.forName(boClassName);
+		} catch(ClassNotFoundException cnfex){
+			throw new IllegalArgumentException("The classname does not represent a valid class.");
+		}
+    	ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
+			Map<String, String> parameterMap = new HashMap<String, String>();
+			Enumeration<Object> e = parameters.keys();
+			while (e.hasMoreElements()) {
+				String paramName = (String) e.nextElement();
+				parameterMap.put(paramName, parameters.getProperty(paramName));
+			}
+			return new ActionForward(responsibleModuleService.getExternalizableBusinessObjectLookupUrl(boClass, parameterMap), true);
+		}
+		
         String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
     }
@@ -722,7 +741,9 @@ public abstract class KualiAction extends DispatchAction {
         AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
         if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), defaultAuthorizationType ) ) {
             LOG.error("User not authorized to use this action: " + this.getClass().getName() );
-            throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), defaultAuthorizationType, getKualiModuleService().getResponsibleModule(((KualiDocumentFormBase)form).getDocument().getClass()) );
+            throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), 
+            		defaultAuthorizationType, 
+            		getKualiModuleService().getResponsibleModuleService(((KualiDocumentFormBase)form).getDocument().getClass()) );
         }
     }
 

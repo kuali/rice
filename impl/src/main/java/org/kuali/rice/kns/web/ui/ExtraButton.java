@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.web.ui;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -23,7 +25,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Represents an extra button that may appear on the lookups or bottom of a
  * document page.
  */
-public class ExtraButton {
+public class ExtraButton implements Serializable {
 	private String extraButtonSource = "";
 
 	private String extraButtonAltText = "";

@@ -22,6 +22,7 @@
         <ref bean="NoteType-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Note Type" />
   </bean>
 
 <!-- Attribute Definitions -->

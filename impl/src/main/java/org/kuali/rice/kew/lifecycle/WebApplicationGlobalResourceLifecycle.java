@@ -16,17 +16,11 @@
  */
 package org.kuali.rice.kew.lifecycle;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringLoader;
-import org.kuali.rice.kew.plugin.PluginRegistry;
-import org.kuali.rice.kew.plugin.PluginRegistryFactory;
-import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 
 
 /**
+ * TODO: This class can be deleted.
  * Start the GlobalResourceLoader from the AppliationInitializeListener.  When the KEW webapp starts up
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -36,28 +30,6 @@ public class WebApplicationGlobalResourceLifecycle extends BaseLifecycle {
 
 	public void start() throws Exception {
 
-		// create the plugin registry
-		PluginRegistry registry = null;
-		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
-		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled)) {
-			registry = new PluginRegistryFactory().createPluginRegistry();
-		}
-
-		CoreResourceLoader coreResourceLoader = new CoreResourceLoader(SpringLoader.getInstance(), registry);
-		coreResourceLoader.start();
-
-		//wait until core resource loader is started to attach to GRL;  this is so startup
-		//code can depend on other things hooked into GRL without incomplete KEW resources
-		//messing things up.
-
-		GlobalResourceLoader.addResourceLoaderFirst(coreResourceLoader);
-
-		// now start the plugin registry if there is one
-		if (registry != null) {
-			registry.start();
-			// the registry resourceloader is now being handled by the CoreResourceLoader
-			//GlobalResourceLoader.addResourceLoader(registry);
-		}
 
 		super.start();
 	}

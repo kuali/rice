@@ -65,6 +65,9 @@ public class FieldBridge {
             MaintainableFieldDefinition maintainableFieldDefinition = ((MaintainableFieldDefinition) definition);
             field.setFieldRequired(maintainableFieldDefinition.isRequired());
             field.setReadOnly(maintainableFieldDefinition.isReadOnly());
+            if (maintainableFieldDefinition.isLookupReadOnly()) {
+            	field.setFieldType(Field.LOOKUP_READONLY);
+            }
 
             // set onblur and callback functions
             if (StringUtils.isNotBlank(maintainableFieldDefinition.getWebUILeaveFieldFunction())) {

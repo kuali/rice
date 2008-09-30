@@ -15,6 +15,7 @@
         <ref bean="AdHocRoutePerson-versionNumber" />
       </list>
     </property>
+    <property name="objectLabel" value="Ad Hoc Route Person" />
   </bean>
 
 <!-- Attribute Definitions -->

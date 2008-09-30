@@ -133,7 +133,9 @@ public class KualiCasFilter implements Filter {
      * @throws IOException
      */
     private void redirectToCas(HttpServletRequest hrequest, HttpServletResponse hresponse) throws java.io.IOException {
-        LOG.info("redirecting to cas: " + loginURL + "?service=" + hrequest.getRequestURL().toString());
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("redirecting to cas: " + loginURL + "?service=" + hrequest.getRequestURL().toString());
+    	}
         hresponse.sendRedirect(hresponse.encodeRedirectURL(loginURL + "?service=" + hrequest.getRequestURL().toString()));
     }
 
@@ -146,7 +148,9 @@ public class KualiCasFilter implements Filter {
      * @throws java.io.IOException
      */
     private void redirectBackToOriginalRequest(HttpServletRequest hrequest, Map originalRequestParameterMap, HttpServletResponse hresponse) throws java.io.IOException {
-        LOG.info("redirecting back to original request: " + hrequest.getRequestURL().toString());
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("redirecting back to original request: " + hrequest.getRequestURL().toString());
+    	}
         hresponse.setContentType("text/html");
         hresponse.setStatus(HttpServletResponse.SC_OK);
         hresponse.getOutputStream().println("<html><head><title>Session Timeout Recovery Page</title></head><body onload=\"document.forms[0].submit()\"><form method=\"POST\" action=\"" + hrequest.getRequestURL().toString() + "\" >" + generateHiddenInputFields(originalRequestParameterMap) + "<noscript>Session Expired Click Here to Resume<input type=\"SUBMIT\" value=\"RESUME\"></noscript></form></body></html>");
@@ -320,7 +324,9 @@ public class KualiCasFilter implements Filter {
         if (userList == null) {
             return null;
         }
-        LOG.info("getRemoteUser returning: " + (String) userList.get(CAS_SERVICE));
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("getRemoteUser returning: " + (String) userList.get(CAS_SERVICE));
+    	}
         return (String) userList.get(CAS_SERVICE);
     }
 

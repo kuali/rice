@@ -29,7 +29,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -59,7 +59,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     
     // TODO WARNING: this does not support nested joins, because i don't have a test case
     public Collection findCollectionBySearchHelperWithUniversalUserJoin(Class businessObjectClass, Map nonUniversalUserSearchCriteria, Map universalUserSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-        PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
+        BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria;
         if (usePrimaryKeyValuesOnly) {
             criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonUniversalUserSearchCriteria);
@@ -95,7 +95,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     }
 
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria ) {
-        PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
+        BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         if (usePrimaryKeyValuesOnly) {
         	return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
         }
@@ -111,7 +111,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     /**
      * Builds up criteria object based on the object and map.
      */
-    public Criteria getCollectionCriteriaFromMap(PersistableBusinessObject example, Map formProps) {
+    public Criteria getCollectionCriteriaFromMap(BusinessObject example, Map formProps) {
         Criteria criteria = new Criteria();
         Iterator propsIter = formProps.keySet().iterator();
         while (propsIter.hasNext()) {
@@ -144,9 +144,9 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     }
     
     public Criteria getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class businessObjectClass, Map formProps) {
-        PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
+        BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria = new Criteria();
-        List pkFields = persistenceStructureService.listPrimaryKeyFieldNames(businessObjectClass);
+        List pkFields = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
         Iterator pkIter = pkFields.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
@@ -163,13 +163,13 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         return criteria;
     }
     
-    private PersistableBusinessObject checkBusinessObjectClass(Class businessObjectClass) {
+    private BusinessObject checkBusinessObjectClass(Class businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("BusinessObject class passed to LookupDaoOjb findCollectionBySearchHelper... method was null");
         }
-        PersistableBusinessObject businessObject = null;
+        BusinessObject businessObject = null;
         try {
-            businessObject = (PersistableBusinessObject) businessObjectClass.newInstance();
+            businessObject = (BusinessObject) businessObjectClass.newInstance();
         }
         catch (IllegalAccessException e) {
             throw new RuntimeException("LookupDaoOjb could not get instance of " + businessObjectClass.getName(), e);
@@ -238,31 +238,33 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
                 // Get the type of the attribute.
                 Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
 
-                Object i = null;
-
-                // If the next level is a Collection, look into the collection, to find out what type its elements are.
-                if(Collection.class.isAssignableFrom(c)) {
-
-                    Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
-                    c = m.get(parts[0]);
-
-                }
-
-                // Look into the attribute class to see if it is writeable.
-                try {
-
-                    i = c.newInstance();
-
-                    StringBuffer sb = new StringBuffer();
-                    for(int x = 1; x < parts.length; x++) {
-                        sb.append(1 == x ? "" : ".").append(parts[x]);
-                    }
-                    b = isWriteable(i, sb.toString());
-
-                } catch(InstantiationException ie) {
-                    LOG.info(ie);
-                } catch(IllegalAccessException iae) {
-                    LOG.info(iae);
+                if ( c != null ) {
+	                Object i = null;
+	
+	                // If the next level is a Collection, look into the collection, to find out what type its elements are.
+	                if(Collection.class.isAssignableFrom(c)) {
+	
+	                    Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
+	                    c = m.get(parts[0]);
+	
+	                }
+	
+	                // Look into the attribute class to see if it is writeable.
+	                try {
+	
+	                    i = c.newInstance();
+	
+	                    StringBuffer sb = new StringBuffer();
+	                    for(int x = 1; x < parts.length; x++) {
+	                        sb.append(1 == x ? "" : ".").append(parts[x]);
+	                    }
+	                    b = isWriteable(i, sb.toString());
+	
+	                } catch(Exception ex) {
+	                	LOG.error( "Skipping Criteria: " + p + " - Unable to instantiate class : " + c.getName(), ex );
+	                }
+                } else {
+                	LOG.error( "Skipping Criteria: " + p + " - Unable to determine class for object: " + o.getClass().getName() + " - " + parts[0] );
                 }
 
             }

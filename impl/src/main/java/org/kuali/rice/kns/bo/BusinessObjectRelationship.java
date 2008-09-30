@@ -90,4 +90,16 @@ public class BusinessObjectRelationship implements Serializable {
 		this.userVisibleIdentifierKey = userVisibleIdentifierKey;
 	}
 
+	public String getParentAttributeForChildAttribute( String childAttributeName ) {
+		for ( Map.Entry<String,String> entry : parentToChildReferences.entrySet() ) {
+			if ( entry.getValue().equals( childAttributeName ) ) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	public String getChildAttributeForParentAttribute( String parentAttributeName ) {
+		return parentToChildReferences.get( parentAttributeName );
+	}
 }

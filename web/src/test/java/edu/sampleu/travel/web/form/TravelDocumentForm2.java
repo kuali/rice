@@ -28,7 +28,7 @@ import edu.sampleu.travel.document.TravelDocument2;
 public class TravelDocumentForm2 extends KualiDocumentFormBase {
 
     @Override
-	protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+	public void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
 		getDocInfo().clear();
 		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
 		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));

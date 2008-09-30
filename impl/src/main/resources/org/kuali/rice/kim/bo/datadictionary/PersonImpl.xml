@@ -1,0 +1,203 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="PersonImpl" parent="PersonImpl-parentBean" />
+
+  <bean id="PersonImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.PersonImpl"
+        p:titleAttribute="principalName"
+        p:objectLabel="Person"
+        p:inquiryDefinition-ref="PersonImpl-inquiryDefinition"
+        p:lookupDefinition-ref="PersonImpl-lookupDefinition" >
+    <property name="attributes" >
+      <list>
+        <ref bean="PersonImpl-campusCode" />
+        <ref bean="PersonImpl-emailAddress" />
+        <ref bean="PersonImpl-entityId" />
+        <ref bean="PersonImpl-firstName" />
+        <ref bean="PersonImpl-lastName" />
+        <ref bean="PersonImpl-middleName" />
+        <ref bean="PersonImpl-name" />
+        <ref bean="PersonImpl-phoneNumber" />
+        <ref bean="PersonImpl-principalId" />
+        <ref bean="PersonImpl-principalName" />
+      </list>
+    </property>
+  </bean>
+
+  <!-- TODO: use campus parent bean once imported into Rice -->
+  <bean id="PersonImpl-campusCode" parent="PersonImpl-campusCode-parentBean" />
+  <bean id="PersonImpl-campusCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="campusCode"
+        p:forceUppercase="true"
+        p:label="Campus Code"
+        p:shortLabel="Campus Code"
+        p:maxLength="2"
+        p:required="false" >
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="3" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-emailAddress" parent="PersonImpl-emailAddress-parentBean" />
+  <bean id="PersonImpl-emailAddress-parentBean" parent="AttributeReferenceDummy-emailAddress" abstract="true"
+        p:name="emailAddress"
+        p:forceUppercase="false"
+        p:label="Email Address" />
+
+  <bean id="PersonImpl-entityId" parent="PersonImpl-entityId-parentBean" />
+  <bean id="PersonImpl-entityId-parentBean" parent="KimBaseBeans-entityId" abstract="true" />
+
+  <bean id="PersonImpl-firstName" parent="PersonImpl-firstName-parentBean" />
+  <bean id="PersonImpl-firstName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="firstName"
+        p:forceUppercase="true"
+        p:label="First Name"
+        p:shortLabel="First Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-lastName" parent="PersonImpl-lastName-parentBean" />
+  <bean id="PersonImpl-lastName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="lastName"
+        p:forceUppercase="true"
+        p:label="Last Name"
+        p:shortLabel="Last Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-middleName" parent="PersonImpl-middleName-parentBean" />
+  <bean id="PersonImpl-middleName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="middleName"
+        p:forceUppercase="true"
+        p:label="Middle Name"
+        p:shortLabel="Middle Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-name" parent="PersonImpl-name-parentBean" />
+  <bean id="PersonImpl-name-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="name"
+        p:forceUppercase="true"
+        p:label="Name"
+        p:shortLabel="Name"
+        p:maxLength="123"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-phoneNumber" parent="PersonImpl-phoneNumber-parentBean" />
+  <bean id="PersonImpl-phoneNumber-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="phoneNumber"
+        p:forceUppercase="false"
+        p:label="Phone Number"
+        p:shortLabel="Phone Number"
+        p:maxLength="20"
+        p:required="false" >
+    <property name="validationPattern" >
+      <bean parent="PhoneNumberValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-principalId" parent="PersonImpl-principalId-parentBean" />
+  <bean id="PersonImpl-principalId-parentBean" parent="KimBaseBeans-principalId" abstract="true" />
+
+  <bean id="PersonImpl-principalName" parent="PersonImpl-principalName-parentBean" />
+  <bean id="PersonImpl-principalName-parentBean" parent="KimBaseBeans-principalName" abstract="true" />
+
+
+  <bean id="PersonImpl-inquiryDefinition" parent="PersonImpl-inquiryDefinition-parentBean" />
+
+  <bean id="PersonImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Person Impl Inquiry"
+        p:inquirableClass="org.kuali.rice.kim.inquiry.PersonInquirable" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Person Attributes"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="principalName" />
+              <bean parent="FieldDefinition" p:attributeName="name" />
+              <bean parent="FieldDefinition" p:attributeName="firstName" />
+              <bean parent="FieldDefinition" p:attributeName="middleName" />
+              <bean parent="FieldDefinition" p:attributeName="lastName" />
+              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="entityId" />
+              <bean parent="FieldDefinition" p:attributeName="campusCode" />
+              <bean parent="FieldDefinition" p:attributeName="emailAddress" />
+              <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-lookupDefinition" parent="PersonImpl-lookupDefinition-parentBean" />
+
+  <bean id="PersonImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
+        p:title="Person Lookup" 
+        p:instructions="Lookup a Person" >
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>principalName</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true" />
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="principalId" />
+        <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="entityId" />
+        <bean parent="FieldDefinition" p:attributeName="firstName" />
+        <bean parent="FieldDefinition" p:attributeName="middleName" />
+        <bean parent="FieldDefinition" p:attributeName="lastName" />
+        <bean parent="FieldDefinition" p:attributeName="campusCode" />
+        <bean parent="FieldDefinition" p:attributeName="emailAddress" />
+        <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="principalId" />
+        <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="name" />
+        <bean parent="FieldDefinition" p:attributeName="entityId" />
+        <bean parent="FieldDefinition" p:attributeName="campusCode" />
+        <bean parent="FieldDefinition" p:attributeName="emailAddress" />
+        <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

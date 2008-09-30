@@ -46,7 +46,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.v2.service.AuthenticationService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 
 
 /**
@@ -148,15 +148,19 @@ public class UserLoginFilter implements Filter {
 
         WorkflowUser workflowUser = null;
         try {
-        	AuthenticationService webAuthenticationService = (AuthenticationService) GlobalResourceLoader.getService(new QName("KIM", "webAuthenticationService"));
-            UserId id = new AuthenticationUserId(webAuthenticationService.getPrincipalName(request));
+        	IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
+            UserId id = new AuthenticationUserId(idmService.getAuthenticatedPrincipalName(request));
             if (id == null || StringUtils.isBlank(id.getId())) {
                 LOG.error("WebAuthenticationService did not derive a network id from incoming request");
                 return null;
             }
-            LOG.debug("Looking up user: " + id);
+            if ( LOG.isDebugEnabled() ) {
+            	LOG.debug("Looking up user: " + id);
+            }
             workflowUser = ((UserService) KEWServiceLocator.getUserService()).getWorkflowUser(id);
-            LOG.debug("ending user lookup: " + workflowUser);
+            if ( LOG.isDebugEnabled() ) {
+            	LOG.debug("ending user lookup: " + workflowUser);
+            }
             UserSession userSession = new UserSession(workflowUser);
             // load the users preferences. The preferences action will update them if necessary
             Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(workflowUser);

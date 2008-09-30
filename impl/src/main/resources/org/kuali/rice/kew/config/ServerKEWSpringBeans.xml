@@ -59,16 +59,18 @@
 				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
-		<property name="modules">
-			<list>
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="${serviceServletUrl}" />
-				</bean>
+		<property name="ksbConfigurer">
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+				<property name="serviceServletUrl" value="${serviceServletUrl}" />
+			</bean>
+		</property>
+		<property name="kcbConfigurer">
                 <bean class="edu.kuali.rice.kcb.config.KCBConfigurer"/>
-				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-					<property name="clientProtocol" value="local" />
-				</bean>
-			</list>
+        </property>
+		<property name="kewConfigurer">
+			<bean class="org.kuali.rice.kew.config.KEWConfigurer">
+				<property name="clientProtocol" value="local" />
+			</bean>
 		</property>
 	</bean>
 

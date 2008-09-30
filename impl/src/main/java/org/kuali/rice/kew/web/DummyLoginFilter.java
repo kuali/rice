@@ -17,6 +17,8 @@
 package org.kuali.rice.kew.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -26,9 +28,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.xml.namespace.QName;
 
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.web.session.UserSession;
-
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityManagementService;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
@@ -45,7 +50,7 @@ public class DummyLoginFilter implements Filter {
         }
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest hsreq = (HttpServletRequest) request;
             UserSession session = null;
@@ -53,8 +58,22 @@ public class DummyLoginFilter implements Filter {
             	session = UserLoginFilter.getUserSession(hsreq);	
             }
             if (session == null) {
+            	IdentityManagementService auth = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
+           		request.setAttribute("showPasswordField", auth.authenticationServiceValidatesPassword());
                 final String user = request.getParameter("__login_user");
+                final String password = request.getParameter("__login_pw");
                 if (user != null) {
+                	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
+                    if (auth.authenticationServiceValidatesPassword()) {
+                    	Map<String,String> criteria = new HashMap<String,String>( 1 );
+        				criteria.put("principalName", user);
+        				KimPrincipal principal = auth.getPrincipalByPrincipalName( user );
+        				if (principal == null || password == null || !password.equals(principal.getPassword())) {
+        					request.setAttribute("invalidPassword", Boolean.TRUE);
+        					request.getRequestDispatcher(loginPath).forward(request, response);
+                        	return;
+        				}
+                    }
                     // wrap the request with the remote user
                     // UserLoginFilter and WebAuthenticationService will create the session
                     request = new HttpServletRequestWrapper(hsreq) {

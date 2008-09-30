@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.DateFormatter;
@@ -60,6 +61,10 @@ public class Field implements java.io.Serializable {
     public static final String SUB_SECTION_SEPARATOR = "subSectionSeparator";
     public static final String BLANK_SPACE = "blankSpace";
     
+    public static final String BUTTON = "button";
+  
+	public static final String LINK = "link";
+    
     
     /**
      * Helper method to determine if this is an INPUT type field
@@ -70,7 +75,7 @@ public class Field implements java.io.Serializable {
         if (StringUtils.isBlank(fieldType)) {
             return false;
         }
-        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC)) {
+        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
             return true;
         }
         else {
@@ -94,7 +99,7 @@ public class Field implements java.io.Serializable {
     private int maxLength;
     private String propertyName;
     private String propertyValue;
-    private String inquiryURL;
+    private HtmlData inquiryURL;
     private String propertyPrefix;
     private String quickFinderClassNameImpl;
     private int size;
@@ -133,7 +138,58 @@ public class Field implements java.io.Serializable {
     public boolean fieldLevelHelpEnabled;
     
     public boolean fieldLevelHelpDisabled;
+    
+	private String imageSrc;
+    private String target;
+    private String hrefText;
+    
 
+	/**
+	 * @return the imageSrc
+	 */
+	public String getImageSrc() {
+		return this.imageSrc;
+	}
+
+	/**
+	 * @param imageSrc the imageSrc to set
+	 */
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
+
+
+	/**
+	 * @return the target
+	 */
+	public String getTarget() {
+		return this.target;
+	}
+
+	/**
+	 * @param target the target to set
+	 */
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	
+	/**
+	 * @return the hrefText
+	 */
+	public String getHrefText() {
+		return this.hrefText;
+	}
+
+	/**
+	 * @param hrefText the hrefText to set
+	 */
+	public void setHrefText(String hrefText) {
+		this.hrefText = hrefText;
+	}
+
+
+    
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, the DD defined objectLabel of the class on which a multiple value lookup is performed.
      * The user friendly name
@@ -149,11 +205,11 @@ public class Field implements java.io.Serializable {
      */
     private String multipleValueLookedUpCollectionName;
     
-    public String getInquiryURL() {
+    public HtmlData getInquiryURL() {
         return inquiryURL;
     }
 
-    public void setInquiryURL(String propertyURL) {
+    public void setInquiryURL(HtmlData propertyURL) {
         this.inquiryURL = propertyURL;
     }
 
@@ -374,6 +430,21 @@ public class Field implements java.io.Serializable {
     public String getBLANK_SPACE() {
         return BLANK_SPACE;
     }
+    
+    /**
+	 * @return the BUTTON
+	 */
+	public String getBUTTON() {
+		return BUTTON;
+	}
+
+	/**
+	 * @return the LINK
+	 */
+	public String getLINK() {
+		return LINK;
+	}
+	
     
     /**
      * @return Returns the fieldConversions.

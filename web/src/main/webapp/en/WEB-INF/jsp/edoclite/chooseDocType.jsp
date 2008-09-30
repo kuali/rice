@@ -1,6 +1,6 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="org.kuali.rice.kew.*" %>
-<%@ page import="org.kuali.rice.kew.edoclite.*" %>
+<%@ page import="org.kuali.rice.kew.edl.*" %>
 <%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
 <%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
 <%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>

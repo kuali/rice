@@ -32,12 +32,14 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 	
 	private String serviceName;
 	private RiceCacheAdministratorImpl cache;
+	protected RemotedServiceRegistry remotedServiceRegistry;
 
 	public Object getObject() throws Exception {
 		if (cache == null) {
 			cache = new RiceCacheAdministratorImpl();
 			cache.setServiceName(this.getServiceName());
 			cache.setForceRegistryRefresh(true);
+			cache.setRemotedServiceRegistry(remotedServiceRegistry);
 			cache.start();
 		}
 		
@@ -63,4 +65,21 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 	public void afterPropertiesSet() throws Exception {
 		getObject();
 	}
+	
+
+	/**
+	 * @return the remotedServiceRegistry
+	 */
+	public RemotedServiceRegistry getRemotedServiceRegistry() {
+		return this.remotedServiceRegistry;
+	}
+
+	/**
+	 * @param remotedServiceRegistry the remotedServiceRegistry to set
+	 */
+	public void setRemotedServiceRegistry(
+			RemotedServiceRegistry remotedServiceRegistry) {
+		this.remotedServiceRegistry = remotedServiceRegistry;
+	}
+
 }

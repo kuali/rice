@@ -25,7 +25,6 @@ def repositories = [
 '/java/projects/rice093jpa/kew/src/main/resources/org/kuali/workflow/ojb/OJB-repository-kew.xml',
 '/java/projects/rice093jpa/kim/src/main/resources/OJB-repository-kim.xml',
 '/java/projects/rice093jpa/kns/src/main/resources/OJB-repository-kns.xml',
-'/java/projects/rice093jpa/kom/src/main/resources/OJB-repository-kom.xml',
 '/java/projects/rice093jpa/ksb/src/main/resources/OJB-repository-ksb.xml',
 '/java/projects/rice093jpa/kns/src/test/resources/repository.xml'
 ]
@@ -37,14 +36,12 @@ def sourceDirectories = [
     '/java/projects/rice093jpa/kew/src/main/java/',
     '/java/projects/rice093jpa/kim/src/main/java/',
     '/java/projects/rice093jpa/kns/src/main/java/',
-    '/java/projects/rice093jpa/kom/src/main/java/',
     '/java/projects/rice093jpa/ksb/src/main/java/',
     '/java/projects/rice093jpa/kns/src/test/java/',
     '/java/projects/rice093jpa/ken-api/src/main/java/', 
     '/java/projects/rice093jpa/kew-api/src/main/java/',
     '/java/projects/rice093jpa/kim-api/src/main/java/',
     '/java/projects/rice093jpa/kns-api/src/main/java/',
-    '/java/projects/rice093jpa/kom-api/src/main/java/',
     '/java/projects/rice093jpa/ksb-api/src/main/java/'
 ]
  

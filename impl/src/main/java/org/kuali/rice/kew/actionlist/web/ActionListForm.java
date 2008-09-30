@@ -44,6 +44,8 @@ public class ActionListForm extends ActionForm {
     private Map defaultActions = new HashMap();
     private String delegationId;
     private List delegators;
+    private String primaryDelegateId;
+    private List primaryDelegates;
     private Boolean hasCustomActions;
     private String routeLogPopup;
     private String documentPopup;
@@ -106,7 +108,23 @@ public class ActionListForm extends ActionForm {
 	this.delegator = delegator;
     }
 
-    public String getDocType() {
+    public String getPrimaryDelegateId() {
+		return this.primaryDelegateId;
+	}
+
+	public void setPrimaryDelegateId(String primaryDelegateId) {
+		this.primaryDelegateId = primaryDelegateId;
+	}
+
+	public List getPrimaryDelegates() {
+		return this.primaryDelegates;
+	}
+
+	public void setPrimaryDelegates(List primaryDelegates) {
+		this.primaryDelegates = primaryDelegates;
+	}
+
+	public String getDocType() {
 	return docType;
     }
 

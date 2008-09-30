@@ -102,13 +102,20 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition() {
+		return getServiceDefinition(KSBServiceLocator.getMessageHelper());
+	}
+
+	public ServiceDefinition getServiceDefinition(MessageHelper enMessageHelper) {
 		if (this.serviceDefinition == null && this.serializedMessageEntity != null) {
-		    this.serviceDefinition = (ServiceDefinition)KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedMessageEntity);
+		    this.serviceDefinition = (ServiceDefinition)
+		    (enMessageHelper==null
+		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedMessageEntity)
+		    		:enMessageHelper.deserializeObject(this.serializedMessageEntity));
 		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
 	}
-
+	
 	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 	}

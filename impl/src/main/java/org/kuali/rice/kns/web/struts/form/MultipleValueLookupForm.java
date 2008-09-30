@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -87,6 +88,7 @@ public class MultipleValueLookupForm extends LookupForm {
     
     public MultipleValueLookupForm() {
         tableMetadata = new KualiTableRenderFormMetadata();
+        setHtmlDataType(HtmlData.INPUT_HTML_DATA_TYPE);
     }
     
     @Override

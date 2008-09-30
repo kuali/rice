@@ -22,6 +22,7 @@
         <ref bean="TravelAccountType-codeAndDescription" />
       </list>
     </property>
+    <property name="objectLabel" value="Travel Account Type"/>
   </bean>
 
 <!-- Attribute Definitions -->

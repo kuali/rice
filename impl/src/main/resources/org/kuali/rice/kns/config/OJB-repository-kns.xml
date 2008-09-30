@@ -80,15 +80,6 @@
 		<field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.user.KualiModuleUserProperty" table="SH_USR_PROP_T">
-		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="moduleId" column="APPL_MOD_ID" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="USR_PROP_NM" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="value" column="USR_PROP_VAL" jdbc-type="VARCHAR" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	</class-descriptor>
-
 	<!--  DOCUMENT MAPPINGS -->
 	<!--
 		NOTE:  we are not relating from document header to the other document
@@ -374,14 +365,6 @@
 		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.rice.kns.bo.user.RiceUser" table="EN_USR_T">
-	    <field-descriptor name="personUniversalIdentifier" column="PRSN_EN_ID" jdbc-type="VARCHAR" primarykey="true" />
-	    <field-descriptor name="universityId" column="PRSN_UNIV_ID" jdbc-type="VARCHAR" />
-	    <field-descriptor name="personUserIdentifier" column="PRSN_NTWRK_ID" jdbc-type="VARCHAR" />
-	    <field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
-	    <field-descriptor name="personName" column="PRSN_NM" jdbc-type="VARCHAR"/>
-  </class-descriptor>
-  
   <class-descriptor class="org.kuali.rice.kns.bo.SessionDocument" table="KR_KNS_SESN_DOC_T">
 	    <field-descriptor name="sessionId" column="SESSION_ID" jdbc-type="VARCHAR" primarykey="true" />
 	    <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primaryKey="true" />

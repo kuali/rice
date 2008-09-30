@@ -62,11 +62,6 @@ public class InquiryForm extends KualiForm {
     private Map<String, String> inquiryDecryptedPrimaryKeys;
 
     /**
-     * A comma separated list of field names.  Each field name in this list has an encrypted value in the request.
-     */
-    private String encryptedValues;
-
-    /**
      * A map of collection name -> Boolean mappings.  Used to denote whether a collection name is configured to show inactive records.
      */
     private Map<String, Boolean> inactiveRecordDisplay;
@@ -96,7 +91,7 @@ public class InquiryForm extends KualiForm {
         inquirable = getInquirable(getBusinessObjectClassName());
 
         // the following variable is true if the method to call is not start, meaning that we already called start
-        boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall());
+        boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall()) && !KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL.equals(getMethodToCall());
 
         // There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
         // hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results
@@ -143,18 +138,15 @@ public class InquiryForm extends KualiForm {
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
     try {
             EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-
-            // List of encrypted values
-            List encryptedList = new ArrayList();
-            if (StringUtils.isNotBlank(getEncryptedValues())) {
-                encryptedList = Arrays.asList(StringUtils.split(getEncryptedValues(), KNSConstants.FIELD_CONVERSIONS_SEPERATOR));
-            }
+            DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            // List of encrypted fields - Change for KFSMI-1374 -
+            // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
+            List encryptedFieldsList = dataDictionaryService.getEncryptedFieldsList(boClassName);
 
             Class businessObjectClass = Class.forName(boClassName);
 
-            DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
             // build list of key values from request, if all keys not given throw error
-            List boKeys = KNSServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(businessObjectClass);
+            List boKeys = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
             for (Iterator iter = boKeys.iterator(); iter.hasNext();) {
                 String realPkFieldName = (String) iter.next();
                 String pkParamName = realPkFieldName;
@@ -171,7 +163,7 @@ public class InquiryForm extends KualiForm {
 
                         // this check prevents a brute-force attacker from passing in an unencrypted PK value that's supposed to be encrypted and determining whether
                         // a record with that guessed PK value exists in the DB, effectively bypassing encryption
-                        if (encryptedList.contains(realPkFieldName)) {
+                        if (encryptedFieldsList.contains(realPkFieldName)) {
                             inquiryDecryptedPrimaryKeys.put(realPkFieldName, encryptionService.decrypt(parameter));
                         }
                         else {
@@ -268,23 +260,6 @@ public class InquiryForm extends KualiForm {
 
     public Map getEditingMode() {
         return editingMode;
-    }
-        /**
-     * Gets a comma separated list of field names.  Each field name in this list has an encrypted value in the request.
-     *
-     * @return a comma separated list of field names.  Each field name in this list has an encrypted value in the request.
-     */
-    public String getEncryptedValues() {
-        return this.encryptedValues;
-    }
-
-    /**
-     * Sets a comma separated list of field names.  Each field name in this list has an encrypted value in the request.
-     *
-     * @param encryptedValues a comma separated list of field names.  Each field name in this list has an encrypted value in the request.
-     */
-    public void setEncryptedValues(String encryptedValues) {
-        this.encryptedValues = encryptedValues;
     }
 
     /**

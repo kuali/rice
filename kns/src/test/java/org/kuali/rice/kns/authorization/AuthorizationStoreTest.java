@@ -214,7 +214,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
     }
 
     private UniversalUser buildUser(String userName, KualiGroup[] groups) throws UserNotFoundException {
-        UniversalUser user = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(userName));
+        UniversalUser user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(userName);
         if(null == user) {
             return user;
         }

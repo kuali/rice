@@ -30,8 +30,13 @@ import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
-import org.kuali.rice.kew.ojb.OjbConfigurer;
+import org.kuali.rice.kew.plugin.PluginRegistry;
+import org.kuali.rice.kew.plugin.PluginRegistryFactory;
+import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -57,11 +62,40 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
 	public static final String KEW_DATASOURCE_JNDI = "org.kuali.workflow.datasource.jndi.location";
-
+    private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
+    
 	private String clientProtocol;
 
 	private DataSource dataSource;
 	private String dataSourceJndiName;
+	
+	@Override
+	public String getSpringFileLocations(){
+		String springFileLocations;
+		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+			springFileLocations = "";
+		} else {
+			springFileLocations = getEmbeddedSpringFileLocation();
+		}
+
+		return springFileLocations;
+	}
+	
+    public String getEmbeddedSpringFileLocation(){
+    	String springLocation = ConfigContext.getCurrentContextConfig().getAlternateSpringFile();
+    	if (springLocation == null) {
+    	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
+    	}
+    	String additionalSpringFiles = ConfigContext.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
+    	if(StringUtils.isNotEmpty(additionalSpringFiles) && 	additionalSpringFiles.contains(","))
+    		StringUtils.split(additionalSpringFiles, ",");
+    	String[] springLocations;
+    	if (!StringUtils.isEmpty(additionalSpringFiles)) {
+    		springLocations = new String[2];
+    		springLocations[0] = "," + additionalSpringFiles;
+    	}
+    	return springLocation;
+    }
 
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
@@ -72,7 +106,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 			if (isStandaloneServer()) {
 				lifecycles.add(new Log4jLifeCycle());
 			}
-			lifecycles.add(new OjbConfigurer());
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
@@ -157,6 +190,33 @@ public class KEWConfigurer extends ModuleConfigurer {
 		} else if (!StringUtils.isBlank(getDataSourceJndiName())) {
 			config.getProperties().put(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
 		}
+	}
+
+	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+		// create the plugin registry
+		PluginRegistry registry = null;
+		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
+		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled)) {
+			registry = new PluginRegistryFactory().createPluginRegistry();
+		}
+
+		CoreResourceLoader coreResourceLoader = 
+			new CoreResourceLoader(RiceResourceLoaderFactory.getSpringResourceLoader(), registry);
+		coreResourceLoader.start();
+
+		//wait until core resource loader is started to attach to GRL;  this is so startup
+		//code can depend on other things hooked into GRL without incomplete KEW resources
+		//messing things up.
+
+		GlobalResourceLoader.addResourceLoader(coreResourceLoader);
+
+		// now start the plugin registry if there is one
+		if (registry != null) {
+			registry.start();
+			// the registry resourceloader is now being handled by the CoreResourceLoader
+			//GlobalResourceLoader.addResourceLoader(registry);
+		}
+		return coreResourceLoader;
 	}
 
 	public String getClientProtocol() {

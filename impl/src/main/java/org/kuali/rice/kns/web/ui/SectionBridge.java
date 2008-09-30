@@ -40,6 +40,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.rice.kns.datadictionary.SubSectionHeaderDefinitionI;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
+import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
@@ -626,10 +627,18 @@ public class SectionBridge {
      * read-only, otherwise a user could change the pk value which would be equivalent to deleting the line and adding a new line.
      */
     private static final void setPrimaryKeyFieldsReadOnly(Class businessObjectClass, Field field) {
-        List primaryKeyPropertyNames = KNSServiceLocator.getPersistenceStructureService().getPrimaryKeys(businessObjectClass);
-        if (primaryKeyPropertyNames.contains(field.getPropertyName())) {
-            field.setReadOnly(true);
-        }
+    	try{
+    		//TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
+    		//May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
+	    	List primaryKeyPropertyNames = 
+	    		KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+	        if (primaryKeyPropertyNames.contains(field.getPropertyName())) {
+	            field.setReadOnly(true);
+	        }
+    	} catch(ClassNotPersistableException ex){
+    		//Not all classes will be persistable in a collection. For e.g. externalizable business objects.
+    		LOG.info("Not persistable businessObjectClass: "+businessObjectClass+", field: "+field);
+    	}
     }
     
     private static void setDuplicateIdentificationFieldsReadOnly(Field field, List<String>duplicateIdentificationFieldNames) {

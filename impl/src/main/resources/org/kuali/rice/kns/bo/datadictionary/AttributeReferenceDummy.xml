@@ -29,6 +29,7 @@
         <ref bean="AttributeReferenceDummy-workflowDocumentStatus" />
       </list>
     </property>
+    <property name="objectLabel" value="Attribute Reference Dummy"/>
   </bean>
 
 <!-- Attribute Definitions -->

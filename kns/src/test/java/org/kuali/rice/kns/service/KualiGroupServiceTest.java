@@ -37,7 +37,7 @@ public class KualiGroupServiceTest extends KNSTestBase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(TEST_GROUP_USER));
+        universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(TEST_GROUP_USER);
     }
 
     @Test public void testGetByGroupName() throws Exception {

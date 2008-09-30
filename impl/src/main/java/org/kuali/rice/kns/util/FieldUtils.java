@@ -30,13 +30,17 @@ import org.kuali.rice.kns.authorization.FieldAuthorization;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -47,6 +51,7 @@ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
@@ -65,7 +70,7 @@ public class FieldUtils {
     private static KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 
     public static void setInquiryURL(Field field, BusinessObject bo, String propertyName) {
-        String inquiryUrl = "";
+        HtmlData inquiryHref = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
 
         Boolean b = businessObjectDictionaryService.noInquiryFieldInquiry(bo.getClass(), propertyName);
         if (b == null || !b.booleanValue()) {
@@ -82,15 +87,16 @@ public class FieldUtils {
         }
                 }
 
-                inquiryUrl = inq.getInquiryUrl(bo, propertyName, null == b2 ? false : b2.booleanValue() );
+                inquiryHref = inq.getInquiryUrl(bo, propertyName, null == b2 ? false : b2.booleanValue() );
 
             } catch ( Exception ex ) {
                 LOG.error("unable to create inquirable to get inquiry URL", ex );
             }
         }
 
-        field.setInquiryURL(inquiryUrl);
+        field.setInquiryURL(inquiryHref);
     }
+    
 
     /**
      * Builds up a Field object based on the propertyName and business object class.
@@ -165,6 +171,14 @@ public class FieldUtils {
 
             if (control.isCurrency()) {
                 fieldType = Field.CURRENCY;
+            }
+            
+            if(control.isButton()){
+            	fieldType = Field.BUTTON;
+            }
+            
+            if(control.isLink()){
+            	fieldType = Field.LINK;
             }
 
             if (Field.CURRENCY.equals(fieldType) && control instanceof CurrencyControlDefinition) {
@@ -253,6 +267,22 @@ public class FieldUtils {
                 fieldType = Field.RADIO;
                 field.setFieldValidValues((new IndicatorValuesFinder()).getKeyValues());
             }
+            
+            // for button control
+            if (Field.BUTTON.equals(fieldType)) {
+            	ButtonControlDefinition buttonControl = (ButtonControlDefinition) control;
+                field.setImageSrc(buttonControl.getImageSrc());
+                field.setStyleClass(buttonControl.getStyleClass());
+            }
+            
+            // for link control
+            if (Field.LINK.equals(fieldType)) {
+            	LinkControlDefinition linkControl = (LinkControlDefinition) control;
+                field.setStyleClass(linkControl.getStyleClass());
+                field.setTarget(linkControl.getTarget());
+                field.setHrefText(linkControl.getHrefText());
+            }
+            
         }
 
         field.setFieldType(fieldType);
@@ -991,9 +1021,17 @@ public class FieldUtils {
             String attributeName = (String) iter.next();
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
+            BusinessObject newBusinessObjectInstance;
+            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
+            	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+            	newBusinessObjectInstance = (BusinessObject) moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
+            }
+            else {
+            	newBusinessObjectInstance = (BusinessObject) businessObjectClass.newInstance();
+            }
             // TODO: This makes no sense, why do we pass it in and then return the same thing
             // back to us?
-            field = LookupUtils.setFieldQuickfinder((BusinessObject) businessObjectClass.newInstance(), attributeName, field, lookupFieldAttributeList);
+            field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
             LookupUtils.setFieldDirectInquiry(field);
 
             // overwrite maxLength to allow for wildcards and ranges in the select

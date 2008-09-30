@@ -15,6 +15,7 @@
       <ref bean="TravelAccount-lookupDefinition" />
     </property>
     <property name="titleAttribute" value="Travel Account" />
+    <property name="objectLabel" value="Travel Account"/>
     <property name="relationships" >
       <list>
         <bean parent="RelationshipDefinition">

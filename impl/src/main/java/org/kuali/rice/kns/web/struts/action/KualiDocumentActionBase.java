@@ -104,7 +104,9 @@ public class KualiDocumentActionBase extends KualiAction {
             AuthorizationType documentAuthorizationType = new AuthorizationType.Document(((KualiDocumentFormBase)form).getDocument().getClass(), ((KualiDocumentFormBase)form).getDocument());
             if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType ) ) {
                 LOG.error("User not authorized to use this document: " + ((KualiDocumentFormBase)form).getDocument().getClass().getName() );
-                throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModule(((KualiDocumentFormBase)form).getDocument().getClass()) );
+                throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), 
+                		documentAuthorizationType, 
+                		getKualiModuleService().getResponsibleModuleService(((KualiDocumentFormBase)form).getDocument().getClass()) );
             }
         }
     }
@@ -146,6 +148,14 @@ public class KualiDocumentActionBase extends KualiAction {
 
         if (form instanceof KualiDocumentFormBase) {
             KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
+            Document document = formBase.getDocument();
+            
+            //KULRICE-2210 fix location of document header population 
+            KualiWorkflowDocument workflowDocument = formBase.getDocument().getDocumentHeader().getWorkflowDocument();
+            formBase.populateHeaderFields(workflowDocument);
+            formBase.setDocId(document.getDocumentNumber());
+            //End of KULRICE-2210 fix
+
             // check to see if document is a pessimistic lock document
             if (isFormRepresentingLockObject(formBase)) {
                 // form represents a document using the BO class PessimisticLock so we need to skip the authorizations in the next logic check
@@ -153,9 +163,9 @@ public class KualiDocumentActionBase extends KualiAction {
             } else {
         // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
         // information which is contained in the form but which may be unavailable until this point
-            Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
+
             // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
             // set returnToActionList flag, if needed
@@ -633,7 +643,7 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
         kualiDocumentFormBase.setAnnotation("");
 
-        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY,Boolean.TRUE);
+//        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY,Boolean.TRUE);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

@@ -1,8 +1,8 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<!-- This file is a copy of SampleAppBeans.xml that removes references to the KIM and KOM configurers and DD files
-     so that the webapp can be loaded up within KNS unit unit tests without adding KIM and KOM dependencies to the POM.
-     When run standalone, this file is not detected so it does not end up overidding and omitting KIM and KOM and will
-     allow the sample app to be run standalone from within Eclipse (not Maven, as the KNS POM won't have the KIM and KOM
+<!-- This file is a copy of SampleAppBeans.xml that removes references to the KIM configurer and DD files
+     so that the webapp can be loaded up within KNS unit unit tests without adding KIM dependencies to the POM.
+     When run standalone, this file is not detected so it does not end up overidding and omitting KIM will
+     allow the sample app to be run standalone from within Eclipse (not Maven, as the KNS POM won't have the KIM
      dependencies because of circular dependency issues.
 
      This works because web.xml has been modified to use the resource string: classpath:SampleAppBeans.xml, classpath:SampleAppBeans-test*.xml

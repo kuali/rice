@@ -121,22 +121,9 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @return the return url for each result row.
      */
-    public String getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
-        return getLookupableHelperService().getReturnUrl(bo, fieldConversions, lookupImpl);
+    public HtmlData getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
+        return getLookupableHelperService().getReturnUrl(bo, fieldConversions, lookupImpl, getReturnKeys());
     }
-
-    /**
-     * Build a maintenanace url.
-     * 
-     * @param bo - business object representing the record for maint.
-     * @param methodToCall - maintenance action
-     * @return
-     */
-    protected String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
-        //TODO: delete me
-        return getLookupableHelperService().getMaintenanceUrl(bo, methodToCall);
-    }
-
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getCreateNewUrl()

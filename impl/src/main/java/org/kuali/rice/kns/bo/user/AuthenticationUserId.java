@@ -20,7 +20,6 @@ import java.io.Serializable;
 /**
  * This class is to hold our users network ids and wrap them in a strongly typed object
  * 
- * 
  */
 public final class AuthenticationUserId implements UserId, Serializable {
     private static final long serialVersionUID = 2540727071768501528L;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,21 +27,22 @@ import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 
 public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
-    private static HashSet<ParameterDetailType> components = new HashSet<ParameterDetailType>(); 
-    
+    private static HashSet<ParameterDetailType> components = new HashSet<ParameterDetailType>();
+
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 
         List baseLookup = super.getSearchResults(fieldValues);
-        
+
         // all step beans
         // all BO beans
-        // all trans doc beans 
-        
+        // all trans doc beans
+
         if ( components.isEmpty() ) {
             // get all components from the DD and make a list.
             // hold statically since it won't change after DD load is complete
@@ -60,7 +61,7 @@ public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupa
                 }
             }
         }
-        
+
         if ( baseLookup instanceof CollectionIncomplete ) {
             long originalCount = ((CollectionIncomplete)baseLookup).getActualSizeIfTruncated();
             baseLookup = new ArrayList( baseLookup );
@@ -72,21 +73,21 @@ public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupa
         if (defaultSortColumns.size() > 0) {
             Collections.sort(baseLookup, new BeanPropertyComparator(getDefaultSortColumns(), true));
         }
-        
+
         return baseLookup;
     }
-    
+
     /**
      * Prevent the edit and copy links on virtual detail types.
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
      */
     @Override
-    public String getActionUrls(BusinessObject businessObject) {
+    public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	if ( !((ParameterDetailType)businessObject).isVirtualDetailType()  ) {
-    		return super.getActionUrls( businessObject );
+    		return super.getCustomActionUrls(businessObject, pkNames);
     	} else {
-    		return "";
+    		return super.getEmptyActionUrls();
     	}
     }
 }

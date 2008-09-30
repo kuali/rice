@@ -30,11 +30,15 @@ public class KSBExporter implements InitializingBean {
 	
 	private ServiceDefinition serviceDefinition;
 	private boolean forceRefresh = false;
+	protected RemotedServiceRegistry remotedServiceRegistry;
 
 	public void afterPropertiesSet() throws Exception {
 		this.getServiceDefinition().validate();
 		LOG.info("Attempting to expose service with localServiceName '" + this.getServiceDefinition().getLocalServiceName() + "' and QName '" + this.getServiceDefinition().getServiceName() + "'");
-		KSBServiceLocator.getServiceDeployer().registerService(this.getServiceDefinition(), this.isForceRefresh());
+		if(getRemotedServiceRegistry()!=null)
+			getRemotedServiceRegistry().registerService(this.getServiceDefinition(), this.isForceRefresh());
+		else
+			KSBServiceLocator.getServiceDeployer().registerService(this.getServiceDefinition(), this.isForceRefresh());
 	}
 
 	public ServiceDefinition getServiceDefinition() {
@@ -51,6 +55,21 @@ public class KSBExporter implements InitializingBean {
 
 	public void setForceRefresh(boolean forceRefresh) {
 		this.forceRefresh = forceRefresh;
+	}
+
+	/**
+	 * @return the remotedServiceRegistry
+	 */
+	public RemotedServiceRegistry getRemotedServiceRegistry() {
+		return this.remotedServiceRegistry;
+	}
+
+	/**
+	 * @param remotedServiceRegistry the remotedServiceRegistry to set
+	 */
+	public void setRemotedServiceRegistry(
+			RemotedServiceRegistry remotedServiceRegistry) {
+		this.remotedServiceRegistry = remotedServiceRegistry;
 	}
 
 }

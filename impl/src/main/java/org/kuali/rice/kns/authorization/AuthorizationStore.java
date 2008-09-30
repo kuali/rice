@@ -68,8 +68,8 @@ public class AuthorizationStore {
         if ((authorizedGroups != null) && !authorizedGroups.isEmpty()) {
             for (Iterator i = authorizedGroups.iterator(); !isAuthorized && i.hasNext();) {
                 String group = (String) i.next();
-
-                isAuthorized = user.isMember( group );
+                // The first part of this check will be removed after the Universal User conversion : KULRICE-2323
+                isAuthorized = "kualiUniversalGroup".equals(group) || user.isMember( group );
             }
         }
 

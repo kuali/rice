@@ -25,6 +25,7 @@
         <ref bean="BusinessObjectAttributeEntry-attributeFormatterClassName" />
       </list>
     </property>
+    <property name="objectLabel" value="Business Object Attribute Entry" />
   </bean>
 
 <!-- Attribute Definitions -->

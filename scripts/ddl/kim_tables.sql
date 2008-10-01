@@ -628,23 +628,6 @@ CREATE TABLE kr_kim_role_rel_t
 ALTER TABLE kr_kim_role_rel_t ADD CONSTRAINT kr_kim_role_rel_tc0 UNIQUE (obj_id)
 /
 
-
-CREATE TABLE kr_kim_role_perm_t
-(
-    role_perm_id          VARCHAR2(40) constraint kr_kim_role_permission_tn1 NOT NULL,
-    obj_id                VARCHAR2(36) CONSTRAINT kr_kim_role_permission_tn2 NOT NULL,
-    ver_nbr               NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_role_permission_tn3 NOT NULL,
-    role_id               VARCHAR2(40),
-    perm_id               VARCHAR2(40),
-    actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_role_permission_tp1 PRIMARY KEY ( role_perm_id )
-)
-/
-
-ALTER TABLE kr_kim_role_permission_t ADD CONSTRAINT kr_kim_role_permission_tc0 UNIQUE (obj_id)
-/
-
-
 CREATE TABLE kr_kim_group_attr_data_t
 (
     attrib_data_id   VARCHAR2(40) NOT NULL,

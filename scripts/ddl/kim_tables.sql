@@ -628,8 +628,7 @@ CREATE TABLE kr_kim_role_rel_t
 ALTER TABLE kr_kim_role_rel_t ADD CONSTRAINT kr_kim_role_rel_tc0 UNIQUE (obj_id)
 /
 
-DROP TABLE kr_kim_role_permission_t
-/
+
 CREATE TABLE kr_kim_role_perm_t
 (
     role_perm_id          VARCHAR2(40) constraint kr_kim_role_permission_tn1 NOT NULL,
@@ -682,8 +681,6 @@ ALTER TABLE kr_kim_role_mbr_attr_data_t ADD CONSTRAINT kr_kim_role_mbr_attr_data
 
 
 -- NEW Tables
-DROP TABLE kr_kim_responsibility_t
-/
 
 CREATE TABLE kr_kim_resp_tmpl_t
 (
@@ -739,9 +736,6 @@ CREATE TABLE kr_kim_resp_attr_data_t
 ALTER TABLE kr_kim_resp_attr_data_t ADD CONSTRAINT kr_kim_resp_attr_data_tc0 UNIQUE (obj_id)
 /
 
-DROP TABLE kr_kim_role_responsibility_t
-/
-
 CREATE TABLE kr_kim_role_resp_t
 (
     role_resp_id          VARCHAR2(40),
@@ -768,7 +762,7 @@ CREATE TABLE kr_kim_role_resp_resol_t
     actn_typ_id           VARCHAR2(40),
     priority_nbr          NUMBER(3),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_role_resp_tp1 PRIMARY KEY ( role_resp_id )
+    CONSTRAINT kr_kim_role_resp_resol_tp1 PRIMARY KEY ( role_resp_resol_id )
 )
 /
 
@@ -776,8 +770,6 @@ ALTER TABLE kr_kim_role_resp_resol_t ADD CONSTRAINT kr_kim_role_resp_resol_tc0 U
 /
 
 
-DROP TABLE kr_kim_permission_t
-/
 
 CREATE TABLE kr_kim_perm_tmpl_t
 (
@@ -788,14 +780,14 @@ CREATE TABLE kr_kim_perm_tmpl_t
     description           VARCHAR2(40),
     kim_type_id           VARCHAR2(40),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_perm_tmpl_tp1 PRIMARY KEY ( perm_id  )
+    CONSTRAINT kr_kim_perm_tmpl_tp1 PRIMARY KEY ( perm_tmpl_id  )
 )
 /
 
 ALTER TABLE kr_kim_perm_tmpl_t ADD CONSTRAINT kr_kim_perm_tmpl_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_permission_t
+CREATE TABLE kr_kim_perm_t
 (
     perm_id               VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
@@ -804,15 +796,14 @@ CREATE TABLE kr_kim_permission_t
     name                  VARCHAR2(40),
     description           VARCHAR2(40),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_permission_tp1 PRIMARY KEY ( perm_id  )
+    CONSTRAINT kr_kim_perm_tp1 PRIMARY KEY ( perm_id  )
 )
 /
 
-ALTER TABLE kr_kim_permission_t ADD CONSTRAINT kr_kim_permission_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_perm_t ADD CONSTRAINT kr_kim_perm_tc0 UNIQUE (obj_id)
 /
 
-DROP TABLE kr_kim_role_permission_t
-/
+
 CREATE TABLE kr_kim_role_perm_t
 (
     role_perm_id          VARCHAR2(40),
@@ -821,8 +812,10 @@ CREATE TABLE kr_kim_role_perm_t
     role_id               VARCHAR2(40),
     perm_id               VARCHAR2(40),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_role_permission_tp1 PRIMARY KEY ( role_perm_id )
+    CONSTRAINT kr_kim_role_perm_tp1 PRIMARY KEY ( role_perm_id )
 )
+/
+ALTER TABLE kr_kim_role_perm_t ADD CONSTRAINT kr_kim_role_perm_tc0 UNIQUE (obj_id)
 /
 
 CREATE TABLE kr_kim_perm_attr_data_t
@@ -838,5 +831,5 @@ CREATE TABLE kr_kim_perm_attr_data_t
 )
 /
 
-ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_ttr_data_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_tc0 UNIQUE (obj_id)
 /

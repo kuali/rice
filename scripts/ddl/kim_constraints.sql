@@ -252,34 +252,67 @@ ALTER TABLE kr_kim_role_mbr_attr_data_t ADD CONSTRAINT kr_kim_role_mbr_attr_data
     REFERENCES kr_kim_attribute_t
 /
 
-ALTER TABLE kr_kim_role_perm_attr_data_t ADD CONSTRAINT kr_kim_role_perm_attr_data_tr1
+ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_tr1
     FOREIGN KEY (kim_type_id)
     REFERENCES kr_kim_type_t
 /
 
-ALTER TABLE kr_kim_role_perm_attr_data_t ADD CONSTRAINT kr_kim_role_perm_attr_data_tr2
+ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_tr2
     FOREIGN KEY (kim_attrib_id)
     REFERENCES kr_kim_attribute_t
 /
 
-ALTER TABLE kr_kim_role_perm_attr_data_t ADD CONSTRAINT kr_kim_role_perm_attr_data_tr3
+ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_tr3
     FOREIGN KEY (target_primary_key)
-    REFERENCES kr_kim_role_permission_t
+    REFERENCES kr_kim_perm_t
     ON DELETE CASCADE
 /
 
-ALTER TABLE kr_kim_role_resp_attr_data_t ADD CONSTRAINT kr_kim_role_resp_attr_data_tr1
+ALTER TABLE kr_kim_resp_attr_data_t ADD CONSTRAINT kr_kim_resp_attr_data_tr1
     FOREIGN KEY (kim_type_id)
     REFERENCES kr_kim_type_t
 /
 
-ALTER TABLE kr_kim_role_resp_attr_data_t ADD CONSTRAINT kr_kim_role_resp_attr_data_tr2
+ALTER TABLE kr_kim_resp_attr_data_t ADD CONSTRAINT kr_kim_resp_attr_data_tr2
     FOREIGN KEY (kim_attrib_id)
     REFERENCES kr_kim_attribute_t
 /
 
-ALTER TABLE kr_kim_role_resp_attr_data_t ADD CONSTRAINT kr_kim_role_resp_attr_data_tr3
+ALTER TABLE kr_kim_resp_attr_data_t ADD CONSTRAINT kr_kim_resp_attr_data_tr3
     FOREIGN KEY (target_primary_key)
-    REFERENCES kr_kim_role_responsibility_t
+    REFERENCES kr_kim_resp_t
     ON DELETE CASCADE
+/
+
+ALTER TABLE kr_kim_role_resp_t ADD CONSTRAINT kr_kim_role_resp_tr1
+    FOREIGN KEY (resp_id)
+    REFERENCES kr_kim_resp_t
+/
+
+ALTER TABLE kr_kim_resp_t ADD CONSTRAINT kr_kim_resp_tr1
+    FOREIGN KEY (resp_tmpl_id)
+    REFERENCES kr_kim_resp_tmpl_t
+/
+
+ALTER TABLE kr_kim_role_perm_t ADD CONSTRAINT kr_kim_role_perm_tr1
+    FOREIGN KEY (perm_id)
+    REFERENCES kr_kim_perm_t
+/
+
+ALTER TABLE kr_kim_perm_t ADD CONSTRAINT kr_kim_perm_tr1
+    FOREIGN KEY (perm_tmpl_id)
+    REFERENCES kr_kim_perm_tmpl_t
+/
+
+ALTER TABLE kr_kim_role_resp_resol_t ADD CONSTRAINT kr_kim_role_resp_resol_tr1
+    FOREIGN KEY (resp_id)
+    REFERENCES kr_kim_resp_t
+/
+ALTER TABLE kr_kim_resp_tmpl_t ADD CONSTRAINT kr_kim_resp_tmpl_tr1
+    FOREIGN KEY (kim_type_id)
+    REFERENCES kr_kim_type_t
+/
+ALTER TABLE kr_kim_perm_tmpl_t ADD CONSTRAINT kr_kim_perm_tmpl_tr1
+    FOREIGN KEY (kim_type_id)
+    REFERENCES kr_kim_type_t
 /

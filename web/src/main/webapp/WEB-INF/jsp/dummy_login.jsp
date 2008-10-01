@@ -35,7 +35,7 @@
         <table border="0" cellpadding="0" cellspacing="0" summary="">
           <tbody>
             <tr>
-              <td align="right">Username: </td><td align="left"><input type="text" name="__login_user" value="khuntley" size="20"/></td>
+              <td align="right">Username: </td><td align="left"><input type="text" name="__login_user" value="admin" size="20"/></td>
             </tr>
             <c:if test="${requestScope.showPasswordField}">
             <tr>

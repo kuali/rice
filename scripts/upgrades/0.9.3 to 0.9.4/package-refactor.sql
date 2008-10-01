@@ -22,7 +22,7 @@ UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.NetworkI
 /
 UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.UniversityIdRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute'
 /
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.xmlrouting.StandardGenericXMLRuleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute'
+UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute'
 /
 UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='org.kuali.notification.kew.ChannelReviewerRoleAttribute'
 /

@@ -26,7 +26,7 @@ public class KimConstants {
 	public static final String EMPLOYEE_EXT_ID_TYPE = "EMPLOYEE";
 	public static final String TAX_EXT_ID_TYPE = "TAX";
 
-	public static final String EMPLOYEE_AFFILIATION_TYPE = "EMPLOYEE";
+	public static final String STAFF_AFFILIATION_TYPE = "STAFF";
 	public static final String STUDENT_AFFILIATION_TYPE = "STUDENT";
 	public static final String AFFILIATE_AFFILIATION_TYPE = "AFFILIATE";
 	public static final String FACULTY_AFFILIATION_TYPE = "FACULTY";

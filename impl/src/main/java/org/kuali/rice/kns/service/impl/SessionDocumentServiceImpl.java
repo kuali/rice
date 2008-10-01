@@ -26,11 +26,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KualiLRUMap;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +111,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     				//re-store workFlowDocument into session
     				KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
     				userSession.setWorkflowDocument(workflowDocument);
+    				
+    				//Need to setGeneateDefaultValues, otherwise there is problem in maintenance create page and session is time out.  
+    				if (documentForm instanceof KualiMaintenanceForm) {
+						KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) documentForm;
+						MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();
+						document.getNewMaintainableObject().setGenerateDefaultValues(false);
+    			
+    				}
     			}
     		} catch(Exception e) {
     		      LOG.error("getDocumentForm failed", e);
@@ -177,9 +187,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     	    sessionDocument.setSerializedDocumentForm(formAsBytes);
     	    sessionDocument.setLastUpdatedDate(currentTime);
     	    
-    	    businessObjectService.save(sessionDocument);
+    	    if(documentNumber != null){
+    	    	businessObjectService.save(sessionDocument);
+    	    }else{
+    	    	LOG.warn("documentNumber is null");
+    	    }
     	  
-
         }catch(Exception e){
         	 LOG.error("setDocumentForm failed", e);
         }

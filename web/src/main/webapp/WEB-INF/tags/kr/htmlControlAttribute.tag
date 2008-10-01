@@ -233,7 +233,9 @@
 
     <%-- hidden --%>
     <c:when test="${attributeEntry.control.hidden == true}">
+		<c:if test="${!sessionDocument}">
             <html:hidden property="${property}" />
+        </c:if>
     </c:when>
 
     <%-- currency --%>

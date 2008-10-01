@@ -521,7 +521,7 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" table="KR_KIM_ROLE_RESPONSIBILITY_T">
+  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" table="KR_KIM_ROLE_RESP_T">
     <field-descriptor name="roleResponsibilityId" column="ROLE_RESP_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="responsibilityId" column="RESP_ID" jdbc-type="VARCHAR" />
@@ -620,5 +620,20 @@
       <foreignkey field-ref="kimTypeId" />
     </reference-descriptor>
   </class-descriptor>     
+
+  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityResolutionImpl" table="KR_KIM_ROLE_RESP_RESOL_T">
+    <field-descriptor name="roleResponsibilityId" column="ROLE_RESP_RESOL_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="responsibilityId" column="RESP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="actionRequestId" column="ACTN_REQ_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="priorityNumber" column="PRIORITY_NBR" jdbc-type="INTEGER" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <reference-descriptor name="kimResponsibility" class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="responsibilityId" />
+    </reference-descriptor>
+  </class-descriptor>
+
 
 </descriptor-repository>

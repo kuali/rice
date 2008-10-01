@@ -15,23 +15,15 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalResponsibilityInfo extends ResponsibilityDetailsInfo implements
-		PrincipalResponsibility {
-
-	String principalId;
-
-	public String getPrincipalId() {
-		return this.principalId;
-	}
-
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
-	}
+public interface ResponsibilityResolution {
+	String getPrincipalId();
+	String getResponsibilityId();
+	String getActionTypeCode();	
+	Integer getPriorityNumber();
 }

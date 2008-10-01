@@ -10,7 +10,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
-import org.kuali.rice.kim.bo.role.PrincipalResponsibility;
+import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -228,12 +228,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
 	 */
-	public List<? extends PrincipalResponsibility> getResponsibilityInfo(String responsibilityId,
+	public List<? extends ResponsibilityResolution> getResponsibilityInfo(String responsibilityId,
 			Map<String,String> qualification, Map<String,String> responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
 	}
 	
-	public List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
+	public List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
 	}

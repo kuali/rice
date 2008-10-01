@@ -10,7 +10,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
-import org.kuali.rice.kim.bo.role.PrincipalResponsibility;
+import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
 
 /**
  * This is the front end for the KIM module.  Clients of KIM should access this service from
@@ -124,10 +124,10 @@ public interface IdentityManagementService {
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<? extends PrincipalResponsibility> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<? extends ResponsibilityResolution> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     
 }

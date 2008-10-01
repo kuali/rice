@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.role.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.PrincipalResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.ResponsibilityResolutionInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -62,11 +62,11 @@ public interface ResponsibilityService {
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<PrincipalResponsibilityInfo> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<ResponsibilityResolutionInfo> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<PrincipalResponsibilityInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<ResponsibilityResolutionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     
    	
 }

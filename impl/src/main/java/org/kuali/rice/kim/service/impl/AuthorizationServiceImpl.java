@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.role.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.KimPermissionTypeService;
 import org.kuali.rice.kim.bo.role.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.PermissionDetailsInfo;
-import org.kuali.rice.kim.bo.role.PrincipalResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.ResponsibilityResolutionInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
@@ -140,7 +140,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionByName(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionByName( java.lang.String, java.lang.String, java.util.Map)
      */
     public boolean hasQualifiedPermissionByName(String principalId, String permissionName, Map<String,String> qualification) {
     	KimPermissionImpl perm = getPermissionImplByName( permissionName );
@@ -209,7 +209,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionByName(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionByName(java.lang.String)
      */
     public KimPermissionInfo getPermissionByName(String permissionName) {
     	KimPermissionImpl impl = getPermissionImplByName( permissionName );
@@ -244,7 +244,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionIdByName(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionIdByName(java.lang.String)
      */
     public String getPermissionIdByName( String permissionName) {
     	KimPermissionImpl perm = getPermissionImplByName( permissionName );
@@ -309,7 +309,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityByName(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityByName(java.lang.String)
      */
     public KimResponsibilityInfo getResponsibilityByName( String responsibilityName) {
     	KimResponsibilityImpl impl = getResponsibilityImplByName( responsibilityName );
@@ -351,7 +351,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getPrincipalIdsWithResponsibilityByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getPrincipalIdsWithResponsibilityByName(java.lang.String, java.util.Map, java.util.Map)
      */
     public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
     		Map<String,String> responsibilityDetails) {
@@ -375,21 +375,21 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<PrincipalResponsibilityInfo> getResponsibilityInfo(String responsibilityId,
+    public List<ResponsibilityResolutionInfo> getResponsibilityInfo(String responsibilityId,
     		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
 
     	// find matching role/resp records based on resp details (use resp service)
     	// group the results by role
     	// for each role, determine the associated principals from the role service
-    	// build PrincipalResponsibilityInfo objects which match the principals with the appropriate responsibility and details
+    	// build ResponsibilityResolutionInfo objects which match the principals with the appropriate responsibility and details
     	
     	throw new UnsupportedOperationException();
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityInfoByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityInfoByName(java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<PrincipalResponsibilityInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
+    public List<ResponsibilityResolutionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
     		Map<String,String> responsibilityDetails) {
     	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
     	return getResponsibilityInfo( resp.getResponsibilityId(), qualification, responsibilityDetails );

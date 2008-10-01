@@ -26,6 +26,8 @@ public class ResponsibilityResolutionInfo implements ResponsibilityResolution {
 
 	String principalId;
 	String responsibilityId;
+	String responsibilityName;
+	String roleId;
 	String actionTypeCode;
 	Integer priorityNumber;
 
@@ -59,5 +61,21 @@ public class ResponsibilityResolutionInfo implements ResponsibilityResolution {
 
 	public void setPrincipalId(String principalId) {
 		this.principalId = principalId;
+	}
+
+	public String getResponsibilityName() {
+		return this.responsibilityName;
+	}
+
+	public void setResponsibilityName(String responsibilityName) {
+		this.responsibilityName = responsibilityName;
+	}
+
+	public String getRoleId() {
+		return this.roleId;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 }

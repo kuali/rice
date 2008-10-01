@@ -75,7 +75,6 @@ public class CustomCollectionJoinQueryCustomizer implements QueryCustomizer {
                 criteria.addEqualTo(key, this.getAttribute(key));
             }
         }
-        System.err.println( criteria );
         query.setCriteria(criteria);
         return query;
     }

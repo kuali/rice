@@ -53,15 +53,6 @@ public interface KimRoleTypeService extends KimTypeService {
     boolean doRoleQualifiersMatchQualification( Map<String,String> qualification, List<Map<String,String>> roleQualifierList );
 
     /**
-     * Return the subset of RoleMember objects whose qualifiers match the given qualifier.
-     * 
-     * This method is intended to be used when all people who have a given role are needed.
-     * (For Example, in role-level routing within KEW.)
-     * 
-     */
-    List<RoleMember> getMembersThatMatchQualification( Map<String,String> qualification, List<RoleMember> roleMemberList );
-
-    /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
     List<Map<String,String>> getAllImpliedQualifications( Map<String,String> qualification );

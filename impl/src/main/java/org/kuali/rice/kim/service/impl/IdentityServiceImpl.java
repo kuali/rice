@@ -108,8 +108,8 @@ public class IdentityServiceImpl implements IdentityService {
 		if ( StringUtils.isBlank( principalId ) ) {
 			return null;
 		}
-		KimEntity entity = getEntityByKeyValue("principalId", principalId);		
-		return entity != null ? entity.getEntityId() : null;
+		KimPrincipal principal = getPrincipal(principalId);		
+		return principal != null ? principal.getEntityId() : null;
     }
 
 	/**
@@ -119,8 +119,8 @@ public class IdentityServiceImpl implements IdentityService {
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
 		}
-		KimEntity entity = getEntityByKeyValue("principalName", principalName);		
-		return entity != null ? entity.getEntityId() : null;
+		KimPrincipal principal = getPrincipalByPrincipalName(principalName);		
+		return principal != null ? principal.getEntityId() : null;
     }
 	
 	/**

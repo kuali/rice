@@ -345,7 +345,7 @@
   </class-descriptor>	
 
   <class-descriptor class="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" table="KR_KIM_GROUP_T">
-    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KR_KIM_GROUP_ID_SEQ" />
     <field-descriptor name="groupName" column="GRP_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="groupDescription" column="GRP_DESC" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
@@ -365,7 +365,7 @@
   </class-descriptor>
   
   <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupGroupImpl" table="KR_KIM_GROUP_GROUP_T">
-    <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KR_KIM_GROUP_MEMBER_ID_SEQ" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MEMBER_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -373,7 +373,7 @@
   </class-descriptor>
   
   <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl" table="KR_KIM_GROUP_PRINCIPAL_T">
-    <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KR_KIM_GROUP_MEMBER_ID_SEQ" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -606,7 +606,7 @@
   </class-descriptor>     
 
   <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl" table="KR_KIM_GROUP_ATTR_DATA_T">
-    <field-descriptor name="attributeDataId" column="ATTRIB_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="attributeDataId" column="ATTRIB_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KR_KIM_GROUP_ATTR_DATA_ID_SEQ" />
     <field-descriptor name="targetPrimaryKey" column="TARGET_PRIMARY_KEY" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYPE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTRIB_ID" jdbc-type="VARCHAR" />

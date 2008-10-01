@@ -530,9 +530,7 @@ public class GroupServiceImpl implements GroupService {
      * @see org.kuali.rice.kim.service.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)
      */
     public boolean addPrincipalToGroup(String principalId, String groupId) {
-        // TODO sgibson - needs to get primary key from sequence
         GroupPrincipalImpl groupPrincipal = new GroupPrincipalImpl();
-        groupPrincipal.setGroupMemberId(groupId + "-" + principalId);
         groupPrincipal.setGroupId(groupId);
         groupPrincipal.setMemberPrincipalId(principalId);
         
@@ -573,7 +571,6 @@ public class GroupServiceImpl implements GroupService {
         }
         
         GroupGroupImpl groupGroup = new GroupGroupImpl();
-        groupGroup.setGroupMemberId(parentId + "-" + childId);
         groupGroup.setGroupId(parentId);
         groupGroup.setMemberId(childId);
         
@@ -633,21 +630,22 @@ public class GroupServiceImpl implements GroupService {
     
     @SuppressWarnings("unchecked")
     protected List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
-        // TODO - get primary key from sequence
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
         
         for(String key : infoMap.keySet()) {
             Map<String,String> criteria = new HashMap<String,String>();
             criteria.put("attributeName", key);
-            List<KimAttribute> kimAttrList = (List<KimAttribute>) getBusinessObjectService().findMatching(KimAttributeImpl.class, criteria);
-            KimAttribute kimAttr = kimAttrList.get(0);
+            KimAttributeImpl kimAttr = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+            
+            if(kimAttr == null) {
+            	throw new IllegalArgumentException("KimAttribute not found: " + key);
+            }
             
             GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
             groupAttr.setKimAttributeId(kimAttr.getAttributeId());
             groupAttr.setAttributeValue(infoMap.get(key));
             groupAttr.setTargetPrimaryKey(groupId);
             groupAttr.setKimTypeId(kimTypeId);
-            groupAttr.setAttributeDataId(groupId + "-" + kimAttr.getAttributeId());
             
             attrList.add(groupAttr);
         }

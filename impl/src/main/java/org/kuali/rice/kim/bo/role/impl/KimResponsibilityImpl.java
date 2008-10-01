@@ -10,12 +10,15 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing Responsibilitys and
+ * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,20 +26,18 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.types.KimType;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_RESPONSIBILITY_T")
+@Table(name="KR_KIM_RESP_T")
 public class KimResponsibilityImpl extends PersistableBusinessObjectBase implements KimResponsibility {
 
 	private static final long serialVersionUID = 1L;
@@ -44,28 +45,20 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@Id
 	@Column(name="RESP_ID")
 	protected String responsibilityId;
-	@Column(name="NMSPC_CD")
-	protected String namespaceCode;
-	@Column(name="RESP_NM")
-	protected String responsibilityName;
-	@Column(name="KIM_TYPE_ID")
-	protected String kimTypeId;
-	@Column(name="RESP_DESC", length=400)
-	protected String responsibilityDescription;
+	@Column(name="NAME")
+	protected String name;
+	@Column(name="DESCRIPTION", length=400)
+	protected String description;
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
-	protected KimType kimResponsibilityType;
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getKimTypeId()
-	 */
-	public String getKimTypeId() {
-		return kimTypeId;
-	}
+	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="RESP_ID", insertable=false, updatable=false)
+	protected List<ResponsibilityAttributeDataImpl> detailObjects;
 
+	protected String templateId;
+	protected KimResponsibilityTemplateImpl template;
+	
 	/**
 	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
 	 */
@@ -80,22 +73,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		this.active = active;
 	}
 
-	public KimType getKimResponsibilityType() {
-		return kimResponsibilityType;
-	}
-
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getNamespaceCode()
+	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getDescription()
 	 */
-	public String getNamespaceCode() {
-		return namespaceCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getResponsibilityDescription()
-	 */
-	public String getResponsibilityDescription() {
-		return responsibilityDescription;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
@@ -106,26 +88,18 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getResponsibilityName()
+	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getName()
 	 */
-	public String getResponsibilityName() {
-		return responsibilityName;
+	public String getName() {
+		return name;
 	}
 
-	public void setKimTypeId(String kimTypeId) {
-		this.kimTypeId = kimTypeId;
+	public void setDescription(String responsibilityDescription) {
+		this.description = responsibilityDescription;
 	}
 
-	public void setNamespaceCode(String namespaceCode) {
-		this.namespaceCode = namespaceCode;
-	}
-
-	public void setResponsibilityDescription(String responsibilityDescription) {
-		this.responsibilityDescription = responsibilityDescription;
-	}
-
-	public void setResponsibilityName(String responsibilityName) {
-		this.responsibilityName = responsibilityName;
+	public void setName(String responsibilityName) {
+		this.name = responsibilityName;
 	}
 
 	/**
@@ -136,9 +110,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "responsibilityId", responsibilityId );
-		m.put( "namespaceCode", namespaceCode );
-		m.put( "responsibilityName", responsibilityName );
-		m.put( "kimTypeId", kimTypeId );
+		m.put( "name", name );
+		m.put( "details", getDetails() );
 		return m;
 	}
 
@@ -146,21 +119,44 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		KimResponsibilityInfo dto = new KimResponsibilityInfo();
 		
 		dto.setResponsibilityId( getResponsibilityId() );
-		dto.setResponsibilityName( getResponsibilityName() );
-		dto.setNamespaceCode( getNamespaceCode() );
-		dto.setResponsibilityDescription( getResponsibilityDescription() );
-		dto.setKimTypeId( getKimTypeId() );
+		dto.setName( getName() );
+		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
+		dto.setDetails( getDetails() );
 		
 		return dto;
 	}
 	
-	public void fromInfo( KimResponsibilityInfo info ) {
-		responsibilityId = info.getResponsibilityId();
-		responsibilityName = info.getResponsibilityName();
-		responsibilityDescription = info.getResponsibilityDescription();
-		namespaceCode = info.getNamespaceCode();
-		kimTypeId = info.getKimTypeId();
-		active = info.isActive();
+	public List<ResponsibilityAttributeDataImpl> getDetailObjects() {
+		return this.detailObjects;
 	}
+
+	public void setDetails(List<ResponsibilityAttributeDataImpl> detailObjects) {
+		this.detailObjects = detailObjects;
+	}
+	
+	public boolean hasDetails() {
+		return !detailObjects.isEmpty();
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.bo.role.ResponsibilityDetails#getDetails()
+	 */
+	public Map<String,String> getDetails() {
+		Map<String, String> map = new HashMap<String, String>();
+		for (ResponsibilityAttributeDataImpl data : detailObjects) {
+			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
+		}
+		return map;
+	}
+
+	public KimResponsibilityTemplateImpl getTemplate() {
+		return this.template;
+	}
+
+	public void setTemplate(KimResponsibilityTemplateImpl template) {
+		this.template = template;
+	}
+
+	
 }

@@ -23,45 +23,24 @@ import java.io.Serializable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimPermissionInfo implements KimPermission, Serializable {
+public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermission, Serializable {
 
-	protected String permissionId;
-	protected String namespaceCode;
-	protected String permissionName;
-	protected String kimTypeId;
-	protected String permissionDescription;
+	protected String name;
+	protected String description;
 	
 	protected boolean active;
 	
-	public String getPermissionId() {
-		return this.permissionId;
+	public String getName() {
+		return this.name;
 	}
-	public void setPermissionId(String permissionId) {
-		this.permissionId = permissionId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getNamespaceCode() {
-		return this.namespaceCode;
+	public String getDescription() {
+		return this.description;
 	}
-	public void setNamespaceCode(String namespaceCode) {
-		this.namespaceCode = namespaceCode;
-	}
-	public String getPermissionName() {
-		return this.permissionName;
-	}
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
-	}
-	public String getKimTypeId() {
-		return this.kimTypeId;
-	}
-	public void setKimTypeId(String kimTypeId) {
-		this.kimTypeId = kimTypeId;
-	}
-	public String getPermissionDescription() {
-		return this.permissionDescription;
-	}
-	public void setPermissionDescription(String permissionDescription) {
-		this.permissionDescription = permissionDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public boolean isActive() {
 		return this.active;

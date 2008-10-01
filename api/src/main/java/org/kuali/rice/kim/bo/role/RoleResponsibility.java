@@ -17,12 +17,13 @@ package org.kuali.rice.kim.bo.role;
 
 
 /**
- * Join table between the KimRole and KimPermission objects. 
+ * Join table between the KimRole and KimResponsibility objects. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RoleResponsibility extends ResponsibilityDetails {
+public interface RoleResponsibility {
 	String getRoleResponsibilityId();	
 	String getRoleId();
+	String getResponsibilityId();
 }

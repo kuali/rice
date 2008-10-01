@@ -15,13 +15,27 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kns.bo.Inactivateable;
+
 
 /**
- * Interface for role-specific method needed for attribute data.
+ * Represents a single permission template within the system.
+ * 
+ * Permissions templates define the type (and corresponding set of attributes) for the permission as well as a default name and description.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RolePermissionAttributeData extends KimAttributeData {
+public interface KimResponsibilityTemplate extends Inactivateable {
+
+	String getResponsibilityTemplateId();
+	
+	String getName();
+
+	/** Verbose description of the Permission and functionally what permissions it implies. */
+	String getDescription();
+
+	/** Type identifier for this role.  This will control what additional attributes are available */
+	String getKimTypeId();
+	
 }

@@ -282,6 +282,28 @@
         p:localServiceName="kimAuthorizationService" />
     </property>  
   </bean>
+  
+  <alias alias="kimPermissionService" name="kimAuthorizationService" />
+    
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimPermissionService"
+        p:localServiceName="kimPermissionService" />
+    </property>  
+  </bean>
+
+  <alias alias="kimResponsibilityService" name="kimAuthorizationService" />
+    
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimResponsibilityService"
+        p:localServiceName="kimResponsibilityService" />
+    </property>  
+  </bean>
 
   <bean id="kimPersonDao" class="org.kuali.rice.kim.dao.proxy.PersonDaoProxy">
     <property name="daoJpa">

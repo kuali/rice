@@ -83,8 +83,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermission(java.lang.String, java.lang.String, java.util.Map)
      */
-    public boolean hasQualifiedPermission(String principalId, String permissionId,
-    		Map<String,String> qualification) {
+    public boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification) {
     	if ( principalId == null || permissionId == null || qualification == null ) {
     		return false;
     	}
@@ -110,8 +109,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#hasPermissionWithDetails(java.lang.String, java.lang.String, java.util.Map)
      */
-    public boolean hasPermissionWithDetails(String principalId, String permissionId,
-    		Map<String,String> permissionDetails) {
+    public boolean hasPermissionWithDetails(String principalId, String permissionId, Map<String,String> permissionDetails) {
     	List<String> roleIds = getRoleService().getRoleIdsForPrincipal( principalId );
     	// build a list of all granted permissions
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
@@ -144,9 +142,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionByName(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
      */
-    public boolean hasQualifiedPermissionByName(String principalId, String namespaceCode,
-    		String permissionName, Map<String,String> qualification) {
-    	KimPermissionImpl perm = getPermissionImplByName( namespaceCode, permissionName );
+    public boolean hasQualifiedPermissionByName(String principalId, String permissionName, Map<String,String> qualification) {
+    	KimPermissionImpl perm = getPermissionImplByName( permissionName );
     	if ( perm == null ) {
     		return false;
     	}
@@ -170,13 +167,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     	}
     	return perms;
     }
-        
-    protected List<PermissionDetailsInfo> getPermissionsForRole(String roleId) {
-    	return getPermissionsInNamespaceForRole( roleId, null );
-    }
 
     @SuppressWarnings("unchecked")
-	protected List<PermissionDetailsInfo> getPermissionsInNamespaceForRole(String roleId, String namespaceCode ) {
+	protected List<PermissionDetailsInfo> getPermissionsForRole(String roleId ) {
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
     	List<String> impliedRoles = getRoleService().getImpliedRoleIds( roleId );
     	Map<String,String> rolePermCriteria = new HashMap<String, String>( 1 );
@@ -185,10 +178,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     		rolePermCriteria.put("roleId", impliedRoleId);
         	List<RolePermissionImpl> rolePerms = (List)getBusinessObjectService().findMatching(RolePermissionImpl.class, rolePermCriteria);
         	for ( RolePermissionImpl perm : rolePerms ) {
-        		if ( namespaceCode == null 
-        				|| perm.getPermission().getNamespaceCode().equals( namespaceCode ) ) {
-        			perms.add( perm.toPermissionDetail() );
-        		}
+    			perms.add( perm.getPermission().toSimpleInfo() );
         	}
     	}
     	return perms;
@@ -197,8 +187,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionDetails(java.lang.String, java.lang.String, java.util.Map)
      */
-    public List<Map<String,String>> getPermissionDetails(String principalId,
-    		String permissionId, Map<String,String> qualification) {
+    public List<Map<String,String>> getPermissionDetails(String principalId, String permissionId, Map<String,String> qualification) {
     	throw new UnsupportedOperationException();
     	// TODO: implement me!
     }
@@ -222,8 +211,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionByName(java.lang.String, java.lang.String)
      */
-    public KimPermissionInfo getPermissionByName(String namespaceCode, String permissionName) {
-    	KimPermissionImpl impl = getPermissionImplByName( namespaceCode, permissionName );
+    public KimPermissionInfo getPermissionByName(String permissionName) {
+    	KimPermissionImpl impl = getPermissionImplByName( permissionName );
     	if ( impl != null ) {
     		return impl.toSimpleInfo();
     	}
@@ -247,10 +236,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     	return (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk );
     }
     
-    protected KimPermissionImpl getPermissionImplByName(String namespaceCode, String permissionName ) {
+    protected KimPermissionImpl getPermissionImplByName( String permissionName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-    	pk.put( "namespaceCode", namespaceCode );
-    	pk.put( "permissionName", permissionName );
+    	pk.put( "name", permissionName );
 		pk.put("active", "Y");
     	return (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk );
     }
@@ -258,8 +246,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionIdByName(java.lang.String, java.lang.String)
      */
-    public String getPermissionIdByName(String namespaceCode, String permissionName) {
-    	KimPermissionImpl perm = getPermissionImplByName( namespaceCode, permissionName );
+    public String getPermissionIdByName( String permissionName) {
+    	KimPermissionImpl perm = getPermissionImplByName( permissionName );
     	if ( perm == null ) {
     		return null;
     	}
@@ -273,7 +261,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     		KimPermissionTypeService kimPermissionService = (KimPermissionTypeService)KIMServiceLocator
 					.getService( serviceName );
     		if ( kimPermissionService == null
-    				|| kimPermissionService.doesPermissionDetailMatch( details, perm.getPermissionDetails() ) ) {
+    				|| kimPermissionService.doesPermissionDetailMatch( details, perm.getDetails() ) ) {
     			perms.add( perm );
     		}
     	}
@@ -281,7 +269,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     
     protected String getPermissionTypeServiceName( String permissionId ) {
-    	KimType permType = getPermissionImpl( permissionId ).getKimPermissionType();
+    	KimType permType = getPermissionImpl( permissionId ).getTemplate().getKimType();
     	if ( permType != null ) {
     		return permType.getKimTypeServiceName();
     	}
@@ -291,12 +279,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
     public void savePermission(KimPermissionInfo permission) {
-    	if ( permission == null ) {
-    		return;
-    	}
-    	KimPermissionImpl impl = new KimPermissionImpl();
-    	impl.fromInfo( permission );
-		getBusinessObjectService().save( impl );
+    	throw new UnsupportedOperationException();
+//    	if ( permission == null ) {
+//    		return;
+//    	}
+//    	KimPermissionImpl impl = new KimPermissionImpl();
+//    	impl.fromInfo( permission );
+//		getBusinessObjectService().save( impl );
     }
 
 	
@@ -322,8 +311,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityByName(java.lang.String, java.lang.String)
      */
-    public KimResponsibilityInfo getResponsibilityByName(String namespaceCode, String responsibilityName) {
-    	KimResponsibilityImpl impl = getResponsibilityImplByName( namespaceCode, responsibilityName );
+    public KimResponsibilityInfo getResponsibilityByName( String responsibilityName) {
+    	KimResponsibilityImpl impl = getResponsibilityImplByName( responsibilityName );
     	if ( impl != null ) {
     		return impl.toSimpleInfo();
     	}
@@ -339,9 +328,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
     }
     
-    protected KimResponsibilityImpl getResponsibilityImplByName(String namespaceCode, String responsibilityName ) {
+    protected KimResponsibilityImpl getResponsibilityImplByName( String responsibilityName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-    	pk.put( "namespaceCode", namespaceCode );
     	pk.put( "responsibilityName", responsibilityName );
 		pk.put("active", "Y");
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
@@ -365,10 +353,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getPrincipalIdsWithResponsibilityByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<String> getPrincipalIdsWithResponsibilityByName(String namespaceCode,
-    		String responsibilityName, Map<String,String> qualification,
+    public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
     		Map<String,String> responsibilityDetails) {
-    	KimResponsibilityInfo resp = getResponsibilityByName( namespaceCode, responsibilityName );
+    	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
     	return getPrincipalIdsWithResponsibility( resp.getResponsibilityId(), qualification, responsibilityDetails );
     }
     
@@ -402,10 +389,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kim.service.AuthorizationService#getResponsibilityInfoByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<PrincipalResponsibilityInfo> getResponsibilityInfoByName(String namespaceCode,
-    		String responsibilityName, Map<String,String> qualification,
+    public List<PrincipalResponsibilityInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
     		Map<String,String> responsibilityDetails) {
-    	KimResponsibilityInfo resp = getResponsibilityByName( namespaceCode, responsibilityName );
+    	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
     	return getResponsibilityInfo( resp.getResponsibilityId(), qualification, responsibilityDetails );
     }
 

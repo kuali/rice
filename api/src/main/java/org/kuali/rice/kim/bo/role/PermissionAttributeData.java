@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.kim.bo.types.KimType;
+import org.kuali.rice.kim.bo.types.KimAttributeData;
 
 /**
- * Base class for additional methods all role types should have. 
+ * Interface for role-specific method needed for attribute data.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimRoleType extends KimType {
-
+public interface PermissionAttributeData extends KimAttributeData {
 }

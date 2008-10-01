@@ -26,8 +26,8 @@ import java.util.Map;
 public interface ResponsibilityDetails {
 	String getResponsibilityId();
 	
-	/** List of details for this role/responsibility relationship.  See the class comment for more information. */
-	Map<String,String> getResponsibilityDetails();
+	/** List of details for this role/permission relationship.  See the class comment for more information. */
+	Map<String,String> getDetails();
 	
 	public boolean hasDetails();
 }

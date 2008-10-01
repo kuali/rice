@@ -34,11 +34,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.KimRoleType;
 import org.kuali.rice.kim.bo.role.RoleGroup;
 import org.kuali.rice.kim.bo.role.RoleMember;
 import org.kuali.rice.kim.bo.role.RolePrincipal;
 import org.kuali.rice.kim.bo.role.RoleRelationship;
+import org.kuali.rice.kim.bo.types.KimType;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -82,7 +82,7 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@Transient
-	protected KimRoleType kimRoleType; 
+	protected KimType kimRoleType; 
 	
 	/**
 	 * This overridden method ...
@@ -197,11 +197,11 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		return new HashCodeBuilder( -460627871, 746615189 ).append( this.roleId ).toHashCode();
 	}
 
-	public KimRoleType getKimRoleType() {
+	public KimType getKimRoleType() {
 		return this.kimRoleType;
 	}
 
-	public void setKimRoleType(KimRoleType kimRoleType) {
+	public void setKimRoleType(KimType kimRoleType) {
 		this.kimRoleType = kimRoleType;
 	}
 	

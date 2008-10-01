@@ -17,6 +17,7 @@ ALTER TABLE kr_kim_entity_name_t ADD CONSTRAINT kr_kim_entity_name_tr1
 	REFERENCES kr_kim_entity_t
 	ON DELETE CASCADE
 /
+
 ALTER TABLE kr_kim_entity_name_t ADD CONSTRAINT kr_kim_entity_name_tr2
 	FOREIGN KEY (name_typ_cd)
 	REFERENCES kr_kim_ent_name_type_t
@@ -33,11 +34,11 @@ ALTER TABLE kr_kim_entity_bio_t ADD CONSTRAINT kr_kim_entity_bio_tr1
 /
  */
 
--- kr_kim_entity_ferpa_pref_t
+-- kr_kim_entity_priv_pref_t
 
 /* commented out because of the way that OJB seems to handle 1:1 relationships
    - it attempts to persist the child entry first 
-ALTER TABLE kr_kim_entity_ferpa_pref_t ADD CONSTRAINT kr_kim_entity_ferpa_pref_tr1
+ALTER TABLE kr_kim_entity_priv_pref_t ADD CONSTRAINT kr_kim_entity_priv_pref_tr1
 	FOREIGN KEY (entity_id)
 	REFERENCES kr_kim_entity_t
 	ON DELETE CASCADE

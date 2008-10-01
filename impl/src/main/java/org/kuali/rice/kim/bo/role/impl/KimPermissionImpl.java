@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,20 +26,18 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimPermissionInfo;
-import org.kuali.rice.kim.bo.types.KimType;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_PERMISSION_T")
+@Table(name="KR_KIM_PERM_T")
 public class KimPermissionImpl extends PersistableBusinessObjectBase implements KimPermission {
 
 	private static final long serialVersionUID = 1L;
@@ -44,27 +45,19 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@Id
 	@Column(name="PERM_ID")
 	protected String permissionId;
-	@Column(name="NMSPC_CD")
-	protected String namespaceCode;
-	@Column(name="PERM_NM")
-	protected String permissionName;
-	@Column(name="KIM_TYPE_ID")
-	protected String kimTypeId;
-	@Column(name="PERM_DESC", length=400)
-	protected String permissionDescription;
+	@Column(name="NAME")
+	protected String name;
+	@Column(name="DESCRIPTION", length=400)
+	protected String description;
 	@Column(name="ACTV_IND")
 	protected boolean active;
-
-	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
-	protected KimType kimPermissionType;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getKimTypeId()
-	 */
-	public String getKimTypeId() {
-		return kimTypeId;
-	}
+	@OneToMany(targetEntity=PermissionAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
+	protected List<PermissionAttributeDataImpl> detailObjects;
+
+	protected String templateId;
+	protected KimPermissionTemplateImpl template;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
@@ -80,22 +73,11 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.active = active;
 	}
 
-	public KimType getKimPermissionType() {
-		return kimPermissionType;
-	}
-
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimPermission#getNamespaceCode()
+	 * @see org.kuali.rice.kim.bo.role.KimPermission#getDescription()
 	 */
-	public String getNamespaceCode() {
-		return namespaceCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimPermission#getPermissionDescription()
-	 */
-	public String getPermissionDescription() {
-		return permissionDescription;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
@@ -106,26 +88,18 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimPermission#getPermissionName()
+	 * @see org.kuali.rice.kim.bo.role.KimPermission#getName()
 	 */
-	public String getPermissionName() {
-		return permissionName;
+	public String getName() {
+		return name;
 	}
 
-	public void setKimTypeId(String kimTypeId) {
-		this.kimTypeId = kimTypeId;
+	public void setDescription(String permissionDescription) {
+		this.description = permissionDescription;
 	}
 
-	public void setNamespaceCode(String namespaceCode) {
-		this.namespaceCode = namespaceCode;
-	}
-
-	public void setPermissionDescription(String permissionDescription) {
-		this.permissionDescription = permissionDescription;
-	}
-
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
+	public void setName(String permissionName) {
+		this.name = permissionName;
 	}
 
 	/**
@@ -136,9 +110,8 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "permissionId", permissionId );
-		m.put( "namespaceCode", namespaceCode );
-		m.put( "permissionName", permissionName );
-		m.put( "kimTypeId", kimTypeId );
+		m.put( "name", name );
+		m.put( "details", getDetails() );
 		return m;
 	}
 
@@ -146,21 +119,52 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		KimPermissionInfo dto = new KimPermissionInfo();
 		
 		dto.setPermissionId( getPermissionId() );
-		dto.setPermissionName( getPermissionName() );
-		dto.setNamespaceCode( getNamespaceCode() );
-		dto.setPermissionDescription( getPermissionDescription() );
-		dto.setKimTypeId( getKimTypeId() );
+		dto.setName( getName() );
+		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
+		dto.setDetails( getDetails() );
 		
 		return dto;
 	}
 	
-	public void fromInfo( KimPermissionInfo info ) {
-		permissionId = info.getPermissionId();
-		permissionName = info.getPermissionName();
-		permissionDescription = info.getPermissionDescription();
-		namespaceCode = info.getNamespaceCode();
-		kimTypeId = info.getKimTypeId();
-		active = info.isActive();
+	public List<PermissionAttributeDataImpl> getDetailObjects() {
+		return this.detailObjects;
 	}
+
+	public void setDetails(List<PermissionAttributeDataImpl> detailObjects) {
+		this.detailObjects = detailObjects;
+	}
+	
+	public boolean hasDetails() {
+		return !detailObjects.isEmpty();
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.bo.role.PermissionDetails#getDetails()
+	 */
+	public Map<String,String> getDetails() {
+		Map<String, String> map = new HashMap<String, String>();
+		for (PermissionAttributeDataImpl data : detailObjects) {
+			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
+		}
+		return map;
+	}
+
+	public KimPermissionTemplateImpl getTemplate() {
+		return this.template;
+	}
+
+	public void setTemplate(KimPermissionTemplateImpl template) {
+		this.template = template;
+	}
+
+	public String getTemplateId() {
+		return this.templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	
 }

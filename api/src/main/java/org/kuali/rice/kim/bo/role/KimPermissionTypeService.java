@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.types.KimTypeService;
  */
 public interface KimPermissionTypeService extends KimTypeService {
 
-    /** Return whether a permission assignment with the given permissionDetails is applicable for the given request details. 
+    /** Return whether a permission assignment with the given details is applicable for the given request details. 
      * 
      * For example, the details for a permission (say edit) could be as follows:
      *   component = Account

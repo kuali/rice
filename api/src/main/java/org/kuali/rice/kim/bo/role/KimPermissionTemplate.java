@@ -15,15 +15,27 @@
  */
 package org.kuali.rice.kim.bo.role;
 
+import org.kuali.rice.kns.bo.Inactivateable;
+
 
 /**
- * Join table between the KimRole and KimPermission objects. 
+ * Represents a single permission template within the system.
+ * 
+ * Permissions templates define the type (and corresponding set of attributes) for the permission as well as a default name and description.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RolePermission {
-	String getRolePermissionId();	
-	String getRoleId();
-	String getPermissionId();
+public interface KimPermissionTemplate extends Inactivateable {
+
+	String getPermissionTemplateId();
+	
+	String getName();
+
+	/** Verbose description of the Permission and functionally what permissions it implies. */
+	String getDescription();
+
+	/** Type identifier for this role.  This will control what additional attributes are available */
+	String getKimTypeId();
+	
 }

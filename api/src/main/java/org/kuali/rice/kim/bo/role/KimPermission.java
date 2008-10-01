@@ -19,7 +19,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
 
 
 /**
- * Represents a single permissions within the system.  It is qualified by a namespace and component.
+ * Represents a single permissions within the system.
  * 
  * Permissions are attached to roles.  All authorization checks should be done against permissions,
  * never against roles or groups.
@@ -27,18 +27,11 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimPermission extends Inactivateable {
+public interface KimPermission extends Inactivateable, PermissionDetails {
 
-	String getPermissionId();
-	
-	String getNamespaceCode();
-	
-	String getPermissionName();
+	String getName();
 
 	/** Verbose description of the Permission and functionally what permissions it implies. */
-	String getPermissionDescription();
+	String getDescription();
 
-	/** Type identifier for this role.  This will control what additional attributes are available */
-	String getKimTypeId();
-	
 }

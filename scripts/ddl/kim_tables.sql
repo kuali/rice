@@ -266,7 +266,6 @@ CREATE TABLE kr_kim_entity_name_t
     obj_id            VARCHAR2(36) CONSTRAINT kr_kim_entity_name_tn1 NOT NULL,
     ver_nbr           NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_name_tn2 NOT NULL,
     entity_id         VARCHAR2(40),
-    ent_typ_cd        VARCHAR2(40),
     name_typ_cd       VARCHAR2(40),
     first_nm          VARCHAR2(40),
     middle_nm         VARCHAR2(40),
@@ -348,22 +347,22 @@ CREATE TABLE kr_kim_entity_email_t
 ALTER TABLE kr_kim_entity_email_t ADD CONSTRAINT kr_kim_entity_email_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_entity_ferpa_pref_t
+CREATE TABLE kr_kim_entity_priv_pref_t
 (
     entity_id           VARCHAR2(40),
-    obj_id              VARCHAR2(36) CONSTRAINT kr_kim_entity_ferpa_pref_tn1 NOT NULL,
-    ver_nbr             NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_entity_ferpa_pref_tn2 NOT NULL,
+    obj_id              VARCHAR2(36) NOT NULL,
+    ver_nbr             NUMBER(8,0) DEFAULT 1 NOT NULL,
     suppress_name_ind   VARCHAR2(1) DEFAULT 'N',
     suppress_email_ind  VARCHAR2(1) DEFAULT 'Y',
     suppress_addr_ind   VARCHAR2(1) DEFAULT 'Y',
     suppress_phone_ind  VARCHAR2(1) DEFAULT 'Y',
     suppress_prsnl_ind  VARCHAR2(1) DEFAULT 'Y',
     last_updt_dt    DATE DEFAULT SYSDATE,
-    CONSTRAINT kr_kim_entity_ferpa_pref_tp1 PRIMARY KEY ( entity_id )
+    CONSTRAINT kr_kim_entity_priv_pref_tp1 PRIMARY KEY ( entity_id )
 )
 /
 
-ALTER TABLE kr_kim_entity_ferpa_pref_t ADD CONSTRAINT kr_kim_entity_ferpa_pref_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_entity_priv_pref_t ADD CONSTRAINT kr_kim_entity_priv_pref_tc0 UNIQUE (obj_id)
 /
 
 CREATE TABLE kr_kim_entity_bio_t
@@ -599,23 +598,6 @@ CREATE TABLE kr_kim_type_attribute_t
 ALTER TABLE kr_kim_type_attribute_t ADD CONSTRAINT kr_kim_type_attribute_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_permission_t
-(
-    perm_id               VARCHAR2(40) constraint kr_kim_permission_tn1 NOT NULL,
-    obj_id                VARCHAR2(36) CONSTRAINT kr_kim_permission_tn2 NOT NULL,
-    ver_nbr               NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_permission_tn3 NOT NULL,
-    nmspc_cd              VARCHAR2(40),
-    perm_nm               VARCHAR2(40),
-    kim_type_id           VARCHAR2(40),
-    perm_desc             VARCHAR2(40),
-    actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_permission_tp1 PRIMARY KEY ( perm_id  )
-)
-/
-
-ALTER TABLE kr_kim_permission_t ADD CONSTRAINT kr_kim_permission_tc0 UNIQUE (obj_id)
-/
-
 CREATE TABLE kr_kim_role_group_t
 (
     role_member_id        VARCHAR2(40) constraint kr_kim_role_group_tn1 NOT NULL,
@@ -646,7 +628,9 @@ CREATE TABLE kr_kim_role_rel_t
 ALTER TABLE kr_kim_role_rel_t ADD CONSTRAINT kr_kim_role_rel_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_role_permission_t
+DROP TABLE kr_kim_role_permission_t
+/
+CREATE TABLE kr_kim_role_perm_t
 (
     role_perm_id          VARCHAR2(40) constraint kr_kim_role_permission_tn1 NOT NULL,
     obj_id                VARCHAR2(36) CONSTRAINT kr_kim_role_permission_tn2 NOT NULL,
@@ -661,37 +645,6 @@ CREATE TABLE kr_kim_role_permission_t
 ALTER TABLE kr_kim_role_permission_t ADD CONSTRAINT kr_kim_role_permission_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_role_responsibility_t
-(
-    role_resp_id          VARCHAR2(40) constraint kr_kim_role_responsibility_tn1 NOT NULL,
-    obj_id                VARCHAR2(36) CONSTRAINT kr_kim_role_responsibility_tn2 NOT NULL,
-    ver_nbr               NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_role_responsibility_tn3 NOT NULL,
-    role_id               VARCHAR2(40),
-    resp_id               VARCHAR2(40),
-    actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_role_responsibility_tp1 PRIMARY KEY ( role_resp_id )
-)
-/
-
-ALTER TABLE kr_kim_role_responsibility_t ADD CONSTRAINT kr_kim_role_responsibility_tc0 UNIQUE (obj_id)
-/
-
-CREATE TABLE kr_kim_responsibility_t
-(
-    resp_id               VARCHAR2(40) constraint kr_kim_responsibility_tn1 NOT NULL,
-    obj_id                VARCHAR2(36) CONSTRAINT kr_kim_responsibility_tn2 NOT NULL,
-    ver_nbr               NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_responsibility_tn3 NOT NULL,
-    nmspc_cd              VARCHAR2(40),
-    resp_nm               VARCHAR2(40),
-    kim_type_id           VARCHAR2(40),
-    resp_desc             VARCHAR2(40),
-    actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_responsibility_tp1 PRIMARY KEY ( resp_id  )
-)
-/
-
-ALTER TABLE kr_kim_responsibility_t ADD CONSTRAINT kr_kim_responsibility_tc0 UNIQUE (obj_id)
-/
 
 CREATE TABLE kr_kim_group_attr_data_t
 (
@@ -724,33 +677,166 @@ CREATE TABLE kr_kim_role_mbr_attr_data_t
 
 ALTER TABLE kr_kim_role_mbr_attr_data_t ADD CONSTRAINT kr_kim_role_mbr_attr_data_tc0 UNIQUE (obj_id)
 /
-CREATE TABLE kr_kim_role_perm_attr_data_t
+
+
+
+
+-- NEW Tables
+DROP TABLE kr_kim_responsibility_t
+/
+
+CREATE TABLE kr_kim_resp_tmpl_t
 (
-    attrib_data_id   VARCHAR2(40) NOT NULL,
+    resp_tmpl_id         VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    resp_nm               VARCHAR2(40),
+    kim_type_id           VARCHAR2(40),
+    resp_desc             VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_resp_tmpl_tp1 PRIMARY KEY ( resp_tmpl_id  )
+)
+/
+
+ALTER TABLE kr_kim_resp_tmpl_t ADD CONSTRAINT kr_kim_resp_tmpl_tc0 UNIQUE (obj_id)
+/
+
+CREATE TABLE kr_kim_resp_t
+(
+    resp_id               VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    resp_tmpl_id         VARCHAR2(40),
+    resp_nm               VARCHAR2(40),
+    resp_desc             VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_resp_tp1 PRIMARY KEY ( resp_id )
+)
+/
+
+ALTER TABLE kr_kim_resp_t ADD CONSTRAINT kr_kim_resp_tc0 UNIQUE (obj_id)
+/
+
+
+ALTER TABLE kr_kim_resp_t ADD CONSTRAINT kr_kim_resp_tr1
+	FOREIGN KEY (resp_tmpl_id)
+	REFERENCES kr_kim_resp_tmpl_t
+/
+
+CREATE TABLE kr_kim_resp_attr_data_t
+(
+    attrib_data_id   VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
     attrib_val            VARCHAR2(40),
-    CONSTRAINT kr_kim_role_perm_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
+    CONSTRAINT kr_kim_resp_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
 
-ALTER TABLE kr_kim_role_perm_attr_data_t ADD CONSTRAINT kr_kim_role_perm_attr_data_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_resp_attr_data_t ADD CONSTRAINT kr_kim_resp_attr_data_tc0 UNIQUE (obj_id)
 /
-CREATE TABLE kr_kim_role_resp_attr_data_t
+
+DROP TABLE kr_kim_role_responsibility_t
+/
+
+CREATE TABLE kr_kim_role_resp_t
 (
-    attrib_data_id   VARCHAR2(40) NOT NULL,
+    role_resp_id          VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    role_id               VARCHAR2(40),
+    resp_id               VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_role_resp_tp1 PRIMARY KEY ( role_resp_id )
+)
+/
+
+ALTER TABLE kr_kim_role_resp_t ADD CONSTRAINT kr_kim_role_resp_tc0 UNIQUE (obj_id)
+/
+
+CREATE TABLE kr_kim_role_resp_resol_t
+(
+    role_resp_resol_id    VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    resp_id               VARCHAR2(40),
+    role_id               VARCHAR2(40),
+    prncpl_id             VARCHAR2(40),
+    actn_typ_id           VARCHAR2(40),
+    priority_nbr          NUMBER(3),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_role_resp_tp1 PRIMARY KEY ( role_resp_id )
+)
+/
+
+ALTER TABLE kr_kim_role_resp_resol_t ADD CONSTRAINT kr_kim_role_resp_resol_tc0 UNIQUE (obj_id)
+/
+
+
+DROP TABLE kr_kim_permission_t
+/
+
+CREATE TABLE kr_kim_perm_tmpl_t
+(
+    perm_tmpl_id         VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    name                  VARCHAR2(40),
+    description           VARCHAR2(40),
+    kim_type_id           VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_perm_tmpl_tp1 PRIMARY KEY ( perm_id  )
+)
+/
+
+ALTER TABLE kr_kim_perm_tmpl_t ADD CONSTRAINT kr_kim_perm_tmpl_tc0 UNIQUE (obj_id)
+/
+
+CREATE TABLE kr_kim_permission_t
+(
+    perm_id               VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    perm_tmpl_id          VARCHAR2(40),
+    name                  VARCHAR2(40),
+    description           VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_permission_tp1 PRIMARY KEY ( perm_id  )
+)
+/
+
+ALTER TABLE kr_kim_permission_t ADD CONSTRAINT kr_kim_permission_tc0 UNIQUE (obj_id)
+/
+
+DROP TABLE kr_kim_role_permission_t
+/
+CREATE TABLE kr_kim_role_perm_t
+(
+    role_perm_id          VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    role_id               VARCHAR2(40),
+    perm_id               VARCHAR2(40),
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
+    CONSTRAINT kr_kim_role_permission_tp1 PRIMARY KEY ( role_perm_id )
+)
+/
+
+CREATE TABLE kr_kim_perm_attr_data_t
+(
+    attrib_data_id        VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
     attrib_val            VARCHAR2(40),
-    CONSTRAINT kr_kim_role_resp_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
+    CONSTRAINT kr_kim_perm_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
 
-ALTER TABLE kr_kim_role_resp_attr_data_t ADD CONSTRAINT kr_kim_role_resp_attr_data_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_ttr_data_tc0 UNIQUE (obj_id)
 /

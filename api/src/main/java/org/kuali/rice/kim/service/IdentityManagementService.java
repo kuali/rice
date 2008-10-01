@@ -77,7 +77,7 @@ public interface IdentityManagementService {
     // --------------------
     
     KimPermission getPermission(String permissionId);
-    KimPermission getPermissionByName( String namespaceCode, String permissionName );    
+    KimPermission getPermissionByName( String permissionName );    
 
     // --------------------
     // Authorization Checks
@@ -89,7 +89,7 @@ public interface IdentityManagementService {
     boolean hasPermission(String principalId, String permissionId);
     boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification );
     boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, Map<String,String> qualification, Map<String,String> permissionDetails );  
-    boolean hasQualifiedPermissionByName( String principalId, String namespaceCode, String permissionName, Map<String,String> qualification );
+    boolean hasQualifiedPermissionByName( String principalId, String permissionName, Map<String,String> qualification );
     
     // ----------------------
     // Responsibility Methods
@@ -104,7 +104,7 @@ public interface IdentityManagementService {
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    KimResponsibility getResponsibilityByName(String namespaceCode, String responsibilityName );
+    KimResponsibility getResponsibilityByName( String responsibilityName );
     
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
@@ -119,7 +119,7 @@ public interface IdentityManagementService {
     /**
      * Get a list of the principals who have this responsibility given the qualifications.
      */
-    List<String> getPrincipalIdsWithResponsibilityByName( String namespaceCode, String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
@@ -128,6 +128,6 @@ public interface IdentityManagementService {
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String namespaceCode, String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
     
 }

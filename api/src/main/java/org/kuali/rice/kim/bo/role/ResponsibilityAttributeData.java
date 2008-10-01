@@ -23,5 +23,5 @@ import org.kuali.rice.kim.bo.types.KimAttributeData;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RoleResponsibilityAttributeData extends KimAttributeData {
+public interface ResponsibilityAttributeData extends KimAttributeData {
 }

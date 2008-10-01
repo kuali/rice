@@ -45,9 +45,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     	return getAuthorizationService().hasQualifiedPermission( principalId, permissionId, qualification );
     }
     
-    public boolean hasQualifiedPermissionByName(String principalId, String namespaceCode, 
+    public boolean hasQualifiedPermissionByName(String principalId,  
     		String permissionName, Map<String,String> qualification) {
-    	return getAuthorizationService().hasQualifiedPermissionByName( principalId, namespaceCode, permissionName, qualification );
+    	return getAuthorizationService().hasQualifiedPermissionByName( principalId, permissionName, qualification );
     }
     
     /**
@@ -64,8 +64,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return getAuthorizationService().getPermission( permissionId );
 	}
 
-    public KimPermission getPermissionByName(String namespaceCode, String permissionName ) {
-		return getAuthorizationService().getPermissionByName( namespaceCode, permissionName );
+    public KimPermission getPermissionByName(String permissionName ) {
+		return getAuthorizationService().getPermissionByName( permissionName );
 	}
     
     // GROUP SERVICE
@@ -192,13 +192,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return getAuthorizationService().getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getPrincipalIdsWithResponsibilityByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
-	 */
-	public List<String> getPrincipalIdsWithResponsibilityByName(String namespaceCode,
-			String responsibilityName, Map<String,String> qualification,
+	public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getPrincipalIdsWithResponsibilityByName( namespaceCode, responsibilityName, qualification, responsibilityDetails );
+		return getAuthorizationService().getPrincipalIdsWithResponsibilityByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**
@@ -207,12 +203,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public KimResponsibility getResponsibility(String responsibilityId) {
 		return getAuthorizationService().getResponsibility( responsibilityId );
 	}
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityByName(java.lang.String, java.lang.String)
-	 */
-	public KimResponsibility getResponsibilityByName(String namespaceCode,
-			String responsibilityName) {
-		return getAuthorizationService().getResponsibilityByName( namespaceCode, responsibilityName );
+
+	public KimResponsibility getResponsibilityByName( String responsibilityName) {
+		return getAuthorizationService().getResponsibilityByName( responsibilityName );
 	}
 	
 	/**
@@ -223,13 +216,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return getAuthorizationService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityInfoByName(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
-	 */
-	public List<? extends PrincipalResponsibility> getResponsibilityInfoByName(String namespaceCode,
-			String responsibilityName, Map<String,String> qualification,
+	public List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getResponsibilityInfoByName( namespaceCode, responsibilityName, qualification, responsibilityDetails );
+		return getAuthorizationService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**

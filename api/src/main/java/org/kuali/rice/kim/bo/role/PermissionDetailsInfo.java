@@ -27,7 +27,7 @@ public class PermissionDetailsInfo implements PermissionDetails {
 
 	protected String permissionId;
 
-	protected Map<String,String> permissionDetails;
+	protected Map<String,String> details;
 
 	public String getPermissionId() {
 		return this.permissionId;
@@ -37,16 +37,16 @@ public class PermissionDetailsInfo implements PermissionDetails {
 		this.permissionId = permissionId;
 	}
 
-	public Map<String,String> getPermissionDetails() {
-		return this.permissionDetails;
+	public Map<String,String> getDetails() {
+		return this.details;
 	}
 
-	public void setPermissionDetails(Map<String,String> permissionDetails) {
-		this.permissionDetails = permissionDetails;
+	public void setDetails(Map<String,String> permissionDetails) {
+		this.details = permissionDetails;
 	}
 	
 	public boolean hasDetails() {
-		return !permissionDetails.isEmpty();
+		return !details.isEmpty();
 	}
 	
 }

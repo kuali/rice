@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
 package org.kuali.rice.kim.bo.role;
@@ -27,26 +27,26 @@ public class ResponsibilityDetailsInfo implements ResponsibilityDetails {
 
 	protected String responsibilityId;
 
-	protected Map<String,String> responsibilityDetails;
+	protected Map<String,String> details;
 
 	public String getResponsibilityId() {
 		return this.responsibilityId;
 	}
 
-	public void setResponsibilityId(String permissionId) {
-		this.responsibilityId = permissionId;
+	public void setResponsibilityId(String responsibilityId) {
+		this.responsibilityId = responsibilityId;
 	}
 
-	public Map<String,String> getResponsibilityDetails() {
-		return this.responsibilityDetails;
+	public Map<String,String> getDetails() {
+		return this.details;
 	}
 
-	public void setResponsibilityDetails(Map<String,String> permissionDetails) {
-		this.responsibilityDetails = permissionDetails;
+	public void setDetails(Map<String,String> responsibilityDetails) {
+		this.details = responsibilityDetails;
 	}
 	
 	public boolean hasDetails() {
-		return !responsibilityDetails.isEmpty();
+		return !details.isEmpty();
 	}
 	
 }

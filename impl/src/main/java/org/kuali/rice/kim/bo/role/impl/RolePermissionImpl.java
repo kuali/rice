@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,21 +23,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.role.PermissionDetailsInfo;
 import org.kuali.rice.kim.bo.role.RolePermission;
-import org.kuali.rice.kim.bo.role.RolePermissionAttributeData;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ROLE_PERMISSION_T")
+@Table(name="KR_KIM_ROLE_PERM_T")
 public class RolePermissionImpl extends PersistableBusinessObjectBase implements RolePermission {
 
 	private static final long serialVersionUID = 1L;
@@ -53,16 +46,11 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	@Column(name="PERM_ID")
 	protected String permissionId;
 	
-	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
-	protected KimPermission kimPermission;
+	protected KimPermissionImpl kimPermission;
 	
-	@OneToMany(targetEntity=RolePermissionAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="ROLE_PERM_ID", insertable=false, updatable=false)
-	protected List<RolePermissionAttributeDataImpl> details;
-	
-	
-	public KimPermission getPermission() {
+	public KimPermissionImpl getPermission() {
 		return kimPermission;
 	}
 
@@ -72,22 +60,7 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	public String getPermissionId() {
 		return permissionId;
 	}
-
-	public List<? extends RolePermissionAttributeData> getDetails() {
-		return details;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RolePermission#getPermissionDetails()
-	 */
-	public Map<String, String> getPermissionDetails() {
-		Map<String, String> map = new HashMap<String, String>();
-		for (RolePermissionAttributeDataImpl data : details) {
-			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
-		}
-		return map;
-	}
-
+	
 	/**
 	 * @see org.kuali.rice.kim.bo.role.RolePermission#getRoleId()
 	 */
@@ -100,10 +73,6 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	 */
 	public String getRolePermissionId() {
 		return rolePermissionId;
-	}
-
-	public boolean hasDetails() {
-		return !details.isEmpty();
 	}
 
 	public void setPermissionId(String permissionId) {
@@ -127,10 +96,4 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 		return m;
 	}
 
-	public PermissionDetailsInfo toPermissionDetail() {
-		PermissionDetailsInfo info = new PermissionDetailsInfo();
-		info.setPermissionId( getPermissionId() );
-		info.setPermissionDetails( getPermissionDetails() );
-		return info;
-	}
 }

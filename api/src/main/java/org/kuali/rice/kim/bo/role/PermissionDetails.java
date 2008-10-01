@@ -27,7 +27,7 @@ public interface PermissionDetails {
 	String getPermissionId();
 	
 	/** List of details for this role/permission relationship.  See the class comment for more information. */
-	Map<String,String> getPermissionDetails();
+	Map<String,String> getDetails();
 	
 	public boolean hasDetails();
 }

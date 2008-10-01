@@ -29,8 +29,8 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.role.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.PermissionDetailsInfo;
-import org.kuali.rice.kim.service.impl.RoleServiceImpl;
-import org.kuali.rice.kim.service.impl.AuthorizationServiceImpl;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
@@ -43,8 +43,8 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  */
 public class AuthorizationServiceImplTest extends RiceTestCase {
 
-	private AuthorizationServiceImpl authorizationService;
-	private RoleServiceImpl roleService;
+	private PermissionService permissionService;
+	private RoleService roleService;
 
 	private String contextName = "/knstest";
 
@@ -94,8 +94,8 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		authorizationService = (AuthorizationServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimAuthorizationService"));
-		roleService = (RoleServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
+		permissionService = (PermissionService)GlobalResourceLoader.getService(new QName("KIM", "kimPermissionService"));
+		roleService = (RoleService)GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
 	}
 
 	@After
@@ -155,12 +155,12 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 	@Test
 	public void testHasPermission() {
 		
-		assertTrue( "p1 must have perm1 (via r1)", authorizationService.hasPermission( "p1", "perm1" ) );		
-		assertTrue( "p1 must have perm2 (via r1)", authorizationService.hasPermission( "p1", "perm2" ) );
-		assertTrue( "p1 must have perm3 (via r2)", authorizationService.hasPermission( "p1", "perm3" ) );
-		assertTrue( "p3 must have perm3 (via r2)", authorizationService.hasPermission( "p3", "perm3" ) );
-		assertFalse( "p3 must not have perm1", authorizationService.hasPermission( "p3", "perm1" ) );
-		assertFalse( "p3 must not have perm2", authorizationService.hasPermission( "p3", "perm2" ) );
+		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "perm1" ) );		
+		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "perm2" ) );
+		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "perm3" ) );
+		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "perm3" ) );
+		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "perm1" ) );
+		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "perm2" ) );
 	}
 	
 	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {

@@ -294,7 +294,7 @@
     </property>  
   </bean>
 
-  <alias alias="kimResponsibilityService" name="kimAuthorizationService" />
+  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"/>
     
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

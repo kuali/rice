@@ -3,8 +3,10 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.NamePrincipalName;
 
 public interface IdentityService extends IdentityServiceBase {
 	
@@ -33,4 +35,8 @@ public interface IdentityService extends IdentityServiceBase {
 	 * is read-only.
 	 */
     public void saveEntity(KimEntity entity);
+    
+    public Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
+    
+    public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
 }

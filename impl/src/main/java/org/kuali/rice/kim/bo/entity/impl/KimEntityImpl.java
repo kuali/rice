@@ -30,6 +30,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.entity.EntityAffiliation;
 import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.EntityCitizenship;
 import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
@@ -87,6 +88,10 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	@OneToOne(targetEntity=EntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
 	protected EntityBioDemographics bioDemographics;
+	
+	@OneToMany(targetEntity = EntityCitizenshipImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<EntityCitizenship> citizenships = new TypedArrayList(EntityCitizenshipImpl.class);
 
 	/**
 	 * @return the entityId
@@ -277,6 +282,20 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 */
 	public EntityName getDefaultName() {
 		return (EntityName)getDefaultItem( names );
+	}
+
+	/**
+	 * @return the citizenships
+	 */
+	public List<EntityCitizenship> getCitizenships() {
+		return this.citizenships;
+	}
+
+	/**
+	 * @param citizenships the citizenships to set
+	 */
+	public void setCitizenships(List<EntityCitizenship> citizenships) {
+		this.citizenships = citizenships;
 	}
 	
 	

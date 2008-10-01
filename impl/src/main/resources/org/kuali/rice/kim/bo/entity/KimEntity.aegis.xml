@@ -1,0 +1,8 @@
+<mappings  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xfire.codehaus.org/schemas/1.0/mapping.xsd">
+  <mapping>
+    <property name="defaultAffiliation" ignore="true" />
+    <property name="defaultName" ignore="true" />
+    <property name="primaryEmployment" ignore="true" />
+  </mapping>
+</mappings>

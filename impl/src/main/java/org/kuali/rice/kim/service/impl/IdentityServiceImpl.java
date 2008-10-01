@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.NamePrincipalName;
+import org.kuali.rice.kim.bo.entity.NamePrincipalNameInfo;
+import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityService;
@@ -133,7 +137,57 @@ public class IdentityServiceImpl implements IdentityService {
 		KimPrincipal principal = getPrincipalByPrincipalName( principalName );
 		return principal != null ? principal.getPrincipalId() : null;
 	}
-
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getDefaultNamesForEntityIds(java.util.List)
+	 */
+	public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds) {
+		// TODO - Use a DAO
+		Map<String, EntityName> result = new HashMap<String, EntityName>(entityIds.size());
+		
+		for(String s : entityIds) {
+			Map<String,String> criteria = new HashMap<String,String>();
+			criteria.put("entityId", s);
+			criteria.put("dflt", "Y");
+			
+			EntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			
+			result.put(s, name);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
+	 */
+	public Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+		// TODO - use a dao?
+		// TODO - what if principal not found, NullPointerException
+		Map<String, NamePrincipalName> result = new HashMap<String, NamePrincipalName>(principalIds.size());
+		
+		for(String s : principalIds) {
+			NamePrincipalNameInfo namePrincipal = new NamePrincipalNameInfo();
+			
+			Map<String,String> criteria = new HashMap<String,String>();
+			criteria.put("principalId", s);
+			KimPrincipal principal = (KimPrincipalImpl) getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
+			
+			namePrincipal.setPrincipalName(principal.getPrincipalName());
+			
+			criteria.clear();
+			criteria.put("entityId", principal.getEntityId());
+			criteria.put("dflt", "Y");
+			EntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			
+			namePrincipal.setDefaultEntityName(name);
+			
+			result.put(s, namePrincipal);
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Generic helper method for performing a lookup through the business object service.
 	 */

@@ -72,6 +72,8 @@ public interface KimEntity extends Inactivateable {
 	 */
 	EntityBioDemographics getBioDemographics();
 	
+	List<EntityCitizenship> getCitizenships();
+	
 	/**
 	 * Returns the EntityEntityType object corresponding to the given code or null if this
 	 * entity does not have data for that type.

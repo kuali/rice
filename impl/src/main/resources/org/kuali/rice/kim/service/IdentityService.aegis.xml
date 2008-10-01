@@ -1,0 +1,8 @@
+<mappings  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xfire.codehaus.org/schemas/1.0/mapping.xsd">
+  <mapping>
+    <method name="getDefaultNamesForEntityIds">
+      <return-type index="0" keyType="java.lang.String" componentType="org.kuali.rice.kim.bo.entity.EntityName" />
+    </method>
+  </mapping>
+</mappings>

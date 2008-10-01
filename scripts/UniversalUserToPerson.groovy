@@ -2,7 +2,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 //def baseDir = '/kuali/projects/rice'
-def baseDir = '/java/projects/rice-release-0-9-4-kfs-080813-br'
+def baseDir = '/java/projects/rice-release-0-9-4-usergroupconversion-br'
 
 def sourceDirectories = [
     '/impl/src/main/', 
@@ -115,18 +115,18 @@ replacements = [
     [ 'getPersonService\\(\\)\\.getPersonByAuthenticationUserId\\(', 'getPersonService\\(\\)\\.getPersonByPrincipalName\\(' ],    
     [ 'KUALI_GROUP_SERVICE', 'KIM_GROUP_SERVICE'],
     [ 'UNIVERSAL_USER_SERVICE', 'PERSON_SERVICE'],
-    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.getByGroupName\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.getGroupByName\\(null, ' ],
+    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.getByGroupName\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.getGroupByName\\(\"KFS\", ' ],
     [ 'kualiGroupService\\(\\)\\.getByGroupName\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.getGroupByName\\(null, ' ],
-    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.getUsersGroups\\((.*)\\)', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getPersonService\\(\\)\\.getPersonGroups\\(\$1, null\\)' ],
+    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.getUsersGroups\\((.*)\\)', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getPersonService\\(\\)\\.getPersonGroups\\(\$1, \"KFS\"\\)' ],
     [ 'kualiGroupService\\(\\)\\.getUsersGroups\\((.*)\\)', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getPersonService\\(\\)\\.getPersonGroups\\(\$1, null\\)' ],
-    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.groupExists\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.groupExistsByName\\(null, ' ],
+    [ 'KNSServiceLocator\\.getKualiGroupService\\(\\)\\.groupExists\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.groupExistsByName\\(\"KFS\", ' ],
     [ 'kualiGroupService\\(\\)\\.groupExists\\(', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getIdentityManagementService\\(\\)\\.groupExistsByName\\(null, ' ],
     [ '\\.getGroupUsers\\(', '\\.getMembers\\(' ],    
     [ 'KualiGroup', 'KimGroup' ],
     [ 'kualiGroup', 'kimGroup' ],
     [ '\\.findPersons\\(', '\\.findPeople\\(' ], 
     // This one is ugly, but will need revisited anyway once we figure out what we are really going to do with supervisor access given KIM permissions/roles.
-    [ 'user\\.isSupervisorUser\\(\\)', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getPersonService\\(\\)\\.isMemberOfGroup\\(user, null, KNSServiceLocator\\.getKualiConfigurationService\\(\\)\\.getParameterValue\\(KNSConstants\\.KNS_NAMESPACE, KNSConstants.DetailTypes\\.DOCUMENT_DETAIL_TYPE, KNSConstants\\.CoreApcParms.SUPERVISOR_WORKGROUP\\)\\)' ], 
+    [ 'user\\.isSupervisorUser\\(\\)', 'org\\.kuali\\.rice\\.kim\\.service\\.KIMServiceLocator\\.getPersonService\\(\\)\\.isMemberOfGroup\\(\"KFS\", null, KNSServiceLocator\\.getKualiConfigurationService\\(\\)\\.getParameterValue\\(KNSConstants\\.KNS_NAMESPACE, KNSConstants.DetailTypes\\.DOCUMENT_DETAIL_TYPE, KNSConstants\\.CoreApcParms.SUPERVISOR_WORKGROUP\\)\\)' ], 
     [ '\"personUniversalIdentifier\"', '\"principalId\"' ],
     [ '\"personUserIdentifier\"', '\"principalName\"' ],
     [ '\"personName\"', '\"name\"' ],

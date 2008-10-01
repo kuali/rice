@@ -12,16 +12,19 @@ import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.PrincipalResponsibility;
 import org.kuali.rice.kim.service.AuthenticationService;
-import org.kuali.rice.kim.service.AuthorizationService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.ResponsibilityService;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService {
 	
 	protected AuthenticationService authenticationService; 
-	protected AuthorizationService authorizationService; 
+//	protected AuthorizationService authorizationService; 
+	protected PermissionService permissionService; 
+	protected ResponsibilityService responsibilityService;  
 	protected IdentityService identityService;
 	protected GroupService groupService;
 	
@@ -38,16 +41,16 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     // AUTHORIZATION SERVICE
     
     public boolean hasPermission(String principalId, String permissionId) {
-    	return getAuthorizationService().hasPermission( principalId, permissionId );
+    	return getPermissionService().hasPermission( principalId, permissionId );
     }
 
     public boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification ) {
-    	return getAuthorizationService().hasQualifiedPermission( principalId, permissionId, qualification );
+    	return getPermissionService().hasQualifiedPermission( principalId, permissionId, qualification );
     }
     
     public boolean hasQualifiedPermissionByName(String principalId,  
     		String permissionName, Map<String,String> qualification) {
-    	return getAuthorizationService().hasQualifiedPermissionByName( principalId, permissionName, qualification );
+    	return getPermissionService().hasQualifiedPermissionByName( principalId, permissionName, qualification );
     }
     
     /**
@@ -56,16 +59,16 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     public boolean hasQualifiedPermissionWithDetails(String principalId,
     		String permissionId, Map<String,String> qualification,
     		Map<String,String> permissionDetails) {
-    	return getAuthorizationService().hasQualifiedPermissionWithDetails( principalId, permissionId, qualification, permissionDetails );
+    	return getPermissionService().hasQualifiedPermissionWithDetails( principalId, permissionId, qualification, permissionDetails );
     }
     
 
     public KimPermission getPermission(String permissionId) {
-		return getAuthorizationService().getPermission( permissionId );
+		return getPermissionService().getPermission( permissionId );
 	}
 
     public KimPermission getPermissionByName(String permissionName ) {
-		return getAuthorizationService().getPermissionByName( permissionName );
+		return getPermissionService().getPermissionByName( permissionName );
 	}
     
     // GROUP SERVICE
@@ -173,13 +176,27 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return groupService;
 	}
 
-	public AuthorizationService getAuthorizationService() {
-		if ( authorizationService == null ) {
-			authorizationService = KIMServiceLocator.getAuthorizationService();
+//	public AuthorizationService getAuthorizationService() {
+//		if ( authorizationService == null ) {
+//			authorizationService = KIMServiceLocator.getAuthorizationService();
+//		}
+//		return authorizationService;
+//	}
+
+	public PermissionService getPermissionService() {
+		if ( permissionService == null ) {
+			permissionService = KIMServiceLocator.getPermissionService();
 		}
-		return authorizationService;
+		return permissionService;
 	}
 
+	public ResponsibilityService getResponsibilityService() {
+		if ( responsibilityService == null ) {
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
+		}
+		return responsibilityService;
+	}
+	
     // ----------------------
     // Responsibility Methods
     // ----------------------
@@ -189,23 +206,23 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	 */
 	public List<String> getPrincipalIdsWithResponsibility(String responsibilityId,
 			Map<String,String> qualification, Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
+		return getResponsibilityService().getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
 	}
 	
 	public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getPrincipalIdsWithResponsibilityByName( responsibilityName, qualification, responsibilityDetails );
+		return getResponsibilityService().getPrincipalIdsWithResponsibilityByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibility(java.lang.String)
 	 */
 	public KimResponsibility getResponsibility(String responsibilityId) {
-		return getAuthorizationService().getResponsibility( responsibilityId );
+		return getResponsibilityService().getResponsibility( responsibilityId );
 	}
 
 	public KimResponsibility getResponsibilityByName( String responsibilityName) {
-		return getAuthorizationService().getResponsibilityByName( responsibilityName );
+		return getResponsibilityService().getResponsibilityByName( responsibilityName );
 	}
 	
 	/**
@@ -213,12 +230,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	 */
 	public List<? extends PrincipalResponsibility> getResponsibilityInfo(String responsibilityId,
 			Map<String,String> qualification, Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
+		return getResponsibilityService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
 	}
 	
 	public List<? extends PrincipalResponsibility> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
+		return getResponsibilityService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**
@@ -227,6 +244,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public boolean hasQualifiedResponsibilityWithDetails(String principalId,
 			String responsibilityId, Map<String,String> qualification,
 			Map<String,String> responsibilityDetails) {
-		return getAuthorizationService().hasQualifiedResponsibilityWithDetails( principalId, responsibilityId, qualification, responsibilityDetails );
+		return getResponsibilityService().hasQualifiedResponsibilityWithDetails( principalId, responsibilityId, qualification, responsibilityDetails );
 	}
 }

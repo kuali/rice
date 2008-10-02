@@ -28,9 +28,9 @@ COMMIT
 
 -- entity name
 
-INSERT INTO KR_KIM_ENTITY_NAME_T ( ENTITY_NAME_ID, OBJ_ID, ENTITY_ID, ENT_TYP_CD, NAME_TYP_CD, 
+INSERT INTO KR_KIM_ENTITY_NAME_T ( ENTITY_NAME_ID, OBJ_ID, ENTITY_ID, NAME_TYP_CD, 
                 FIRST_NM, LAST_NM, DFLT_IND )
-   (SELECT kr_kim_entity_name_id_seq.NEXTVAL, SYS_GUID(), p.entity_id, 'PERSON', 'PREFERRED',
+   (SELECT kr_kim_entity_name_id_seq.NEXTVAL, SYS_GUID(), p.entity_id, 'PREFERRED',
         u.PRSN_GVN_NM, u.PRSN_LST_NM, 'Y'
         FROM KR_KIM_PRINCIPAL_T p, EN_USR_T u
         WHERE u.PRSN_EN_ID = p.PRNCPL_ID

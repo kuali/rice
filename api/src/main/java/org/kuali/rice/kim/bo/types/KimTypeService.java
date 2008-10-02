@@ -53,12 +53,17 @@ public interface KimTypeService {
 	 */
 	List<String> validateAttribute( String attributeName, String attributeValue );
 	
-	/** Provide an absolute URL for performing a lookup on this field. */
+	/** Provide an absolute URL for performing a lookup on this field. 
+	 * 
+	 * Return null for no lookup.
+	 */
 	String getLookupUrl( String attributeName );
 	
 	/** Provides the absolute inquiry URL for the given attribute.  All attributes on the
 	 * KimAttributeContainer will be passed so that other field values may be used if needed.
 	 * (As in the case of a multi-part primary key.)
+	 * 
+	 * Return null for no inquiry URL.
 	 */
 	String getInquiryUrl( String attributeName, Map<String,String> relevantAttributeData );
 	

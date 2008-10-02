@@ -53,6 +53,25 @@ public interface KimRoleTypeService extends KimTypeService {
     boolean doRoleQualifiersMatchQualification( Map<String,String> qualification, List<Map<String,String>> roleQualifierList );
 
     /**
+     * Returns true if this role type represents an "application" role type.  That is, the members of the 
+     * role are known to the host application, not to KIM.  This is needed for cases like the KFS
+     * Fiscal Officer, where the members of the role are in the Account table in the KFS database. 
+     */
+    boolean isApplicationRoleType();
+    
+    /**
+     * Returns a list of principal IDs corresponding to the given application role.  These principal IDs 
+     * would be returned from the implementing application.
+     * 
+     * Continuing the example from {@link #isApplicationRoleType()}, the qualification in that case would be
+     * a chart code and account number.  This service would use that information to retrieve the Fiscal Officer
+     * from the account table.
+     * 
+     * @see #isApplicationRoleType()
+     */
+    List<String> getPrincipalIdsFromApplicationRole( String roleName, Map<String,String> qualification );
+
+    /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
     List<Map<String,String>> getAllImpliedQualifications( Map<String,String> qualification );

@@ -21,9 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.KimRoleTypeService;
-import org.kuali.rice.kim.bo.role.RoleMember;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -31,16 +29,19 @@ import org.kuali.rice.kim.bo.role.RoleMember;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
+public class KimRoleTypeServiceBase implements KimRoleTypeService {
 
-	private static Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
+//	private static Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
+	
+	protected List<String> acceptedQualificationAttributeNames; 
+	
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 * 
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#doesRoleCriteriaMatchQualifications(java.util.Map, java.util.Map)
+	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(Map, Map)
 	 */
-	public boolean doesRoleQualifierMatchQualification(java.util.Map<String,String> qualification, java.util.Map<String,String> roleQualifier) {
+	public boolean doesRoleQualifierMatchQualification(Map<String,String> qualification, Map<String,String> roleQualifier) {
 		
 		for ( Map.Entry<String, String> entry : roleQualifier.entrySet() ) {
 			if ( !qualification.containsKey(entry.getKey() ) ) {
@@ -54,17 +55,7 @@ public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
 	}
 	
 	/**
-	 * Simple pass-thru for {@link #doesRoleQualifierMatchQualification(Map, Map)}
-	 * 
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#doesRoleMemberMatchQualification(java.util.Map, org.kuali.rice.kim.bo.role.RoleMember)
-	 */
-	public boolean doesRoleMemberMatchQualification(
-			Map<String, String> qualification, RoleMember roleMember) {
-		return doesRoleQualifierMatchQualification(qualification, roleMember.getQualifierAsMap());
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#doRoleQualifiersMatchQualification(java.util.Map, java.util.List)
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#doRoleQualifiersMatchQualification(Map, List)
 	 */
 	public boolean doRoleQualifiersMatchQualification(
 			Map<String, String> qualification,
@@ -79,30 +70,23 @@ public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#doRoleMembersMatchQualification(java.util.Map, java.util.List)
+	 * Return an empty list since this method should not be called by the role service for this service type.
+	 * Subclasses which are application role types should override this method.
+	 * 
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getPrincipalIdsFromApplicationRole(java.lang.String, java.util.Map)
 	 */
-	public boolean doRoleMembersMatchQualification(
-			Map<String, String> qualification, List<RoleMember> roleMemberList) {
-		for ( RoleMember roleMember : roleMemberList ) {
-			if ( doesRoleMemberMatchQualification(qualification, roleMember) ) {
-				return true;
-			}
-		}
-		return false;
+	public List<String> getPrincipalIdsFromApplicationRole(String roleName,
+			Map<String,String> qualification) {
+		return new ArrayList<String>(0);
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getMembersThatMatchQualification(java.util.Map, java.util.List)
+	 * Default to not being an application role type.  Always returns false.
+	 * 
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#isApplicationRoleType()
 	 */
-	public List<RoleMember> getMembersThatMatchQualification(
-			Map<String, String> qualification, List<RoleMember> roleMemberList) {
-		List<RoleMember> members = new ArrayList<RoleMember>();
-		for ( RoleMember roleMember : roleMemberList ) {
-			if ( doesRoleMemberMatchQualification(qualification, roleMember) ) {
-				members.add(roleMember);
-			}
-		}
-		return members;
+	public boolean isApplicationRoleType() {
+		return false;
 	}
 	
 	/**
@@ -119,7 +103,7 @@ public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
 	 * validate it there.  No combination validation is done.  That should be done
 	 * by overriding this method.
 	 * 
-	 * @see org.kuali.rice.kim.bo.types.KimTypeService#validateAttributes(org.kuali.rice.kim.bo.types.KimAttributeContainer)
+	 * @see org.kuali.rice.kim.bo.types.KimTypeService#validateAttributes(Map)
 	 */
 	public Map<String,String> validateAttributes(Map<String,String> attributes) {
 		Map<String,String> validationErrors = new HashMap<String, String>();
@@ -136,9 +120,9 @@ public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
 	}
 	
 	/**
-	 * This overridden method ...
+	 * Simple implementation, simply returns the passed in qualification in a single-element list.
 	 * 
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getAllImpliedQualifications(java.util.Map)
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getAllImpliedQualifications(Map)
 	 */
 	public List<Map<String, String>> getAllImpliedQualifications(
 			Map<String, String> qualification) {
@@ -148,14 +132,73 @@ public abstract class KimRoleTypeServiceBase implements KimRoleTypeService {
 	}
 	
 	/**
-	 * This overridden method ...
+	 * Simple implementation, simply returns the passed in qualification in a single-element list.
 	 * 
-	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getAllImplyingQualifications(java.util.Map)
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getAllImplyingQualifications(Map)
 	 */
 	public List<Map<String, String>> getAllImplyingQualifications(
 			Map<String, String> qualification) {
 		ArrayList<Map<String,String>> implyingQualifications = new ArrayList<Map<String,String>>( 1 );
 		implyingQualifications.add(qualification);
 		return implyingQualifications;
+	}
+
+	/**
+	 * Returns null to indicate no errors (does not perform any validation.)
+	 * 
+	 * @see org.kuali.rice.kim.bo.types.KimTypeService#validateAttribute(java.lang.String, java.lang.String)
+	 */
+	public List<String> validateAttribute(String attributeName, String attributeValue) {
+		return null;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#getAcceptedQualificationAttributeNames()
+	 */
+	public List<String> getAcceptedQualificationAttributeNames() {
+		return this.acceptedQualificationAttributeNames;
+	}
+
+	public void setAcceptedQualificationAttributeNames(List<String> acceptedQualificationAttributeNames) {
+		this.acceptedQualificationAttributeNames = acceptedQualificationAttributeNames;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#supportsQualificationAttributes(java.util.List)
+	 */
+	public boolean supportsQualificationAttributes(List<String> attributeNames) {
+		for ( String attributeName : attributeNames ) {
+			if ( !acceptedQualificationAttributeNames.contains( attributeName ) ) {
+				return false;
+			}
+		}
+		return true;
+	}	
+	/**
+	 * No conversion performed.  Simply returns the passed in Map.
+	 * 
+	 * @see org.kuali.rice.kim.bo.role.KimRoleTypeService#convertQualificationAttributesToRequired(java.util.Map)
+	 */
+	public Map<String,String> convertQualificationAttributesToRequired(
+			Map<String,String> qualificationAttributes) {
+		return qualificationAttributes;
+	}
+	
+	/**
+	 * Returns null - no inquiry.
+	 * 
+	 * @see org.kuali.rice.kim.bo.types.KimTypeService#getInquiryUrl(java.lang.String, java.util.Map)
+	 */
+	public String getInquiryUrl(String attributeName, Map<String,String> relevantAttributeData) {
+		return null;
+	}
+	
+	/**
+	 * Returns null - no lookup.
+	 * 
+	 * @see org.kuali.rice.kim.bo.types.KimTypeService#getLookupUrl(java.lang.String)
+	 */
+	public String getLookupUrl(String attributeName) {
+		return null;
 	}
 }

@@ -425,18 +425,16 @@
         <property name="serviceOrder">
             <list>
                 <value>enApplicationConstantsService</value>
+                <value>enUserService</value>
                 <value>enRuleAttributeService</value>
                 <value>workgroupTypeService</value>
+                <value>enWorkgroupService</value>                
                 <value>enRuleTemplateService</value>
                 <value>enDocumentTypeService</value>
                 <value>enRuleService</value>
                 <value>enHelpService</value>
                 <value>enEDocLiteService</value>
-                <value>enStyleService</value>
-                <!-- 
-                <value>enUserService</value>
-                <value>enWorkgroupService</value>
-                -->
+                <value>enStyleService</value>                 
             </list>
         </property>
     </bean>

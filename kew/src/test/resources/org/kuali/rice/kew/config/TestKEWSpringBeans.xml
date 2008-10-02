@@ -70,6 +70,7 @@
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
+        </property>
         <property name="knsConfigurer">
                 <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
         </property>
@@ -77,6 +78,12 @@
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
+		</property>
+		<property name="kenConfigurer">
+        	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
+		</property>
+		<property name="kimConfigurer">
+        	<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
 		</property>
 	</bean>
 

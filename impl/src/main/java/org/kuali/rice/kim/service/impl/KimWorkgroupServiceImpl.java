@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,11 +38,18 @@ import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupCapabilities;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kew.xml.WorkgroupXmlHandler;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.GroupGroup;
+import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
+import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -133,6 +141,9 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	}
 
 	private Workgroup convertToWorkgroup(KimGroup kimGroup) {
+		if (kimGroup == null) {
+			return null;
+		}
 		BaseWorkgroup workgroup = new BaseWorkgroup();
 		workgroup.setActiveInd(kimGroup.isActive());
 		workgroup.setCurrentInd(true);
@@ -175,7 +186,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getBlankWorkgroup()
 	 */
 	public Workgroup getBlankWorkgroup() {
-		throw new UnsupportedOperationException("Kim does not suppoert this method");
+		return new BaseWorkgroup();
 	}
 
 	/**
@@ -210,7 +221,33 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#save(org.kuali.rice.kew.workgroup.Workgroup)
 	 */
 	public void save(Workgroup workgroup) {
-		throw new UnsupportedOperationException("Kim does not suppoert this method");
+		KimGroupImpl group = new KimGroupImpl();
+		if (workgroup.getWorkflowGroupId() != null && !workgroup.getWorkflowGroupId().isEmpty()) {
+			group.setGroupId("" + workgroup.getWorkflowGroupId().getGroupId());
+		}
+		group.setGroupName(workgroup.getGroupNameId().getNameId());
+		group.setNamespaceCode("KFS");
+		group.setGroupDescription(workgroup.getDescription());
+		group.setKimTypeId(workgroup.getWorkgroupType());
+		group.setActive(true);
+
+		group.setMemberPrincipals(new ArrayList<GroupPrincipal>());
+		group.setMemberGroups(new ArrayList<GroupGroup>());
+		for (Iterator iterator = workgroup.getMembers().iterator(); iterator.hasNext();) {
+			Recipient recipient = (Recipient) iterator.next();
+			if (recipient instanceof WorkflowUser) {
+				WorkflowUser user = (WorkflowUser)recipient;
+				GroupPrincipalImpl principal = new GroupPrincipalImpl();
+				principal.setMemberId(user.getWorkflowId());
+				group.getMemberPrincipals().add(principal);
+			} else if (recipient instanceof Workgroup) {
+				Workgroup groupMember = (Workgroup)recipient;
+				GroupGroupImpl groupGroup = new GroupGroupImpl();
+				groupGroup.setMemberId("" + groupMember.getWorkflowGroupId().getGroupId());
+				group.getMemberGroups().add(groupGroup);
+			}
+		}
+		KNSServiceLocator.getBusinessObjectService().save(group);
 	}
 
 	/**
@@ -227,12 +264,16 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}
 
-	/**
-	 * @see org.kuali.rice.kew.xml.XmlLoader#loadXml(java.io.InputStream, org.kuali.rice.kew.user.WorkflowUser)
-	 */
-	public void loadXml(InputStream inputStream, WorkflowUser user) {
-		throw new UnsupportedOperationException("Kim does not suppoert this method");
-	}
+	public void loadXml(InputStream stream, WorkflowUser user) {
+        try {
+        	new WorkgroupXmlHandler().parseWorkgroupEntries(stream);
+        } catch (Exception e) {
+        	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	}
+            throw new RuntimeException("Caught Exception parsing workgroup xml", e);
+        }
+    }
 
 	/**
 	 * @see org.kuali.rice.kew.xml.export.XmlExporter#export(org.kuali.rice.kew.export.ExportDataSet)

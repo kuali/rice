@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseUserService;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
@@ -38,9 +40,18 @@ import org.kuali.rice.kew.user.UserCapabilities;
 import org.kuali.rice.kew.user.UuId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.xml.UserXmlHandler;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
+import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -63,7 +74,56 @@ public class KimUserServiceImpl extends BaseUserService {
 	}
 
 	public void save(WorkflowUser user) {
-		throw new UnsupportedOperationException("KIMUserService cannot save");
+		if (user == null) {
+			return;
+		}
+		Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_ENTITY_ENT_TYPE_ID_seq");
+		KimEntityImpl entity = new KimEntityImpl();
+		entity.setActive(true);
+		entity.setEntityId("" + entityId);
+		
+		Long entityTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_ENTITY_ENT_TYPE_ID_seq");
+		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
+		entity.getEntityTypes().add(entityType);
+		entityType.setEntityTypeCode("PERSON");
+		entityType.setEntityId(entity.getEntityId());
+		entityType.setEntityEntityTypeId(""+entityTypeId);
+		entityType.setActive(true);
+		
+		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_entity_name_id_seq");
+		EntityNameImpl name = new EntityNameImpl();
+		name.setActive(true);
+		name.setEntityNameId("" + entityNameId);
+		name.setEntityId(entity.getEntityId());
+		name.setNameTypeCode("PREFERRED");
+		name.setFirstName(user.getGivenName());
+		name.setMiddleName("");
+		name.setLastName(user.getLastName());
+		name.setDefault(true);
+		
+		entity.getNames().add(name);
+				
+		KNSServiceLocator.getBusinessObjectService().save(entity);
+		
+		if (!StringUtils.isBlank(user.getEmailAddress())) {
+			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_entity_email_id_seq");
+			EntityEmailImpl email = new EntityEmailImpl();
+			email.setActive(true);
+			email.setEntityEmailId("" + emailId);
+			email.setEntityTypeCode("PERSON");
+			email.setEmailTypeCode("CAMPUS");
+			email.setEmailAddress(user.getEmailAddress());
+			email.setDefault(true);
+			email.setEntityId(entity.getEntityId());
+			KNSServiceLocator.getBusinessObjectService().save(email);
+		}
+		
+		KimPrincipalImpl principal = new KimPrincipalImpl();
+		principal.setActive(true);
+		principal.setPrincipalName(user.getAuthenticationUserId().getId());
+		principal.setPrincipalId(user.getWorkflowId());
+		principal.setEntityId(entity.getEntityId());
+		KNSServiceLocator.getBusinessObjectService().save(principal);
 	}
 
 	public WorkflowUser getWorkflowUser(UserIdDTO userId) throws KEWUserNotFoundException {
@@ -174,9 +234,20 @@ public class KimUserServiceImpl extends BaseUserService {
 		return new org.kuali.rice.kns.workflow.bo.WorkflowUser();
 	}
 
-	public void loadXml(InputStream arg0, WorkflowUser arg1) {
-		LOG.warn("KIMUserService cannot import XML");
-	}
+	public void loadXml(InputStream stream, WorkflowUser user) {
+        try {
+            List parsedUsers = new UserXmlHandler().parseUserEntries(this, stream);
+            for(Iterator iter = parsedUsers.iterator(); iter.hasNext();) {
+            	BaseWorkflowUser xmlUser = (BaseWorkflowUser) iter.next();
+            	save(xmlUser);
+            }
+        } catch (Exception e) {
+        	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	}
+            throw new RuntimeException("Caught Exception parsing user xml.", e);
+        }
+    }
 
 	public PersonService<Person> getPersonService() {
 		if (personService == null) {

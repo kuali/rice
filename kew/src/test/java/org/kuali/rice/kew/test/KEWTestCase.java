@@ -209,6 +209,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	protected List<String> getTablesToClear() {
 		List<String> tablesToClear = new ArrayList<String>();
 		tablesToClear.add("EN_.*");
+		tablesToClear.add("KR_KIM_.*");
 		return tablesToClear;
 	}
 

@@ -214,7 +214,8 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
 	            }
 	            // need to save now in case this group is used as a nested group in any of the others in this xml document
 	            LOG.info("Versioning and saving workgroup '" + workgroup.getDisplayName() + "'");
-                KEWServiceLocator.getWorkgroupRoutingService().versionAndSave(workgroup);
+                //KEWServiceLocator.getWorkgroupRoutingService().versionAndSave(workgroup);
+	            KEWServiceLocator.getWorkgroupService().save(workgroup);
 	            workgroupMap.put(workgroup.getGroupNameId().getNameId(), workgroup);
 	            workgroups.add(workgroup);
 	        }

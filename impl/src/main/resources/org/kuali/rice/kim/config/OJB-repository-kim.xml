@@ -479,7 +479,6 @@
   <class-descriptor class="org.kuali.rice.kim.bo.types.impl.KimAttributeImpl" table="KR_KIM_ATTRIBUTE_T">
     <field-descriptor name="kimAttributeId" column="KIM_ATTRIB_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="attributeName" column="ATTRIB_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="kimAttributeServiceName" column="SRVC_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />

@@ -27,5 +27,4 @@ import org.kuali.rice.kns.bo.Inactivateable;
 public interface KimAttribute extends Inactivateable {
 	String getAttributeId();
 	String getAttributeName();
-	String getKimAttributeServiceName();
 }

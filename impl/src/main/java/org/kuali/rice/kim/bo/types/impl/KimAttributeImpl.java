@@ -39,8 +39,6 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase implements K
 	protected String kimAttributeId;
 	@Column(name="ATTRIB_NM")
 	protected String attributeName;
-	@Column(name="SRVC_NM")
-	protected String kimAttributeServiceName;
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
@@ -58,25 +56,8 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase implements K
 		return attributeName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttribute#getKimAttributeServiceName()
-	 */
-	public String getKimAttributeServiceName() {
-		return kimAttributeServiceName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttribute#setAttributeName(java.lang.String)
-	 */
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttribute#setKimAttributeServiceName(java.lang.String)
-	 */
-	public void setKimAttributeServiceName(String attributeServiceName) {
-		this.kimAttributeServiceName = attributeServiceName;
 	}
 
 	/**
@@ -102,8 +83,6 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase implements K
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "kimAttributeId", kimAttributeId );
 		m.put( "attributeName", attributeName );
-		m.put( "kimAttributeServiceName", kimAttributeServiceName );
-		m.put( "active", active );
 		return m;
 	}
 

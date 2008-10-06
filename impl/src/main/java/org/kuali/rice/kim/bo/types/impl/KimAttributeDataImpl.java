@@ -19,12 +19,11 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.types.KimAttribute;
 import org.kuali.rice.kim.bo.types.KimAttributeData;
@@ -37,8 +36,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Entity
-@Table(name="KR_KIM_ATTRIBUTE_DATA_T")
+@MappedSuperclass
 public class KimAttributeDataImpl extends PersistableBusinessObjectBase implements KimAttributeData {
 
 	@Id
@@ -57,11 +55,11 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Column(name="ATTRIB_VAL")
 	protected String attributeValue;	
 
-	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
 	protected KimAttribute kimAttribute;
 	
-	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
 	protected KimType kimType;
 	

@@ -25,13 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseUserService;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
@@ -47,19 +48,18 @@ import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KimUserServiceImpl extends BaseUserService {
 
-	protected PersonService<Person> personService;
+    private static final Log logger = LogFactory.getLog(KimUserServiceImpl.class);
 
+    protected PersonService<Person> personService;
 	protected UserCapabilities workflowUserCapabilities;
 
 	public UserCapabilities getCapabilities() {
@@ -135,8 +135,11 @@ public class KimUserServiceImpl extends BaseUserService {
 		if (user == null) {
 			Person person = getPersonFromUserId(userId);
 			if (person != null) {
-				user = convertPersonToWorkflowUser( person );
-				addToCache(user);
+				WorkflowUser u = convertPersonToWorkflowUser(person);
+				if (u != null) {
+					user = u;
+					addToCache(user);
+				}
 			} else {
 				throw new KEWUserNotFoundException("User is invalid. userId " + userId.toString());
 			}
@@ -178,13 +181,20 @@ public class KimUserServiceImpl extends BaseUserService {
 
 		List workflowUsers = new ArrayList();
 		for (Person person : getPersonService().findPeople(criteria)) {
-			workflowUsers.add(convertPersonToWorkflowUser(person));
+			WorkflowUser u = convertPersonToWorkflowUser(person);
+			if (u != null) {
+				workflowUsers.add(u);
+			}
 		}
 
 		return workflowUsers;
 	}
 
 	public static WorkflowUser convertPersonToWorkflowUser(Person person) {
+		if (person == null) {
+			logger.error("KimUserService.convertPersonToWorkflowUser() was passed a null Person object");
+			return null;
+		}
 		BaseWorkflowUser user = new org.kuali.rice.kns.workflow.bo.WorkflowUser();
 		user.setWorkflowUserId(new WorkflowUserId(person.getPrincipalId()));
 		user.setLockVerNbr(1);

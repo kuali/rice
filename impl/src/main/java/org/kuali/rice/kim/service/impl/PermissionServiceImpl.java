@@ -18,23 +18,19 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.KimPermissionTypeService;
-import org.kuali.rice.kim.bo.role.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.PermissionDetailsInfo;
-import org.kuali.rice.kim.bo.role.ResponsibilityResolutionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.PermissionDetailsInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.KimType;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -82,9 +78,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermission(java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermission(java.lang.String, java.lang.String, AttributeSet)
      */
-    public boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification) {
+    public boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification) {
     	if ( principalId == null || permissionId == null || qualification == null ) {
     		return false;
     	}
@@ -108,9 +104,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#hasPermissionWithDetails(java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#hasPermissionWithDetails(java.lang.String, java.lang.String, AttributeSet)
      */
-    public boolean hasPermissionWithDetails(String principalId, String permissionId, Map<String,String> permissionDetails) {
+    public boolean hasPermissionWithDetails(String principalId, String permissionId, AttributeSet permissionDetails) {
     	List<String> roleIds = getRoleService().getRoleIdsForPrincipal( principalId );
     	// build a list of all granted permissions
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
@@ -124,11 +120,11 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionWithDetails(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionWithDetails(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean hasQualifiedPermissionWithDetails(String principalId,
-    		String permissionId, Map<String,String> qualification,
-    		Map<String,String> permissionDetails) {
+    		String permissionId, AttributeSet qualification,
+    		AttributeSet permissionDetails) {
     	List<String> roleIds = getRoleService().getRoleIdsMatchingQualification( principalId, qualification );
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
     	for ( String roleId : roleIds ) {
@@ -141,9 +137,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionByName( java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#hasQualifiedPermissionByName( java.lang.String, java.lang.String, AttributeSet)
      */
-    public boolean hasQualifiedPermissionByName(String principalId, String permissionName, Map<String,String> qualification) {
+    public boolean hasQualifiedPermissionByName(String principalId, String permissionName, AttributeSet qualification) {
     	KimPermissionImpl perm = getPermissionImplByName( permissionName );
     	if ( perm == null ) {
     		return false;
@@ -173,7 +169,7 @@ public class PermissionServiceImpl implements PermissionService {
 	protected List<PermissionDetailsInfo> getPermissionsForRole(String roleId ) {
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
     	List<String> impliedRoles = getRoleService().getImpliedRoleIds( roleId );
-    	Map<String,String> rolePermCriteria = new HashMap<String, String>( 1 );
+    	AttributeSet rolePermCriteria = new AttributeSet();
     	for ( String impliedRoleId : impliedRoles ) {
     		// TODO: optimize me - get all role permission objects at once
     		rolePermCriteria.put("roleId", impliedRoleId);
@@ -186,9 +182,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionDetails(java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#getPermissionDetails(java.lang.String, java.lang.String, AttributeSet)
      */
-    public List<Map<String,String>> getPermissionDetails(String principalId, String permissionId, Map<String,String> qualification) {
+    public List<AttributeSet> getPermissionDetails(String principalId, String permissionId, AttributeSet qualification) {
     	throw new UnsupportedOperationException();
     	// TODO: implement me!
     }
@@ -221,9 +217,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.AuthorizationService#lookupPermissions(java.util.Map)
+     * @see org.kuali.rice.kim.service.AuthorizationService#lookupPermissions(AttributeSet)
      */
-    public List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria) {
+    public List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria) {
     	//return (List<KimPermission>)getBusinessObjectService().findMatching( KimPermissionImpl.class, searchCriteria );
     	throw new UnsupportedOperationException();
     }
@@ -255,7 +251,7 @@ public class PermissionServiceImpl implements PermissionService {
     	return perm.getPermissionId();
     }
 
-    protected List<PermissionDetailsInfo> getMatchingPermissions( List<PermissionDetailsInfo> permissions, Map<String,String> details ) {
+    protected List<PermissionDetailsInfo> getMatchingPermissions( List<PermissionDetailsInfo> permissions, AttributeSet details ) {
     	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
     	for ( PermissionDetailsInfo perm : permissions ) {
     		String serviceName = getPermissionTypeServiceName( perm.getPermissionId() );
@@ -290,7 +286,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
 	
-    public void assignQualifiedPermissionToRole(String roleId, String permissionId, Map<String,String> qualifier) {
+    public void assignQualifiedPermissionToRole(String roleId, String permissionId, AttributeSet qualifier) {
     	throw new UnsupportedOperationException();
     }
 

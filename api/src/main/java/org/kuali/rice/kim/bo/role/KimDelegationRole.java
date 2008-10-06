@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.util.Map;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,30 +23,9 @@ import java.util.Map;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PermissionDetailsInfo implements PermissionDetails {
+public interface KimDelegationRole {
 
-	protected String permissionId;
-
-	protected Map<String,String> details;
-
-	public String getPermissionId() {
-		return this.permissionId;
-	}
-
-	public void setPermissionId(String permissionId) {
-		this.permissionId = permissionId;
-	}
-
-	public Map<String,String> getDetails() {
-		return this.details;
-	}
-
-	public void setDetails(Map<String,String> permissionDetails) {
-		this.details = permissionDetails;
-	}
-	
-	public boolean hasDetails() {
-		return !details.isEmpty();
-	}
-	
+	String getDelegationId();
+	String getRoleId();
+	AttributeSet getQualifier();
 }

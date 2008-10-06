@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2008 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.RolePrincipal;
+import org.kuali.rice.kim.bo.role.KimDelegationGroup;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -30,30 +30,29 @@ import org.kuali.rice.kim.bo.role.RolePrincipal;
  *
  */
 @Entity
-@Table(name="KR_KIM_ROLE_PRINCIPAL_T")
-public class RolePrincipalImpl extends RoleMemberImpl implements RolePrincipal {
+@Table(name="KR_KIM_GROUP_T")
+public class KimDelegationGroupImpl extends KimDelegationMemberImpl implements
+		KimDelegationGroup {
 
-	@Column(name="PRNCPL_ID")
-	protected String principalId;
-
-
-	public String getPrincipalId() {
-		return this.principalId;
-	}
-
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
-	}
-
+	@Column(name="GRP_ID")
+	protected String groupId;
+	
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "principalId", principalId );
-		return m;
+		LinkedHashMap lhm = new LinkedHashMap();
+		lhm.put( "groupId", groupId );
+		return lhm;
 	}
-	
+
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 }

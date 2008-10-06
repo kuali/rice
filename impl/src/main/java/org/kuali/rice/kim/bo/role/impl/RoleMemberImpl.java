@@ -15,19 +15,16 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.role.RoleMember;
-import org.kuali.rice.kim.bo.role.RoleMemberAttributeData;
-import org.kuali.rice.kim.bo.types.KimAttributeContainer;
 import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -37,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class RoleMemberBase extends PersistableBusinessObjectBase implements RoleMember, KimAttributeContainer {
+public abstract class RoleMemberImpl extends PersistableBusinessObjectBase implements RoleMember {
 
 	@Id
 	@Column(name="ROLE_MEMBER_ID")
@@ -46,16 +43,13 @@ public abstract class RoleMemberBase extends PersistableBusinessObjectBase imple
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
-	@Column(name="MEMBER_ID")
-	protected String memberId;
-	
 	// TODO: uncomment this when the class has been implemented
 	//@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 //	@JoinColumns({
 //		@JoinColumn(name="ROLE_ID", insertable=false, updatable=false),
 //		@JoinColumn(name="MEMBER_ID", insertable=false, updatable=false)
 //	})	
-	protected List<RoleMemberAttributeData> qualifier;
+	protected List<RoleMemberAttributeDataImpl> attributes;
 	
 	public String getRoleMemberId() {
 		return this.roleMemberId;
@@ -69,12 +63,6 @@ public abstract class RoleMemberBase extends PersistableBusinessObjectBase imple
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
-	public String getMemberId() {
-		return this.memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
 	
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -85,49 +73,25 @@ public abstract class RoleMemberBase extends PersistableBusinessObjectBase imple
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "roleMemberId", roleMemberId );
 		m.put( "roleId", roleId );
-		m.put( "memberTypeCode", getRoleMemberTypeCode() );
-		m.put( "memberId", memberId );
 		return m;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RoleMember#getQualifier()
-	 */
-	public List<RoleMemberAttributeData> getQualifier() {
-		return this.qualifier;
+	public List<RoleMemberAttributeDataImpl> getAttributes() {
+		return this.attributes;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RoleMember#getQualifierAsMap()
-	 */
-	public Map<String, String> getQualifierAsMap() {
-		return getAttributesAsMap();
+	public void setAttributes(List<RoleMemberAttributeDataImpl> attributes) {
+		this.attributes = attributes;
 	}
-	public void setQualifier(List<RoleMemberAttributeData> qualifications) {
-		this.qualifier = qualifications;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttributeContainer#getAttributes()
-	 */
-	public List<? extends KimAttributeData> getAttributes() {
-		return qualifier;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttributeContainer#getAttributesAsMap()
-	 */
-	public Map<String,String> getAttributesAsMap() {
-		Map<String,String> m = new HashMap<String,String>();
+
+	public AttributeSet getQualifier() {
+		AttributeSet m = new AttributeSet();
 		for ( KimAttributeData data : getAttributes() ) {
 			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 		}
 		return m;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RoleMember#hasQualifier()
-	 */
 	public boolean hasQualifier() {
 		return !getAttributes().isEmpty();
 	}

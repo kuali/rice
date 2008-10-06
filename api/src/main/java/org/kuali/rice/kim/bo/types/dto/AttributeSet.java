@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2008 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.bo.types.dto;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Join table between roles and their member groups. 
+ * Specialization of HashMap to facilitate web services and simplify API definitions.
  * 
- * @author Kuali Rice Team (kuali-rice@googleRoles.com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RoleGroup extends RoleMember {
-	String getGroupId();
+public class AttributeSet extends HashMap<String,String> {
+
+	public AttributeSet() {
+		super();
+	}
+	
+	public AttributeSet( Map<String,String> map ) {
+		super( map );
+	}
 }

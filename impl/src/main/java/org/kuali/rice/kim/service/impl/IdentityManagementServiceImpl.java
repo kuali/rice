@@ -1,7 +1,6 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +10,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -44,21 +44,21 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     	return getPermissionService().hasPermission( principalId, permissionId );
     }
 
-    public boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification ) {
+    public boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification ) {
     	return getPermissionService().hasQualifiedPermission( principalId, permissionId, qualification );
     }
     
     public boolean hasQualifiedPermissionByName(String principalId,  
-    		String permissionName, Map<String,String> qualification) {
+    		String permissionName, AttributeSet qualification) {
     	return getPermissionService().hasQualifiedPermissionByName( principalId, permissionName, qualification );
     }
     
     /**
-     * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedPermissionWithDetails(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedPermissionWithDetails(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean hasQualifiedPermissionWithDetails(String principalId,
-    		String permissionId, Map<String,String> qualification,
-    		Map<String,String> permissionDetails) {
+    		String permissionId, AttributeSet qualification,
+    		AttributeSet permissionDetails) {
     	return getPermissionService().hasQualifiedPermissionWithDetails( principalId, permissionId, qualification, permissionDetails );
     }
     
@@ -202,15 +202,15 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     // ----------------------
 
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getPrincipalIdsWithResponsibility(java.lang.String, java.util.Map, java.util.Map)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getPrincipalIdsWithResponsibility(java.lang.String, AttributeSet, AttributeSet)
 	 */
 	public List<String> getPrincipalIdsWithResponsibility(String responsibilityId,
-			Map<String,String> qualification, Map<String,String> responsibilityDetails) {
+			AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
 	}
 	
-	public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
-			Map<String,String> responsibilityDetails) {
+	public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, AttributeSet qualification,
+			AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getPrincipalIdsWithResponsibilityByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
@@ -226,24 +226,24 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityInfo(java.lang.String, AttributeSet, AttributeSet)
 	 */
 	public List<? extends ResponsibilityResolution> getResponsibilityInfo(String responsibilityId,
-			Map<String,String> qualification, Map<String,String> responsibilityDetails) {
+			AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
 	}
 	
-	public List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
-			Map<String,String> responsibilityDetails) {
+	public List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, AttributeSet qualification,
+			AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedResponsibilityWithDetails(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedResponsibilityWithDetails(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
 	 */
 	public boolean hasQualifiedResponsibilityWithDetails(String principalId,
-			String responsibilityId, Map<String,String> qualification,
-			Map<String,String> responsibilityDetails) {
+			String responsibilityId, AttributeSet qualification,
+			AttributeSet responsibilityDetails) {
 		return getResponsibilityService().hasQualifiedResponsibilityWithDetails( principalId, responsibilityId, qualification, responsibilityDetails );
 	}
 }

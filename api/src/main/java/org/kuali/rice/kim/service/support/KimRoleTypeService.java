@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.service.support;
 
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kim.bo.types.KimTypeService;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a service interface that must be used for a service related to a role type.
@@ -46,11 +45,11 @@ public interface KimRoleTypeService extends KimTypeService {
      * the KFS organization hierarchy, so an implementation of this sort must be done by
      * a service which lives within KFS and will be called remotely by KIM.
      */
-    boolean doesRoleQualifierMatchQualification( Map<String,String> qualification, Map<String,String> roleQualifier );
+    boolean doesRoleQualifierMatchQualification( AttributeSet qualification, AttributeSet roleQualifier );
 
-    /** Same as {@link #doesRoleQualifierMatchQualification(Map, Map)} except that it takes a list of qualifiers to check.
+    /** Same as {@link #doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
      */
-    boolean doRoleQualifiersMatchQualification( Map<String,String> qualification, List<Map<String,String>> roleQualifierList );
+    boolean doRoleQualifiersMatchQualification( AttributeSet qualification, List<AttributeSet> roleQualifierList );
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
@@ -69,12 +68,12 @@ public interface KimRoleTypeService extends KimTypeService {
      * 
      * @see #isApplicationRoleType()
      */
-    List<String> getPrincipalIdsFromApplicationRole( String roleName, Map<String,String> qualification );
+    List<String> getPrincipalIdsFromApplicationRole( String roleName, AttributeSet qualification );
 
     /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
-    List<Map<String,String>> getAllImpliedQualifications( Map<String,String> qualification );
+    List<AttributeSet> getAllImpliedQualifications( AttributeSet qualification );
 
     /**
      * This method would return all qualifications that imply this qualification. (up)
@@ -84,7 +83,7 @@ public interface KimRoleTypeService extends KimTypeService {
      * Allowed?
      * Granting?
      */
-    List<Map<String,String>> getAllImplyingQualifications( Map<String,String> qualification );
+    List<AttributeSet> getAllImplyingQualifications( AttributeSet qualification );
     // TODO: need list versions of the implyed/ing methods?
     
     /** 
@@ -105,6 +104,6 @@ public interface KimRoleTypeService extends KimTypeService {
      * if this role was based on the campus and the role assigned to it was based 
      * on organization.
      */
-    Map<String,String> convertQualificationAttributesToRequired( Map<String,String> qualificationAttributes );
+    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
     
 }

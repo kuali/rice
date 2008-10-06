@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.util.List;
-
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
@@ -51,17 +49,5 @@ public interface KimRole extends Inactivateable {
 	
 	/** Type identifier for this role.  This will control what additional attributes are available */
 	String getKimTypeId();
-	
-//	/** List of principals who have been assigned to this role. */
-//	List<RolePrincipal> getMemberPrincipals();
-//
-//	/** List of groups who have been assigned to this role.  
-//	 * All principals in these groups (and their contained groups) are implicitly assigned to this role. */
-//	List<RoleGroup> getMemberGroups();
-//
-//	/** The list of all roles which are contained within this role.  This role implies all the permissions
-//	 * of the contained roles but not all the members.  That is, membership in a contained role
-//	 * does not imply membership in this role.
-//	 */
-//	List<RoleRelationship> getContainedRoles();
+
 }

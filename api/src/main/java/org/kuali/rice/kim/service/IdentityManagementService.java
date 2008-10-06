@@ -1,7 +1,6 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +10,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is the front end for the KIM module.  Clients of KIM should access this service from
@@ -87,9 +87,9 @@ public interface IdentityManagementService {
      * @see AuthorizationService#hasPermission(java.lang.String, java.lang.String)
      */
     boolean hasPermission(String principalId, String permissionId);
-    boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification );
-    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, Map<String,String> qualification, Map<String,String> permissionDetails );  
-    boolean hasQualifiedPermissionByName( String principalId, String permissionName, Map<String,String> qualification );
+    boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification );
+    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, AttributeSet qualification, AttributeSet permissionDetails );  
+    boolean hasQualifiedPermissionByName( String principalId, String permissionName, AttributeSet qualification );
     
     // ----------------------
     // Responsibility Methods
@@ -109,25 +109,25 @@ public interface IdentityManagementService {
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
-    boolean hasQualifiedResponsibilityWithDetails( String principalId, String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    boolean hasQualifiedResponsibilityWithDetails( String principalId, String responsibilityId, AttributeSet qualification, AttributeSet responsibilityDetails );
 
     /**
      * Get a list of the principals who have this responsibility given the qualifications.
      */
-    List<String> getPrincipalIdsWithResponsibility( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<String> getPrincipalIdsWithResponsibility( String responsibilityId, AttributeSet qualification, AttributeSet responsibilityDetails );
 
     /**
      * Get a list of the principals who have this responsibility given the qualifications.
      */
-    List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<? extends ResponsibilityResolution> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<? extends ResponsibilityResolution> getResponsibilityInfo( String responsibilityId, AttributeSet qualification, AttributeSet responsibilityDetails );
     /**
      * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
      */
-    List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
 }

@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.bo.role.impl;
 
-import java.io.Serializable;
+import java.util.LinkedHashMap;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.kuali.rice.kim.bo.role.KimDelegationRole;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,29 +29,30 @@ import java.io.Serializable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermission, Serializable {
+@Entity
+@Table(name="KR_KIM_DELE_ROLE_T")
+public class KimDelegationRoleImpl extends KimDelegationMemberImpl implements
+		KimDelegationRole {
 
-	protected String name;
-	protected String description;
-	
-	protected boolean active;
-	
-	public String getName() {
-		return this.name;
+	@Column(name="ROLE_ID")
+	protected String roleId;
+
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		throw new UnsupportedOperationException();
+		// return null;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public String getRoleId() {
+		return this.roleId;
 	}
-	public String getDescription() {
-		return this.description;
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public boolean isActive() {
-		return this.active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+
 }

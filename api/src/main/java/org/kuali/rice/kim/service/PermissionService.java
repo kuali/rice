@@ -16,9 +16,9 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -42,7 +42,7 @@ public interface PermissionService {
     /**
      *  Return the list of details that the principal has been assigned for the given permission.
      */
-    List<Map<String,String>> getPermissionDetails( String principalId, String permissionId, Map<String,String> roleQualification );
+    List<AttributeSet> getPermissionDetails( String principalId, String permissionId, AttributeSet roleQualification );
             
     // --------------------
     // Authorization Checks
@@ -74,7 +74,7 @@ public interface PermissionService {
 	 * It can also be used when the client application KNOWS that this is a role which
 	 * is never qualified.
      */
-    boolean hasPermissionWithDetails( String principalId, String permissionId, Map<String,String> permissionDetails );
+    boolean hasPermissionWithDetails( String principalId, String permissionId, AttributeSet permissionDetails );
     
     /**
      * Checks whether the given permission is granted to the principal given
@@ -86,12 +86,12 @@ public interface PermissionService {
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
      */
-    boolean hasQualifiedPermission(String principalId, String permissionId, Map<String,String> qualification);
+    boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification);
 
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermissionWithDetails(String, String, Map)}.
+     * then this method behaves the same as {@link #hasPermissionWithDetails(String, String, AttributeSet)}.
      * 
      * Each role assigned to the principal is checked for qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked first through
@@ -102,13 +102,13 @@ public interface PermissionService {
      * is called for each permission with the given permissionId to see if the 
      * permissionQualification matches its qualifier.
      */
-    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, Map<String,String> qualification, Map<String,String> permissionDetails );
+    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, AttributeSet qualification, AttributeSet permissionDetails );
     
     /**
-     * Same as {@link #hasQualifiedPermission(String, String, Map)} except that it looks up the
+     * Same as {@link #hasQualifiedPermission(String, String, AttributeSet)} except that it looks up the
      * permission by its namespace/name first.
      */
-    boolean hasQualifiedPermissionByName(String principalId, String permissionName, Map<String,String> qualification);
+    boolean hasQualifiedPermissionByName(String principalId, String permissionName, AttributeSet qualification);
     
 
     // --------------------
@@ -132,10 +132,10 @@ public interface PermissionService {
      * 
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
-    List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria);
+    List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria);
    
     void savePermission(KimPermissionInfo permission);
    
-    void assignQualifiedPermissionToRole(String roleId, String permissionId, Map<String,String> qualifier);    
+    void assignQualifiedPermissionToRole(String roleId, String permissionId, AttributeSet qualifier);    
  
 }

@@ -16,13 +16,14 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthorizationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.RoleMembershipInfo;
 import org.kuali.rice.kim.service.RoleService;
 
 /**
@@ -37,7 +38,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	protected RoleService roleService;
 	
 	public void assignQualifiedPermissionToRole(String roleId, String permissionId,
-			Map<String,String> qualifier) {
+			AttributeSet qualifier) {
 		getPermissionService().assignQualifiedPermissionToRole( roleId, permissionId, qualifier );
 	}
 	public KimPermissionInfo getPermission(String permissionId) {
@@ -46,8 +47,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public KimPermissionInfo getPermissionByName(String permissionName) {
 		return getPermissionService().getPermissionByName( permissionName );
 	}
-	public List<Map<String,String>> getPermissionDetails(String principalId, String permissionId,
-			Map<String,String> roleQualification) {
+	public List<AttributeSet> getPermissionDetails(String principalId, String permissionId,
+			AttributeSet roleQualification) {
 		return getPermissionService().getPermissionDetails( principalId, permissionId,
 				roleQualification );
 	}
@@ -58,37 +59,37 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return getPermissionService().hasPermission( principalId, permissionId );
 	}
 	public boolean hasPermissionWithDetails(String principalId, String permissionId,
-			Map<String,String> permissionDetails) {
+			AttributeSet permissionDetails) {
 		return getPermissionService().hasPermissionWithDetails( principalId, permissionId,
 				permissionDetails );
 	}
 	public boolean hasQualifiedPermission(String principalId, String permissionId,
-			Map<String,String> qualification) {
+			AttributeSet qualification) {
 		return getPermissionService().hasQualifiedPermission( principalId, permissionId,
 				qualification );
 	}
 	public boolean hasQualifiedPermissionByName(String principalId, String permissionName,
-			Map<String,String> qualification) {
+			AttributeSet qualification) {
 		return getPermissionService().hasQualifiedPermissionByName( principalId, permissionName,
 				qualification );
 	}
 	public boolean hasQualifiedPermissionWithDetails(String principalId, String permissionId,
-			Map<String,String> qualification, Map<String,String> permissionDetails) {
+			AttributeSet qualification, AttributeSet permissionDetails) {
 		return getPermissionService().hasQualifiedPermissionWithDetails( principalId, permissionId,
 				qualification, permissionDetails );
 	}
-	public List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria) {
+	public List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria) {
 		return getPermissionService().lookupPermissions( searchCriteria );
 	}
 	public void savePermission(KimPermissionInfo permission) {
 		getPermissionService().savePermission( permission );
 	}
 	public void assignQualifiedRoleToGroup(String groupId, String roleId,
-			Map<String,String> qualifier) {
+			AttributeSet qualifier) {
 		getRoleService().assignQualifiedRoleToGroup( groupId, roleId, qualifier );
 	}
 	public void assignQualifiedRoleToPrincipal(String principalId, String roleId,
-			Map<String,String> qualifier) {
+			AttributeSet qualifier) {
 		getRoleService().assignQualifiedRoleToPrincipal( principalId, roleId, qualifier );
 	}
 	public List<String> getImpliedRoleIds(String roleId) {
@@ -98,7 +99,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return getRoleService().getImplyingRoleIds( roleId );
 	}
 	public List<String> getPrincipalIdsWithQualifiedRole(String roleId,
-			Map<String,String> qualification) {
+			AttributeSet qualification) {
 		return getRoleService().getPrincipalIdsWithQualifiedRole( roleId, qualification );
 	}
 	public List<String> getPrincipalIdsWithRole(String roleId) {
@@ -120,14 +121,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return getRoleService().getRoleIdsInNamespaceForPrincipal( principalId, namespaceCode );
 	}
 	public List<String> getRoleIdsMatchingQualification(String principalId,
-			Map<String,String> qualification) {
+			AttributeSet qualification) {
 		return getRoleService().getRoleIdsMatchingQualification( principalId, qualification );
 	}
 	public boolean isRoleActive(String roleId) {
 		return getRoleService().isRoleActive( roleId );
 	}
 	public boolean principalHasQualifiedRole(String principalId, String roleId,
-			Map<String,String> qualification) {
+			AttributeSet qualification) {
 		return getRoleService().principalHasQualifiedRole( principalId, roleId, qualification );
 	}
 	public boolean principalHasRole(String principalId, String roleId) {
@@ -136,8 +137,20 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public void saveRole(KimRoleInfo role) {
 		getRoleService().saveRole( role );
 	}
+	
+	
+	public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
+		return getRoleService().getRoleMembers( roleIds, qualification );
+	}
+	public boolean principalHasRole(String principalId, List<String> roleIds,
+			AttributeSet qualification) {
+		return getRoleService().principalHasRole( principalId, roleIds, qualification );
+	}
+	
+	
+	
 	public PermissionService getPermissionService() {
-		return this.permissionService;
+		return permissionService;
 	}
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {

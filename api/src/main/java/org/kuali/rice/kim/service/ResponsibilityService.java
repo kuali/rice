@@ -18,8 +18,8 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.ResponsibilityResolutionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.dto.ResponsibilityResolutionInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

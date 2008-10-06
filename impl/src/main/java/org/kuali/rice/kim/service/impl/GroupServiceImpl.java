@@ -11,8 +11,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.group.GroupAttribute;
 import org.kuali.rice.kim.bo.group.GroupGroup;
-import org.kuali.rice.kim.bo.group.GroupInfo;
 import org.kuali.rice.kim.bo.group.GroupPrincipal;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
@@ -487,7 +487,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
     /**
-     * @see org.kuali.rice.kim.service.GroupService#createGroup(org.kuali.rice.kim.bo.group.GroupInfo)
+     * @see org.kuali.rice.kim.service.GroupService#createGroup(org.kuali.rice.kim.bo.group.dto.GroupInfo)
      */
     public GroupInfo createGroup(GroupInfo groupInfo) {
         KimGroupImpl group = new KimGroupImpl();
@@ -510,7 +510,7 @@ public class GroupServiceImpl implements GroupService {
 	}
     
     /**
-     * @see org.kuali.rice.kim.service.GroupService#updateGroup(java.lang.String, org.kuali.rice.kim.bo.group.GroupInfo)
+     * @see org.kuali.rice.kim.service.GroupService#updateGroup(java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo)
      */
     public GroupInfo updateGroup(String groupId, GroupInfo groupInfo) {
         // TODO sgibson - can this be used to change id?

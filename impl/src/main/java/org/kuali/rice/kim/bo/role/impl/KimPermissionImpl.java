@@ -30,7 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.role.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**

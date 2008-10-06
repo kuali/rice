@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.types.KimTypeService;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -26,7 +25,7 @@ import org.kuali.rice.kim.bo.types.KimTypeService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimPermissionTypeService extends KimTypeService {
+public interface KimResponsibilityTypeService extends KimTypeService {
 
     /** Return whether a permission assignment with the given details is applicable for the given request details. 
      * 
@@ -40,11 +39,11 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesPermissionDetailMatch( Map<String,String> requestedDetails, Map<String,String> permissionDetails );
+    boolean doesResponsibilityDetailMatch( Map<String,String> requestedDetails, Map<String,String> responsibilityDetails );
 
-    /** Same as {@link #doesPermissionDetailMatch(Map, Map)} except that it takes a list of details to check.
+    /** Same as {@link #doesResponsibilityDetailMatch(Map, Map)} except that it takes a list of details to check.
      */
-    boolean doPermissionDetailsMatch( Map<String,String> requestedDetails, List<Map<String,String>> permissionDetailsList );
+    boolean doResponsibilityDetailsMatch( Map<String,String> requestedDetails, List<Map<String,String>> responsibilityDetailsList );
 
     /**
      * This method would return all permission details that the given details imply. (down)
@@ -62,15 +61,5 @@ public interface KimPermissionTypeService extends KimTypeService {
     List<Map<String,String>> getAllImplyingDetails( Map<String,String> requestedDetails );
     // TODO: need list versions of the implyed/ing methods?
 
-
- // TODO: uncomment this and implement a storage mechanism
-// 	/**
-// 	 * Returns a list of attribute names that must be passed when checking for 
-// 	 * this permission.  This will be used to ensure that the calls for permission
-// 	 * checks (when qualified) are executed properly.  It will also be used by
-// 	 * the user interface to ensure that the role to which this permission is assigned
-// 	 * can understand these attributes.
-// 	 */
-// 	List<String> getRequiredQualificationAttributeNames();
-
+	
 }

@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import java.util.LinkedHashMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.RoleGroup;
-import org.kuali.rice.kim.bo.role.RoleMember;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -32,25 +31,28 @@ import org.kuali.rice.kim.bo.role.RoleMember;
  */
 @Entity
 @Table(name="KR_KIM_ROLE_GROUP_T")
-@AttributeOverrides({
-	@AttributeOverride(name="memberId",column=@Column(name="GRP_ID"))
-})
-public class RoleGroupImpl extends RoleMemberBase implements RoleGroup {
+public class RoleGroupImpl extends RoleMemberImpl implements RoleGroup {
 
-	public String getMemberGroupId() {
-		return getMemberId();
+	@Column(name="GRP_ID")
+	protected String groupId;
+	
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = new LinkedHashMap();
+		m.put( "groupId", groupId );
+		return m;
 	}
 	
-	public void setMemberGroupId( String groupId ) {
-		setMemberId( groupId );
-	}
-
-	public Class<? extends RoleMember> getRoleMemberClass() {
-		return this.getClass();
-	}
-
-	public String getRoleMemberTypeCode() {
-		return getClass().getSimpleName();
-	}
-
 }

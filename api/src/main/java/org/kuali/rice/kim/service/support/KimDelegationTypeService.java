@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2008 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.types;
-
-import java.util.List;
-import java.util.Map;
+package org.kuali.rice.kim.service.support;
 
 /**
- * Interface used by objects which contain lists of KimAttributeData objects. 
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimAttributeContainer {
+public interface KimDelegationTypeService extends KimRoleTypeService {
 
-	/** Returns a list of the data elements.  These may not always be called attributes, but
-	 * this provides a common API for the general handling code.
-	 */
-	List<? extends KimAttributeData> getAttributes();
-	
-	/**
-	 * Returns the attributes associated with this object as a map, for ease of consumption
-	 * by some code. The map is keyed by the attributeName.
-	 */
-	Map<String,String> getAttributesAsMap();
 }

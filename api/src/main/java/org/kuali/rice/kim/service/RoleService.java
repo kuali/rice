@@ -16,9 +16,9 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -92,11 +92,11 @@ public interface RoleService {
 	 * assigned to this role or in groups assigned to this role which match the
 	 * qualification will be returned.  
 	 */
-    List<String> getPrincipalIdsWithQualifiedRole(String roleId, Map<String,String> qualification);
+    List<String> getPrincipalIdsWithQualifiedRole(String roleId, AttributeSet qualification);
     
     // TODO: leave commented out unless we have a use case for checking groups in this way
 //    List<String> getGroupIdsWithRole(String roleId);
-//    List<String> getGroupIdsWithQualifiedRole(String roleId, Map<String,String> qualification);
+//    List<String> getGroupIdsWithQualifiedRole(String roleId, AttributeSet qualification);
 
     /**
      * Check whether the principal has the given unqualified role.
@@ -107,7 +107,7 @@ public interface RoleService {
      *  Check whether the principal has the given role within the context identified
      *  by the passed qualification.
      */
-    boolean principalHasQualifiedRole(String principalId, String roleId, Map<String,String> qualification);
+    boolean principalHasQualifiedRole(String principalId, String roleId, AttributeSet qualification);
     
     
     /**
@@ -119,7 +119,18 @@ public interface RoleService {
      */
     List<String> getRoleIdsForPrincipal(String principalId);
     List<String> getRoleIdsInNamespaceForPrincipal(String principalId, String namespaceCode);
-    List<String> getRoleIdsMatchingQualification( String principalId, Map<String,String> qualification );
+    List<String> getRoleIdsMatchingQualification( String principalId, AttributeSet qualification );
+    
+    /**
+     * Get all the role members (groups and principals) associated with the given list of roles
+     * where their role membership/assignment matches the given qualification.
+     *
+     * The return object will have each membership relationship along with the delegations
+     * 
+     */
+    List<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
+    
+    boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
     
     // --------------------
     // Persistence Methods
@@ -127,7 +138,7 @@ public interface RoleService {
         
     void saveRole(KimRoleInfo role);   
 
-    void assignQualifiedRoleToPrincipal(String principalId, String roleId, Map<String,String> qualifier);
-    void assignQualifiedRoleToGroup(String groupId, String roleId, Map<String,String> qualifier);
+    void assignQualifiedRoleToPrincipal(String principalId, String roleId, AttributeSet qualifier);
+    void assignQualifiedRoleToGroup(String groupId, String roleId, AttributeSet qualifier);
     
 }

@@ -10,12 +10,12 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing responsibilitys and
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.io.Serializable;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,29 +23,9 @@ import java.io.Serializable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements KimResponsibility, Serializable {
+public interface KimDelegationPrincipal {
 
-	protected String name;
-	protected String description;
-	
-	protected boolean active;
-	
-	public String getName() {
-		return this.name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return this.description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public boolean isActive() {
-		return this.active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+	String getDelegationId();
+	String getPrincipalId();
+	AttributeSet getQualifier();
 }

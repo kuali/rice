@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2008 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.service;
+
+import java.util.List;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
- * Join table between roles and their member groups. 
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googleRoles.com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface RoleGroup extends RoleMember {
-	String getGroupId();
+public class RoleMembershipInfo {
+	String principalId;
+	String groupId;
+	String roleId;
+	AttributeSet qualifier;
+	List delegates;
 }

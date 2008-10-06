@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -42,23 +41,7 @@ public interface RoleMember {
 	/** ID of the role of which this person/group is a member. */
 	String getRoleId();
 	
-	/** Returns a string identifying the type of member.  Something like "GROUP" or "PRINCIPAL".
-	 * (up to the implementation)
-	 */
-	String getRoleMemberTypeCode();
-	
-	/** Returns the actual implementation class for the role member instance. */
-	Class<? extends RoleMember> getRoleMemberClass();
-	
-	/**
-	 * The unique identifier of the member from its respective table.
-	 * In the default implementation this will either be a principalId
-	 * or a RoleId.
-	 */
-	String getMemberId();
-
 	/** List of qualifier for this role/member relationship.  See the class comment for more information. */
-	List<RoleMemberAttributeData> getQualifier();
-	Map<String,String> getQualifierAsMap();
+	AttributeSet getQualifier();
 	boolean hasQualifier();
 }

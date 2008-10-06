@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.types;
+package org.kuali.rice.kim.service.support;
 
 import java.util.List;
-import java.util.Map;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  *  This is the base service interface for handling type-specific behavior.  Types can be attached
@@ -44,7 +45,7 @@ public interface KimTypeService {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	Map<String,String> validateAttributes( Map<String,String> attributes );
+	AttributeSet validateAttributes( AttributeSet attributes );
 	
 	/** Validates a single attribute data element.
 	 * 
@@ -65,7 +66,7 @@ public interface KimTypeService {
 	 * 
 	 * Return null for no inquiry URL.
 	 */
-	String getInquiryUrl( String attributeName, Map<String,String> relevantAttributeData );
+	String getInquiryUrl( String attributeName, AttributeSet relevantAttributeData );
 	
 	/** Return a data dictionary AttributeDefinition for use rendering in the UI. */
 	// QUESTION: Do some DD classes need to be moved into the API for use like this?  ANSWER: Yes

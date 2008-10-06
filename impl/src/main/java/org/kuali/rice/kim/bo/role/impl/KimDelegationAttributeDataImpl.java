@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.bo.role.impl;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.kuali.rice.kim.bo.role.RoleMemberAttributeData;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
- * Join table between the KimRole and KimPrincipal objects. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public interface RolePrincipal extends RoleMember {
-
-	/** The Principal ID of the person who is a member of this group. */
-	String getPrincipalId();
+@Entity
+@Table(name="KR_KIM_ROLE_MBR_ATTR_DATA_T")
+public class KimDelegationAttributeDataImpl extends KimAttributeDataImpl implements RoleMemberAttributeData {
 }

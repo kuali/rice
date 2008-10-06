@@ -13,9 +13,11 @@
  * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.bo.role.dto;
 
 import java.util.Map;
+
+import org.kuali.rice.kim.bo.role.ResponsibilityDetails;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

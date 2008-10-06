@@ -3,7 +3,7 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.GroupInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 public interface GroupService {
 

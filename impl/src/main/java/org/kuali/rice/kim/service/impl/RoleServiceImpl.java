@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,19 +24,20 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.role.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.KimRoleTypeService;
 import org.kuali.rice.kim.bo.role.RoleGroup;
 import org.kuali.rice.kim.bo.role.RolePrincipal;
 import org.kuali.rice.kim.bo.role.RoleRelationship;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleMembershipInfo;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
 		}
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("roleId", roleId);
 		return (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
 	}
@@ -98,7 +98,7 @@ public class RoleServiceImpl implements RoleService {
 				|| StringUtils.isBlank( roleName ) ) {
 			return null;
 		}
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("namespaceCode", namespaceCode);
 		criteria.put("roleName", roleName);
 		criteria.put("active", "Y");
@@ -116,7 +116,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	public boolean isRoleActive( String roleId ) {
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("roleId", roleId);
 		criteria.put("active", "Y");
 		return getBusinessObjectService().countMatching(KimRoleImpl.class, criteria) > 0;
@@ -142,17 +142,17 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#principalHasQualifiedRole(java.lang.String, java.lang.String, java.util.Map)
+	 * @see org.kuali.rice.kim.service.RoleService#principalHasQualifiedRole(java.lang.String, java.lang.String, AttributeSet)
 	 */
-    public boolean principalHasQualifiedRole(String principalId, String roleId, Map<String,String> qualification) {
+    public boolean principalHasQualifiedRole(String principalId, String roleId, AttributeSet qualification) {
     	KimRoleImpl role = getRoleImpl( roleId );
     	return principalHasQualifiedRole( principalId, role, qualification );
     }
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#principalHasQualifiedRole(java.lang.String, org.kuali.rice.kim.bo.role.KimRole, java.util.Map)
+     * @see org.kuali.rice.kim.service.RoleService#principalHasQualifiedRole(java.lang.String, org.kuali.rice.kim.bo.role.KimRole, AttributeSet)
      */
-    protected boolean principalHasQualifiedRole(String principalId, KimRoleImpl role, Map<String,String> qualification) {
+    protected boolean principalHasQualifiedRole(String principalId, KimRoleImpl role, AttributeSet qualification) {
     	if ( StringUtils.isEmpty( principalId ) || role == null ) {
     		return false;
     	}
@@ -166,18 +166,18 @@ public class RoleServiceImpl implements RoleService {
      	}
      	// direct assignment
     	for ( RolePrincipal rp : role.getMemberPrincipals() ) {
-    		if ( rp.getMemberPrincipalId().equals( principalId ) ) {
+    		if ( rp.getPrincipalId().equals( principalId ) ) {
     			if ( rp.hasQualifier() 
-    					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifierAsMap() ) ) {
+    					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
     				return true;
     			}
     		}
     	}
     	// assigned by group
     	for ( RoleGroup rg : role.getMemberGroups() ) {
-    		if ( getGroupService().isMemberOfGroup( principalId, rg.getMemberGroupId() ) ) {
+    		if ( getGroupService().isMemberOfGroup( principalId, rg.getGroupId() ) ) {
     			if ( rg.hasQualifier() 
-    					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifierAsMap() ) ) {
+    					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifier() ) ) {
     				return true;
     			}
     		}
@@ -205,10 +205,10 @@ public class RoleServiceImpl implements RoleService {
 		List<RoleGroup> roleGroups = role.getMemberGroups();
 
 		for (RolePrincipal rolePrincipal : rolePrincipals) {
-			ids.add(rolePrincipal.getMemberPrincipalId());
+			ids.add(rolePrincipal.getPrincipalId());
 		}
 		for (RoleGroup roleGroup : roleGroups) {
-			ids.addAll(getGroupService().getMemberPrincipalIds(roleGroup.getMemberGroupId()));
+			ids.addAll(getGroupService().getMemberPrincipalIds(roleGroup.getGroupId()));
 		}
 		
 		// difference from groups - do not recurse, principals in lower level roles do not automatically belong to
@@ -226,9 +226,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdsWithQualifiedRole(java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdsWithQualifiedRole(java.lang.String, AttributeSet)
      */
-    public List<String> getPrincipalIdsWithQualifiedRole(String roleId, Map<String,String> qualifications) {
+    public List<String> getPrincipalIdsWithQualifiedRole(String roleId, AttributeSet qualifications) {
     	Set<String> principalIds = new HashSet<String>();
     	// get matching qualified role members
     	KimRoleImpl role = getRoleImpl(roleId);
@@ -238,16 +238,16 @@ public class RoleServiceImpl implements RoleService {
     	// add directly assigned principals
     	KimRoleTypeService kimRoleTypeService = (KimRoleTypeService)KIMServiceLocator.getService( role.getKimRoleType().getKimTypeServiceName() );
     	for ( RolePrincipal rm : role.getMemberPrincipals() ) {
-    		Map<String,String> qualifier = rm.getQualifierAsMap();
+    		AttributeSet qualifier = rm.getQualifier();
     		if ( kimRoleTypeService.doesRoleQualifierMatchQualification(qualifications, qualifier)  ) {
-    			principalIds.add(rm.getMemberPrincipalId());
+    			principalIds.add(rm.getPrincipalId());
     		}
     	}
     	// resolve directly assigned matching groups into principals
     	for ( RoleGroup rm : role.getMemberGroups() ) {
-    		Map<String,String> qualifier = rm.getQualifierAsMap();
+    		AttributeSet qualifier = rm.getQualifier();
     		if ( kimRoleTypeService.doesRoleQualifierMatchQualification(qualifications, qualifier)  ) {
-    			principalIds.addAll( getGroupService().getMemberPrincipalIds(rm.getMemberGroupId()) );
+    			principalIds.addAll( getGroupService().getMemberPrincipalIds(rm.getGroupId()) );
     		}
     	}    	
     	// now, find all implying roles and test them as well
@@ -263,7 +263,7 @@ public class RoleServiceImpl implements RoleService {
 //    	throw new UnsupportedOperationException();
 //    }
 //
-//    public List<String> getGroupIdsWithQualifiedRole(String roleId, Map<String,String> qualifications) {
+//    public List<String> getGroupIdsWithQualifiedRole(String roleId, AttributeSet qualifications) {
 //    	// check the directly assigned groups
 //    	// get those which match the qualification
 //    	// pull all sub-groups as well
@@ -276,6 +276,24 @@ public class RoleServiceImpl implements RoleService {
     // Role Membership Methods
     // --------------------
 
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
+    	throw new UnsupportedOperationException();
+    	// return null;
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#principalHasRole(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public boolean principalHasRole(String principalId, List<String> roleIds,
+    		AttributeSet qualification) {
+    	throw new UnsupportedOperationException();
+    	// return false;
+    }
+    
+    
 	public List<String> getRoleIdsForPrincipal(String principalId) {
 		return getRoleIdsInNamespaceForPrincipal( principalId, null );
 	}
@@ -286,7 +304,7 @@ public class RoleServiceImpl implements RoleService {
 			return new ArrayList<String>(0);
 		}
 		// get the direct principal assignments
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("memberId", principalId);
 		Set<String> roles = new HashSet<String>();
 		List<RolePrincipalImpl> principalRoles = (List<RolePrincipalImpl>) getBusinessObjectService().findMatching(RolePrincipalImpl.class, criteria);
@@ -381,7 +399,7 @@ public class RoleServiceImpl implements RoleService {
 			return;
 		}
 		// search role relationships where the given role is the child
-		Map<String,String> criteria = new HashMap<String, String>( 1 );
+		AttributeSet criteria = new AttributeSet();
 		criteria.put( "containedRoleId", roleId );
 		Collection<RoleRelationship> rels = getBusinessObjectService().findMatching(RoleRelationshipImpl.class, criteria);
 		for ( RoleRelationship rel : rels ) {
@@ -396,14 +414,14 @@ public class RoleServiceImpl implements RoleService {
 	
     // getRoleIdsForPrincipal(prin)
     // getRolePermissionIdsForRoleAndPermission(role,perm)
-    // List<Map<String,String>> getPermissionQualifiers( List<String> rolePermissionIds )
+    // List<AttributeSet> getPermissionQualifiers( List<String> rolePermissionIds )
     
 	/**
 	 * Gets the roles directly assigned to the given role.
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<RoleGroupImpl> getRolesForDirectGroup(String groupId) {
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("memberId", groupId);
 
 		List<RoleGroupImpl> roles = (List<RoleGroupImpl>) getBusinessObjectService().findMatching(RoleGroupImpl.class, criteria);
@@ -412,9 +430,9 @@ public class RoleServiceImpl implements RoleService {
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsMatchingQualification( String principalId, Map<String,String> qualification ) {
+	public List<String> getRoleIdsMatchingQualification( String principalId, AttributeSet qualification ) {
 		// get the direct principal assignments
-		Map<String,String> criteria = new HashMap<String,String>();
+		AttributeSet criteria = new AttributeSet();
 		criteria.put("memberId", principalId);
 		Set<String> roles = new HashSet<String>();
 		List<RolePrincipalImpl> principalRoles = (List<RolePrincipalImpl>) getBusinessObjectService().findMatching(RolePrincipalImpl.class, criteria);
@@ -423,7 +441,7 @@ public class RoleServiceImpl implements RoleService {
 			KimRoleImpl role = getRoleImpl( rp.getRoleId() );
 			KimRoleTypeService roleTypeService = (KimRoleTypeService)KIMServiceLocator.getService( role.getKimRoleType().getKimTypeServiceName() );
 			if ( role.isActive() 
-					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifierAsMap() ) 
+					&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) 
 					) {
 				roles.add( role.getRoleId() );
 				roles.addAll( getImpliedRoleIds( role.getRoleId() ) );
@@ -439,7 +457,7 @@ public class RoleServiceImpl implements RoleService {
 				KimRoleImpl role = getRoleImpl( rg.getRoleId() );
 				KimRoleTypeService roleTypeService = (KimRoleTypeService)KIMServiceLocator.getService( role.getKimRoleType().getKimTypeServiceName() );
 				if ( role.isActive() 
-						&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifierAsMap() ) 
+						&& roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifier() ) 
 						) {
 					roles.add( role.getRoleId() );
 				}
@@ -468,11 +486,11 @@ public class RoleServiceImpl implements RoleService {
 //		}
 	}
 
-    public void assignQualifiedRoleToPrincipal(String principalId, String roleId, Map<String,String> qualifications) {
+    public void assignQualifiedRoleToPrincipal(String principalId, String roleId, AttributeSet qualifications) {
     	throw new UnsupportedOperationException();
     }
 
-    public void assignQualifiedRoleToGroup(String groupId, String roleId, Map<String,String> qualifications) {
+    public void assignQualifiedRoleToGroup(String groupId, String roleId, AttributeSet qualifications) {
     	throw new UnsupportedOperationException();
     }
 	

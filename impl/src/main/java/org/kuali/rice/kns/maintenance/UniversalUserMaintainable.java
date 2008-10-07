@@ -18,7 +18,6 @@ package org.kuali.rice.kns.maintenance;
 import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
 import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -79,12 +78,13 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
     /**
      * @see org.kuali.rice.kns.maintenance.Maintainable#populateBusinessObject(java.util.Map)
      */
-    public Map populateBusinessObject(Map fieldValues) {
+    @Override
+    public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
         // need to make sure that the UUID is populated first for later fields
         if ( fieldValues.containsKey( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
             ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
         }
-        return super.populateBusinessObject( fieldValues );
+        return super.populateBusinessObject( fieldValues, maintenanceDocument );
     }
     
     /**

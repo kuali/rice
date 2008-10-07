@@ -38,8 +38,11 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -177,8 +180,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @see org.kuali.rice.kns.maintenance.Maintainable#populateBusinessObject(java.util.Map)
      */
-    public Map populateBusinessObject(Map fieldValues) {
-        fieldValues = decryptEncryptedData(fieldValues);
+    public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
+        fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument);
         Map newFieldValues = null;
         newFieldValues = getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(getBusinessObject(), fieldValues);
    
@@ -195,29 +198,55 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @param fieldValues - possibly with encrypted values
      * @return Map fieldValues - with no encrypted values
      */
-    private Map decryptEncryptedData(Map fieldValues) {
-        try {
-        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
-                String fieldName = (String) iter.next();
-                String fieldValue = (String) fieldValues.get(fieldName);
-                if (fieldValue != null && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-                    String encryptedValue = fieldValue;
+    private Map decryptEncryptedData(Map fieldValues, Document maintenanceDocument) {
+    	try {
+	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+	                String fieldName = (String) iter.next();
+	                String fieldValue = (String) fieldValues.get(fieldName);
 
-                    // take of the postfix
-                    encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-                    String decryptedValue = getEncryptionService().decrypt(encryptedValue);
-
-                    fieldValues.put(fieldName, decryptedValue);
-                }
-            }
+	                if (fieldValue != null && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
+	                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName)){
+		                    String encryptedValue = fieldValue;
+		
+		                    // take off the postfix
+		                    encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+		                    String decryptedValue = getEncryptionService().decrypt(encryptedValue);
+		
+		                    fieldValues.put(fieldName, decryptedValue);
+	                	} else
+	                		throw new RuntimeException(
+	                			"The field value for field name "+fieldName+" should not be encrypted. Value received: "+fieldValue);
+                	} else if(fieldValue != null && shouldFieldBeEncrypted(maintenanceDocument, fieldName))
+                		throw new RuntimeException(
+                			"The field value for field name "+fieldName+" should be encrypted. Value received: "+fieldValue);
+	        	} 
+	        }
+        catch (GeneralSecurityException e) {
+            throw new RuntimeException("Unable to decrypt secure data: " + e.getMessage());
         }
-                catch (GeneralSecurityException e) {
-                    throw new RuntimeException("Unable to decrypt secure data: " + e.getMessage());
-                }
-        
+       
         return fieldValues;
     }
 
+    private boolean shouldFieldBeEncrypted(Document maintenanceDocument, String fieldName){
+    	DocumentAuthorizer authorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
+    	Map editMap = authorizer.getEditMode(maintenanceDocument, GlobalVariables.getUserSession().getUniversalUser());
+    	String displayEditMode = getDisplayEditMode(maintenanceDocument, fieldName);
+    	// Non-blank displayEditMode implies that this field should be encrypted, if the user does not have appropriate permissions
+    	// If the logged in user has the permission to view or edit this field, 
+    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted 
+    	if(StringUtils.isNotBlank(displayEditMode) && (editMap==null || !editMap.containsKey(displayEditMode)))
+    		return true;
+    	return false;
+    }
+    
+    private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
+    	String docTypeName = maintenanceDocument.getDocumentHeader().getWorkflowDocument().getDocumentType();
+    	MaintainableFieldDefinition fieldDefinition =
+    		KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableField(docTypeName, fieldName);
+    	return fieldDefinition==null?null:fieldDefinition.getDisplayEditMode();
+	}
+    
     /**
      * Calls method to get all the core sections for the business object defined in the data dictionary. Then determines if the bo
      * has custom attributes, if so builds a custom attribute section and adds to the section list.

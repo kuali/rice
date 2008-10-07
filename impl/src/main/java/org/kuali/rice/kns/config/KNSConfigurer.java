@@ -38,7 +38,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 
 	private List<String> dataDictionaryPackages;
 
-	private boolean suppressAutoModuleConfiguration;
+	private boolean loadDataDictionary;
 	
 	private BeanFactory beanFactory;
 
@@ -60,7 +60,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 		GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
 		//lifecycles.add(new OJBConfigurer());
 		//lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
-		if (!isSuppressAutoModuleConfiguration()) {
+		if (!isLoadDataDictionary()) {
 			lifecycles.add(new Lifecycle() {
 				boolean started = false;
 
@@ -80,7 +80,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 					//moduleService.setModuleConfiguration(moduleConfiguration);					
 					//moduleService.afterPropertiesSet();
 					
-					KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
+					//KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
 					this.started = true;
 				}
 
@@ -100,7 +100,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
     public void onEvent(RiceConfigEvent event) throws Exception {
         if (event instanceof AfterStartEvent) {
             LOG.info("Processing any remaining Data Dictionary configuration.");
-    		if (!isSuppressAutoModuleConfiguration()) {
+    		if (!isLoadDataDictionary()) {
     			KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(false);
     		}
     	}
@@ -122,12 +122,18 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 		this.dataDictionaryPackages = dataDictionaryPackages;
 	}
 
-	public boolean isSuppressAutoModuleConfiguration() {
-		return suppressAutoModuleConfiguration;
+	/**
+	 * @return the loadDataDictionary
+	 */
+	public boolean isLoadDataDictionary() {
+		return this.loadDataDictionary;
 	}
 
-	public void setSuppressAutoModuleConfiguration(boolean suppressAutoModuleConfiguration) {
-		this.suppressAutoModuleConfiguration = suppressAutoModuleConfiguration;
+	/**
+	 * @param loadDataDictionary the loadDataDictionary to set
+	 */
+	public void setLoadDataDictionary(boolean loadDataDictionary) {
+		this.loadDataDictionary = loadDataDictionary;
 	}
 
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

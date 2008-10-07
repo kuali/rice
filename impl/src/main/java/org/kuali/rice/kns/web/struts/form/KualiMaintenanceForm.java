@@ -202,12 +202,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
 
             GlobalVariables.getErrorMap().addToErrorPath("document.oldMaintainableObject");
-            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues);
+            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument);
             GlobalVariables.getErrorMap().removeFromErrorPath("document.oldMaintainableObject");
 
             GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
-            Map cachedValues = maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues);
+            Map cachedValues = 
+            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument);
             
             if(maintenanceDocument.getFileAttachment() != null) {
                 populateAttachmentPropertyForBO(maintenanceDocument);

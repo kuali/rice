@@ -78,9 +78,13 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
 
 
     /**
-     * Populates the business object based on key/value pairs.
+     * This method populates the business object based on key/value pairs.
+     * 
+     * @param fieldValues
+     * @param maintenanceDocument
+     * @return
      */
-    public Map populateBusinessObject(Map fieldValues);
+    public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument);
 
 
     /**

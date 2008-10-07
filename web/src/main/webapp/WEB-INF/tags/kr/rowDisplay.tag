@@ -775,7 +775,7 @@
 							fieldLabel="${field.fieldLabel}" />
 						<td class="grid" width="${dataCellWidth}%">
 						<html:image
-							src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}"
+							src="${ConfigProperties.externalizable.images.url}${field.imageSrc}"
 							styleClass="${field.styleClass}"
 							property="${Constants.DISPATCH_REQUEST_PARAMETER}.${Constants.RETURN_METHOD_TO_CALL}.${Constants.METHOD_TO_CALL_PARM1_LEFT_DEL}${Constants.CUSTOM_ACTION}.${fn:substringAfter(field.propertyName, Constants.MAINTENANCE_NEW_MAINTAINABLE)}${Constants.METHOD_TO_CALL_PARM1_RIGHT_DEL}"
 							title="${field.fieldLabel}" alt="${field.fieldLabel}" />

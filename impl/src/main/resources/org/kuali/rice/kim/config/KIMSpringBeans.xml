@@ -228,7 +228,11 @@
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl" />
 
-  <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"/>
+  <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
+
+  <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
+  	p:roleDao-ref="kimRoleDao"
+  	/>
     
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -316,3 +316,38 @@ ALTER TABLE kr_kim_perm_tmpl_t ADD CONSTRAINT kr_kim_perm_tmpl_tr1
     FOREIGN KEY (kim_type_id)
     REFERENCES kr_kim_type_t
 /
+
+-- Delegation Tables
+
+ALTER TABLE kr_kim_dele_t 
+    ADD CONSTRAINT kr_kim_dele_tr1
+    FOREIGN KEY ( role_id ) REFERENCES kr_kim_role_t
+/
+
+ALTER TABLE kr_kim_dele_t 
+    ADD CONSTRAINT kr_kim_dele_tr2
+    FOREIGN KEY ( typ_id ) REFERENCES kr_kim_type_t
+/
+
+
+ALTER TABLE kr_kim_dele_role_t 
+    ADD CONSTRAINT kr_kim_dele_role_tr1
+    FOREIGN KEY ( dele_id ) REFERENCES kr_kim_dele_t
+/
+
+ALTER TABLE kr_kim_dele_role_t 
+    ADD CONSTRAINT kr_kim_dele_role_tr2
+    FOREIGN KEY ( role_id ) REFERENCES kr_kim_role_t
+/
+
+
+ALTER TABLE kr_kim_dele_principal_t
+    ADD CONSTRAINT kr_kim_dele_principal_tr1
+    FOREIGN KEY ( dele_id ) REFERENCES kr_kim_dele_t
+/
+
+
+ALTER TABLE kr_kim_dele_group_t
+    ADD CONSTRAINT kr_kim_dele_group_tr1
+    FOREIGN KEY ( dele_id ) REFERENCES kr_kim_dele_t
+/

@@ -816,3 +816,81 @@ CREATE TABLE kr_kim_perm_attr_data_t
 
 ALTER TABLE kr_kim_perm_attr_data_t ADD CONSTRAINT kr_kim_perm_attr_data_tc0 UNIQUE (obj_id)
 /
+
+-- Delegation Tables
+
+CREATE TABLE kr_kim_dele_t (
+    dele_id        VARCHAR(40),
+    ver_nbr        NUMBER(8,0) NOT NULL,
+    obj_id        VARCHAR2(36) NOT NULL,
+    role_id        VARCHAR(40),
+    actv_ind        VARCHAR2(1) DEFAULT 'Y',
+    typ_id        VARCHAR(40),
+    dele_typ_cd        VARCHAR(1),
+    CONSTRAINT kr_kim_dele_tp1 PRIMARY KEY ( dele_id ),
+    CONSTRAINT kr_kim_dele_tc0 UNIQUE ( obj_id ) 
+)
+/
+
+CREATE TABLE kr_kim_dele_role_t (
+    dele_mbr_id        VARCHAR(40),
+    ver_nbr        NUMBER(8,0) NOT NULL,
+    obj_id        VARCHAR2(36) NOT NULL,
+    dele_id        VARCHAR(40),
+    role_id        VARCHAR(40),
+    CONSTRAINT kr_kim_dele_role_tp1 PRIMARY KEY ( dele_mbr_id ),
+    CONSTRAINT kr_kim_dele_role_tc0 UNIQUE ( obj_id ) 
+)
+/
+
+CREATE TABLE kr_kim_dele_principal_t (
+    dele_mbr_id        VARCHAR(40),
+    ver_nbr        NUMBER(8,0) NOT NULL,
+    obj_id        VARCHAR2(36) NOT NULL,
+    dele_id        VARCHAR(40),
+    prncpl_id        VARCHAR(40),
+    CONSTRAINT kr_kim_dele_principal_tp1 PRIMARY KEY ( dele_mbr_id ),
+    CONSTRAINT kr_kim_dele_principal_tc0 UNIQUE ( obj_id ) 
+)
+/
+
+CREATE TABLE kr_kim_dele_group_t (
+    dele_mbr_id        VARCHAR(40),
+    ver_nbr        NUMBER(8,0) NOT NULL,
+    obj_id        VARCHAR2(36) NOT NULL,
+    dele_id        VARCHAR(40),
+    grp_id        VARCHAR(40),
+    CONSTRAINT kr_kim_dele_group_tp1 PRIMARY KEY ( dele_mbr_id ),
+    CONSTRAINT kr_kim_dele_group_tc0 UNIQUE ( obj_id ) 
+)
+/
+
+CREATE TABLE kr_kim_dele_attr_data_t
+(
+    attrib_data_id        VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    target_primary_key    VARCHAR2(40),
+	kim_type_id           VARCHAR2(40),
+	kim_attrib_id         VARCHAR2(40),
+    attrib_val            VARCHAR2(40),
+    CONSTRAINT kr_kim_dele_attr_data_tp1 PRIMARY KEY ( attrib_data_id ),
+    CONSTRAINT kr_kim_dele_attr_data_tc0 UNIQUE ( obj_id ) 
+)
+/
+
+
+CREATE TABLE kr_kim_dele_mbr_attr_data_t
+(
+    attrib_data_id        VARCHAR2(40),
+    obj_id                VARCHAR2(36) NOT NULL,
+    ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
+    target_primary_key    VARCHAR2(40),
+	kim_type_id           VARCHAR2(40),
+	kim_attrib_id         VARCHAR2(40),
+    attrib_val            VARCHAR2(40),
+    CONSTRAINT kr_kim_dele_mbr_attr_data_tp1 PRIMARY KEY ( attrib_data_id ),
+    CONSTRAINT kr_kim_dele_mbr_attr_data_tc0 UNIQUE ( obj_id ) 
+)
+/
+

@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.util.Map;
-
 import org.kuali.rice.kim.bo.role.PermissionDetails;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -29,7 +28,7 @@ public class PermissionDetailsInfo implements PermissionDetails {
 
 	protected String permissionId;
 
-	protected Map<String,String> details;
+	protected AttributeSet details;
 
 	public String getPermissionId() {
 		return this.permissionId;
@@ -39,11 +38,11 @@ public class PermissionDetailsInfo implements PermissionDetails {
 		this.permissionId = permissionId;
 	}
 
-	public Map<String,String> getDetails() {
+	public AttributeSet getDetails() {
 		return this.details;
 	}
 
-	public void setDetails(Map<String,String> permissionDetails) {
+	public void setDetails(AttributeSet permissionDetails) {
 		this.details = permissionDetails;
 	}
 	

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -76,20 +75,15 @@ public interface IdentityManagementService {
     // Permission Data
     // --------------------
     
-    KimPermission getPermission(String permissionId);
-    KimPermission getPermissionByName( String permissionName );    
+//    KimPermission getPermission(String permissionId);
+//    KimPermission getPermissionByName( String permissionName );    
 
     // --------------------
     // Authorization Checks
     // --------------------
     
-    /**
-     * @see AuthorizationService#hasPermission(java.lang.String, java.lang.String)
-     */
-    boolean hasPermission(String principalId, String permissionId);
-    boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification );
-    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, AttributeSet qualification, AttributeSet permissionDetails );  
-    boolean hasQualifiedPermissionByName( String principalId, String permissionName, AttributeSet qualification );
+    boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails);
+    boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );  
     
     // ----------------------
     // Responsibility Methods

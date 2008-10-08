@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,6 +29,8 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -135,21 +135,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.detailObjects = detailObjects;
 	}
 	
-	public boolean hasDetails() {
-		return !detailObjects.isEmpty();
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.role.PermissionDetails#getDetails()
-	 */
-	public Map<String,String> getDetails() {
-		Map<String, String> map = new HashMap<String, String>();
-		for (PermissionAttributeDataImpl data : detailObjects) {
-			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
-		}
-		return map;
-	}
-
 	public KimPermissionTemplateImpl getTemplate() {
 		return this.template;
 	}
@@ -166,5 +151,17 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.templateId = templateId;
 	}
 
+	public AttributeSet getDetails() {
+		AttributeSet m = new AttributeSet();
+		for ( KimAttributeData data : getDetailObjects() ) {
+			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+		}
+		return m;
+	}
+	
+	public boolean hasDetails() {
+		return !getDetailObjects().isEmpty();
+	}
+	
 	
 }

@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role;
+package org.kuali.rice.kim.dao;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import java.util.Collection;
+import java.util.List;
+
+import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,11 +26,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface PermissionDetails {
-	String getPermissionId();
-	
-	/** List of details for this role/permission relationship.  See the class comment for more information. */
-	AttributeSet getDetails();
-	
-	public boolean hasDetails();
+public interface KimPermissionDao {
+
+	List<String> getRoleIdsForPermissions( Collection<KimPermissionImpl> permissions );
 }

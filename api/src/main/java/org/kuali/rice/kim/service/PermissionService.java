@@ -32,38 +32,17 @@ public interface PermissionService {
     // Permission Data
     // --------------------
 
-	/** 
-	 * Return the permission ID for the given unique combination of namespace and permission name.
-	 */
-	String getPermissionIdByName( String permissionName );
-	
-
-
     /**
      *  Return the list of details that the principal has been assigned for the given permission.
      */
-    List<AttributeSet> getPermissionDetails( String principalId, String permissionId, AttributeSet roleQualification );
+    List<AttributeSet> getPermissionDetails( String principalId, String permissionId, AttributeSet qualification );
             
     // --------------------
     // Authorization Checks
     // --------------------
-	
-	/** 
-	 * Check whether the principal is granted this permission without taking 
-	 * qualifiers into account.
-	 * 
-	 * This method should not be used for true authorization checks since a principal
-	 * may only have this permission within a given context.  It could be used to
-	 * identify that the user would have some permissions within a certain area.
-	 * Later checks would identify exactly what permissions were granted.
-	 * 
-	 * It can also be used when the client application KNOWS that this is a role which
-	 * is never qualified.
-	 */
-    boolean hasPermission(String principalId, String permissionId);
 
     /**
-     * Checks whether the principal has been granted a permission matching the given qualification
+     * Checks whether the principal has been granted a permission matching the given details
      * without taking role qualifiers into account.
      * 
 	 * This method should not be used for true authorization checks since a principal
@@ -74,24 +53,12 @@ public interface PermissionService {
 	 * It can also be used when the client application KNOWS that this is a role which
 	 * is never qualified.
      */
-    boolean hasPermissionWithDetails( String principalId, String permissionId, AttributeSet permissionDetails );
-    
-    /**
-     * Checks whether the given permission is granted to the principal given
-     * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermission(String, String)}.
-     * 
-     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
-     * exists on the principal's membership in that role, that is checked first through
-     * the role's type service.  Once it is determined that the principal has the role
-     * in the given context (qualification), the permissions are examined.
-     */
-    boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification);
+    boolean hasPermission( String principalId, String permissionName, AttributeSet permissionDetails );
 
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermissionWithDetails(String, String, AttributeSet)}.
+     * then this method behaves the same as {@link #hasPermission(String, String, AttributeSet)}.
      * 
      * Each role assigned to the principal is checked for qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked first through
@@ -102,13 +69,8 @@ public interface PermissionService {
      * is called for each permission with the given permissionId to see if the 
      * permissionQualification matches its qualifier.
      */
-    boolean hasQualifiedPermissionWithDetails( String principalId, String permissionId, AttributeSet qualification, AttributeSet permissionDetails );
+    boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification  );
     
-    /**
-     * Same as {@link #hasQualifiedPermission(String, String, AttributeSet)} except that it looks up the
-     * permission by its namespace/name first.
-     */
-    boolean hasQualifiedPermissionByName(String principalId, String permissionName, AttributeSet qualification);
     
 
     // --------------------
@@ -124,7 +86,7 @@ public interface PermissionService {
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission name.
 	 */
-    KimPermissionInfo getPermissionByName( String permissionName );
+    List<KimPermissionInfo> getPermissionsByName( String permissionName );
 
     /**
      * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 

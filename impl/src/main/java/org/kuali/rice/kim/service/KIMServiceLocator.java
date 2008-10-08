@@ -6,11 +6,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.AuthorizationService;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.PersonService;
 
 /**
  * Service locator for KIM.
@@ -26,7 +21,6 @@ public final class KIMServiceLocator {
 	public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
 	public static final String KIM_GROUP_SERVICE = "kimGroupService";
 	public static final String KIM_ROLE_SERVICE = "kimRoleService";
-	public static final String KIM_AUTHORIZATION_SERVICE = "kimAuthorizationService";
 	public static final String KIM_PERSON_SERVICE = "kimPersonService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
 	public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
@@ -60,10 +54,6 @@ public final class KIMServiceLocator {
 
     public static RoleService getRoleService() {
     	return (RoleService)getService(KIM_ROLE_SERVICE);
-    }
-
-    public static AuthorizationService getAuthorizationService() {
-    	return (AuthorizationService)getService(KIM_AUTHORIZATION_SERVICE);
     }
 
     public static PermissionService getPermissionService() {

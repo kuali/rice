@@ -42,7 +42,7 @@ import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao {
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getMatchingRolePrincipals(java.util.List, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RolePrincipalImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId) {
@@ -57,7 +57,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.List, java.util.List)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleGroupImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {

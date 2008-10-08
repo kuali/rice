@@ -16,7 +16,8 @@
 package org.kuali.rice.kim.service.support;
 
 import java.util.List;
-import java.util.Map;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -39,16 +40,16 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesPermissionDetailMatch( Map<String,String> requestedDetails, Map<String,String> permissionDetails );
+    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, AttributeSet permissionDetails );
 
-    /** Same as {@link #doesPermissionDetailMatch(Map, Map)} except that it takes a list of details to check.
+    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, AttributeSet)} except that it takes a list of details to check.
      */
-    boolean doPermissionDetailsMatch( Map<String,String> requestedDetails, List<Map<String,String>> permissionDetailsList );
+    boolean doPermissionDetailsMatch( AttributeSet requestedDetails, List<AttributeSet> permissionDetailsList );
 
     /**
      * This method would return all permission details that the given details imply. (down)
      */
-    List<Map<String,String>> getAllImpliedDetails( Map<String,String> requestedDetails );
+    List<AttributeSet> getAllImpliedDetails( AttributeSet requestedDetails );
 
     /**
      * This method would return all detail entries that imply this set of detail attributes. (up)
@@ -58,7 +59,7 @@ public interface KimPermissionTypeService extends KimTypeService {
      * Allowed?
      * Granting?
      */
-    List<Map<String,String>> getAllImplyingDetails( Map<String,String> requestedDetails );
+    List<AttributeSet> getAllImplyingDetails( AttributeSet requestedDetails );
     // TODO: need list versions of the implyed/ing methods?
 
 

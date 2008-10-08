@@ -229,6 +229,7 @@
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
+  <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao"
@@ -275,19 +276,10 @@
         p:localServiceName="kimGroupService" />
     </property>  
   </bean>
-
-  <bean id="kimAuthorizationService" class="org.kuali.rice.kim.service.impl.AuthorizationServiceImpl"/>
-    
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimAuthorizationService"
-        p:localServiceName="kimAuthorizationService" />
-    </property>  
-  </bean>
   
-  <alias alias="kimPermissionService" name="kimAuthorizationService" />
+  <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
+    p:permissionDao-ref="kimPermissionDao"
+  />
     
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

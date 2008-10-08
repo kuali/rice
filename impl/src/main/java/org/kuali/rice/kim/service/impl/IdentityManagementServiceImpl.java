@@ -40,36 +40,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     
     // AUTHORIZATION SERVICE
     
-    public boolean hasPermission(String principalId, String permissionId) {
-    	return getPermissionService().hasPermission( principalId, permissionId );
-    }
-
-    public boolean hasQualifiedPermission(String principalId, String permissionId, AttributeSet qualification ) {
-    	return getPermissionService().hasQualifiedPermission( principalId, permissionId, qualification );
+    public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
+    	return getPermissionService().hasPermission( principalId, permissionName, permissionDetails );
     }
     
-    public boolean hasQualifiedPermissionByName(String principalId,  
-    		String permissionName, AttributeSet qualification) {
-    	return getPermissionService().hasQualifiedPermissionByName( principalId, permissionName, qualification );
+    public boolean isAuthorized(String principalId,
+    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().isAuthorized( principalId, permissionName, permissionDetails, qualification );
     }
-    
-    /**
-     * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedPermissionWithDetails(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-     */
-    public boolean hasQualifiedPermissionWithDetails(String principalId,
-    		String permissionId, AttributeSet qualification,
-    		AttributeSet permissionDetails) {
-    	return getPermissionService().hasQualifiedPermissionWithDetails( principalId, permissionId, qualification, permissionDetails );
-    }
-    
-
-    public KimPermission getPermission(String permissionId) {
-		return getPermissionService().getPermission( permissionId );
-	}
-
-    public KimPermission getPermissionByName(String permissionName ) {
-		return getPermissionService().getPermissionByName( permissionName );
-	}
     
     // GROUP SERVICE
     

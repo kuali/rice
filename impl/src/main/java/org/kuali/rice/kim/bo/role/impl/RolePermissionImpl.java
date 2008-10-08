@@ -46,7 +46,7 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	@Column(name="PERM_ID")
 	protected String permissionId;
 	
-	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
 	protected KimPermissionImpl kimPermission;
 	

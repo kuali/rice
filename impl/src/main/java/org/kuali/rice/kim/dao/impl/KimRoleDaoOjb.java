@@ -128,4 +128,30 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<KimDelegationGroupImpl>( coll );
 	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds ) {	
+		Criteria c = new Criteria();
+		
+		c.addColumnIn("roleId", roleIds);
+		Query query = QueryFactory.newQuery(RolePrincipalImpl.class, c);
+		Collection<RolePrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RolePrincipalImpl>( coll );
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds ) {
+		Criteria c = new Criteria();
+		c.addColumnIn("roleId", roleIds);
+		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
+		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleGroupImpl>( coll );
+	}
+	
 }

@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -29,6 +30,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionDetailsInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.test.RiceTestCase;
@@ -105,18 +107,22 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 	public void testRoleMembership() {
 		KimRoleInfo role = roleService.getRole( "r2" );
 		assertNotNull( "r2 must exist", role );
-		List<String> principalIds = roleService.getPrincipalIdsWithRole("r2");
+		ArrayList<String> roleList = new ArrayList<String>( 1 );
+		roleList.add( "r2" );
+		Collection<RoleMembershipInfo> principalIds = roleService.getRoleMembers( roleList, null );
 		System.out.println( "r2: " + principalIds );
 		assertNotNull( "returned list may not be null", principalIds );
 		assertFalse( "list must not be empty", principalIds.isEmpty() );
 		assertTrue( "p3 must belong to role", principalIds.contains("p3") );
 		assertTrue( "p2 must belong to role (assigned via group)", principalIds.contains("p2") );
-		assertEquals("list must be unique (no duplicates)", new HashSet<String>( principalIds ).size(), principalIds.size() );
+		//assertEquals("list must be unique (no duplicates)", new HashSet<RoleMembershipInfo>( principalIds ).size(), principalIds.size() );
 		assertTrue( "p1 must belong to r2 (via r1)", principalIds.contains("p1") );
 		
 		role = roleService.getRole( "r1" );
 		assertNotNull( "r1 must exist", role );
-		principalIds = roleService.getPrincipalIdsWithRole("r1");
+		roleList.clear();
+		roleList.add( "r1" );
+		principalIds = roleService.getRoleMembers( roleList, null );
 		assertNotNull( "returned list may not be null", principalIds );
 		System.out.println( "r1: " + principalIds );
 		assertTrue( "p1 must belong to r1 (directly)", principalIds.contains("p1") );

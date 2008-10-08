@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -26,23 +23,24 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleMembershipInfo {
+public class DelegateInfo {
+	protected String delegationId;
+	protected String delegationTypeCode;
 	protected String principalId;
 	protected String groupId;
-	protected String roleId;
 	protected AttributeSet qualifier;
-	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
-	public RoleMembershipInfo(String principalId, String groupId, String roleId,
-			AttributeSet qualifier) {
-		super();
-		this.principalId = principalId;
-		this.groupId = groupId;
-		this.roleId = roleId;
-		this.qualifier = qualifier;
+	public DelegateInfo(String delegationId, String delegationTypeCode) {
+		this.delegationId = delegationId;
+		this.delegationTypeCode = delegationTypeCode;
 	}
 	
-	
+	public String getDelegationTypeCode() {
+		return this.delegationTypeCode;
+	}
+	public void setDelegationTypeCode(String delegationTypeCode) {
+		this.delegationTypeCode = delegationTypeCode;
+	}
 	public String getPrincipalId() {
 		return this.principalId;
 	}
@@ -55,23 +53,19 @@ public class RoleMembershipInfo {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	public String getRoleId() {
-		return this.roleId;
-	}
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
 	public AttributeSet getQualifier() {
 		return this.qualifier;
 	}
 	public void setQualifier(AttributeSet qualifier) {
 		this.qualifier = qualifier;
 	}
-	public List<DelegateInfo> getDelegates() {
-		return this.delegates;
+
+	public String getDelegationId() {
+		return this.delegationId;
 	}
-	public void setDelegates(List<DelegateInfo> delegates) {
-		this.delegates = delegates;
+
+	public void setDelegationId(String delegationId) {
+		this.delegationId = delegationId;
 	}
 	
 	

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -77,50 +78,50 @@ public interface RoleService {
     // Role Membership Checks
     // --------------------
 
-	/**
-	 * Return a list of all the principal IDs who have the passed role.  This will include
-	 * all principals assigned to roles which are contained within the given role.  It will
-	 * also have those principals who belong to groups (and their sub-groups)
-	 * which are assigned to this role. 
-	 */
-    List<String> getPrincipalIdsWithRole(String roleId);       
-    
-	/**
-	 * Return a list of all the principal IDs who have the passed role where the 
-	 * qualification matches the qualifier on their assignment to this role.  
-	 * 
-	 * The qualification is only matched against the role listed.  So, only principals
-	 * assigned to this role or in groups assigned to this role which match the
-	 * qualification will be returned.  
-	 */
-    List<String> getPrincipalIdsWithQualifiedRole(String roleId, AttributeSet qualification);
-    
-    // TODO: leave commented out unless we have a use case for checking groups in this way
-//    List<String> getGroupIdsWithRole(String roleId);
-//    List<String> getGroupIdsWithQualifiedRole(String roleId, AttributeSet qualification);
-
-    /**
-     * Check whether the principal has the given unqualified role.
-     */
-    boolean principalHasRole(String principalId, String roleId);
-
-    /** 
-     *  Check whether the principal has the given role within the context identified
-     *  by the passed qualification.
-     */
-    boolean principalHasQualifiedRole(String principalId, String roleId, AttributeSet qualification);
-    
-    
-    /**
-     * Return the list of all roles that are assigned to a given principal.
-     * 
-     * This list will include the roles which are directly assigned to the
-     * principal or to a group to which they belong and all contained roles
-     * under those roles.
-     */
-    List<String> getRoleIdsForPrincipal(String principalId);
-    List<String> getRoleIdsInNamespaceForPrincipal(String principalId, String namespaceCode);
-    List<String> getRoleIdsMatchingQualification( String principalId, AttributeSet qualification );
+//	/**
+//	 * Return a list of all the principal IDs who have the passed role.  This will include
+//	 * all principals assigned to roles which are contained within the given role.  It will
+//	 * also have those principals who belong to groups (and their sub-groups)
+//	 * which are assigned to this role. 
+//	 */
+//    List<String> getPrincipalIdsWithRole(String roleId);       
+//    
+//	/**
+//	 * Return a list of all the principal IDs who have the passed role where the 
+//	 * qualification matches the qualifier on their assignment to this role.  
+//	 * 
+//	 * The qualification is only matched against the role listed.  So, only principals
+//	 * assigned to this role or in groups assigned to this role which match the
+//	 * qualification will be returned.  
+//	 */
+//    List<String> getPrincipalIdsWithQualifiedRole(String roleId, AttributeSet qualification);
+//    
+//    // TODO: leave commented out unless we have a use case for checking groups in this way
+////    List<String> getGroupIdsWithRole(String roleId);
+////    List<String> getGroupIdsWithQualifiedRole(String roleId, AttributeSet qualification);
+//
+//    /**
+//     * Check whether the principal has the given unqualified role.
+//     */
+//    boolean principalHasRole(String principalId, String roleId);
+//
+//    /** 
+//     *  Check whether the principal has the given role within the context identified
+//     *  by the passed qualification.
+//     */
+//    boolean principalHasQualifiedRole(String principalId, String roleId, AttributeSet qualification);
+//    
+//    
+//    /**
+//     * Return the list of all roles that are assigned to a given principal.
+//     * 
+//     * This list will include the roles which are directly assigned to the
+//     * principal or to a group to which they belong and all contained roles
+//     * under those roles.
+//     */
+//    List<String> getRoleIdsForPrincipal(String principalId);
+//    List<String> getRoleIdsInNamespaceForPrincipal(String principalId, String namespaceCode);
+//    List<String> getRoleIdsMatchingQualification( String principalId, AttributeSet qualification );
     
     /**
      * Get all the role members (groups and principals) associated with the given list of roles
@@ -129,7 +130,7 @@ public interface RoleService {
      * The return object will have each membership relationship along with the delegations
      * 
      */
-    List<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
+    Collection<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
     
     boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
     

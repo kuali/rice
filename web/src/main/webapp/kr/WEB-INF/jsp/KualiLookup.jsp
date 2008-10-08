@@ -145,16 +145,15 @@
 					<logic:present name="KualiForm" property="formKey">
 						<c:if
 							test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
-							<display:column class="infocell" title="Return value">
-								<c:if test="${row.rowReturnable}">
-									<display:column class="infocell" property="returnUrl" media="html" />
-								</c:if>
-							</display:column>
+							<c:if test="${row.rowReturnable}">
+								<display:column class="infocell" property="returnUrl" media="html" />
+							</c:if>
 						</c:if>
 						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
 							<display:column class="infocell" property="actionUrls"
 								title="Actions" media="html" />
-						</c:if>						</logic:present>
+						</c:if>
+					</logic:present>
 				</c:if>
 
 				<c:forEach items="${row.columns}" var="column" varStatus="loopStatus">

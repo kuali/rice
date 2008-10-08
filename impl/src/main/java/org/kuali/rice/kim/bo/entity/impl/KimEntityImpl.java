@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.entity.EntityCitizenship;
 import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.EntityFerpaPreferences;
+import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -47,6 +47,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
+@SuppressWarnings("unchecked")
 @Entity
 @Table(name = "KR_KIM_ENTITY_T")
 public class KimEntityImpl extends InactivatableEntityDataBase implements KimEntity {
@@ -81,9 +82,9 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	@JoinColumn(name="ENTITY_ID", insertable=true, updatable=true)
 	protected List<EntityEmploymentInformation> employmentInformation = new TypedArrayList(EntityEmploymentInformationImpl.class);
 
-	@OneToOne(targetEntity=EntityFerpaPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=EntityPrivacyPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
-	protected EntityFerpaPreferences ferpaPreferences;
+	protected EntityPrivacyPreferences privacyPreferences;
 
 	@OneToOne(targetEntity=EntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
@@ -151,18 +152,18 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	}
 
 	/**
-	 * @return the ferpaPreferences
+	 * @return the privacyPreferences
 	 */
-	public EntityFerpaPreferences getFerpaPreferences() {
-		return this.ferpaPreferences;
+	public EntityPrivacyPreferences getPrivacyPreferences() {
+		return this.privacyPreferences;
 	}
 
 	/**
-	 * @param ferpaPreferences
-	 *            the ferpaPreferences to set
+	 * @param privacyPreferences
+	 *            the privacyPreferences to set
 	 */
-	public void setFerpaPreferences(EntityFerpaPreferences ferpaPreferences) {
-		this.ferpaPreferences = ferpaPreferences;
+	public void setPrivacyPreferences(EntityPrivacyPreferences privacyPreferences) {
+		this.privacyPreferences = privacyPreferences;
 	}
 
 	/**

@@ -55,13 +55,13 @@ public interface KimEntity extends Inactivateable {
 	List<EntityEmploymentInformation> getEmploymentInformation();
 
 	/**
-	 * Returns the FERPA preferences object for this Entity.
+	 * Returns the privacy preferences object for this Entity.
 	 * 
 	 * Implementations will create an object if necessary before returning.  
 	 * This method shall not return null.
 	 * 
 	 */
-	EntityFerpaPreferences getFerpaPreferences();
+	EntityPrivacyPreferences getPrivacyPreferences();
 	
 	/**
 	 * Returns the demographic information for this Entity.

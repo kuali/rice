@@ -23,7 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.bo.entity.EntityFerpaPreferences;
+import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
 
 /**
  * This is a description of what this class does - nathanieljohnson don't forget to fill this in. 
@@ -32,8 +32,8 @@ import org.kuali.rice.kim.bo.entity.EntityFerpaPreferences;
  *
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_FERPA_PREF_T")
-public class EntityFerpaPreferencesImpl extends EntityDataBase implements EntityFerpaPreferences {
+@Table(name = "KR_KIM_ENTITY_PRIV_PREF_T")
+public class EntityPrivacyPreferencesImpl extends EntityDataBase implements EntityPrivacyPreferences {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,70 +62,70 @@ public class EntityFerpaPreferencesImpl extends EntityDataBase implements Entity
 	protected boolean suppressPersonal;
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#isSuppressAddress()
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressAddress()
 	 */
 	public boolean isSuppressAddress() {
 		return suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#isSuppressEmail()
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressEmail()
 	 */
 	public boolean isSuppressEmail() {
 		return suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#isSuppressName()
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressName()
 	 */
 	public boolean isSuppressName() {
 		return suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#isSuppressPersonal()
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPersonal()
 	 */
 	public boolean isSuppressPersonal() {
 		return suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#isSuppressPhone()
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPhone()
 	 */
 	public boolean isSuppressPhone() {
 		return suppressPhone;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#setSuppressAddress(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressAddress(boolean)
 	 */
 	public void setSuppressAddress(boolean suppressAddress) {
 		this.suppressAddress = suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#setSuppressEmail(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressEmail(boolean)
 	 */
 	public void setSuppressEmail(boolean suppressEmail) {
 		this.suppressEmail = suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#setSuppressName(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressName(boolean)
 	 */
 	public void setSuppressName(boolean suppressName) {
 		this.suppressName = suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#setSuppressPersonal(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressPersonal(boolean)
 	 */
 	public void setSuppressPersonal(boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityFerpaPreferences#setSuppressPhone(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressPhone(boolean)
 	 */
 	public void setSuppressPhone(boolean suppressPhone) {
 		this.suppressPhone = suppressPhone;

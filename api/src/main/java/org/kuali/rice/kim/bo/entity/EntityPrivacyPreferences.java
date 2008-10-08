@@ -21,7 +21,7 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityFerpaPreferences {
+public interface EntityPrivacyPreferences {
 
 	boolean isSuppressName();
 	boolean isSuppressAddress();

@@ -70,7 +70,7 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 
 	@OneToMany(targetEntity=RoleRelationshipImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleRelationship> containedRoles;
+	protected List<RoleRelationship> assignedRoles;
 
 	@OneToMany(targetEntity=RoleGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
@@ -138,12 +138,12 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		return m;
 	}
 
-	public List<RoleRelationship> getContainedRoles() {
-		return this.containedRoles;
+	public List<RoleRelationship> getAssignedRoles() {
+		return this.assignedRoles;
 	}
 
-	public void setContainedRoles(List<RoleRelationship> containedRoles) {
-		this.containedRoles = containedRoles;
+	public void setAssignedRoles(List<RoleRelationship> assignedRoles) {
+		this.assignedRoles = assignedRoles;
 	}
 
 	public List<RoleGroup> getMemberGroups() {

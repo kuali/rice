@@ -24,9 +24,10 @@ import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ResponsibilityResolutionInfo implements ResponsibilityResolution {
+public class ResponsibilityActionInfo implements ResponsibilityResolution {
 
 	String principalId;
+	String groupId;
 	String responsibilityId;
 	String responsibilityName;
 	String roleId;

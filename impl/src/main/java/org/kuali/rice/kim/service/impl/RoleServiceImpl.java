@@ -507,7 +507,7 @@ public class RoleServiceImpl implements RoleService {
 		if ( role == null ) {
 			return;
 		}
-		List<RoleRelationship> roleRoles = role.getContainedRoles();
+		List<RoleRelationship> roleRoles = role.getAssignedRoles();
 
 		for (RoleRelationship roleRole : roleRoles) {
 			KimRoleImpl containedRole = getRoleImpl(roleRole.getContainedRoleId());

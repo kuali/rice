@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityResolutionInfo;
+import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -124,7 +124,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<ResponsibilityResolutionInfo> getResponsibilityInfo(String responsibilityId,
+    public List<ResponsibilityActionInfo> getResponsibilityInfo(String responsibilityId,
     		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
 
     	// find matching role/resp records based on resp details (use resp service)
@@ -138,7 +138,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfoByName(java.lang.String, java.util.Map, java.util.Map)
      */
-    public List<ResponsibilityResolutionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
+    public List<ResponsibilityActionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
     		Map<String,String> responsibilityDetails) {
     	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
     	return getResponsibilityInfo( resp.getResponsibilityId(), qualification, responsibilityDetails );

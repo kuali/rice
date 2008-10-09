@@ -16,14 +16,15 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.PermissionDetailsInfo;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.KimType;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimPermissionDao;
@@ -50,11 +51,6 @@ public class PermissionServiceImpl implements PermissionService {
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
 
-	// TODO: potential optimization - get list of candidate roles first by checking
-	// their attached permissions and sending that into the role service as
-	// a subset to search from when matching against the principal
-	// Ex: boolean doesPrincipalHaveAnyOfTheseQualifiedRoles( String principalId, List<String> roleIds )
-	
     // --------------------
     // Authorization Checks
     // --------------------
@@ -63,26 +59,14 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
      */
     public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
-    	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
-    	//List<String> roleIds = getRoleService().getRoleIdsForPrincipal( principalId );
-    	// build a list of all granted permissions
-    	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    	return getRoleService().principalHasRole( principalId, roleIds, null );
-    	// TODO: maybe just call the method below? 
+    	return isAuthorized( principalId, permissionName, permissionDetails, null );
     }
 
     /**
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
-    	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
+    	List<String> roleIds = getRoleIdsForPermission( permissionName, permissionDetails, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -117,39 +101,28 @@ public class PermissionServiceImpl implements PermissionService {
     	return applicablePermissions;
     }
 	
+    public List<PermissionAssigneeInfo> getPermissionAssignees( String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
+    	List<String> roleIds = getRoleIdsForPermission( permissionName, permissionDetails, qualification );
+    	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
+    	for ( RoleMembershipInfo rm : roleMembers ) {
+    		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );
+    	}
+    	return results;
+    }
+    
+    protected List<String> getRoleIdsForPermission( String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
+    	// now, filter the full list by the detail passed
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
+    }
+    
     // --------------------
     // Role Permission Methods
     // --------------------
 	
-//    
-//	/**
-//	 * Return all the permission IDs granted by having a given role.
-//	 */
-//    protected List<String> getPermissionIdsForRole(String roleId) {
-//    	List<String> perms = new ArrayList<String>();
-//    	List<PermissionDetailsInfo> rolePerms = getPermissionsForRole(roleId);
-//    	for ( PermissionDetailsInfo perm : rolePerms ) {
-//    		perms.add( perm.getPermissionId() );
-//    	}
-//    	return perms;
-//    }
-
-//    @SuppressWarnings("unchecked")
-//	protected List<PermissionDetailsInfo> getPermissionsForRole( String roleId ) {
-//    	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
-//    	List<String> impliedRoles = getRoleService().getImpliedRoleIds( roleId );
-//    	AttributeSet rolePermCriteria = new AttributeSet();
-//    	for ( String impliedRoleId : impliedRoles ) {
-//    		// TODO: optimize me - get all role permission objects at once
-//    		rolePermCriteria.put("roleId", impliedRoleId);
-//        	List<RolePermissionImpl> rolePerms = (List)getBusinessObjectService().findMatching(RolePermissionImpl.class, rolePermCriteria);
-//        	for ( RolePermissionImpl perm : rolePerms ) {
-//    			perms.add( perm.getPermission().toSimpleInfo() );
-//        	}
-//    	}
-//    	return perms;
-//    }
-//    
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionDetails(java.lang.String, java.lang.String, AttributeSet)
      */
@@ -210,20 +183,6 @@ public class PermissionServiceImpl implements PermissionService {
 		pk.put( "active", "Y" );
     	return (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
     }
-    
-//    protected List<PermissionDetailsInfo> getMatchingPermissions( List<PermissionDetailsInfo> permissions, AttributeSet details ) {
-//    	List<PermissionDetailsInfo> perms = new ArrayList<PermissionDetailsInfo>();
-//    	for ( PermissionDetailsInfo perm : permissions ) {
-//    		String serviceName = getPermissionTypeServiceName( perm.getPermissionId() );
-//    		KimPermissionTypeService kimPermissionService = (KimPermissionTypeService)KIMServiceLocator
-//					.getService( serviceName );
-//    		if ( kimPermissionService == null
-//    				|| kimPermissionService.doesPermissionDetailMatch( details, perm.getDetails() ) ) {
-//    			perms.add( perm );
-//    		}
-//    	}
-//    	return perms;
-//    }
     
     protected String getPermissionTypeServiceName( String permissionId ) {
     	KimType permType = getPermissionImpl( permissionId ).getTemplate().getKimType();

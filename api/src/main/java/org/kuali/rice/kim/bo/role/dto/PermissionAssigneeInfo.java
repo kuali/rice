@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,28 +24,17 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DelegateInfo {
-	protected String delegationId;
-	protected String delegationTypeCode;
+public class PermissionAssigneeInfo {
 	protected String principalId;
 	protected String groupId;
-	protected AttributeSet qualifier;
-		
-	public DelegateInfo(String delegationId, String delegationTypeCode, String principalId,
-			String groupId, AttributeSet qualifier) {
-		this.delegationId = delegationId;
-		this.delegationTypeCode = delegationTypeCode;
+	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
+	
+	public PermissionAssigneeInfo(String principalId, String groupId, List<DelegateInfo> delegates) {
 		this.principalId = principalId;
 		this.groupId = groupId;
-		this.qualifier = qualifier;
+		this.delegates = delegates;
 	}
 	
-	public String getDelegationTypeCode() {
-		return this.delegationTypeCode;
-	}
-	public void setDelegationTypeCode(String delegationTypeCode) {
-		this.delegationTypeCode = delegationTypeCode;
-	}
 	public String getPrincipalId() {
 		return this.principalId;
 	}
@@ -57,20 +47,10 @@ public class DelegateInfo {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	public AttributeSet getQualifier() {
-		return this.qualifier;
+	public List<DelegateInfo> getDelegates() {
+		return this.delegates;
 	}
-	public void setQualifier(AttributeSet qualifier) {
-		this.qualifier = qualifier;
+	public void setDelegates(List<DelegateInfo> delegates) {
+		this.delegates = delegates;
 	}
-
-	public String getDelegationId() {
-		return this.delegationId;
-	}
-
-	public void setDelegationId(String delegationId) {
-		this.delegationId = delegationId;
-	}
-	
-	
 }

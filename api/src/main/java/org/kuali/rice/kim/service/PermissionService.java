@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -65,12 +66,25 @@ public interface PermissionService {
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
      * 
-     * Each permission is checked against the permissionQualification.  The KimPermissionTypeService
-     * is called for each permission with the given permissionId to see if the 
-     * permissionQualification matches its qualifier.
+     * Each permission is checked against the permissionDetails.  The KimPermissionTypeService
+     * is called for each permission with the given permissionName to see if the 
+     * permissionDetails matches its details.
      */
     boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification  );
     
+    
+    /**
+     * Get the list of principals/groups who have a given permission.  This also returns delegates
+     * for the given principals/groups who also have this permission given the context in the
+     * qualification parameter.
+     * 
+     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
+     * exists on the principal's membership in that role, that is checked first through
+     * the role's type service.  Once it is determined that the principal has the role
+     * in the given context (qualification), the permissions are examined.
+     * 
+     */
+    List<PermissionAssigneeInfo> getPermissionAssignees( String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     
 
     // --------------------

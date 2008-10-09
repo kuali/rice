@@ -34,15 +34,17 @@ import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * This is a description of what this class does - jonathan don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
 public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao {
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
+	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RolePrincipalImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId) {
@@ -57,7 +59,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
+	 *      java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleGroupImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {
@@ -99,7 +102,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationPrincipalsForPrincipalIdAndDelegationIds(java.util.Collection, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationPrincipalsForPrincipalIdAndDelegationIds(java.util.Collection,
+	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<KimDelegationPrincipalImpl> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
@@ -116,7 +120,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationGroupsForGroupIdsAndDelegationIds(java.util.Collection, java.util.List)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationGroupsForGroupIdsAndDelegationIds(java.util.Collection,
+	 *      java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<KimDelegationGroupImpl> getDelegationGroupsForGroupIdsAndDelegationIds(
@@ -130,7 +135,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
+	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds ) {	
@@ -143,7 +149,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
+	 *      java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds ) {
@@ -154,4 +161,45 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		return new ArrayList<RoleGroupImpl>( coll );
 	}
 	
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationPrincipalsForDelegationIds(java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<String,List<KimDelegationPrincipalImpl>> getDelegationPrincipalsForDelegationIds(
+			List<String> delegationIds) {
+		Criteria c = new Criteria();
+		
+		c.addColumnIn("delegationIds", delegationIds);
+		Query query = QueryFactory.newQuery(KimDelegationPrincipalImpl.class, c);
+		Collection<KimDelegationPrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		HashMap<String,List<KimDelegationPrincipalImpl>> result = new HashMap<String,List<KimDelegationPrincipalImpl>>();
+		for ( KimDelegationPrincipalImpl dp : coll ) {
+			if ( !result.containsKey( dp.getDelegationId() ) ) {
+				result.put( dp.getDelegationId(), new ArrayList<KimDelegationPrincipalImpl>() );
+			}
+			result.get( dp.getDelegationId() ).add( dp );
+		}
+		return result;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationGroupsForDelegationIds(java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<String,List<KimDelegationGroupImpl>> getDelegationGroupsForDelegationIds(
+			List<String> delegationIds) {
+		Criteria c = new Criteria();
+		
+		c.addColumnIn("delegationIds", delegationIds);
+		Query query = QueryFactory.newQuery(KimDelegationGroupImpl.class, c);
+		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		HashMap<String,List<KimDelegationGroupImpl>> result = new HashMap<String,List<KimDelegationGroupImpl>>();
+		for ( KimDelegationGroupImpl dg : coll ) {
+			if ( !result.containsKey( dg.getDelegationId() ) ) {
+				result.put( dg.getDelegationId(), new ArrayList<KimDelegationGroupImpl>() );
+			}
+			result.get( dg.getDelegationId() ).add( dg );
+		}
+		return result;
+	}
 }

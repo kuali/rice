@@ -31,6 +31,7 @@ public class RoleMembershipInfo {
 	protected String groupId;
 	protected String roleId;
 	protected AttributeSet qualifier;
+	protected List<String> delegationIds = new ArrayList<String>();
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
 	public RoleMembershipInfo(String principalId, String groupId, String roleId,
@@ -72,6 +73,16 @@ public class RoleMembershipInfo {
 	}
 	public void setDelegates(List<DelegateInfo> delegates) {
 		this.delegates = delegates;
+	}
+
+
+	public List<String> getDelegationIds() {
+		return this.delegationIds;
+	}
+
+
+	public void setDelegationIds(List<String> delegationIds) {
+		this.delegationIds = delegationIds;
 	}
 	
 	

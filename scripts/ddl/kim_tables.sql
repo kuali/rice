@@ -662,7 +662,7 @@ CREATE TABLE kr_kim_resp_tmpl_t
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     name               VARCHAR2(80),
-    kim_type_id           VARCHAR2(40),
+    kim_type_id           VARCHAR2(100),
     description             VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_resp_tmpl_tp1 PRIMARY KEY ( resp_tmpl_id  )
@@ -678,7 +678,7 @@ CREATE TABLE kr_kim_resp_t
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     resp_tmpl_id         VARCHAR2(40),
-    name               VARCHAR2(80),
+    name               VARCHAR2(100),
     description             VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_resp_tp1 PRIMARY KEY ( resp_id )
@@ -725,22 +725,23 @@ CREATE TABLE kr_kim_role_resp_t
 ALTER TABLE kr_kim_role_resp_t ADD CONSTRAINT kr_kim_role_resp_tc0 UNIQUE (obj_id)
 /
 
-CREATE TABLE kr_kim_role_resp_resol_t
+CREATE TABLE kr_kim_role_resp_actn_t
 (
-    role_resp_resol_id    VARCHAR2(40),
+    role_resp_actn_id    VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-    resp_id               VARCHAR2(40),
+    resp_nm               VARCHAR2(100),
     role_id               VARCHAR2(40),
     prncpl_id             VARCHAR2(40),
-    actn_typ_id           VARCHAR2(40),
+    grp_id                VARCHAR2(40),
+    actn_typ_cd           VARCHAR2(40),
     priority_nbr          NUMBER(3),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
-    CONSTRAINT kr_kim_role_resp_resol_tp1 PRIMARY KEY ( role_resp_resol_id )
+    CONSTRAINT kr_kim_role_resp_actn_tp1 PRIMARY KEY ( role_resp_actn_id )
 )
 /
 
-ALTER TABLE kr_kim_role_resp_resol_t ADD CONSTRAINT kr_kim_role_resp_resol_tc0 UNIQUE (obj_id)
+ALTER TABLE kr_kim_role_resp_actn_t ADD CONSTRAINT kr_kim_role_resp_actn_tc0 UNIQUE (obj_id)
 /
 
 
@@ -750,7 +751,7 @@ CREATE TABLE kr_kim_perm_tmpl_t
     perm_tmpl_id         VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-    name               VARCHAR2(80),
+    name               VARCHAR2(100),
     description           VARCHAR2(400),
     kim_type_id           VARCHAR2(40),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
@@ -767,7 +768,7 @@ CREATE TABLE kr_kim_perm_t
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     perm_tmpl_id          VARCHAR2(40),
-    name               VARCHAR2(80),
+    name               VARCHAR2(100),
     description           VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_perm_tp1 PRIMARY KEY ( perm_id  )

@@ -15,15 +15,23 @@
  */
 package org.kuali.rice.kim.bo.role;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface ResponsibilityResolution {
+public interface ResponsibilityAction {
 	String getPrincipalId();
-	String getResponsibilityId();
+	String getGroupId();
+	String getResponsibilityName();
 	String getActionTypeCode();	
 	Integer getPriorityNumber();
+	AttributeSet getQualifier();
+	List<DelegateInfo> getDelegates();
 }

@@ -1,0 +1,89 @@
+/*
+ * Copyright 2008 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kim.dao.impl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.Query;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.dao.KimResponsibilityDao;
+import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
+
+/**
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements KimResponsibilityDao {
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibilities(java.util.Collection)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getRoleIdsForResponsibilities(Collection<KimResponsibilityImpl> responsibilities) {
+		List<String> responsibilityIds = new ArrayList<String>( responsibilities.size() );
+		for ( KimResponsibilityImpl kp : responsibilities ) {
+			responsibilityIds.add( kp.getResponsibilityId() );
+		}
+		Criteria c = new Criteria();
+		c.addColumnIn( "responsibilityId", responsibilityIds );
+		// TODO: add once effective dating in place
+		//c.addColumnEqualTo( "active", true );
+		
+		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
+		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		List<String> roleIds = new ArrayList<String>( coll.size() );
+		for ( RoleResponsibilityImpl rp : coll ) {
+			roleIds.add( rp.getRoleId() );
+		}
+		return roleIds;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityName,
+			String principalId, String groupId) {
+		if ( principalId == null && groupId == null ) {
+			return null;
+		}
+		
+		Criteria c = new Criteria();
+		c.addColumnEqualTo( "responsibilityName", responsibilityName );
+		if ( principalId != null ) {
+			c.addColumnEqualTo( "principalId", principalId );
+		}
+		if ( groupId != null ) {
+			c.addColumnEqualTo( "groupId", groupId );
+		}
+		c.addColumnEqualTo( "active", true );
+		
+		Query query = QueryFactory.newQuery( RoleResponsibilityActionImpl.class, c );
+		Collection<RoleResponsibilityActionImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		if ( coll.size() == 0 ) {
+			return null;
+		}
+		return coll.iterator().next();
+	}
+}

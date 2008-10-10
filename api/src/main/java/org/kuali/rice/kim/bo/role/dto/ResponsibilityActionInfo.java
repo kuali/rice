@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kuali.rice.kim.bo.role.ResponsibilityAction;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -24,22 +28,25 @@ import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ResponsibilityActionInfo implements ResponsibilityResolution {
+public class ResponsibilityActionInfo implements ResponsibilityAction {
 
 	String principalId;
 	String groupId;
-	String responsibilityId;
 	String responsibilityName;
 	String roleId;
 	String actionTypeCode;
 	Integer priorityNumber;
+	protected AttributeSet qualifier;
+	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 
-	public String getResponsibilityId() {
-		return this.responsibilityId;
-	}
-
-	public void setResponsibilityId(String responsibilityId) {
-		this.responsibilityId = responsibilityId;
+	public ResponsibilityActionInfo(String principalId, String groupId, String responsibilityName,
+			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
+		this.principalId = principalId;
+		this.groupId = groupId;
+		this.responsibilityName = responsibilityName;
+		this.roleId = roleId;
+		this.qualifier = qualifier;
+		this.delegates = delegates;
 	}
 
 	public String getActionTypeCode() {
@@ -80,5 +87,29 @@ public class ResponsibilityActionInfo implements ResponsibilityResolution {
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
+	}
+
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public AttributeSet getQualifier() {
+		return this.qualifier;
+	}
+
+	public void setQualifier(AttributeSet qualifier) {
+		this.qualifier = qualifier;
+	}
+
+	public List<DelegateInfo> getDelegates() {
+		return this.delegates;
+	}
+
+	public void setDelegates(List<DelegateInfo> delegates) {
+		this.delegates = delegates;
 	}
 }

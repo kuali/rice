@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import org.kuali.rice.kim.bo.role.RoleResponsibilityResolution;
+import java.util.LinkedHashMap;
+
+import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -23,29 +26,28 @@ import org.kuali.rice.kim.bo.role.RoleResponsibilityResolution;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleResponsibilityResolutionImpl implements RoleResponsibilityResolution {
+public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase implements Inactivateable {
 
-	protected String roleResponsibilityResolutionId;
-	protected String responsibilityId;
+	protected String roleResponsibilityActionId;
+	protected String responsibilityName;
 	protected String roleId;
 	protected String principalId;
+	protected String groupId;
 	protected String actionTypeCode;
 	protected Integer priorityNumber;
 	protected boolean active;
 	
-	protected KimResponsibilityImpl kimResponsibility;
-	
-	public String getRoleResponsibilityResolutionId() {
-		return this.roleResponsibilityResolutionId;
+	public String getRoleResponsibilityActionId() {
+		return this.roleResponsibilityActionId;
 	}
-	public void setRoleResponsibilityResolutionId(String roleResponsibilityResolutionId) {
-		this.roleResponsibilityResolutionId = roleResponsibilityResolutionId;
+	public void setRoleResponsibilityActionId(String roleResponsibilityResolutionId) {
+		this.roleResponsibilityActionId = roleResponsibilityResolutionId;
 	}
-	public String getResponsibilityId() {
-		return this.responsibilityId;
+	public String getResponsibilityName() {
+		return this.responsibilityName;
 	}
-	public void setResponsibilityId(String responsibilityId) {
-		this.responsibilityId = responsibilityId;
+	public void setResponsibilityName(String responsibilityName) {
+		this.responsibilityName = responsibilityName;
 	}
 	public String getRoleId() {
 		return this.roleId;
@@ -77,12 +79,25 @@ public class RoleResponsibilityResolutionImpl implements RoleResponsibilityResol
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	public KimResponsibilityImpl getKimResponsibility() {
-		return this.kimResponsibility;
-	}
-	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
-		this.kimResponsibility = kimResponsibility;
-	}
 	
-	
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap lhm = new LinkedHashMap();
+		lhm.put( "roleResponsibilityResolutionId", roleResponsibilityActionId );
+		lhm.put( "responsibilityName", responsibilityName );
+		lhm.put( "roleId", roleId );
+		lhm.put( "principalId", principalId );
+		lhm.put( "groupId", groupId );
+		return lhm;
+	}
+	public String getGroupId() {
+		return this.groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 }

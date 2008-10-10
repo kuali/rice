@@ -15,18 +15,24 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.dao.KimResponsibilityDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -41,6 +47,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
 	private RoleService roleService;
+	private KimResponsibilityDao responsibilityDao;   
 
     // --------------------------
     // Responsibility Methods
@@ -58,14 +65,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityByName(java.lang.String)
+     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilitiesByName(java.lang.String)
      */
-    public KimResponsibilityInfo getResponsibilityByName( String responsibilityName) {
-    	KimResponsibilityImpl impl = getResponsibilityImplByName( responsibilityName );
-    	if ( impl != null ) {
-    		return impl.toSimpleInfo();
+    public List<KimResponsibilityInfo> getResponsibilitiesByName( String responsibilityName) {
+    	List<KimResponsibilityImpl> impls = getResponsibilityImplsByName( responsibilityName );
+    	List<KimResponsibilityInfo> results = new ArrayList<KimResponsibilityInfo>( impls.size() );
+    	for ( KimResponsibilityImpl impl : impls ) {
+    		results.add( impl.toSimpleInfo() );
     	}
-    	return null;
+    	return results;
     }
     
     protected KimResponsibilityImpl getResponsibilityImpl(String responsibilityId) {
@@ -77,74 +85,101 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
     }
     
-    protected KimResponsibilityImpl getResponsibilityImplByName( String responsibilityName ) {
+    @SuppressWarnings("unchecked")
+	protected List<KimResponsibilityImpl> getResponsibilityImplsByName( String responsibilityName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
     	pk.put( "responsibilityName", responsibilityName );
 		pk.put("active", "Y");
-    	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
-    }
-    
-    
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getPrincipalIdsWithResponsibility(java.lang.String, java.util.Map, java.util.Map)
-     */
-    public List<String> getPrincipalIdsWithResponsibility(String responsibilityId,
-    		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
-    	
-    	// find matching role/resp records based on resp details (use resp service)
-    	// determine roles which directly infer those resp
-    	// obtain list of principals who have those roles based on the qualifications
-    	
-    	throw new UnsupportedOperationException();
-    	// return null;
+    	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
     }
     
     /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getPrincipalIdsWithResponsibilityByName(java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
-    public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification,
-    		Map<String,String> responsibilityDetails) {
-    	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
-    	return getPrincipalIdsWithResponsibility( resp.getResponsibilityId(), qualification, responsibilityDetails );
+    public boolean hasResponsibility(String principalId,
+    		String responsibilityName, AttributeSet qualification,
+    		AttributeSet responsibilityDetails) {
+    	List<String> roleIds = getRoleIdsForResponsibility( responsibilityName, responsibilityDetails, qualification );
+    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
     
     /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#hasQualifiedResponsibilityWithDetails(java.lang.String, java.lang.String, java.util.Map, java.util.Map)
+     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
      */
-    public boolean hasQualifiedResponsibilityWithDetails(String principalId,
-    		String responsibilityId, Map<String,String> qualification,
-    		Map<String,String> responsibilityDetails) {
+    public List<ResponsibilityActionInfo> getResponsibilityActions(String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
+    	List<String> roleIds = getRoleIdsForResponsibility( responsibilityName, responsibilityDetails, qualification );
+    	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
+    	for ( RoleMembershipInfo rm : roleMembers ) {
+    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), responsibilityName, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		// get associated resp resolution objects
+    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibilityName, rm.getPrincipalId(), rm.getGroupId() );
+    		// add the data to the ResponsibilityActionInfo objects
+    		rai.setActionTypeCode( action.getActionTypeCode() );
+    		rai.setPriorityNumber( action.getPriorityNumber() );
 
-    	// TODO: simple implementation, probably needs to be replaced
-    	
-    	List<String> ids = getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
-    	return ids.contains( principalId );
+    		results.add( rai );
+    	}
+    	return results;
     }
     
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
-     */
-    public List<ResponsibilityActionInfo> getResponsibilityInfo(String responsibilityId,
-    		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
-
-    	// find matching role/resp records based on resp details (use resp service)
-    	// group the results by role
-    	// for each role, determine the associated principals from the role service
-    	// build ResponsibilityResolutionInfo objects which match the principals with the appropriate responsibility and details
-    	
-    	throw new UnsupportedOperationException();
-    }
+//    /**
+//     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
+//     */
+//    public List<ResponsibilityActionInfo> getResponsibilityInfo(String responsibilityId,
+//    		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
+//
+//    	// find matching role/resp records based on resp details (use resp service)
+//    	// group the results by role
+//    	// for each role, determine the associated principals from the role service
+//    	// build ResponsibilityResolutionInfo objects which match the principals with the appropriate responsibility and details
+//    	
+//    	throw new UnsupportedOperationException();
+//    }
+    
     
     /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfoByName(java.lang.String, java.util.Map, java.util.Map)
+     * Compare each of the passed in responsibilities with the given responsibilityDetails.  Those that
+     * match are added to the result list.
      */
-    public List<ResponsibilityActionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification,
-    		Map<String,String> responsibilityDetails) {
-    	KimResponsibilityInfo resp = getResponsibilityByName( responsibilityName );
-    	return getResponsibilityInfo( resp.getResponsibilityId(), qualification, responsibilityDetails );
+    protected List<KimResponsibilityImpl> getMatchingResponsibilities( List<KimResponsibilityImpl> responsibilities, AttributeSet responsibilityDetails ) {
+    	List<KimResponsibilityImpl> applicableResponsibilities;    	
+    	if ( responsibilityDetails == null || responsibilityDetails.isEmpty() ) {
+    		// if no details passed, assume that all match
+    		applicableResponsibilities = responsibilities;
+    	} else {
+    		// otherwise, attempt to match the 
+    		applicableResponsibilities = new ArrayList<KimResponsibilityImpl>();
+    		for ( KimResponsibilityImpl perm : responsibilities ) {
+    			String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
+    			if ( serviceName == null ) { // no service - assume a match
+    				applicableResponsibilities.add( perm );
+    			} else {
+    				KimResponsibilityTypeService responsibilityTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getBean( serviceName );
+    				if ( responsibilityTypeService == null ) { // can't find the service - assume a match
+    					applicableResponsibilities.add( perm );
+    				} else { // got a service - check with it
+    					if ( responsibilityTypeService.doesResponsibilityDetailMatch( responsibilityDetails, perm.getDetails() ) ) {
+    						applicableResponsibilities.add( perm );
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return applicableResponsibilities;
     }
-
-
+	
+    protected List<String> getRoleIdsForResponsibility( String responsibilityName, AttributeSet responsibilityDetails, AttributeSet qualification ) {
+    	// get all the responsibility objects whose name match that requested
+    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( responsibilityName );
+    	// now, filter the full list by the detail passed
+    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	return responsibilityDao.getRoleIdsForResponsibilities( applicableResponsibilities );    	
+    }
+    
+    
+    
     // --------------------
     // Support Methods
     // --------------------
@@ -171,6 +206,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 		}
 
 		return roleService;
+	}
+
+	public KimResponsibilityDao getResponsibilityDao() {
+		return this.responsibilityDao;
+	}
+
+	public void setResponsibilityDao(KimResponsibilityDao responsibilityDao) {
+		this.responsibilityDao = responsibilityDao;
 	}
 
 }

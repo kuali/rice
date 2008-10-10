@@ -7,9 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
-import org.kuali.rice.kim.bo.role.ResponsibilityResolution;
+import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
@@ -180,48 +179,31 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     // ----------------------
 
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getPrincipalIdsWithResponsibility(java.lang.String, AttributeSet, AttributeSet)
-	 */
-	public List<String> getPrincipalIdsWithResponsibility(String responsibilityId,
-			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getPrincipalIdsWithResponsibility( responsibilityId, qualification, responsibilityDetails );
-	}
-	
-	public List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, AttributeSet qualification,
-			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getPrincipalIdsWithResponsibilityByName( responsibilityName, qualification, responsibilityDetails );
-	}
-	
-	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibility(java.lang.String)
 	 */
 	public KimResponsibility getResponsibility(String responsibilityId) {
 		return getResponsibilityService().getResponsibility( responsibilityId );
 	}
 
-	public KimResponsibility getResponsibilityByName( String responsibilityName) {
-		return getResponsibilityService().getResponsibilityByName( responsibilityName );
+	public List<? extends KimResponsibility> getResponsibilitiesByName( String responsibilityName) {
+		return getResponsibilityService().getResponsibilitiesByName( responsibilityName );
+	}
+	
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
+	 */
+	public boolean hasResponsibility(String principalId,
+			String responsibilityName, AttributeSet qualification,
+			AttributeSet responsibilityDetails) {
+		return getResponsibilityService().hasResponsibility( principalId, responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityInfo(java.lang.String, AttributeSet, AttributeSet)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
 	 */
-	public List<? extends ResponsibilityResolution> getResponsibilityInfo(String responsibilityId,
+	public List<ResponsibilityActionInfo> getResponsibilityActions(String responsibilityName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityInfo( responsibilityId, qualification, responsibilityDetails );
-	}
-	
-	public List<? extends ResponsibilityResolution> getResponsibilityInfoByName( String responsibilityName, AttributeSet qualification,
-			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityInfoByName( responsibilityName, qualification, responsibilityDetails );
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasQualifiedResponsibilityWithDetails(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-	 */
-	public boolean hasQualifiedResponsibilityWithDetails(String principalId,
-			String responsibilityId, AttributeSet qualification,
-			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasQualifiedResponsibilityWithDetails( principalId, responsibilityId, qualification, responsibilityDetails );
+		return getResponsibilityService().getResponsibilityActions( responsibilityName, qualification, responsibilityDetails );
 	}
 }

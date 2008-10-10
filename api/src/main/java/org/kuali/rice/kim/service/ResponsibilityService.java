@@ -16,10 +16,10 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -42,31 +42,12 @@ public interface ResponsibilityService {
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    KimResponsibilityInfo getResponsibilityByName( String responsibilityName );
+    List<KimResponsibilityInfo> getResponsibilitiesByName( String responsibilityName );
     
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
-    boolean hasQualifiedResponsibilityWithDetails( String principalId, String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
-
-    /**
-     * Get a list of the principals who have this responsibility given the qualifications.
-     */
-    List<String> getPrincipalIdsWithResponsibility( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
-
-    /**
-     * Get a list of the principals who have this responsibility given the qualifications.
-     */
-    List<String> getPrincipalIdsWithResponsibilityByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
+    boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
-    /**
-     * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
-     */
-    List<ResponsibilityActionInfo> getResponsibilityInfo( String responsibilityId, Map<String,String> qualification, Map<String,String> responsibilityDetails );
-    /**
-     * Obtain a list of the principal/responsibility relationships given the qualifier and responsibility details.
-     */
-    List<ResponsibilityActionInfo> getResponsibilityInfoByName( String responsibilityName, Map<String,String> qualification, Map<String,String> responsibilityDetails );
-    
-   	
+   	List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
 }

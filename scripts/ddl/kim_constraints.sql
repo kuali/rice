@@ -304,10 +304,6 @@ ALTER TABLE kr_kim_perm_t ADD CONSTRAINT kr_kim_perm_tr1
     REFERENCES kr_kim_perm_tmpl_t
 /
 
-ALTER TABLE kr_kim_role_resp_resol_t ADD CONSTRAINT kr_kim_role_resp_resol_tr1
-    FOREIGN KEY (resp_id)
-    REFERENCES kr_kim_resp_t
-/
 ALTER TABLE kr_kim_resp_tmpl_t ADD CONSTRAINT kr_kim_resp_tmpl_tr1
     FOREIGN KEY (kim_type_id)
     REFERENCES kr_kim_type_t

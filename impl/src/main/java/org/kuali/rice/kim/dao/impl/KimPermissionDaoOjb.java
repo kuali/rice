@@ -45,7 +45,7 @@ public class KimPermissionDaoOjb extends PlatformAwareDaoBaseOjb implements KimP
 			permissionIds.add( kp.getPermissionId() );
 		}
 		Criteria c = new Criteria();
-		c.addColumnIn( "permissionId", permissionIds );
+		c.addIn( "permissionId", permissionIds );
 		// TODO: add once effective dating in place
 		//c.addColumnEqualTo( "active", true );
 		

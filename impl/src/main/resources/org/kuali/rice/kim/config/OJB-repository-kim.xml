@@ -618,7 +618,7 @@
     <reference-descriptor name="template" class-ref="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="templateId" />
     </reference-descriptor>
-    <collection-descriptor name="details" element-class-ref="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
     </collection-descriptor>
   </class-descriptor>

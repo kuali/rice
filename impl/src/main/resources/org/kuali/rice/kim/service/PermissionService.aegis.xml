@@ -1,0 +1,9 @@
+<mappings  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xfire.codehaus.org/schemas/1.0/mapping.xsd">
+  <mapping>
+    <method name="isAuthorized">
+      <parameter index="2" keyType="java.lang.String" componentType="java.lang.String" />
+      <parameter index="3" keyType="java.lang.String" componentType="java.lang.String" />
+    </method>
+  </mapping>
+</mappings>

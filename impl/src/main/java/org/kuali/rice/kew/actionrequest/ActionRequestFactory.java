@@ -23,11 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
+import org.kuali.rice.kew.role.KimRoleRecipient;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -35,6 +37,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -42,7 +45,7 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 
 
 /**
@@ -187,7 +190,7 @@ public class ActionRequestFactory {
     	} else if (recipient instanceof Workgroup){
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
     		actionRequest.setWorkgroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
-    	} else {
+    	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
     		actionRequest.setRoleName(role.getRoleName());
@@ -203,6 +206,20 @@ public class ActionRequestFactory {
     				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getRouteHeader().getRouteHeaderId());
     			}
     			resolveRecipient(actionRequest, role.getTarget());
+    		}
+    	} else if (recipient instanceof KimRoleRecipient) {
+    		KimRoleRecipient roleRecipient = (KimRoleRecipient)recipient;
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
+    		actionRequest.setRoleName(roleRecipient.getResponsibilities().get(0).getRoleId());
+    		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityId());
+    		// what about qualified role name label?
+    		actionRequest.setAnnotation(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
+    		Recipient targetRecipient = roleRecipient.getTarget();
+    		if (targetRecipient != null) {
+    			if (targetRecipient instanceof RoleRecipient) {
+    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getRouteHeader().getRouteHeaderId());
+    			}
+    			resolveRecipient(actionRequest, roleRecipient.getTarget());
     		}
     	}
     }
@@ -261,9 +278,31 @@ public class ActionRequestFactory {
     	return requestGraph;
     }
     
-    public ActionRequestValue addResponsibilityRequest(KimResponsibility responsibility) {
-    	// TODO implement me
-    	throw new UnsupportedOperationException("Implement me!!!");
+    public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) throws KEWUserNotFoundException {
+    	if (responsibilities == null || responsibilities.isEmpty()) {
+    		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
+    		return null;
+    	}
+    	// it's assumed the that all in the list have the same action type code, priority number, etc.
+    	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
+    	Integer priority = responsibilities.get(0).getPriorityNumber();
+    	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
+    	// TODO finish allowing for configuration of some of these other values
+    	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
+    	
+    	for (ResponsibilityActionInfo responsibility : responsibilities) {
+			if (responsibility.getPrincipalId() != null) {
+				roleRecipient.setTarget(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(responsibility.getPrincipalId())));
+				// TODO group case
+			} else {
+				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
+			}
+			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, null);
+			request.setParentActionRequest(requestGraph);
+			requestGraph.getChildrenRequests().add(request);
+	     }
+    	requestGraphs.add(requestGraph);
+    	return requestGraph;
     }
 
     public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {

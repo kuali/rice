@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute RuleAttribute">
+		<ruleAttribute>
+			<name>RoleRouteModule-TestQualifierResolver</name>
+			<className>org.kuali.rice.kew.role.TestQualifierResolver</className>
+			<label>RoleRouteModule-TestQualifierResolver</label>
+			<description>RoleRouteModule-TestQualifierResolver</description>
+			<type>QualifierResolver</type>
+		</ruleAttribute>
+	</ruleAttributes>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+ 		<documentType>
+			<name>RouteRouteModuleTest1</name>
+			<label>RouteRouteModuleTest1</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Role1"/>
+					<role name="Role1"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<role name="Role1">
+					<activationType>P</activationType>
+					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
+					<responsibilityName>VoluntaryReview</responsibilityName>
+				</role>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RouteRouteModuleTest2</name>
+			<label>RouteRouteModuleTest2</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Role1"/>
+					<role name="Role1"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<role name="Role1">
+					<activationType>P</activationType>
+					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
+					<responsibilityName>VoluntaryReview</responsibilityName>
+					<approvePolicy>A</approvePolicy>
+				</role>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+</data>

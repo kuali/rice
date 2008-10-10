@@ -692,6 +692,7 @@ public class DTOConverter {
             actionRequestVO.setWorkgroupId(actionRequest.getWorkgroupId());
             actionRequestVO.setWorkgroupDTO(convertWorkgroup(actionRequest.getWorkgroup()));
         }
+        actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
         for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {

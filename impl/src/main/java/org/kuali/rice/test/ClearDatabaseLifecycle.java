@@ -131,7 +131,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                             while (resultSet.next()) {
                                 String tableName = resultSet.getString("TABLE_NAME");
                                 if (shouldTableBeCleared(tableName)) {
-                                    if (!isUsingDerby(metaData)) {
+                                    if (!isUsingDerby(metaData) && isUsingOracle(metaData)) {
                                     	List<String[]> exportedKeyNames = exportedKeys.get(tableName);
                                     	if (exportedKeyNames != null) {
                                     		for (String[] exportedKeyName : exportedKeyNames) {
@@ -143,6 +143,8 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                                     			reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
                                     		}
                                     	}
+                                    } else if (isUsingMySQL(metaData)) {
+                                    	statement.addBatch("SET FOREIGN_KEY_CHECKS = 0");
                                     }
                                     String deleteStatement = "DELETE FROM " + tableName;
                                     LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
@@ -152,6 +154,9 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                             for (final String constraint : reEnableConstraints) {
                                 LOG.info("Enabling constraints using statement ->" + constraint + "<-");
                                 statement.addBatch(constraint);
+                            }
+                            if (isUsingMySQL(metaData)) {
+                            	statement.addBatch("SET FOREIGN_KEY_CHECKS = 1");
                             }
                             statement.executeBatch();
                             resultSet.close();
@@ -171,7 +176,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     
     protected Map<String, List<String[]>> indexExportedKeys(DatabaseMetaData metaData, String schemaName) throws SQLException {
     	Map<String, List<String[]>> exportedKeys = new HashMap<String, List<String[]>>();
-        if (!isUsingDerby(metaData)) {
+        if (!isUsingDerby(metaData) && isUsingOracle(metaData)) {
         	ResultSet keyResultSet = metaData.getExportedKeys(null, schemaName, null);
         	while (keyResultSet.next()) {
         		String tableName = keyResultSet.getString("PKTABLE_NAME");
@@ -214,6 +219,15 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
         return metaData.getDriverName().toLowerCase().indexOf("derby") > -1;
     }
 
+    private boolean isUsingOracle(DatabaseMetaData metaData) throws SQLException {
+        return metaData.getDriverName().toLowerCase().indexOf("oracle") > -1;
+    }
+
+    private boolean isUsingMySQL(DatabaseMetaData metaData) throws SQLException {
+        return metaData.getDriverName().toLowerCase().indexOf("mysql") > -1;
+    }
+
+    
     public List<String> getTablesToClear() {
         return this.tablesToClear;
     }

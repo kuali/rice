@@ -258,6 +258,17 @@
             <lastName>administrator</lastName>
       <dtype>user</dtype>
         </user>
+        <user>
+			<workflowId>admin</workflowId>
+			<emplId>admin</emplId>
+			<authenticationId>admin</authenticationId>
+			<uuId>admin</uuId>
+			<emailAddress>admin@indiana.edu</emailAddress>
+			<displayName>Admin</displayName>
+			<givenName>Ad</givenName>
+			<lastName>Min</lastName>
+			<dtype>user</dtype>
+		</user>
 	</users>
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup allowOverwrite="true">

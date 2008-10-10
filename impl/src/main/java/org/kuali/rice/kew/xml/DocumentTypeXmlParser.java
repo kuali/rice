@@ -49,6 +49,7 @@ import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -769,6 +770,9 @@ public class DocumentTypeXmlParser implements XmlConstants {
             // join node should have same branch prototype as split node
             RouteNode splitNode = (RouteNode)context.splitNodeStack.removeFirst();
             context.branch = splitNode.getBranch();
+        } else if (NodeType.ROLE.getName().equalsIgnoreCase(localName)) {
+        	routeNode.setRouteMethodName(RoleRouteModule.class.getName());
+        	routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
         }
         routeNode.setBranch(context.branch);
 

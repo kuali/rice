@@ -441,6 +441,13 @@ Definitions are applied to the names in the routeNodes section.
         		</documentation>
         	</annotation>
         </element>
+        <element name="role" type="dt:PathNodeType">
+        	<annotation>
+        		<documentation>
+        		 Generate request to a Role
+        		</documentation>
+        	</annotation>
+        </element>
         <element name="simple" type="dt:PathNodeType">
         	<annotation>
         		<documentation>
@@ -648,6 +655,13 @@ Definitions are applied to the names in the routeNodes section.
         	<annotation>
      			<documentation>
         		 Generate request to user or workgroup.
+        		</documentation>
+        	</annotation>
+        </element>
+        <element name="role" type="dt:RequestsNodeType">
+        	<annotation>
+     			<documentation>
+        		 Generate request to a Role
         		</documentation>
         	</annotation>
         </element>

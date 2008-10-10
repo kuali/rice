@@ -694,6 +694,7 @@ public class KEWConstants {
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchResultProcessorAttribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";
     public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE = "DocumentSearchSecurityFilterAttribute";
+    public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE = "QualifierResolver";
 
     public static final String RULE_ATTRIBUTE_TYPE_LABEL = "Rule Attribute";
     public static final String SEARCHABLE_ATTRIBUTE_TYPE_LABEL = "Searchable Attribute";
@@ -709,6 +710,7 @@ public class KEWConstants {
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor Attribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor XML Attribute";
     public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL = "Document Search Security Filter Attribute";
+    public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL = "Qualifier Resolver";
     
     public static final String[] RULE_ATTRIBUTE_TYPES = {
     	RULE_ATTRIBUTE_TYPE,
@@ -724,7 +726,8 @@ public class KEWConstants {
         SEARCH_GENERATOR_ATTRIBUTE_TYPE,
         SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE,
         SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE,
-        DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE
+        DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE,
+        QUALIFIER_RESOLVER_ATTRIBUTE_TYPE
     };
     
     public static final Map<String, String> RULE_ATTRIBUTE_TYPE_MAP;
@@ -744,6 +747,7 @@ public class KEWConstants {
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE, DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL);
+        RULE_ATTRIBUTE_TYPE_MAP.put(QUALIFIER_RESOLVER_ATTRIBUTE_TYPE, QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL);
     };
     
     public static final String DAILY = "daily";

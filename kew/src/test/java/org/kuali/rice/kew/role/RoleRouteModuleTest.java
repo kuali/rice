@@ -16,19 +16,120 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Tests Role-based routing integration between KEW and KIM. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RoleRouteModuleTest extends KEWTestCase {
 
+	protected void loadTestData() throws Exception {
+        loadXmlFile("RoleRouteModuleTestConfig.xml");
+    }
+	
 	@Test
-	public void testRoleRouteModule() throws Exception {
+	public void testRoleRouteModule_FirstApprove() throws Exception {
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "RouteRouteModuleTest1");
+		document.routeDocument("");
 		
+		// in this case we should have a first approve role that contains admin and user2, we
+		// should also have a first approve role that contains just user1
+		
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		
+		// examine the action requests
+		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+		// there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
+		assertEquals("Should have 5 action requests.", 5, actionRequests.length);
+		int numRoots = 0;
+		for (ActionRequestDTO actionRequest : actionRequests) {
+			// each of these should be "first approve"
+			if (actionRequest.getApprovePolicy() != null) {
+				assertEquals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE, actionRequest.getApprovePolicy());
+			}
+			if (actionRequest.getParentActionRequestId() == null) {
+				numRoots++;
+			}
+		}
+		assertEquals("There should have been 2 root requests.", 2, numRoots);
+		
+		// let's approve as "user1" and verify the document is still ENROUTE
+		document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+		document.approve("");
+		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
+		
+		// verify that admin and user2 still have requests
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		
+		// let's approve as "user2" and verify the document has gone FINAL
+		document.approve("");
+		assertTrue("Document should be FINAL.", document.stateIsFinal());
+		
+	}
+	
+	@Test
+	public void testRoleRouteModule_AllApprove() throws Exception {
+		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "RouteRouteModuleTest2");
+		document.routeDocument("");
+		
+		// in this case we should have all approve roles for admin, user1 and user2
+		
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		
+		// examine the action requests
+		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+		assertEquals("Should have 6 action requests.", 6, actionRequests.length);
+		int numRoots = 0;
+		for (ActionRequestDTO actionRequest : actionRequests) {
+			if (actionRequest.getApprovePolicy() != null) {
+				assertEquals(KEWConstants.APPROVE_POLICY_ALL_APPROVE, actionRequest.getApprovePolicy());
+			}
+			if (actionRequest.getParentActionRequestId() == null) {
+				numRoots++;
+			}
+		}
+		assertEquals("There should have been 3 root requests.", 3, numRoots);
+		
+		// let's approve as "user1" and verify the document does NOT go FINAL
+		document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+		document.approve("");
+		assertTrue("Document should still be enroute.", document.stateIsEnroute());
+		
+		// verify that admin and user2 still have requests
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
+		assertTrue("Approval should be requested.", document.isApprovalRequested());
+		
+		// approve as "user2" and verify document is still ENROUTE
+		document.approve("");
+		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
+		
+		// now approve as "admin", coument should be FINAL
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
+		document.approve("");
+		assertTrue("Document should be FINAL.", document.stateIsFinal());
 	}
 	
 }

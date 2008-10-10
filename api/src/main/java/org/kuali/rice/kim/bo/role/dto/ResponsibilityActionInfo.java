@@ -39,6 +39,12 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 
+	/**
+	 * 
+	 */
+	public ResponsibilityActionInfo() {
+	}
+	
 	public ResponsibilityActionInfo(String principalId, String groupId, String responsibilityName,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;

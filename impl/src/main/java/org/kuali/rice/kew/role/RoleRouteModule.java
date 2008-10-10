@@ -127,7 +127,7 @@ public class RoleRouteModule implements RouteModule {
         	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         	info.setPrincipalId(principal.getPrincipalId());
         	info.setPriorityNumber(1);
-        	info.setResponsibilityId("123");
+        	info.setResponsibilityName("123");
         	info.setResponsibilityName(responsibilityName);
         	info.setRoleId("1234");
         	responsibilityInfos.add(info);
@@ -137,7 +137,7 @@ public class RoleRouteModule implements RouteModule {
         	principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         	info.setPrincipalId(principal.getPrincipalId());
         	info.setPriorityNumber(1);
-        	info.setResponsibilityId("1235");
+        	info.setResponsibilityName("1235");
         	info.setResponsibilityName(responsibilityName);
         	info.setRoleId("1234");
         	responsibilityInfos.add(info);
@@ -147,7 +147,7 @@ public class RoleRouteModule implements RouteModule {
         	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         	info.setPrincipalId(principal.getPrincipalId());
         	info.setPriorityNumber(1);
-        	info.setResponsibilityId("321");
+        	info.setResponsibilityName("321");
         	info.setResponsibilityName(responsibilityName);
         	info.setRoleId("4321");
         	responsibilityInfos.add(info);

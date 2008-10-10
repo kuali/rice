@@ -211,7 +211,7 @@ public class ActionRequestFactory {
     		KimRoleRecipient roleRecipient = (KimRoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
     		actionRequest.setRoleName(roleRecipient.getResponsibilities().get(0).getRoleId());
-    		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityId());
+    		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
     		// what about qualified role name label?
     		actionRequest.setAnnotation(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
     		Recipient targetRecipient = roleRecipient.getTarget();
@@ -297,7 +297,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
 			}
-			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, null);
+			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityName()), true, approvePolicy, null, null);
 			request.setParentActionRequest(requestGraph);
 			requestGraph.getChildrenRequests().add(request);
 	     }

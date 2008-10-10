@@ -46,9 +46,9 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 			responsibilityIds.add( kp.getResponsibilityId() );
 		}
 		Criteria c = new Criteria();
-		c.addColumnIn( "responsibilityId", responsibilityIds );
+		c.addIn( "responsibilityId", responsibilityIds );
 		// TODO: add once effective dating in place
-		//c.addColumnEqualTo( "active", true );
+		//c.addEqualTo( "active", true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
 		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -70,14 +70,14 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		}
 		
 		Criteria c = new Criteria();
-		c.addColumnEqualTo( "responsibilityName", responsibilityName );
+		c.addEqualTo( "responsibilityName", responsibilityName );
 		if ( principalId != null ) {
-			c.addColumnEqualTo( "principalId", principalId );
+			c.addEqualTo( "principalId", principalId );
 		}
 		if ( groupId != null ) {
-			c.addColumnEqualTo( "groupId", groupId );
+			c.addEqualTo( "groupId", groupId );
 		}
-		c.addColumnEqualTo( "active", true );
+		c.addEqualTo( "active", true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityActionImpl.class, c );
 		Collection<RoleResponsibilityActionImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);

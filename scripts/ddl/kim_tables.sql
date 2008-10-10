@@ -481,8 +481,6 @@ CREATE TABLE kr_kim_group_group_t
 ALTER TABLE kr_kim_group_group_t ADD CONSTRAINT kr_kim_group_group_tc0 UNIQUE (obj_id)
 /
 
-ALTER TABLE kr_kim_group_group_t ADD CONSTRAINT kr_kim_group_group_tc1 UNIQUE (grp_id,member_grp_id)
-/
 
 CREATE TABLE kr_kim_group_principal_t
 (
@@ -497,9 +495,6 @@ CREATE TABLE kr_kim_group_principal_t
 /
 
 ALTER TABLE kr_kim_group_principal_t ADD CONSTRAINT kr_kim_group_principal_tc0 UNIQUE (obj_id)
-/
-
-ALTER TABLE kr_kim_group_principal_t ADD CONSTRAINT kr_kim_group_principal_tc1 UNIQUE (grp_id,prncpl_id)
 /
 
 -- ************************************************************************
@@ -542,10 +537,6 @@ CREATE TABLE kr_kim_role_principal_t
 
 ALTER TABLE kr_kim_role_principal_t ADD CONSTRAINT kr_kim_role_principal_tc0 UNIQUE (obj_id)
 /
-
-ALTER TABLE kr_kim_role_principal_t ADD CONSTRAINT kr_kim_role_principal_tc1 UNIQUE (role_id,prncpl_id)
-/
-
 
 
 
@@ -636,7 +627,7 @@ CREATE TABLE kr_kim_group_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_group_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
@@ -652,7 +643,7 @@ CREATE TABLE kr_kim_role_mbr_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_role_mbr_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
@@ -670,7 +661,7 @@ CREATE TABLE kr_kim_resp_tmpl_t
     resp_tmpl_id         VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-    name               VARCHAR2(40),
+    name               VARCHAR2(80),
     kim_type_id           VARCHAR2(40),
     description             VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
@@ -687,7 +678,7 @@ CREATE TABLE kr_kim_resp_t
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     resp_tmpl_id         VARCHAR2(40),
-    name               VARCHAR2(40),
+    name               VARCHAR2(80),
     description             VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_resp_tp1 PRIMARY KEY ( resp_id )
@@ -711,7 +702,7 @@ CREATE TABLE kr_kim_resp_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_resp_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
@@ -759,7 +750,7 @@ CREATE TABLE kr_kim_perm_tmpl_t
     perm_tmpl_id         VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-    name                  VARCHAR2(40),
+    name               VARCHAR2(80),
     description           VARCHAR2(400),
     kim_type_id           VARCHAR2(40),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
@@ -776,7 +767,7 @@ CREATE TABLE kr_kim_perm_t
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
     perm_tmpl_id          VARCHAR2(40),
-    name                  VARCHAR2(40),
+    name               VARCHAR2(80),
     description           VARCHAR2(400),
     actv_ind              VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_perm_tp1 PRIMARY KEY ( perm_id  )
@@ -809,7 +800,7 @@ CREATE TABLE kr_kim_perm_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_perm_attr_data_tp1 PRIMARY KEY ( attrib_data_id )
 )
 /
@@ -873,7 +864,7 @@ CREATE TABLE kr_kim_dele_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_dele_attr_data_tp1 PRIMARY KEY ( attrib_data_id ),
     CONSTRAINT kr_kim_dele_attr_data_tc0 UNIQUE ( obj_id ) 
 )
@@ -888,7 +879,7 @@ CREATE TABLE kr_kim_dele_mbr_attr_data_t
     target_primary_key    VARCHAR2(40),
 	kim_type_id           VARCHAR2(40),
 	kim_attrib_id         VARCHAR2(40),
-    attrib_val            VARCHAR2(40),
+    attrib_val            VARCHAR2(400),
     CONSTRAINT kr_kim_dele_mbr_attr_data_tp1 PRIMARY KEY ( attrib_data_id ),
     CONSTRAINT kr_kim_dele_mbr_attr_data_tc0 UNIQUE ( obj_id ) 
 )

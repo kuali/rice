@@ -26,6 +26,9 @@
                 <property name="testMode" value="true"/>
             </bean>
         </property>
+        <property name="knsConfigurer">
+            <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+        </property>
 		<property name="kewConfigurer">
             <bean class="org.kuali.rice.kew.config.KEWConfigurer">
                 <property name="clientProtocol" value="local" />
@@ -36,5 +39,8 @@
                 <property name="testMode" value="true"/>
             </bean>
         </property>
+		<property name="kimConfigurer">
+        	<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+		</property>
     </bean>
 </beans>

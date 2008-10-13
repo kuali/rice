@@ -146,7 +146,7 @@
 						<c:if
 							test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
 							<c:if test="${row.rowReturnable}">
-								<display:column class="infocell" property="returnUrl" media="html" />
+								<display:column class="infocell" property="returnUrl" media="html" title="Return Value"/>
 							</c:if>
 						</c:if>
 						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">

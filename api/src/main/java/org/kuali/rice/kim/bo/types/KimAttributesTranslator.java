@@ -16,7 +16,8 @@
 package org.kuali.rice.kim.bo.types;
 
 import java.util.List;
-import java.util.Map;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -44,6 +45,6 @@ public interface KimAttributesTranslator {
     /**
      * Perform the conversion of the given attributes.
      */
-    Map<String,String> convertAttributes( Map<String,String> attributes );
+    AttributeSet convertAttributes( AttributeSet attributes );
 
 }

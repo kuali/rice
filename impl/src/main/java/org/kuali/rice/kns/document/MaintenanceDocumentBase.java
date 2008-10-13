@@ -380,7 +380,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
             PersistableBusinessObject oldBo = oldMaintainableObject.getBusinessObject();
             ObjectUtils.materializeAllSubObjects(oldBo); // hack to resolve XStream not dealing well with Proxies
-            docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(oldBo));
+            docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
 
             // add the maintainable's maintenanceAction
             docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -393,7 +393,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         PersistableBusinessObject newBo = newMaintainableObject.getBusinessObject();
         ObjectUtils.materializeAllSubObjects(newBo); // hack to resolve XStream not dealing well with Proxies
-        docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(newBo));
+        docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
 
         // add the maintainable's maintenanceAction
         docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");

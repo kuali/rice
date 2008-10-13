@@ -235,7 +235,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         			filteredFieldValues.put(fieldName, fieldValues.get(fieldName));
         		}
         	}
-        	searchResults = eboModuleService.getExternalizableBusinessObjectsList( getBusinessObjectClass(), (Map)filteredFieldValues );
+        	searchResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(getBusinessObjectClass(), (Map)filteredFieldValues, unbounded);
         // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
         } else if ( hasExternalBusinessObjectProperty( getBusinessObjectClass(), fieldValues ) ) {
         	if ( LOG.isDebugEnabled() ) {
@@ -262,7 +262,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
             	}
             	// run search against attached EBO's module service
             	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
-        		List eboResults = eboModuleService.getExternalizableBusinessObjectsList( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues );
+        		List eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
         		// get the mapping/relationship between the EBO object and it's parent object
         		// use that to adjust the fieldValues
         		

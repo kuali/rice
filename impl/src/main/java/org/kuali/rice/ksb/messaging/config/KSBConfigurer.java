@@ -82,7 +82,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private String webserviceRetry;
 
-	private RiceCacheAdministrator cache;
+	//private RiceCacheAdministrator cache;
 
 	private DataSource registryDataSource;
 
@@ -126,7 +126,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	
 	@Override
 	public ResourceLoader getResourceLoaderToRegister() throws Exception{
-		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
+		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader(getOverrideServices());
 		ksbRemoteResourceLoader.start();
 		return ksbRemoteResourceLoader;
 	}
@@ -160,16 +160,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 				this.started = false;
 			}
 		});
-		//lifecycles.add(new OjbConfigurer());
-		lifecycles.add(new ServicesOverrideLifecycle(this.getOverrideServices()));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.SCHEDULED_THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REPEAT_TOPIC_INVOKING_QUEUE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.OBJECT_REMOTER));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.BUS_ADMIN_SERVICE));
-		if (getCache() != null) {
-			lifecycles.add(getCache());
-		}
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
 		return lifecycles;
 	}
@@ -283,7 +278,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
 		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
-
+	
 	public void stop() throws Exception {
 	    super.stop();
 	    cleanUpConfiguration();
@@ -422,14 +417,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	public void setOverrideServices(List<ServiceHolder> overrideServices) {
 		this.overrideServices = overrideServices;
-	}
-
-	public RiceCacheAdministrator getCache() {
-		return this.cache;
-	}
-
-	public void setCache(RiceCacheAdministrator cache) {
-		this.cache = cache;
 	}
 
 	public Scheduler getExceptionMessagingScheduler() {

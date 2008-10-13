@@ -45,7 +45,7 @@ public class GroupServiceImplTest extends RiceTestCase {
 
 	private String relativeWebappRoot = "/../web/src/main/webapp";
 
-	private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
+	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
 
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {

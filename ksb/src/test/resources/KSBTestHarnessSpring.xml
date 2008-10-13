@@ -47,7 +47,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl"/>
+	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />
@@ -67,9 +67,6 @@
 							<property name="service" ref="testExceptionHandlerService" />
 						</bean>
 					</list>
-				</property>
-				<property name="cache">
-					<ref bean="cache"/>
 				</property>
 				<property name="services">
 					<list>

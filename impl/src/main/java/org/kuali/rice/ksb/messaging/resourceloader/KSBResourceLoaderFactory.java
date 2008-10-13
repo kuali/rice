@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.ksb.messaging.resourceloader;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.config.Config;
@@ -27,6 +29,7 @@ import org.kuali.rice.core.resourceloader.SimpleServiceLocator;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
+import org.kuali.rice.ksb.messaging.config.ServiceHolder;
 
 
 
@@ -42,6 +45,9 @@ import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
  */
 public class KSBResourceLoaderFactory {
 
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(KSBResourceLoaderFactory.class);
+	
 	private static final String KSB_ROOT_RESOURCE_LOACER_NAME = "KSB_ROOT_RESOURCE_LOADER";
 	private static final String KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME = "KSB_REMOTE_RESOURCE_LOADER";
 
@@ -58,9 +64,18 @@ public class KSBResourceLoaderFactory {
 		}
 	}
 
-	public static ResourceLoader createRootKSBRemoteResourceLoader() {
+	public static ResourceLoader createRootKSBRemoteResourceLoader(List<ServiceHolder> overrideServices) {
 		initialize();
-		ResourceLoader rootResourceLoader = new BaseResourceLoader(getRootResourceLoaderName(), new SimpleServiceLocator());
+		SimpleServiceLocator serviceLocator = new SimpleServiceLocator();
+		if (overrideServices != null) {
+			for (ServiceHolder serviceHolder : overrideServices) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Loading override service " + serviceHolder.getServiceName() + " " + serviceHolder.getService());
+				}
+				serviceLocator.addService(serviceHolder.getServiceName(), serviceHolder.getService());
+			}
+		}
+		ResourceLoader rootResourceLoader = new BaseResourceLoader(getRootResourceLoaderName(), serviceLocator);
 		rootResourceLoader.addResourceLoader(new RemoteResourceServiceLocatorImpl(getRemoteResourceLoaderName()));
 		return rootResourceLoader;
 	}

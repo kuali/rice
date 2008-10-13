@@ -18,6 +18,7 @@ package org.kuali.rice.ksb.messaging;
 
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -35,14 +36,6 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 	protected RemotedServiceRegistry remotedServiceRegistry;
 
 	public Object getObject() throws Exception {
-		if (cache == null) {
-			cache = new RiceCacheAdministratorImpl();
-			cache.setServiceName(this.getServiceName());
-			cache.setForceRegistryRefresh(true);
-			cache.setRemotedServiceRegistry(remotedServiceRegistry);
-			cache.start();
-		}
-		
 		return cache;
 	}
 
@@ -63,7 +56,16 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 	}
 
 	public void afterPropertiesSet() throws Exception {
-		getObject();
+		if (cache == null) {
+			cache = new RiceCacheAdministratorImpl();
+			cache.setServiceName(this.getServiceName());
+			cache.setForceRegistryRefresh(true);
+			if (remotedServiceRegistry == null) {
+				remotedServiceRegistry = KSBServiceLocator.getServiceDeployer();
+			}
+			cache.setRemotedServiceRegistry(remotedServiceRegistry);
+			cache.start();
+		}
 	}
 	
 

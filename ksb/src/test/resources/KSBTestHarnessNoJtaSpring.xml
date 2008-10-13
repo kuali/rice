@@ -40,7 +40,7 @@
 		</property>
 	</bean>
 
-	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl" />
+	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />
@@ -61,9 +61,6 @@
 					</list>
 				</property>
 				<property name="platformTransactionManager" ref="transactionManager" />
-				<property name="cache">
-					<ref bean="cache" />
-				</property>
 				<property name="services">
 					<list>
 						<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">

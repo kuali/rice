@@ -27,7 +27,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
-import org.kuali.rice.kim.bo.types.KimType;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -54,7 +53,7 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 
 	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
-	protected KimType kimType;
+	protected KimTypeImpl kimType;
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.types.KimType#getKimTypeId()
@@ -77,7 +76,7 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 		this.active = active;
 	}
 
-	public KimType getKimType() {
+	public KimTypeImpl getKimType() {
 		return kimType;
 	}
 

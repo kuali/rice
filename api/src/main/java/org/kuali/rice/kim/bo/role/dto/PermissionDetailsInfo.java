@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import org.kuali.rice.kim.bo.role.PermissionDetails;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -24,7 +23,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PermissionDetailsInfo implements PermissionDetails {
+public class PermissionDetailsInfo {
 
 	protected String permissionId;
 

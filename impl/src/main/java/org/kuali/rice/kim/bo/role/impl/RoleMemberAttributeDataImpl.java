@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo.role.impl;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.RoleMemberAttributeData;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
@@ -26,5 +25,5 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
  */
 @Entity
 @Table(name="KR_KIM_ROLE_MBR_ATTR_DATA_T")
-public class RoleMemberAttributeDataImpl extends KimAttributeDataImpl implements RoleMemberAttributeData {
+public class RoleMemberAttributeDataImpl extends KimAttributeDataImpl {
 }

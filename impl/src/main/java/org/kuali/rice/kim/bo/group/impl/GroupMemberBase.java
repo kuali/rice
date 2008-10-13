@@ -36,13 +36,9 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 	@Id
 	@Column(name="GRP_MEMBER_ID")
 	protected String groupMemberId;
-	
-	
+		
 	@Column(name="GRP_ID")
 	protected String groupId;
-	
-	@Column(name="MEMBER_ID")
-	protected String memberId;
 	
 	public String getGroupMemberId() {
 		return this.groupMemberId;
@@ -56,25 +52,18 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	public String getMemberId() {
-		return this.memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-	
+
 	/**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "groupMemberId", groupMemberId );
 		m.put( "groupId", groupId );
-		m.put( "memberTypeCode", getGroupMemberTypeCode() );
-		m.put( "memberId", memberId );
 		return m;
 	}
 }

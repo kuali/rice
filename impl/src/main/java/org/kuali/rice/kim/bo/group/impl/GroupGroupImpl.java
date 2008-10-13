@@ -15,14 +15,11 @@
  */
 package org.kuali.rice.kim.bo.group.impl;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.group.GroupGroup;
-import org.kuali.rice.kim.bo.group.GroupMember;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -32,31 +29,17 @@ import org.kuali.rice.kim.bo.group.GroupMember;
  */
 @Entity
 @Table(name="KR_KIM_GROUP_GROUP_T")
-@AttributeOverrides({
-	@AttributeOverride(name="memberId",column=@Column(name="MEMBER_GRP_ID"))
-})
 public class GroupGroupImpl extends GroupMemberBase implements GroupGroup {
 
+	@Column(name="MEMBER_GRP_ID")
+	protected String memberGroupId;
+
 	public String getMemberGroupId() {
-		return getMemberId();
-	}
-	
-	public void setMemberGroupId( String groupId ) {
-		setMemberId( groupId );
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.group.GroupMember#getGroupMemberClass()
-	 */
-	public Class<? extends GroupMember> getGroupMemberClass() {
-		return this.getClass();
+		return this.memberGroupId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.group.GroupMember#getGroupMemberTypeCode()
-	 */
-	public String getGroupMemberTypeCode() {
-		return getClass().getSimpleName();
+	public void setMemberGroupId(String memberGroupId) {
+		this.memberGroupId = memberGroupId;
 	}
-
+	
 }

@@ -23,7 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.role.RoleMember;
-import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -86,7 +85,7 @@ public abstract class RoleMemberImpl extends PersistableBusinessObjectBase imple
 
 	public AttributeSet getQualifier() {
 		AttributeSet m = new AttributeSet();
-		for ( KimAttributeData data : getAttributes() ) {
+		for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
 			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 		}
 		return m;

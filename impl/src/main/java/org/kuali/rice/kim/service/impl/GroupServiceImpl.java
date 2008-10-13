@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.group.GroupAttribute;
 import org.kuali.rice.kim.bo.group.GroupGroup;
 import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -17,7 +16,6 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.types.KimAttribute;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -161,7 +159,7 @@ public class GroupServiceImpl implements GroupService {
 			return new ArrayList<KimGroupImpl>(0);
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("memberPrincipals.memberId", principalId);
+		criteria.put("memberPrincipals.memberPrincipalId", principalId);
 		criteria.put("active", "Y");
 		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
 			criteria.put("namespaceCode", namespaceCode);
@@ -188,9 +186,9 @@ public class GroupServiceImpl implements GroupService {
 		if ( group == null ) {
 			return;
 		}
-		List<GroupGroup> memberGroups = group.getMemberGroups();
+		List<GroupGroupImpl> memberGroups = group.getMemberGroups();
 
-		for (GroupGroup groupGroup : memberGroups) {
+		for (GroupGroupImpl groupGroup : memberGroups) {
 			KimGroupImpl memberGroup = getGroupImpl(groupGroup.getMemberGroupId());
 			// if we've already seen that role, don't recurse into it
 			if ( !groups.contains( memberGroup ) ) {
@@ -231,10 +229,10 @@ public class GroupServiceImpl implements GroupService {
 		if ( group == null ) {
 			return new ArrayList<String>(0);
 		}
-		List<GroupPrincipal> groupPrincipals = group.getMemberPrincipals();
+		List<GroupPrincipalImpl> groupPrincipals = group.getMemberPrincipals();
 
 		List<String> ids = new ArrayList<String>();
-		for (GroupPrincipal groupPrincipal : groupPrincipals) {
+		for (GroupPrincipalImpl groupPrincipal : groupPrincipals) {
 			ids.add(groupPrincipal.getMemberPrincipalId());
 		}
 		
@@ -337,7 +335,7 @@ public class GroupServiceImpl implements GroupService {
 			return new ArrayList<KimGroupImpl>(0);
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("memberGroups.memberId", groupId);
+		criteria.put("memberGroups.memberGroupId", groupId);
 		criteria.put("active", "Y");
 		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
 	}
@@ -455,7 +453,7 @@ public class GroupServiceImpl implements GroupService {
 			return false;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("memberPrincipals.memberId", principalId);
+		criteria.put("memberPrincipals.memberPrincipalId", principalId);
 		criteria.put("groupId", groupId);
 		criteria.put("active", "Y");
 		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) != 0;
@@ -478,9 +476,9 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("groupId", groupId);
-		List<GroupAttribute> groupAttributes = (List<GroupAttribute>)getBusinessObjectService().findMatching(GroupAttributeDataImpl.class, criteria);
+		List<GroupAttributeDataImpl> groupAttributes = (List<GroupAttributeDataImpl>)getBusinessObjectService().findMatching(GroupAttributeDataImpl.class, criteria);
 		Map<String, String> attributes = new HashMap<String, String>( groupAttributes.size() );
-		for ( GroupAttribute attr : groupAttributes ) {
+		for ( GroupAttributeDataImpl attr : groupAttributes ) {
 			attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
 		}
 		return attributes;
@@ -546,7 +544,7 @@ public class GroupServiceImpl implements GroupService {
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", groupId);
-        criteria.put("memberId", principalId);
+        criteria.put("memberPrincipalId", principalId);
         Collection<GroupPrincipalImpl> groupPrincipalList = getBusinessObjectService().findMatching(GroupPrincipalImpl.class, criteria);
         
         if(groupPrincipalList.size() == 1) {
@@ -572,7 +570,7 @@ public class GroupServiceImpl implements GroupService {
         
         GroupGroupImpl groupGroup = new GroupGroupImpl();
         groupGroup.setGroupId(parentId);
-        groupGroup.setMemberId(childId);
+        groupGroup.setMemberGroupId(childId);
         
         getBusinessObjectService().save(groupGroup);
         
@@ -586,7 +584,7 @@ public class GroupServiceImpl implements GroupService {
     public boolean removeGroupFromGroup(String childId, String parentId) {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", parentId);
-        criteria.put("memberId", childId);
+        criteria.put("memberGroupId", childId);
         Collection<GroupGroupImpl> groupGroupList = getBusinessObjectService().findMatching(GroupGroupImpl.class, criteria);
         
         if(groupGroupList.size() == 1) {

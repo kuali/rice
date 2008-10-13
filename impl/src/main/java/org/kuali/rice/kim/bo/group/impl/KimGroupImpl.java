@@ -16,11 +16,9 @@
 package org.kuali.rice.kim.bo.group.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,10 +33,9 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.GroupGroup;
 import org.kuali.rice.kim.bo.group.GroupMember;
-import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -70,11 +67,11 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	@OneToMany(targetEntity=GroupGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupGroup> memberGroups;
+	protected List<GroupGroupImpl> memberGroups;
 
 	@OneToMany(targetEntity=GroupPrincipalImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupPrincipal> memberPrincipals;
+	protected List<GroupPrincipalImpl> memberPrincipals;
 
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
@@ -95,8 +92,8 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		return m;
 	}
 
-	public Map<String, String> getAttributes() {
-        Map<String, String> attributes = new HashMap<String, String>( groupAttributes.size() );
+	public AttributeSet getAttributes() {
+		AttributeSet attributes = new AttributeSet( groupAttributes.size() );
         for ( GroupAttributeDataImpl attr : groupAttributes ) {
             attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         }
@@ -143,19 +140,19 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		return m;
 	}
 
-	public List<GroupGroup> getMemberGroups() {
+	public List<GroupGroupImpl> getMemberGroups() {
 		return this.memberGroups;
 	}
 
-	public void setMemberGroups(List<GroupGroup> memberGroups) {
+	public void setMemberGroups(List<GroupGroupImpl> memberGroups) {
 		this.memberGroups = memberGroups;
 	}
 
-	public List<GroupPrincipal> getMemberPrincipals() {
+	public List<GroupPrincipalImpl> getMemberPrincipals() {
 		return this.memberPrincipals;
 	}
 
-	public void setMemberPrincipals(List<GroupPrincipal> memberPrincipals) {
+	public void setMemberPrincipals(List<GroupPrincipalImpl> memberPrincipals) {
 		this.memberPrincipals = memberPrincipals;
 	}
 
@@ -204,19 +201,19 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	/**
 	 * Just a shim until KEW is converted to use KimGroups
 	 * 
-	 * @see org.kuali.rice.kim.bo.group.KimGroup#setGroupUsers(java.util.List)
 	 */
+	@SuppressWarnings("unchecked")
 	public void setGroupUsers(List groupMembers) {
 		if (memberGroups == null) {
-			memberGroups = new ArrayList<GroupGroup>();
+			memberGroups = new ArrayList<GroupGroupImpl>();
 		}
 		if (memberPrincipals == null) {
-			memberPrincipals = new ArrayList<GroupPrincipal>();
+			memberPrincipals = new ArrayList<GroupPrincipalImpl>();
 		}
 		for (Iterator member = groupMembers.iterator(); member.hasNext();) {
 			UserDTO dto = (UserDTO) member.next();
 			GroupPrincipalImpl p = new GroupPrincipalImpl();
-			p.setMemberId(dto.getWorkflowId());
+			p.setMemberPrincipalId(dto.getWorkflowId());
 			p.setMemberPrincipalId(dto.getNetworkId());
 			memberPrincipals.add(p);
 		}	
@@ -226,7 +223,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		if (person == null) {
 			return false;
 		}
-		for (GroupPrincipal groupPrincipal : memberPrincipals) {
+		for (GroupPrincipalImpl groupPrincipal : memberPrincipals) {
 			if (groupPrincipal.getMemberPrincipalId().equals(person.getPrincipalId())) {
 				return true;
 			}

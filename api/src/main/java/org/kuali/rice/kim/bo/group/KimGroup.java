@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kim.bo.group;
 
-import java.util.Map;
-
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
@@ -28,15 +27,9 @@ import org.kuali.rice.kns.bo.Inactivateable;
 public interface KimGroup extends Inactivateable {
 
 	String getGroupId();
-	
 	String getGroupName();
-	
 	String getGroupDescription();
-	
 	String getKimTypeId();
-	
 	String getNamespaceCode();
-	
-	Map<String, String> getAttributes();
-	
+	AttributeSet getAttributes();
 }

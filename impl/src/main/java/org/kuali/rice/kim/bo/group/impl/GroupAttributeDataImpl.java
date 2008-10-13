@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo.group.impl;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.group.GroupAttribute;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
@@ -26,6 +25,6 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
  */
 @Entity
 @Table(name="KR_KIM_GROUP_ATTR_DATA_T")
-public class GroupAttributeDataImpl extends KimAttributeDataImpl implements GroupAttribute {
+public class GroupAttributeDataImpl extends KimAttributeDataImpl {
 	
 }

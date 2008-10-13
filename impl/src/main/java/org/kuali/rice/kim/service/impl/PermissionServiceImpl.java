@@ -25,8 +25,8 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.types.KimType;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -185,7 +185,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     protected String getPermissionTypeServiceName( String permissionId ) {
-    	KimType permType = getPermissionImpl( permissionId ).getTemplate().getKimType();
+    	KimTypeImpl permType = getPermissionImpl( permissionId ).getTemplate().getKimType();
     	if ( permType != null ) {
     		return permType.getKimTypeServiceName();
     	}

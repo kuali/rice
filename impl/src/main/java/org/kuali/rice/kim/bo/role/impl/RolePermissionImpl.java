@@ -26,7 +26,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.RolePermission;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -34,7 +33,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_ROLE_PERM_T")
-public class RolePermissionImpl extends PersistableBusinessObjectBase implements RolePermission {
+public class RolePermissionImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,23 +53,14 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 		return kimPermission;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RolePermission#getPermissionId()
-	 */
 	public String getPermissionId() {
 		return permissionId;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RolePermission#getRoleId()
-	 */
 	public String getRoleId() {
 		return roleId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.RolePermission#getRolePermissionId()
-	 */
 	public String getRolePermissionId() {
 		return rolePermissionId;
 	}

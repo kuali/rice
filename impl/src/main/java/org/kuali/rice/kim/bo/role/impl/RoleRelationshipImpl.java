@@ -22,7 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.RoleRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -33,7 +32,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_ROLE_REL_T")
-public class RoleRelationshipImpl extends PersistableBusinessObjectBase implements RoleRelationship {
+public class RoleRelationshipImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 

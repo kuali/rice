@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import java.math.BigDecimal;
-
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.util.KualiDecimal;
 

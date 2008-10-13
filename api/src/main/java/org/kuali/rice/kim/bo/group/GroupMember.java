@@ -25,16 +25,5 @@ package org.kuali.rice.kim.bo.group;
 public interface GroupMember {
 
 	String getGroupMemberId();
-	
 	String getGroupId();
-	
-	String getGroupMemberTypeCode();
-	Class<? extends GroupMember> getGroupMemberClass();
-	
-	/**
-	 * The unique identifier of the member from its respective table.
-	 * In the default implementation this will either be a principalId
-	 * or a groupId.
-	 */
-	String getMemberId();
 }

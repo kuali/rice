@@ -16,9 +16,9 @@
 package org.kuali.rice.kim.bo.group.dto;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -37,7 +37,7 @@ public class GroupInfo implements KimGroup, Serializable {
 	protected boolean active;
 	protected String kimTypeId;
 	protected String namespaceCode;
-	protected Map<String,String> attributes;
+	protected AttributeSet attributes;
 	
 	
 	public String getGroupDescription() {
@@ -60,7 +60,7 @@ public class GroupInfo implements KimGroup, Serializable {
 		return this.namespaceCode;
 	}
 
-	public Map<String, String> getAttributes() {
+	public AttributeSet getAttributes() {
 		return this.attributes;
 	}
 	
@@ -84,7 +84,7 @@ public class GroupInfo implements KimGroup, Serializable {
 		this.namespaceCode = namespaceCode;
 	}
 
-	public void setAttributes(Map<String, String> attributes) {
+	public void setAttributes(AttributeSet attributes) {
 		this.attributes = attributes;
 	}
 	

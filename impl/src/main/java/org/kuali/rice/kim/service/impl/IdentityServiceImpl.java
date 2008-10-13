@@ -11,7 +11,7 @@ import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.NamePrincipalName;
-import org.kuali.rice.kim.bo.entity.NamePrincipalNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.NamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;

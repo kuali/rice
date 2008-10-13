@@ -29,7 +29,6 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -153,7 +152,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public AttributeSet getDetails() {
 		AttributeSet m = new AttributeSet();
-		for ( KimAttributeData data : getDetailObjects() ) {
+		for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
 			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 		}
 		return m;

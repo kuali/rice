@@ -38,8 +38,8 @@ public interface KimAttributeData {
 	String getKimTypeId();
 	String getKimAttributeId();
 	
-	KimAttribute getKimAttribute();
-	KimType getKimType();
+//	KimAttribute getKimAttribute();
+//	KimType getKimType();
 	
 	String getAttributeValue();
 }

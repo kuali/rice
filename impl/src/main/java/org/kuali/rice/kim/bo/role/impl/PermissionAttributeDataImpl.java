@@ -18,13 +18,12 @@ package org.kuali.rice.kim.bo.role.impl;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.PermissionAttributeData;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ROLE_PERM_ATTR_DATA_T")
-public class PermissionAttributeDataImpl extends KimAttributeDataImpl implements PermissionAttributeData {
+@Table(name="KR_KIM_PERM_ATTR_DATA_T")
+public class PermissionAttributeDataImpl extends KimAttributeDataImpl {
 }

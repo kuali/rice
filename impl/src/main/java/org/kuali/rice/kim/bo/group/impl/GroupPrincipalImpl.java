@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.kim.bo.group.impl;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kim.bo.group.GroupPrincipal;
 
 /**
@@ -32,31 +29,17 @@ import org.kuali.rice.kim.bo.group.GroupPrincipal;
  */
 @Entity
 @Table(name="KR_KIM_GROUP_PRINCIPAL_T")
-@AttributeOverrides({
-	@AttributeOverride(name="memberId",column=@Column(name="PRNCPL_ID"))
-})
 public class GroupPrincipalImpl extends GroupMemberBase implements GroupPrincipal {
 
+	@Column(name="PRNCPL_ID")
+	protected String memberPrincipalId;
+
 	public String getMemberPrincipalId() {
-		return getMemberId();
+		return this.memberPrincipalId;
+	}
+
+	public void setMemberPrincipalId(String memberPrincipalId) {
+		this.memberPrincipalId = memberPrincipalId;
 	}
 	
-	public void setMemberPrincipalId( String principalId ) {
-		setMemberId( principalId );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.group.GroupMember#getGroupMemberClass()
-	 */
-	public Class<? extends GroupMember> getGroupMemberClass() {
-		return this.getClass();
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.group.GroupMember#getGroupMemberTypeCode()
-	 */
-	public String getGroupMemberTypeCode() {
-		return getClass().getSimpleName();
-	}
-
 }

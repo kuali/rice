@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 
@@ -27,8 +28,15 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimPermission extends Inactivateable, PermissionDetails {
+public interface KimPermission extends Inactivateable {
 
+	String getPermissionId();
+	
+	/** List of details for this role/permission relationship.  See the class comment for more information. */
+	AttributeSet getDetails();
+	
+	public boolean hasDetails();
+	
 	String getName();
 
 	/** Verbose description of the Permission and functionally what permissions it implies. */

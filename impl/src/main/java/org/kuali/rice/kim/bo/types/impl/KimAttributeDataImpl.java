@@ -27,7 +27,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.types.KimAttribute;
 import org.kuali.rice.kim.bo.types.KimAttributeData;
-import org.kuali.rice.kim.bo.types.KimType;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -61,7 +60,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	
 	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
-	protected KimType kimType;
+	protected KimTypeImpl kimType;
 	
 	public String getAttributeDataId() {
 		return this.attributeDataId;
@@ -99,10 +98,10 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	public void setKimAttribute(KimAttribute kimAttribute) {
 		this.kimAttribute = kimAttribute;
 	}
-	public KimType getKimType() {
+	public KimTypeImpl getKimType() {
 		return this.kimType;
 	}
-	public void setKimType(KimType kimType) {
+	public void setKimType(KimTypeImpl kimType) {
 		this.kimType = kimType;
 	}
 

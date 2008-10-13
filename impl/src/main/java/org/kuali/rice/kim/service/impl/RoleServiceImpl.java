@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.RoleRelationship;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -507,9 +506,9 @@ public class RoleServiceImpl implements RoleService {
 		if ( role == null ) {
 			return;
 		}
-		List<RoleRelationship> roleRoles = role.getAssignedRoles();
+		List<RoleRelationshipImpl> roleRoles = role.getAssignedRoles();
 
-		for (RoleRelationship roleRole : roleRoles) {
+		for (RoleRelationshipImpl roleRole : roleRoles) {
 			KimRoleImpl containedRole = getRoleImpl(roleRole.getContainedRoleId());
 			// if we've already seen that role (or it's not active), don't recurse into it
 			if ( !containedRole.isActive() && !roles.contains( containedRole ) ) {
@@ -539,8 +538,8 @@ public class RoleServiceImpl implements RoleService {
 		// search role relationships where the given role is the child
 		AttributeSet criteria = new AttributeSet();
 		criteria.put( "containedRoleId", roleId );
-		Collection<RoleRelationship> rels = getBusinessObjectService().findMatching(RoleRelationshipImpl.class, criteria);
-		for ( RoleRelationship rel : rels ) {
+		Collection<RoleRelationshipImpl> rels = getBusinessObjectService().findMatching(RoleRelationshipImpl.class, criteria);
+		for ( RoleRelationshipImpl rel : rels ) {
 			if ( !roles.contains(rel.getRoleId()) ) {
 				if ( isRoleActive( rel.getRoleId() ) ) { 
 					roles.add( rel.getRoleId() );

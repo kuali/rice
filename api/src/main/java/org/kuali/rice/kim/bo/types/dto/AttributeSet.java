@@ -30,6 +30,15 @@ public class AttributeSet extends HashMap<String,String> {
 		super();
 	}
 	
+	/**
+	 * @see HashMap#HashMap(int)
+	 * 
+	 * @param initialSize
+	 */
+	public AttributeSet( int initialSize ) {
+		super( initialSize );
+	}
+	
 	public AttributeSet( Map<String,String> map ) {
 		super( map );
 	}

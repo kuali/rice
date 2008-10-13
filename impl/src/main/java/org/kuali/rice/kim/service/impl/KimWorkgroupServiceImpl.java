@@ -40,8 +40,6 @@ import org.kuali.rice.kew.workgroup.WorkgroupCapabilities;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.xml.WorkgroupXmlHandler;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.GroupGroup;
-import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
@@ -223,6 +221,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#save(org.kuali.rice.kew.workgroup.Workgroup)
 	 */
+	@SuppressWarnings("unchecked")
 	public void save(Workgroup workgroup) {
 		KimGroupImpl group = new KimGroupImpl();
 		if (workgroup.getWorkflowGroupId() != null && !workgroup.getWorkflowGroupId().isEmpty()) {
@@ -234,19 +233,19 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		group.setKimTypeId(workgroup.getWorkgroupType());
 		group.setActive(true);
 
-		group.setMemberPrincipals(new ArrayList<GroupPrincipal>());
-		group.setMemberGroups(new ArrayList<GroupGroup>());
+		group.setMemberPrincipals(new ArrayList<GroupPrincipalImpl>());
+		group.setMemberGroups(new ArrayList<GroupGroupImpl>());
 		for (Iterator iterator = workgroup.getMembers().iterator(); iterator.hasNext();) {
 			Recipient recipient = (Recipient) iterator.next();
 			if (recipient instanceof WorkflowUser) {
 				WorkflowUser user = (WorkflowUser)recipient;
 				GroupPrincipalImpl principal = new GroupPrincipalImpl();
-				principal.setMemberId(user.getWorkflowId());
+				principal.setMemberPrincipalId(user.getWorkflowId());
 				group.getMemberPrincipals().add(principal);
 			} else if (recipient instanceof Workgroup) {
 				Workgroup groupMember = (Workgroup)recipient;
 				GroupGroupImpl groupGroup = new GroupGroupImpl();
-				groupGroup.setMemberId("" + groupMember.getWorkflowGroupId().getGroupId());
+				groupGroup.setMemberGroupId("" + groupMember.getWorkflowGroupId().getGroupId());
 				group.getMemberGroups().add(groupGroup);
 			}
 		}
@@ -257,6 +256,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, boolean)
 	 */
+	@SuppressWarnings("unchecked")
 	public List search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards) {
 		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}
@@ -264,6 +264,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, org.kuali.rice.kew.user.WorkflowUser)
 	 */
+	@SuppressWarnings("unchecked")
 	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException {
 		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}

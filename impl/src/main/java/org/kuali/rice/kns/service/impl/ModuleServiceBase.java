@@ -33,10 +33,12 @@ import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
+import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -54,8 +56,9 @@ public class ModuleServiceBase implements ModuleService {
 	protected static final Logger LOG = Logger.getLogger(ModuleServiceBase.class);
 	
 	protected ModuleConfiguration moduleConfiguration;
-	private BusinessObjectService businessObjectService;
-	private BusinessObjectDictionaryService businessObjectDictionaryService;
+	protected BusinessObjectService businessObjectService;
+	protected LookupService lookupService;
+	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected KualiModuleService kualiModuleService;
 	
 	/***
@@ -130,8 +133,20 @@ public class ModuleServiceBase implements ModuleService {
 	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
 		Class<? extends ExternalizableBusinessObject> implementationClass = getExternalizableBusinessObjectImplementation(externalizableBusinessObjectClass);
-		return (List<T>)
-			getBusinessObjectService().findMatching(implementationClass, fieldValues);
+		return (List<T>) getBusinessObjectService().findMatching(implementationClass, fieldValues);
+	}
+
+	/***
+	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
+	 */
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
+			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
+		Class<? extends ExternalizableBusinessObject> implementationClass = getExternalizableBusinessObjectImplementation(externalizableBusinessObjectClass);
+		if (isExternalizableBusinessObjectLookupable(implementationClass)) {
+		    return (List<T>) getLookupService().findCollectionBySearchHelper(implementationClass, fieldValues, unbounded);
+		} else {
+		   throw new KualiException("External business object is not lookupable: "+implementationClass);
+		}
 	}
 
 	public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass){
@@ -388,6 +403,14 @@ public class ModuleServiceBase implements ModuleService {
 		return businessObjectService;
 	}
 	
+    /**
+     * Gets the lookupService attribute.
+     * @return Returns the lookupService.
+     */
+    protected LookupService getLookupService() {
+        return lookupService != null ? lookupService : KNSServiceLocator.getLookupService();
+    }
+
 	/**
 	 * @return the kualiModuleService
 	 */

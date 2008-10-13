@@ -15,20 +15,10 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.bo.BusinessObject;
 
-/**
- * Implementations of this interface are able to serialize documents into XML that's used by the workflow engine to perform routing, searches,
- * etc.
- *
- */
-public interface DocumentSerializerService extends SerializerService  {
-    /**
-     * Serializes a document into XML for the workflow engine
-     * 
-     * @param document the document
-     * @return a XML representation of the document
-     */
-    public String serializeDocumentToXmlForRouting(Document document);
+public interface BusinessObjectSerializerService {
     
+    public String serializeBusinessObjectToXml(BusinessObject businessObject);
+
 }

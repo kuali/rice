@@ -53,8 +53,9 @@ public class PropertySerializerTrie {
      * That is, primitives of "document" and "document.a" will not be serialized unless those property strings are registered.
      * 
      * @param propertyName
+     * @param setPropertySerializabilityToObjectAndAllPrimitivesForAll
      */
-    public void addSerializablePropertyName(String propertyName) {
+    public void addSerializablePropertyName(String propertyName, boolean setPropertySerializabilityToObjectAndAllPrimitivesForAll) {
         if (propertyName == null) {
             throw new IllegalArgumentException("Null attribute name specified");
         }
@@ -64,6 +65,9 @@ public class PropertySerializerTrie {
         else {
             StringTokenizer tok = new StringTokenizer(propertyName, PROPERTY_NAME_COMPONENT_SEPARATOR, false);
             StringBuilder buf = new StringBuilder();
+
+            if(setPropertySerializabilityToObjectAndAllPrimitivesForAll)
+            	rootNode.setPropertySerializabilityToObjectAndAllPrimitives();
 
             PropertySerializerTrieNode currentNode = rootNode;
             while (tok.hasMoreTokens()) {
@@ -83,6 +87,8 @@ public class PropertySerializerTrie {
                     buf.append(PROPERTY_NAME_COMPONENT_SEPARATOR);
                 }
                 currentNode = childNode;
+                if(setPropertySerializabilityToObjectAndAllPrimitivesForAll)
+                	currentNode.setPropertySerializabilityToObjectAndAllPrimitives();
             }
             
             currentNode.setPropertySerializabilityToObjectAndAllPrimitives();

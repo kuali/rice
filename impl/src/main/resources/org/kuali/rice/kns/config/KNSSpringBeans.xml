@@ -862,4 +862,14 @@
 			<ref bean="xmlObjectSerializerService"/>
 		</property>
 	</bean>
+
+	<bean id="businessObjectSerializerService" class="org.kuali.rice.kns.service.impl.BusinessObjectSerializerServiceImpl">
+		<property name="persistenceService">
+			<ref bean="persistenceService" />
+		</property>
+		<property name="xmlObjectSerializerService">
+			<ref bean="xmlObjectSerializerService"/>
+		</property>
+	</bean>	
+	
 </beans>

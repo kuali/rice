@@ -15,11 +15,9 @@
  */
 package org.kuali.rice.kns.util.documentserializer;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
@@ -27,7 +25,6 @@ import org.kuali.rice.kns.datadictionary.WorkflowProperty;
 import org.kuali.rice.kns.datadictionary.WorkflowPropertyGroup;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityMetadata.PropertySerializability;
 
 /**
  * This implementation of {@link PropertySerializabilityEvaluator} uses the &lt;workflowProperties&gt; defined within the data dictionary
@@ -39,8 +36,6 @@ import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityMetadat
  */
 public class BusinessObjectPropertySerializibilityEvaluator extends PropertySerializabilityEvaluatorBase implements PropertySerializabilityEvaluator {
 
-    private PropertySerializerTrie serializableProperties;
-    
     /**
      * Reads the data dictionary to determine which properties of the document should be serialized.
      * 
@@ -58,10 +53,10 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
             // the basepath of each workflow property group is serializable
             if (StringUtils.isEmpty(group.getBasePath())) {
                 // automatically serialize all primitives of document when the base path is null or empty string
-                serializableProperties.addSerializablePropertyName(document.getBasePathToDocumentDuringSerialization());
+                serializableProperties.addSerializablePropertyName(document.getBasePathToDocumentDuringSerialization(), false);
             }
             else {
-               serializableProperties.addSerializablePropertyName(group.getBasePath());
+               serializableProperties.addSerializablePropertyName(group.getBasePath(), false);
             }
             
             for (WorkflowProperty property : group.getWorkflowProperties()) {
@@ -72,96 +67,9 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
                 else {
                     fullPath = group.getBasePath() + "." + property.getPath(); 
                 }
-                serializableProperties.addSerializablePropertyName(fullPath);
+                serializableProperties.addSerializablePropertyName(fullPath, false);
             }
         }
     }
 
-    /**
-     * Returns whether a child property of a given containing object should be serialized, based on the metadata provided in the data dictionary.
-     * 
-     * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.kns.util.documentserializer.DocumentSerializationState, java.lang.Object, java.lang.String, java.lang.Object)
-     */
-    public boolean isPropertySerializable(DocumentSerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue) {
-        boolean allPropertiesMatched = true;
-        
-        PropertySerializabilityMetadata metadata = serializableProperties.getRootPropertySerializibilityMetadata();
-        int i = 0;
-        for (; i < state.numPropertyElements(); i++) {
-            String nextPropertyName = state.getElementName(i);
-            PropertySerializabilityMetadata nextMetadata = metadata.getSerializableChildProperty(nextPropertyName);
-            
-            if (nextMetadata == null) {
-                allPropertiesMatched = false;
-                break;
-            }
-            else {
-                // we've found the child... continue searching deeper
-                metadata = nextMetadata;
-            }
-        }
-        
-        if (allPropertiesMatched) {
-            // complete match, so we determine if the child property is serializable
-            return evaluateCompleteMatch(state, containingObject, metadata, childPropertyName, childPropertyValue);
-        }
-        else {
-            // we have a partial match, so we have a different algorithm to determine serializibility
-            // partial matches can occur for primitives that contains nested primitives.  For example, if we have a member field named
-            // "amount" of type KualiDecimal, then the XML will have to look something like <amount><value>100.00</value></amount>.
-            // It is likely that "value" isn't specified in the serializability path, so we need to make inferences about whether "value" is 
-            // serializable
-            return evaluatePartialMatch(state, i, containingObject, metadata, childPropertyName, childPropertyValue);
-        }
-    }
-    
-    /**
-     * Evaluates whether a property is serializable when all properties in the serialization state have been matched up with the properties
-     * defined in the data dictionary.
-     * 
-     * @param state
-     * @param containingObject
-     * @param metadata
-     * @param childPropertyName
-     * @param childPropertyValue
-     * @return whether the child property is serializable
-     */
-    protected boolean evaluateCompleteMatch(DocumentSerializationState state, Object containingObject, PropertySerializabilityMetadata metadata, String childPropertyName, Object childPropertyValue) {
-        if (metadata.getPropertySerializability().equals(PropertySerializability.SERIALIZE_OBJECT_AND_ALL_PRIMITIVES)) {
-            if (isPrimitiveObject(childPropertyValue)) {
-                return true;
-            }
-        }
-        return metadata.getSerializableChildProperty(childPropertyName) != null;
-    }
-    
-    /**
-     * Evaluates whether a property is serializable when only some of the properties in the serialization state have been matched up with the 
-     * serializable properties specified in the data dictionary.  This often occurs when we determine whether to serialize a primitive of a serialized primitive
-     * 
-     * @param state
-     * @param lastMatchedStateIndex the index of the state parameter that represents the last matched property
-     * @param containingObject the object containing the child property
-     * @param metadata metadata of the last matched property
-     * @param childPropertyName the name of the child property that we are going to determine whether it is serializable
-     * @param childPropertyValue the value of the child property that we are going to determine whether it is serializable
-     * @return whether the child property is serializable
-     */
-    protected boolean evaluatePartialMatch(DocumentSerializationState state, int lastMatchedStateIndex, Object containingObject, PropertySerializabilityMetadata metadata, String childPropertyName, Object childPropertyValue) {
-        
-        if (metadata.getPropertySerializability().equals(PropertySerializability.SERIALIZE_OBJECT_AND_ALL_PRIMITIVES)) {
-            return isPrimitiveObject(childPropertyValue);
-        }
-        return false;
-    }
-    
-    /**
-     * Whether the object represents a primitive
-     * 
-     * @param object
-     * @return
-     */
-    protected boolean isPrimitiveObject(Object object) {
-        return PropertyType.PRIMITIVE.equals(determinePropertyType(object));
-    }
 }

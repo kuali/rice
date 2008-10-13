@@ -80,7 +80,7 @@ public interface ModuleService extends InitializingBean {
 
 	/**
 	 * 
-	 * This method returns the list of primary keys for the EBO
+	 * This method returns the list of primary keys for the EBO.
 	 * 
 	 * @param businessObjectInterfaceClass
 	 * @return
@@ -89,7 +89,7 @@ public interface ModuleService extends InitializingBean {
 	
 	/**
 	 * 
-	 * This method gets the business object dictionary entry for the passed in externalizable business object class
+	 * This method gets the business object dictionary entry for the passed in externalizable business object class.
 	 * 
 	 * @param businessObjectInterfaceClass
 	 * @return
@@ -108,17 +108,31 @@ public interface ModuleService extends InitializingBean {
 
 	/**
 	 * 
-	 * This method gets the list of externalizable business objects, given its type and a map of primary keys and values
+	 * This method gets the list of externalizable business objects, given its type and a map of primary keys and values.
 	 * 
 	 * @param businessObjectInterfaceClass
 	 * @param fieldValues
 	 * @return
 	 */
-	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(Class<T> businessObjectClass, Map<String, Object> fieldValues);
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
+			Class<T> businessObjectClass, Map<String, Object> fieldValues);
+	
+	/**
+	 * 
+	 * This method gets the list of externalizable business objects for lookup, given its type and a map of primary keys and values.
+	 * 
+	 * @param <T>
+	 * @param businessObjectClass
+	 * @param fieldValues
+	 * @param unbounded
+	 * @return
+	 */
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
+			Class<T> businessObjectClass, Map<String, Object> fieldValues, boolean unbounded);
 	
 	/**
 	 * This method returns a URL so that the inquiry framework may redirect a user to the appropriate (possibly external) website 
-	 * at which to view inquiry information
+	 * at which to view inquiry information.
 	 * 
 	 * @param inquiryBusinessObjectClass a {@link ExternalizableBusinessObject} managed by this module
 	 * @param parameters any inquiry parameters, and the primary key values of the inquiryBusinessObjectClass would be in here
@@ -128,7 +142,7 @@ public interface ModuleService extends InitializingBean {
 
 	/**
 	 * 
-	 * This method gets the lookup url for the given externalizable business object properties
+	 * This method gets the lookup url for the given externalizable business object properties.
 	 * 
 	 * @param parameters
 	 * @return
@@ -138,7 +152,7 @@ public interface ModuleService extends InitializingBean {
 	/**
 	 * 
 	 * This method retrieves the externalizable business object, if it is not already populated 
-	 * with the matching primary key values
+	 * with the matching primary key values.
 	 * 
 	 * @param businessObject
 	 * @param currentInstanceExternalizableBO
@@ -152,7 +166,7 @@ public interface ModuleService extends InitializingBean {
 	 * 
 	 * This method retrieves a list of externalizable business objects given a business object, 
 	 * name of the relationship between the business object and the externalizable business object, and
-	 * the externalizable business object class  
+	 * the externalizable business object class.  
 	 * 
 	 * @param businessObject
 	 * @param externalizableRelationshipName
@@ -171,10 +185,23 @@ public interface ModuleService extends InitializingBean {
 	 */
 	public boolean isExternalizable(Class boClass);
 	
+	/**
+	 * @param boClass
+	 * @return
+	 */
 	public boolean isExternalizableBusinessObjectLookupable(Class boClass);
 	
+	/**
+	 * @param boClass
+	 * @return
+	 */
 	public boolean isExternalizableBusinessObjectInquirable(Class boClass);
 	
+	/**
+	 * @param <T>
+	 * @param boClass
+	 * @return
+	 */
 	public <T extends ExternalizableBusinessObject> T createNewObjectFromExternalizableClass(Class<T> boClass);
 	
 	/**

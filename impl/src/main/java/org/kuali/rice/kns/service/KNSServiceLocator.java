@@ -421,4 +421,11 @@ public class KNSServiceLocator<T extends Object> {
     public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
+    
+    public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
+    
+    public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
+        return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
+    }
+
 }

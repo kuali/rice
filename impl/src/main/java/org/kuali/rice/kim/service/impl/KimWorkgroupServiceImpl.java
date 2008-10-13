@@ -251,6 +251,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			}
 		}
 		KNSServiceLocator.getBusinessObjectService().save(group);
+		workgroup.setWorkflowGroupId(new WorkflowGroupId(new Long(group.getGroupId())));
 	}
 
 	/**

@@ -47,6 +47,6 @@ public interface KimAttributesTranslator {
      * 
      * Note that this method should not change the passed in AttributeSet.
      */
-    AttributeSet convertAttributes( AttributeSet attributes );
+    AttributeSet translateAttributes( final AttributeSet attributes );
 
 }

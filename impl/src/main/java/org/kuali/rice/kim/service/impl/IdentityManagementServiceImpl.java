@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -46,6 +47,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     public boolean isAuthorized(String principalId,
     		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	return getPermissionService().isAuthorized( principalId, permissionName, permissionDetails, qualification );
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public List<? extends KimPermission> getAuthorizedPermissions(String principalId,
+    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+    	return getPermissionService().getAuthorizedPermissions( principalId, permissionName, permissionDetails, qualification );
     }
     
     // GROUP SERVICE

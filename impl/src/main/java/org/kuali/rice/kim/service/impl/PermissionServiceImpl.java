@@ -70,6 +70,9 @@ public class PermissionServiceImpl implements PermissionService {
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
+    public List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	throw new UnsupportedOperationException();
+    }
     /**
      * Compare each of the passed in permissions with the given permissionDetails.  Those that
      * match are added to the result list.

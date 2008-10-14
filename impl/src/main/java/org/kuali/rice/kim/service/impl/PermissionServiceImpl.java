@@ -70,8 +70,28 @@ public class PermissionServiceImpl implements PermissionService {
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
+    /**
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
     public List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	throw new UnsupportedOperationException();
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
+    	// now, filter the full list by the detail passed
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	ArrayList<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>();
+    	List<KimPermissionImpl> tempList = new ArrayList<KimPermissionImpl>(1);
+    	for ( KimPermissionImpl perm : applicablePermissions ) {
+    		tempList.clear();
+    		tempList.add( perm );
+    		List<String> roleIds = permissionDao.getRoleIdsForPermissions( permissions );
+    		if ( roleIds != null && !roleIds.isEmpty() ) {
+    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
+    				results.add( perm.toSimpleInfo() );
+    			}
+    		}
+    	}
+    	
+    	return results;
     }
     /**
      * Compare each of the passed in permissions with the given permissionDetails.  Those that

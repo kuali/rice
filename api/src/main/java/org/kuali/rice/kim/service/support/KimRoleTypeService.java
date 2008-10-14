@@ -45,11 +45,11 @@ public interface KimRoleTypeService extends KimTypeService {
      * the KFS organization hierarchy, so an implementation of this sort must be done by
      * a service which lives within KFS and will be called remotely by KIM.
      */
-    boolean doesRoleQualifierMatchQualification( AttributeSet qualification, AttributeSet roleQualifier );
+    boolean doesRoleQualifierMatchQualification( final AttributeSet qualification, final AttributeSet roleQualifier );
 
     /** Same as {@link #doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
      */
-    boolean doRoleQualifiersMatchQualification( AttributeSet qualification, List<AttributeSet> roleQualifierList );
+    boolean doRoleQualifiersMatchQualification( final AttributeSet qualification, final List<AttributeSet> roleQualifierList );
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
@@ -68,12 +68,12 @@ public interface KimRoleTypeService extends KimTypeService {
      * 
      * @see #isApplicationRoleType()
      */
-    List<String> getPrincipalIdsFromApplicationRole( String roleName, AttributeSet qualification );
+    List<String> getPrincipalIdsFromApplicationRole( String roleName, final AttributeSet qualification );
 
     /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
-    List<AttributeSet> getAllImpliedQualifications( AttributeSet qualification );
+    List<AttributeSet> getAllImpliedQualifications( final AttributeSet qualification );
 
     /**
      * This method would return all qualifications that imply this qualification. (up)
@@ -83,7 +83,7 @@ public interface KimRoleTypeService extends KimTypeService {
      * Allowed?
      * Granting?
      */
-    List<AttributeSet> getAllImplyingQualifications( AttributeSet qualification );
+    List<AttributeSet> getAllImplyingQualifications( final AttributeSet qualification );
     // TODO: need list versions of the implyed/ing methods?
     
     /** 
@@ -104,6 +104,6 @@ public interface KimRoleTypeService extends KimTypeService {
      * if this role was based on the campus and the role assigned to it was based 
      * on organization.
      */
-    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
+    AttributeSet convertQualificationAttributesToRequired( final AttributeSet qualificationAttributes );
     
 }

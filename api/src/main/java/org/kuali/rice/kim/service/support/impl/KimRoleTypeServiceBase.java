@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
@@ -35,14 +36,27 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	
 	protected List<String> acceptedQualificationAttributeNames; 
 	
+	protected List<KimAttributesTranslator> kimAttributesTranslators;
+
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 * 
 	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)
 	 */
-	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
-		
+	public boolean doesRoleQualifierMatchQualification(final AttributeSet qualification, final AttributeSet roleQualifier) {
+		return performRoleQualifierQualificationMatch(translateQualificationAttributeSet(qualification), roleQualifier);
+	}
+	
+	/**
+	 * 
+	 * This method ...
+	 * 
+	 * @param qualification
+	 * @param roleQualifier
+	 * @return
+	 */
+	protected boolean performRoleQualifierQualificationMatch(final AttributeSet qualification, final AttributeSet roleQualifier) {
 		for ( Map.Entry<String, String> entry : roleQualifier.entrySet() ) {
 			if ( !qualification.containsKey(entry.getKey() ) ) {
 				return false;
@@ -54,21 +68,46 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 		return true;
 	}
 	
+	protected AttributeSet translateQualificationAttributeSet(final AttributeSet qualification){
+		AttributeSet translatedQualification = new AttributeSet();
+		translatedQualification.putAll(qualification);
+		List<String> attributeNames;
+		for(KimAttributesTranslator translator: kimAttributesTranslators){
+			attributeNames = new ArrayList<String>();
+			attributeNames.addAll(translatedQualification.keySet());
+			if(translator.supportsTranslationOfAttributes(attributeNames)){
+				translatedQualification = translator.translateAttributes(translatedQualification);
+			}
+		}
+		return translatedQualification;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
-	public boolean doRoleQualifiersMatchQualification(
-			AttributeSet qualification,
-			List<AttributeSet> roleQualifierList) {
+	public boolean doRoleQualifiersMatchQualification(final AttributeSet qualification, final List<AttributeSet> roleQualifierList) {
+		return performRoleQualifiersQualificationMatch(translateQualificationAttributeSet(qualification), roleQualifierList);
+	}
+
+	/**
+	 * 
+	 * This method ...
+	 * 
+	 * @param qualification
+	 * @param roleQualifierList
+	 * @return
+	 */
+	protected boolean performRoleQualifiersQualificationMatch(final AttributeSet qualification,
+			final List<AttributeSet> roleQualifierList){
 		for ( AttributeSet roleQualifier : roleQualifierList ) {
 			// if one matches, return true
-			if ( doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+			if ( performRoleQualifierQualificationMatch(qualification, roleQualifier) ) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return an empty list since this method should not be called by the role service for this service type.
 	 * Subclasses which are application role types should override this method.
@@ -105,7 +144,7 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
-	public AttributeSet validateAttributes(AttributeSet attributes) {
+	public AttributeSet validateAttributes(final AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
 		// call the individual field validators
 		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
@@ -201,4 +240,20 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	public String getLookupUrl(String attributeName) {
 		return null;
 	}
+	
+	/**
+	 * @return the kimAttributesTranslators
+	 */
+	public List<KimAttributesTranslator> getKimAttributesTranslators() {
+		return this.kimAttributesTranslators;
+	}
+
+	/**
+	 * @param kimAttributesTranslators the kimAttributesTranslators to set
+	 */
+	public void setKimAttributesTranslators(
+			List<KimAttributesTranslator> kimAttributesTranslators) {
+		this.kimAttributesTranslators = kimAttributesTranslators;
+	}
+
 }

@@ -75,6 +75,8 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     protected Class<? extends BusinessObject> overrideLookupClass;
     protected String overrideFieldConversions;
     
+    private AttributeSecurity attributeSecurity;
+    
     public MaintainableFieldDefinition() {}
 
     /**
@@ -242,6 +244,9 @@ required is true if the field must contain a non-null value
                 throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + "" + ")");
             }
         }
+        if(attributeSecurity != null){
+        	attributeSecurity.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
+        }
         
     }
 
@@ -360,4 +365,18 @@ The defaultValueFinderClass specifies the java class that will be
       public void setLookupReadOnly(boolean lookupReadOnly) {
     	  this.lookupReadOnly = lookupReadOnly;
       }
+
+	/**
+	 * @return the attributeSecurity
+	 */
+	public AttributeSecurity getAttributeSecurity() {
+		return this.attributeSecurity;
+	}
+
+	/**
+	 * @param attributeSecurity the attributeSecurity to set
+	 */
+	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+		this.attributeSecurity = attributeSecurity;
+	}
 }

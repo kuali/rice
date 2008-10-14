@@ -60,6 +60,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
 
     protected Class<? extends Formatter> formatterClass;
 
+    protected AttributeSecurity attributeSecurity;
+
     public AttributeDefinition() {}
 
 
@@ -464,6 +466,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
             if (isRequired() == null) {
                 setRequired(Boolean.FALSE);
             }
+            if(attributeSecurity != null){
+            	attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
+            }
         } catch ( RuntimeException ex ) {
             LogFactory.getLog(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );
             throw ex;
@@ -497,4 +502,20 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     public void setDisplayLabelAttribute(String displayLabelAttribute) {
         this.displayLabelAttribute = displayLabelAttribute;
     }
+
+
+	/**
+	 * @return the attributeSecurity
+	 */
+	public AttributeSecurity getAttributeSecurity() {
+		return this.attributeSecurity;
+	}
+
+
+	/**
+	 * @param attributeSecurity the attributeSecurity to set
+	 */
+	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+		this.attributeSecurity = attributeSecurity;
+	}
 }

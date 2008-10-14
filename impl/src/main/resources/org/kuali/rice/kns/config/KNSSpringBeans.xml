@@ -813,7 +813,8 @@
 			<ref bean="persistenceStructureService" />
 		</property>
 	</bean>
-	
+	<bean id="kimPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
+		
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->

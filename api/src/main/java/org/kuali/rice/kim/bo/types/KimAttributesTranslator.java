@@ -44,6 +44,8 @@ public interface KimAttributesTranslator {
     
     /**
      * Perform the conversion of the given attributes.
+     * 
+     * Note that this method should not change the passed in AttributeSet.
      */
     AttributeSet convertAttributes( AttributeSet attributes );
 

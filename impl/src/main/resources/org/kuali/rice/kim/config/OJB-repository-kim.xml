@@ -136,6 +136,9 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <collection-descriptor name="attributeDefinitions" element-class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="kimTypeId" />
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.types.impl.KimAttributeImpl" table="KR_KIM_ATTRIBUTE_T">
@@ -146,6 +149,17 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
   </class-descriptor>
          
+  <class-descriptor class="org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl" table="KR_KIM_TYPE_ATTRIBUTE_T">
+    <field-descriptor name="kimTypeAttributeId" column="KIM_TYPE_ATTRIB_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="kimTypeId" column="KIM_TYPE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="kimAttributeId" column="KIM_ATTRIB_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.bo.types.impl.KimAttributeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="kimAttributeId" />
+    </reference-descriptor>    
+  </class-descriptor>
 
   <!-- ******************************************************************* -->
   <!-- Principal Tables -->

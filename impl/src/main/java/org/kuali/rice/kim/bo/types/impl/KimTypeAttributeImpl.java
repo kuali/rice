@@ -26,8 +26,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.types.KimAttribute;
-import org.kuali.rice.kim.bo.types.KimTypeAttribute;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -35,7 +33,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_TYPE_ATTRIBUTE_T")
-public class KimTypeAttributeImpl extends PersistableBusinessObjectBase implements KimTypeAttribute {
+public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,32 +49,20 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase implemen
 	
 	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
-	protected KimAttribute kimAttribute;
+	protected KimAttributeImpl kimAttribute;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimTypeAttribute#getKimAttribute()
-	 */
-	public KimAttribute getKimAttribute() {
+	public KimAttributeImpl getKimAttribute() {
 		return kimAttribute;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimTypeAttribute#getKimAttributeId()
-	 */
 	public String getKimAttributeId() {
 		return kimAttributeId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimTypeAttribute#getKimTypeAttributeId()
-	 */
 	public String getKimTypeAttributeId() {
 		return kimTypeAttributeId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimTypeAttribute#getKimTypeId()
-	 */
 	public String getKimTypeId() {
 		return kimTypeId;
 	}

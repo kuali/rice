@@ -27,8 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.types.KimType;
-import org.kuali.rice.kim.bo.types.KimTypeAttribute;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -36,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_TYPE_T")
-public class KimTypeImpl extends PersistableBusinessObjectBase implements KimType {
+public class KimTypeImpl extends PersistableBusinessObjectBase {
 
 	@Id
 	@Column(name="KIM_TYPE_ID")
@@ -50,37 +48,25 @@ public class KimTypeImpl extends PersistableBusinessObjectBase implements KimTyp
 	
 	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYPE_ID", insertable=false, updatable=false)
-	protected List<KimTypeAttribute> attributeDefinitions;
+	protected List<KimTypeAttributeImpl> attributeDefinitions;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getAttributeDefinitions()
-	 */
-	public List<KimTypeAttribute> getAttributeDefinitions() {
+	public List<KimTypeAttributeImpl> getAttributeDefinitions() {
 		return attributeDefinitions;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getKimTypeId()
-	 */
 	public String getKimTypeId() {
 		return kimTypeId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getKimTypeServiceName()
-	 */
 	public String getKimTypeServiceName() {
 		return kimTypeServiceName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimType#getName()
-	 */
 	public String getName() {
 		return name;
 	}
 
-	public void setAttributeDefinitions(List<KimTypeAttribute> attributeDefinitions) {
+	public void setAttributeDefinitions(List<KimTypeAttributeImpl> attributeDefinitions) {
 		this.attributeDefinitions = attributeDefinitions;
 	}
 

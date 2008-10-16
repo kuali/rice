@@ -170,9 +170,6 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     @Transient
     private boolean routingReport = false;
 
-    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
-    private String dtype = "DocumentRouteHeaderValue";
-
     private static final boolean FINAL_STATE = true;
     protected static final HashMap<String,String> legalActions;
     protected static final HashMap<String,String> stateTransitionMap;
@@ -908,13 +905,4 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             .append("appDocId", appDocId)
             .toString();
 	}
-
-	public String getDtype() {
-		return this.dtype;
-	}
-
-	public void setDtype(String dtype) {
-		this.dtype = dtype;
-	}
-
 }

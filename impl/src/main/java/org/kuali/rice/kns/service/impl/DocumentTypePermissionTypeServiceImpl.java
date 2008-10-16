@@ -60,15 +60,18 @@ public class DocumentTypePermissionTypeServiceImpl implements
 			AttributeSet permissionDetails) {
 		if (!requestedDetails.containsKey(KNSConstants.DOCUMENT_TYPE_NAME)
 				|| !permissionDetails
-						.containsKey(KNSConstants.DOCUMENT_TYPE_NAME))
+						.containsKey(KNSConstants.DOCUMENT_TYPE_NAME)){
 			throw new RuntimeException("documemt type name is blank or null");
+		}else if(requestedDetails.get(KNSConstants.DOCUMENT_TYPE_NAME).equals("*")){
+			return true;
+		}
 		DocumentType currentDocType = KEWServiceLocator
-				.getDocumentTypeService().findByName(
-						requestedDetails.get(KNSConstants.DOCUMENT_TYPE_NAME));
+		.getDocumentTypeService().findByName(
+				requestedDetails.get(KNSConstants.DOCUMENT_TYPE_NAME));
 		return checkPermissionDetailMatch(currentDocType, permissionDetails);
 	}
 
-	private boolean checkPermissionDetailMatch(DocumentType currentDocType,
+	protected boolean checkPermissionDetailMatch(DocumentType currentDocType,
 			AttributeSet permissionDetails) {
 		if (currentDocType != null) {
 			if (permissionDetails.get(KNSConstants.DOCUMENT_TYPE_NAME)

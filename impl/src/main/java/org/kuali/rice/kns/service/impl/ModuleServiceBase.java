@@ -215,8 +215,12 @@ public class ModuleServiceBase implements ModuleService {
 		if (!lookupUrl.endsWith("/")) {
 			lookupUrl = lookupUrl + "/";
 		}
-		lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
-		
+		if (parameters.containsKey(KNSConstants.MULTIPLE_VALUE)) {
+			lookupUrl = lookupUrl + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+		}
+		else {
+			lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
+		}
 		for (String paramName : parameters.keySet()) {
 			urlParameters.put(paramName, parameters.get(paramName));
 		}

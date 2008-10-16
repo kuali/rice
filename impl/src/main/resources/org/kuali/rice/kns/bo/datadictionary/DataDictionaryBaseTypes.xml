@@ -233,7 +233,7 @@
         class="org.kuali.rice.kns.datadictionary.control.LinkControlDefinition"
         abstract="true"
     />
-    <bean id="AttributteSecurity"
+    <bean id="AttributeSecurity"
         class="org.kuali.rice.kns.datadictionary.AttributeSecurity"
         abstract="true"
     />

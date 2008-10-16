@@ -78,9 +78,6 @@ public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
     @Column(name="DB_LOCK_VER_NBR")
     private Integer lockVerNbr = new Integer(0);
 
-    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
-    private String dtype;
-
     public BaseWorkflowUser() {
     }
 
@@ -283,13 +280,4 @@ public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
 	public String toString() {
         return "[SimpleWorkflowUser: " + ", displayName=" + displayName + ", givenName=" + givenName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", emplId=" + emplId + ", uuId=" + uuId + ", authenticationId=" + authenticationUserId + ", workflowId=" + workflowUserId + "]";
     }
-
-	public String getDtype() {
-		return this.dtype;
-	}
-
-	public void setDtype(String dtype) {
-		this.dtype = dtype;
-	}
-
 }

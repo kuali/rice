@@ -113,9 +113,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_HDR_ID")
 	private transient DocumentRouteHeaderValue routeHeader;
-    
-    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
-    private String dtype = "ActionItem";
     @Transient
     private Timestamp lastApprovedDate; 
 

@@ -20,7 +20,7 @@
         <column name="ACTN_ITM_RESP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
-        <column name="DTYPE" size="50" type="VARCHAR"/>
+        
         <index oldName="EN_ACTN_ITM_T1" newName="KREW_ACTN_ITM_T1" >
             <index-column oldName="ACTN_ITM_PRSN_EN_ID" newName="PRNCPL_ID"/>
         </index>
@@ -263,8 +263,7 @@
         <column oldName="DOC_INITR_PRSN_EN_ID" newName="DOC_INITR_PRNCPL_ID" required="true" size="30" type="VARCHAR"/>
         <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
         <column oldName="DOC_RTE_USR_PRSN_EN_ID" newName="DOC_RTE_USR_PRNCPL_ID" size="30" type="VARCHAR"/>
-        <column name="DTYPE" size="50" type="VARCHAR"/>
-        <index oldName="KREW_DOC_HDR_TI1" newName="KREW_DOC_HDR_TI1">
+                <index oldName="KREW_DOC_HDR_TI1" newName="KREW_DOC_HDR_TI1">
             <index-column name="DOC_TYP_ID"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI2" newName="KREW_DOC_HDR_TI2">
@@ -884,8 +883,7 @@
         <column oldName="USR_LST_UPDT_DT" newName="LST_UPDT_DT" type="DATE"/>
         <column default="0" name="PRSN_ID_MSNG_IND" size="1" type="DECIMAL"/>
         <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
-        <column name="DTYPE" size="50" type="VARCHAR"/>
-        <unique oldName="EN_USR_TI1" newName="KREW_USR_TI1">
+                <unique oldName="EN_USR_TI1" newName="KREW_USR_TI1">
             <unique-column oldName="PRSN_UNIV_ID" newName="UNIV_ID"/>
         </unique>
         <unique oldName="EN_USR_TI2" newName="KREW_USR_TI2">
@@ -1839,7 +1837,7 @@
         <foreign-key oldForeignTable="NOTIFICATION_CONTENT_TYPES" newForeignTable="KREN_CONTENT_TYPES_T" oldName="NOTIFICATIONS_NOTIFICATIO_FK2" newName="KREN_NOTIFICATIONS_FK2">
             <reference foreign="ID" local="CONTENT_TYPE_ID"/>
         </foreign-key>
-        <foreign-key oldForeignTable="NOTIFICATION_CHANNELS" newForeignTable="KREN_NOTIFICATIONS_CHANNELS_T" oldName="NOTIFICATIONS_NOTIFICATIO_FK1" newName="KREN_NOTIFICATIONS_FK1">
+        <foreign-key oldForeignTable="NOTIFICATION_CHANNELS" newForeignTable="KREN_NOTIFICATION_CHANNELS_T" oldName="NOTIFICATIONS_NOTIFICATIO_FK1" newName="KREN_NOTIFICATIONS_FK1">
             <reference foreign="ID" local="NOTIFICATION_CHANNEL_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="NOTIFICATION_PRIORITIES" newForeignTable="KREN_PRIORITIES_T" oldName="NOTIFICATIONS_NOTIFICATIO_FK3" newName="KREN_NOTIFICATIONS_FK3">

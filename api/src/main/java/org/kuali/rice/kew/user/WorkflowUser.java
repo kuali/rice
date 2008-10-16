@@ -54,7 +54,4 @@ public interface WorkflowUser extends Recipient {
     public void setLastName(String lastName);
     public void setDisplayName(String displayName);
     public void setEmailAddress(String emailAddress);
-    
-    public void setDtype(String dtype);
-    public String getDtype();
 }

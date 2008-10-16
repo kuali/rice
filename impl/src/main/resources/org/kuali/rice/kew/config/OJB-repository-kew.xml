@@ -34,7 +34,6 @@
     <field-descriptor name="initiatorWorkflowId" column="DOC_INITR_PRSN_EN_ID"  jdbc-type="VARCHAR" />
     <field-descriptor name="routedByUserWorkflowId" column="DOC_RTE_USR_PRSN_EN_ID"  jdbc-type="VARCHAR" />
     <field-descriptor name="jrfVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
-    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
@@ -142,7 +141,6 @@
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -166,7 +164,6 @@
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -838,8 +835,7 @@
     <field-descriptor name="lastName"                       column="PRSN_LST_NM"      jdbc-type="VARCHAR"/>
 	<field-descriptor name="createDate"                     column="USR_CRTE_DT"      jdbc-type="TIMESTAMP"  />
     <field-descriptor name="lastUpdateDate"                 column="USR_LST_UPDT_DT"  jdbc-type="TIMESTAMP" />
-    <field-descriptor name="lockVerNbr"                     column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="false"/>
-    <field-descriptor name="dtype"                      column="DTYPE"      jdbc-type="VARCHAR"/>
+    <field-descriptor name="lockVerNbr"                     column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="false"/>   
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.workgroup.BaseWorkgroup" table="EN_WRKGRP_T">

@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
 /**
@@ -56,7 +57,8 @@ public class KimModuleService extends ModuleServiceBase {
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
 	 */
 	@Override
-	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
+			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)personService.findPeople( (Map)fieldValues );
@@ -65,6 +67,15 @@ public class KimModuleService extends ModuleServiceBase {
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
 	}
 
+	/***
+	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
+	 */
+	@Override
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
+			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
+		return getExternalizableBusinessObjectsList(externalizableBusinessObjectClass, fieldValues);
+	}
+	
 	/**
 	 * This overridden method ...
 	 * 

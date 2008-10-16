@@ -70,7 +70,8 @@ println "******* Processing specified files ******"
 				oldSeq =""		
 			}//fied Desc				
 		}//class desc
-		def outfile = new File (dir,fileName)
+		def outfile = new File (dir,fileName+".bk")
+		outfile.delete()
 		def fwriter = new FileWriter( outfile )
 		new XmlNodePrinter(new PrintWriter(fwriter)).print(ojbroot)	
             

@@ -86,18 +86,6 @@ public interface KimRoleTypeService extends KimTypeService {
     List<AttributeSet> getAllImplyingQualifications( final AttributeSet qualification );
     // TODO: need list versions of the implyed/ing methods?
     
-    /** 
-     * Return a list of attribute names that will be accepted by this role type.  They
-     * are either understood directly, or can be translated by this service into that
-     * required. 
-     */
-    List<String> getAcceptedQualificationAttributeNames();
-    
-    /**
-     * Given a list of attribute names, determine whether this service can convert that set of parameters.
-     */
-    boolean supportsQualificationAttributes( List<String> attributeNames );
-    
     /**
      * Convert a set of attributes that need to be converted.  For example,
      * this method could take [chart=BL,org=PSY] and return [campus=BLOOMINGTON]

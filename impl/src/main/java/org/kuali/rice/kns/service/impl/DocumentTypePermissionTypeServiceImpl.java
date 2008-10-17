@@ -17,11 +17,10 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -31,8 +30,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class DocumentTypePermissionTypeServiceImpl implements
-		KimPermissionTypeService {
+public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 	/**
 	 * This overridden method ...

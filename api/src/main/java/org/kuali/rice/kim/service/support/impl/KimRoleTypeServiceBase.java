@@ -17,10 +17,7 @@ package org.kuali.rice.kim.service.support.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
@@ -30,13 +27,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimRoleTypeServiceBase implements KimRoleTypeService {
-
-//	private static Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
-	
-	protected List<String> acceptedQualificationAttributeNames; 
-	
-	protected List<KimAttributesTranslator> kimAttributesTranslators;
+public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService {
 
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.
@@ -45,67 +36,14 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)
 	 */
 	public boolean doesRoleQualifierMatchQualification(final AttributeSet qualification, final AttributeSet roleQualifier) {
-		return performRoleQualifierQualificationMatch(translateQualificationAttributeSet(qualification), roleQualifier);
-	}
-	
-	/**
-	 * 
-	 * This method ...
-	 * 
-	 * @param qualification
-	 * @param roleQualifier
-	 * @return
-	 */
-	protected boolean performRoleQualifierQualificationMatch(final AttributeSet qualification, final AttributeSet roleQualifier) {
-		for ( Map.Entry<String, String> entry : roleQualifier.entrySet() ) {
-			if ( !qualification.containsKey(entry.getKey() ) ) {
-				return false;
-			}
-			if ( !StringUtils.equals(qualification.get(entry.getKey()), entry.getValue()) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	protected AttributeSet translateQualificationAttributeSet(final AttributeSet qualification){
-		AttributeSet translatedQualification = new AttributeSet();
-		translatedQualification.putAll(qualification);
-		List<String> attributeNames;
-		for(KimAttributesTranslator translator: kimAttributesTranslators){
-			attributeNames = new ArrayList<String>();
-			attributeNames.addAll(translatedQualification.keySet());
-			if(translator.supportsTranslationOfAttributes(attributeNames)){
-				translatedQualification = translator.translateAttributes(translatedQualification);
-			}
-		}
-		return translatedQualification;
+		return performMatch(translateInputAttributeSet(qualification), roleQualifier);
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
 	public boolean doRoleQualifiersMatchQualification(final AttributeSet qualification, final List<AttributeSet> roleQualifierList) {
-		return performRoleQualifiersQualificationMatch(translateQualificationAttributeSet(qualification), roleQualifierList);
-	}
-
-	/**
-	 * 
-	 * This method ...
-	 * 
-	 * @param qualification
-	 * @param roleQualifierList
-	 * @return
-	 */
-	protected boolean performRoleQualifiersQualificationMatch(final AttributeSet qualification,
-			final List<AttributeSet> roleQualifierList){
-		for ( AttributeSet roleQualifier : roleQualifierList ) {
-			// if one matches, return true
-			if ( performRoleQualifierQualificationMatch(qualification, roleQualifier) ) {
-				return true;
-			}
-		}
-		return false;
+		return performMatches(translateInputAttributeSet(qualification), roleQualifierList);
 	}
 
 	/**
@@ -127,37 +65,7 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	public boolean isApplicationRoleType() {
 		return false;
 	}
-	
-	/**
-	 * Returns null, to indicate that there is no custom workflow document needed for this type.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowDocumentTypeName()
-	 */
-	public String getWorkflowDocumentTypeName() {
-		return null;
-	}
-
-	/**
-	 * This is the default implementation.  It calls into the service for each attribute to
-	 * validate it there.  No combination validation is done.  That should be done
-	 * by overriding this method.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
-	 */
-	public AttributeSet validateAttributes(final AttributeSet attributes) {
-		AttributeSet validationErrors = new AttributeSet();
-		// call the individual field validators
-		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
-			List<String> attributeErrors = validateAttribute( attribute.getKey(), attribute.getValue() );
-			if ( attributeErrors != null ) {
-				for ( String err : attributeErrors ) {
-					validationErrors.put(attribute.getKey(), err);
-				}
-			}
-		}
-		return validationErrors;
-	}
-	
+		
 	/**
 	 * Simple implementation, simply returns the passed in qualification in a single-element list.
 	 * 
@@ -181,38 +89,6 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 		implyingQualifications.add(qualification);
 		return implyingQualifications;
 	}
-
-	/**
-	 * Returns null to indicate no errors (does not perform any validation.)
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttribute(java.lang.String, java.lang.String)
-	 */
-	public List<String> validateAttribute(String attributeName, String attributeValue) {
-		return null;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getAcceptedQualificationAttributeNames()
-	 */
-	public List<String> getAcceptedQualificationAttributeNames() {
-		return this.acceptedQualificationAttributeNames;
-	}
-
-	public void setAcceptedQualificationAttributeNames(List<String> acceptedQualificationAttributeNames) {
-		this.acceptedQualificationAttributeNames = acceptedQualificationAttributeNames;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#supportsQualificationAttributes(java.util.List)
-	 */
-	public boolean supportsQualificationAttributes(List<String> attributeNames) {
-		for ( String attributeName : attributeNames ) {
-			if ( !acceptedQualificationAttributeNames.contains( attributeName ) ) {
-				return false;
-			}
-		}
-		return true;
-	}	
 	/**
 	 * No conversion performed.  Simply returns the passed in Map.
 	 * 
@@ -221,39 +97,6 @@ public class KimRoleTypeServiceBase implements KimRoleTypeService {
 	public AttributeSet convertQualificationAttributesToRequired(
 			AttributeSet qualificationAttributes) {
 		return qualificationAttributes;
-	}
-	
-	/**
-	 * Returns null - no inquiry.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getInquiryUrl(java.lang.String, java.util.Map)
-	 */
-	public String getInquiryUrl(String attributeName, AttributeSet relevantAttributeData) {
-		return null;
-	}
-	
-	/**
-	 * Returns null - no lookup.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getLookupUrl(java.lang.String)
-	 */
-	public String getLookupUrl(String attributeName) {
-		return null;
-	}
-	
-	/**
-	 * @return the kimAttributesTranslators
-	 */
-	public List<KimAttributesTranslator> getKimAttributesTranslators() {
-		return this.kimAttributesTranslators;
-	}
-
-	/**
-	 * @param kimAttributesTranslators the kimAttributesTranslators to set
-	 */
-	public void setKimAttributesTranslators(
-			List<KimAttributesTranslator> kimAttributesTranslators) {
-		this.kimAttributesTranslators = kimAttributesTranslators;
 	}
 
 }

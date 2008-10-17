@@ -40,6 +40,9 @@ public class KimPermissionDaoOjb extends PlatformAwareDaoBaseOjb implements KimP
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getRoleIdsForPermissions(Collection<KimPermissionImpl> permissions) {
+		if ( permissions.isEmpty() ) {
+			return new ArrayList<String>(0);
+		}
 		List<String> permissionIds = new ArrayList<String>( permissions.size() );
 		for ( KimPermissionImpl kp : permissions ) {
 			permissionIds.add( kp.getPermissionId() );

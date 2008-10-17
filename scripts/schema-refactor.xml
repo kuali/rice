@@ -12,14 +12,14 @@
         <column oldName="WRKGRP_ID" newName="GRP_ID" size="14" type="DECIMAL"/>
         <column name="ROLE_NM" size="2000" type="VARCHAR"/>
         <column oldName="ACTN_ITM_DLGN_PRSN_EN_ID" newName="DLGN_PRNCPL_ID" size="30" type="VARCHAR"/>
-        <column oldName="ACTN_ITM_DLGN_WRKGRP_ID" newName="DLGN_WRKGRP_ID" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_ITM_DLGN_WRKGRP_ID" newName="DLGN_GRP_ID" size="14" type="DECIMAL"/>
         <column name="DOC_TTL" size="255" type="VARCHAR"/>
-        <column oldName="DOC_TYP_LBL_TXT" newName="LBL_TXT" required="true" size="255" type="VARCHAR"/>
-        <column name="DOC_TYP_HDLR_URL_ADDR" required="true" size="255" type="VARCHAR"/>
+        <column oldName="DOC_TYP_LBL_TXT" newName="DOC_TYP_LBL" required="true" size="255" type="VARCHAR"/>
+        <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM" required="true" size="255" type="VARCHAR"/>
-        <column name="ACTN_ITM_RESP_ID" required="true" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_ITM_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         
         <index oldName="EN_ACTN_ITM_T1" newName="KREW_ACTN_ITM_T1" >
             <index-column oldName="ACTN_ITM_PRSN_EN_ID" newName="PRNCPL_ID"/>
@@ -32,7 +32,7 @@
         </index>
         <index oldName="EN_ACTN_ITM_TI4" newName="KREW_ACTN_ITM_TI4">
             <index-column oldName="ACTN_ITM_DLGN_PRSN_EN_ID" newName="DLGN_PRNCPL_ID"/>
-            <index-column oldName="ACTN_ITM_DLGN_WRKGRP_ID" newName="DLGN_WRKGRP_ID"/>
+            <index-column oldName="ACTN_ITM_DLGN_WRKGRP_ID" newName="DLGN_GRP_ID"/>
             <index-column oldName="ACTN_ITM_PRSN_EN_ID" newName="PRNCPL_ID"/>
             <index-column oldName="DLGN_TYP" newName="DLGN_TYP"/>
         </index>
@@ -45,9 +45,9 @@
     <table oldName="EN_ACTN_RQST_T" newName="KREW_ACTN_RQST_T">
         <column oldName="ACTN_RQST_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column oldName="ACTN_RQST_PARNT_ID" newName="PARNT_ID" size="14" type="DECIMAL"/>
-        <column oldName="ACTN_RQST_CD" newName="CD" required="true" size="1" type="CHAR"/>
+        <column oldName="ACTN_RQST_CD" newName="RQST_CD" required="true" size="1" type="CHAR"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column name="RULE_BASE_VALUES_ID" size="19" type="DECIMAL"/>
+        <column oldName="RULE_BASE_VALUES_ID" newName="RUlE_ID" size="19" type="DECIMAL"/>
         <column oldName="ACTN_RQST_STAT_CD" newName="STAT_CD" required="true" size="1" type="CHAR"/>
         <column oldName="ACTN_RQST_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
         <column oldName="ACTN_RQST_PRSN_EN_ID" newName="PRNCPL_ID" size="30" type="VARCHAR"/>
@@ -65,11 +65,11 @@
         <column oldName="ACTN_RQST_CRTE_DT" newName="CRTE_DT"  required="true" type="DATE"/>
         <column oldName="ACTN_RQST_RESP_DESC"  newName="RESP_DESC" size="200" type="VARCHAR"/>
         <column default="0" oldName="ACTN_RQST_IGN_PREV_ACTN_IND"  newName="IGN_PREV_ACTN_IND" size="1" type="DECIMAL"/>
-        <column oldName="ACTN_RQST_ANNOTN_TXT"  name="ANNOTN_TXT" size="2000" type="VARCHAR"/>
+        <column oldName="ACTN_RQST_ANNOTN_TXT"  name="ANNOTN" size="2000" type="VARCHAR"/>
         <column name="DLGN_TYP" size="1" type="CHAR"/>
         <column oldName="ACTN_RQST_APPR_PLCY"  newName="APPR_PLCY" size="1" type="CHAR"/>
         <column default="1" oldName="ACTN_RQST_CUR_IND"  newName="CUR_IND" size="1" type="DECIMAL"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_ACTN_RQST_T13" newName="KREW_ACTN_RQST_T13">
             <index-column name="ACTN_TKN_ID"/>
         </index>
@@ -105,13 +105,13 @@
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
         <column oldName="ACTN_TKN_PRSN_EN_ID" newName="PRNCPL_ID" required="true" size="30" type="VARCHAR"/>
         <column oldName="ACTN_TKN_DLGTR_PRSN_EN_ID" newName="DLGTR_PRNCPL_ID" size="30" type="VARCHAR"/>
-        <column oldName="ACTN_TKN_DLGTR_WRKGRP_ID" newName="DLGTR_WRKGRP_ID" size="14" type="DECIMAL"/>
-        <column oldName="ACTN_TKN_CD" newName="CD" required="true" size="1" type="CHAR"/>
-        <column oldName="ACTN_TKN_DT" newName="DT" required="true" type="DATE"/>
+        <column oldName="ACTN_TKN_DLGTR_WRKGRP_ID" newName="DLGTR_GRP_ID" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_TKN_CD" newName="ACTN_CD" required="true" size="1" type="CHAR"/>
+        <column oldName="ACTN_TKN_DT" newName="ACTN_DT" required="true" type="DATE"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="ACTN_TKN_ANNOTN_TXT" newName="ANNOTN_TXT" size="2000" type="VARCHAR"/>
-        <column default="1" name="ACTN_TKN_CUR_IND"  newName="CUR_IND" size="1" type="DECIMAL"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column oldName="ACTN_TKN_ANNOTN_TXT" newName="ANNOTN" size="2000" type="VARCHAR"/>
+        <column default="1" oldName="ACTN_TKN_CUR_IND"  newName="CUR_IND" size="1" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_ACTN_TKN_TI1" newName="KREW_ACTN_TKN_TI1">
             <index-column oldName="DOC_HDR_ID" newName="DOC_HDR_ID"/>
             <index-column oldName="ACTN_TKN_PRSN_EN_ID" newName="PRNCPL_ID"/>
@@ -119,7 +119,7 @@
         <index oldName="EN_ACTN_TKN_TI2" newName="KREW_ACTN_TKN_TI2">
             <index-column oldName="DOC_HDR_ID" newName="DOC_HDR_ID"/>
             <index-column oldName="ACTN_TKN_PRSN_EN_ID" newName="PRNCPL_ID"/>
-            <index-column oldName="ACTN_TKN_CD" newName="CD" />
+            <index-column oldName="ACTN_TKN_CD" newName="ACTN_CD" />
         </index>
         <index oldName="EN_ACTN_TKN_TI3" newName="KREW_ACTN_TKN_TI3">
             <index-column oldName="ACTN_TKN_PRSN_EN_ID" newName="PRNCPL_ID"/>
@@ -133,50 +133,50 @@
     </table>
     <table oldName="EN_APPL_CNST_T" newName="KREW_APPL_CNST_T">
         <column oldName="APPL_CNST_NM" newName="NM" primaryKey="true" size="100" type="VARCHAR"/>
-        <column oldName="APPL_CNST_VAL_TXT" newName="VAL_TXT" size="2000" type="VARCHAR"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column oldName="APPL_CNST_VAL_TXT" newName="VAL" size="2000" type="VARCHAR"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
-    <table oldName="EN_ATTACHMENT_T" newName="KREW__ATTACHMENT_T">
+    <table oldName="EN_ATTACHMENT_T" newName="KREW_ATTACHMENT_T">
         <column oldName="ATTACHMENT_ID" newName="ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="NTE_ID" required="true" size="19" type="DECIMAL"/>
         <column name="FILE_NM" required="true" size="255" type="VARCHAR"/>
         <column name="FILE_LOC" required="true" size="255" type="VARCHAR"/>
         <column name="MIME_TYP" required="true" size="255" type="VARCHAR"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
-    <table oldName="EN_BAM_PARAM_T" newName="KREW_BAM_PARAM_T">
-        <column oldName="BAM_PARAM_ID" newName="PARAM_ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column oldName="BAM_ID" newName="ID" required="true" size="14" type="DECIMAL"/>
+    <table oldName="EN_BAM_PARAM_T" newName="KRSB_BAM_PARAM_T">
+        <column oldName="BAM_PARAM_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column oldName="BAM_ID" newName="BAM_ID" required="true" size="14" type="DECIMAL"/>
         <column name="PARAM" required="true" type="CLOB"/>
         <index oldName="EN_BAM_PARAM_TI1" newName="KREW_BAM_PARAM_TI1">
-            <index-column oldName="BAM_ID" newName="ID"/>
+            <index-column oldName="BAM_ID" newName="BAM_ID"/>
         </index>
     </table>
-    <table oldName="EN_BAM_T" newName="KREW_BAM_T">
-        <column name="BAM_ID" primaryKey="true" size="14" type="DECIMAL"/>
+    <table oldName="EN_BAM_T" newName="KRSB_BAM_T">
+        <column oldName="BAM_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="SERVICE_NM" required="true" size="255" type="VARCHAR"/>
         <column name="SERVICE_URL" required="true" size="500" type="VARCHAR"/>
         <column name="METHOD_NM" required="true" size="2000" type="VARCHAR"/>
         <column name="THREAD_NM" required="true" size="500" type="VARCHAR"/>
         <column name="CALL_DT" required="true" type="DATE"/>
         <column name="TARGET_TO_STRING" required="true" size="2000" type="VARCHAR"/>
-        <column name="SRVR_IND_IND" required="true" size="1" type="DECIMAL"/>
+        <column oldName="SRVR_IND_IND" newName="SRVR_IND" required="true" size="1" type="DECIMAL"/>
         <column name="EXCEPTION_TO_STRING" size="2000" type="VARCHAR"/>
         <column name="EXCEPTION_MSG" type="CLOB"/>
-        <index oldName="EN_BAM_TI1" newName="KREW_BAM_TI1">
+        <index oldName="EN_BAM_TI1" newName="KRSB_BAM_TI1">
             <index-column name="SERVICE_NM"/>
             <index-column name="METHOD_NM"/>
         </index>
-        <index oldName="EN_BAM_TI2" newName="KREW_BAM_TI2">
+        <index oldName="EN_BAM_TI2" newName="KRSB_BAM_TI2">
             <index-column name="SERVICE_NM"/>
         </index>
     </table>
     <table oldName="EN_DLGN_RSP_T" newName="KREW_DLGN_RSP_T">
         <column name="DLGN_RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RULE_RSP_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="DLGN_RULE_BASE_VAL_ID" required="true" size="19" type="DECIMAL"/>
+        <column oldName="DLGN_RULE_BASE_VAL_ID" newName="DLGN_RULE_ID" required="true" size="19" type="DECIMAL"/>
         <column name="DLGN_TYP" required="true" size="20" type="VARCHAR"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
     <table oldName="EN_DOC_HDR_CNTNT_T" newName="KREW_DOC_HDR_CNTNT_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="DECIMAL"/>
@@ -185,10 +185,10 @@
     <table oldName="EN_DOC_HDR_EXT_DT_T" newName="KREW_DOC_HDR_EXT_DT_T">
         <column oldName="DOC_HDR_EXT_ID" newName="ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" type="DATE"/>
         <index oldName="EN_DOC_HDR_EXT_DT_TI1" newName="KREW_DOC_HDR_EXT_DT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_DT_TI2" newName="KREW_DOC_HDR_EXT_DT_TI2">
@@ -201,10 +201,10 @@
     <table oldName="EN_DOC_HDR_EXT_FLT_T" newName="KREW_DOC_HDR_EXT_FLT_T">
         <column oldName="DOC_HDR_EXT_ID" newName="ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" type="FLOAT"/>
         <index oldName="EN_DOC_HDR_EXT_FLT_TI1" newName="KREW_DOC_HDR_EXT_FLT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_FLT_TI2" newName="KREW_DOC_HDR_EXT_FLT_TI2">
@@ -217,10 +217,10 @@
     <table oldName="EN_DOC_HDR_EXT_LONG_T" newName="KREW_DOC_HDR_EXT_LONG_T">
         <column oldName="DOC_HDR_EXT_ID" newName="ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" size="22" type="DECIMAL"/>
         <index oldName="EN_DOC_HDR_EXT_LONG_TI1" newName="KREW_DOC_HDR_EXT_LONG_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_LONG_TI2" newName="KREW_DOC_HDR_EXT_LONG_TI2">
@@ -233,10 +233,10 @@
     <table oldName="EN_DOC_HDR_EXT_T" newName="KREW_DOC_HDR_EXT_T">
         <column oldName="DOC_HDR_EXT_ID" newName="ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" size="2000" type="VARCHAR"/>
         <index oldName="EN_DOC_HDR_EXT_TI1" newName="KREW_DOC_HDR_EXT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="VAL_KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_TI2" newName="KREW_DOC_HDR_EXT_TI2">
@@ -247,48 +247,48 @@
         </index>       
     </table>
     <table oldName="EN_DOC_HDR_T" newName="KREW_DOC_HDR_T">
-        <column name="DOC_HDR_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column oldName="DOC_HDR_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="DOC_TYP_ID" size="19" type="DECIMAL"/>
-        <column name="DOC_RTE_STAT_CD" required="true" size="1" type="CHAR"/>
-        <column name="DOC_RTE_LVL_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="DOC_STAT_MDFN_DT" required="true" type="DATE"/>
-        <column name="DOC_CRTE_DT" required="true" type="DATE"/>
-        <column name="DOC_APRV_DT" type="DATE"/>
-        <column name="DOC_FNL_DT" type="DATE"/>
-        <column name="DOC_RTE_STAT_MDFN_DT" type="DATE"/>
-        <column name="DOC_RTE_LVL_MDFN_DT" type="DATE"/>
-        <column name="DOC_TTL" size="255" type="VARCHAR"/>
-        <column name="DOC_APPL_DOC_ID" size="20" type="VARCHAR"/>
+        <column oldName="DOC_RTE_STAT_CD" newName="STAT_CD" required="true" size="1" type="CHAR"/>
+        <column oldName="DOC_RTE_LVL_NBR" newName="RTE_LVL" required="true" size="8" type="DECIMAL"/>
+        <column oldName="DOC_STAT_MDFN_DT" newName="STAT_MDFN_DT" required="true" type="DATE"/>
+        <column oldName="DOC_CRTE_DT" newName="CRTE_DT" required="true" type="DATE"/>
+        <column oldName="DOC_APRV_DT" newName="APRV_DT" type="DATE"/>
+        <column oldName="DOC_FNL_DT" newName="FNL_DT" type="DATE"/>
+        <column oldName="DOC_RTE_STAT_MDFN_DT" newName="RTE_STAT_MDFN_DT" type="DATE"/>
+        <column oldName="DOC_RTE_LVL_MDFN_DT" newName="RTE_LVL_MDFN_DT" type="DATE"/>
+        <column oldName="DOC_TTL" newName="TTL" size="255" type="VARCHAR"/>
+        <column oldName="DOC_APPL_DOC_ID" newName="APPL_DOC_ID" size="20" type="VARCHAR"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="DOC_INITR_PRSN_EN_ID" newName="DOC_INITR_PRNCPL_ID" required="true" size="30" type="VARCHAR"/>
-        <column default="0" name="DB_LOCK_VER_NBR" size="8" type="DECIMAL"/>
-        <column oldName="DOC_RTE_USR_PRSN_EN_ID" newName="DOC_RTE_USR_PRNCPL_ID" size="30" type="VARCHAR"/>
-                <index oldName="KREW_DOC_HDR_TI1" newName="KREW_DOC_HDR_TI1">
+        <column oldName="DOC_INITR_PRSN_EN_ID" newName="INITR_PRNCPL_ID" required="true" size="30" type="VARCHAR"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
+        <column oldName="DOC_RTE_USR_PRSN_EN_ID" newName="RTE_PRNCPL_ID" size="30" type="VARCHAR"/>
+        <index oldName="KREW_DOC_HDR_TI1" newName="KREW_DOC_HDR_TI1">
             <index-column name="DOC_TYP_ID"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI2" newName="KREW_DOC_HDR_TI2">
-            <index-column oldName="DOC_INITR_PRSN_EN_ID" newName="DOC_INITR_PRNCPL_ID"/>
+            <index-column oldName="DOC_INITR_PRSN_EN_ID" newName="INITR_PRNCPL_ID"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI3" newName="KREW_DOC_HDR_TI3">
-            <index-column name="DOC_RTE_STAT_CD"/>
+            <index-column oldName="DOC_RTE_STAT_CD" newName="STAT_CD"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI4" newName="KREW_DOC_HDR_TI4">
-            <index-column name="DOC_TTL"/>
+            <index-column oldName="DOC_TTL" newName="TTL"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI5" newName="KREW_DOC_HDR_TI5">
-            <index-column name="DOC_CRTE_DT"/>
+            <index-column oldName="DOC_CRTE_DT" newName="CRTE_DT"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI6" newName="KREW_DOC_HDR_TI6">
-            <index-column name="DOC_RTE_STAT_MDFN_DT"/>
+            <index-column oldName="DOC_RTE_STAT_MDFN_DT" newName="RTE_STAT_MDFN_DT"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI7" newName="KREW_DOC_HDR_TI7">
-            <index-column name="DOC_APRV_DT"/>
+            <index-column oldName="DOC_APRV_DT" newName="APRV_DT"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI8" newName="KREW_DOC_HDR_TI8">
-            <index-column name="DOC_FNL_DT"/>
+            <index-column oldName="DOC_FNL_DT" newName="FNL_DT"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI9" newName="KREW_DOC_HDR_TI9">
-            <index-column name="DOC_APPL_DOC_ID"/>
+            <index-column oldName="DOC_APPL_DOC_ID" newName="APPL_DOC_ID"/>
         </index>
     </table>
     <table oldName="EN_DOC_NTE_T" newName="KREW_DOC_NTE_T">
@@ -370,11 +370,11 @@
         <column default="0" oldName="DOC_TYP_VER_NBR" newName="VER_NBR" size="10" type="DECIMAL"/>
         <column oldName="DOC_TYP_ACTV_IND" newName="ACTV_IND" size="1" type="DECIMAL"/>
         <column oldName="DOC_TYP_CUR_IND" newName="CUR_IND" size="1" type="DECIMAL"/>
-        <column oldName="DOC_TYP_LBL_TXT" newName="LBL_TXT" size="255" type="VARCHAR"/>
+        <column oldName="DOC_TYP_LBL_TXT" newName="LBL" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_PREV_VER" newName="PREV_VER" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" size="14" type="DECIMAL"/>
         <column name="DOC_TYP_DESC" size="255" type="VARCHAR"/>
-        <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="HDLR_URL_ADDR" size="255" type="VARCHAR"/>
+        <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="DOC_HDLR_URL" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_POST_PRCSR_NM" newName="POST_PRCSR_NM" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_JNDI_URL_ADDR" newName="JNDI_URL_ADDR" size="255" type="VARCHAR"/>
         <column oldName="WRKGRP_ID" newName="GRP_ID" size="14" type="DECIMAL"/>
@@ -531,7 +531,7 @@
         <column oldName="ACTN_ITM_DLGN_WRKGRP_ID" newName="DLGN_WRKGRP_ID" size="14" type="DECIMAL"/>
         <column name="DOC_TTL" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_LBL_TXT" required="true" size="255" type="VARCHAR"/>
-        <column name="DOC_TYP_HDLR_URL_ADDR" required="true" size="255" type="VARCHAR"/>
+        <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM"  required="true" size="255" type="VARCHAR"/>
         <column oldName="ACTN_ITM_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>

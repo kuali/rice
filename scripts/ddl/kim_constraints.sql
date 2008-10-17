@@ -172,6 +172,19 @@ ALTER TABLE kr_kim_group_principal_t ADD CONSTRAINT kr_kim_group_principal_tr1
 	ON DELETE CASCADE
 /
 
+-- kr_kim_group_t
+
+ALTER TABLE kr_kim_group_t ADD CONSTRAINT kr_kim_group_tr1
+	FOREIGN KEY (typ_id)
+	REFERENCES kr_kim_type_t
+/
+
+-- kr_kim_role_t
+
+ALTER TABLE kr_kim_role_t ADD CONSTRAINT kr_kim_role_tr1
+	FOREIGN KEY (typ_id)
+	REFERENCES kr_kim_type_t
+/
 
 -- kr_kim_role_group_t
 
@@ -346,4 +359,33 @@ ALTER TABLE kr_kim_dele_principal_t
 ALTER TABLE kr_kim_dele_group_t
     ADD CONSTRAINT kr_kim_dele_group_tr1
     FOREIGN KEY ( dele_id ) REFERENCES kr_kim_dele_t
+/
+
+
+ALTER TABLE kr_kim_dele_attr_data_t ADD CONSTRAINT kr_kim_dele_attr_data_tr1
+    FOREIGN KEY (kim_type_id)
+    REFERENCES kr_kim_type_t
+/
+
+ALTER TABLE kr_kim_dele_attr_data_t ADD CONSTRAINT kr_kim_dele_attr_data_tr2
+    FOREIGN KEY (kim_attrib_id)
+    REFERENCES kr_kim_attribute_t
+/
+
+ALTER TABLE kr_kim_dele_attr_data_t ADD CONSTRAINT kr_kim_dele_attr_data_tr3
+    FOREIGN KEY (target_primary_key)
+    REFERENCES kr_kim_dele_t
+    ON DELETE CASCADE
+/
+
+
+
+ALTER TABLE kr_kim_dele_mbr_attr_data_t ADD CONSTRAINT kr_kim_dele_mbr_attr_data_tr1
+    FOREIGN KEY (kim_type_id)
+    REFERENCES kr_kim_type_t
+/
+
+ALTER TABLE kr_kim_dele_mbr_attr_data_t ADD CONSTRAINT kr_kim_dele_mbr_attr_data_tr2
+    FOREIGN KEY (kim_attrib_id)
+    REFERENCES kr_kim_attribute_t
 /

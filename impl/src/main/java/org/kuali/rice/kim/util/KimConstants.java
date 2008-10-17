@@ -32,11 +32,7 @@ public class KimConstants {
 	public static final String FACULTY_AFFILIATION_TYPE = "FACULTY";
 	public static final String DOC_STATUS = "Route Status Code";
     public static final String KEY_EDIT_MODE = "keyEditMode";
-	public static final String DOCUMENT_TYPE = "Document Type Name";
 	public static final String PERMISSION_UNMARK = "Unmark";
-	public static final String COMPONENT ="Component";
-	public static final String DOCUMENT_NUMBER ="Document Number";
-	public static final String ROUTE_NODE = "Route Node Name";
 	public static final String PERMISSION_UNMASK_PROPERTY = "Completely Unmask Property";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
 	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";

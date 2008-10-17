@@ -38,7 +38,20 @@ public class KimConstants {
 	public static final String DOCUMENT_NUMBER ="Document Number";
 	public static final String ROUTE_NODE = "Route Node Name";
 	public static final String PERMISSION_UNMASK_PROPERTY = "Completely Unmask Property";
-	public static final String PROPERTY_NAME = "Property Name";
-	public static final String NAMESPACE_CODE ="Namespace Code";
+	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
+	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
+	public static final String USER_IS_INITIATOR = "userIsInitiator";
+	public static final String KIM_ATTRIB_CHART_CODE ="Chart Code";
+	public static final String KIM_ATTRIB_ORGANIZATION_CODE = "Organization Code";
+	public static final String KIM_ATTRIB_CAMPUS_CODE = "Campus Code";
+	public static final String KIM_ATTRIB_NAMESPACE_CODE = "Namespace Code";
+	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "Document Type Name";
+	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "Route Status Code";
+	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "Route Node Name";
+	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "Document Number";
+	public static final String KIM_ATTRIB_PROPERTY_NAME = "Property Name";
+	public static final String KIM_ATTRIB_COMPONENT_NAME = "Component";
+	
+
 	
 }

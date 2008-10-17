@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -34,12 +35,14 @@ public class NamespaceCodeRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 	@Override
 	public boolean performMatch(final AttributeSet qualification, final AttributeSet roleQualifier) {
 		//Create a role type that checks the namespace code. In the namespaceCode attribute, wildcards are allowed ("*")
-		//Consider creating a wildcard matching base role type service class for these kinds of attributes.
 		//In this case we DO want partial value matching (as in KFS-* should match all namespaces which begin with KFS.)
-		String namespaceCode = qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE);
-		String roleQualifierNamespaceCode = roleQualifier.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE);
+		if(StringUtils.isEmpty(qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE)))
+        	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE+" should not be blank or null.");
+
 		//Assuming that a namespace can contain digits (0-9), alphabets (a-z and A-Z), -, _ and $.
-		return KimCommonUtils.matchInputWithWildcard(namespaceCode, roleQualifierNamespaceCode);
+		return KimCommonUtils.matchInputWithWildcard(
+				qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), 
+				roleQualifier.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE));
 	}
 
 }

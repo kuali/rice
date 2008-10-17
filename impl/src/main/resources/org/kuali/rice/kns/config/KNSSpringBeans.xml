@@ -814,7 +814,30 @@
 		</property>
 	</bean>
 	<bean id="kimPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
-		
+
+	<bean id="documentStatusComponentAttributePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeServiceImpl" >
+    	<property name="kimAttributesTranslators">
+    		<list>
+				<bean class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeTranslator">
+					<property name="supportedAttributeNames">
+						<list>
+							<value>Document Number</value>
+							<value>Property Name</value>
+							<value>Component</value>
+						</list>
+					</property>
+					<property name="resultAttributeNames">
+						<list>
+							<value>Document Type Name</value>
+							<value>Route Status Code</value>
+							<value>Route Node Name</value>
+						</list>
+					</property>
+			    </bean>
+    		</list>
+    	</property>
+	</bean>
+			
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->

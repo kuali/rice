@@ -47,7 +47,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	/**
 	 * 
-	 * This method ...
+	 * This method matches input attribute set entries and standard attribute set entries using liternal string match.
 	 * 
 	 * @param qualification
 	 * @param roleQualifier
@@ -63,6 +63,35 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 
+	 * This method matches input attribute set entries and standard attribute set entries using wild card match.
+	 * "*" is the only wildcard supported currently.
+	 * 
+	 * @param qualification
+	 * @param roleQualifier
+	 * @return
+	 */
+	public boolean performMatchUsingWildcard(final AttributeSet inputAttributeSet, final AttributeSet standardAttributeSet) {
+		for ( Map.Entry<String, String> entry : standardAttributeSet.entrySet() ) {
+			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
+				return false;
+			}
+			if ( !matchInputWithWildcard(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean matchInputWithWildcard(String inputStr, String matchStr){
+		inputStr.replaceAll("*", "([0-9a-zA-Z-_$]*)");
+		if(matchStr.matches(inputStr)){
+			return true;
+		}
+		return false;
 	}
 	
 	public AttributeSet translateInputAttributeSet(final AttributeSet qualification){

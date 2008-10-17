@@ -138,6 +138,7 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
     	// now, filter the full list by the detail passed
+    	// FIXME: certain generic permissions (live view and edit) could have thousands of rows - this will not scale
     	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
     }
@@ -202,7 +203,7 @@ public class PermissionServiceImpl implements PermissionService {
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByName( String permissionName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-    	pk.put( "name", permissionName );
+    	pk.put( "template.name", permissionName );
 		pk.put( "active", "Y" );
     	return (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
     }

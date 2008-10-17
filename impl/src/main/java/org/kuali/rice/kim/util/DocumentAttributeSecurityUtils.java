@@ -39,7 +39,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class DocumentAttributeSecurityUtils {
 
-	public Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(
+	public static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(
 			MaintenanceDocumentEntry objectEntry) {
 		List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry
 				.getMaintainableSections();
@@ -53,7 +53,7 @@ public class DocumentAttributeSecurityUtils {
 		return fieldAttributeSecurities;
 	}
 
-	private Map<String, FieldAttributeSecurity> getRestrictionMaintainableFieldList(
+	private static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFieldList(
 			Map<String, FieldAttributeSecurity> returnList, List items, Class boClass,
 			String documentTypeName, String key) {
 		for (Object item: items) {

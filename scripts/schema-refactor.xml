@@ -382,9 +382,6 @@
         <column name="BLNKT_APPR_PLCY" size="10" type="VARCHAR"/>
         <column name="RPT_WRKGRP_ID" size="14" type="DECIMAL"/>
         <column name="ADV_DOC_SRCH_URL_ADDR" size="255" type="VARCHAR"/>
-        <column name="CSTM_ACTN_LIST_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
-        <column name="CSTM_ACTN_EMAIL_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
-        <column name="CSTM_DOC_NTE_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
         <column default="1" name="DOC_TYP_RTE_VER_NBR" required="true"
             size="2" type="VARCHAR"/>
         <column oldName="DOC_TYP_NOTIFY_ADDR" newName="NOTIFY_ADDR" size="255" type="VARCHAR"/>

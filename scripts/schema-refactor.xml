@@ -134,7 +134,7 @@
 			<index-column oldName="DOC_HDR_ID" newName="DOC_HDR_ID"/>
         </index>
     </table>
-    <table oldName="EN_APPL_CNST_T" newName="KREW_APPL_CNST_T">
+    <table oldName="EN_APPL_CNST_T" newName="KREW_APP_CNST_T">
         <column oldName="APPL_CNST_NM" newName="NM" primaryKey="true" size="100" type="VARCHAR"/>
         <column oldName="APPL_CNST_VAL_TXT" newName="VAL" size="2000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
@@ -234,7 +234,7 @@
         <column oldName="DOC_RTE_STAT_MDFN_DT" newName="RTE_STAT_MDFN_DT" type="DATE"/>
         <column oldName="DOC_RTE_LVL_MDFN_DT" newName="RTE_LVL_MDFN_DT" type="DATE"/>
         <column oldName="DOC_TTL" newName="TTL" size="255" type="VARCHAR"/>
-        <column oldName="DOC_APPL_DOC_ID" newName="APPL_DOC_ID" size="20" type="VARCHAR"/>
+        <column oldName="DOC_APPL_DOC_ID" newName="APP_DOC_ID" size="20" type="VARCHAR"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="DOC_INITR_PRSN_EN_ID" newName="INITR_PRNCPL_ID" required="true" size="30" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
@@ -264,7 +264,7 @@
             <index-column oldName="DOC_FNL_DT" newName="FNL_DT"/>
         </index>
         <index oldName="KREW_DOC_HDR_TI9" newName="KREW_DOC_HDR_TI9">
-            <index-column oldName="DOC_APPL_DOC_ID" newName="APPL_DOC_ID"/>
+            <index-column oldName="DOC_APPL_DOC_ID" newName="APP_DOC_ID"/>
         </index>
     </table>
     <table oldName="EN_DOC_NTE_T" newName="KREW_DOC_NTE_T">
@@ -470,7 +470,7 @@
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
     </table>
-    <table oldName="EN_RMV_RPLC_WRKGRP_T" newName="KREW_RMV_RPLC_WRKGRP_T">
+    <table oldName="EN_RMV_RPLC_WRKGRP_T" newName="KREW_RMV_RPLC_GRP_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column oldName="WRKGRP_ID" newName="GRP_ID" primaryKey="true" size="14" type="DECIMAL"/>
     </table>

@@ -1,5 +1,1771 @@
 ### Eclipse Workspace Patch 1.0
 #P rice
+Index: impl/src/main/java/org/kuali/rice/kns/bo/Country.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/Country.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/Country.java	(revision 0)
+@@ -0,0 +1,69 @@
++/*
++ * Copyright 2008 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.bo;
++
++import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
++
++
++public interface Country extends ExternalizableBusinessObject{
++
++    /**
++     * @param postalCountryCode - The postalCountryCode to set
++     */
++    public abstract void setPostalCountryCode(String postalCountryCode);
++
++    /**
++     * @return Returns the postalCountryCode
++     */
++    public abstract String getPostalCountryCode();
++
++    /**
++     * @param postalCountryName - The postalCountryName to set
++     */
++    public abstract void setPostalCountryName(String postalCountryName);
++
++    /**
++     * @return Returns the postalCountryName
++     */
++    public abstract String getPostalCountryName();
++
++    /**
++     * Gets the postalCountryRestrictedIndicator attribute.
++     * 
++     * @return Returns the postalCountryRestrictedIndicator.
++     */
++    public abstract boolean isPostalCountryRestrictedIndicator();
++
++    /**
++     * Sets the postalCountryRestrictedIndicator attribute value.
++     * 
++     * @param postalCountryRestrictedIndicator The postalCountryRestrictedIndicator to set.
++     */
++    public abstract void setPostalCountryRestrictedIndicator(boolean postalCountryRestrictedIndicator);
++
++    /**
++     * Gets the active attribute. 
++     * @return Returns the active.
++     */
++    public abstract boolean isActive();
++
++    /**
++     * Sets the active attribute value.
++     * @param active The active to set.
++     */
++    public abstract void setActive(boolean active);
++
++}
+\ No newline at end of file
+Index: impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql
+===================================================================
+--- impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(revision 4890)
++++ impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(working copy)
+@@ -11,3 +11,26 @@
+ CREATE INDEX KR_KNS_SESN_DOC_TI1 ON KR_KNS_SESN_DOC_T (
+         LST_UPDATE_DT )
+ /
++
++DELETE FROM SH_PARM_T WHERE 
++SH_PARM_NMSPC_CD = 'KFS-SYS' AND
++SH_PARM_DTL_TYP_CD IN ('PostalCode', 'Country', 'County', 'State')
++
++/
++
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','State','STATE', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fstatemaintenancedocument.htm','Help URL for State document.','A','FP_OPERATIONS')
++/
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','Country','COUNTRY', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fcountrymaintenancedocument.htm','Help URL for Chart Country.','A','FP_OPERATIONS')
++/
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','PostalCode','POSTAL_CODE', SYS_GUID(),1,'HELP','default.htm?turl=WordDocuments%2Fpostalcodemaintenancedocument.htm','Help URL for Postal Code document.','A','FP_OPERATIONS')
++/
++
++COMMIT
++/
++
+Index: impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl
+===================================================================
+--- impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl	(revision 0)
++++ impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl	(revision 0)
+@@ -0,0 +1,39 @@
++/*
++ * Copyright 2005-2006 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++CREATE TABLE KR_STATE_T 
++    (POSTAL_STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_STATE_NM VARCHAR2(40), 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TP1 
++PRIMARY KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TR1 
++FOREIGN KEY (POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTRY_T 
++/ 
++
++
++
+Index: impl/src/main/java/org/kuali/rice/kns/bo/PostalCodeImpl.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/PostalCodeImpl.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/PostalCodeImpl.java	(revision 0)
+@@ -0,0 +1,227 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package org.kuali.rice.kns.bo;
++
++import java.util.LinkedHashMap;
++
++import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
++import org.kuali.rice.kns.bo.Inactivateable;
++import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
++
++/**
++ * 
++ */
++public class PostalCodeImpl extends PersistableBusinessObjectBase implements Inactivateable, PostalCode {
++
++    private String postalCountryCode;
++    private String postalZipCode;
++    private String postalStateCode;
++    private String postalCityName;
++    private String buildingCode;
++    private String buildingRoomNumber;
++    private boolean active;
++    private String countyCode;
++
++    private State state;
++    private Country country;
++
++    /**
++     * Default no-arg constructor.
++     */
++    public PostalCodeImpl() {
++
++    }
++
++    /**
++     * Gets the postalZipCode attribute.
++     * 
++     * @return Returns the postalZipCode
++     */
++    public String getPostalZipCode() {
++        return postalZipCode;
++    }
++
++    /**
++     * Sets the postalZipCode attribute.
++     * 
++     * @param postalZipCode The postalZipCode to set.
++     */
++    public void setPostalZipCode(String postalZipCode) {
++        this.postalZipCode = postalZipCode;
++    }
++
++    /**
++     * Gets the postalStateCode attribute.
++     * 
++     * @return Returns the postalStateCode
++     */
++    public String getPostalStateCode() {
++        return postalStateCode;
++    }
++
++    /**
++     * Sets the postalStateCode attribute.
++     * 
++     * @param postalStateCode The postalStateCode to set.
++     */
++    public void setPostalStateCode(String postalStateCode) {
++        this.postalStateCode = postalStateCode;
++    }
++
++    /**
++     * Gets the postalCityName attribute.
++     * 
++     * @return Returns the postalCityName
++     */
++    public String getPostalCityName() {
++        return postalCityName;
++    }
++
++    /**
++     * Sets the postalCityName attribute.
++     * 
++     * @param postalCityName The postalCityName to set.
++     */
++    public void setPostalCityName(String postalCityName) {
++        this.postalCityName = postalCityName;
++    }
++
++    /**
++     * Gets the buildingCode attribute.
++     * 
++     * @return Returns the buildingCode
++     */
++    public String getBuildingCode() {
++        return buildingCode;
++    }
++
++    /**
++     * Sets the buildingCode attribute.
++     * 
++     * @param buildingCode The buildingCode to set.
++     */
++    public void setBuildingCode(String buildingCode) {
++        this.buildingCode = buildingCode;
++    }
++
++    /**
++     * Gets the buildingRoomNumber attribute.
++     * 
++     * @return Returns the buildingRoomNumber
++     */
++    public String getBuildingRoomNumber() {
++        return buildingRoomNumber;
++    }
++
++    /**
++     * Sets the buildingRoomNumber attribute.
++     * 
++     * @param buildingRoomNumber The buildingRoomNumber to set.
++     */
++    public void setBuildingRoomNumber(String buildingRoomNumber) {
++        this.buildingRoomNumber = buildingRoomNumber;
++    }
++
++    /**
++     * Gets the state attribute.
++     * 
++     * @return Returns the state.
++     */
++    public State getState() {
++        return state;
++    }
++
++    /**
++     * Sets the state attribute value.
++     * 
++     * @param state The state to set.
++     */
++    public void setState(State state) {
++        this.state = state;
++    }
++
++    /**
++     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
++     */
++    protected LinkedHashMap toStringMapper() {
++        LinkedHashMap m = new LinkedHashMap();
++        m.put("postalZipCode", this.postalZipCode);
++        return m;
++    }
++
++    /**
++     * Gets the active attribute.
++     * 
++     * @return Returns the active.
++     */
++    public boolean isActive() {
++        return active;
++    }
++
++    /**
++     * Sets the active attribute value.
++     * 
++     * @param active The active to set.
++     */
++    public void setActive(boolean active) {
++        this.active = active;
++    }
++
++    public String getCountyCode() {
++        return countyCode;
++    }
++
++    public void setCountyCode(String countyCode) {
++        this.countyCode = countyCode;
++    }
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public String getPostalCountryCode() {
++        return postalCountryCode;
++    }
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public void setPostalCountryCode(String postalCountryCode) {
++        this.postalCountryCode = postalCountryCode;
++    }
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public Country getCountry() {
++        return country;
++    }
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public void setCountry(Country country) {
++        this.country = country;
++    }
++}
+Index: impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl
+===================================================================
+--- impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl	(revision 0)
++++ impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl	(revision 0)
+@@ -0,0 +1,39 @@
++/*
++ * Copyright 2005-2006 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++CREATE TABLE KR_COUNTY_T 
++    (COUNTY_CD VARCHAR2(10) NOT NULL, 
++    STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    COUNTY_NM VARCHAR2(100), 
++    ACTV_IND VARCHAR2(1)) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TP1 
++PRIMARY KEY (COUNTY_CD, STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TR1 
++FOREIGN KEY (STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_STATE_T 
++/ 
++
++
+Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PostalCode.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PostalCode.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PostalCode.xml	(revision 0)
+@@ -0,0 +1,239 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="PostalCode" parent="PostalCode-parentBean" />
++
++  <bean id="PostalCode-parentBean" abstract="true" parent="BusinessObjectEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
++    <property name="inquiryDefinition" >
++      <ref bean="PostalCode-inquiryDefinition" />
++    </property>
++    <property name="lookupDefinition" >
++      <ref bean="PostalCode-lookupDefinition" />
++    </property>
++    <property name="titleAttribute" value="postalZipCode" />
++    <property name="objectLabel" value="Postal Code" />
++    <property name="attributes" >
++      <list>
++      	<ref bean="PostalCode-postalCountryCode" />
++        <ref bean="PostalCode-postalZipCode" />
++        <ref bean="PostalCode-postalStateCode" />
++        <ref bean="PostalCode-postalCityName" />
++        <ref bean="PostalCode-buildingCode" />
++        <ref bean="PostalCode-buildingRoomNumber" />
++        <ref bean="PostalCode-active" />
++        <ref bean="PostalCode-countyCode" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Attribute Definitions -->
++  <bean id="PostalCode-postalCountryCode" parent="Country-postalCountryCode-parentBean" />
++
++  <bean id="PostalCode-postalZipCode" parent="PostalCode-postalZipCode-parentBean" />
++
++  <bean id="PostalCode-postalZipCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalZipCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="Postal Code" />
++    <property name="shortLabel" value="Zip" />
++    <property name="maxLength" value="20" />
++    <property name="validationPattern" >
++      <bean parent="ZipcodeValidationPattern" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="15" />
++    </property>
++    <property name="summary" value="Postal Code" />
++    <property name="description" value="Postal Code either in 5-4 format or just 5 digits" />
++  </bean>
++  <bean id="PostalCode-postalStateCode" parent="PostalCode-postalStateCode-parentBean" />
++
++  <bean id="PostalCode-postalStateCode-parentBean" abstract="true" parent="State-postalStateCode">
++    <property name="label" value="State" />
++    <property name="shortLabel" value="State" />
++    <property name="summary" value="State" />
++    <property name="description" value="Postal State Code" />
++  </bean>
++  <bean id="PostalCode-postalCityName" parent="PostalCode-postalCityName-parentBean" />
++
++  <bean id="PostalCode-postalCityName-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalCityName" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="City Name" />
++    <property name="shortLabel" value="City Name" />
++    <property name="maxLength" value="30" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="35" />
++    </property>
++    <property name="summary" value="City Name" />
++    <property name="description" value="City Name" />
++  </bean>
++  <bean id="PostalCode-buildingCode" parent="PostalCode-buildingCode-parentBean" />
++
++  <bean id="PostalCode-buildingCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="buildingCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="Building Code" />
++    <property name="shortLabel" value="Building" />
++    <property name="maxLength" value="4" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="6" />
++    </property>
++    <property name="summary" value="Building Code" />
++    <property name="description" value="Building Code" />
++  </bean>
++  <bean id="PostalCode-buildingRoomNumber" parent="PostalCode-buildingRoomNumber-parentBean" />
++
++  <bean id="PostalCode-buildingRoomNumber-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="buildingRoomNumber" />
++    <property name="forceUppercase" value="false" />
++    <property name="label" value="Building Room Number" />
++    <property name="shortLabel" value="Building Room Number" />
++    <property name="maxLength" value="8" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="10" />
++    </property>
++    <property name="summary" value="Building Room Number" />
++    <property name="description" value="Building Room Number" />
++  </bean>
++  <bean id="PostalCode-active" parent="PostalCode-active-parentBean" />
++
++  <bean id="PostalCode-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
++    <property name="name" value="active" />
++  </bean>
++
++  <bean id="PostalCode-countyCode" parent="PostalCode-countyCode-parentBean" />
++  
++  <bean id="PostalCode-countyCode-parentBean" abstract="true" parent="AttributeDefinition">
++  	<property name="name" value="countyCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="County Code" />
++    <property name="shortLabel" value="County" />
++    <property name="maxLength" value="10" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="10" />
++    </property>
++    <property name="summary" value="County Code" />
++    <property name="description" value="County Code" />
++  </bean>
++<!-- Business Object Inquiry Definition -->
++
++
++  <bean id="PostalCode-inquiryDefinition" parent="PostalCode-inquiryDefinition-parentBean" />
++
++  <bean id="PostalCode-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
++    <property name="title" value="Postal Code Inquiry" />
++    <property name="inquirySections" >
++      <list>
++        <bean parent="InquirySectionDefinition">
++          <property name="title" value="" />
++          <property name="numberOfColumns" value="1" />
++          <property name="inquiryFields" >
++            <list>
++              <bean parent="FieldDefinition"
++              		p:attributeName="postalCountryCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalZipCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalStateCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalCityName" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="buildingCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="buildingRoomNumber" />
++              <bean parent="FieldDefinition"
++              		p:attributeName="countyCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="active" />
++            </list>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Business Object Lookup Definition -->
++
++
++  <bean id="PostalCode-lookupDefinition" parent="PostalCode-lookupDefinition-parentBean" />
++
++  <bean id="PostalCode-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
++    <property name="title" value="Postal Code Lookup" />
++    <property name="instructions" value="Lookup a Postal Code" />
++    <property name="defaultSort" >
++      <bean parent="SortDefinition">
++        <property name="attributeNames" >
++          <list>
++            <value>postalZipCode</value>
++          </list>
++        </property>
++      </bean>
++    </property>
++    <property name="lookupFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalZipCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCityName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="buildingCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="buildingRoomNumber" />
++        <bean parent="FieldDefinition"
++              p:attributeName="countyCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++    <property name="resultFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalZipCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCityName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="buildingCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="buildingRoomNumber" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++  </bean>
++</beans>
+Index: impl/src/main/java/org/kuali/rice/kns/bo/State.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/State.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/State.java	(revision 0)
+@@ -0,0 +1,98 @@
++/*
++ * Copyright 2008 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.bo;
++
++import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
++
++
++public interface State extends ExternalizableBusinessObject{
++
++    /**
++     * Gets the postalStateCode attribute.
++     * 
++     * @return Returns the postalStateCode
++     */
++    public abstract String getPostalStateCode();
++
++    /**
++     * Sets the postalStateCode attribute.
++     * 
++     * @param postalStateCode The postalStateCode to set.
++     */
++    public abstract void setPostalStateCode(String postalStateCode);
++
++    /**
++     * Gets the postalStateName attribute.
++     * 
++     * @return Returns the postalStateName
++     */
++    public abstract String getPostalStateName();
++
++    /**
++     * Sets the postalStateName attribute.
++     * 
++     * @param postalStateName The postalStateName to set.
++     */
++    public abstract void setPostalStateName(String postalStateName);
++
++    /**
++     * @return Returns the code and description in format: xx - xxxxxxxxxxxxxxxx
++     */
++    public abstract String getCodeAndDescription();
++
++    /**
++     * Gets the active attribute.
++     * 
++     * @return Returns the active.
++     */
++    public abstract boolean isActive();
++
++    /**
++     * Sets the active attribute value.
++     * 
++     * @param active The active to set.
++     */
++    public abstract void setActive(boolean active);
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public abstract String getPostalCountryCode();
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public abstract void setPostalCountryCode(String postalCountryCode);
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public abstract Country getCountry();
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public abstract void setCountry(Country country);
++
++}
+\ No newline at end of file
+Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml	(revision 0)
+@@ -0,0 +1,176 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="County" parent="County-parentBean" />
++
++  <bean id="County-parentBean" abstract="true" parent="BusinessObjectEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountyImpl" />
++    <property name="inquiryDefinition" >
++      <ref bean="County-inquiryDefinition" />
++    </property>
++    <property name="lookupDefinition" >
++      <ref bean="County-lookupDefinition" />
++    </property>
++    <property name="titleAttribute" value="countyCode" />
++    <property name="objectLabel" value="County" />
++    <property name="attributes" >
++      <list>
++      	<ref bean="County-postalCountryCode" />
++        <ref bean="County-countyCode" />
++        <ref bean="County-stateCode" />
++        <ref bean="County-countyName" />
++        <ref bean="County-active" />
++      </list>
++    </property>
++  </bean>
++  
++  <bean id="County-postalCountryCode" parent="Country-postalCountryCode-parentBean" />
++  
++  <bean id="County-countyCode" parent="County-countyCode-parentBean" />
++
++  <bean id="County-countyCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="countyCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="County Code" />
++    <property name="shortLabel" value="County Cd." />
++    <property name="maxLength" value="10" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"/>
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="10" />
++    </property>
++    <property name="summary" value="County Abbreviation" />
++    <property name="description" value="The ten digit code for a County" />
++  </bean>
++  
++  <bean id="County-stateCode" parent="County-stateCode-parentBean" />
++
++  <bean id="County-stateCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="stateCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="State Abbreviation" />
++    <property name="shortLabel" value="State Abbr." />
++    <property name="maxLength" value="2" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:exactLength="2" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="2" />
++    </property>
++    <property name="summary" value="State Abbreviation" />
++    <property name="description" value="The two digit code for a state" />
++  </bean>
++  
++  <bean id="County-countyName" parent="County-countyName-parentBean" />
++
++  <bean id="County-countyName-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="countyName" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="County Name" />
++    <property name="shortLabel" value="County Name" />
++    <property name="maxLength" value="100" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="25" />
++    </property>
++    <property name="summary" value="County Name" />
++    <property name="description" value="The name assigned to this County." />
++  </bean>
++  
++  <bean id="County-active" parent="County-active-parentBean" />
++
++  <bean id="County-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
++    <property name="name" value="active" />
++  </bean>
++  
++
++  <bean id="County-inquiryDefinition" parent="County-inquiryDefinition-parentBean" />
++
++  <bean id="County-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
++    <property name="title" value="County Inquiry" />
++    <property name="inquirySections" >
++      <list>
++        <bean parent="InquirySectionDefinition">
++          <property name="title" value="" />
++          <property name="numberOfColumns" value="1" />
++          <property name="inquiryFields" >
++            <list>
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalCountryCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="countyCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="stateCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="countyName" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="active" />
++            </list>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Business Object Lookup Definition -->
++
++
++  <bean id="County-lookupDefinition" parent="County-lookupDefinition-parentBean" />
++
++  <bean id="County-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
++    <property name="title" value="County Code Lookup" />
++    <property name="instructions" value="Lookup a County" />
++    <property name="defaultSort" >
++      <bean parent="SortDefinition">
++        <property name="attributeNames" >
++          <list>
++            <value>countyCode</value>
++          </list>
++        </property>
++      </bean>
++    </property>
++    <property name="lookupFields" >
++      <list>
++      	<bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="countyCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="stateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="countyName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++    <property name="resultFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="countyCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="stateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="countyName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++  </bean>
++</beans>
++  
+\ No newline at end of file
+Index: impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl
+===================================================================
+--- impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl	(revision 0)
++++ impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl	(revision 0)
+@@ -0,0 +1,32 @@
++/*
++ * Copyright 2005-2006 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++CREATE TABLE KR_COUNTRY_T 
++    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_CNTRY_NM VARCHAR2(40), 
++    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL, 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TP1 
++PRIMARY KEY (POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++
+Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml	(revision 0)
+@@ -0,0 +1,92 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="StateMaintenanceDocument" parent="StateMaintenanceDocument-parentBean" />
++
++  <bean id="StateMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.StateImpl" />
++    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
++    <property name="maintainableSections" >
++      <list>
++        <ref bean="StateMaintenanceDocument-EditStates" />
++      </list>
++    </property>
++    <property name="defaultExistenceChecks" >
++      <list>
++        <bean parent="ReferenceDefinition"
++              p:attributeName="country"
++              p:attributeToHighlightOnFail="postalCountryCode" />
++      </list>
++    </property>    
++    <property name="lockingKeys" >
++      <list>
++      	<value>postalCountryCode</value>
++        <value>postalStateCode</value>
++      </list>
++    </property>
++    <property name="label" value="State" />
++    <property name="shortLabel" value="State" />
++    <property name="summary" value="State maintenance document" />
++    <property name="description" value="Document used to create or update State objects" />
++    <property name="helpDefinition" >
++      <bean parent="HelpDefinition"
++            p:parameterNamespace="KR-NS"
++            p:parameterName="STATE"
++            p:parameterDetailType="State" />
++    </property>
++    <property name="documentTypeName" value="StateMaintenanceDocument" />
++    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
++    <property name="documentTypeCode" value="STAT" />
++    <property name="workflowProperties" >
++      <ref bean="StateMaintenanceDocument-workflowProperties" />
++    </property>
++    <property name="authorizations" >
++      <list>
++        <bean parent="AuthorizationDefinition">
++          <property name="action" value="initiate" />
++          <property name="authorizedGroups" >
++            <set>
++              <value>SY_MAINTENANCE_USERS</value>
++            </set>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Maintenance Section Definitions -->
++
++
++  <bean id="StateMaintenanceDocument-EditStates" parent="StateMaintenanceDocument-EditStates-parentBean" />
++
++  <bean id="StateMaintenanceDocument-EditStates-parentBean" abstract="true" parent="MaintainableSectionDefinition">
++    <property name="id" value="Edit States" />
++    <property name="title" value="Edit States" />
++    <property name="maintainableItems" >
++      <list>
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalStateCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalStateName"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="active" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Exported Workflow Properties -->
++
++
++  <bean id="StateMaintenanceDocument-workflowProperties" parent="StateMaintenanceDocument-workflowProperties-parentBean" />
++
++  <bean id="StateMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
++  </bean>
++</beans>
+Index: impl/src/main/java/org/kuali/rice/kns/bo/CountryImpl.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/CountryImpl.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/CountryImpl.java	(revision 0)
+@@ -0,0 +1,115 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.bo;
++
++import java.util.LinkedHashMap;
++
++import org.kuali.rice.kns.bo.Inactivateable;
++import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
++
++/**
++ *
++ */
++
++public class CountryImpl extends PersistableBusinessObjectBase implements Inactivateable, Country{
++
++    private String postalCountryCode;
++    private String postalCountryName;
++    private boolean postalCountryRestrictedIndicator;
++    private boolean active;
++
++    /**
++     * Default no-arg constructor.
++     */
++
++    public CountryImpl() {
++        super();
++    }
++
++    /**
++     * @param postalCountryCode - The postalCountryCode to set
++     */
++    public void setPostalCountryCode(String postalCountryCode) {
++        this.postalCountryCode = postalCountryCode;
++    }
++
++    /**
++     * @return Returns the postalCountryCode
++     */
++    public String getPostalCountryCode() {
++        return postalCountryCode;
++    }
++
++    /**
++     * @param postalCountryName - The postalCountryName to set
++     */
++    public void setPostalCountryName(String postalCountryName) {
++        this.postalCountryName = postalCountryName;
++    }
++
++    /**
++     * @return Returns the postalCountryName
++     */
++    public String getPostalCountryName() {
++        return postalCountryName;
++    }
++
++    /**
++     * Gets the postalCountryRestrictedIndicator attribute.
++     * 
++     * @return Returns the postalCountryRestrictedIndicator.
++     */
++    public boolean isPostalCountryRestrictedIndicator() {
++        return postalCountryRestrictedIndicator;
++    }
++
++    /**
++     * Sets the postalCountryRestrictedIndicator attribute value.
++     * 
++     * @param postalCountryRestrictedIndicator The postalCountryRestrictedIndicator to set.
++     */
++    public void setPostalCountryRestrictedIndicator(boolean postalCountryRestrictedIndicator) {
++        this.postalCountryRestrictedIndicator = postalCountryRestrictedIndicator;
++    }
++
++    /**
++     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
++     */
++    protected LinkedHashMap toStringMapper() {
++        LinkedHashMap m = new LinkedHashMap();
++
++        m.put("postalCountryCode", getPostalCountryCode());
++
++        return m;
++    }
++
++    /**
++     * Gets the active attribute. 
++     * @return Returns the active.
++     */
++    public boolean isActive() {
++        return active;
++    }
++
++    /**
++     * Sets the active attribute value.
++     * @param active The active to set.
++     */
++    public void setActive(boolean active) {
++        this.active = active;
++    }
++
++}
+Index: impl/src/main/java/org/kuali/rice/kns/bo/County.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/County.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/County.java	(revision 0)
+@@ -0,0 +1,70 @@
++/*
++ * Copyright 2008 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.bo;
++
++import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
++
++public interface County extends ExternalizableBusinessObject{
++
++    public abstract State getState();
++
++    public abstract void setState(State state);
++
++    public abstract boolean isActive();
++
++    public abstract void setActive(boolean active);
++
++    public abstract String getCountyName();
++
++    public abstract void setCountyName(String countName);
++
++    public abstract String getCountyCode();
++
++    public abstract void setCountyCode(String countyCode);
++
++    public abstract String getStateCode();
++
++    public abstract void setStateCode(String stateCode);
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public abstract String getPostalCountryCode();
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public abstract void setPostalCountryCode(String postalCountryCode);
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public abstract Country getCountry();
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public abstract void setCountry(Country country);
++
++}
+\ No newline at end of file
+Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml	(revision 0)
+@@ -0,0 +1,107 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="PostalCodeMaintenanceDocument" parent="PostalCodeMaintenanceDocument-parentBean" />
++
++  <bean id="PostalCodeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
++    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
++    <property name="maintainableSections" >
++      <list>
++        <ref bean="PostalCodeMaintenanceDocument-EditPostalCodes" />
++      </list>
++    </property>
++    <property name="defaultExistenceChecks" >
++      <list>
++      	<bean parent="ReferenceDefinition"
++              p:attributeName="country"
++              p:attributeToHighlightOnFail="postalCountryCode" />
++        <bean parent="ReferenceDefinition"
++              p:attributeName="state"
++              p:attributeToHighlightOnFail="postalStateCode" />
++      </list>
++    </property>
++    <property name="lockingKeys" >
++      <list>
++      	<value>postalCountryCode</value>
++        <value>postalZipCode</value>
++      </list>
++    </property>
++    <property name="label" value="Postal Code" />
++    <property name="shortLabel" value="Postal Code" />
++    <property name="summary" value="Postal Code maintenance document" />
++    <property name="description" value="Document used to create or update Postal Code objects" />
++    <property name="helpDefinition" >
++      <bean parent="HelpDefinition"
++            p:parameterNamespace="KR-NS"
++            p:parameterName="POSTAL_CODE"
++            p:parameterDetailType="PostalCode" />
++    </property>
++    <property name="documentTypeName" value="PostalCodeMaintenanceDocument" />
++    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
++    <property name="documentTypeCode" value="ZIPC" />
++    <property name="workflowProperties" >
++      <ref bean="PostalCodeMaintenanceDocument-workflowProperties" />
++    </property>
++    <property name="authorizations" >
++      <list>
++        <bean parent="AuthorizationDefinition">
++          <property name="action" value="initiate" />
++          <property name="authorizedGroups" >
++            <set>
++              <value>SY_MAINTENANCE_USERS</value>
++            </set>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Maintenance Section Definitions -->
++
++
++  <bean id="PostalCodeMaintenanceDocument-EditPostalCodes" parent="PostalCodeMaintenanceDocument-EditPostalCodes-parentBean" />
++
++  <bean id="PostalCodeMaintenanceDocument-EditPostalCodes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
++    <property name="id" value="Edit Postal Codes" />
++    <property name="title" value="Edit Postal Codes" />
++    <property name="maintainableItems" >
++      <list>
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalZipCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalStateCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="countyCode" />              
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCityName"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="buildingCode" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="buildingRoomNumber" />
++        <bean parent="MaintainableFieldDefinition"
++              p:defaultValue="true"
++              p:name="active" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="versionNumber" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Exported Workflow Properties -->
++
++
++  <bean id="PostalCodeMaintenanceDocument-workflowProperties" parent="PostalCodeMaintenanceDocument-workflowProperties-parentBean" />
++
++  <bean id="PostalCodeMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
++  </bean>
++</beans>
+Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/State.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/State.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/State.xml	(revision 0)
+@@ -0,0 +1,166 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="State" parent="State-parentBean" />
++
++  <bean id="State-parentBean" abstract="true" parent="BusinessObjectEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.StateImpl" />
++    <property name="inquiryDefinition" >
++      <ref bean="State-inquiryDefinition" />
++    </property>
++    <property name="lookupDefinition" >
++      <ref bean="State-lookupDefinition" />
++    </property>
++    <property name="titleAttribute" value="postalStateCode" />
++    <property name="objectLabel" value="State" />
++    <property name="attributes" >
++      <list>
++        <ref bean="State-postalCountryCode" />
++        <ref bean="State-postalStateCode" />
++        <ref bean="State-postalStateName" />
++        <ref bean="State-codeAndDescription" />
++        <ref bean="State-active" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Attribute Definitions -->
++  <bean id="State-postalCountryCode" parent="Country-postalCountryCode-parentBean" />
++
++  <bean id="State-postalStateCode" parent="State-postalStateCode-parentBean" />
++
++  <bean id="State-postalStateCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalStateCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="State Abbreviation" />
++    <property name="shortLabel" value="State Abbr." />
++    <property name="maxLength" value="2" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:exactLength="2" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="2" />
++    </property>
++    <property name="summary" value="State Abbreviation" />
++    <property name="description" value="The two digit code for a state" />
++  </bean>
++  <bean id="State-postalStateName" parent="State-postalStateName-parentBean" />
++
++  <bean id="State-postalStateName-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalStateName" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="State Name" />
++    <property name="shortLabel" value="State Name" />
++    <property name="maxLength" value="40" />
++    <property name="validationPattern" >
++      <bean parent="AnyCharacterValidationPattern"
++            p:allowWhitespace="true" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="25" />
++    </property>
++    <property name="summary" value="State Name" />
++    <property name="description" value="The name assigned to this state." />
++  </bean>
++  <bean id="State-codeAndDescription" parent="State-codeAndDescription-parentBean" />
++
++  <bean id="State-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="codeAndDescription" />
++    <property name="forceUppercase" value="false" />
++    <property name="label" value="State Code" />
++    <property name="shortLabel" value="State Code" />
++    <property name="maxLength" value="45" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="45" />
++    </property>
++    <property name="summary" value="State Code" />
++    <property name="description" value="State Code" />
++  </bean>
++  <bean id="State-active" parent="State-active-parentBean" />
++
++  <bean id="State-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
++    <property name="name" value="active" />
++  </bean>
++
++
++<!-- Business Object Inquiry Definition -->
++
++
++  <bean id="State-inquiryDefinition" parent="State-inquiryDefinition-parentBean" />
++
++  <bean id="State-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
++    <property name="title" value="State Inquiry" />
++    <property name="inquirySections" >
++      <list>
++        <bean parent="InquirySectionDefinition">
++          <property name="title" value="" />
++          <property name="numberOfColumns" value="1" />
++          <property name="inquiryFields" >
++            <list>
++              <bean parent="FieldDefinition"
++              		p:attributeName="postalCountryCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalStateCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalStateName" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="active" />
++            </list>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Business Object Lookup Definition -->
++
++
++  <bean id="State-lookupDefinition" parent="State-lookupDefinition-parentBean" />
++
++  <bean id="State-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
++    <property name="title" value="State Code Lookup" />
++    <property name="instructions" value="Lookup a State" />
++    <property name="defaultSort" >
++      <bean parent="SortDefinition">
++        <property name="attributeNames" >
++          <list>
++            <value>postalStateCode</value>
++          </list>
++        </property>
++      </bean>
++    </property>
++    <property name="lookupFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++    <property name="resultFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalStateName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++  </bean>
++</beans>
+Index: impl/src/main/java/org/kuali/rice/kns/bo/CountyImpl.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/CountyImpl.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/CountyImpl.java	(revision 0)
+@@ -0,0 +1,101 @@
++package org.kuali.rice.kns.bo;
++
++import java.util.LinkedHashMap;
++
++import org.kuali.rice.kns.bo.Inactivateable;
++import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
++
++public class CountyImpl extends PersistableBusinessObjectBase implements Inactivateable, County {
++
++    private String postalCountryCode;
++    private String countyCode;
++    private String stateCode;
++    private String countyName;
++    private boolean active;
++
++    private State state;
++    private Country country;
++
++    public State getState() {
++        return state;
++    }
++
++    public void setState(State state) {
++        this.state = state;
++    }
++
++    public boolean isActive() {
++        return active;
++    }
++
++    public void setActive(boolean active) {
++        this.active = active;
++    }
++
++    public String getCountyName() {
++        return countyName;
++    }
++
++    public void setCountyName(String countName) {
++        this.countyName = countName;
++    }
++
++    public String getCountyCode() {
++        return countyCode;
++    }
++
++    public void setCountyCode(String countyCode) {
++        this.countyCode = countyCode;
++    }
++
++    public String getStateCode() {
++        return stateCode;
++    }
++
++    public void setStateCode(String stateCode) {
++        this.stateCode = stateCode;
++    }
++
++    protected LinkedHashMap toStringMapper() {
++        LinkedHashMap m = new LinkedHashMap();
++        m.put("countyCode", this.countyCode);
++        m.put("stateCode", this.stateCode);
++        return m;
++    }
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public String getPostalCountryCode() {
++        return postalCountryCode;
++    }
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public void setPostalCountryCode(String postalCountryCode) {
++        this.postalCountryCode = postalCountryCode;
++    }
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public Country getCountry() {
++        return country;
++    }
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public void setCountry(Country country) {
++        this.country = country;
++    }
++}
+Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml	(revision 0)
+@@ -0,0 +1,86 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="CountryMaintenanceDocument" parent="CountryMaintenanceDocument-parentBean" />
++
++  <bean id="CountryMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountryImpl" />
++    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
++    <property name="maintainableSections" >
++      <list>
++        <ref bean="CountryMaintenanceDocument-EditCountry" />
++      </list>
++    </property>
++    <property name="lockingKeys" >
++      <list>
++        <value>postalCountryCode</value>
++      </list>
++    </property>
++    <property name="label" value="Country" />
++    <property name="shortLabel" value="Country" />
++    <property name="summary" value="Country maintenance document" />
++    <property name="description" value="Document used to create or update Country objects" />
++    <property name="helpDefinition" >
++      <bean parent="HelpDefinition"
++            p:parameterNamespace="KR-NS"
++            p:parameterName="COUNTRY"
++            p:parameterDetailType="Country" />
++    </property>
++    <property name="documentTypeName" value="CountryMaintenanceDocument" />
++    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
++    <property name="documentTypeCode" value="CTRY" />
++    <property name="workflowProperties" >
++      <ref bean="CountryMaintenanceDocument-workflowProperties" />
++    </property>
++    <property name="authorizations" >
++      <list>
++        <bean parent="AuthorizationDefinition">
++          <property name="action" value="initiate" />
++          <property name="authorizedGroups" >
++            <set>
++              <value>SY_MAINTENANCE_USERS</value>
++            </set>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Maintenance Section Definitions -->
++
++
++  <bean id="CountryMaintenanceDocument-EditCountry" parent="CountryMaintenanceDocument-EditCountry-parentBean" />
++
++  <bean id="CountryMaintenanceDocument-EditCountry-parentBean" abstract="true" parent="MaintainableSectionDefinition">
++    <property name="id" value="Edit Country" />
++    <property name="title" value="Edit Country" />
++    <property name="maintainableItems" >
++      <list>
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryName"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryRestrictedIndicator"
++              p:defaultValue="false"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:defaultValue="true" 
++              p:name="active" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Exported Workflow Properties -->
++
++
++  <bean id="CountryMaintenanceDocument-workflowProperties" parent="CountryMaintenanceDocument-workflowProperties-parentBean" />
++
++  <bean id="CountryMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
++  </bean>
++</beans>
 Index: impl/src/main/config/ddl/tables/KR_POSTAL_CODE_T.table.ddl
 ===================================================================
 --- impl/src/main/config/ddl/tables/KR_POSTAL_CODE_T.table.ddl	(revision 0)
@@ -56,13 +1822,189 @@ Index: impl/src/main/config/ddl/tables/KR_POSTAL_CODE_T.table.ddl
 +REFERENCES KR_COUNTY_T 
 +/ 
 +
-Index: impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl
+Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 ===================================================================
---- impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl	(revision 0)
-+++ impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl	(revision 0)
-@@ -0,0 +1,39 @@
+--- impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml	(revision 4996)
++++ impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml	(working copy)
+@@ -372,5 +372,69 @@
+ 	    <field-descriptor name="lastUpdatedDate" column="LST_UPDATE_DT" jdbc-type="TIMESTAMP" index="true" />
+   </class-descriptor>
+   
++  <class-descriptor class="org.kuali.kfs.sys.businessobject.CountryImpl" table="KR_COUNTRY_T">
++	    <field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
++    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
++    	<field-descriptor name="postalCountryName" column="POSTAL_CNTRY_NM" jdbc-type="VARCHAR" />
++    	<field-descriptor name="postalCountryRestrictedIndicator" column="PSTL_CNTRY_RSTRC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
++		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
++  </class-descriptor>
++
++  <class-descriptor class="org.kuali.kfs.sys.businessobject.StateImpl" table="KR_STATE_T">
++		<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    	<field-descriptor name="postalStateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    	<field-descriptor name="postalStateName" column="POSTAL_STATE_NM" jdbc-type="VARCHAR" />
++    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
++    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
++		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
++	
++		<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++        	<foreignkey field-ref="postalCountryCode" />
++    	</reference-descriptor>
++  </class-descriptor>
++
++  <class-descriptor class="org.kuali.kfs.sys.businessobject.PostalCodeImpl" table="KR_POSTAL_CODE_T">
++		<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    	<field-descriptor name="postalZipCode" column="POSTAL_ZIP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    	<field-descriptor name="postalStateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" />
++    	<field-descriptor name="postalCityName" column="POSTAL_CITY_NM" jdbc-type="VARCHAR" />
++    	<field-descriptor name="buildingCode" column="BLDG_CD" jdbc-type="VARCHAR" />
++    	<field-descriptor name="buildingRoomNumber" column="BLDG_ROOM_NBR" jdbc-type="VARCHAR" />
++    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
++    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
++		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
++		<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" />
++	
++		<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++        	<foreignkey field-ref="postalCountryCode" />
++    	</reference-descriptor>
++    
++    	<reference-descriptor name="state" class-ref="org.kuali.kfs.sys.businessobject.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++        	<foreignkey field-ref="postalCountryCode" />
++        	<foreignkey field-ref="postalStateCode" />
++    	</reference-descriptor>
++  </class-descriptor>
++
++<class-descriptor class="org.kuali.kfs.sys.businessobject.CountyImpl" table="KR_COUNTY_T" >
++	<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++	<field-descriptor name="stateCode" column="STATE_CD"  jdbc-type="VARCHAR" primarykey="true" index="true" />
++	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
++    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
++	<field-descriptor name="countyName" column="COUNTY_NM" jdbc-type="VARCHAR" />
++	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
++	
++	<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++        <foreignkey field-ref="postalCountryCode" />
++    </reference-descriptor>
++	
++	<reference-descriptor name="state" class-ref="org.kuali.kfs.sys.businessobject.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++        <foreignkey field-ref="postalCountryCode" />
++        <foreignkey field-ref="stateCode" />
++    </reference-descriptor>
++</class-descriptor>
++
+   
++  
+ </descriptor-repository>
+\ No newline at end of file
+Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml	(revision 0)
+@@ -0,0 +1,96 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="CountyMaintenanceDocument" parent="CountyMaintenanceDocument-parentBean" />
++
++  <bean id="CountyMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountyImpl" />
++    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
++    <property name="maintainableSections" >
++      <list>
++        <ref bean="CountyMaintenanceDocument-EditCounties" />
++      </list>
++    </property>
++    <property name="defaultExistenceChecks" >
++      <list>
++        <bean parent="ReferenceDefinition"
++              p:attributeName="country"
++              p:attributeToHighlightOnFail="postalCountryCode" />
++      </list>
++    </property>    
++    <property name="lockingKeys" >
++      <list>
++      	<value>postalCountryCode</value>
++        <value>countyCode</value>
++        <value>stateCode</value>
++      </list>
++    </property>
++    <property name="label" value="County" />
++    <property name="shortLabel" value="County" />
++    <property name="summary" value="County maintenance document" />
++    <property name="description" value="Document used to create or update County objects" />
++    <!--  <property name="helpDefinition" >
++      <bean parent="HelpDefinition"
++            p:parameterNamespace="KR-NS"
++            p:parameterName="COUNTY"
++            p:parameterDetailType="County" /> 
++    </property> -->
++    <property name="documentTypeName" value="CountyMaintenanceDocument" />
++    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
++    <property name="documentTypeCode" value="CNTY" />
++    <property name="workflowProperties" >
++      <ref bean="CountyMaintenanceDocument-workflowProperties" />
++    </property>
++    <property name="authorizations" >
++      <list>
++        <bean parent="AuthorizationDefinition">
++          <property name="action" value="initiate" />
++          <property name="authorizedGroups" >
++            <set>
++              <value>SY_MAINTENANCE_USERS</value>
++            </set>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Maintenance Section Definitions -->
++
++
++  <bean id="CountyMaintenanceDocument-EditCounties" parent="CountyMaintenanceDocument-EditCounties-parentBean" />
++
++  <bean id="CountyMaintenanceDocument-EditCounties-parentBean" abstract="true" parent="MaintainableSectionDefinition">
++    <property name="id" value="Edit Counties" />
++    <property name="title" value="Edit Counties" />
++    <property name="maintainableItems" >
++      <list>
++        <bean parent="MaintainableFieldDefinition"
++              p:name="postalCountryCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="countyCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="stateCode"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="countyName"
++              p:required="true" />
++        <bean parent="MaintainableFieldDefinition"
++              p:name="active" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Exported Workflow Properties -->
++
++
++  <bean id="CountyMaintenanceDocument-workflowProperties" parent="CountyMaintenanceDocument-workflowProperties-parentBean" />
++
++  <bean id="CountyMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
++  </bean>
++</beans>
+Index: impl/src/main/java/org/kuali/rice/kns/bo/PostalCode.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/bo/PostalCode.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/PostalCode.java	(revision 0)
+@@ -0,0 +1,153 @@
 +/*
-+ * Copyright 2005-2006 The Kuali Foundation.
++ * Copyright 2008 The Kuali Foundation.
 + * 
 + * Licensed under the Educational Community License, Version 1.0 (the "License");
 + * you may not use this file except in compliance with the License.
@@ -76,37 +2018,152 @@ Index: impl/src/main/config/ddl/tables/KR_STATE_T.table.ddl
 + * See the License for the specific language governing permissions and
 + * limitations under the License.
 + */
-+CREATE TABLE KR_STATE_T 
-+    (POSTAL_STATE_CD VARCHAR2(2) NOT NULL, 
-+    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    POSTAL_STATE_NM VARCHAR2(40), 
-+    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TP1 
-+PRIMARY KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TR1 
-+FOREIGN KEY (POSTAL_CNTRY_CD) 
-+REFERENCES KR_COUNTRY_T 
-+/ 
++package org.kuali.rice.kns.bo;
++
++import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 +
 +
++public interface PostalCode extends ExternalizableBusinessObject{
 +
-Index: impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl
++    /**
++     * Gets the postalZipCode attribute.
++     * 
++     * @return Returns the postalZipCode
++     */
++    public abstract String getPostalZipCode();
++
++    /**
++     * Sets the postalZipCode attribute.
++     * 
++     * @param postalZipCode The postalZipCode to set.
++     */
++    public abstract void setPostalZipCode(String postalZipCode);
++
++    /**
++     * Gets the postalStateCode attribute.
++     * 
++     * @return Returns the postalStateCode
++     */
++    public abstract String getPostalStateCode();
++
++    /**
++     * Sets the postalStateCode attribute.
++     * 
++     * @param postalStateCode The postalStateCode to set.
++     */
++    public abstract void setPostalStateCode(String postalStateCode);
++
++    /**
++     * Gets the postalCityName attribute.
++     * 
++     * @return Returns the postalCityName
++     */
++    public abstract String getPostalCityName();
++
++    /**
++     * Sets the postalCityName attribute.
++     * 
++     * @param postalCityName The postalCityName to set.
++     */
++    public abstract void setPostalCityName(String postalCityName);
++
++    /**
++     * Gets the buildingCode attribute.
++     * 
++     * @return Returns the buildingCode
++     */
++    public abstract String getBuildingCode();
++
++    /**
++     * Sets the buildingCode attribute.
++     * 
++     * @param buildingCode The buildingCode to set.
++     */
++    public abstract void setBuildingCode(String buildingCode);
++
++    /**
++     * Gets the buildingRoomNumber attribute.
++     * 
++     * @return Returns the buildingRoomNumber
++     */
++    public abstract String getBuildingRoomNumber();
++
++    /**
++     * Sets the buildingRoomNumber attribute.
++     * 
++     * @param buildingRoomNumber The buildingRoomNumber to set.
++     */
++    public abstract void setBuildingRoomNumber(String buildingRoomNumber);
++
++    /**
++     * Gets the state attribute.
++     * 
++     * @return Returns the state.
++     */
++    public abstract State getState();
++
++    /**
++     * Sets the state attribute value.
++     * 
++     * @param state The state to set.
++     */
++    public abstract void setState(State state);
++
++    /**
++     * Gets the active attribute.
++     * 
++     * @return Returns the active.
++     */
++    public abstract boolean isActive();
++
++    /**
++     * Sets the active attribute value.
++     * 
++     * @param active The active to set.
++     */
++    public abstract void setActive(boolean active);
++
++    public abstract String getCountyCode();
++
++    public abstract void setCountyCode(String countyCode);
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public abstract String getPostalCountryCode();
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public abstract void setPostalCountryCode(String postalCountryCode);
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public abstract Country getCountry();
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public abstract void setCountry(Country country);
++
++}
+\ No newline at end of file
+Index: impl/src/main/java/org/kuali/rice/kns/bo/StateImpl.java
 ===================================================================
---- impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl	(revision 0)
-+++ impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl	(revision 0)
-@@ -0,0 +1,39 @@
+--- impl/src/main/java/org/kuali/rice/kns/bo/StateImpl.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/bo/StateImpl.java	(revision 0)
+@@ -0,0 +1,151 @@
 +/*
-+ * Copyright 2005-2006 The Kuali Foundation.
++ * Copyright 2007 The Kuali Foundation.
 + * 
 + * Licensed under the Educational Community License, Version 1.0 (the "License");
 + * you may not use this file except in compliance with the License.
@@ -120,64 +2177,299 @@ Index: impl/src/main/config/ddl/tables/KR_COUNTY_T.table.ddl
 + * See the License for the specific language governing permissions and
 + * limitations under the License.
 + */
-+CREATE TABLE KR_COUNTY_T 
-+    (COUNTY_CD VARCHAR2(10) NOT NULL, 
-+    STATE_CD VARCHAR2(2) NOT NULL, 
-+    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    COUNTY_NM VARCHAR2(100), 
-+    ACTV_IND VARCHAR2(1)) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TP1 
-+PRIMARY KEY (COUNTY_CD, STATE_CD, POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TR1 
-+FOREIGN KEY (STATE_CD, POSTAL_CNTRY_CD) 
-+REFERENCES KR_STATE_T 
-+/ 
 +
++package org.kuali.rice.kns.bo;
 +
-Index: impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl
-===================================================================
---- impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl	(revision 0)
-+++ impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl	(revision 0)
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright 2005-2006 The Kuali Foundation.
++import java.util.LinkedHashMap;
++
++import org.kuali.rice.kns.bo.Inactivateable;
++import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
++
++/**
 + * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
 + */
-+CREATE TABLE KR_COUNTRY_T 
-+    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    POSTAL_CNTRY_NM VARCHAR2(40), 
-+    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL, 
-+    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
-+/ 
-+ALTER TABLE KR_COUNTRY_T 
-+ADD CONSTRAINT KR_COUNTRY_TP1 
-+PRIMARY KEY (POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_COUNTRY_T 
-+ADD CONSTRAINT KR_COUNTRY_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
++public class StateImpl extends PersistableBusinessObjectBase implements Inactivateable, State {
 +
++    private String postalCountryCode;
++    private String postalStateCode;
++    private String postalStateName;
++    private boolean active;
++
++    private Country country;
++
++    /**
++     * Default no-arg constructor.
++     */
++    public StateImpl() {
++
++    }
++
++    /**
++     * Gets the postalStateCode attribute.
++     * 
++     * @return Returns the postalStateCode
++     */
++    public String getPostalStateCode() {
++        return postalStateCode;
++    }
++
++    /**
++     * Sets the postalStateCode attribute.
++     * 
++     * @param postalStateCode The postalStateCode to set.
++     */
++    public void setPostalStateCode(String postalStateCode) {
++        this.postalStateCode = postalStateCode;
++    }
++
++    /**
++     * Gets the postalStateName attribute.
++     * 
++     * @return Returns the postalStateName
++     */
++    public String getPostalStateName() {
++        return postalStateName;
++    }
++
++    /**
++     * Sets the postalStateName attribute.
++     * 
++     * @param postalStateName The postalStateName to set.
++     */
++    public void setPostalStateName(String postalStateName) {
++        this.postalStateName = postalStateName;
++    }
++
++
++    /**
++     * @return Returns the code and description in format: xx - xxxxxxxxxxxxxxxx
++     */
++    public String getCodeAndDescription() {
++        String theString = getPostalStateCode() + " - " + getPostalStateName();
++        return theString;
++    }
++
++    /**
++     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
++     */
++    protected LinkedHashMap toStringMapper() {
++        LinkedHashMap m = new LinkedHashMap();
++        m.put("postalStateCode", this.postalStateCode);
++        return m;
++    }
++
++    /**
++     * Gets the active attribute.
++     * 
++     * @return Returns the active.
++     */
++    public boolean isActive() {
++        return active;
++    }
++
++    /**
++     * Sets the active attribute value.
++     * 
++     * @param active The active to set.
++     */
++    public void setActive(boolean active) {
++        this.active = active;
++    }
++
++    /**
++     * Gets the postalCountryCode attribute.
++     * 
++     * @return Returns the postalCountryCode.
++     */
++    public String getPostalCountryCode() {
++        return postalCountryCode;
++    }
++
++    /**
++     * Sets the postalCountryCode attribute value.
++     * 
++     * @param postalCountryCode The postalCountryCode to set.
++     */
++    public void setPostalCountryCode(String postalCountryCode) {
++        this.postalCountryCode = postalCountryCode;
++    }
++
++    /**
++     * Gets the country attribute.
++     * 
++     * @return Returns the country.
++     */
++    public Country getCountry() {
++        return country;
++    }
++
++    /**
++     * Sets the country attribute value.
++     * 
++     * @param country The country to set.
++     */
++    public void setCountry(Country country) {
++        this.country = country;
++    }
++
++}
+Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Country.xml
+===================================================================
+--- impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Country.xml	(revision 0)
++++ impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Country.xml	(revision 0)
+@@ -0,0 +1,155 @@
++<beans xmlns="http://www.springframework.org/schema/beans"
++    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:p="http://www.springframework.org/schema/p"
++    xsi:schemaLocation="http://www.springframework.org/schema/beans
++        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
++
++  <bean id="Country" parent="Country-parentBean" />
++
++  <bean id="Country-parentBean" abstract="true" parent="BusinessObjectEntry">
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo..CountryImpl" />
++    <property name="inquiryDefinition" >
++      <ref bean="Country-inquiryDefinition" />
++    </property>
++    <property name="lookupDefinition" >
++      <ref bean="Country-lookupDefinition" />
++    </property>
++    <property name="titleAttribute" value="postalCountryCode" />
++    <property name="objectLabel" value="Country" />
++    <property name="attributes" >
++      <list>
++        <ref bean="Country-postalCountryCode" />
++        <ref bean="Country-postalCountryName" />
++        <ref bean="Country-postalCountryRestrictedIndicator" />
++        <ref bean="Country-active" />
++      </list>
++    </property>
++  </bean>
++
++<!-- Attribute Definitions -->
++
++
++  <bean id="Country-postalCountryCode" parent="Country-postalCountryCode-parentBean" />
++
++  <bean id="Country-postalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalCountryCode" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="Country Code" />
++    <property name="shortLabel" value="Country Code" />
++    <property name="maxLength" value="2" />
++    <property name="validationPattern" >
++      <bean parent="AlphaNumericValidationPattern" />
++    </property>
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="2" />
++    </property>
++    <property name="summary" value="Postal Country Code" />
++    <property name="description" value="The code uniquely identify a country." />
++  </bean>
++  <bean id="Country-postalCountryName" parent="Country-postalCountryName-parentBean" />
++
++  <bean id="Country-postalCountryName-parentBean" abstract="true" parent="AttributeDefinition">
++    <property name="name" value="postalCountryName" />
++    <property name="forceUppercase" value="true" />
++    <property name="label" value="Country Name" />
++    <property name="shortLabel" value="Country Name" />
++    <property name="maxLength" value="50" />
++    <property name="required" value="true" />
++    <property name="control" >
++      <bean parent="TextControlDefinition"
++            p:size="50" />
++    </property>
++    <property name="summary" value="Postal Country Name" />
++    <property name="description" value="Postal Country Name..." />
++  </bean>
++  <bean id="Country-postalCountryRestrictedIndicator" parent="Country-postalCountryRestrictedIndicator-parentBean" />
++
++  <bean id="Country-postalCountryRestrictedIndicator-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
++    <property name="name" value="postalCountryRestrictedIndicator" />
++    <property name="label" value="Country Restricted Indicator" />
++    <property name="shortLabel" value="Indicator" />
++    <property name="summary" value="Indicator for whether this is a postal country restricted." />
++    <property name="description" value="This is the indicator for whether this country is a postal country restricted." />
++  </bean>
++  <bean id="Country-active" parent="Country-active-parentBean" />
++
++  <bean id="Country-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
++    <property name="name" value="active"/>
++  </bean>
++
++
++<!-- Business Object Inquiry Definition -->
++
++
++  <bean id="Country-inquiryDefinition" parent="Country-inquiryDefinition-parentBean" />
++
++  <bean id="Country-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
++    <property name="title" value="Country Inquiry" />
++    <property name="inquirySections" >
++      <list>
++        <bean parent="InquirySectionDefinition">
++          <property name="title" value="" />
++          <property name="numberOfColumns" value="1" />
++          <property name="inquiryFields" >
++            <list>
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalCountryCode" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalCountryName" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="postalCountryRestrictedIndicator" />
++              <bean parent="FieldDefinition"
++                    p:attributeName="active" />
++            </list>
++          </property>
++        </bean>
++      </list>
++    </property>
++  </bean>
++
++<!-- Business Object Lookup Definition -->
++
++
++  <bean id="Country-lookupDefinition" parent="Country-lookupDefinition-parentBean" />
++
++  <bean id="Country-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
++    <property name="title" value="Country Lookup" />
++    <property name="instructions" value="Lookup a Country" />
++    <property name="defaultSort" >
++      <bean parent="SortDefinition">
++        <property name="attributeNames" >
++          <list>
++            <value>postalCountryCode</value>
++          </list>
++        </property>
++      </bean>
++    </property>
++    <property name="lookupFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryName" />
++        <bean parent="FieldDefinition"
++              p:defaultValue="N"
++              p:attributeName="postalCountryRestrictedIndicator" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++    <property name="resultFields" >
++      <list>
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryCode" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryName" />
++        <bean parent="FieldDefinition"
++              p:attributeName="postalCountryRestrictedIndicator" />
++        <bean parent="FieldDefinition"
++              p:attributeName="active" />
++      </list>
++    </property>
++  </bean>
++</beans>

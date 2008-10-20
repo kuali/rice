@@ -51,8 +51,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		
 		Criteria c = new Criteria();
 		
-		c.addColumnEqualTo("principalId", principalId);
-		c.addColumnIn("roleId", roleIds);
+		c.addEqualTo("principalId", principalId);
+		c.addIn("roleId", roleIds);
 		Query query = QueryFactory.newQuery(RolePrincipalImpl.class, c);
 		Collection<RolePrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RolePrincipalImpl>( coll );
@@ -65,8 +65,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	@SuppressWarnings("unchecked")
 	public List<RoleGroupImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {
 		Criteria c = new Criteria();
-		c.addColumnIn("roleId", roleIds);
-		c.addColumnIn("groupId", groupIds);
+		c.addIn("roleId", roleIds);
+		c.addIn("groupId", groupIds);
 		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
 		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RoleGroupImpl>( coll );
@@ -76,7 +76,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public Map<String,KimRoleImpl> getRoleImplMap(Collection<String> roleIds) {
 		HashMap<String,KimRoleImpl> results = new HashMap<String, KimRoleImpl>();
 		Criteria c = new Criteria();
-		c.addColumnIn("roleId", roleIds);
+		c.addIn("roleId", roleIds);
 		Query query = QueryFactory.newQuery(KimRoleImpl.class, c);
 		Collection<KimRoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		for ( KimRoleImpl role : coll ) {
@@ -89,8 +89,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
 		HashMap<String,KimDelegationImpl> results = new HashMap<String, KimDelegationImpl>();
 		Criteria c = new Criteria();
-		c.addColumnIn("roleId", roleIds);
-		c.addColumnEqualTo("active", Boolean.TRUE);
+		c.addIn("roleId", roleIds);
+		c.addEqualTo("active", Boolean.TRUE);
 		Query query = QueryFactory.newQuery(KimDelegationImpl.class, c);
 		Collection<KimDelegationImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		for ( KimDelegationImpl dele : coll ) {
@@ -110,8 +110,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 			Collection<String> delegationIds, String principalId) {
 		Criteria c = new Criteria();
 		
-		c.addColumnEqualTo("principalId", principalId);
-		c.addColumnIn("delegationId", delegationIds);
+		c.addEqualTo("principalId", principalId);
+		c.addIn("delegationId", delegationIds);
 		Query query = QueryFactory.newQuery(KimDelegationPrincipalImpl.class, c);
 		Collection<KimDelegationPrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<KimDelegationPrincipalImpl>( coll );
@@ -127,8 +127,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<KimDelegationGroupImpl> getDelegationGroupsForGroupIdsAndDelegationIds(
 			Collection<String> delegationIds, List<String> groupIds) {
 		Criteria c = new Criteria();
-		c.addColumnIn("delegationId", delegationIds);
-		c.addColumnIn("groupId", groupIds);
+		c.addIn("delegationId", delegationIds);
+		c.addIn("groupId", groupIds);
 		Query query = QueryFactory.newQuery(KimDelegationGroupImpl.class, c);
 		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<KimDelegationGroupImpl>( coll );
@@ -142,7 +142,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds ) {	
 		Criteria c = new Criteria();
 		
-		c.addColumnIn("roleId", roleIds);
+		c.addIn("roleId", roleIds);
 		Query query = QueryFactory.newQuery(RolePrincipalImpl.class, c);
 		Collection<RolePrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RolePrincipalImpl>( coll );
@@ -155,7 +155,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	@SuppressWarnings("unchecked")
 	public List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds ) {
 		Criteria c = new Criteria();
-		c.addColumnIn("roleId", roleIds);
+		c.addIn("roleId", roleIds);
 		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
 		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RoleGroupImpl>( coll );
@@ -169,7 +169,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 			List<String> delegationIds) {
 		Criteria c = new Criteria();
 		
-		c.addColumnIn("delegationIds", delegationIds);
+		c.addIn("delegationIds", delegationIds);
 		Query query = QueryFactory.newQuery(KimDelegationPrincipalImpl.class, c);
 		Collection<KimDelegationPrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		HashMap<String,List<KimDelegationPrincipalImpl>> result = new HashMap<String,List<KimDelegationPrincipalImpl>>();
@@ -190,7 +190,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 			List<String> delegationIds) {
 		Criteria c = new Criteria();
 		
-		c.addColumnIn("delegationIds", delegationIds);
+		c.addIn("delegationIds", delegationIds);
 		Query query = QueryFactory.newQuery(KimDelegationGroupImpl.class, c);
 		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		HashMap<String,List<KimDelegationGroupImpl>> result = new HashMap<String,List<KimDelegationGroupImpl>>();

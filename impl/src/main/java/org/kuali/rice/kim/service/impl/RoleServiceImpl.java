@@ -280,7 +280,7 @@ public class RoleServiceImpl implements RoleService {
     public boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification) {
     	Set<String> allRoleIds = new HashSet<String>();
     	// get all implying roles (this also filters to active roles only)
-    	for ( String roleId : allRoleIds ) {
+    	for ( String roleId : roleIds ) {
     		allRoleIds.addAll( getImplyingRoleIds(roleId) );
     	}
     	// short-circuit if no roles match

@@ -27,6 +27,7 @@ import org.kuali.rice.kim.bo.role.KimResponsibility;
  */
 public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements KimResponsibility, Serializable {
 
+	protected String namespaceCode;
 	protected String name;
 	protected String description;
 	
@@ -49,5 +50,11 @@ public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements 
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
 	}
 }

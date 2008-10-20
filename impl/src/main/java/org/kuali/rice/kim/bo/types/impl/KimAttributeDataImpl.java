@@ -25,7 +25,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kim.bo.types.KimAttribute;
 import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -56,7 +55,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 
 	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
-	protected KimAttribute kimAttribute;
+	protected KimAttributeImpl kimAttribute;
 	
 	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
@@ -92,10 +91,10 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	public void setKimAttributeId(String kimAttributeId) {
 		this.kimAttributeId = kimAttributeId;
 	}
-	public KimAttribute getKimAttribute() {
+	public KimAttributeImpl getKimAttribute() {
 		return this.kimAttribute;
 	}
-	public void setKimAttribute(KimAttribute kimAttribute) {
+	public void setKimAttribute(KimAttributeImpl kimAttribute) {
 		this.kimAttribute = kimAttribute;
 	}
 	public KimTypeImpl getKimType() {

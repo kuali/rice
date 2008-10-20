@@ -22,7 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.types.KimAttribute;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -30,7 +29,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_ATTRIBUTE_T")
-public class KimAttributeImpl extends PersistableBusinessObjectBase implements KimAttribute {
+public class KimAttributeImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,19 +38,15 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase implements K
 	protected String kimAttributeId;
 	@Column(name="ATTRIB_NM")
 	protected String attributeName;
+	@Column(name="ATTRIB_LBL")
+	protected String attributeLabel;
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttribute#getAttributeId()
-	 */
-	public String getAttributeId() {
+	public String getKimAttributeId() {
 		return kimAttributeId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimAttribute#getAttributeName()
-	 */
 	public String getAttributeName() {
 		return attributeName;
 	}
@@ -81,9 +76,21 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase implements K
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
-		m.put( "kimAttributeId", kimAttributeId );
+		m.put( "attributeId", kimAttributeId );
 		m.put( "attributeName", attributeName );
 		return m;
+	}
+
+	public String getAttributeLabel() {
+		return this.attributeLabel;
+	}
+
+	public void setAttributeLabel(String attributeLabel) {
+		this.attributeLabel = attributeLabel;
+	}
+
+	public void setKimAttributeId(String kimAttributeId) {
+		this.kimAttributeId = kimAttributeId;
 	}
 
 }

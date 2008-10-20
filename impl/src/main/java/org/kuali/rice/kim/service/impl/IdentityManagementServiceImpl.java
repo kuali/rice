@@ -220,8 +220,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
 	 */
+	@Deprecated
 	public List<ResponsibilityActionInfo> getResponsibilityActions(String responsibilityName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityActions( responsibilityName, qualification, responsibilityDetails );
+	}
+	
+	public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, qualification, responsibilityDetails );
 	}
 }

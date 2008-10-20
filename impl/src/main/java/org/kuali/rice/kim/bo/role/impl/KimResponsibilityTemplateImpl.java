@@ -42,6 +42,8 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	@Id
 	@Column(name="PERM_TMPL_ID")
 	protected String responsibilityTemplateId;
+	@Column(name="NAMESPACE_CD")
+	protected String namespaceCode;
 	@Column(name="NAME")
 	protected String name;
 	@Column(name="KIM_TYPE_ID")
@@ -55,9 +57,6 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
 	protected KimTypeImpl kimType;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.types.KimTypeImpl#getKimTypeId()
-	 */
 	public String getKimTypeId() {
 		return kimTypeId;
 	}
@@ -124,5 +123,17 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 		m.put( "name", name );
 		m.put( "kimTypeId", kimTypeId );
 		return m;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
+	}
+
+	public void setResponsibilityTemplateId(String responsibilityTemplateId) {
+		this.responsibilityTemplateId = responsibilityTemplateId;
 	}
 }

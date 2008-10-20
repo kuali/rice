@@ -35,6 +35,7 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -102,17 +103,26 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	List<String> roleIds = getRoleIdsForResponsibility( responsibilityName, responsibilityDetails, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
-    
+
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
      */
-    public List<ResponsibilityActionInfo> getResponsibilityActions(String responsibilityName,
+    @Deprecated
+    public List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	// FIXME: remove this version of the method once external code converted
+    	return getResponsibilityActions( KNSConstants.KNS_NAMESPACE, responsibilityName, qualification, responsibilityDetails );
+	}
+    /**
+     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(String, java.lang.String, AttributeSet, AttributeSet)
+     */
+    public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	List<String> roleIds = getRoleIdsForResponsibility( responsibilityName, responsibilityDetails, qualification );
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), responsibilityName, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), namespaceCode, responsibilityName, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
     		// get associated resp resolution objects
     		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibilityName, rm.getPrincipalId(), rm.getGroupId() );
     		// add the data to the ResponsibilityActionInfo objects

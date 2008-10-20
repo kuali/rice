@@ -29,6 +29,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  */
 public interface KimResponsibility extends Inactivateable, ResponsibilityDetails {
 
+	String getNamespaceCode();
 	String getName();
 
 	/** Verbose description of the Responsibility and functionally what permissions it implies. */

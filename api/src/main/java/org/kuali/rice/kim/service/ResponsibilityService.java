@@ -49,5 +49,8 @@ public interface ResponsibilityService {
      */
     boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
+	@Deprecated
    	List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
+   	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails);
 }

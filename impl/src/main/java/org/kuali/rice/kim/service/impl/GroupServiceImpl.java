@@ -640,7 +640,7 @@ public class GroupServiceImpl implements GroupService {
             }
             
             GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
-            groupAttr.setKimAttributeId(kimAttr.getAttributeId());
+            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
             groupAttr.setAttributeValue(infoMap.get(key));
             groupAttr.setTargetPrimaryKey(groupId);
             groupAttr.setKimTypeId(kimTypeId);

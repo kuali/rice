@@ -44,6 +44,8 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@Id
 	@Column(name="PERM_ID")
 	protected String permissionId;
+	@Column(name="NAMESPACE_CD")
+	protected String namespaceCode;
 	@Column(name="NAME")
 	protected String name;
 	@Column(name="DESCRIPTION", length=400)
@@ -118,6 +120,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		KimPermissionInfo dto = new KimPermissionInfo();
 		
 		dto.setPermissionId( getPermissionId() );
+		dto.setNamespaceCode( getNamespaceCode() );
 		dto.setName( getName() );
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
@@ -160,6 +163,22 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	
 	public boolean hasDetails() {
 		return !getDetailObjects().isEmpty();
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
+	}
+
+	public void setPermissionId(String permissionId) {
+		this.permissionId = permissionId;
+	}
+
+	public void setDetailObjects(List<PermissionAttributeDataImpl> detailObjects) {
+		this.detailObjects = detailObjects;
 	}
 	
 	

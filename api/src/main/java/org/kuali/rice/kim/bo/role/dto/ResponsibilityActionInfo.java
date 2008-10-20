@@ -32,6 +32,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 
 	String principalId;
 	String groupId;
+	String responsibilityNamespaceCode;
 	String responsibilityName;
 	String roleId;
 	String actionTypeCode;
@@ -45,10 +46,11 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	public ResponsibilityActionInfo() {
 	}
 	
-	public ResponsibilityActionInfo(String principalId, String groupId, String responsibilityName,
+	public ResponsibilityActionInfo(String principalId, String groupId, String responsibilityNamespaceCode, String responsibilityName,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;
 		this.groupId = groupId;
+		this.responsibilityNamespaceCode = responsibilityNamespaceCode;
 		this.responsibilityName = responsibilityName;
 		this.roleId = roleId;
 		this.qualifier = qualifier;
@@ -117,5 +119,13 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 
 	public void setDelegates(List<DelegateInfo> delegates) {
 		this.delegates = delegates;
+	}
+
+	public String getResponsibilityNamespaceCode() {
+		return this.responsibilityNamespaceCode;
+	}
+
+	public void setResponsibilityNamespaceCode(String responsibilityNamespaceCode) {
+		this.responsibilityNamespaceCode = responsibilityNamespaceCode;
 	}
 }

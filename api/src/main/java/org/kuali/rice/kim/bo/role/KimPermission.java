@@ -37,6 +37,7 @@ public interface KimPermission extends Inactivateable {
 	
 	public boolean hasDetails();
 	
+	String getNamespaceCode();
 	String getName();
 
 	/** Verbose description of the Permission and functionally what permissions it implies. */

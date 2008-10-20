@@ -45,6 +45,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@Id
 	@Column(name="RESP_ID")
 	protected String responsibilityId;
+	@Column(name="NAMESPACE_CD")
+	protected String namespaceCode;
 	@Column(name="NAME")
 	protected String name;
 	@Column(name="DESCRIPTION", length=400)
@@ -119,6 +121,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		KimResponsibilityInfo dto = new KimResponsibilityInfo();
 		
 		dto.setResponsibilityId( getResponsibilityId() );
+		dto.setNamespaceCode( getNamespaceCode() );
 		dto.setName( getName() );
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
@@ -156,6 +159,30 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public void setTemplate(KimResponsibilityTemplateImpl template) {
 		this.template = template;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
+	}
+
+	public String getTemplateId() {
+		return this.templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	public void setResponsibilityId(String responsibilityId) {
+		this.responsibilityId = responsibilityId;
+	}
+
+	public void setDetailObjects(List<ResponsibilityAttributeDataImpl> detailObjects) {
+		this.detailObjects = detailObjects;
 	}
 
 	

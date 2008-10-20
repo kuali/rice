@@ -44,6 +44,8 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 	protected String kimTypeId; 	
 	@Column(name="KIM_ATTRIB_ID")
 	protected String kimAttributeId;
+	@Column(name="SORT_CD")
+	protected String sortCode;
 	@Column(name="ACTV_IND")
 	protected boolean active; 	 
 	
@@ -101,6 +103,14 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 		m.put( "kimAttributeId", kimAttributeId );
 		m.put( "active", active );
 		return m;
+	}
+
+	public String getSortCode() {
+		return this.sortCode;
+	}
+
+	public void setSortCode(String sortCode) {
+		this.sortCode = sortCode;
 	}
 
 }

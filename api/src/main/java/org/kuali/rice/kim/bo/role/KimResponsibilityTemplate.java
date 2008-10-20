@@ -30,6 +30,7 @@ public interface KimResponsibilityTemplate extends Inactivateable {
 
 	String getResponsibilityTemplateId();
 	
+	String getNamespaceCode();
 	String getName();
 
 	/** Verbose description of the Permission and functionally what permissions it implies. */

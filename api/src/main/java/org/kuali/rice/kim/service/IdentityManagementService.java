@@ -109,8 +109,10 @@ public interface IdentityManagementService {
      */
     boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
+	@Deprecated
     List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
-    
+    List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails);
     /**
      * Returns the matching permission objects for a principal.
      * 

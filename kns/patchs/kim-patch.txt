@@ -4,7 +4,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 4976)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(working copy)
-@@ -16,31 +16,96 @@
+@@ -16,31 +16,100 @@
  package org.kuali.rice.kns.document.authorization;
  
  import java.util.HashMap;
@@ -46,9 +46,11 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
       *      org.kuali.rice.kns.bo.user.KualiUser)
       */
      public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, UniversalUser user) {
--        // by default, there are no restrictions, only if this method is
--        // overridden by a subclass that adds restrictions
++       
+         // by default, there are no restrictions, only if this method is
+         // overridden by a subclass that adds restrictions
 -        return new MaintenanceDocumentAuthorizations();
++        //return new MaintenanceDocumentAuthorizations();
 +       
 +    	MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
 +    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
@@ -86,7 +88,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    	   if(maintainableFieldAttributeSecurity != null){
 +    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
 +    		   if(maintainableFieldAttributeSecurity.isMask()){  
-+    			   if(!getIdentityManagementService().isAuthorized(user.getPersonUniversalIdentifier(), KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
++    			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPersonUniversalIdentifier(), KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
 +    				   auths.addReadonlyAuthField(fullFieldName);
 +    			   }
 +    		   }
@@ -95,7 +97,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    	   if(businessObjectAttributeSecurity != null){
 +    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
 +    		   if( businessObjectAttributeSecurity.isMask()){
-+               	   if(!getIdentityManagementService().isAuthorized(user.getPersonUniversalIdentifier(), "Unmask Bank Account Number", permissionDetails, null)){
++               	   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPersonUniversalIdentifier(), "Unmask Bank Account Number", permissionDetails, null)){
 +               		auths.addReadonlyAuthField(fullFieldName);
 +               	   }
 +    		   }
@@ -103,11 +105,11 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    	   }
 +        }
 +    	
-+    	return auths;
++    	return auths; 
      }
  
      /**
-@@ -170,4 +235,29 @@
+@@ -170,4 +239,29 @@
          String maintAction = maintDoc.getNewMaintainableObject().getMaintenanceAction();
          return (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
      }

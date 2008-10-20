@@ -50,15 +50,15 @@
         <column oldName="ACTN_RQST_PARNT_ID" newName="PARNT_ID" size="14" type="DECIMAL"/>
         <column oldName="ACTN_RQST_CD" newName="RQST_CD" required="true" size="1" type="CHAR"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="RULE_BASE_VALUES_ID" newName="RUlE_ID" size="19" type="DECIMAL"/>
+        <column oldName="RULE_BASE_VALUES_ID" newName="RULE_ID" size="19" type="DECIMAL"/>
         <column oldName="ACTN_RQST_STAT_CD" newName="STAT_CD" required="true" size="1" type="CHAR"/>
-        <column oldName="ACTN_RQST_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_RQST_RESP_ID" newName="RSP_ID" required="true" size="14" type="DECIMAL"/>
         <column oldName="ACTN_RQST_PRSN_EN_ID" newName="PRNCPL_ID" size="30" type="VARCHAR"/>
         <column oldName="WRKGRP_ID" newName="GRP_ID" size="14" type="DECIMAL"/>
         <column name="ROLE_NM" size="2000" type="VARCHAR"/>
         <column name="QUAL_ROLE_NM" size="2000" type="VARCHAR"/>
         <column name="QUAL_ROLE_NM_LBL_TXT" size="2000" type="VARCHAR"/>
-        <column oldName="ACTN_RQST_RECP_TYP_CD" newName="RECP_TYP_CD" size="1" type="CHAR"/>
+        <column oldName="ACTN_RQST_RECP_TYP_CD" newName="RECIP_TYP_CD" size="1" type="CHAR"/>
         <column oldName="ACTN_RQST_PRIO_NBR" newName="PRIO_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="ACTN_RQST_RTE_TYP_NM" newName="RTE_TYP_NM" size="255" type="VARCHAR"/>
         <column oldName="ACTN_RQST_RTE_LVL_NBR" newName="RTE_LVL_NBR" required="true" size="8" type="DECIMAL"/>
@@ -66,7 +66,7 @@
         <column name="ACTN_TKN_ID" size="14" type="DECIMAL"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="ACTN_RQST_CRTE_DT" newName="CRTE_DT"  required="true" type="DATE"/>
-        <column oldName="ACTN_RQST_RESP_DESC"  newName="RESP_DESC" size="200" type="VARCHAR"/>
+        <column oldName="ACTN_RQST_RESP_DESC"  newName="RSP_DESC" size="200" type="VARCHAR"/>
         <column default="0" oldName="ACTN_RQST_IGN_PREV_ACTN_IND"  newName="IGN_PREV_ACTN_IND" size="1" type="DECIMAL"/>
         <column oldName="ACTN_RQST_ANNOTN_TXT"  name="ANNOTN" size="2000" type="VARCHAR"/>
         <column name="DLGN_TYP" size="1" type="CHAR"/>
@@ -86,11 +86,11 @@
             <index-column oldName="ACTN_RQST_PRSN_EN_ID" newName="PRNCPL_ID"/>
         </index>
         <index oldName="EN_ACTN_RQST_TI5" newName="KREW_ACTN_RQST_T15">
-            <index-column oldName="ACTN_RQST_RESP_ID" newName="RESP_ID"/>
+            <index-column oldName="ACTN_RQST_RESP_ID" newName="RSP_ID"/>
         </index>
         <index oldName="EN_ACTN_RQST_TI6" newName="KREW_ACTN_RQST_T16">
             <index-column oldName="ACTN_RQST_STAT_CD" newName="STAT_CD"/>
-            <index-column oldName="ACTN_RQST_RESP_ID" newName="RESP_ID"/>
+            <index-column oldName="ACTN_RQST_RESP_ID" newName="RSP_ID"/>
         </index>
         <index oldName="EN_ACTN_RQST_TI7" newName="KREW_ACTN_RQST_T17">
             <index-column oldName="ACTN_RQST_RTE_NODE_INSTN_ID" newName="RTE_NODE_INSTN_ID"/>
@@ -751,28 +751,28 @@
     <table oldName="EN_BAM_PARAM_T" newName="KRSB_BAM_PARM_T">
         <column oldName="BAM_PARAM_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column oldName="BAM_ID" newName="BAM_ID" required="true" size="14" type="DECIMAL"/>
-        <column name="PARAM" required="true" type="CLOB"/>
+        <column oldName="PARAM" newName="PARM" required="true" type="CLOB"/>
         <index oldName="EN_BAM_PARAM_TI1" newName="KREW_BAM_PARM_TI1">
             <index-column oldName="BAM_ID" newName="BAM_ID"/>
         </index>
     </table>
     <table oldName="EN_BAM_T" newName="KRSB_BAM_T">
         <column oldName="BAM_ID" newName="ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column name="SERVICE_NM" required="true" size="255" type="VARCHAR"/>
-        <column name="SERVICE_URL" required="true" size="500" type="VARCHAR"/>
-        <column name="METHOD_NM" required="true" size="2000" type="VARCHAR"/>
-        <column name="THREAD_NM" required="true" size="500" type="VARCHAR"/>
+        <column oldName="SERVICE_NM" newName="SVC_NM" required="true" size="255" type="VARCHAR"/>
+        <column oldName="SERVICE_URL" newName="SVC_URL" required="true" size="500" type="VARCHAR"/>
+        <column oldName="METHOD_NM" newName="MTHD_NM" required="true" size="2000" type="VARCHAR"/>
+        <column oldName="THREAD_NM" newName="THRD_NM" required="true" size="500" type="VARCHAR"/>
         <column name="CALL_DT" required="true" type="DATE"/>
-        <column name="TARGET_TO_STRING" required="true" size="2000" type="VARCHAR"/>
+        <column oldName="TARGET_TO_STRING" newName="TGT_TO_STR" required="true" size="2000" type="VARCHAR"/>
         <column oldName="SRVR_IND_IND" newName="SRVR_IND" required="true" size="1" type="DECIMAL"/>
-        <column name="EXCEPTION_TO_STRING" size="2000" type="VARCHAR"/>
-        <column name="EXCEPTION_MSG" type="CLOB"/>
+        <column oldName="EXCEPTION_TO_STRING" newName="EXCPN_TO_STR" size="2000" type="VARCHAR"/>
+        <column oldName="EXCEPTION_MSG" newName="EXCPN_MSG" type="CLOB"/>
         <index oldName="EN_BAM_TI1" newName="KRSB_BAM_TI1">
-            <index-column name="SERVICE_NM"/>
-            <index-column name="METHOD_NM"/>
+            <index-column oldName="SERVICE_NM" newName="SVC_NM"/>
+            <index-column oldName="METHOD_NM" newName="MTHD_NM"/>
         </index>
         <index oldName="EN_BAM_TI2" newName="KRSB_BAM_TI2">
-            <index-column name="SERVICE_NM"/>
+            <index-column oldName="SERVICE_NM" newName="SVC_NM"/>
         </index>
     </table>  
     <table oldName="EN_MSG_PAYLOAD_T" newName="KRSB_MSG_PYLD_T">
@@ -905,18 +905,18 @@
             <index-column oldName="FDOC_NBR" newName="DOC_HDR_ID" />
         </index>
     </table>
-    <table oldName="FS_ADHOC_RTE_ACTN_RECP_T" newName="KRNS_ADHOC_RECP_T">
-        <column oldName="ACTN_RQST_RECP_TYP_CD" newName="RECP_TYP_CD" primaryKey="true" size="1" type="DECIMAL"/>
+    <table oldName="FS_ADHOC_RTE_ACTN_RECP_T" newName="KRNS_ADHOC_RECIP_T">
+        <column oldName="ACTN_RQST_RECP_TYP_CD" newName="RECIP_TYP_CD" primaryKey="true" size="1" type="DECIMAL"/>
         <column name="ACTN_RQST_CD" primaryKey="true" size="30" type="VARCHAR"/>
-        <column oldName="ACTN_RQST_RECP_ID" newName="RECP_ID" primaryKey="true" size="70" type="VARCHAR"/>
+        <column oldName="ACTN_RQST_RECP_ID" newName="RECIP_ID" primaryKey="true" size="70" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="FDOC_NBR" newName="DOC_HDR_ID"  primaryKey="true" size="14" type="VARCHAR"/>
-        <unique oldName="FS_ADHOC_RTE_ACTN_RECP_TC0" newName="KRNS_ADHOC_RECP_TC1" >
+        <unique oldName="FS_ADHOC_RTE_ACTN_RECP_TC0" newName="KRNS_ADHOC_RECIP_TC1" >
             <unique-column name="OBJ_ID"/>
         </unique>
-        <index oldName="FS_ADHOC_RTE_ACTN_RECP_TI2" newName="KRNS_ADHOC_RECP_TI2">
+        <index oldName="FS_ADHOC_RTE_ACTN_RECP_TI2" newName="KRNS_ADHOC_RECIP_TI2">
             <index-column oldName="FDOC_NBR" newName="DOC_HDR_ID" />
         </index>
     </table>
@@ -1307,7 +1307,7 @@
         <column oldName="CONTENT" newName="CNTNT" required="true" type="CLOB"/>
         <column oldName="CONTENT_TYPE" newName="CNTNT_TYP" size="128" type="VARCHAR"/>
         <column name="URL" size="512" type="VARCHAR"/>
-        <column oldName="USER_RECIPIENT_ID" newName="RECP_ID" required="true" size="300" type="VARCHAR"/>
+        <column oldName="USER_RECIPIENT_ID" newName="RECIP_ID" required="true" size="300" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" required="true"
             size="22" type="DECIMAL"/>
         <unique oldName="KCB_MESSAGES_UK1" newName="KREN_MSG_UK1">

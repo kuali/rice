@@ -48,6 +48,15 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	return getPermissionService().isAuthorized( principalId, permissionName, permissionDetails, qualification );
     }
+
+    public boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails) {
+    	return getPermissionService().hasPermissionByTemplateName( principalId, permissionTemplateName, permissionDetails );
+    }
+    
+    public boolean isAuthorizedByTemplateName(String principalId,
+    		String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().isAuthorizedByTemplateName( principalId, permissionTemplateName, permissionDetails, qualification );
+    }
     
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)

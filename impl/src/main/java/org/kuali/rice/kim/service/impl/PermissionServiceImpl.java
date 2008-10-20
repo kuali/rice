@@ -66,10 +66,25 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<String> roleIds = getRoleIdsForPermission( permissionName, permissionDetails, qualification );
+    	List<String> roleIds = getRoleIdsForPermissionTemplate( permissionName, permissionDetails, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
+    /**
+     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
+     */
+    public boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails) {
+    	return isAuthorized( principalId, permissionTemplateName, permissionDetails, null );
+    }
+
+    /**
+     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
+     */
+    public boolean isAuthorizedByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	List<String> roleIds = getRoleIdsForPermissionTemplate( permissionTemplateName, permissionDetails, qualification );
+    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
+    }
+    
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
@@ -138,6 +153,14 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( permissionName );
     	// now, filter the full list by the detail passed
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
+    }
+
+    protected List<String> getRoleIdsForPermissionTemplate( String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( permissionTemplateName );
+    	// now, filter the full list by the detail passed
     	// FIXME: certain generic permissions (live view and edit) could have thousands of rows - this will not scale
     	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
@@ -172,6 +195,18 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
+     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByTemplateName(java.lang.String)
+     */
+    public List<KimPermissionInfo> getPermissionsByTemplateName(String permissionName) {
+    	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( permissionName );
+    	List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( impls.size() );
+    	for ( KimPermissionImpl impl : impls ) {
+    		results.add( impl.toSimpleInfo() );
+    	}
+    	return results;
+    }
+
+    /**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(java.lang.String)
      */
     public List<KimPermissionInfo> getPermissionsByName(String permissionName) {
@@ -201,9 +236,17 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     @SuppressWarnings("unchecked")
-	protected List<KimPermissionImpl> getPermissionImplsByName( String permissionName ) {
+	protected List<KimPermissionImpl> getPermissionImplsByTemplateName( String permissionName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
     	pk.put( "template.name", permissionName );
+		pk.put( "active", "Y" );
+    	return (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+    }
+
+    @SuppressWarnings("unchecked")
+	protected List<KimPermissionImpl> getPermissionImplsByName( String permissionName ) {
+    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+    	pk.put( "name", permissionName );
 		pk.put( "active", "Y" );
     	return (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
     }

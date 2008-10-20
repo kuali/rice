@@ -71,6 +71,36 @@ public interface PermissionService {
      * permissionDetails matches its details.
      */
     boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification  );
+
+    /**
+     * Checks whether the principal has been granted a permission matching the given details
+     * without taking role qualifiers into account.
+     * 
+	 * This method should not be used for true authorization checks since a principal
+	 * may only have this permission within a given context.  It could be used to
+	 * identify that the user would have some permissions within a certain area.
+	 * Later checks would identify exactly what permissions were granted.
+	 * 
+	 * It can also be used when the client application KNOWS that this is a role which
+	 * is never qualified.
+     */
+    boolean hasPermissionByTemplateName( String principalId, String permissionTemplateName, AttributeSet permissionDetails );
+
+    /**
+     * Checks whether the given qualified permission is granted to the principal given
+     * the passed roleQualification.  If no roleQualification is passed (null or empty)
+     * then this method behaves the same as {@link #hasPermission(String, String, AttributeSet)}.
+     * 
+     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
+     * exists on the principal's membership in that role, that is checked first through
+     * the role's type service.  Once it is determined that the principal has the role
+     * in the given context (qualification), the permissions are examined.
+     * 
+     * Each permission is checked against the permissionDetails.  The KimPermissionTypeService
+     * is called for each permission with the given permissionName to see if the 
+     * permissionDetails matches its details.
+     */
+    boolean isAuthorizedByTemplateName( String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification  );
     
     
     /**
@@ -118,10 +148,16 @@ public interface PermissionService {
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
+	 * component and permission template name.
+	 */
+    List<KimPermissionInfo> getPermissionsByTemplateName( String permissionName );
+
+	/** 
+	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission name.
 	 */
     List<KimPermissionInfo> getPermissionsByName( String permissionName );
-
+    
     /**
      * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 
      * should be used to reference the properties.

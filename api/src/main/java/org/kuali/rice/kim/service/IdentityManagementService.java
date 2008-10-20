@@ -85,6 +85,9 @@ public interface IdentityManagementService {
     
     boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails);
     boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );  
+
+    boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails);
+    boolean isAuthorizedByTemplateName( String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );  
     
     // ----------------------
     // Responsibility Methods

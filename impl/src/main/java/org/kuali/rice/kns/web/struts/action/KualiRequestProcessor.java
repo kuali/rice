@@ -452,7 +452,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
 			String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
 
-			if (form instanceof KualiDocumentFormBase && !KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) && !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
+			if (form instanceof KualiDocumentFormBase && !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
 				KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
 				Document document = docForm.getDocument();
 				String docFormKey = docForm.getFormKey();

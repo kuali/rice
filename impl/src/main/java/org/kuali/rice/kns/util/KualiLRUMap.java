@@ -47,12 +47,13 @@ public class KualiLRUMap extends LRUMap {
        //It is for session document cache enhancement. 
        //To control the size of cache. When the LRUMap reach the maxsize. 
        //It will remove session document entries from the in-memory user session objects.
-       try{
+    	try{
            SessionDocumentServiceImpl.CachedObject cachedObject = (SessionDocumentServiceImpl.CachedObject) this.entryValue(entry);
            UserSession userSession = cachedObject.getUserSession();
            String formKey = (String) cachedObject.getFormKey();
            
-           userSession.retrieveObject(formKey);
+           //userSession.retrieveObject(formKey);
+           userSession.removeObject(formKey);
        }catch(Exception e){}
        
         super.removeEntry(entry, hashIndex, previous);

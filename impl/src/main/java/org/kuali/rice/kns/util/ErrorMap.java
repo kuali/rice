@@ -319,7 +319,7 @@ public class ErrorMap implements Map, Serializable {
 
         if (!errorPath.isEmpty() && prependFullErrorPath) {
             keyPath = StringUtils.join(errorPath.iterator(), ".");
-            keyPath += "." + propertyName;
+            keyPath += (keyPath!=null && keyPath.endsWith("."))?propertyName:"." + propertyName;
         }
         else {
             keyPath = propertyName;

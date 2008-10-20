@@ -66,7 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<String> roleIds = getRoleIdsForPermissionTemplate( permissionName, permissionDetails, qualification );
+    	List<String> roleIds = getRoleIdsForPermission( permissionName, permissionDetails, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 

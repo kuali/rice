@@ -235,14 +235,30 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return getResponsibilityService().getResponsibility( responsibilityId );
 	}
 
+	@Deprecated
 	public List<? extends KimResponsibility> getResponsibilitiesByName( String responsibilityName) {
 		return getResponsibilityService().getResponsibilitiesByName( responsibilityName );
 	}
 	
 	
 	/**
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
+	 */
+	public boolean hasResponsibility(String principalId, String namespaceCode,
+			String responsibilityName, AttributeSet qualification,
+			AttributeSet responsibilityDetails) {
+		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName, qualification, responsibilityDetails );
+	}
+
+	public List<? extends KimResponsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName) {
+		return getResponsibilityService().getResponsibilitiesByName( namespaceCode, responsibilityName );
+	}
+	
+	
+	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
 	 */
+	@Deprecated
 	public boolean hasResponsibility(String principalId,
 			String responsibilityName, AttributeSet qualification,
 			AttributeSet responsibilityDetails) {

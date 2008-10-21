@@ -127,11 +127,24 @@ public interface IdentityManagementService {
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
+    List<? extends KimResponsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName );
+    
+    /**
+     * Check whether the principal has the given responsibility within the passed qualifier.
+     */
+    boolean hasResponsibility( String principalId, String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
+
+ 	/** 
+ 	 * Return the responsibility object for the given unique combination of namespace,
+ 	 * component and responsibility name.
+ 	 */
+    @Deprecated
     List<? extends KimResponsibility> getResponsibilitiesByName( String responsibilityName );
     
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
+    @Deprecated
     boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
 	@Deprecated

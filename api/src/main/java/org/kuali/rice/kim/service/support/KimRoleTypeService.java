@@ -44,12 +44,15 @@ public interface KimRoleTypeService extends KimTypeService {
      * This method would return true for this set of arguments.  This would require a query of 
      * the KFS organization hierarchy, so an implementation of this sort must be done by
      * a service which lives within KFS and will be called remotely by KIM.
+     * 
+     * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
+     * the role service.
      */
-    boolean doesRoleQualifierMatchQualification( final AttributeSet qualification, final AttributeSet roleQualifier );
+    boolean doesRoleQualifierMatchQualification( AttributeSet qualification, AttributeSet roleQualifier );
 
     /** Same as {@link #doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
      */
-    boolean doRoleQualifiersMatchQualification( final AttributeSet qualification, final List<AttributeSet> roleQualifierList );
+    boolean doRoleQualifiersMatchQualification( AttributeSet qualification, List<AttributeSet> roleQualifierList );
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
@@ -66,24 +69,39 @@ public interface KimRoleTypeService extends KimTypeService {
      * a chart code and account number.  This service would use that information to retrieve the Fiscal Officer
      * from the account table.
      * 
+     * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
+     * the role service.
+     * 
      * @see #isApplicationRoleType()
      */
-    List<String> getPrincipalIdsFromApplicationRole( String roleName, final AttributeSet qualification );
+    List<String> getPrincipalIdsFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
 
+    /**
+     * Returns a list of group IDs corresponding to the given application role.  These group IDs 
+     * would be returned from the implementing application.
+     * 
+     * @see #isApplicationRoleType()
+     * @see #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
+     */
+    List<String> getGroupIdsFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
+    
     /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
-    List<AttributeSet> getAllImpliedQualifications( final AttributeSet qualification );
+    List<AttributeSet> getAllImpliedQualifications( AttributeSet qualification );
 
     /**
      * This method would return all qualifications that imply this qualification. (up)
+     * 
+     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
+     * the role service.
      * 
      * TODO: 
      * Allowing?
      * Allowed?
      * Granting?
      */
-    List<AttributeSet> getAllImplyingQualifications( final AttributeSet qualification );
+    List<AttributeSet> getAllImplyingQualifications( AttributeSet qualification );
     // TODO: need list versions of the implyed/ing methods?
     
     /**
@@ -91,7 +109,11 @@ public interface KimRoleTypeService extends KimTypeService {
      * this method could take [chart=BL,org=PSY] and return [campus=BLOOMINGTON]
      * if this role was based on the campus and the role assigned to it was based 
      * on organization.
+     * 
+     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
+     * the role service.
+     * 
      */
-    AttributeSet convertQualificationAttributesToRequired( final AttributeSet qualificationAttributes );
+    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
     
 }

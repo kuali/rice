@@ -29,11 +29,11 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class NamespaceCodeRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
-	/***
+	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#performRoleQualifierQualificationMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	public boolean performMatch(final AttributeSet qualification, final AttributeSet roleQualifier) {
+	public boolean performMatch(AttributeSet qualification, AttributeSet roleQualifier) {
 		//Create a role type that checks the namespace code. In the namespaceCode attribute, wildcards are allowed ("*")
 		//In this case we DO want partial value matching (as in KFS-* should match all namespaces which begin with KFS.)
 		if(StringUtils.isEmpty(qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE)))

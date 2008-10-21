@@ -35,14 +35,14 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)
 	 */
-	public boolean doesRoleQualifierMatchQualification(final AttributeSet qualification, final AttributeSet roleQualifier) {
+	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
 		return performMatch(translateInputAttributeSet(qualification), roleQualifier);
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
-	public boolean doRoleQualifiersMatchQualification(final AttributeSet qualification, final List<AttributeSet> roleQualifierList) {
+	public boolean doRoleQualifiersMatchQualification(AttributeSet qualification, List<AttributeSet> roleQualifierList) {
 		return performMatches(translateInputAttributeSet(qualification), roleQualifierList);
 	}
 
@@ -52,9 +52,27 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getPrincipalIdsFromApplicationRole(java.lang.String, AttributeSet)
 	 */
-	public List<String> getPrincipalIdsFromApplicationRole(String roleName,
+	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName,
 			AttributeSet qualification) {
-		return new ArrayList<String>(0);
+		if ( !isApplicationRoleType() ) {
+			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
+		} else {
+			throw new UnsupportedOperationException( this.getClass().getName() + " is an application role type but has not overridden this method." );
+		}
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getGroupIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<String> getGroupIdsFromApplicationRole(String namespaceCode,
+			String roleName, AttributeSet qualification) {
+		if ( !isApplicationRoleType() ) {
+			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
+		} else {
+			throw new UnsupportedOperationException( this.getClass().getName() + " is an application role type but has not overridden this method." );
+		}
 	}
 	
 	/**

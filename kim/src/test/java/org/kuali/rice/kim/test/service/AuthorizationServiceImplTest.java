@@ -161,12 +161,12 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 	@Test
 	public void testHasPermission() {
 		
-		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "perm1", null ) );		
-		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "perm2", null ) );
-		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "perm3", null ) );
-		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "perm3", null ) );
-		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "perm1", null ) );
-		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "perm2", null ) );
+		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "KR-NS", "p1", "perm1", null ) );		
+		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "KR-NS", "p1", "perm2", null ) );
+		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "KR-NS", "p1", "perm3", null ) );
+		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "KR-NS", "p3", "perm3", null ) );
+		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "KR-NS", "p3", "perm1", null ) );
+		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "KR-NS", "p3", "perm2", null ) );
 	}
 	
 	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {

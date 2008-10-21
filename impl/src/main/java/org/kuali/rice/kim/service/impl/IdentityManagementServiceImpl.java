@@ -40,19 +40,50 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     
     // AUTHORIZATION SERVICE
     
+    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
+    	return getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+    }
+    
+    public boolean isAuthorized(String principalId, String namespaceCode, 
+    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
+    }
+
+    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
+    	return getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+    }
+    
+    public boolean isAuthorizedByTemplateName(String principalId,
+    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public List<? extends KimPermission> getAuthorizedPermissions(String principalId,
+    		String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+    	return getPermissionService().getAuthorizedPermissions( principalId, namespaceCode, permissionName, permissionDetails, qualification );
+    }
+
+    
+    @Deprecated
     public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
     	return getPermissionService().hasPermission( principalId, permissionName, permissionDetails );
     }
     
+    @Deprecated
     public boolean isAuthorized(String principalId,
     		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	return getPermissionService().isAuthorized( principalId, permissionName, permissionDetails, qualification );
     }
 
+    @Deprecated
     public boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails) {
     	return getPermissionService().hasPermissionByTemplateName( principalId, permissionTemplateName, permissionDetails );
     }
     
+    @Deprecated
     public boolean isAuthorizedByTemplateName(String principalId,
     		String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	return getPermissionService().isAuthorizedByTemplateName( principalId, permissionTemplateName, permissionDetails, qualification );
@@ -61,6 +92,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
+    @Deprecated
     public List<? extends KimPermission> getAuthorizedPermissions(String principalId,
     		String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
     	return getPermissionService().getAuthorizedPermissions( principalId, permissionName, permissionDetails, qualification );

@@ -83,11 +83,36 @@ public interface IdentityManagementService {
     // Authorization Checks
     // --------------------
     
+    boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails);
+    boolean isAuthorized( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );  
+
+    boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails);
+    boolean isAuthorizedByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );  
+
+    /**
+     * Returns the matching permission objects for a principal.
+     * 
+     * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
+     */
+    List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+
+    @Deprecated
     boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails);
+    @Deprecated
     boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );  
 
+    @Deprecated
     boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails);
+    @Deprecated
     boolean isAuthorizedByTemplateName( String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );  
+
+    /**
+     * Returns the matching permission objects for a principal.
+     * 
+     * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
+     */
+    @Deprecated
+    List<? extends KimPermission> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     
     // ----------------------
     // Responsibility Methods
@@ -113,10 +138,4 @@ public interface IdentityManagementService {
     List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails);
-    /**
-     * Returns the matching permission objects for a principal.
-     * 
-     * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
-     */
-    List<? extends KimPermission> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
 }

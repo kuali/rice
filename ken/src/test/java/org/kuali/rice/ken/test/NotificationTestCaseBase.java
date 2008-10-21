@@ -22,6 +22,7 @@ import org.kuali.rice.core.config.SpringModuleConfigurer;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
@@ -89,9 +90,8 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         lifecycles.add(new BaseLifecycle() {
             @Override
             public void start() throws Exception {
-                // grab KEN's resource loader to pull out the context
-                SpringResourceLoader kenResourceLoader = (SpringResourceLoader) GlobalResourceLoader.getResourceLoader(SpringModuleConfigurer.getDefaultResourceLoaderQName(KEN_MODULE_NAME)); 
-                ConfigurableApplicationContext moduleContext = kenResourceLoader.getContext();
+                // get the composite Rice Spring context 
+                ConfigurableApplicationContext moduleContext = RiceResourceLoaderFactory.getSpringResourceLoader().getContext();
                 // This method sets up the Spring services so that they can be accessed by the tests.
                 services = new SpringNotificationServiceLocator(moduleContext);
                 // grab the module's transaction manager

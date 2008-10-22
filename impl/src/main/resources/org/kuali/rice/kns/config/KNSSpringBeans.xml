@@ -91,7 +91,6 @@
 
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
-		<property name="authorizationService" ref="authorizationService" />
   	<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="baselinePackages">
 			<list>

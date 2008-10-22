@@ -25,4 +25,5 @@ public class KENConfigurer extends SpringModuleConfigurer {
     public KENConfigurer() {
         super("ken");
     }
+    
 }

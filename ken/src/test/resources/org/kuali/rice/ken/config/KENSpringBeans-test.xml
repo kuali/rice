@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<!-- KENTestSpringBeans.xml - Test KEN spring context
-     includes common notification spring beans
-     does not include security beans not required for unit tests -->
-<beans>
-  <import resource="classpath:org/kuali/rice/ken/config/KENSpringBeans.xml"/>
-</beans>

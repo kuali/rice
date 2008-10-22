@@ -29,20 +29,13 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 public class SpringModuleConfigurer extends BaseModuleConfigurer {
 	
     /**
-     * The resource path of the Spring context to use in test
-     */
-    protected final String springResourceTest;
-    /**
      * The name of this resource loader
      */
     protected final String resourceLoaderName;
 
     @Override
 	public String getSpringFileLocations(){
-    	if(isTestMode())
-    		return getDefaultSpringBeansTestPath(getConfigPackagePath(moduleName), moduleName);
-    	else
-    		return getDefaultSpringBeansPath(getConfigPackagePath(moduleName), moduleName);
+    	return getDefaultSpringBeansPath(getConfigPackagePath(moduleName), moduleName);
 	}
 	
     /* helper methods for constructors */
@@ -51,9 +44,6 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     }
     private static final String getDefaultSpringBeansPath(String configPackagePath, String moduleName) {
         return configPackagePath + moduleName.toUpperCase() + "SpringBeans.xml"; 
-    }
-    private static final String getDefaultSpringBeansTestPath(String configPackagePath, String moduleName) {
-        return configPackagePath + moduleName.toUpperCase() + "SpringBeans-test.xml";
     }
     public static final String getDefaultResourceLoaderName(String moduleName) {
         return moduleName.toUpperCase() + "_SPRING_RESOURCE_LOADER";        
@@ -78,36 +68,10 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
      * @param resourceLoaderName the resource loader name
      */
     public SpringModuleConfigurer(String moduleName, String resourceLoaderName) {
-        this(moduleName,
-             resourceLoaderName,
-             getConfigPackagePath(moduleName));
+    	super(moduleName);
+    	this.resourceLoaderName = resourceLoaderName;
     }
     
-    /**
-     * Constructs a SpringModuleConfigurer with default context resources but custom resource loader name
-     * and configuration package path.
-     * @param moduleName the module name
-     * @param resourceLoaderName the resource loader name
-     * @param configPackagePath the path to the configuration package for this module
-     */
-    public SpringModuleConfigurer(String moduleName, String resourceLoaderName, String configPackagePath) {
-        this(moduleName,
-             resourceLoaderName,
-             getDefaultSpringBeansPath(configPackagePath, moduleName),
-             getDefaultSpringBeansTestPath(configPackagePath, moduleName));
-    }
-
-    /**
-     * Constructs a SpringModuleConfigurer with specified resource loader name and spring resource paths
-     * @param moduleName the module name
-     * @param resourceLoaderName the resource loader name
-     */
-    public SpringModuleConfigurer(String moduleName, String resourceLoaderName, String springResource, String testSpringResource) {
-        super(moduleName);
-        this.resourceLoaderName = resourceLoaderName;
-        this.springResourceTest = testSpringResource;
-    }
-
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {
         Config c = super.loadConfig(parentConfig);
@@ -128,7 +92,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
      */
     @Override
     protected ResourceLoader createResourceLoader() {
-        String context = springResourceTest;
+        String context = getSpringFileLocations();
         ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), resourceLoaderName), context);
         return resourceLoader;
     }

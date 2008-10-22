@@ -44,7 +44,6 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PreRulesCheck;
-import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -61,7 +60,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     private KualiConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
-    private AuthorizationService authorizationService;
 
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#setBaselinePackages(java.lang.String)
@@ -846,14 +844,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public void setKualiModuleService(KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
-    }
-
-    public AuthorizationService getAuthorizationService() {
-        return authorizationService;
-    }
-
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
     }
 
     /**

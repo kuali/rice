@@ -33,7 +33,7 @@ public class MockEmailServiceImpl extends EmailServiceImpl implements MockEmailS
 
     public final Map<String, List<Map<String, String>>> MAILBOXES = new HashMap<String, List<Map<String, String>>>();
 
-    /**
+	/**
      * @see org.kuali.rice.kcb.test.service.MockEmailService#getMailBoxes()
      */
     public Map<String, List<Map<String, String>>> getMailBoxes() {

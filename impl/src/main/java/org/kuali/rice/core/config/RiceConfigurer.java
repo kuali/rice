@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -43,11 +44,9 @@ import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
 import org.kuali.rice.kew.config.KEWConfigurer;
-import org.kuali.rice.kew.lifecycle.WebApplicationGlobalResourceLifecycle;
 import org.kuali.rice.kim.config.KIMConfigurer;
 import org.kuali.rice.kns.config.KNSConfigurer;
 import org.kuali.rice.ksb.messaging.config.KSBConfigurer;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationEvent;
@@ -82,7 +81,8 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private Config rootConfig;
 	private ResourceLoader rootResourceLoader;
 	private Properties properties;
-	private List<String> configLocations;
+	private List<String> configLocations = new ArrayList<String>();
+	private List<String> additionalSpringFiles = new ArrayList<String>();
 
 	private KSBConfigurer ksbConfigurer;
 	private KNSConfigurer knsConfigurer;
@@ -176,6 +176,9 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		for(ModuleConfigurer module: modules){
 			if(StringUtils.isNotBlank(module.getSpringFileLocations())) 
 				springFileLocations += module.getSpringFileLocations()+SpringLoader.SPRING_SEPARATOR_CHARACTER;
+		}
+		for (String springFile : additionalSpringFiles) {
+			springFileLocations += springFile + SpringLoader.SPRING_SEPARATOR_CHARACTER;	
 		}
 		ResourceLoader resourceLoader = RiceResourceLoaderFactory.createRootRiceResourceLoader(springFileLocations);
 		resourceLoader.start();
@@ -562,6 +565,20 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 */
 	public void setModules(List<ModuleConfigurer> modules) {
 		this.modules = modules;
+	}
+
+	/**
+	 * @return the additionalSpringFiles
+	 */
+	public List<String> getAdditionalSpringFiles() {
+		return this.additionalSpringFiles;
+	}
+
+	/**
+	 * @param additionalSpringFiles the additionalSpringFiles to set
+	 */
+	public void setAdditionalSpringFiles(List<String> additionalSpringFiles) {
+		this.additionalSpringFiles = additionalSpringFiles;
 	}	
 
 }

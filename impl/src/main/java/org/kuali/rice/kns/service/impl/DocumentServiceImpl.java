@@ -47,6 +47,7 @@ import org.kuali.rice.kns.rule.event.RouteDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveEvent;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentAuthorizationService;
@@ -85,7 +86,7 @@ public class DocumentServiceImpl implements DocumentService {
     protected BusinessObjectService businessObjectService;
     protected DocumentAuthorizationService documentAuthorizationService;
     protected DocumentDao documentDao;
-    private DataDictionaryServiceImpl dataDictionaryService;
+    private DataDictionaryService dataDictionaryService;
     private DocumentHeaderService documentHeaderService;
     
 
@@ -817,7 +818,7 @@ public class DocumentServiceImpl implements DocumentService {
      * 
      * @param dataDictionaryService
      */
-    public void setDataDictionaryService(DataDictionaryServiceImpl dataDictionaryService) {
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
 

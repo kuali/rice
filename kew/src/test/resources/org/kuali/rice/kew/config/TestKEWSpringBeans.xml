@@ -61,6 +61,11 @@
 				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
+		<property name="additionalSpringFiles">
+			<list>
+				<value>classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</value>
+			</list>
+		</property>
 		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />

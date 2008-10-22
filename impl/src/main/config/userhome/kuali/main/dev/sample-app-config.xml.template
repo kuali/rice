@@ -6,9 +6,9 @@
     <param name="serviceServletUrl">${application.url}/remoting/</param>
 
     <param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.url">jdbc:oracle:thin:@esdb12-k.uits.indiana.edu:1521:KUALI</param>
-	<param name="datasource.username">KRDEV</param
-	<param name="datasource.password">!!!!!!!!!!!!!!!!!! ASK YOUR TEAM !!!!!!!!!!!!!!!!!!!</param>
+    <param name="datasource.url">jdbc:oracle:thin:@esdbk02.uits.indiana.edu:1521:KUALI</param>
+    <param name="datasource.username">!!!!!!!!!!!!!!!!!! ASK YOUR TEAM !!!!!!!!!!!!!!!!!!!</param>
+    <param name="datasource.password">!!!!!!!!!!!!!!!!!! ASK YOUR TEAM !!!!!!!!!!!!!!!!!!!</param>
 
     <param name="keystore.alias">rice</param>
     <param name="keystore.password">r1c3pw</param>

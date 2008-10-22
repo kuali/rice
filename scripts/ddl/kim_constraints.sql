@@ -65,7 +65,7 @@ ALTER TABLE kr_kim_entity_addr_t ADD CONSTRAINT kr_kim_entity_addr_tr1
 	ON DELETE CASCADE
 /
 ALTER TABLE kr_kim_entity_addr_t ADD CONSTRAINT kr_kim_entity_addr_tr2
-	FOREIGN KEY (addr_type_cd)
+	FOREIGN KEY (addr_typ_cd)
 	REFERENCES kr_kim_addr_type_t
 /
 

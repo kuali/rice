@@ -160,66 +160,66 @@ INSERT INTO KR_KIM_TYPE_T(KIM_TYPE_ID, OBJ_ID, TYPE_NM, SRVC_NM,  ACTV_IND)
 COMMIT 
 /
 
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr1', 'kimAttr1', 'Attribute 1', 'kimRoleTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr1', 'kimAttr1', 'Attribute 1', 'Attrib LBL 1', 'kimRoleTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr2', 'kimAttr2', 'Attribute 2', 'kimRoleTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr2', 'kimAttr2', 'Attribute 2', 'Attrib LBL 2', 'kimRoleTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr3', 'kimAttr3', 'Attribute 3', 'kimRoleTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr3', 'kimAttr3', 'Attribute 3', 'Attrib LBL 3', 'kimRoleTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr4', 'kimAttr4', 'Attribute 4', 'groupTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr4', 'kimAttr4', 'Attribute 4', 'Attrib LBL 4', 'groupTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr5', 'kimAttr5', 'Attribute 5', 'groupTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr5', 'kimAttr5', 'Attribute 5', 'Attrib LBL 5', 'groupTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr6', 'kimAttr6', 'Attribute 6', 'permTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr6', 'kimAttr6', 'Attribute 6', 'Attrib LBL 6', 'permTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr7', 'kimAttr7', 'Attribute 7', 'permTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr7', 'kimAttr7', 'Attribute 7', 'Attrib LBL 7', 'permTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr8', 'kimAttr8', 'Attribute 8', 'permTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr8', 'kimAttr8', 'Attribute 8', 'Attrib LBL 8', 'permTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr9', 'kimAttr9', 'Attribute 9', 'responsibilityTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr9', 'kimAttr9', 'Attribute 9', 'Attrib LBL 9', 'responsibilityTypeService',  'Y')
 /
-INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, SRVC_NM,  ACTV_IND) 
-    VALUES('kimAttr10', 'kimAttr10', 'Attribute 10', 'responsibilityTypeService',  'Y')
+INSERT INTO KR_KIM_ATTRIBUTE_T(KIM_ATTRIB_ID, OBJ_ID, ATTRIB_NM, ATTRIB_LBL, SRVC_NM,  ACTV_IND) 
+    VALUES('kimAttr10', 'kimAttr10', 'Attribute 10', 'Attrib LBL 10', 'responsibilityTypeService',  'Y')
 /
 COMMIT
 /
 
 
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr1', 'kimTpAttr1', 'roleType1', 'kimAttr1',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr1', 'kimTpAttr1', 'roleType1', 'kimAttr1', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr2', 'kimTpAttr2', 'roleType2', 'kimAttr2',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr2', 'kimTpAttr2', 'roleType2', 'kimAttr2', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr4', 'kimTpAttr4', 'groupType1', 'kimAttr4',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr4', 'kimTpAttr4', 'groupType1', 'kimAttr4', '00', 'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr5', 'kimTpAttr5', 'groupType2', 'kimAttr5',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr5', 'kimTpAttr5', 'groupType2', 'kimAttr5', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr6', 'kimTpAttr6', 'permType1', 'kimAttr6',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr6', 'kimTpAttr6', 'permType1', 'kimAttr6', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr7', 'kimTpAttr7', 'permType2', 'kimAttr7',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr7', 'kimTpAttr7', 'permType2', 'kimAttr7', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr8', 'kimTpAttr8', 'permType3', 'kimAttr8',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr8', 'kimTpAttr8', 'permType3', 'kimAttr8', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr9', 'kimTpAttr9', 'rspType1', 'kimAttr9',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr9', 'kimTpAttr9', 'rspType1', 'kimAttr9', '00',  'Y')
 /
-INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID,  ACTV_IND) 
-    VALUES('kimTpAttr10', 'kimTpAttr10', 'rspType2', 'kimAttr10',  'Y')
+INSERT INTO KR_KIM_TYPE_ATTRIBUTE_T(KIM_TYPE_ATTRIB_ID, OBJ_ID, KIM_TYPE_ID, KIM_ATTRIB_ID, SORT_CD,  ACTV_IND) 
+    VALUES('kimTpAttr10', 'kimTpAttr10', 'rspType2', 'kimAttr10', '00',  'Y')
 /
 COMMIT
 /
@@ -305,13 +305,10 @@ INSERT INTO KR_KIM_ROLE_MBR_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_K
     VALUES('rmad2', 'rmad2', 'rp2', 'roleType2', 'kimAttr2', 'CHEM')
 /
 INSERT INTO KR_KIM_ROLE_MBR_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY, KIM_TYPE_ID, KIM_ATTRIB_ID, ATTRIB_VAL) 
-    VALUES('rmad3', 'rmad3', 'rp2', 'roleType2', 'kimAttr3', 'PHYS')
+    VALUES('rmad3', 'rmad4', 'rg1', 'groupType1', 'kimAttr4', 'ROLEMEMBERATTR4')
 /
 INSERT INTO KR_KIM_ROLE_MBR_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY, KIM_TYPE_ID, KIM_ATTRIB_ID, ATTRIB_VAL) 
-    VALUES('rmad4', 'rmad4', 'rg1', 'groupType1', 'kimAttr4', 'ROLEMEMBERATTR4')
-/
-INSERT INTO KR_KIM_ROLE_MBR_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY, KIM_TYPE_ID, KIM_ATTRIB_ID, ATTRIB_VAL) 
-    VALUES('rmad5', 'rmad5', 'rg2', 'groupType1', 'kimAttr5', 'ROLEMEMBERATTR5')
+    VALUES('rmad4', 'rmad5', 'rg2', 'groupType1', 'kimAttr5', 'ROLEMEMBERATTR5')
 /
 COMMIT
 /
@@ -325,27 +322,27 @@ INSERT INTO KR_KIM_GROUP_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY,
 COMMIT
 /
 
-INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
-    VALUES('permTmpl1', 'permTmpl1', 'Perm template name1', 'Perm template description1', 'permType1', 'Y')
+INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME, NAMESPACE_CD,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
+    VALUES('permTmpl1', 'permTmpl1', 'Perm template name1', 'KFS', 'Perm template description1', 'permType1', 'Y')
 /
-INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
-    VALUES('permTmpl2', 'permTmpl2', 'Perm template name2', 'Perm template description2', 'permType2', 'Y')
+INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME, NAMESPACE_CD,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
+    VALUES('permTmpl2', 'permTmpl2', 'Perm template name2', 'KFS', 'Perm template description2', 'permType2', 'Y')
 /
-INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
-    VALUES('permTmpl3', 'permTmpl3', 'Perm template name3', 'Perm template description3', 'permType3', 'Y')
+INSERT INTO KR_KIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, NAME, NAMESPACE_CD,  DESCRIPTION, KIM_TYPE_ID, ACTV_IND) 
+    VALUES('permTmpl3', 'permTmpl3', 'Perm template name3', 'KFS', 'Perm template description3', 'permType3', 'Y')
 /
 COMMIT
 /
 
 
-INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME,  DESCRIPTION, ACTV_IND) 
-    VALUES('perm1', 'perm1', 'permTmpl1', 'Permission One', NULL,  'Y')
+INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME, NAMESPACE_CD,  DESCRIPTION, ACTV_IND) 
+    VALUES('perm1', 'perm1', 'permTmpl1', 'Permission One', 'KFS', NULL,  'Y')
 /
-INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME,  DESCRIPTION, ACTV_IND) 
-    VALUES('perm2', 'perm2', 'permTmpl2', 'Permission Two', NULL, 'Y')
+INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME, NAMESPACE_CD,  DESCRIPTION, ACTV_IND) 
+    VALUES('perm2', 'perm2', 'permTmpl2', 'Permission Two', 'KFS', NULL, 'Y')
 /
-INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME,  DESCRIPTION, ACTV_IND) 
-    VALUES('perm3', 'perm3', 'permTmpl3', 'Permission Two', null, 'Y')
+INSERT INTO KR_KIM_PERM_T(PERM_ID, OBJ_ID, PERM_TMPL_ID, NAME, NAMESPACE_CD,  DESCRIPTION, ACTV_IND) 
+    VALUES('perm3', 'perm3', 'permTmpl3', 'Permission Two', 'KFS', null, 'Y')
 /
 COMMIT
 /
@@ -374,20 +371,20 @@ INSERT INTO KR_KIM_PERM_ATTR_DATA_T(ATTRIB_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY, 
 COMMIT
 /
 
-INSERT INTO KR_KIM_RESP_TMPL_T(RESP_TMPL_ID, OBJ_ID, NAME, KIM_TYPE_ID, DESCRIPTION, ACTV_IND) 
-    VALUES('rsptpl1', 'rsptpl1', 'Resp template 1', 'rspType1', 'desc1', 'Y')
+INSERT INTO KR_KIM_RESP_TMPL_T(RESP_TMPL_ID, OBJ_ID, NAME, KIM_TYPE_ID, DESCRIPTION, namespace_cd, ACTV_IND) 
+    VALUES('rsptpl1', 'rsptpl1', 'Resp template 1', 'rspType1', 'desc1', 'KFS', 'Y')
 /
-INSERT INTO KR_KIM_RESP_TMPL_T(RESP_TMPL_ID, OBJ_ID, NAME, KIM_TYPE_ID, DESCRIPTION, ACTV_IND) 
-    VALUES('rsptpl2', 'rsptpl2', 'Resp template 2', 'rspType2', 'desc2', 'Y')
+INSERT INTO KR_KIM_RESP_TMPL_T(RESP_TMPL_ID, OBJ_ID, NAME, KIM_TYPE_ID, DESCRIPTION, namespace_cd, ACTV_IND) 
+    VALUES('rsptpl2', 'rsptpl2', 'Resp template 2', 'rspType2', 'desc2', 'KFS', 'Y')
 /
 COMMIT
 /
 
-INSERT INTO KR_KIM_RESP_T(RESP_ID, OBJ_ID, RESP_TMPL_ID, NAME, DESCRIPTION, ACTV_IND) 
-    VALUES('rsp1', 'rsp1', 'rsptpl1', 'Resp 1',  'desc1', 'Y')
+INSERT INTO KR_KIM_RESP_T(RESP_ID, OBJ_ID, RESP_TMPL_ID, NAME, DESCRIPTION, namespace_cd, ACTV_IND) 
+    VALUES('rsp1', 'rsp1', 'rsptpl1', 'Resp 1',  'desc1', 'KFS', 'Y')
 /
-INSERT INTO KR_KIM_RESP_T(RESP_ID, OBJ_ID, RESP_TMPL_ID, NAME, DESCRIPTION, ACTV_IND) 
-    VALUES('rsp2', 'rsp2', 'rsptpl2', 'Resp 2',  'desc2', 'Y')
+INSERT INTO KR_KIM_RESP_T(RESP_ID, OBJ_ID, RESP_TMPL_ID, NAME, DESCRIPTION, namespace_cd, ACTV_IND) 
+    VALUES('rsp2', 'rsp2', 'rsptpl2', 'Resp 2',  'desc2', 'KFS', 'Y')
 /
 COMMIT
 /

@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -45,6 +46,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="EN_SERVICE_DEF_DUEX_T")
+@Sequence(name="SERVICE_DEF_SEQ", property="messageEntryId")
 public class ServiceInfo implements Serializable {
 	
 	private static final long serialVersionUID = -4244884858494208070L;

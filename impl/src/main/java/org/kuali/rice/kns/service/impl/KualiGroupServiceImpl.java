@@ -39,7 +39,7 @@ import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
 
 /**
  * This class is the service implementation for the KualiGroupService structure. This is the default implementation, that is
- * delivered with Kuali which utilizes the workgroup concept in OneStart Workflow.
+ * delivered with Kuali which utilizes the workgroup concept in Workflow.
  */
 public class KualiGroupServiceImpl implements KualiGroupService {
 
@@ -146,7 +146,7 @@ public class KualiGroupServiceImpl implements KualiGroupService {
     }
 
     /**
-     * Retrieves all the users in a OneStart Workflow workgroup.
+     * Retrieves all the users in a Workflow workgroup.
      * 
      * @param workgroup
      * @return

@@ -46,7 +46,6 @@ public class KEWConstants {
     public static final String EMAIL_REMINDER_FROM_ADDRESS_KEY = "Config.Mailer.FromAddress";
     public static final String EMAIL_REMINDER_LAST_WEEKLY_KEY = "Config.Mailer.LastWeeklyReminderDate";
     public static final String EMAIL_REMINDER_LAST_DAILY_KEY = "Config.Mailer.LastDailyReminderDate";
-    public static final String APP_CONST_USE_ONESTART_URL = "Config.Application.UseOneStartPortalUrl";
     public static final String APP_CONST_EDL_USE_XSLTC = "EDL.UseXSLTC";
     public static final String APP_CONST_EDL_DEBUG_TRANSFORM = "EDL.DebugTransform";
     

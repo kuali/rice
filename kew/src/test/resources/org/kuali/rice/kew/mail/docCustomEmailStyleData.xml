@@ -17,8 +17,8 @@
     <xsl:template match="immediateReminder">
         <xsl:variable name="docHandlerUrl" select="actionItem/documentType/docHandlerUrl"/>
         <email>
-            <subject>DOCTYPE CUSTOM: OneStart Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
-            <body>DOCTYPE CUSTOM: Your OneStart Action List has an eDoc(electronic document) that needs your attention: 
+            <subject>DOCTYPE CUSTOM: Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
+            <body>DOCTYPE CUSTOM: Your Action List has an eDoc(electronic document) that needs your attention: 
 
 Document ID:&#x9;<xsl:value-of select="actionItem/actionItem/routeHeaderId"/>
 Initiator:&#x9;&#x9;<xsl:value-of select="actionItem/docInitiator/displayName"/>
@@ -58,8 +58,8 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemAuthenticationUse
 
     <xsl:template match="dailyReminder">
         <email>
-            <subject>DOCTYPE CUSTOM: OneStart Action List Reminder</subject>
-            <body>DOCTYPE CUSTOM: Your OneStart Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
+            <subject>DOCTYPE CUSTOM: Action List Reminder</subject>
+            <body>DOCTYPE CUSTOM: Your Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
@@ -97,8 +97,8 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
     
     <xsl:template match="weeklyReminder">
         <email>
-            <subject>DOCTYPE CUSTOM: OneStart Action List Reminder</subject>
-            <body>DOCTYPE CUSTOM: Your OneStart Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
+            <subject>DOCTYPE CUSTOM: Action List Reminder</subject>
+            <body>DOCTYPE CUSTOM: Your Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want

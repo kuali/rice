@@ -16,7 +16,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" class="headercell1">
       <tr>
         <td>
-          <img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
+          <img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         	<td width="90%"><a href="Lookup.do?method=search&lookupableImplServiceName=RuleTemplateLookupableImplService">Rule Template Search</a> <!-- | <a href="RuleTemplate.do" >Create new Rule Template</a> --></td>
       </tr>

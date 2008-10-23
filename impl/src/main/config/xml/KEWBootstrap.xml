@@ -164,10 +164,6 @@
             <ConstantName>Config.Application.RunDeactivationDate</ConstantName>
             <ConstantValue>true</ConstantValue>
             </ApplicationConstant>
-            <ApplicationConstant>
-            <ConstantName>Config.Application.UseOneStartPortalUrl</ConstantName>
-            <ConstantValue>true</ConstantValue>
-            </ApplicationConstant>
         -->
         <!--
             new

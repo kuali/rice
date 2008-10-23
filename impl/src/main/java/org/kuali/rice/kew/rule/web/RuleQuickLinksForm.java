@@ -48,10 +48,6 @@ public class RuleQuickLinksForm extends ActionForm {
     public List getRootDocuments() {
         return rootDocuments;
     }
-	public boolean isUseOneStartPortalUrl() {
-		String useOneStartPortalUrl = Utilities.getApplicationConstant(KEWConstants.APP_CONST_USE_ONESTART_URL);
-		return (StringUtils.isEmpty(useOneStartPortalUrl) ? false : new Boolean(useOneStartPortalUrl).booleanValue());
-	}
     public List getDocumentTypeQuickLinksStructures() {
         return this.documentTypeQuickLinksStructures;
     }

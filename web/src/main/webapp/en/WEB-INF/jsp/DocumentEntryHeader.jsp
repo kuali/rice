@@ -7,7 +7,7 @@
 
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headertable">
   <tr>
-    <td width="10%" ><img src="<c:out value="${resourcePath}"/>images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td width="10%" ><img src="<c:out value="${resourcePath}"/>images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
     <td><a href="<c:out value="${ActionForm.searchLink}" />" ><c:out value="${ActionForm.searchLinkText}" /></a></td>
     <td align="right">
       <table border=0 cellpadding=0 cellspacing=0>

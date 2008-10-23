@@ -74,7 +74,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "workflow@indiana.edu";
 
-	private static final String ACTION_LIST_REMINDER = "OneStart Action List Reminder";
+	private static final String ACTION_LIST_REMINDER = "Action List Reminder";
 
     private static final String IMMEDIATE_REMINDER_EMAIL_MESSAGE_KEY = "immediate.reminder.email.message";
 
@@ -335,7 +335,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
      * 7 = getHelpLink(documentType)
      */
     private static final MessageFormat DEFAULT_IMMEDIATE_REMINDER = new MessageFormat(
-        "Your OneStart Action List has an eDoc(electronic document) that needs your attention: \n\n" +
+        "Your Action List has an eDoc(electronic document) that needs your attention: \n\n" +
         "Document ID:\t{0,number,#}\n" +
         "Initiator:\t\t{1}\n" +
         "Type:\t\tAdd/Modify {2}\n" +
@@ -368,7 +368,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		StringBuffer sf = new StringBuffer();
 
 		/*sf
-				.append("Your OneStart Action List has an eDoc(electronic document) that needs your attention: \n\n");
+				.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
 		sf.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
 		sf.append("Initiator:\t\t");
 		try {
@@ -485,7 +485,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		HashMap docTypes = getActionListItemsStat(actionItems);
 
 		sf
-				.append("Your OneStart Action List has "
+				.append("Your Action List has "
 						+ actionItems.size()
 						+ " eDocs(electronic documents) that need your attention: \n\n");
 		Iterator iter = docTypes.keySet().iterator();

@@ -318,7 +318,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
     }
 
     /**
-     * Used from the rule quicklinks when doing the onestart focus channel.
+     * Used from the rule quicklinks when doing the focus channel.
      */
     public String getEncodedName() {
         return URLEncoder.encode(getName());

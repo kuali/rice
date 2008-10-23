@@ -30,7 +30,7 @@
   <tr>
     <c:if test="${ActionListForm.logoAlign != 'right'}">
     <td width="10%">
-        <img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
     </td>
     </c:if>
     <td align="left">
@@ -78,7 +78,7 @@
     </td>
     <c:if test="${ActionListForm.logoAlign == 'right'}">
     <td align="right">
-        <img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 vspace=2>
+        <img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 vspace=2>
     </td>
     </c:if>
   </tr>

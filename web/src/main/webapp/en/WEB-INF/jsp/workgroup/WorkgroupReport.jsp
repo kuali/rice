@@ -17,7 +17,7 @@
 <html-el:form action="${UrlResolver.workgroupUrl}">
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
-    <td width="10%"><img src="<c:out value="${resourcePath}"/>images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5></td>
+    <td width="10%"><img src="<c:out value="${resourcePath}"/>images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
     <td>
       <c:if test="${WorkgroupCaps.lookupSupported}"><a href="<c:out value="${resourcePath}"/>Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService" >Workgroup Search</a>&nbsp;|&nbsp;</c:if>
       <a href='<c:out value="${resourcePath}"/>Lookup.do?lookupableImplServiceName=RuleBaseValuesLookupableImplService&workgroupName=<c:out value="${WorkgroupForm.workgroupName}" />'>Rule Search</a></td>

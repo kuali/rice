@@ -10,9 +10,6 @@
 <TITLE>Rule QuickLinks</TITLE>
 <link href="css/screen.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="scripts/en-common.js"></script>
-<c:if test="${RuleQuickLinkForm.useOneStartPortalUrl}">
-	<script language="javascript" src="https://docs.onestart.iu.edu/dav/MY/shared/OneStartGlobal.js" ></script>
-</c:if>
 <script language="JavaScript" src="scripts/cal2.js">
     /*
     Xin's Popup calendar script-  Xin Yang (http://www.yxscripts.com/) Script
@@ -27,7 +24,7 @@
 
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
 	<tr>
-    	<td><img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    	<td><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 	    <td width="90%">&nbsp;</td>
   </tr>
 </table>

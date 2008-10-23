@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * This class is the implementation of the WorkflowDocumentService, which makes use of OneStart Workflow.
+ * This class is the implementation of the WorkflowDocumentService, which makes use of Workflow.
  */
 @Transactional
 public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {

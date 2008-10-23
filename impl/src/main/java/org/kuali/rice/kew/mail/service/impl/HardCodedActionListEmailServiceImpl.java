@@ -32,7 +32,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "workflow@indiana.edu";
 
-	private static final String ACTION_LIST_REMINDER = "OneStart Action List Reminder";
+	private static final String ACTION_LIST_REMINDER = "Action List Reminder";
 
 	private String deploymentEnvironment;
 
@@ -182,7 +182,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		StringBuffer sf = new StringBuffer();
 
 		sf
-				.append("Your OneStart Action List has an eDoc(electronic document) that needs your attention: \n\n");
+				.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
 		sf.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
 		sf.append("Initiator:\t\t");
 		try {
@@ -268,7 +268,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		HashMap docTypes = getActionListItemsStat(actionItems);
 
 		sf
-				.append("Your OneStart Action List has "
+				.append("Your Action List has "
 						+ actionItems.size()
 						+ " eDocs(electronic documents) that need your attention: \n\n");
 		Iterator iter = docTypes.keySet().iterator();

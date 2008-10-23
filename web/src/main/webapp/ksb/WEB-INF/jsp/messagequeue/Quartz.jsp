@@ -25,7 +25,7 @@
 	class="headercell1">
 	<tr>
 		<td width="15%"><img src="images/wf-logo.gif"
-			alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5></td>
+			alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
 		<td width="85%"><a href="Quartz.do?methodToCall=start" />Refresh Page</a></td>
 		<td>&nbsp;&nbsp;</td>
 	</tr>

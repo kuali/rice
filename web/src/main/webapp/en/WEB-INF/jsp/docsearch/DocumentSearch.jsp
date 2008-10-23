@@ -47,7 +47,7 @@
 <table id="headerTable" width="100%" border="0" cellpadding="0" cellspacing="0" class="headercell1">
   <tr>
     <td>
-        <img src="<bean-el:message key="wflogo"/>" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<bean-el:message key="wflogo"/>" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;
     </td>
     <td width="90%">
       <a id="searchType" href="javascript:setMethod('<c:if test="${DocumentSearchForm.isAdvancedSearch == 'YES'}">basic</c:if><c:if test="${DocumentSearchForm.isAdvancedSearch != 'YES'}">advanced</c:if>');document.forms[0].submit();">

@@ -44,7 +44,7 @@ import org.kuali.rice.kew.util.Utilities;
 public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImpl {
     private static final Logger LOG = Logger.getLogger(HardCodedEmailContentServiceImpl.class);
 
-    protected String defaultReminderSubject = "OneStart Action List Reminder";
+    protected String defaultReminderSubject = "Action List Reminder";
 
     public void setDefaultReminderSubject(String defaultReminderSubject) {
         this.defaultReminderSubject = defaultReminderSubject;
@@ -63,7 +63,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.ACTIONLIST_COMMAND;
         StringBuffer emailBody = new StringBuffer();
 
-        emailBody.append("Your OneStart Action List has an eDoc(electronic document) that needs your attention: \n\n");
+        emailBody.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
         emailBody.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
         emailBody.append("Initiator:\t\t");
         try {
@@ -184,7 +184,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         HashMap docTypes = getActionListItemsStat(actionItems);
 
         sf
-                .append("Your OneStart Action List has "
+                .append("Your Action List has "
                         + actionItems.size()
                         + " eDocs(electronic documents) that need your attention: \n\n");
         Iterator iter = docTypes.keySet().iterator();

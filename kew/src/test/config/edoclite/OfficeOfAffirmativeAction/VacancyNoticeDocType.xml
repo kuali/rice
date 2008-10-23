@@ -9,7 +9,7 @@
       <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <docHandler>https://onestart.iu.edu/en-prd/EDocLite</docHandler>
+      <docHandler>${workflow.url}/EDocLite</docHandler>
       <active>true</active>
       <attributes>
         <attribute>

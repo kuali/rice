@@ -16,7 +16,7 @@
 <c:if test="${!RouteLogForm.removeHeader}">
 	<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
 	  <tr>
-	    <td width="10%"><img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5></td>
+	    <td width="10%"><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
 		<td>
 		  <a href="<c:url value="RouteLog.do">
 					<c:param name="showFuture" value="${RouteLogForm.showFuture}" />

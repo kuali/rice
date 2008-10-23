@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * This class implements the WorkflowGroup Service using OneStart Workflow.
+ * This class implements the WorkflowGroup Service using Workflow.
  * 
  * 
  */

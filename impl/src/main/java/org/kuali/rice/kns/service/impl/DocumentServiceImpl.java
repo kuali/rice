@@ -71,7 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * This class is the service implementation for the Document structure. It contains all of the document level type of processing and
  * calling back into documents for various centralization of functionality. This is the default, Kuali delivered implementation
- * which utilizes OneStart Workflow.
+ * which utilizes Workflow.
  */
 @Transactional
 public class DocumentServiceImpl implements DocumentService {

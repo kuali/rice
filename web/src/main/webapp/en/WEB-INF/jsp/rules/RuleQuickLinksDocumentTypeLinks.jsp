@@ -33,81 +33,40 @@ String context = (String)request.getAttribute("basePath") + "/";
 						<td width="20">&nbsp;</td>
 						<td>
 							<c:out value="${routeLevel.routeNodeName}" />&nbsp;
-								<c:choose>
-								<c:when test="${RuleQuickLinkForm.useOneStartPortalUrl}">
-								    <c:set var="ruleTemplateName" value="${routeLevel.ruleTemplate.encodedName}"/>
-									<a href="javascript:focusInOnUrl('<%=context %><c:url value="Rule.do">
-												<c:param name="methodToCall" value="createNew" />
-												<c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-												<c:param name="ruleCreationValues.ruleTemplateName" value="${ruleTemplateName}"/>
-												<c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
-											</c:url>')">Add Rule</a>
-									&nbsp;
-									<a href="javascript:focusInOnUrl('<%=context %><c:url value="Lookup.do">
-												<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>s
-												<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-												<c:param name="ruleTemplateName" value="${ruleTemplateName}"/>
-												<c:param name="docTypeFullName" value="${documentType.name}"/>
-											</c:url>')">Search</a>
-									<c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
-										&nbsp;
-										<a href="javascript:focusInOnUrl('<%=context %><c:url value="RuleQuickLinks.do">
-										            <c:param name="methodToCall" value="addDelegationRule"/>
-													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
-													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-													<c:param name="ruleTemplateName" value="${ruleTemplateName}"/>
-													<%-- delegationWizard is a constants in KEWConstants --%>
-													<c:param name="delegationWizard" value="true"/>
-													<c:param name="docTypeFullName" value="${documentType.name}"/>
-												</c:url>')">Add Delegation</a>
-										&nbsp;
-										<a href="javascript:focusInOnUrl('<%=context %><c:url value="Lookup.do">
-													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
-													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
-													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.encodedName}"/>
-													<%-- delegationWizard is a constants in KEWConstants --%>
-													<c:param name="docTypeFullName" value="${documentType.name}"/>
-													<c:param name="delegateRuleSearch" value="true"/>
-												</c:url>')">Search Delegations</a>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<a href="<%=context %><c:url value="Rule.do">
-												<c:param name="methodToCall" value="createNew" />
-												<c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-												<c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
-												<c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
-											</c:url>" target=_blank>Add Rule</a>
-									&nbsp;
-									<a href="<%=context %><c:url value="Lookup.do">
-												<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>s
-												<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-												<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
-												<c:param name="docTypeFullName" value="${documentType.name}"/>
-											</c:url>" target=_blank>Search</a>
-									<c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
-										&nbsp;
-										<a href="<%=context %><c:url value="RuleQuickLinks.do">
-										            <c:param name="methodToCall" value="addDelegationRule"/>
-													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
-													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
-													<%-- delegationWizard is a constants in KEWConstants --%>
-													<c:param name="delegationWizard" value="true"/>
-													<c:param name="docTypeFullName" value="${documentType.name}"/>
-												</c:url>" target=_blank>Add Delegation</a>
-										&nbsp;
-										<a href="<%=context %><c:url value="Lookup.do">
-													<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
-													<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
-													<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
-													<%-- delegationWizard is a constants in KEWConstants --%>
-													<c:param name="docTypeFullName" value="${documentType.name}"/>
-													<c:param name="delegateRuleSearch" value="true"/>
-												</c:url>" target=_blank>Search Delegations</a>
-									</c:if>
-								</c:otherwise>
-								</c:choose>
+							<a href="<%=context %><c:url value="Rule.do">
+										<c:param name="methodToCall" value="createNew" />
+										<c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+										<c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
+										<c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
+									</c:url>" target=_blank>Add Rule</a>
+							&nbsp;
+							<a href="<%=context %><c:url value="Lookup.do">
+										<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>s
+										<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+										<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
+										<c:param name="docTypeFullName" value="${documentType.name}"/>
+									</c:url>" target=_blank>Search</a>
+							<c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
+								&nbsp;
+								<a href="<%=context %><c:url value="RuleQuickLinks.do">
+								            <c:param name="methodToCall" value="addDelegationRule"/>
+											<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
+											<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+											<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
+											<%-- delegationWizard is a constants in KEWConstants --%>
+											<c:param name="delegationWizard" value="true"/>
+											<c:param name="docTypeFullName" value="${documentType.name}"/>
+										</c:url>" target=_blank>Add Delegation</a>
+								&nbsp;
+								<a href="<%=context %><c:url value="Lookup.do">
+											<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
+											<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
+											<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
+											<%-- delegationWizard is a constants in KEWConstants --%>
+											<c:param name="docTypeFullName" value="${documentType.name}"/>
+											<c:param name="delegateRuleSearch" value="true"/>
+										</c:url>" target=_blank>Search Delegations</a>
+							</c:if>
 						</td>
 					</tr>
 			</c:if>

@@ -88,13 +88,13 @@ def processDir( dir ) {
 									indCols+=it.getValue()				
 						} //indColAttr				
 					} //indCol
-					
-					if (newIndName.length() < 30 ) 
-						sqlFile.append("DROP INDEX ${oldIndName} \n/\nCREATE INDEX ${newIndName} ON ${newTable} ${indCols})\n/\n")
-					else if (newIndName.length() > 30 )
-						LongerNames.append(newIndName+"\n/\n")
+					//Removed File Writes From Here....
 				} //indexes 
-		
+				if (newIndName.length() < 30 ) 
+					sqlFile.append("DROP INDEX ${oldIndName} \n/\nCREATE INDEX ${newIndName} ON ${newTable} ${indCols})\n/\n")
+				else if (newIndName.length() > 30 )
+					LongerNames.append(newIndName+"\n/\n")
+				
 				indCols = "("
 				ctr = 0
 				newIndName= " "
@@ -126,12 +126,13 @@ def processDir( dir ) {
 							if (it.getValue().length() > 30 )	LongerNames.append(it.getValue()+"\n/\n")
 						} //if
 					}//uattr
-				} //uchil 
+				} //uchil //Removed File Writes From Here....
 			if (newIndName.length() < 30 ) 
-				sqlFile.append("DROP INDEX ${oldIndName} \n/\nCREATE UNIQUE INDEX ${newIndName} ON ${newTable} ${indCols})\n/\n")
+				sqlFile.append("ALTER TABLE ${oldTable} disable CONSTRAINT ${oldIndName} \n/\n ALTER TABLE ${newTable} ADD  CONSTRAINT ${newIndName} UNIQUE ${indCols})\n/\n")
 			else if (newIndName.length() > 30 ) 
 				LongerNames.append(newIndName+"\n/\n")
-	  	}//unique
+
+			}//unique ALTER TABLE table_name drop CONSTRAINT constraint_name; ALTER TABLE supplier add CONSTRAINT supplier_unique UNIQUE (supplier_id);
 
 	  	table."foreign-key".findAll { //foreign-key
 			f ->
@@ -167,14 +168,15 @@ def processDir( dir ) {
 							else lCols+=it.getValue()					
 						} //if
 				}//fattr
-			} //fchil 
+			} //fchil //Removed File Writes From Here....
 		if ( lCols != "(" && fCols != "(" && ctr ==0 && newIndName.length() < 30 ){
-		sqlFile.append("DROP CONSTRAINT ${oldIndName} \n/\nALTER TABLE ${newTable} ADD CONSTRAINT ${newIndName} FOREIGN KEY  ${lCols}) REFERENCES ${newFtable} ${fCols}) \n/\n")
+		sqlFile.append("ALTER TABLE ${newTable} DROP CONSTRAINT ${oldIndName} \n/\nALTER TABLE ${newTable} ADD CONSTRAINT ${newIndName} FOREIGN KEY  ${lCols}) REFERENCES ${newFtable} ${fCols}) \n/\n")
 		ctr = ctr + 1
 		}//if
 		else if (newIndName.length() > 30)
-			LongerNames.append(newIndName+"\n/\n")
+			LongerNames.append(newIndName+"\n/\n")	
 	  }//foreign-key
+	  
 	}
 }
 
@@ -193,6 +195,7 @@ def processDir( dir ) {
 		}	
 }//tables
 } //else
-} //files
+println "Completed Processing XML "+fileName
+} //files   	
 } //processDir
 processDir(dir)

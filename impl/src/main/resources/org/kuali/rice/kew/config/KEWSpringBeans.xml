@@ -159,10 +159,12 @@
 
 	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.service.impl.BranchServiceImpl" lazy-init="true">
 		<property name="branchDAO">
+		<!-- <ref bean="enBranchDAOJpa" /> -->
 			<ref bean="enBranchDAO"/>
 		</property>
 	</bean>
 
+	<bean id="enBranchDAOJpa" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOJpaImpl" lazy-init="true"/>
 	<bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
@@ -947,6 +949,7 @@
         <idref local="enApplicationConstantsDAO"/>
         <idref local="enUserOptionsDAO"/>
         <idref local="enHelpDAO"/>
+        <idref local="enBranchDAOJpa"/>        
       </list>
     </property>
   </bean>

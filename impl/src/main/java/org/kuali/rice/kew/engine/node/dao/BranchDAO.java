@@ -23,5 +23,5 @@ import org.kuali.rice.kew.engine.node.Branch;
 
 public interface BranchDAO {
     public void save(Branch branch);
-    public void deleteBranchStates(List statesToBeDeleted);
+    public void deleteBranchStates(List<Long> statesToBeDeleted);
 }

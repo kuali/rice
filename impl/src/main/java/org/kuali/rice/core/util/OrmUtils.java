@@ -61,6 +61,10 @@ public class OrmUtils {
 		} 
 	}
 	
+	public static Long getNextAutoIncValue(Class entityClass, EntityManager manager) {
+	    return getNextAutoIncValue((Sequence)entityClass.getAnnotation(Sequence.class), manager);
+	}
+	
 	private static Long getNextAutoIncValue(Sequence sequence, EntityManager manager) {
 		Long value = -1L;
 		try {

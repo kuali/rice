@@ -446,7 +446,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml
 \ No newline at end of file
 Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
 ===================================================================
---- impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(revision 5017)
+--- impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(revision 5056)
 +++ impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(working copy)
 @@ -36,6 +36,74 @@
  		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
@@ -523,7 +523,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
  	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
  
  	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
-@@ -109,6 +177,10 @@
+@@ -108,6 +176,10 @@
  				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentTypeAttribute.xml</value>
  				<value>classpath:org/kuali/rice/kns/bo/datadictionary/EmployeeStatus.xml</value>
  				<value>classpath:org/kuali/rice/kns/bo/datadictionary/EmployeeType.xml</value>
@@ -534,7 +534,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
  
                  <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
                  <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
-@@ -131,6 +203,10 @@
+@@ -130,6 +202,10 @@
  				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeStatusMaintenanceDocument.xml</value>
  				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeTypeMaintenanceDocument.xml</value>
  				<value>classpath:org/kuali/rice/kns/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
@@ -545,20 +545,16 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
  			</list>
  		</property>
  	</bean>
-@@ -168,9 +244,10 @@
+@@ -167,7 +243,7 @@
  			<ref bean="dataDictionaryService" />
  		</property>
  	</bean>
-+	
-+	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" >
-+	</bean>
- 
--	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 -
++	
+ 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
+ 
  	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
- 		<property name="mailSender">
- 			<ref bean="mailSender" />
-@@ -532,6 +609,40 @@
+@@ -531,6 +607,40 @@
  		</property>
  	</bean>
  	
@@ -599,37 +595,32 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
    <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
      <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa" />
      <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
-@@ -572,7 +683,8 @@
+@@ -571,7 +681,7 @@
          </property>
      </bean>
  
 -    <!-- placeholder so applications can override without making DD changes -->
-+    <!-- placeholder so applications can override without making DD changes+-->
++    <!-- placeholder so applications can override without making DD changes-->
      <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
          <property name="lookupableHelperService">
              <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
-@@ -848,7 +960,8 @@
+@@ -847,7 +957,7 @@
      <constructor-arg ref="knsDataSource"/>
    </bean>
  
 -  <!-- Used for @Transactional so you don't have to wire services up in here -->
-+  <!-- Used for @Transactional so you don't have to wire services up in here+-->
++  <!-- Used for @Transactional so you don't have to wire services up in here-->
    <tx:annotation-driven transaction-manager="transactionManager"/>
    
    <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-@@ -896,4 +1009,13 @@
+@@ -895,4 +1005,8 @@
  		</property>
  	</bean>	
  	
-+	<bean id="DocumentStatusComponentAttributePermissionType" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" >
-+	</bean>
-+	
 +	<bean id="knsModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase" >
 +    	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
 +    	<property name="kualiModuleService" ref="kualiModuleService" />
 +    </bean>
-+	
-+	
  </beans>
 Index: impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl
 ===================================================================
@@ -2265,16 +2256,112 @@ Index: impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql
 ===================================================================
 --- impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(revision 4890)
 +++ impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(working copy)
-@@ -11,3 +11,29 @@
+@@ -11,3 +11,128 @@
  CREATE INDEX KR_KNS_SESN_DOC_TI1 ON KR_KNS_SESN_DOC_T (
          LST_UPDATE_DT )
  /
 +
-+DELETE FROM SH_PARM_T WHERE 
-+SH_PARM_NMSPC_CD = 'KFS-SYS' AND
-+SH_PARM_DTL_TYP_CD IN ('PostalCode', 'Country', 'County', 'State')
 +
-+/
++CREATE TABLE KR_COUNTRY_T 
++    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_CNTRY_NM VARCHAR2(40), 
++    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL, 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TP1 
++PRIMARY KEY (POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++
++
++CREATE TABLE KR_COUNTY_T 
++    (COUNTY_CD VARCHAR2(10) NOT NULL, 
++    STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    COUNTY_NM VARCHAR2(100), 
++    ACTV_IND VARCHAR2(1)) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TP1 
++PRIMARY KEY (COUNTY_CD, STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TR1 
++FOREIGN KEY (STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_STATE_T 
++/ 
++
++CREATE TABLE KR_POSTAL_CODE_T 
++    (POSTAL_ZIP_CD VARCHAR2(20) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_STATE_CD VARCHAR2(2), 
++    COUNTY_CD VARCHAR2(10), 
++    POSTAL_CITY_NM VARCHAR2(30), 
++    BLDG_CD VARCHAR2(4), 
++    BLDG_ROOM_NBR VARCHAR2(8), 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TP1 
++PRIMARY KEY (POSTAL_ZIP_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR1 
++FOREIGN KEY (POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTRY_T 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR2 
++FOREIGN KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_STATE_T 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR3 
++FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTY_T 
++/ 
++
++
++CREATE TABLE KR_STATE_T 
++    (POSTAL_STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_STATE_NM VARCHAR2(40), 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TP1 
++PRIMARY KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TR1 
++FOREIGN KEY (POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTRY_T 
++/ 
++
 +
 +INSERT INTO SH_PARM_T
 +VALUES
@@ -2289,7 +2376,10 @@ Index: impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql
 +('KR-NS','PostalCode','POSTAL_CODE', SYS_GUID(),1,'HELP','default.htm?turl=WordDocuments%2Fpostalcodemaintenancedocument.htm','Help URL for Postal Code document.','A','FP_OPERATIONS')
 +/
 +
-+
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','All','DEFAULT_COUNTRY',  SYS_GUID(),1,'CONFG','US','Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected.','A','FP_OPERATIONS')
++/
 +
 +
 +COMMIT

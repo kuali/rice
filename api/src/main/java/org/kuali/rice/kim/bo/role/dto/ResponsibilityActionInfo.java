@@ -18,8 +18,8 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.ResponsibilityAction;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -48,7 +48,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	public ResponsibilityActionInfo() {
 	}
 	
-	public ResponsibilityActionInfo(String principalId, String groupId, KimResponsibilityImpl responsibility,
+	public ResponsibilityActionInfo(String principalId, String groupId, KimResponsibility responsibility,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;
 		this.groupId = groupId;

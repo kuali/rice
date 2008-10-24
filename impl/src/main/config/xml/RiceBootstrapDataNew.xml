@@ -1,0 +1,1428 @@
+<?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
+
+        <ApplicationConstant>
+            <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
+            <ConstantValue>2620</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleService.IsCaching</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Application.AdminUserList</ConstantName>
+            <ConstantValue>admin</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>DocumentSearch.IsDocumentPopup</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>ActionList.IsRouteLogPopup</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>ActionList.IsDocumentPopup</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteTypeSearch.Instructions</ConstantName>
+            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
+            <ConstantValue>3</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteQueue.timeIncrement</ConstantName>
+            <ConstantValue>1000</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
+            <ConstantValue>1000</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteManagerQueue.waitTime</ConstantName>
+            <ConstantValue>1000</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteManagerPool.numWorkers</ConstantName>
+            <ConstantValue>10</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RouteManagerDriver.isRunning</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>ActionList.sendEmailNotification</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleTemplate.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Enter a rule template name and description. Please select all necessary rule attributes for this template.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Rule.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Please select a rule template and document type.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Workgroup.Search.Instruction</ConstantName>
+            <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
+            <ConstantValue>Use fields below to search for rule templates.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Rule.Search.Instruction</ConstantName>
+            <ConstantValue>Use fields below to search for rules.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>GlobalReviewer.Replace.Instruction</ConstantName>
+            <ConstantValue>Enter the reviewer to replace.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>DocumentType.Search.Instruction</ConstantName>
+            <ConstantValue>Enter document type information below and click search.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Backdoor.TargetFrameName</ConstantName>
+            <ConstantValue>iframe_51148</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>ApplicationContext</ConstantName>
+            <ConstantValue>en-dev</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
+            <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>User.Search.Instruction</ConstantName>
+            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>QuickLinks.restrictDocumentTypes</ConstantName>
+            <ConstantValue>HREDOC,PURDOCS,ERADOCS,IeAccessRequest,ERA_HumanSubjects,MainStudy,TRAVELDOCS</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Workgroup.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Enter/edit the workgroup data and click the route button to route the document.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Workflow.AdminWorkgroup</ConstantName>
+            <ConstantValue>WorkflowAdmin</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Workgroup.IsRouteLogPopup</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Rule.IsRouteLogPopup</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Application.RuleLockingOn</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Application.DelegateLimit</ConstantName>
+            <ConstantValue>20</ConstantValue>
+        </ApplicationConstant>        
+        <ApplicationConstant>
+            <ConstantName>Config.Mailer.FromAddress</ConstantName>
+            <ConstantValue>kew@localhost</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Backdoor.ShowbackDoorLogin</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <!--
+            <ApplicationConstant>
+            <ConstantName>Config.Application.RunDeactivationDate</ConstantName>
+            <ConstantValue>true</ConstantValue>
+            </ApplicationConstant>
+        -->
+        <!--
+            new
+        -->
+        <ApplicationConstant>
+            <ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
+            <ConstantValue>WorkflowAdmin</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Mailer.LastDailyReminderDate</ConstantName>
+            <ConstantValue>1112663586040</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Config.Mailer.LastWeeklyReminderDate</ConstantName>
+            <ConstantValue>1112663586068</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>User.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Create or modify user information.</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Workflow.AdminUrls</ConstantName>
+            <ConstantValue>/RouteType.do /RouteManagerDriver.do /ApplicationConstants.do /RuleAttribute.do /RuleTemplate.do /WorkflowUser.do /DocumentOperation.do /RouteQueue.do /Ingester.do /Plugin.do</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Feature.CheckRouteLogAuthentication.CheckFuture</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>Note.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Create or modify note information.</ConstantValue>
+        </ApplicationConstant>
+        <!--
+            <ApplicationConstant>
+            <ConstantName>ActionList.EmailNotification.TestAddress</ConstantName>
+            <ConstantValue>rkirkend@indiana.edu</ConstantValue>
+            </ApplicationConstant>
+            <ApplicationConstant>
+            <ConstantName>RouteQueue.CreateNew.Instruction</ConstantName>
+            <ConstantValue>Create or modify a Route Queue entry.</ConstantValue>
+            </ApplicationConstant>
+        -->
+        <ApplicationConstant>
+            <ConstantName>RouteQueue.requeueWaitTime</ConstantName>
+            <ConstantValue>5000</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>showAttachments</ConstantName>
+            <ConstantValue>true</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>EDL.UseXSLTC</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+        <ApplicationConstant>
+            <ConstantName>EDL.DebugTransform</ConstantName>
+            <ConstantValue>false</ConstantValue>
+        </ApplicationConstant>
+    
+
+    </ApplicationConstants>
+<!-- 
+    <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+-->
+        <!-- Core admin user -->
+   <!--      
+        <user>
+            <workflowId>admin</workflowId>
+            <emplId>admin</emplId>
+            <authenticationId>admin</authenticationId>
+            <uuId>admin</uuId>
+            <emailAddress>admin@localhost</emailAddress>
+            <displayName>Administrator</displayName>
+            <givenName>admin</givenName>
+            <lastName>admin</lastName>
+        </user>
+    
+        <user>
+            <workflowId>idm1</workflowId>
+            <emplId>idm1</emplId>
+            <authenticationId>idm1</authenticationId>
+            <uuId>idm1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager One</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager One</lastName>
+        </user>
+        <user>
+            <workflowId>idm2</workflowId>
+            <emplId>idm2</emplId>
+            <authenticationId>idm2</authenticationId>
+            <uuId>idm2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Two</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Two</lastName>
+        </user>
+        <user>
+            <workflowId>idm3</workflowId>
+            <emplId>idm3</emplId>
+            <authenticationId>idm3</authenticationId>
+            <uuId>idm3</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Three</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Three</lastName>
+        </user>
+        <user>
+            <workflowId>admin1</workflowId>
+            <emplId>admin1</emplId>
+            <authenticationId>admin1</authenticationId>
+            <uuId>admin1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin One</displayName>
+            <givenName>Admin</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>admin2</workflowId>
+            <emplId>admin2</emplId>
+            <authenticationId>admin2</authenticationId>
+            <uuId>admin2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin Two</displayName>
+            <givenName>Admin</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>test1</workflowId>
+            <emplId>test1</emplId>
+            <authenticationId>test1</authenticationId>
+            <uuId>test1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester One</displayName>
+            <givenName>Tester</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>test2</workflowId>
+            <emplId>test2</emplId>
+            <authenticationId>test2</authenticationId>
+            <uuId>test2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester Two</displayName>
+            <givenName>Tester</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>dev1</workflowId>
+            <emplId>dev1</emplId>
+            <authenticationId>dev1</authenticationId>
+            <uuId>dev1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer One</displayName>
+            <givenName>Developer</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>dev2</workflowId>
+            <emplId>dev2</emplId>
+            <authenticationId>dev2</authenticationId>
+            <uuId>dev2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer Two</displayName>
+            <givenName>Developer</givenName>
+            <lastName>Two</lastName>
+        </user>
+	-->
+        <!-- The NotSys user is needed for the message sending forms that come with the system -->
+   <!--      
+        <user>
+            <workflowId>NotSys</workflowId>
+            <emplId>NotSys</emplId>
+            <authenticationId>NotSys</authenticationId>
+            <uuId>NotSys</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Notification System</displayName>
+            <givenName>Notification</givenName>
+            <lastName>System</lastName>
+        </user>
+        <user>
+            <workflowId>NotSysAdm</workflowId>
+            <emplId>NotSysAdm</emplId>
+            <authenticationId>NotSysAdm</authenticationId>
+            <uuId>NotSysAdm</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Notification System Admin</displayName>
+            <givenName>Notification</givenName>
+            <lastName>System Admin</lastName>
+        </user>
+    
+
+    </users>
+-->
+    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+
+        <!-- Core admin workgroup -->
+<!--         
+        <workgroup allowOverwrite="true">
+            <workgroupName>WorkflowAdmin</workgroupName>
+            <description>WorkflowAdmin</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin</workflowId>
+            </members>
+        </workgroup>
+ -->   
+
+
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Identity Managers</workgroupName>
+            <description>Kuali Identity Managers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>idm1</workflowId>
+                <workflowId>idm2</workflowId>
+                <workflowId>idm3</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Administrators</workgroupName>
+            <description>Kuali Administrators</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin1</workflowId>
+                <workflowId>admin2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Developers</workgroupName>
+            <description>Kuali Developers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>dev1</workflowId>
+                <workflowId>dev2</workflowId>
+            </members>
+        </workgroup>
+	
+       <workgroup allowOverwrite="true">
+            <workgroupName>NotificationAdmin</workgroupName>
+            <description>Notification system admin group for automation.</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>NotSysAdm</workflowId>
+            </members>
+        </workgroup>
+     <!--    
+        <workgroup allowOverwrite="true">
+            <workgroupName>WorkflowAdmin</workgroupName>
+            <description>WorkflowAdmin</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin</workflowId>
+                <workflowId>NotSys</workflowId>
+            </members>
+        </workgroup>
+    -->
+
+    </workgroups>
+
+    <workgroupTypes xmlns="ns:workflow/WorkgroupType" xsi:schemaLocation="ns:workflow/WorkgroupType resource:WorkgroupType">
+    </workgroupTypes>
+
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+
+        <ruleAttribute>
+            <name>RuleRoutingAttribute</name>
+            <className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
+            <label>foo</label>
+            <description>foo</description>
+            <type>RuleAttribute</type>
+        </ruleAttribute>
+        <ruleAttribute>
+            <name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
+            <className>org.kuali.rice.kew.rule.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
+            <label>RemoveReplaceWorkgroupTypeRoutingAttribute</label>
+            <description>An attribute for routing workgroups that have been changed via the Remove/Replace User document</description>
+            <type>RuleAttribute</type>
+        </ruleAttribute>
+        <ruleAttribute>
+			<name>RemoveReplaceRuleRoutingAttribute</name>
+			<className>org.kuali.rice.kew.rule.RemoveReplaceRuleRoutingAttribute</className>
+			<label>RemoveReplaceRuleRoutingAttribute</label>
+			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+    
+      <ruleAttribute>
+        <name>NotificationCustomActionListAttribute</name>
+        <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
+        <label>Notification Action List Attribute</label>
+        <description>Notification Action List Attribute</description>
+        <type>ActionListAttribute</type>
+        <!--
+        <messageEntity>KEN</messageEntity>
+         -->
+      </ruleAttribute>
+      <ruleAttribute>
+           <name>NotificationChannelSearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Channel</label>
+           <description>The associated channel that this message was sent on.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationChannel" title="Notification Channel">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/channel/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationPrioritySearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Priority</label>
+           <description>The priority of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationPriority" title="Notification Priority">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/priority/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationContentTypeSearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Content Type</label>
+           <description>The content type of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationContentType" title="Notification Content Type">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/contentType/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationProducerSearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Producer</label>
+           <description>The producer of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationProducer" title="Notification Producer">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/producer/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationRecipientsSearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Recipient</label>
+           <description>Those who are receiving this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationRecipients" title="Notification Recipients">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification//recipients)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationSendersSearchableAttribute</name>
+           <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Senders</label>
+           <description>Those who this notification is being sent on behalf of.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationSenders" title="Notification Senders">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification//senders)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+
+       <!-- attributes for notification request -->       
+       <ruleAttribute>
+            <name>NotificationCustomActionListAttribute</name>
+            <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
+            <label>Notification  Action List Attribute</label>
+            <description>Notification Action List Attribute</description>
+            <type>ActionListAttribute</type>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+        </ruleAttribute>
+        <ruleAttribute>
+            <name>ChannelReviewerRoleAttribute</name>
+            <className>org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute</className>
+            <label>Channel Reviewer Role Attribute</label>
+            <description>Channel Reviewer Role Attribute</description>
+            <type>RuleAttribute</type>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+        </ruleAttribute>
+    
+
+    </ruleAttributes>
+
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+
+        <ruleTemplate allowOverwrite="true">
+            <name>WorkflowDocumentDelegationTemplate</name>
+            <description>WorkflowDocumentDelegationTemplate</description>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>WorkflowDocumentTemplate</name>
+            <description>Workflow Document Template</description>
+            <delegationTemplate>WorkflowDocumentDelegationTemplate</delegationTemplate>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>Ack1Template</name>
+            <description>Acknowledgement 1 Template</description>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>Ack2Template</name>
+            <description>Acknowledgement 2 Template</description>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+			<name>RemoveReplaceWorkgroupTemplate</name>
+			<description>Remove/Replace Workgroup Routing</description>
+			<attributes>
+				<attribute>
+					<name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
+					<required>true</required>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>RemoveReplaceRuleTemplate</name>
+            <description>Remove/Replace Rule Routing</description>
+                <attributes>
+                    <attribute>
+                        <name>RemoveReplaceRuleRoutingAttribute</name>
+                        <required>true</required>
+                    </attribute>
+                </attributes>
+        </ruleTemplate>
+    
+        <ruleTemplate allowOverwrite="true">
+            <name>ReviewersRouting</name>
+            <description>Routes to channel reviewers</description>
+            <attributes>
+                <attribute>
+                    <name>ChannelReviewerRoleAttribute</name>
+                </attribute>
+            </attributes>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>NotificationRouting</name>
+            <description>The standard rule template for sending notification messages.</description>
+        </ruleTemplate>
+    
+
+    </ruleTemplates>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+
+        <documentType>
+            <name>EDENSERVICE-DOCS</name>
+            <description>Workflow Maintenance Document</description>
+            <label>Workflow Maintenance Document</label>
+            <postProcessorName>none</postProcessorName>
+            <docHandler>docHandler is now mandatory...</docHandler>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                    <!-- <inherited>false</inherited> -->
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                    <!-- <inherited>false</inherited> -->
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="adhoc" nextNode="exception" />
+                    <requests name="exception" nextNode="Workflow Document Routing" />
+                    <requests name="Workflow Document Routing" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="adhoc">
+                    <activationType>S</activationType>
+                </start>
+                <requests name="exception">
+                    <activationType>S</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                </requests>
+                <requests name="Workflow Document Routing">
+                    <activationType>S</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                    <mandatoryRoute>true</mandatoryRoute>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>EDENSERVICE-DOCS.DocumentType</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>Workflow Maintenance Document Type Document</description>
+            <label>Workflow Maintenance Document Type Document</label>
+            <postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <policies />
+            <routePaths>
+                <routePath>
+                    <start name="placeholder" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="placeholder">
+                    <activationType>S</activationType>
+                </start>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>EDENSERVICE-DOCS.RuleDocument</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>Rule Maintenance Document Type Document</description>
+            <label>Rule Maintenance Document Type Document</label>
+            <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/Rule.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <policies />
+            <routePaths>
+                <routePath>
+                    <start name="placeholder" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="placeholder">
+                    <activationType>S</activationType>
+                </start>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>EDENSERVICE-DOCS.WKGRPREQ</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>Document to generate a new workgroup</description>
+            <label>Add/modify EDEN workgroup</label>
+            <postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/Workgroup.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <routingVersion>1</routingVersion>
+            <routePaths>
+                <routePath>
+                    <start name="Adhoc Routing" nextNode="Workgroup Approvers" />
+                    <requests name="Workgroup Approvers" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Adhoc Routing">
+                    <activationType>P</activationType>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </start>
+                <requests name="Workgroup Approvers">
+                    <activationType>P</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                    <mandatoryRoute>true</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>EDENSERVICE-DOCS.RemoveReplaceUser</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>A document to remove or replace users within rules and workgroups.</description>
+            <label>Remove/Replace User</label>
+            <postProcessorName>org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <routingVersion>1</routingVersion>
+            <routePaths>
+                <routePath>
+                    <start name="Adhoc Routing" nextNode="Workgroup Approval"/>
+                    <requests name="Workgroup Approval" nextNode="Rule Approval"/>
+                    <requests name="Rule Approval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Adhoc Routing">
+                    <activationType>P</activationType>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </start>
+                <requests name="Workgroup Approval">
+                    <activationType>P</activationType>
+                    <ruleTemplate>RemoveReplaceWorkgroupTemplate</ruleTemplate>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </requests>
+                <requests name="Rule Approval">
+                    <activationType>P</activationType>
+                    <ruleTemplate>RemoveReplaceRuleTemplate</ruleTemplate>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </requests>
+
+            </routeNodes>
+        </documentType>
+    
+   <documentType>
+      <name>KIMPrincipalMaintenanceDocument</name>
+      <description>Create or Update a Principal</description>
+      <label>KIM Principal Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="Kuali Identity Managers Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMPrincipalKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+        
+      </routeNodes>
+    </documentType>
+
+  	<documentType>
+      <name>KIMGroupMaintenanceDocument</name>
+      <description>Create or Update a Group</description>
+      <label>KIM Group Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+		<routeNodes>
+			<start name="Adhoc Routing">
+			<activationType>P</activationType>
+			<mandatoryRoute>false</mandatoryRoute>
+			<finalApproval>false</finalApproval>
+			</start>
+			<requests name="Kuali Identity Managers Group Approval">
+                   <activationType>S</activationType>
+                   <ruleSelector>Named</ruleSelector>
+                   <ruleName>KIMGroupKualiIdentityManagersGroupApproval</ruleName>
+             </requests>
+		</routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>KIMRoleMaintenanceDocument</name>
+      <description>Create or Update a Principal</description>
+      <label>KIM Role Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+         <requests name="Kuali Identity Managers Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMRoleKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+        
+      </routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>KIMAttributeTypeMaintenanceDocument</name>
+      <description>Create or Update a Attribute Type</description>
+      <label>KIM Attribute Type Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Administrators Group Approval" />
+			<requests name="Kuali Administrators Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="Kuali Administrators Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMAttributeTypeKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+        
+      </routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>KIMNamespaceMaintenanceDocument</name>
+      <description>Create or Update a Namespace</description>
+      <label>KIM Namespace Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+		<routePaths>
+			<routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+			</routePath>
+		</routePaths>
+		<routeNodes>
+			<start name="Adhoc Routing">
+			<activationType>P</activationType>
+			<mandatoryRoute>false</mandatoryRoute>
+			<finalApproval>false</finalApproval>
+			</start>
+			<requests name="Kuali Identity Managers Group Approval">
+                   <activationType>S</activationType>
+                   <ruleSelector>Named</ruleSelector>
+                   <ruleName>KIMNamespaceKualiIdentityManagersGroupApproval</ruleName>
+             </requests>
+		</routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>KIMEntityTypeMaintenanceDocument</name>
+      <description>Create or Update a EntityType</description>
+      <label>KIM EntityType Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+                <requests name="Kuali Identity Managers Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMEntityTypeKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+        
+      </routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>KIMEntityMaintenanceDocument</name>
+      <description>Create or Update a Entity</description>
+      <label>KIM Entity Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="Kuali Identity Managers Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMEntityKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+      </routeNodes>
+    </documentType>
+    
+    <documentType>
+      <name>KIMGroupTypeMaintenanceDocument</name>
+      <description>Create or Update a Group Type</description>
+      <label>KIM Group Type Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+			<start name="Adhoc Routing" nextNode="Kuali Identity Managers Group Approval" />
+			<requests name="Kuali Identity Managers Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="Kuali Identity Managers Group Approval">
+            <activationType>S</activationType>
+            <ruleSelector>Named</ruleSelector>
+            <ruleName>KIMGroupTypeKualiIdentityManagersGroupApproval</ruleName>
+        </requests>
+        
+      </routeNodes>
+    </documentType>
+
+        <!-- Notification Document Type -->
+        <documentType>
+          <name>KualiNotification</name>
+          <description>This is the re-usable notification document type that will be used for delivering all notifications with KEW.</description>
+          <label>Notification</label>
+          <!--
+          <messageEntity>KEN</messageEntity>
+          -->
+          <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
+          <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
+          <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+          <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+          <docHandler>${notification.basewebappurl}/DetailView.form</docHandler>
+          <active>true</active>
+          <attributes>
+              <attribute>
+                <name>NotificationCustomActionListAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationContentTypeSearchableAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationChannelSearchableAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationProducerSearchableAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationPrioritySearchableAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationRecipientsSearchableAttribute</name>
+              </attribute>
+              <attribute>
+                <name>NotificationSendersSearchableAttribute</name>
+              </attribute>
+          </attributes> 
+          <routingVersion>1</routingVersion>
+          <routePaths>
+            <routePath>
+              <start name="Adhoc Routing" />
+            </routePath>
+          </routePaths>
+          <routeNodes>
+            <start name="Adhoc Routing">
+              <activationType>S</activationType>
+              <mandatoryRoute>false</mandatoryRoute>
+              <finalApproval>true</finalApproval>
+            </start>
+          </routeNodes>
+        </documentType>
+        
+        <!-- Send notification request doc type -->
+        <documentType>
+            <name>SendNotificationRequest</name>
+            <description>Create a New Notification Request</description>
+            <label>Send Notification Request</label>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+            <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${notification.basewebappurl}/AdministerNotificationRequest.form</docHandler>
+            <active>true</active>
+
+            <attributes>
+              <attribute>
+                <name>NotificationCustomActionListAttribute</name>
+              </attribute>
+            </attributes>
+
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                    <!-- this should be false in a production scenario -->
+                </policy>
+                <policy>
+                    <name>LOOK_FUTURE</name>
+                    <value>true</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="Initiated" nextNode="ReviewersNode"/>
+                    <requests name="ReviewersNode" nextNode="RequestsNode"/>
+                    <requests name="RequestsNode"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Initiated">
+                    <activationType>S</activationType>
+                </start>
+                <requests name="ReviewersNode">
+                    <ruleTemplate>ReviewersRouting</ruleTemplate>
+                </requests>
+                <requests name="RequestsNode">
+                    <ruleTemplate>NotificationRouting</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+    
+   <documentType>
+      <name>KualiOrganizationMaintenanceDocument</name>
+      <description>Create or Update a Organization</description>
+      <label>Kuali Organization Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Adhoc Routing" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+      </routeNodes>
+    </documentType>
+
+   <documentType>
+      <name>KualiOrganizationCategoryMaintenanceDocument</name>
+      <description>Create or Update a Organization Category</description>
+      <label>Kuali Organization Category Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Adhoc Routing" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+      </routeNodes>
+    </documentType>
+
+   <documentType>
+      <name>KualiOrganizationContextMaintenanceDocument</name>
+      <description>Create or Update a Organization Context</description>
+      <label>Kuali Organization Context Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Adhoc Routing" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+      </routeNodes>
+    </documentType>
+
+  
+
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+
+        <rule>
+            <documentType>EDENSERVICE-DOCS</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+            <description>workflowdocumenttemplate description</description>
+            <ignorePrevious>false</ignorePrevious>
+            <!--
+                <ruleExtensions>
+
+                </ruleExtensions>
+            -->
+            <responsibilities>
+                <responsibility>
+                    <user>admin</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>EDENSERVICE-DOCS.WKGRPREQ</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+            <description>Workgroup Approval Rule</description>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <workgroup>WorkflowAdmin</workgroup>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    
+	<rule>
+       <name>KIMNamespaceKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMNamespaceMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+    
+    
+    <rule>
+       <name>KIMEntityKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMEntityMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+    
+    <rule>
+       <name>KIMPrincipalKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMPrincipalMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+    
+
+    <rule>
+       <name>KIMEntityTypeKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMEntityTypeMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+
+
+    <rule>
+       <name>KIMGroupTypeKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMGroupTypeMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+
+    <rule>
+       <name>KIMRoleKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMRoleMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+
+    <rule>
+       <name>KIMAttributeTypeKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMAttributeTypeMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Administrators workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Administrators</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+
+    <rule>
+       <name>KIMGroupKualiIdentityManagersGroupApproval</name>
+       <documentType>KIMGroupMaintenanceDocument</documentType>
+       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
+       <ignorePrevious>true</ignorePrevious>
+       <responsibilities>
+	       <responsibility>
+	          <workgroup>Kuali Identity Managers</workgroup>
+	       </responsibility>
+       </responsibilities>
+    </rule>
+
+        <rule>
+          <documentType>SendNotificationRequest</documentType>
+          <ruleTemplate>ReviewersRouting</ruleTemplate>
+          <description>ReviewersRouting rule</description>
+          <ignorePrevious>true</ignorePrevious>
+          <ruleExtensions>
+            <ruleExtension>
+                <attribute>ChannelReviewerRoleAttribute</attribute>
+                <ruleTemplate>ReviewersRouting</ruleTemplate>
+            </ruleExtension>
+          </ruleExtensions>
+          <responsibilities>
+            <responsibility>
+              <role>org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute!reviewers</role>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+          </responsibilities>
+        </rule>
+    
+
+    </rules>
+
+    <helpEntries xmlns="ns:workflow/Help" xsi:schemaLocation="ns:workflow/Help resource:Help">
+    </helpEntries>
+
+    <styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
+    </styles>
+
+    <edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">
+    </edoclite>
+</data>

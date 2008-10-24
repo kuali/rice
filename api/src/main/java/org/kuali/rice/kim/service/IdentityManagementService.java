@@ -95,7 +95,8 @@ public interface IdentityManagementService {
      * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
      */
     List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-
+    List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId,
+    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
     @Deprecated
     boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails);
     @Deprecated
@@ -134,6 +135,11 @@ public interface IdentityManagementService {
      */
     boolean hasResponsibility( String principalId, String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
 
+    /**
+     * Check whether the principal has the given responsibility within the passed qualifier.
+     */
+    boolean hasResponsibilityByTemplateName( String principalId, String namespaceCode, String responsibilityTemplateName, AttributeSet qualification, AttributeSet responsibilityDetails );
+
  	/** 
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
@@ -150,5 +156,7 @@ public interface IdentityManagementService {
 	@Deprecated
     List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
     List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails);
+    List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
     		AttributeSet qualification, AttributeSet responsibilityDetails);
 }

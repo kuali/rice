@@ -60,6 +60,28 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	}
 	
 	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibility(org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getRoleIdsForResponsibility(
+			KimResponsibilityImpl responsibility) {
+		Criteria c = new Criteria();
+		c.addEqualTo( "responsibilityId", responsibility.getResponsibilityId() );
+		// TODO: add once effective dating in place
+		//c.addEqualTo( "active", true );
+		
+		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
+		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		List<String> roleIds = new ArrayList<String>( coll.size() );
+		for ( RoleResponsibilityImpl rp : coll ) {
+			roleIds.add( rp.getRoleId() );
+		}
+		return roleIds;
+	}
+	
+	/**
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")

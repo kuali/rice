@@ -66,6 +66,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     	return getPermissionService().getAuthorizedPermissions( principalId, namespaceCode, permissionName, permissionDetails, qualification );
     }
 
+    public List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId,
+    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification) {
+    	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
+    }
     
     @Deprecated
     public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
@@ -277,5 +281,27 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, qualification, responsibilityDetails );
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName(
+			String namespaceCode, String responsibilityTemplateName,
+			AttributeSet qualification, AttributeSet responsibilityDetails) {
+		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public boolean hasResponsibilityByTemplateName(String principalId,
+			String namespaceCode, String responsibilityTemplateName,
+			AttributeSet qualification, AttributeSet responsibilityDetails) {
+		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
 	}
 }

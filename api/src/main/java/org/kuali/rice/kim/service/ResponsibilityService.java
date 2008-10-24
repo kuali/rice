@@ -49,6 +49,11 @@ public interface ResponsibilityService {
      */
     boolean hasResponsibility( String principalId, String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
 
+    /**
+     * Check whether the principal has the given responsibility within the passed qualifier.
+     */
+    boolean hasResponsibilityByTemplateName( String principalId, String namespaceCode, String responsibilityTemplateName, AttributeSet qualification, AttributeSet responsibilityDetails );
+    
  	/** 
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
@@ -65,5 +70,7 @@ public interface ResponsibilityService {
 	@Deprecated
    	List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
    	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails);
+   	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
     		AttributeSet qualification, AttributeSet responsibilityDetails);
 }

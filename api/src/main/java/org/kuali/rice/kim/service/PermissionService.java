@@ -138,6 +138,27 @@ public interface PermissionService {
     List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
 
     /**
+     * Returns permissions (with their details) that are granted to the principal given
+     * the passed qualification.  If no qualification is passed (null or empty)
+     * then this method does not check any qualifications on the roles.
+     * 
+     * All permissions with the given name are checked against the permissionDetails.  
+     * The KimPermissionTypeService is called for each permission to see if the 
+     * permissionDetails matches its details.
+     * 
+     * An asterisk (*) as a value in any permissionDetails key-value pair will match any value.
+     * This forms a way to provide a wildcard to obtain multiple permissions in one call.
+     * 
+     * After the permissions are determined, the roles that hold those permissions are determined.
+     * Each role that matches between the principal and the permission objects is checked for 
+     * qualifications.  If a qualifier 
+     * exists on the principal's membership in that role, that is checked through
+     * the role's type service. 
+     * 
+     */
+    List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+
+    /**
      * Checks whether the principal has been granted a permission matching the given details
      * without taking role qualifiers into account.
      * 

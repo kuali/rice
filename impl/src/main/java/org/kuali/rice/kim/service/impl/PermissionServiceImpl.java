@@ -126,13 +126,31 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
+    }
+
+    /**
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
+    	// now, filter the full list by the detail passed
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
+    }
+    
+    /**
+     * Checks the list of permisions against the principal's roles and returns a subset of the list which match.
+     */
+    protected List<KimPermissionInfo> getPermissionsForUser( String principalId, List<KimPermissionImpl> permissions, AttributeSet qualification ) {
     	ArrayList<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>();
     	List<KimPermissionImpl> tempList = new ArrayList<KimPermissionImpl>(1);
-    	for ( KimPermissionImpl perm : applicablePermissions ) {
+    	for ( KimPermissionImpl perm : permissions ) {
     		tempList.clear();
     		tempList.add( perm );
-    		List<String> roleIds = permissionDao.getRoleIdsForPermissions( permissions );
+    		List<String> roleIds = permissionDao.getRoleIdsForPermissions( tempList );
     		if ( roleIds != null && !roleIds.isEmpty() ) {
     			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
     				results.add( perm.toSimpleInfo() );
@@ -140,7 +158,7 @@ public class PermissionServiceImpl implements PermissionService {
     		}
     	}
     	
-    	return results;
+    	return results;    	
     }
 
     /**
@@ -152,20 +170,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( KNSConstants.KNS_NAMESPACE, permissionName );
     	// now, filter the full list by the detail passed
     	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
-    	ArrayList<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>();
-    	List<KimPermissionImpl> tempList = new ArrayList<KimPermissionImpl>(1);
-    	for ( KimPermissionImpl perm : applicablePermissions ) {
-    		tempList.clear();
-    		tempList.add( perm );
-    		List<String> roleIds = permissionDao.getRoleIdsForPermissions( permissions );
-    		if ( roleIds != null && !roleIds.isEmpty() ) {
-    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
-    				results.add( perm.toSimpleInfo() );
-    			}
-    		}
-    	}
-    	
-    	return results;
+    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
     
     /**

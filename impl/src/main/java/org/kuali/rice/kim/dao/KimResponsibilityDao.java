@@ -30,6 +30,9 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 public interface KimResponsibilityDao {
 
 	List<String> getRoleIdsForResponsibilities( Collection<KimResponsibilityImpl> responsibilities );
+
+	
+	List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility );
 	
 	RoleResponsibilityActionImpl getResponsibilityAction( String responsibilityName, String principalId, String groupId );
 }

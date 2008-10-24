@@ -102,6 +102,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 		pk.put("active", "Y");
     	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
     }
+
+    @SuppressWarnings("unchecked")
+	protected List<KimResponsibilityImpl> getResponsibilityImplsByTemplateName( String namespaceCode, String responsibilityTemplateName ) {
+    	HashMap<String,Object> pk = new HashMap<String,Object>( 4 );
+    	pk.put( "template.namespaceCode", namespaceCode );
+    	pk.put( "template.responsibilityName", responsibilityTemplateName );
+		pk.put( "template.active", "Y");
+		pk.put( "active", "Y");
+    	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
+    }
     
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibility(java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
@@ -109,10 +119,30 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public boolean hasResponsibility(String principalId, String namespaceCode,
     		String responsibilityName, AttributeSet qualification,
     		AttributeSet responsibilityDetails) {
-    	List<String> roleIds = getRoleIdsForResponsibility( namespaceCode, responsibilityName, responsibilityDetails, qualification );
+    	// get all the responsibility objects whose name match that requested
+    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( namespaceCode, responsibilityName );
+    	// now, filter the full list by the detail passed
+    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	List<String> roleIds = getRoleIdsForResponsibilities( applicableResponsibilities, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public boolean hasResponsibilityByTemplateName(String principalId,
+    		String namespaceCode, String responsibilityTemplateName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	// get all the responsibility objects whose name match that requested
+    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByTemplateName( namespaceCode, responsibilityTemplateName );
+    	// now, filter the full list by the detail passed
+    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	List<String> roleIds = getRoleIdsForResponsibilities( applicableResponsibilities, qualification );
+    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
+    }
+    
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
      */
@@ -120,8 +150,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public boolean hasResponsibility(String principalId,
     		String responsibilityName, AttributeSet qualification,
     		AttributeSet responsibilityDetails) {
-    	List<String> roleIds = getRoleIdsForResponsibility( KNSConstants.KNS_NAMESPACE, responsibilityName, responsibilityDetails, qualification );
-    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
+    	return hasResponsibility(principalId, KNSConstants.KNS_NAMESPACE, responsibilityName, qualification, responsibilityDetails);
     }
     
     /**
@@ -133,18 +162,48 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	// FIXME: remove this version of the method once external code converted
     	return getResponsibilityActions( KNSConstants.KNS_NAMESPACE, responsibilityName, qualification, responsibilityDetails );
 	}
+
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(String, java.lang.String, AttributeSet, AttributeSet)
      */
     public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	// get all the responsibility objects whose name match that requested
+    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( namespaceCode, responsibilityName );
+    	// now, filter the full list by the detail passed
+    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
-    	List<String> roleIds = getRoleIdsForResponsibility( namespaceCode, responsibilityName, responsibilityDetails, qualification );
+    	for ( KimResponsibilityImpl r : applicableResponsibilities ) {
+    		List<String> roleIds = getRoleIdsForResponsibility( r, qualification );
+    		results.addAll( getActionsForResponsibilityRoles( r, roleIds, qualification) );
+    	}
+    	return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(String, java.lang.String, AttributeSet, AttributeSet)
+     */
+    public List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
+    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	// get all the responsibility objects whose name match that requested
+    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByTemplateName( namespaceCode, responsibilityTemplateName );
+    	// now, filter the full list by the detail passed
+    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );
+    	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
+    	for ( KimResponsibilityImpl r : applicableResponsibilities ) {
+    		List<String> roleIds = getRoleIdsForResponsibility( r, qualification );
+    		results.addAll( getActionsForResponsibilityRoles( r, roleIds, qualification) );
+    	}
+    	return results;
+    }
+    
+    protected List<ResponsibilityActionInfo> getActionsForResponsibilityRoles( KimResponsibilityImpl responsibility, List<String> roleIds, AttributeSet qualification ) {
+    	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), namespaceCode, responsibilityName, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
     		// get associated resp resolution objects
-    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibilityName, rm.getPrincipalId(), rm.getGroupId() );
+    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getPrincipalId(), rm.getGroupId() );
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setPriorityNumber( action.getPriorityNumber() );
@@ -200,15 +259,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	return applicableResponsibilities;
     }
 	
-    protected List<String> getRoleIdsForResponsibility( String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, AttributeSet qualification ) {
-    	// get all the responsibility objects whose name match that requested
-    	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( namespaceCode, responsibilityName );
-    	// now, filter the full list by the detail passed
-    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
-    	return responsibilityDao.getRoleIdsForResponsibilities( applicableResponsibilities );    	
+    protected List<String> getRoleIdsForResponsibilities( List<KimResponsibilityImpl> responsibilities, AttributeSet qualification ) {
+    	return responsibilityDao.getRoleIdsForResponsibilities( responsibilities );    	
     }
-    
-    
+
+    protected List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility, AttributeSet qualification ) {
+    	return responsibilityDao.getRoleIdsForResponsibility( responsibility );    	
+    }
     
     // --------------------
     // Support Methods

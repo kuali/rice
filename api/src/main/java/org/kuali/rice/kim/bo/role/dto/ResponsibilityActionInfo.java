@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.role.ResponsibilityAction;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -34,6 +35,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	String groupId;
 	String responsibilityNamespaceCode;
 	String responsibilityName;
+	String responsibilityId;
 	String roleId;
 	String actionTypeCode;
 	Integer priorityNumber;
@@ -46,12 +48,13 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	public ResponsibilityActionInfo() {
 	}
 	
-	public ResponsibilityActionInfo(String principalId, String groupId, String responsibilityNamespaceCode, String responsibilityName,
+	public ResponsibilityActionInfo(String principalId, String groupId, KimResponsibilityImpl responsibility,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;
 		this.groupId = groupId;
-		this.responsibilityNamespaceCode = responsibilityNamespaceCode;
-		this.responsibilityName = responsibilityName;
+		this.responsibilityNamespaceCode = responsibility.getNamespaceCode();
+		this.responsibilityName = responsibility.getName();
+		this.responsibilityId = responsibility.getResponsibilityId();
 		this.roleId = roleId;
 		this.qualifier = qualifier;
 		this.delegates = delegates;
@@ -127,5 +130,19 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 
 	public void setResponsibilityNamespaceCode(String responsibilityNamespaceCode) {
 		this.responsibilityNamespaceCode = responsibilityNamespaceCode;
+	}
+
+	/**
+	 * @return the responsibilityId
+	 */
+	public String getResponsibilityId() {
+		return this.responsibilityId;
+	}
+
+	/**
+	 * @param responsibilityId the responsibilityId to set
+	 */
+	public void setResponsibilityId(String responsibilityId) {
+		this.responsibilityId = responsibilityId;
 	}
 }

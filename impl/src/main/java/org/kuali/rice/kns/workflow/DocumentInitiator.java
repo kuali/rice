@@ -15,19 +15,20 @@
  */
 package org.kuali.rice.kns.workflow;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 
 public class DocumentInitiator {
 
-    private UniversalUser universalUser;
+    private Person person;
 
-    public UniversalUser getUniversalUser() {
-        return universalUser;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUniversalUser(UniversalUser universalUser) {
-        this.universalUser = universalUser;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
 
 }
+

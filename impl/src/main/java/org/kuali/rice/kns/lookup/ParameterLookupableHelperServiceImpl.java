@@ -38,10 +38,11 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         Parameter parm = (Parameter)businessObject;
-        if ( GlobalVariables.getUserSession().getUniversalUser().isMember( parm.getParameterWorkgroupName() ) ) {
+        if ( GlobalVariables.getUserSession().getPerson().isMember( parm.getParameterWorkgroupName() ) ) {
             return super.getCustomActionUrls(businessObject, pkNames);
         } else {
             return super.getEmptyActionUrls();
         }
     }
 }
+

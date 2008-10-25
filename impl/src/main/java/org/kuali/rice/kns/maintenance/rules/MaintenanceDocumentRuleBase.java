@@ -31,7 +31,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.document.Document;
@@ -57,7 +57,7 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
@@ -99,7 +99,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected DocumentAuthorizationService documentAuthorizationService;
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
-    protected UniversalUserService universalUserService;
+    protected org.kuali.rice.kim.service.PersonService personService;
 
     private PersistableBusinessObject oldBo;
     private PersistableBusinessObject newBo;
@@ -133,7 +133,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setDocumentAuthorizationService(KNSServiceLocator.getDocumentAuthorizationService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KNSServiceLocator.getWorkflowDocumentService());
-            this.setUniversalUserService( KNSServiceLocator.getUniversalUserService() );
+            this.setPersonService( org.kuali.rice.kim.service.KIMServiceLocator.getPersonService() );
         } catch ( Exception ex ) {
             // do nothing, avoid blowing up if called prior to spring initialization
         }
@@ -1171,14 +1171,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         Object savedValue = null;
 
         KualiWorkflowDocument workflowDocument = null;
-        UniversalUser user = GlobalVariables.getUserSession().getUniversalUser();
+        Person user = GlobalVariables.getUserSession().getPerson();
         try {
                 workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), user);
         }
         catch (WorkflowException e) {
                 throw new UnknownDocumentIdException("no document found for documentHeaderId '" + document.getDocumentNumber() + "'", e);
         }
-        if (user.getPersonUserIdentifier().equalsIgnoreCase(workflowDocument.getInitiatorNetworkId())) {
+        if (user.getPrincipalName().equalsIgnoreCase(workflowDocument.getInitiatorNetworkId())) {
             // if these are the same person then we know it is the initiator
             isInitiator = true;
         }
@@ -1719,12 +1719,12 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         return true;
     }
 
-    public UniversalUserService getUniversalUserService() {
-        return universalUserService;
+    public org.kuali.rice.kim.service.PersonService getPersonService() {
+        return personService;
     }
 
-    public void setUniversalUserService(UniversalUserService universalUserService) {
-        this.universalUserService = universalUserService;
+    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+        this.personService = personService;
     }
     
     public DateTimeService getDateTimeService() {
@@ -1732,3 +1732,4 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
     
 }
+

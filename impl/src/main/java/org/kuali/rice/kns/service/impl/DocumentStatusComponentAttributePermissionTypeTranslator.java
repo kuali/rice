@@ -48,7 +48,7 @@ public class DocumentStatusComponentAttributePermissionTypeTranslator extends Ki
         KualiWorkflowDocument workflowDocument = null;
         try{
 	        workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(
-	        			documentNumber, GlobalVariables.getUserSession().getUniversalUser());
+	        			documentNumber, GlobalVariables.getUserSession().getPerson());
         } catch(WorkflowException wex){
         	throw new RuntimeException("Could not retrieve document for documemt number:"+documentNumber);
         }

@@ -178,7 +178,7 @@ public interface BusinessObjectService {
 
     /**
      * 
-     * Updates all KualiUser or UniversalUser objects contained within this BO, based on the UserID as the authoritative key. The
+     * Updates all KualiUser or Person objects contained within this BO, based on the UserID as the authoritative key. The
      * appropriate foreign-key field in the BO itself is also updated.
      * 
      * This allows UserIDs to be entered on forms, and the back-end will link up correctly based on this non-key field.
@@ -190,7 +190,7 @@ public interface BusinessObjectService {
 
     /**
      * 
-     * Updates all KualiUser or UniversalUser objects contained within this BO, based on the UserID as the authoritative key. The
+     * Updates all KualiUser or Person objects contained within this BO, based on the UserID as the authoritative key. The
      * appropriate foreign-key field in the BO itself is also updated.
      * 
      * This allows UserIDs to be entered on forms, and the back-end will link up correctly based on this non-key field.
@@ -200,3 +200,4 @@ public interface BusinessObjectService {
     public void linkUserFields(List<PersistableBusinessObject> bos);
 
 }
+

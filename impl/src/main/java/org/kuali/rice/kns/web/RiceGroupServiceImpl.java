@@ -26,10 +26,10 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.user.KualiGroup;
-import org.kuali.rice.kns.bo.user.UniversalUser;
-import org.kuali.rice.kns.service.impl.KualiGroupServiceImpl;
-
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.service.impl.GroupServiceImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Override kuali workgroup service because it's going directly against the workflow group service but 
@@ -37,38 +37,36 @@ import org.kuali.rice.kns.service.impl.KualiGroupServiceImpl;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
+public class RiceGroupServiceImpl extends GroupServiceImpl {
 
     private static final Logger LOG = Logger.getLogger(RiceGroupServiceImpl.class);
     
     /**
-     * @see org.kuali.rice.kns.service.KualiGroupService#getUsersGroups(org.kuali.bo.KualiUser)
+     * @see org.kuali.rice.kns.service.KimGroupService#getUsersGroups(org.kuali.bo.KualiUser)
      */
-    public List getUsersGroups(UniversalUser universalUser) {
+    public List getUsersGroups(Person person) {
         List usersGroups = null;
 
-        String userId = universalUser.getPersonUserIdentifier();
+        String userId = person.getPrincipalName();
 
         try {
 
-            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdDTO(universalUser.getPersonUserIdentifier()));
+            Collection workflowUsersGroups = KNSServiceLocator.getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdDTO(person.getPrincipalName()));
             if (workflowUsersGroups != null) {
                 usersGroups = new ArrayList(workflowUsersGroups.size());
 
                 Iterator iter = workflowUsersGroups.iterator();
                 while (iter.hasNext()) {
                     WorkgroupDTO workgroup = (WorkgroupDTO) iter.next();
-                    KualiGroup kualiGroup = new KualiGroup();
-                    kualiGroup.setGroupDescription(workgroup.getDescription());
-                    kualiGroup.setGroupName(workgroup.getWorkgroupName());
+                    KimGroupImpl kimGroup = new KimGroupImpl();
+                    kimGroup.setGroupDescription(workgroup.getDescription());
+                    kimGroup.setGroupName(workgroup.getWorkgroupName());
 
                     List groupUsers = getGroupUsers(workgroup);
 
-                    kualiGroup.setGroupUsers(groupUsers);
-                    usersGroups.add(kualiGroup);
+                    kimGroup.setGroupUsers(groupUsers);
+                    usersGroups.add(kimGroup);
                 }
-
-                usersGroups.add(KualiGroup.KUALI_UNIVERSAL_GROUP);
             }
         }
         catch (WorkflowException e) {

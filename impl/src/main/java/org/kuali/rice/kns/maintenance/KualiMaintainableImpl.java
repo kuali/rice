@@ -51,7 +51,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -89,7 +89,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     private static BusinessObjectService businessObjectService;
     private static BusinessObjectDictionaryService businessObjectDictionaryService;
     private static EncryptionService encryptionService;
-    private static UniversalUserService universalUserService;
+    private static org.kuali.rice.kim.service.PersonService personService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
     
     /**
@@ -183,7 +183,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
         fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument);
         Map newFieldValues = null;
-        newFieldValues = getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(getBusinessObject(), fieldValues);
+        newFieldValues = getPersonService().resolvePrincipalNamesToPrincipalIds(getBusinessObject(), fieldValues);
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
         getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
@@ -230,7 +230,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     private boolean shouldFieldBeEncrypted(Document maintenanceDocument, String fieldName){
     	DocumentAuthorizer authorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
-    	Map editMap = authorizer.getEditMode(maintenanceDocument, GlobalVariables.getUserSession().getUniversalUser());
+    	Map editMap = authorizer.getEditMode(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
     	String displayEditMode = getDisplayEditMode(maintenanceDocument, fieldName);
     	// Non-blank displayEditMode implies that this field should be encrypted, if the user does not have appropriate permissions
     	// If the logged in user has the permission to view or edit this field, 
@@ -1076,11 +1076,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return encryptionService;
     }
 
-    public static UniversalUserService getUniversalUserService() {
-        if ( universalUserService == null ) {
-            universalUserService = KNSServiceLocator.getUniversalUserService();
+    public static org.kuali.rice.kim.service.PersonService getPersonService() {
+        if ( personService == null ) {
+            personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
         }
-        return universalUserService;
+        return personService;
     }
 
     public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {

@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document.authorization;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
@@ -32,10 +32,10 @@ public class ParameterMaintenanceDocumentAuthorizer extends MaintenanceDocumentA
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#hasInitiateAuthorization(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#hasInitiateAuthorization(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
      */
     @Override
-    public boolean hasInitiateAuthorization(Document document, UniversalUser user) {
+    public boolean hasInitiateAuthorization(Document document, Person user) {
         boolean hasInitiateAuth = super.hasInitiateAuthorization(document, user);
         
         // user can not initiate if they are not in the workgroup
@@ -56,3 +56,4 @@ public class ParameterMaintenanceDocumentAuthorizer extends MaintenanceDocumentA
     }
     
 }
+

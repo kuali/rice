@@ -59,9 +59,9 @@ public class KualiInquiryAction extends KualiAction {
                 Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
                 AuthorizationType inquiryAuthType = new AuthorizationType.Inquiry(businessObjectClass);
                 // check if the inquiry is allowed
-                if (!getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), inquiryAuthType)) {
+                if (!getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getPerson(), inquiryAuthType)) {
                     LOG.error("User not authorized for inquiry action for this object: " + businessObjectClass.getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), inquiryAuthType, getKualiModuleService().getResponsibleModuleService(businessObjectClass));
+                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), inquiryAuthType, getKualiModuleService().getResponsibleModuleService(businessObjectClass));
                 }
             }
             catch (ClassNotFoundException ex) {

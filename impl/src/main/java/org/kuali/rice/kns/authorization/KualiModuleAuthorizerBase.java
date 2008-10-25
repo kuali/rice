@@ -17,7 +17,7 @@ package org.kuali.rice.kns.authorization;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.ModuleService;
 
 public class KualiModuleAuthorizerBase implements KualiModuleAuthorizer {
@@ -25,7 +25,7 @@ public class KualiModuleAuthorizerBase implements KualiModuleAuthorizer {
     private ModuleService moduleService;
     private List<String> packagePrefixes;
     
-    public boolean isAuthorized(UniversalUser user, AuthorizationType authType) {
+    public boolean isAuthorized(Person user, AuthorizationType authType) {
         return moduleService.canAccessModule(user);
     }
 
@@ -57,3 +57,4 @@ public class KualiModuleAuthorizerBase implements KualiModuleAuthorizer {
     }
     
 }
+

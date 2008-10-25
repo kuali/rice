@@ -1,8 +1,7 @@
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-//def baseDir = '/kuali/projects/rice'
-def baseDir = '/java/projects/rice-release-0-9-4-usergroupconversion-br'
+def baseDir = '/java/projects/rice-release-0-9-4'
 
 def sourceDirectories = [
     '/impl/src/main/', 
@@ -41,7 +40,8 @@ def filesToDelete = [
     '/impl/src/main/java/org/kuali/rice/kns/service/UniversalUserService.java',
     '/impl/src/main/java/org/kuali/rice/kns/rules/UniversalUserRule.java',
     '/impl/src/main/java/org/kuali/rice/kns/rules/UniversalUserPreRules.java',
-    '/impl/src/main/java/org/kuali/rice/kns/authorization/UniversalUserAuthorizationConstants.java'
+    '/impl/src/main/java/org/kuali/rice/kns/authorization/UniversalUserAuthorizationConstants.java',
+    '/impl/src/main/resources/org/kuali/rice/kns/bo.datadictionary/UniversalUser.xml'
 ]
 
 replacements = [
@@ -292,3 +292,4 @@ if ( deleteBackups ) {
             deleteBackupsInDir( baseDir + dir )
     }
 }
+

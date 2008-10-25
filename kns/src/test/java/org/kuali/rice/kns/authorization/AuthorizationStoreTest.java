@@ -18,13 +18,11 @@ package org.kuali.rice.kns.authorization;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.kuali.rice.kns.authorization.AuthorizationStore;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.KualiGroup;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.exception.UserNotFoundException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -45,14 +43,14 @@ public class AuthorizationStoreTest extends KNSTestBase {
     private static final String TARGETTYPE1 = "target1";
     private static final String TARGETTYPE2 = "target2";
 
-    KualiGroup workgroupWithNoMembers;
-    KualiGroup legitWorkgroupOne;
-    KualiGroup legitWorkgroupTwo;
+    KimGroup workgroupWithNoMembers;
+    KimGroup legitWorkgroupOne;
+    KimGroup legitWorkgroupTwo;
 
-    UniversalUser userThatBelongsToNoWorkgroups;
-    UniversalUser userThatBelongsToLegitWorkgroupOne;
-    UniversalUser userThatBelongsToLegitWorkgroupTwo;
-    UniversalUser userThatBelongsToAllWorkgroups;
+    Person userThatBelongsToNoWorkgroups;
+    Person userThatBelongsToLegitWorkgroupOne;
+    Person userThatBelongsToLegitWorkgroupTwo;
+    Person userThatBelongsToAllWorkgroups;
 
     AuthorizationStore authorizationStore;
 
@@ -66,10 +64,10 @@ public class AuthorizationStoreTest extends KNSTestBase {
         legitWorkgroupOne = buildGroup(LEGIT_WORKGROUP_NAME_1);
         legitWorkgroupTwo = buildGroup(LEGIT_WORKGROUP_NAME_2);
 
-        userThatBelongsToNoWorkgroups = buildUser(NAME_OF_USER_THAT_BELONGS_TO_NO_WORKGROUPS, new KualiGroup[] {});
-        userThatBelongsToLegitWorkgroupOne = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUP_NAME_1, new KualiGroup[] { legitWorkgroupOne });
-        userThatBelongsToLegitWorkgroupTwo = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUP_NAME_2, new KualiGroup[] { legitWorkgroupTwo });
-        userThatBelongsToAllWorkgroups = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUPS_1_AND_2, new KualiGroup[] { legitWorkgroupOne, legitWorkgroupTwo });
+        userThatBelongsToNoWorkgroups = buildUser(NAME_OF_USER_THAT_BELONGS_TO_NO_WORKGROUPS, new KimGroup[] {});
+        userThatBelongsToLegitWorkgroupOne = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUP_NAME_1, new KimGroup[] { legitWorkgroupOne });
+        userThatBelongsToLegitWorkgroupTwo = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUP_NAME_2, new KimGroup[] { legitWorkgroupTwo });
+        userThatBelongsToAllWorkgroups = buildUser(NAME_OF_USER_THAT_BELONGS_TO_LEGIT_WORKGROUPS_1_AND_2, new KimGroup[] { legitWorkgroupOne, legitWorkgroupTwo });
     }
 
     @Test public final void testAddAuthorization_emptyGroupName() {
@@ -204,21 +202,22 @@ public class AuthorizationStoreTest extends KNSTestBase {
         assertTrue(authorizationStore.isAuthorized(userThatBelongsToAllWorkgroups, ACTION1, TARGETTYPE1));
     }
 
-    private KualiGroup buildGroup(String groupName) throws GroupNotFoundException {
-        KualiGroup group = KNSServiceLocator.getKualiGroupService().getByGroupName(groupName);
+    private KimGroup buildGroup(String groupName) throws GroupNotFoundException {
+        KimGroup group = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName("KFS", groupName);
         if(null == group) {
             return group;
         }
-        group.setGroupName(groupName);
+        //((KimGroupImpl)group).setGroupName(groupName);
         return group;
     }
 
-    private UniversalUser buildUser(String userName, KualiGroup[] groups) throws UserNotFoundException {
-        UniversalUser user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(userName);
+    private Person buildUser(String userName, KimGroup[] groups) throws UserNotFoundException {
+        Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(userName);
         if(null == user) {
             return user;
         }
-        user.setGroups(Arrays.asList(groups));
+        //user.setGroups(Arrays.asList(groups));
         return user;
     }
 }
+

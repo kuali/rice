@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document.authorization;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -31,11 +31,11 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     /**
      * Adds settings for transactional-document-specific flags.
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getDocumentActionFlags(Document, UniversalUser)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getDocumentActionFlags(Document, Person)
      */
     @Override
-    public DocumentActionFlags getDocumentActionFlags(Document document, UniversalUser user) {
-        LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPersonUserIdentifier() + "'");
+    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
+        LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         DocumentActionFlags flags = super.getDocumentActionFlags(document, user);
 
         TransactionalDocument transactionalDocument = (TransactionalDocument) document;

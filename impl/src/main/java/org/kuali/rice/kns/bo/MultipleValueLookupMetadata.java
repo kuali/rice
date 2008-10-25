@@ -30,7 +30,7 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
     @Column(name="LOOKUP_RESULT_SEQUENCE_NBR")
     private String lookupResultsSequenceNumber;
     @Column(name="PERSON_UNVL_ID")
-    private String lookupUniversalUserId;
+    private String lookupPersonId;
     /**
      * the time the lookup data was persisted, used by a batch purge job
      */
@@ -45,12 +45,12 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
         this.lookupResultsSequenceNumber = lookupResultsSequenceNumber;
     }
 
-    public String getLookupUniversalUserId() {
-        return lookupUniversalUserId;
+    public String getLookupPersonId() {
+        return lookupPersonId;
     }
 
-    public void setLookupUniversalUserId(String lookupUniversalUserId) {
-        this.lookupUniversalUserId = lookupUniversalUserId;
+    public void setLookupPersonId(String lookupPersonId) {
+        this.lookupPersonId = lookupPersonId;
     }
 
     @Override
@@ -74,3 +74,4 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
         this.lookupDate = lookupDate;
     }
 }
+

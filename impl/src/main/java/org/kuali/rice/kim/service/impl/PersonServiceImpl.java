@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -116,6 +118,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
 	public List<PersonImpl> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
+		if (externalIdentifierTypeCode == null || externalId == null) {
+			return null;
+		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
 		criteria.put( "externalIdentifierTypeCode", externalIdentifierTypeCode );
 		criteria.put( "externalId", externalId );
@@ -333,7 +338,17 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
     
 	// GROUP RELATED METHODS
 
-	/**
+    public List<Person> getGroupMembersByGroupName(String namespace, String groupName) { 
+		List<Person> members = new ArrayList<Person>();
+		KimGroup group = identityManagementService.getGroupByName(namespace, groupName);
+		for (String id: identityManagementService.getGroupMemberPrincipalIds(group.getGroupId())) {
+			Person person = KIMServiceLocator.getPersonService().getPerson(id);
+			members.add(person);
+		}
+		return members;
+	}
+    
+    /**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonGroups(org.kuali.rice.kim.bo.Person, String)
 	 */
 	public List<? extends KimGroup> getPersonGroups(Person person, String namespaceCode) {
@@ -353,6 +368,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	public boolean isMemberOfGroup(Person person, String namespaceCode, String groupName) {
 		if ( person == null || namespaceCode == null || groupName == null ) {
 			return false;
+		}
+		if ("kualiUniversalGroup".equals(groupName)) {
+			return true;
 		}
 		KimGroup group = identityManagementService.getGroupByName( namespaceCode, groupName );
 		if ( group == null ) {

@@ -36,10 +36,10 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
@@ -517,24 +517,24 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * 
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public boolean userIsInitiator(UniversalUser user) {
+    public boolean userIsInitiator(Person user) {
         if (user == null) {
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getInitiatorNetworkId(), user.getPersonUserIdentifier());
+        return StringUtils.equalsIgnoreCase(getInitiatorNetworkId(), user.getPrincipalName());
     }
 
     /**
      * 
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public boolean userIsRoutedByUser(UniversalUser user) {
+    public boolean userIsRoutedByUser(Person user) {
         if (user == null) {
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getRoutedByUserNetworkId(), user.getPersonUserIdentifier());
+        return StringUtils.equalsIgnoreCase(getRoutedByUserNetworkId(), user.getPrincipalName());
     }
 
     public String[] getNodeNames() throws WorkflowException {
@@ -625,21 +625,21 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     /**
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
-    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
-        UniversalUserService universalUserService = KNSServiceLocator.getUniversalUserService();
+    public Set<Person> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
+        org.kuali.rice.kim.service.PersonService personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
         ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
-        Set<String> universalUserIds = new HashSet<String>();
-        Set<UniversalUser> universalUsers = new HashSet<UniversalUser>();
+        Set<String> personIds = new HashSet<String>();
+        Set<Person> persons = new HashSet<Person>();
         
         for (ActionTakenDTO actionTaken : actionsTaken) {
             if (KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
-                String universalUserId = actionTaken.getUserDTO().getUuId();
-                if (!universalUserIds.contains(universalUserId)) {
-                    universalUserIds.add(universalUserId);
-                    universalUsers.add(universalUserService.getUniversalUser(universalUserId));
+                String personId = actionTaken.getUserDTO().getUuId();
+                if (!personIds.contains(personId)) {
+                    personIds.add(personId);
+                    persons.add(personService.getPerson(personId));
                 }
             }
         }
-        return universalUsers;
+        return persons;
     }
 }

@@ -71,10 +71,10 @@ public class LookupDaoProxy implements LookupDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.dao.LookupDao#findCollectionBySearchHelperWithUniversalUserJoin(java.lang.Class, java.util.Map, java.util.Map, boolean, boolean)
+	 * @see org.kuali.rice.kns.dao.LookupDao#findCollectionBySearchHelperWithPersonJoin(java.lang.Class, java.util.Map, java.util.Map, boolean, boolean)
 	 */
-	public Collection findCollectionBySearchHelperWithUniversalUserJoin(Class example, Map nonUniversalUserSearchCriteria, Map universalUserSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		return getDao(example).findCollectionBySearchHelperWithUniversalUserJoin(example, nonUniversalUserSearchCriteria, universalUserSearchCriteria, unbounded, usePrimaryKeyValuesOnly);
+	public Collection findCollectionBySearchHelperWithPersonJoin(Class example, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
+		return getDao(example).findCollectionBySearchHelperWithPersonJoin(example, nonPersonSearchCriteria, personSearchCriteria, unbounded, usePrimaryKeyValuesOnly);
 	}
 
 	/**

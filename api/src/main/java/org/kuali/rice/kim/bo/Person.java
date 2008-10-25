@@ -126,4 +126,11 @@ public interface Person extends ExternalizableBusinessObject {
 	KualiDecimal getBaseSalaryAmount();
 	
 	String getExternalId( String externalIdentifierTypeCode );
+	
+	@Deprecated
+	String getPrimaryDepartmentCode();
+	
+	@Deprecated
+	String getPersonPayrollIdentifier();
+	
 }

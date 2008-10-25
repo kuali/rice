@@ -184,23 +184,13 @@ public class KNSServiceLocator<T extends Object> {
 	return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
     }
 
-    public static final String UNIVERSAL_USER_SERVICE = "universalUserService";
-
-    public static UniversalUserService getUniversalUserService() {
-	return (UniversalUserService) getService(UNIVERSAL_USER_SERVICE);
-    }
-
     public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
 
     public static KualiModuleService getKualiModuleService() {
 	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
     }
 
-    public static final String KUALI_GROUP_SERVICE = "kualiGroupService";
-
-    public static KualiGroupService getKualiGroupService() {
-	return (KualiGroupService) getService(KUALI_GROUP_SERVICE);
-    }
+    public static final String KIM_GROUP_SERVICE = "kimGroupService";
 
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
 
@@ -429,3 +419,4 @@ public class KNSServiceLocator<T extends Object> {
     }
 
 }
+

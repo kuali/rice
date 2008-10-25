@@ -30,12 +30,12 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -172,13 +172,12 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         populateHeaderFields(workflowDocument);
     }
     
-    private String getUniversalUserInquiryUrlLink(String id, String linkBody) {
+    private String getPersonInquiryUrlLink(String id, String linkBody) {
         StringBuffer urlBuffer = new StringBuffer();
         
         if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
-            UniversalUser user = new UniversalUser();
+            Person user = new org.kuali.rice.kim.bo.impl.PersonImpl();
             AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, false);
-            user.setPersonUniversalIdentifier(id);
             String inquiryUrlSection = inquiryHref.getHref();
             urlBuffer.append("<a href='");
             urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
@@ -243,15 +242,15 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         //Document Number    	
         HeaderField docNumber = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER, "DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null, null);
         HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
-        String personUniversalIdentifier = null;
+        String principalId = null;
     	if (workflowDocument != null) {
             try {
-            		personUniversalIdentifier = getInitiator().getPersonUniversalIdentifier();
+            		principalId = getInitiator().getPrincipalId();
     		} catch (UserNotFoundException e) {
     			LOG.warn("UserNotFoundException thrown and swallowed while attempting to build inquiry link for document header fields");
     		}
     	}
-        String inquiryUrl = getUniversalUserInquiryUrlLink(personUniversalIdentifier, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
+        String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
 
         HeaderField docInitiator = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
         workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null, workflowDocument != null? inquiryUrl : null);
@@ -291,7 +290,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // graceless hack which takes advantage of the fact that here and only here will we have guaranteed access to the
             // correct DocumentAuthorizer
             if (getEditingMode().containsKey(AuthorizationConstants.EditMode.UNVIEWABLE)) {
-                throw new DocumentAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonName(), "view", document.getDocumentHeader().getDocumentNumber());
+                throw new DocumentAuthorizationException(GlobalVariables.getUserSession().getPerson().getName(), "view", document.getDocumentHeader().getDocumentNumber());
             }
         }
     }
@@ -319,7 +318,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @param documentAuthorizer
      */
     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
-        UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
         Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
         if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
             editMode = documentAuthorizer.establishLocks(document, editMode, kualiUser);
@@ -543,19 +542,17 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         return false;
     }
 
-    public UniversalUser getInitiator() throws UserNotFoundException {
+    public Person getInitiator() throws UserNotFoundException {
 	String networkId = getWorkflowDocument().getInitiatorNetworkId();
 	if (!StringUtils.isBlank(networkId)) {
-	    try {
-		UniversalUser user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(getWorkflowDocument().getInitiatorNetworkId());
+		Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(getWorkflowDocument().getInitiatorNetworkId());
 		if (user != null) {
 		    return user;
 		}
-	    } catch (UserNotFoundException e) {}
 	}
 	// the following is for backward compatibility with the way that page.tag used to work where it was checking against the workflow uuId
 	String uuId = getWorkflowDocument().getRouteHeader().getInitiator().getUuId();
-	return KNSServiceLocator.getUniversalUserService().getUniversalUser(uuId);
+	return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(uuId);
     }
 
     /**
@@ -760,3 +757,4 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 }
+

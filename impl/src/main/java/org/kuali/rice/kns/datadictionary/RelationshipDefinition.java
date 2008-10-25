@@ -193,7 +193,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
                     lookup field conversions and lookup parameters.
 
                     Field conversions and lookup parameters are normally generated using foreign key relationships
-                    defined within OJB and the DD.  Because UniversalUser objects are linked in a special way (i.e. they may
+                    defined within OJB and the DD.  Because Person objects are linked in a special way (i.e. they may
                     come from an external data source and not from the DB, such as LDAP), it is often necessary to define
                     extra fields that are related to each other, sort of like a supplemental foreign key.
 
@@ -206,3 +206,4 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         this.supportAttributes = supportAttributes;
     }
 }
+

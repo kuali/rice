@@ -24,6 +24,9 @@
         <ref bean="PersonImpl-phoneNumber" />
         <ref bean="PersonImpl-principalId" />
         <ref bean="PersonImpl-principalName" />
+        <ref bean="PersonImpl-primaryDepartmentCode" />
+        <ref bean="PersonImpl-employeeStatusCode" />
+        <ref bean="PersonImpl-employeeTypeCode" />
       </list>
     </property>
   </bean>
@@ -123,6 +126,45 @@
     </property>
   </bean>
 
+  <bean id="PersonImpl-primaryDepartmentCode" parent="PersonImpl-primaryDepartmentCode-parentBean" />
+  <bean id="PersonImpl-primaryDepartmentCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="primaryDepartmentCode"
+        p:forceUppercase="true"
+        p:label="Primary Department Code"
+        p:shortLabel="Primary Department Code"
+        p:maxLength="123"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+  
+  <bean id="PersonImpl-employeeStatusCode" parent="PersonImpl-employeeStatusCode-parentBean" />
+  <bean id="PersonImpl-employeeStatusCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="employeeStatusCode"
+        p:forceUppercase="true"
+        p:label="Employee Status Code"
+        p:shortLabel="Employee Status Code"
+        p:maxLength="123"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+  
+  <bean id="PersonImpl-employeeTypeCode" parent="PersonImpl-employeeTypeCode-parentBean" />
+  <bean id="PersonImpl-employeeTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="employeeTypeCode"
+        p:forceUppercase="true"
+        p:label="Employee Type Code"
+        p:shortLabel="Employee Type Code"
+        p:maxLength="123"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+  
   <bean id="PersonImpl-principalId" parent="PersonImpl-principalId-parentBean" />
   <bean id="PersonImpl-principalId-parentBean" parent="KimBaseBeans-principalId" abstract="true" />
 
@@ -152,6 +194,9 @@
               <bean parent="FieldDefinition" p:attributeName="campusCode" />
               <bean parent="FieldDefinition" p:attributeName="emailAddress" />
               <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+              <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode" />
+              <bean parent="FieldDefinition" p:attributeName="employeeStatusCode" />
+              <bean parent="FieldDefinition" p:attributeName="employeeTypeCode" />
             </list>
           </property>
         </bean>

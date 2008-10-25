@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -49,7 +49,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#delete(java.lang.String)
      */
     public void delete(String id) {
-        UniversalUser user = GlobalVariables.getUserSession().getUniversalUser();
+        Person user = GlobalVariables.getUserSession().getPerson();
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("An invalid blank id was passed to delete a Pessimistic Lock.");
         }
@@ -60,7 +60,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
             throw new IllegalArgumentException("Pessimistic Lock with id " + id + " cannot be found in the database.");
         }
         if ( (!lock.isOwnedByUser(user)) && (!isPessimisticLockAdminUser(user)) ) {
-            throw new AuthorizationException(user.getPersonName(),"delete", "Pessimistick Lock (id " + id + ")");
+            throw new AuthorizationException(user.getName(),"delete", "Pessimistick Lock (id " + id + ")");
         }
         delete(lock);
     }
@@ -74,27 +74,27 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock()
      */
     public PessimisticLock generateNewLock(String documentNumber) {
-        return generateNewLock(documentNumber, GlobalVariables.getUserSession().getUniversalUser());
+        return generateNewLock(documentNumber, GlobalVariables.getUserSession().getPerson());
     }
 
     /**
      * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String)
      */
     public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor) {
-        return generateNewLock(documentNumber, lockDescriptor, GlobalVariables.getUserSession().getUniversalUser());
+        return generateNewLock(documentNumber, lockDescriptor, GlobalVariables.getUserSession().getPerson());
     }
 
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kim.bo.Person)
      */
-    public PessimisticLock generateNewLock(String documentNumber, UniversalUser user) {
+    public PessimisticLock generateNewLock(String documentNumber, Person user) {
         return generateNewLock(documentNumber, PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, user);
     }
 
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.Person)
      */
-    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, UniversalUser user) {
+    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
         PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user);
         save(lock);
         LOG.debug("Generated new lock: " + lock);
@@ -112,9 +112,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
     
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.bo.Person)
      */
-    public boolean isPessimisticLockAdminUser(UniversalUser user) {
+    public boolean isPessimisticLockAdminUser(Person user) {
         String workgroupName = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM);
         if (StringUtils.isNotBlank(workgroupName)) {
             boolean returnValue = user.isMember(workgroupName);
@@ -124,9 +124,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.bo.Person)
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, UniversalUser user) {
+    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if (lock.isOwnedByUser(user)) {
@@ -136,9 +136,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kns.bo.user.UniversalUser, java.lang.String)
+     * @see org.kuali.rice.kns.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.bo.Person, java.lang.String)
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, UniversalUser user, String lockDescriptor) {
+    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if ( (lock.isOwnedByUser(user)) && (lockDescriptor.equals(lock.getLockDescriptor())) ) {
@@ -164,3 +164,4 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
 }
+

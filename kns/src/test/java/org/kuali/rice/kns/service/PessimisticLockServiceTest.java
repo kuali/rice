@@ -26,7 +26,6 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.UserNotFoundException;
-import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -75,15 +74,15 @@ public class PessimisticLockServiceTest extends TestBase {
 
         String userId = "fran";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getUniversalUser().isMember(getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getPerson().isMember(getPessimisticLockAdminWorkgroupName()));
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getUniversalUser().isMember(getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getPerson().isMember(getPessimisticLockAdminWorkgroupName()));
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getUniversalUser().isMember(getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", new UserSession(userId).getPerson().isMember(getPessimisticLockAdminWorkgroupName()));
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
         verifyDelete("fran", Arrays.asList(new String[]{"1111"}), null, false);
@@ -94,7 +93,7 @@ public class PessimisticLockServiceTest extends TestBase {
         
         // test admin user can delete any lock
         userId = "supervisr";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", new UserSession(userId).getUniversalUser().isMember(getPessimisticLockAdminWorkgroupName()));
+        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", new UserSession(userId).getPerson().isMember(getPessimisticLockAdminWorkgroupName()));
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
@@ -138,7 +137,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
         assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, lock.getLockDescriptor());
-        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), lock.getOwnedByUser().getPersonUserIdentifier());
+        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
         Map primaryKeys = new HashMap();
         primaryKeys.put(KNSPropertyConstants.ID, lock.getId());
         lock = null;
@@ -148,7 +147,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
         assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, lock.getLockDescriptor());
-        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), lock.getOwnedByUser().getPersonUserIdentifier());
+        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
 
         // test generating lock with given lock descriptor
         lock = null;
@@ -159,7 +158,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
         assertEquals("Generated lock should have lock descriptor set", lockDescriptor, lock.getLockDescriptor());
-        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), lock.getOwnedByUser().getPersonUserIdentifier());
+        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
         primaryKeys = new HashMap();
         primaryKeys.put(KNSPropertyConstants.ID, lock.getId());
         lock = null;
@@ -169,7 +168,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
         assertEquals("Generated lock should have lock descriptor set", lockDescriptor, lock.getLockDescriptor());
-        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), lock.getOwnedByUser().getPersonUserIdentifier());
+        assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
     }
 
     /**
@@ -222,27 +221,27 @@ public class PessimisticLockServiceTest extends TestBase {
         List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 8 manually inserted locks", 8, locks.size());
 
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("fran"), lockDescriptor);
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 7 locks left after releasing locks for fran using lock descriptor " + lockDescriptor, 7, locks.size());
 
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("frank"), lockDescriptor);
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 5 locks left after releasing locks for fran and frank using lock descriptor " + lockDescriptor, 5, locks.size());
 
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("fred"), lockDescriptor);
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks left after releasing locks for fran, frank, and fred using lock descriptor " + lockDescriptor, 4, locks.size());
         
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("fran"));
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fran"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 3 locks left after releasing locks for fran with no lock descriptor", 3, locks.size());
 
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("frank"));
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("frank"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left after releasing locks for fran and frank with no lock descriptor", 1, locks.size());
 
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, KNSServiceLocator.getUniversalUserService().getUniversalUser("fred"));
+        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fred"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be no locks left after releasing locks for fran, frank, and fred with no lock descriptor", 0, locks.size());
     }
@@ -254,16 +253,16 @@ public class PessimisticLockServiceTest extends TestBase {
      */
     @Test
     public void testIsPessimisticLockAdminUser() throws Exception {
-        List adminGroupUsers = KNSServiceLocator.getKualiGroupService().getByGroupName(getPessimisticLockAdminWorkgroupName()).getGroupUsers();
+        List adminGroupUsers = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getGroupMembersByGroupName("KFS", getPessimisticLockAdminWorkgroupName());
         assertTrue("Admin group requires more than one user", adminGroupUsers.size() > 0);
         String userId = "fred";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getUniversalUser()));
+        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
         userId = "fran";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getUniversalUser()));
+        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
         userId = "quickstart";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getUniversalUser()));
+        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
         userId = "supervisr";
-        assertTrue(userId + " should be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getUniversalUser()));
+        assertTrue(userId + " should be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
     }
 
     /**

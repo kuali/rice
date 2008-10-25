@@ -28,8 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -170,7 +171,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         if (StringUtils.isNotBlank(getDocTypeName())) {
             Map localOldMaintainableValues = new HashMap();
             Map localNewMaintainableValues = new HashMap();
-            Map<String,Object> localNewCollectionValues = new HashMap<String,Object>();
+            Map<String,String> localNewCollectionValues = new HashMap<String,String>();
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
                 if (parameter.toUpperCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
@@ -189,7 +190,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 String key = (String)((Map.Entry)obj).getKey(); 
                 if ( key.startsWith( KNSConstants.MAINTENANCE_ADD_PREFIX ) ) {
                     localNewCollectionValues.put( key.substring( KNSConstants.MAINTENANCE_ADD_PREFIX.length() ),
-                            ((Map.Entry)obj).getValue() );
+                            (String)((Map.Entry)obj).getValue() );
                 }
             }
             if ( LOG.isDebugEnabled() ) {
@@ -215,7 +216,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             }
             
             // update add lines
-            localNewCollectionValues = KNSServiceLocator.getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
+            localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
             cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues ) );
             GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
 
@@ -296,7 +297,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
 
         // init some things we'll need
-        UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) getDocument();
         MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizer;
 

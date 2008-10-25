@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -92,6 +93,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected List<KimGroup> groups;
 //	// role is a different sub-module - use the interface only
 //	protected List<KimRole> roles;
+	
+	protected String primaryDepartmentCode = "";
+	protected String personPayrollIdentifiere = "";
 	
 	public PersonImpl() {}
 	
@@ -338,7 +342,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#isMember(java.lang.String)
 	 */
 	public boolean isMember(String groupName) {
-		return getPersonService().isMemberOfGroup(this, null, groupName);
+		return getPersonService().isMemberOfGroup(this, "KFS", groupName);
 	}
 	
 	/**
@@ -448,4 +452,15 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
 		this.baseSalaryAmount = baseSalaryAmount;
 	}
+	
+	@Deprecated
+	public String getPrimaryDepartmentCode() {
+		return "FIX ME!";
+	}
+
+	@Deprecated
+	public String getPersonPayrollIdentifier() {
+		return getExternalId(KimConstants.EMPLOYEE_EXT_ID_TYPE);
+	}
+	
 }

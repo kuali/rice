@@ -45,7 +45,7 @@ import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -91,7 +91,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     private String docFormKey;
     private Map fieldConversions;
     private LookupService lookupService;
-    private UniversalUserService universalUserService;
+    private org.kuali.rice.kim.service.PersonService personService;
     private List<Row> rows;
     private String referencesToRefresh;
     private SequenceAccessorService sequenceAccessorService;
@@ -758,7 +758,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 fieldNm = (String) fieldConversions.get(fieldNm);
             }
 
-            if (StringUtils.isNotBlank(displayWorkgroup) && !GlobalVariables.getUserSession().getUniversalUser().isMember( displayWorkgroup )) {
+            if (StringUtils.isNotBlank(displayWorkgroup) && !GlobalVariables.getUserSession().getPerson().isMember( displayWorkgroup )) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
                 }
@@ -892,12 +892,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         }
     }
 
-    protected UniversalUserService getUniversalUserService() {
-        return universalUserService != null ? universalUserService : KNSServiceLocator.getUniversalUserService();
+    protected org.kuali.rice.kim.service.PersonService getPersonService() {
+        return personService != null ? personService : org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
     }
 
-    public void setUniversalUserService(UniversalUserService universalUserService) {
-        this.universalUserService = universalUserService;
+    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+        this.personService = personService;
     }
 
     /**
@@ -1036,7 +1036,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
                 // check security on field and do masking if necessary
-                boolean viewAuthorized = getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), element.getClass().getName(), col.getPropertyName());
+                boolean viewAuthorized = getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), element.getClass().getName(), col.getPropertyName());
                 if (!viewAuthorized) {
                     Mask displayMask = getDataDictionaryService().getAttributeDisplayMask(element.getClass().getName(), col.getPropertyName());
                     propValue = displayMask.maskValue(propValue);

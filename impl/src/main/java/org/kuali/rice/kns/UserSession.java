@@ -28,8 +28,7 @@ import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -46,8 +45,8 @@ public class UserSession implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(UserSession.class);
 
-    private UniversalUser universalUser;
-    private UniversalUser backdoorUser;
+    private Person person;
+    private Person backdoorUser;
     private UserDTO workflowUser;
     private UserDTO backdoorWorkflowUser;
     private int nextObjectKey;
@@ -79,7 +78,7 @@ public class UserSession implements Serializable {
      * @throws ResourceUnavailableException
      */
     public UserSession(String networkId) throws UserNotFoundException, WorkflowException {
-        this.universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
+        this.person = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
         this.workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.nextObjectKey = 0;
         this.objectMap = new HashMap();
@@ -91,10 +90,10 @@ public class UserSession implements Serializable {
      */
     public String getNetworkId() {
         if (backdoorUser != null) {
-            return backdoorUser.getPersonUserIdentifier();
+            return backdoorUser.getPrincipalName();
         }
         else {
-            return universalUser.getPersonUserIdentifier();
+            return person.getPrincipalName();
         }
     }
 
@@ -105,18 +104,18 @@ public class UserSession implements Serializable {
      * @return String
      */
     public String getLoggedInUserNetworkId() {
-        return universalUser.getPersonUserIdentifier();
+        return person.getPrincipalName();
     }
 
     /**
      * @return the KualiUser which is the current user in the system, backdoor if backdoor is set
      */
-    public UniversalUser getUniversalUser() {
+    public Person getPerson() {
         if (backdoorUser != null) {
             return backdoorUser;
         }
         else {
-            return universalUser;
+            return person;
         }
     }
 
@@ -144,7 +143,7 @@ public class UserSession implements Serializable {
     public void setBackdoorUser(String networkId) throws UserNotFoundException, WorkflowException {
        // only allow backdoor in non-production environments
        if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
-        this.backdoorUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
+        this.backdoorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
         this.backdoorWorkflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.workflowDocMap = new HashMap();
        }
@@ -284,7 +283,4 @@ public class UserSession implements Serializable {
         }
     }
 
-    private void refreshUserGroups(UniversalUser universalUser) {
-        universalUser.refreshUserGroups();
-    }
 }

@@ -134,7 +134,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 				fieldAuthorizations.put(pkFieldName, Boolean.TRUE);
 			}
 			else {
-				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(GlobalVariables.getUserSession().getUniversalUser().isMember(authorizedWorkgroup)));
+				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(GlobalVariables.getUserSession().getPerson().isMember(authorizedWorkgroup)));
 			}
 		}
 		
@@ -153,3 +153,4 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 		this.dataDictionaryService = dataDictionaryService;
 	}
 }
+

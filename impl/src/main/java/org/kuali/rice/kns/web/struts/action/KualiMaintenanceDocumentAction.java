@@ -49,7 +49,7 @@ import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -99,9 +99,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             Document document = (MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument();
             if (document != null) {
                 AuthorizationType documentAuthorizationType = new AuthorizationType.Document(document.getDocumentBusinessObject().getClass(), ((KualiMaintenanceForm) form).getDocument());
-                if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType)) {
+                if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getPerson(), documentAuthorizationType)) {
                     LOG.error("User not authorized to use this document: " + ((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass().getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModuleService(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
+                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), documentAuthorizationType, getKualiModuleService().getResponsibleModuleService(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
                 }
             }
         }
@@ -503,7 +503,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 String lookupResultsBOClassName = maintenanceForm.getLookupResultsBOClassName();
                 Class lookupResultsBOClass = Class.forName(lookupResultsBOClassName);
 
-                rawValues = KNSServiceLocator.getLookupResultsService().retrieveSelectedResultBOs(lookupResultsSequenceNumber, lookupResultsBOClass, GlobalVariables.getUserSession().getUniversalUser().getPersonUniversalIdentifier());
+                rawValues = KNSServiceLocator.getLookupResultsService().retrieveSelectedResultBOs(lookupResultsSequenceNumber, lookupResultsBOClass, GlobalVariables.getUserSession().getPerson().getPrincipalId());
             }
         }
 
@@ -927,7 +927,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     private void clearUnauthorizedNewFields(MaintenanceDocument document) {
         // get a reference to the current user
-        UniversalUser user = GlobalVariables.getUserSession().getUniversalUser();
+        Person user = GlobalVariables.getUserSession().getPerson();
 
         // get the correct documentAuthorizer for this document
         DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();

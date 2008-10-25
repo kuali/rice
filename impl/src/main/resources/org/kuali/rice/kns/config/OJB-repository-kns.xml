@@ -24,23 +24,23 @@
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 	</jdbc-connection-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.user.UniversalUser" table="FS_UNIVERSAL_USR_T">
-		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kim.bo.Person" table="FS_UNIVERSAL_USR_T">
+		<field-descriptor name="principalId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="personUserIdentifier" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="principalName" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="personPayrollIdentifier" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="personTaxIdentifier" column="PRSN_TAX_ID" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 		<field-descriptor name="personTaxIdentifierTypeCode" column="PRSN_TAX_ID_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="personFirstName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="personLastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="firstName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="lastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="personMiddleName" column="PRSN_MID_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="personName" column="PERSON_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="personEmailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
+		<field-descriptor name="name" column="PERSON_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
 		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="primaryDepartmentCode" column="EMP_PRM_DEPT_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="personCampusAddress" column="PRSN_CMP_ADDR" jdbc-type="VARCHAR" />
+		<field-descriptor name="addressLine1" column="PRSN_CMP_ADDR" jdbc-type="VARCHAR" />
 		<field-descriptor name="personLocalPhoneNumber" column="PRSN_LOC_PHN_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="employeeTypeCode" column="EMP_TYPE_CD" jdbc-type="VARCHAR" />
@@ -48,7 +48,7 @@
 		<field-descriptor name="staff" column="PRSN_STAFF_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="faculty" column="PRSN_FAC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="affiliate" column="PRSN_AFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="personBaseSalaryAmount" column="PRSN_BASE_SLRY_AMT" jdbc-type="DECIMAL"
+		<field-descriptor name="baseSalaryAmount" column="PRSN_BASE_SLRY_AMT" jdbc-type="DECIMAL"
 			conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" />
 		<field-descriptor name="financialSystemsEncryptedPasswordText" column="FS_ENCRPTD_PWD_TXT" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.kns.util.OjbKualiHashFieldConversion" />
@@ -309,7 +309,7 @@
 	<class-descriptor class="org.kuali.rice.kns.bo.LookupResults" table="FS_LOOKUP_RESULTS_MT">
 		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="lookupUniversalUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupPersonId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="serializedLookupResults" column="SERIALIZED_LOOKUP_RESULTS" jdbc-type="CLOB"
@@ -319,7 +319,7 @@
 	<class-descriptor class="org.kuali.rice.kns.bo.SelectedObjectIds" table="FS_LOOKUP_SELECTIONS_MT">
 		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="lookupUniversalUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupPersonId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="selectedObjectIds" column="SELECTED_OBJ_IDS" jdbc-type="CLOB" />

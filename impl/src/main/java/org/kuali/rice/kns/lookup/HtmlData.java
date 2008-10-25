@@ -202,7 +202,7 @@ public abstract class HtmlData implements Serializable {
 					.getAuthorizationService()
 					.isAuthorizedToViewAttribute(
 							GlobalVariables.getUserSession()
-									.getUniversalUser(),
+									.getPerson(),
 							element.getName(), key);
 			if (!viewAuthorized) {
 				Mask displayMask = KNSServiceLocator

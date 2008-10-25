@@ -24,7 +24,7 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -567,17 +567,17 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.rice.kim.bo.Person)
      */
-    public boolean userIsInitiator(UniversalUser user) {
+    public boolean userIsInitiator(Person user) {
         LOG.debug("Using MockWorkflowDocument");
         return false;
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.rice.kim.bo.Person)
      */
-    public boolean userIsRoutedByUser(UniversalUser user) {
+    public boolean userIsRoutedByUser(Person user) {
         LOG.debug("Using MockWorkflowDocument");
         return false;
     }
@@ -601,7 +601,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     /**
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
-    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
+    public Set<Person> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
         return null;
     }
 
@@ -633,3 +633,4 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
     
 }
+

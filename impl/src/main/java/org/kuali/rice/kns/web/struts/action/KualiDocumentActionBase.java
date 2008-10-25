@@ -48,7 +48,7 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
@@ -102,9 +102,9 @@ public class KualiDocumentActionBase extends KualiAction {
             super.checkAuthorization(form, methodToCall);
         } else {
             AuthorizationType documentAuthorizationType = new AuthorizationType.Document(((KualiDocumentFormBase)form).getDocument().getClass(), ((KualiDocumentFormBase)form).getDocument());
-            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType ) ) {
+            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), documentAuthorizationType ) ) {
                 LOG.error("User not authorized to use this document: " + ((KualiDocumentFormBase)form).getDocument().getClass().getName() );
-                throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), 
+                throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                 		documentAuthorizationType, 
                 		getKualiModuleService().getResponsibleModuleService(((KualiDocumentFormBase)form).getDocument().getClass()) );
             }
@@ -235,7 +235,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // first check if the method to call is listed as required lock clearing
         if (document.getLockClearningMethodNames().contains(methodToCall)) {
             // find all locks for the current user and remove them
-            KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getUniversalUser());
+            KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
         }
     }
     
@@ -243,7 +243,7 @@ public class KualiDocumentActionBase extends KualiAction {
         List<String> lockMessages = new ArrayList<String>();
         for (PessimisticLock lock : document.getPessimisticLocks()) {
             // if lock is owned by current user, do not display message for it
-            if (!lock.isOwnedByUser(GlobalVariables.getUserSession().getUniversalUser())) {
+            if (!lock.isOwnedByUser(GlobalVariables.getUserSession().getPerson())) {
                 lockMessages.add(generatePessimisticLockMessage(lock));
             }
         }
@@ -252,7 +252,7 @@ public class KualiDocumentActionBase extends KualiAction {
     
     protected String generatePessimisticLockMessage(PessimisticLock lock) {
         String descriptor = (lock.getLockDescriptor() != null) ? lock.getLockDescriptor() : "";
-        return "This document currently has a " + descriptor + " lock owned by " + lock.getOwnedByUser().getPersonName() + " as of " + RiceConstants.getDefaultTimeFormat().format(lock.getGeneratedTimestamp()) + " on " + RiceConstants.getDefaultDateFormat().format(lock.getGeneratedTimestamp());
+        return "This document currently has a " + descriptor + " lock owned by " + lock.getOwnedByUser().getName() + " as of " + RiceConstants.getDefaultTimeFormat().format(lock.getGeneratedTimestamp()) + " on " + RiceConstants.getDefaultDateFormat().format(lock.getGeneratedTimestamp());
     }
     
     private void saveMessages(HttpServletRequest request) {
@@ -1269,7 +1269,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // if document is saved, send notification
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
-            KNSServiceLocator.getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getUniversalUser());
+            KNSServiceLocator.getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
 
             // add success message
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);
@@ -1380,7 +1380,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param document
      */
     protected DocumentActionFlags getDocumentActionFlags(Document document) {
-        UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
 
         DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
         DocumentActionFlags flags = documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, kualiUser);
@@ -1395,7 +1395,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param document
      */
     protected DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
-        return new DocumentAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), action, document.getDocumentNumber());
+        return new DocumentAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), action, document.getDocumentNumber());
     }
 
     protected boolean exitingDocument() {
@@ -1431,3 +1431,4 @@ public class KualiDocumentActionBase extends KualiAction {
         return dest;
     }
 }
+

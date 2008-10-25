@@ -31,7 +31,7 @@ import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.exception.IntrospectionException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -94,7 +94,7 @@ public class PersistenceServiceJpaImpl extends PersistenceServiceImplBase implem
         }
 
         EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(bo.getClass());
-        if (! UniversalUser.class.equals(referenceClass)) {
+        if (! Person.class.equals(referenceClass)) {
         	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(referenceName);
             if (objectDescriptor == null) {
                 throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");

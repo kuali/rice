@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.ModuleService;
 
 /**
@@ -24,7 +24,7 @@ import org.kuali.rice.kns.service.ModuleService;
  * interface could be used to perform more granular access control (e.g., based on the class name) if desired.  
  */
 public interface KualiModuleAuthorizer {
-    public boolean isAuthorized(UniversalUser user, AuthorizationType authType);
+    public boolean isAuthorized(Person user, AuthorizationType authType);
     
     public ModuleService getModuleService();
     
@@ -35,3 +35,4 @@ public interface KualiModuleAuthorizer {
      */
     public boolean isResponsibleFor( Class boClass );
 }
+

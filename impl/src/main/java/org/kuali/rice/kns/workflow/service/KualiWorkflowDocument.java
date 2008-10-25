@@ -28,7 +28,7 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 public interface KualiWorkflowDocument {
@@ -323,20 +323,20 @@ public interface KualiWorkflowDocument {
 
 
     /**
-     * Returns true if the personUserIdentifier of the given KualiUser matches the initiatorNetworkId of this document
+     * Returns true if the principalName of the given KualiUser matches the initiatorNetworkId of this document
      * 
      * @param user
      * @return true if the given user is the initiator of this document
      */
-    public boolean userIsInitiator(UniversalUser user);
+    public boolean userIsInitiator(Person user);
 
     /**
-     * Returns true if the personUserIdentifier of the given KualiUser matches the routedByUserNetworkId of this document
+     * Returns true if the principalName of the given KualiUser matches the routedByUserNetworkId of this document
      * 
      * @param user
      * @return true if the given user is the user who routed this document
      */
-    public boolean userIsRoutedByUser(UniversalUser user);
+    public boolean userIsRoutedByUser(Person user);
     
     /**
      * Returns the names of the nodes that the document is currently at.
@@ -354,7 +354,7 @@ public interface KualiWorkflowDocument {
      * 
      * @return a set of all approvers
      */
-    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, org.kuali.rice.kns.exception.UserNotFoundException;
+    public Set<Person> getAllPriorApprovers() throws WorkflowException, org.kuali.rice.kns.exception.UserNotFoundException;
        
     public void setReceiveFutureRequests() throws WorkflowException;
     

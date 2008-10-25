@@ -150,19 +150,19 @@ public class XPathTest extends BaseRiceTestCase {
     
     @Test public void testBooleanTranslation() throws Exception {
         String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + XSTREAM_SAFE_SUFFIX;
-        String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/universalUser/student" + XSTREAM_SAFE_SUFFIX;
+        String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/person/student" + XSTREAM_SAFE_SUFFIX;
         DocumentContent docContent = new StandardDocumentContent(
               "<documentContent><applicationContent><org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer>" + 
               "  <kualiTransactionalDocumentInformation>" + 
               "  <documentInitiator>" + 
-              "     <universalUser>" +
+              "     <person>" +
               "        <student>false</student>" +
               "        <campus class=\"org.kuali.rice.kns.bo.Campus--EnhancerByCGLIB--4968dd25\">" +
               "          <campusType>" +
               "            <dataObjectMaintenanceCodeActiveIndicator>true</dataObjectMaintenanceCodeActiveIndicator>" +
               "          </campusType>" + 
               "        </campus>" + 
-              "      </universalUser>" + 
+              "      </person>" + 
               "    </documentInitiator>" + 
               "  </kualiTransactionalDocumentInformation>" + 
               "  <document>" +

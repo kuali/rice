@@ -4,42 +4,42 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="UniversalUser" parent="UniversalUser-parentBean" />
+  <bean id="Person" parent="Person-parentBean" />
 
-  <bean id="UniversalUser-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.user.UniversalUser" />
+  <bean id="Person-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Person" />
     <property name="inquiryDefinition" >
-      <ref bean="UniversalUser-inquiryDefinition" />
+      <ref bean="Person-inquiryDefinition" />
     </property>
     <property name="lookupDefinition" >
-      <ref bean="UniversalUser-lookupDefinition" />
+      <ref bean="Person-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="personUniversalIdentifier" />
+    <property name="titleAttribute" value="principalId" />
     <property name="attributes" >
       <list>
-        <ref bean="UniversalUser-personUniversalIdentifier" />
-        <ref bean="UniversalUser-personUserIdentifier" />
-        <ref bean="UniversalUser-personPayrollIdentifier" />
-        <ref bean="UniversalUser-personName" />
-        <ref bean="UniversalUser-employeeStatusCode" />
-        <ref bean="UniversalUser-employeeTypeCode" />
-        <ref bean="UniversalUser-student" />
-        <ref bean="UniversalUser-staff" />
-        <ref bean="UniversalUser-faculty" />
-        <ref bean="UniversalUser-affiliate" />
-        <ref bean="UniversalUser-primaryDepartmentCode" />
-        <ref bean="UniversalUser-personEmailAddress" />
-        <ref bean="UniversalUser-personFirstName" />
-        <ref bean="UniversalUser-personLastName" />
-        <ref bean="UniversalUser-personMiddleName" />
-        <ref bean="UniversalUser-personCampusAddress" />
-        <ref bean="UniversalUser-personLocalPhoneNumber" />
-        <ref bean="UniversalUser-personBaseSalaryAmount" />
-        <ref bean="UniversalUser-personTaxIdentifier" />
-        <ref bean="UniversalUser-personTaxIdentifierTypeCode" />
-        <ref bean="UniversalUser-financialSystemsEncryptedPasswordText" />
-        <ref bean="UniversalUser-campusCode" />
-        <ref bean="UniversalUser-versionNumber" />
+        <ref bean="Person-principalId" />
+        <ref bean="Person-principalName" />
+        <ref bean="Person-personPayrollIdentifier" />
+        <ref bean="Person-personName" />
+        <ref bean="Person-employeeStatusCode" />
+        <ref bean="Person-employeeTypeCode" />
+        <ref bean="Person-student" />
+        <ref bean="Person-staff" />
+        <ref bean="Person-faculty" />
+        <ref bean="Person-affiliate" />
+        <ref bean="Person-primaryDepartmentCode" />
+        <ref bean="Person-personEmailAddress" />
+        <ref bean="Person-personFirstName" />
+        <ref bean="Person-personLastName" />
+        <ref bean="Person-personMiddleName" />
+        <ref bean="Person-personCampusAddress" />
+        <ref bean="Person-personLocalPhoneNumber" />
+        <ref bean="Person-personBaseSalaryAmount" />
+        <ref bean="Person-personTaxIdentifier" />
+        <ref bean="Person-personTaxIdentifierTypeCode" />
+        <ref bean="Person-financialSystemsEncryptedPasswordText" />
+        <ref bean="Person-campusCode" />
+        <ref bean="Person-versionNumber" />
       </list>
     </property>
     <property name="objectLabel" value="Universal User" />
@@ -48,9 +48,9 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="UniversalUser-personUniversalIdentifier" parent="UniversalUser-personUniversalIdentifier-parentBean" />
+  <bean id="Person-principalId" parent="Person-principalId-parentBean" />
 
-  <bean id="UniversalUser-personUniversalIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-principalId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Univ User Id" />
     <property name="maxLength" value="10" />
@@ -63,13 +63,13 @@
             p:size="10" />
     </property>
     <property name="summary" value="Universal User ID" />
-    <property name="name" value="personUniversalIdentifier" />
+    <property name="name" value="principalId" />
     <property name="label" value="Universal User ID" />
     <property name="description" value="Universal User ID" />
   </bean>
-  <bean id="UniversalUser-personUserIdentifier" parent="UniversalUser-personUserIdentifier-parentBean" />
+  <bean id="Person-principalName" parent="Person-principalName-parentBean" />
 
-  <bean id="UniversalUser-personUserIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-principalName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="User ID" />
     <property name="maxLength" value="8" />
@@ -82,13 +82,13 @@
             p:size="8" />
     </property>
     <property name="summary" value="User ID" />
-    <property name="name" value="personUserIdentifier" />
+    <property name="name" value="principalName" />
     <property name="label" value="User ID" />
     <property name="description" value="User ID" />
   </bean>
-  <bean id="UniversalUser-personPayrollIdentifier" parent="UniversalUser-personPayrollIdentifier-parentBean" />
+  <bean id="Person-personPayrollIdentifier" parent="Person-personPayrollIdentifier-parentBean" />
 
-  <bean id="UniversalUser-personPayrollIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personPayrollIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Empl ID" />
     <property name="maxLength" value="11" />
@@ -104,9 +104,9 @@
 					This is a unique 9-digit number assigned to each 
 					employee as they are entered into the HRMS system." />
   </bean>
-  <bean id="UniversalUser-personName" parent="UniversalUser-personName-parentBean" />
+  <bean id="Person-personName" parent="Person-personName-parentBean" />
 
-  <bean id="UniversalUser-personName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Name" />
     <property name="maxLength" value="80" />
@@ -114,13 +114,13 @@
       <bean parent="HiddenControlDefinition" />
     </property>
     <property name="summary" value="Display Name" />
-    <property name="name" value="personName" />
+    <property name="name" value="name" />
     <property name="label" value="Display Name" />
     <property name="description" value="Name" />
   </bean>
-  <bean id="UniversalUser-employeeStatusCode" parent="UniversalUser-employeeStatusCode-parentBean" />
+  <bean id="Person-employeeStatusCode" parent="Person-employeeStatusCode-parentBean" />
 
-  <bean id="UniversalUser-employeeStatusCode-parentBean" abstract="true" parent="EmployeeStatus-code">
+  <bean id="Person-employeeStatusCode-parentBean" abstract="true" parent="EmployeeStatus-code">
     <property name="required" value="false" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -129,9 +129,9 @@
     </property>
     <property name="name" value="employeeStatusCode" />
   </bean>
-  <bean id="UniversalUser-employeeTypeCode" parent="UniversalUser-employeeTypeCode-parentBean" />
+  <bean id="Person-employeeTypeCode" parent="Person-employeeTypeCode-parentBean" />
 
-  <bean id="UniversalUser-employeeTypeCode-parentBean" abstract="true" parent="EmployeeType-code">
+  <bean id="Person-employeeTypeCode-parentBean" abstract="true" parent="EmployeeType-code">
     <property name="required" value="false" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -140,45 +140,45 @@
     </property>
     <property name="name" value="employeeTypeCode" />
   </bean>
-  <bean id="UniversalUser-student" parent="UniversalUser-student-parentBean" />
+  <bean id="Person-student" parent="Person-student-parentBean" />
 
-  <bean id="UniversalUser-student-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="Person-student-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
     <property name="shortLabel" value="Stdt?" />
     <property name="summary" value="Student?" />
     <property name="name" value="student" />
     <property name="label" value="Student?" />
     <property name="description" value="Is this person a student?" />
   </bean>
-  <bean id="UniversalUser-staff" parent="UniversalUser-staff-parentBean" />
+  <bean id="Person-staff" parent="Person-staff-parentBean" />
 
-  <bean id="UniversalUser-staff-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="Person-staff-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
     <property name="shortLabel" value="Stf?" />
     <property name="summary" value="Staff?" />
     <property name="name" value="staff" />
     <property name="label" value="Staff?" />
     <property name="description" value="Is this person a staff member?" />
   </bean>
-  <bean id="UniversalUser-faculty" parent="UniversalUser-faculty-parentBean" />
+  <bean id="Person-faculty" parent="Person-faculty-parentBean" />
 
-  <bean id="UniversalUser-faculty-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="Person-faculty-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
     <property name="shortLabel" value="Fcty?" />
     <property name="summary" value="Faculty?" />
     <property name="name" value="faculty" />
     <property name="label" value="Faculty?" />
     <property name="description" value="Is this person a faculty member?" />
   </bean>
-  <bean id="UniversalUser-affiliate" parent="UniversalUser-affiliate-parentBean" />
+  <bean id="Person-affiliate" parent="Person-affiliate-parentBean" />
 
-  <bean id="UniversalUser-affiliate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="Person-affiliate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
     <property name="shortLabel" value="Aflt?" />
     <property name="summary" value="Affiliate?" />
     <property name="name" value="affiliate" />
     <property name="label" value="Affiliate?" />
     <property name="description" value="Is this person an affiliate of the institution?" />
   </bean>
-  <bean id="UniversalUser-primaryDepartmentCode" parent="UniversalUser-primaryDepartmentCode-parentBean" />
+  <bean id="Person-primaryDepartmentCode" parent="Person-primaryDepartmentCode-parentBean" />
 
-  <bean id="UniversalUser-primaryDepartmentCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-primaryDepartmentCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="DeptId" />
     <property name="maxLength" value="10" />
@@ -194,9 +194,9 @@
     <property name="label" value="Department Id" />
     <property name="description" value="Chart-Org" />
   </bean>
-  <bean id="UniversalUser-personEmailAddress" parent="UniversalUser-personEmailAddress-parentBean" />
+  <bean id="Person-personEmailAddress" parent="Person-personEmailAddress-parentBean" />
 
-  <bean id="UniversalUser-personEmailAddress-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personEmailAddress-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Email" />
     <property name="maxLength" value="40" />
@@ -208,13 +208,13 @@
             p:size="40" />
     </property>
     <property name="summary" value="Email Address" />
-    <property name="name" value="personEmailAddress" />
+    <property name="name" value="emailAddress" />
     <property name="label" value="Email Address" />
     <property name="description" value="Email Address" />
   </bean>
-  <bean id="UniversalUser-personFirstName" parent="UniversalUser-personFirstName-parentBean" />
+  <bean id="Person-personFirstName" parent="Person-personFirstName-parentBean" />
 
-  <bean id="UniversalUser-personFirstName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personFirstName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="1st Name" />
     <property name="maxLength" value="20" />
@@ -228,13 +228,13 @@
             p:size="20" />
     </property>
     <property name="summary" value="Person First Name" />
-    <property name="name" value="personFirstName" />
+    <property name="name" value="firstName" />
     <property name="label" value="First Name" />
     <property name="description" value="Person First Name" />
   </bean>
-  <bean id="UniversalUser-personLastName" parent="UniversalUser-personLastName-parentBean" />
+  <bean id="Person-personLastName" parent="Person-personLastName-parentBean" />
 
-  <bean id="UniversalUser-personLastName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personLastName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Lst Name" />
     <property name="maxLength" value="20" />
@@ -248,13 +248,13 @@
             p:size="20" />
     </property>
     <property name="summary" value="Person Last Name" />
-    <property name="name" value="personLastName" />
+    <property name="name" value="lastName" />
     <property name="label" value="Last Name" />
     <property name="description" value="Person Last Name" />
   </bean>
-  <bean id="UniversalUser-personMiddleName" parent="UniversalUser-personMiddleName-parentBean" />
+  <bean id="Person-personMiddleName" parent="Person-personMiddleName-parentBean" />
 
-  <bean id="UniversalUser-personMiddleName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personMiddleName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Mdl Name" />
     <property name="maxLength" value="20" />
@@ -272,9 +272,9 @@
     <property name="label" value="Middle Name" />
     <property name="description" value="Person Last Name" />
   </bean>
-  <bean id="UniversalUser-personCampusAddress" parent="UniversalUser-personCampusAddress-parentBean" />
+  <bean id="Person-personCampusAddress" parent="Person-personCampusAddress-parentBean" />
 
-  <bean id="UniversalUser-personCampusAddress-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personCampusAddress-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Cmp Addr" />
     <property name="maxLength" value="55" />
@@ -283,13 +283,13 @@
             p:size="40" />
     </property>
     <property name="summary" value="Person Campus Address" />
-    <property name="name" value="personCampusAddress" />
+    <property name="name" value="addressLine1" />
     <property name="label" value="Campus Address" />
     <property name="description" value="Person Campus Address" />
   </bean>
-  <bean id="UniversalUser-personLocalPhoneNumber" parent="UniversalUser-personLocalPhoneNumber-parentBean" />
+  <bean id="Person-personLocalPhoneNumber" parent="Person-personLocalPhoneNumber-parentBean" />
 
-  <bean id="UniversalUser-personLocalPhoneNumber-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personLocalPhoneNumber-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Phn Nbr" />
     <property name="maxLength" value="10" />
@@ -305,9 +305,9 @@
     <property name="label" value="Local Phone Number" />
     <property name="description" value="Person Local Phone Number" />
   </bean>
-  <bean id="UniversalUser-personBaseSalaryAmount" parent="UniversalUser-personBaseSalaryAmount-parentBean" />
+  <bean id="Person-personBaseSalaryAmount" parent="Person-personBaseSalaryAmount-parentBean" />
 
-  <bean id="UniversalUser-personBaseSalaryAmount-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personBaseSalaryAmount-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Salary" />
     <property name="maxLength" value="19" />
@@ -321,13 +321,13 @@
             p:size="10" />
     </property>
     <property name="summary" value="Person Base Salary" />
-    <property name="name" value="personBaseSalaryAmount" />
+    <property name="name" value="baseSalaryAmount" />
     <property name="label" value="Base Salary" />
     <property name="description" value="Person Base Salary" />
   </bean>
-  <bean id="UniversalUser-personTaxIdentifier" parent="UniversalUser-personTaxIdentifier-parentBean" />
+  <bean id="Person-personTaxIdentifier" parent="Person-personTaxIdentifier-parentBean" />
 
-  <bean id="UniversalUser-personTaxIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personTaxIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Tax ID" />
     <property name="maxLength" value="9" />
@@ -352,9 +352,9 @@
     <property name="label" value="Tax Identifier" />
     <property name="description" value="Social Security Number" />
   </bean>
-  <bean id="UniversalUser-personTaxIdentifierTypeCode" parent="UniversalUser-personTaxIdentifierTypeCode-parentBean" />
+  <bean id="Person-personTaxIdentifierTypeCode" parent="Person-personTaxIdentifierTypeCode-parentBean" />
 
-  <bean id="UniversalUser-personTaxIdentifierTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-personTaxIdentifierTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Tax ID Type" />
     <property name="maxLength" value="1" />
@@ -371,9 +371,9 @@
     <property name="label" value="Tax Identifier Type" />
     <property name="description" value="Tax Identifier Type" />
   </bean>
-  <bean id="UniversalUser-financialSystemsEncryptedPasswordText" parent="UniversalUser-financialSystemsEncryptedPasswordText-parentBean" />
+  <bean id="Person-financialSystemsEncryptedPasswordText" parent="Person-financialSystemsEncryptedPasswordText-parentBean" />
 
-  <bean id="UniversalUser-financialSystemsEncryptedPasswordText-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Person-financialSystemsEncryptedPasswordText-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Password" />
     <property name="maxLength" value="200" />
@@ -398,23 +398,23 @@
     <property name="label" value="Password" />
     <property name="description" value="Password" />
   </bean>
-  <bean id="UniversalUser-campusCode" parent="UniversalUser-campusCode-parentBean" />
+  <bean id="Person-campusCode" parent="Person-campusCode-parentBean" />
 
-  <bean id="UniversalUser-campusCode-parentBean" abstract="true" parent="Campus-campusCode">
+  <bean id="Person-campusCode-parentBean" abstract="true" parent="Campus-campusCode">
     <property name="required" value="false" />
     <property name="description" value="The code for the Campus of the user." />
   </bean>
-  <bean id="UniversalUser-versionNumber" parent="UniversalUser-versionNumber-parentBean" />
+  <bean id="Person-versionNumber" parent="Person-versionNumber-parentBean" />
 
-  <bean id="UniversalUser-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  <bean id="Person-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 
 <!-- Business Object Inquiry Definition -->
 
 
-  <bean id="UniversalUser-inquiryDefinition" parent="UniversalUser-inquiryDefinition-parentBean" />
+  <bean id="Person-inquiryDefinition" parent="Person-inquiryDefinition-parentBean" />
 
-  <bean id="UniversalUser-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+  <bean id="Person-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -422,14 +422,14 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition"
-                    p:attributeName="personUserIdentifier" />
+                    p:attributeName="principalName" />
               <bean parent="FieldDefinition"
-                    p:attributeName="personUniversalIdentifier"
+                    p:attributeName="principalId"
                     p:noInquiry="true" />
               <bean parent="FieldDefinition"
                     p:attributeName="personPayrollIdentifier" />
               <bean parent="FieldDefinition"
-                    p:attributeName="personName" />
+                    p:attributeName="name" />
               <bean parent="FieldDefinition"
                     p:attributeName="campusCode" />
               <bean parent="FieldDefinition"
@@ -447,7 +447,7 @@
               <bean parent="FieldDefinition"
                     p:attributeName="employeeTypeCode" />
               <bean parent="FieldDefinition"
-                    p:attributeName="personEmailAddress" />
+                    p:attributeName="emailAddress" />
             </list>
           </property>
           <property name="title" value="" />
@@ -460,16 +460,16 @@
 <!-- Business Object Lookup Definition -->
 
 
-  <bean id="UniversalUser-lookupDefinition" parent="UniversalUser-lookupDefinition-parentBean" />
+  <bean id="Person-lookupDefinition" parent="Person-lookupDefinition-parentBean" />
 
-  <bean id="UniversalUser-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="lookupableID" value="universalUserLookupable" />
+  <bean id="Person-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="lookupableID" value="personLookupable" />
     <property name="instructions" value="Lookup a User" />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >
           <list>
-            <value>personUserIdentifier</value>
+            <value>principalName</value>
           </list>
         </property>
       </bean>
@@ -477,17 +477,17 @@
     <property name="lookupFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="personUserIdentifier" />
+              p:attributeName="principalName" />
         <bean parent="FieldDefinition"
-              p:attributeName="personUniversalIdentifier" />
+              p:attributeName="principalId" />
         <bean parent="FieldDefinition"
               p:attributeName="personPayrollIdentifier" />
         <bean parent="FieldDefinition"
-              p:attributeName="personLastName" />
+              p:attributeName="lastName" />
         <bean parent="FieldDefinition"
-              p:attributeName="personFirstName" />
+              p:attributeName="firstName" />
         <bean parent="FieldDefinition"
-              p:attributeName="personEmailAddress" />
+              p:attributeName="emailAddress" />
         <bean parent="FieldDefinition"
               p:attributeName="campusCode" />
         <bean parent="FieldDefinition"
@@ -509,13 +509,13 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="personUserIdentifier" />
+              p:attributeName="principalName" />
         <bean parent="FieldDefinition"
-              p:attributeName="personUniversalIdentifier" />
+              p:attributeName="principalId" />
         <bean parent="FieldDefinition"
               p:attributeName="personPayrollIdentifier" />
         <bean parent="FieldDefinition"
-              p:attributeName="personName" />
+              p:attributeName="name" />
         <bean parent="FieldDefinition"
               p:attributeName="campusCode" />
         <bean parent="FieldDefinition"
@@ -529,3 +529,4 @@
     <property name="title" value="User Lookup" />
   </bean>
 </beans>
+

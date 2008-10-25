@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentSerializerService;
 import org.kuali.rice.kns.service.PersistenceService;
@@ -74,7 +74,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
-        xstream.registerConverter(new UniversalUserConverter(xstream.getMapper(), new UniversalUserReflectionProvider()));
+        xstream.registerConverter(new PersonConverter(xstream.getMapper(), new PersonReflectionProvider()));
         xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
         //xstream.registerConverter(new TypedArrayListConverter(xstream.getMapper()));
     }
@@ -156,32 +156,32 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
     }
 
-    public class UniversalUserConverter extends ReflectionConverter {
-        private UniversalUserReflectionProvider reflectionProvider;
+    public class PersonConverter extends ReflectionConverter {
+        private PersonReflectionProvider reflectionProvider;
         
-        public UniversalUserConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
+        public PersonConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
-            this.reflectionProvider = (UniversalUserReflectionProvider) reflectionProvider;
+            this.reflectionProvider = (PersonReflectionProvider) reflectionProvider;
         }
         
         @Override
         public boolean canConvert(Class type) {
-            return UniversalUser.class.isAssignableFrom(type);
+            return Person.class.isAssignableFrom(type);
         }
     }
     
-    public class UniversalUserReflectionProvider extends ProxyAndStateAwareJavaReflectionProvider {
+    public class PersonReflectionProvider extends ProxyAndStateAwareJavaReflectionProvider {
         private Set<String> primitivePropertiesPopulatedByServices;
         private PropertyUtilsBean propertyUtilsBean;
         
-        public UniversalUserReflectionProvider() {
+        public PersonReflectionProvider() {
             initializePrimitivePropertiesPopulatedByServices();
             propertyUtilsBean = new PropertyUtilsBean();
         }
         
         @Override
         protected void initializeField(Object object, Field field) {
-            UniversalUser user = (UniversalUser) object;
+            Person user = (Person) object;
             String fieldName = field.getName();
             
             if (primitivePropertiesPopulatedByServices.contains(fieldName)) {
@@ -191,7 +191,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
                     // when the reflection provider attempts to access these properties
                     propertyUtilsBean.getProperty(user, fieldName);
                 } catch (Exception e) {
-                    LOG.error("Cannot use getter method for UniversalUser property: " + fieldName, e);
+                    LOG.error("Cannot use getter method for Person property: " + fieldName, e);
                 }
             }
         }
@@ -237,3 +237,4 @@ public abstract class SerializerServiceBase implements SerializerService  {
     
     
 }
+

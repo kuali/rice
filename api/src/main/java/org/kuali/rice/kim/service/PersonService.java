@@ -61,6 +61,8 @@ public interface PersonService<T extends Person> {
 	 */
 	List<? extends Person> findPeople( Map<String, String> criteria, boolean unbounded );
 	
+	List<Person> getGroupMembersByGroupName(String namespace, String groupName); 
+	
 	/**
 	 * Check whether the given person belongs to the given group.  This method will do deep inspection
 	 * (through the group service) of contained workgroups and return true if the user is in any of them.

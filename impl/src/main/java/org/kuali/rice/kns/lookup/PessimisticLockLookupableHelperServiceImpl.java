@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PessimisticLockService;
@@ -55,7 +55,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         PessimisticLock lock = (PessimisticLock)businessObject;
-        if ( (lock.isOwnedByUser(GlobalVariables.getUserSession().getUniversalUser())) || (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(GlobalVariables.getUserSession().getUniversalUser())) ) {
+        if ( (lock.isOwnedByUser(GlobalVariables.getUserSession().getPerson())) || (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(GlobalVariables.getUserSession().getPerson())) ) {
             List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
             anchorHtmlDataList.add(getUrlData(businessObject, KNSConstants.DELETE_METHOD, pkNames));
             return anchorHtmlDataList;
@@ -65,13 +65,13 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     }
 
     /**
-     * This overridden method checks whether the user is an admin user according to {@link PessimisticLockService#isPessimisticLockAdminUser(UniversalUser)} and if the user is not an admin user the user field is set to Read Only and the lookup field
+     * This overridden method checks whether the user is an admin user according to {@link PessimisticLockService#isPessimisticLockAdminUser(Person)} and if the user is not an admin user the user field is set to Read Only and the lookup field
      *
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
      */
     @Override
     public List<Row> getRows() {
-        UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person currentUser = GlobalVariables.getUserSession().getPerson();
         if (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
             return super.getRows();
         } else {
@@ -107,9 +107,9 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         // remove hidden fields
         LookupUtils.removeHiddenCriteriaFields( getBusinessObjectClass(), fieldValues );
         // force criteria if not admin user
-        UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person currentUser = GlobalVariables.getUserSession().getPerson();
         if (!KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
-            fieldValues.put(KNSPropertyConstants.OWNED_BY_PERSON_UNIVERSAL_ID,GlobalVariables.getUserSession().getUniversalUser().getPersonUniversalIdentifier());
+            fieldValues.put(KNSPropertyConstants.OWNED_BY_PERSON_UNIVERSAL_ID,GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
 
         setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
@@ -127,3 +127,4 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     }
 
 }
+

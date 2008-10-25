@@ -70,35 +70,35 @@ public class LookupDaoJpa implements LookupDao {
 	// TODO: Add the JPA implementation
 	// TODO WARNING: this does not support nested joins, because i don't have a
 	// test case
-	public Collection findCollectionBySearchHelperWithUniversalUserJoin(Class businessObjectClass, Map nonUniversalUserSearchCriteria, Map universalUserSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
+	public Collection findCollectionBySearchHelperWithPersonJoin(Class businessObjectClass, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
 		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
 		Criteria criteria = null;
 		/*
 		if (usePrimaryKeyValuesOnly) {
-			criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonUniversalUserSearchCriteria);
+			criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonPersonSearchCriteria);
 		} else {
-			criteria = getCollectionCriteriaFromMap(businessObject, nonUniversalUserSearchCriteria);
-			Iterator universalUserReferenceItr = universalUserSearchCriteria.keySet().iterator();
-			UniversalUser universalUserExample = new UniversalUser();
-			while (universalUserReferenceItr.hasNext()) {
-				String institutionalIdSourcePrimitivePropertyName = (String) universalUserReferenceItr.next();
-				Map universalUserReferenceSearchCriteria = (Map) universalUserSearchCriteria.get(institutionalIdSourcePrimitivePropertyName);
-				Iterator universalUserReferenceSearchCriterionItr = universalUserReferenceSearchCriteria.keySet().iterator();
-				Criteria universalUserSubCriteria = new Criteria();
-				while (universalUserReferenceSearchCriterionItr.hasNext()) {
-					String universalUserSearchFieldName = (String) universalUserReferenceSearchCriterionItr.next();
+			criteria = getCollectionCriteriaFromMap(businessObject, nonPersonSearchCriteria);
+			Iterator personReferenceItr = personSearchCriteria.keySet().iterator();
+			Person personExample = new org.kuali.rice.kim.bo.impl.PersonImpl();
+			while (personReferenceItr.hasNext()) {
+				String institutionalIdSourcePrimitivePropertyName = (String) personReferenceItr.next();
+				Map personReferenceSearchCriteria = (Map) personSearchCriteria.get(institutionalIdSourcePrimitivePropertyName);
+				Iterator personReferenceSearchCriterionItr = personReferenceSearchCriteria.keySet().iterator();
+				Criteria personSubCriteria = new Criteria();
+				while (personReferenceSearchCriterionItr.hasNext()) {
+					String personSearchFieldName = (String) personReferenceSearchCriterionItr.next();
 					Boolean caseInsensitive = Boolean.FALSE;
-					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(businessObjectClass, universalUserSearchFieldName)) {
-						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(UniversalUser.class, universalUserSearchFieldName);
+					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(businessObjectClass, personSearchFieldName)) {
+						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(Person.class, personSearchFieldName);
 					}
 					if (caseInsensitive == null) {
 						caseInsensitive = Boolean.FALSE;
 					}
-					createCriteria(universalUserExample, (String) universalUserReferenceSearchCriteria.get(universalUserSearchFieldName), universalUserSearchFieldName, caseInsensitive, universalUserSubCriteria);
+					createCriteria(personExample, (String) personReferenceSearchCriteria.get(personSearchFieldName), personSearchFieldName, caseInsensitive, personSubCriteria);
 				}
-				ReportQueryByCriteria universalUserSubQuery = QueryFactory.newReportQuery(UniversalUser.class, universalUserSubCriteria);
-				universalUserSubQuery.setAttributes(new String[] { "personUniversalIdentifier" });
-				criteria.addIn(institutionalIdSourcePrimitivePropertyName, universalUserSubQuery);
+				ReportQueryByCriteria personSubQuery = QueryFactory.newReportQuery(Person.class, personSubCriteria);
+				personSubQuery.setAttributes(new String[] { "principalId" });
+				criteria.addIn(institutionalIdSourcePrimitivePropertyName, personSubQuery);
 			}
 		}
 		*/
@@ -264,7 +264,7 @@ public class LookupDaoJpa implements LookupDao {
 					bo.setExtension(boe);
 				}
 			}
-			// populate UniversalUser objects in business objects
+			// populate Person objects in business objects
 			List bos = new ArrayList();
 			bos.addAll(searchResults);
 			searchResults = bos;

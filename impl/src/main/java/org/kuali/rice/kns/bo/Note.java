@@ -29,7 +29,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -65,7 +65,7 @@ public class Note extends PersistableBusinessObjectBase {
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
 	private NoteType noteType;
-    private UniversalUser authorUniversal;
+    private Person authorUniversal;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE})
 	@JoinColumn(name="NTE_ID")
 	private Attachment attachment;
@@ -271,8 +271,8 @@ public class Note extends PersistableBusinessObjectBase {
      * 
      * @return Returns the authorUniversal.
      */
-    public UniversalUser getAuthorUniversal() {
-        authorUniversal = KNSServiceLocator.getUniversalUserService().updateUniversalUserIfNecessary(authorUniversalIdentifier, authorUniversal);
+    public Person getAuthorUniversal() {
+        authorUniversal = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().updatePersonIfNecessary(authorUniversalIdentifier, authorUniversal);
         return authorUniversal;
     }
 
@@ -282,7 +282,7 @@ public class Note extends PersistableBusinessObjectBase {
      * @param authorUniversal The authorUniversal to set.
      * @deprecated
      */
-    public void setAuthorUniversal(UniversalUser authorUniversal) {
+    public void setAuthorUniversal(Person authorUniversal) {
         this.authorUniversal = authorUniversal;
     }
 
@@ -361,4 +361,5 @@ public class Note extends PersistableBusinessObjectBase {
     }
 
 }
+
 

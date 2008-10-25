@@ -26,7 +26,7 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String AD_HOC_ROUTE_ERRORS = null;
 
     // special user used in the post-processor
-    public static final String SYSTEM_USER = "KULUSER";
+    public static final String SYSTEM_USER = "kuluser";
 
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
@@ -39,7 +39,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
         public static final String LOOKUP_PARM_DETAIL_TYPE = "Lookup";
-        public static final String UNIVERSAL_USER_DETAIL_TYPE = "UniversalUser";
+        public static final String UNIVERSAL_USER_DETAIL_TYPE = "Person";
         public static final String KUALI_MODULE_USER_DETAIL_TYPE = "KualiModuleUser";
         public static final String DOCUMENT_DETAIL_TYPE = "Document";
         public static final String DOCUMENT_TYPE_DETAIL_TYPE = "DocumentType";

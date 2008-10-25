@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
@@ -37,7 +37,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#getFieldAuthorizations(org.kuali.rice.kns.document.MaintenanceDocument,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, UniversalUser user) {
+    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user) {
         // by default, there are no restrictions, only if this method is
         // overridden by a subclass that adds restrictions
         return new MaintenanceDocumentAuthorizations();
@@ -48,7 +48,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public DocumentActionFlags getDocumentActionFlags(Document document, UniversalUser user) {
+    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
 
         // run the super, let the common flags be set
         MaintenanceDocumentActionFlags docActionFlags = new MaintenanceDocumentActionFlags(super.getDocumentActionFlags(document, user));
@@ -81,7 +81,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public Map getEditMode(Document document, UniversalUser user) {
+    public Map getEditMode(Document document, Person user) {
 
         // if this is not a MaintenanceDocument, then fail loudly, something is badly wrong
         if (!MaintenanceDocument.class.isAssignableFrom(document.getClass())) {
@@ -171,3 +171,4 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         return (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
     }
 }
+

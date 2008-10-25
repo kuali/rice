@@ -340,8 +340,8 @@ public class RiceKeyConstants {
     public static final String ERROR_DOCUMENT_KUALIUSERMAINT_CANNOT_EDIT_USER_ID = "error.document.kualiUserMaintenance.cannotEditUserId";
     public static final String ERROR_DOCUMENT_KUALIUSERMAINT_INVALID_EMP_STATUS = "error.document.kualiUserMaintenance.invalidEmpStatus";
     
-    // UniversalUser errors
-    public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.UniversalUserMaintenance.UniqueEmplId";
+    // Person errors
+    public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.PersonMaintenance.UniqueEmplId";
     
     // Object Code errors
 
@@ -852,3 +852,4 @@ public class RiceKeyConstants {
         public static final String USER_INITIATED_DATE_TOO_EARLY = "error.cg.userInitiatedDateTooEarly";
     }
 }
+

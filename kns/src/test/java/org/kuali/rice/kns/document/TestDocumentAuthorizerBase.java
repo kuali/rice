@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document;
 
 import java.util.Map;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
@@ -35,10 +35,10 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     public static final String USER_SESSION_OBJECT_KEY = "TEST_AUTHORIZER_OBJECT_KEY";
 
     /**
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.kns.document.Document, java.util.Map, org.kuali.rice.kns.bo.user.UniversalUser)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.kns.document.Document, java.util.Map, org.kuali.rice.kim.bo.Person)
      */
     @Override
-    protected String getCustomLockDescriptor(Document document, Map editMode, UniversalUser user) {
+    protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
         return (String)GlobalVariables.getUserSession().retrieveObject(USER_SESSION_OBJECT_KEY);
     }
 
@@ -51,3 +51,4 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     }
 
 }
+

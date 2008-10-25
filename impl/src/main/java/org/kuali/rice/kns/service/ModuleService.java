@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -66,7 +66,7 @@ public interface ModuleService extends InitializingBean {
 	 * @param user
 	 * @return
 	 */
-	public boolean canAccessModule( UniversalUser user );
+	public boolean canAccessModule( Person user );
 	
 	/**
 	 * 
@@ -76,7 +76,7 @@ public interface ModuleService extends InitializingBean {
 	 * @param authType
 	 * @return
 	 */
-	public boolean isAuthorized(UniversalUser user, AuthorizationType authType);
+	public boolean isAuthorized(Person user, AuthorizationType authType);
 
 	/**
 	 * 
@@ -209,3 +209,4 @@ public interface ModuleService extends InitializingBean {
 	 */
 	public <E extends ExternalizableBusinessObject> Class<E> getExternalizableBusinessObjectImplementation(Class<E> externalizableBusinessObjectInterface);
 }
+

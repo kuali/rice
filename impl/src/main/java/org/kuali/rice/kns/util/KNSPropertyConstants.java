@@ -71,8 +71,8 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String GROUPS = "groups";
 	public static final String ID = "id";
 	public static final String INITIATOR_NETWORK_ID = "initiatorNetworkId";
-	public static final String KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER = "personUniversalIdentifier";
-	public static final String KUALI_USER_PERSON_USER_IDENTIFIER = "personUserIdentifier";
+	public static final String KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER = "principalId";
+	public static final String KUALI_USER_PERSON_USER_IDENTIFIER = "principalName";
 	public static final String LOOKUP_DATE = "lookupDate";
 	public static final String NAME = "name";
 	public static final String NEW_DOCUMENT_NOTE = "newDocumentNote";
@@ -85,18 +85,18 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String OWNED_BY_PERSON_UNIVERSAL_ID = "ownedByPersonUniversalIdentifier";
 	public static final String OWNED_BY_USER = "ownedByUser";
 	public static final String PERCENT = "percent";
-	public static final String PERSON_BASE_SALARY_AMOUNT = "personBaseSalaryAmount";
-	public static final String PERSON_CAMPUS_ADDRESS = "personCampusAddress";
-	public static final String PERSON_EMAIL_ADDRESS = "personEmailAddress";
-	public static final String PERSON_FIRST_NAME = "personFirstName";
-	public static final String PERSON_LAST_NAME = "personLastName";
+	public static final String PERSON_BASE_SALARY_AMOUNT = "baseSalaryAmount";
+	public static final String PERSON_CAMPUS_ADDRESS = "addressLine1";
+	public static final String PERSON_EMAIL_ADDRESS = "emailAddress";
+	public static final String PERSON_FIRST_NAME = "firstName";
+	public static final String PERSON_LAST_NAME = "lastName";
 	public static final String PERSON_LOCAL_PHONE_NUMBER = "personLocalPhoneNumber";
-	public static final String PERSON_NAME = "personName";
-	public static final String PERSON_UNIVERSAL_IDENTIFIER = "personUniversalIdentifier";
-	public static final String PERSON_USER_IDENTIFIER = "personUserIdentifier";
+	public static final String PERSON_NAME = "name";
+	public static final String PERSON_UNIVERSAL_IDENTIFIER = "principalId";
+	public static final String PERSON_USER_IDENTIFIER = "principalName";
 	public static final String TWO_DIGIT_TEXT_CODE = "twoDigitTextCode";
 	public static final String TYPE = "type";
-	public static final String UNIVERSAL_USER = "universalUser";
+	public static final String UNIVERSAL_USER = "person";
 	public static final String UU_ID = "uuId";
 	public static final String VALUE = "value";
 	public static final String VERSION_NUMBER = "versionNumber";
@@ -104,3 +104,4 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String XML_DOCUMENT_CONTENTS = "xmlDocumentContents";
 	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
 }
+

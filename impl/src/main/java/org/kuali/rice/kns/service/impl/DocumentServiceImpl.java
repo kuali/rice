@@ -30,7 +30,7 @@ import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.DocumentType;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -322,15 +322,15 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     private DocumentActionFlags getDocumentActionFlags(Document document) {
-        UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         return documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, currentUser);
     }
 
     private DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
-        UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person currentUser = GlobalVariables.getUserSession().getPerson();
 
-        return new DocumentAuthorizationException(currentUser.getPersonUserIdentifier(), action, document.getDocumentNumber());
+        return new DocumentAuthorizationException(currentUser.getPrincipalName(), action, document.getDocumentNumber());
     }
 
     private void validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
@@ -420,7 +420,7 @@ public class DocumentServiceImpl implements DocumentService {
         Class documentClass = getDocumentClassByTypeName(documentTypeName);
 
         // get the current user
-        UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         // document must be maint doc or finanancial doc
         DocumentType documentType = documentTypeService.getPotentialDocumentTypeByName(documentTypeName);
@@ -436,7 +436,7 @@ public class DocumentServiceImpl implements DocumentService {
         documentAuthorizer.canInitiate(documentTypeName, currentUser);
 
         // initiate new workflow entry, get the workflow doc
-        KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getUniversalUser());
+        KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
         GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         // create a new document header object
@@ -511,7 +511,7 @@ public class DocumentServiceImpl implements DocumentService {
         KualiWorkflowDocument workflowDocument = null;
 
             LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
-            workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getUniversalUser());
+            workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
             GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
@@ -585,7 +585,7 @@ public class DocumentServiceImpl implements DocumentService {
         for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
             Document document = (Document) i.next();
 
-            KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getUniversalUser());
+            KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
 
             document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
             documents.add(document);

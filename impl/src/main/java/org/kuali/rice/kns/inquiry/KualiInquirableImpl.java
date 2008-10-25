@@ -33,7 +33,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -47,7 +47,7 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -73,7 +73,7 @@ public class KualiInquirableImpl implements Inquirable {
     private PersistenceStructureService persistenceStructureService;
     private DataDictionaryService dataDictionaryService;
     private EncryptionService encryptionService;
-    private UniversalUserService universalUserService;
+    private org.kuali.rice.kim.service.PersonService personService;
     private KualiConfigurationService kualiConfigurationService;
 
     private Class businessObjectClass;
@@ -107,8 +107,8 @@ public class KualiInquirableImpl implements Inquirable {
         CollectionIncomplete searchResults = null;
         // user inquiries need to go through user service
         // TODO: Remove with Universal user changes
-        if (UniversalUser.class.equals(getBusinessObjectClass())) {
-            searchResults = (CollectionIncomplete) getUniversalUserService().findUniversalUsers(fieldValues);
+        if (Person.class.equals(getBusinessObjectClass())) {
+            searchResults = (CollectionIncomplete) getPersonService().findPeople(fieldValues);
         }
         else {
     		ModuleService moduleService = 
@@ -310,7 +310,7 @@ public class KualiInquirableImpl implements Inquirable {
             // Encrypt value if it is a secure field
             //String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
             boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(
-					GlobalVariables.getUserSession().getUniversalUser(), businessObject.getClass().getName(), keyName);
+					GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getName(), keyName);
             if (!viewAuthorized) {
                 try {
                     keyValue = getEncryptionService().encrypt(keyValue);
@@ -377,11 +377,11 @@ public class KualiInquirableImpl implements Inquirable {
      * 
      * @return Returns the kualiUserService.
      */
-    public UniversalUserService getUniversalUserService() {
-	if ( universalUserService == null ) {
-	    universalUserService = KNSServiceLocator.getUniversalUserService();
+    public org.kuali.rice.kim.service.PersonService getPersonService() {
+	if ( personService == null ) {
+	    personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
 	}
-        return universalUserService;
+        return personService;
     }
 
     /**
@@ -459,8 +459,8 @@ public class KualiInquirableImpl implements Inquirable {
         this.encryptionService = encryptionService;
     }
 
-    public void setUniversalUserService(UniversalUserService universalUserService) {
-        this.universalUserService = universalUserService;
+    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+        this.personService = personService;
     }
 
     /**

@@ -68,7 +68,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
      /**
       * Session user name
       */
-     private String personUserIdentifier="";
+     private String principalName="";
      /**
       * Session user name
       */
@@ -118,7 +118,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
         this.stackTrace=null;
         this.userEmail=null;
         this.userName=null;
-        this.personUserIdentifier=null;
+        this.principalName=null;
 
     }
     
@@ -150,7 +150,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
         map.put(ExceptionIncident.DOCUMENT_ID, this.documentId);
         map.put(ExceptionIncident.USER_EMAIL, this.userEmail);
         map.put(ExceptionIncident.USER_NAME, this.userName);
-        map.put(ExceptionIncident.UUID, this.personUserIdentifier);
+        map.put(ExceptionIncident.UUID, this.principalName);
         map.put(ExceptionIncident.COMPONENT_NAME, this.componentName);
         map.put(ExceptionIncident.DESCRIPTION, this.description);
         map.put(ExceptionIncident.EXCEPTION_REPORT_SUBJECT, this.exceptionReportSubject);
@@ -259,17 +259,17 @@ public class KualiExceptionIncidentForm extends KualiForm {
     }
 
     /**
-	 * @return the personUserIdentifier
+	 * @return the principalName
 	 */
 	public String getPersonUserIdentifier() {
-		return this.personUserIdentifier;
+		return this.principalName;
 	}
 
 	/**
-	 * @param personUserIdentifier the personUserIdentifier to set
+	 * @param principalName the principalName to set
 	 */
-	public void setPersonUserIdentifier(String personUserIdentifier) {
-		this.personUserIdentifier = personUserIdentifier;
+	public void setPersonUserIdentifier(String principalName) {
+		this.principalName = principalName;
 	}
 
 	/**
@@ -343,3 +343,4 @@ public class KualiExceptionIncidentForm extends KualiForm {
     }
 
 }
+

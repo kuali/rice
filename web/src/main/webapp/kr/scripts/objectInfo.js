@@ -24,7 +24,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 			callback:function(data) {
 			if ( data != null && typeof data == 'object' ) {
 				if ( universalIdFieldName != null && universalIdFieldName != "" ) {
-					setRecipientValue( universalIdFieldName, data.personUniversalIdentifier );
+					setRecipientValue( universalIdFieldName, data.principalId );
 				}
 				if ( userNameFieldName != null && userNameFieldName != "" ) {
 					setRecipientValue( userNameFieldName, data.personName );
@@ -47,6 +47,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 				}
 			}
 		};
-		UserService.getUniversalUserByAuthenticationUserId( userId, dwrReply );
+		PersonService.getPersonByPrincipalName( userId, dwrReply );
 	}
 }
+

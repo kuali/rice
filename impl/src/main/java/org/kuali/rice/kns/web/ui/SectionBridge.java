@@ -352,7 +352,7 @@ public class SectionBridge {
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             // set field value from business object
                             // check if field contains sensitive data and user is authorized to see value
-                            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), lineBusinessObject.getClass().getName(), name);
+                            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getName(), name);
                             if (!viewAuthorized) {
 
                                 // set mask as field value
@@ -515,7 +515,7 @@ public class SectionBridge {
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
                                         // set field value from business object
                                         // check if field contains sensitive data and user is authorized to see value
-                                        boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), lineSubBusinessObject.getClass().getName(), name);
+                                        boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineSubBusinessObject.getClass().getName(), name);
                                         if (!viewAuthorized) {
 
                                             // set mask as field value
@@ -754,3 +754,4 @@ public class SectionBridge {
         return false;
     }
 }
+

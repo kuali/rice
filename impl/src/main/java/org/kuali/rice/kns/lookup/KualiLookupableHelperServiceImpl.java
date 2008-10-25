@@ -28,7 +28,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -327,15 +326,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         	// run the normal search (but with the EBO critieria added)
     		searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonEboFieldValues, unbounded);
         } else {
-        	// TODO: remove the UU portions of this section, leaving only the contents of the final else clause
-            if (UniversalUser.class.equals(getBusinessObjectClass())) {
-                searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
-            } else if (getUniversalUserService().hasUniversalUserProperty(getBusinessObjectClass(), fieldValues)) {
-                // TODO WARNING: this does not support nested joins, because i don't have a test case
-                searchResults = (List) getUniversalUserService().findWithUniversalUserJoin(getBusinessObjectClass(), fieldValues, unbounded);
-            } else {
-                searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
-            }
+            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
         }
         
         // sort list if default sort column given
@@ -382,3 +373,4 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     
     
 }
+

@@ -20,7 +20,7 @@ import java.util.List;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -47,7 +47,7 @@ public interface WorkflowDocumentService {
      * @throws ResourceUnavailableException
      * @throws KEWUserNotFoundException
      */
-    public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, UniversalUser workflowUser) throws WorkflowException;
+    public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person workflowUser) throws WorkflowException;
 
     /**
      * Given a documentHeaderId and workflowUser, retrieves the workflowDocument associated with that documentHeaderId from the workflow
@@ -59,7 +59,7 @@ public interface WorkflowDocumentService {
      * @throws IllegalArgumentException if the given documentHeaderId is null
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      */
-    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, UniversalUser workflowUser) throws WorkflowException;
+    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, Person workflowUser) throws WorkflowException;
 
     /**
      * This method will first determine if the {@link KualiWorkflowDocument#saveDocument(String)} method is valid to be called.  If so the method

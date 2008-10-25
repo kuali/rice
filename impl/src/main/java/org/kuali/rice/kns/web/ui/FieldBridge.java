@@ -157,7 +157,7 @@ public class FieldBridge {
             }
 
             // check if field contains sensitive data and user is authorized to see value
-            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), bo.getClass().getName(), propertyName);
+            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), bo.getClass().getName(), propertyName);
             if (!viewAuthorized) {
                 // set mask as field value
                 Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(bo.getClass(), propertyName);
@@ -519,3 +519,4 @@ public class FieldBridge {
     }
 
 }
+

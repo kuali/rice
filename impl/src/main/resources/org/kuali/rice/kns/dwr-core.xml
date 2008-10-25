@@ -16,23 +16,23 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN" "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
 
 <dwr>
-	<init>
-		<creator id="spring" class="org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
-	</init>
-	<allow>
-	   	<convert converter="bean" match="org.kuali.rice.kns.bo.user.UniversalUser">
-	   		<param name="include" value="personUniversalIdentifier,personUserIdentifier,personName,personFirstName,personLastName,primaryDepartmentCode,campusCode,personMiddleName,personEmailAddress" />
-	   	</convert>
-	    <create creator="spring" javascript="UserService">
-	    	<param name="beanName" value="universalUserService" />
-	    	<include method="getUniversalUserByAuthenticationUserId" />
-	    </create>
-	   	<convert converter="bean" match="org.kuali.rice.kns.bo.DocumentType">
-	   		<param name="include" value="documentTypeCode,documentName,documentTypeActiveIndicator" />
-	   	</convert>
-	    <create creator="spring" javascript="DocumentTypeService">
-	    	<param name="beanName" value="documentTypeService" />
-	    	<include method="getDocumentTypeByCode" />
-	    </create>
-	</allow>
+  <init>
+    <creator id="spring" class="org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
+  </init>
+  <allow>
+      <convert converter="bean" match="org.kuali.rice.kim.bo.impl.PersonImpl">
+        <param name="include" value="principalId,principalName,name,firstName,lastName,campusCode,middleName,emailAddress" />
+      </convert>
+      <create creator="spring" javascript="PersonService">
+        <param name="beanName" value="kimPersonService" />
+        <include method="getPersonByPrincipalName" />
+      </create>
+      <convert converter="bean" match="org.kuali.rice.kns.bo.DocumentType">
+        <param name="include" value="documentTypeCode,documentName,documentTypeActiveIndicator" />
+      </convert>
+      <create creator="spring" javascript="DocumentTypeService">
+        <param name="beanName" value="documentTypeService" />
+        <include method="getDocumentTypeByCode" />
+      </create>
+  </allow>
 </dwr>

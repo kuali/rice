@@ -8,13 +8,10 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill
@@ -44,16 +41,13 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		// don't check if workgroup is blank
 		if ( StringUtils.isNotBlank( newBO.getParameterWorkgroupName() ) ) {
 			// check that the workgroup exists
-			result = KNSServiceLocator.getKualiGroupService().groupExists(
-					newBO.getParameterWorkgroupName() );
+			result = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName("KFS", newBO.getParameterWorkgroupName() ) != null;
 			if ( result ) {
 				// get the initiator user record
-			    	UniversalUser user = null; 
-			    	try {
-			    	    user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(initiatorUserId);
-			    	} catch ( UserNotFoundException ex ) {
+			    	Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorUserId);
+			    	if (user == null) {
 			    	    LOG.error( "Unable to find initiator user: " + initiatorUserId + " via user service" );
-			    	    throw new RuntimeException( "Unable to find initiator user: " + initiatorUserId + " via user service", ex );
+			    	    throw new RuntimeException( "Unable to find initiator user: " + initiatorUserId + " via user service");
 			    	}
 				if ( oldBO == null || StringUtils.isBlank( oldBO.getParameterWorkgroupName() ) ) { // creating
 																									// a
@@ -83,3 +77,4 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	}
 
 }
+

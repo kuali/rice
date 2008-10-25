@@ -32,13 +32,11 @@ import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -66,7 +64,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public Map getEditMode(Document d, UniversalUser u) {
+    public Map getEditMode(Document d, Person u) {
         Map editModeMap = new HashMap();
         String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
 
@@ -92,8 +90,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public DocumentActionFlags getDocumentActionFlags(Document document, UniversalUser user) {
-        LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPersonUserIdentifier() + "'");
+    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
+        LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
 
         DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
 
@@ -115,7 +113,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             // to the supervisor buttons. If they're the initiator, but for some reason they are also
             // approving the document, then they can have the supervisor button & functions.
             boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
-            flags.setCanSupervise(user.isSupervisorUser() && canSuperviseAsInitiator);
+            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().isMemberOfGroup(user, "KFS", KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
 
             // default normal documents to be unable to copy
             flags.setCanCopy(false);
@@ -161,7 +159,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                         if ( req.getWorkgroupDTO() != null ) {
                         UserDTO[] users = req.getWorkgroupDTO().getMembers();
                         for ( UserDTO usr : users ) {
-                            if ( usr.getUuId().equals( user.getPersonUniversalIdentifier() ) ) {
+                            if ( usr.getUuId().equals( user.getPrincipalId() ) ) {
                             flags.setCanCancel( true );
                                     flags.setCanApprove( true );
                                     flags.setCanDisapprove( true );
@@ -218,7 +216,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user - current user
      * @return boolean to allow or disallow route report button to show for user
      */
-    public boolean allowsPerformRouteReport(Document document, UniversalUser user) {
+    public boolean allowsPerformRouteReport(Document document, Person user) {
         KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
@@ -236,7 +234,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * DocumentTypeAuthorizationException can be extended to customize the initiate error message
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public void canInitiate(String documentTypeName, UniversalUser user) {
+    public void canInitiate(String documentTypeName, Person user) {
         if (!getAuthorizationService().isAuthorized(user, "initiate", documentTypeName)) {
             // build authorized workgroup list for error message
             Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
@@ -249,24 +247,24 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Default implementation here is if a user cannot initiate a document they cannot copy one.
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canCopy(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public boolean canCopy(String documentTypeName, UniversalUser user) {
+    public boolean canCopy(String documentTypeName, Person user) {
         return getAuthorizationService().isAuthorized(user, "initiate", documentTypeName);
     }
 
     /**
      * This method checks to see if a document is using Pessimistic Locking first. If the document is not using Pessimistic
-     * Locking this method will return the value returned by {@link #hasInitiateAuthorization(Document, UniversalUser)}. If
-     * the document is using pessimistic locking and the value of {@link #hasInitiateAuthorization(Document, UniversalUser)}
+     * Locking this method will return the value returned by {@link #hasInitiateAuthorization(Document, Person)}. If
+     * the document is using pessimistic locking and the value of {@link #hasInitiateAuthorization(Document, Person)}
      * is true, the system will check to see that the given user has a lock on the document and return true if one is found.
      * 
      * @param document - document to check
      * @param user - current user
      * @return true if the document is using Pessimistic Locking, the user has initiate authorization (see
-     *         {@link #hasInitiateAuthorization(Document, UniversalUser)}), and the document has a lock owned by the given
+     *         {@link #hasInitiateAuthorization(Document, Person)}), and the document has a lock owned by the given
      *         user. If the document is not using Pessimistic Locking the value returned will be that returned by
-     *         {@link #hasInitiateAuthorization(Document, UniversalUser)}.
+     *         {@link #hasInitiateAuthorization(Document, Person)}.
      */
-    public boolean hasPreRouteEditAuthorization(Document document, UniversalUser user) {
+    public boolean hasPreRouteEditAuthorization(Document document, Person user) {
         if (usesPessimisticLocking(document)) {
             if (hasInitiateAuthorization(document, user)) {
                 for (Iterator iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
@@ -292,9 +290,9 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user - current user
      * @return boolean (true if they should have permissions)
      */
-    public boolean hasInitiateAuthorization(Document document, UniversalUser user) {
+    public boolean hasInitiateAuthorization(Document document, Person user) {
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPersonUserIdentifier());
+        return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPrincipalName());
     }
 
     /**
@@ -305,7 +303,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user - current user
      * @return boolean (true if they should have permissions)
      */
-    public boolean canViewAttachment(String attachmentTypeName, Document document, UniversalUser user) {
+    public boolean canViewAttachment(String attachmentTypeName, Document document, Person user) {
         return true;
     }
 
@@ -338,16 +336,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * The default is the Kuali system user defined by {@link RiceConstants#SYSTEM_USER}. This method can be overriden by
      * implementing documents if another user is needed.
      * 
-     * @return a valid {@link UniversalUser} object
+     * @return a valid {@link Person} object
      */
-    protected UniversalUser getWorkflowPessimisticLockOwnerUser() {
+    protected Person getWorkflowPessimisticLockOwnerUser() {
         String networkId = KNSConstants.SYSTEM_USER;
-        try {
-            return KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(networkId);
-        } catch (UserNotFoundException e) {
-            LOG.error("Cannot find user with network id '" + networkId + "'", e);
-            throw new RuntimeException("Cannot find user with network id '" + networkId + "'", e);
-        }
+        return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
     }
     
     /**
@@ -361,14 +354,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * NOTE: This method is only called if the document uses pessimistic locking as described in the data dictionary file.
      * 
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#establishLocks(org.kuali.rice.kns.document.Document,
-     *      java.util.Map, org.kuali.rice.kns.bo.user.UniversalUser)
+     *      java.util.Map, org.kuali.rice.kim.bo.Person)
      */
-    public Map establishLocks(Document document, Map editMode, UniversalUser user) {
+    public Map establishLocks(Document document, Map editMode, Person user) {
         Map editModeMap = new HashMap();
         // givenUserLockDescriptors is a list of lock descriptors currently held on the document by the given user
         List<String> givenUserLockDescriptors = new ArrayList<String>();
         // lockDescriptorUsers is a map with lock descriptors as keys and users other than the given user who hold a lock of each descriptor 
-        Map<String,Set<UniversalUser>> lockDescriptorUsers = new HashMap<String,Set<UniversalUser>>();
+        Map<String,Set<Person>> lockDescriptorUsers = new HashMap<String,Set<Person>>();
 
         // build the givenUserLockDescriptors set and the lockDescriptorUsers map
         for (PessimisticLock lock : document.getPessimisticLocks()) {
@@ -378,17 +371,17 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             } else {
                 // lock is not owned by the given user
                 if (!lockDescriptorUsers.containsKey(lock.getLockDescriptor())) {
-                    lockDescriptorUsers.put(lock.getLockDescriptor(), new HashSet<UniversalUser>());
+                    lockDescriptorUsers.put(lock.getLockDescriptor(), new HashSet<Person>());
                 }
-                ((Set<UniversalUser>) lockDescriptorUsers.get(lock.getLockDescriptor())).add(lock.getOwnedByUser());
+                ((Set<Person>) lockDescriptorUsers.get(lock.getLockDescriptor())).add(lock.getOwnedByUser());
             }
         }
 
         // verify that no locks held by current user exist for any other user
         for (String givenUserLockDescriptor : givenUserLockDescriptors) {
             if ( (lockDescriptorUsers.containsKey(givenUserLockDescriptor)) && (lockDescriptorUsers.get(givenUserLockDescriptor).size() > 0) ) {
-                Set<UniversalUser> users = lockDescriptorUsers.get(givenUserLockDescriptor);
-                if ( (users.size() != 1) || (!getWorkflowPessimisticLockOwnerUser().getPersonUniversalIdentifier().equals(users.iterator().next().getPersonUniversalIdentifier())) ) {
+                Set<Person> users = lockDescriptorUsers.get(givenUserLockDescriptor);
+                if ( (users.size() != 1) || (!getWorkflowPessimisticLockOwnerUser().getPrincipalId().equals(users.iterator().next().getPrincipalId())) ) {
                     String descriptorText = (useCustomLockDescriptors()) ? " using lock descriptor '" + givenUserLockDescriptor + "'" : "";
                     String errorMsg = "Found an invalid lock status on document number " + document.getDocumentNumber() + "with current user and other user both having locks" + descriptorText + " concurrently";
                     LOG.debug(errorMsg);
@@ -467,7 +460,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      *            user the lock will be 'owned' by
      * @return true if the given edit mode map has at least one 'entry type' edit mode... false otherwise
      */
-    protected boolean isLockRequiredByUser(Document document, Map editMode, UniversalUser user) {
+    protected boolean isLockRequiredByUser(Document document, Map editMode, Person user) {
         // check for entry edit mode
         for (Iterator iterator = editMode.entrySet().iterator(); iterator.hasNext();) {
             Map.Entry entry = (Map.Entry) iterator.next();
@@ -508,7 +501,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * 
      * @param entry -
      *            the {@link Map.Entry} object that contains an edit mode such as the ones returned but
-     *            {@link #getEditMode(Document, UniversalUser)}
+     *            {@link #getEditMode(Document, Person)}
      * @return true if the given entry has a key signifying an 'entry type' edit mode and the value is equal to
      *         {@link #EDIT_MODE_DEFAULT_TRUE_VALUE}... false if not
      */
@@ -536,7 +529,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * This method creates a new {@link PessimisticLock} object using the given document and user. If the
      * {@link #useCustomLockDescriptors()} method returns true then the new lock will also have a custom lock descriptor
-     * value set to the return value of {@link #getCustomLockDescriptor(Document, Map, UniversalUser)}.
+     * value set to the return value of {@link #getCustomLockDescriptor(Document, Map, Person)}.
      * 
      * @param document -
      *            document to place the lock on
@@ -546,7 +539,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      *            user who will 'own' the new lock object
      * @return the newly created lock object
      */
-    protected PessimisticLock createNewPessimisticLock(Document document, Map editMode, UniversalUser user) {
+    protected PessimisticLock createNewPessimisticLock(Document document, Map editMode, Person user) {
         if (useCustomLockDescriptors()) {
             return KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), getCustomLockDescriptor(document, editMode, user), user);
         } else {
@@ -564,14 +557,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user - user attempting to establish locks
      * @return a {@link PessimisticLockingException} will be thrown as the default implementation
      */
-    protected String getCustomLockDescriptor(Document document, Map editMode, UniversalUser user) {
+    protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
         throw new PessimisticLockingException("Document " + document.getDocumentNumber() + " is using Pessimistic Locking with lock descriptors but the authorizer class has not defined the getCustomLockDescriptor() method");
     }
 
     /**
      * This method should be used to define Document Authorizer classes which will use custom lock descriptors in the
      * {@link PessimisticLock} objects NOTE: if this method is overriden to return true then the method
-     * {@link #getCustomLockDescriptor(Document, Map, UniversalUser)} must be overriden
+     * {@link #getCustomLockDescriptor(Document, Map, Person)} must be overriden
      * 
      * @return false if the document will not be using lock descriptors or true if the document will use lock descriptors.
      *         The default return value is false

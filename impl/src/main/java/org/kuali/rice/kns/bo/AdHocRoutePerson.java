@@ -20,10 +20,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.UniversalUser;
-import org.kuali.rice.kns.exception.UserNotFoundException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 
 /**
  * Ad Hoc Route Person Business Object
@@ -36,7 +33,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     private static final long serialVersionUID = 1L;
     
     @Transient
-    private transient UniversalUser universalUser;
+    private transient Person person;
 
     public AdHocRoutePerson() {
         setType(PERSON_TYPE);
@@ -52,19 +49,15 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     @Override
     public String getName() {
-        if ( universalUser == null || universalUser.getPersonUserIdentifier() == null || !universalUser.getPersonUserIdentifier().equalsIgnoreCase( getId() ) ) {
-            universalUser = null;
-            try {
-                universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId( getId() );
-            } catch ( UserNotFoundException ex ) {
-                // do nothing, leave UU as null
-            }
+        if ( person == null || person.getPrincipalName() == null || !person.getPrincipalName().equalsIgnoreCase( getId() ) ) {
+            person = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
         }
-        if ( universalUser == null ) {
+        if ( person == null ) {
             return "";
         }
-        return universalUser.getPersonName();
+        return person.getName();
     }
     
     
 }
+

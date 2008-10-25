@@ -41,9 +41,7 @@ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
@@ -377,7 +375,6 @@ public class LookupUtils {
         if (ObjectUtils.isNestedAttribute(attributeName)) {
             //first determine the prefix and the attribute we are referring to
             String nestedAttributePrefix = StringUtils.substringBeforeLast(attributeName, ".");
-            PersistableBusinessObject childBO = (PersistableBusinessObject)getNestedBusinessObject(businessObject, attributeName);
 
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );

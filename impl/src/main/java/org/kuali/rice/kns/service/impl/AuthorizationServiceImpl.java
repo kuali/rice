@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.authorization.AuthorizationStore;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.AuthorizationService;
@@ -93,7 +93,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedWithQualification(org.kuali.rice.kns.bo.user.KualiUser, java.lang.String,
      *      java.lang.String)
      */
-    public boolean isAuthorized(UniversalUser user, String action, String targetType) {
+    public boolean isAuthorized(Person user, String action, String targetType) {
         return disabled || authorizationStore.isAuthorized(user, action, targetType);
     }
     
@@ -110,7 +110,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedToViewAttribute(org.kuali.rice.kns.bo.user.KualiUser,
      *      java.lang.String, java.lang.String)
      */
-    public boolean isAuthorizedToViewAttribute(UniversalUser user, String entryName, String attributeName) {
+    public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName) {
         boolean authorized = true;
 
         String displayWorkgroupName = this.dataDictionaryService.getAttributeDisplayWorkgroup(entryName, attributeName);
@@ -143,3 +143,4 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return this.dataDictionaryService;
     }
 }
+

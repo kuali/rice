@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 
 /**
@@ -62,7 +62,7 @@ public interface PessimisticLockService {
      * @param user - the user to set on the new lock being generated
      * @return the newly generated document descriptor {@link PessimisticLock}
      */
-    public PessimisticLock generateNewLock(String documentNumber, UniversalUser user);
+    public PessimisticLock generateNewLock(String documentNumber, Person user);
 
     /**
      * This method will generate a new {@link PessimisticLock} object with a lock descriptor of
@@ -73,7 +73,7 @@ public interface PessimisticLockService {
      * @param user - the user to set on the new lock being generated
      * @return the newly generated {@link PessimisticLock} containing the given lockDescriptor
      */
-    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, UniversalUser user);
+    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user);
     
     /**
      * This method gets all locks associated with the given document number
@@ -90,7 +90,7 @@ public interface PessimisticLockService {
      * @param user - user to verify as admin
      * @return true if the given use is an admin user or false if not
      */
-    public boolean isPessimisticLockAdminUser(UniversalUser user);
+    public boolean isPessimisticLockAdminUser(Person user);
     
     /**
      * This method will release all locks in the given list that are owned by the given user
@@ -98,7 +98,7 @@ public interface PessimisticLockService {
      * @param locks - locks to release if owned by given user
      * @param user - user to check for lock ownership
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, UniversalUser user);
+    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user);
 
     /**
      * This method will release all locks in the given list that are owned by the given user that have a matching lock
@@ -108,7 +108,7 @@ public interface PessimisticLockService {
      * @param user - user to check for lock ownership
      * @param lockDescriptor - lock descriptor value to match locks against
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, UniversalUser user, String lockDescriptor);
+    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor);
 
     /**
      * This method saves the given lock object
@@ -116,3 +116,4 @@ public interface PessimisticLockService {
      */
     public void save(PessimisticLock lock);
 }
+

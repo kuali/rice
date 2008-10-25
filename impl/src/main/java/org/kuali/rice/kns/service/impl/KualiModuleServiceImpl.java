@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -106,7 +106,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         this.installedModuleServices = installedModuleServices;
     }
 
-    public boolean isAuthorized( UniversalUser user, AuthorizationType authType ) {
+    public boolean isAuthorized( Person user, AuthorizationType authType ) {
         if ( user != null && authType != null ) {
             ModuleService moduleService = getResponsibleModuleService( authType.getTargetObjectClass() );
             if ( moduleService != null ) {
@@ -160,3 +160,4 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 	}
 
 }
+

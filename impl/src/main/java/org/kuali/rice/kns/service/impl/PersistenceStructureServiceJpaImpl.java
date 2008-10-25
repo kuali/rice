@@ -34,7 +34,7 @@ import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.kns.exception.ReferenceAttributeNotAnOjbReferenceException;
@@ -300,7 +300,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 
 	private Map determineFkMap(Class clazz, String attributeName, Class attributeClass) {
 		Map fkMap = new HashMap();
-		if (!UniversalUser.class.equals(attributeClass)) {
+		if (!Person.class.equals(attributeClass)) {
 			EntityDescriptor entityDescriptor = MetadataManager.getEntityDescriptor(clazz);
 			ObjectDescriptor objectDescriptor = entityDescriptor.getObjectDescriptorByName(attributeName);
 			if (objectDescriptor == null) {
@@ -511,7 +511,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(bo.getClass());
 		ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(referenceName);
 
-		if (!UniversalUser.class.equals(referenceClass)) {
+		if (!Person.class.equals(referenceClass)) {
 			if (objectDescriptor == null) {
 				throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
 			}
@@ -670,3 +670,4 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		return descriptor.getObjectDescriptorByName(referenceName) != null;
 	}
 }
+

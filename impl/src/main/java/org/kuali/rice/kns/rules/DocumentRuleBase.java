@@ -13,18 +13,16 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.rule.AddAdHocRoutePersonRule;
 import org.kuali.rice.kns.rule.AddAdHocRouteWorkgroupRule;
 import org.kuali.rice.kns.rule.AddNoteRule;
@@ -36,7 +34,6 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.UniversalUserService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -52,7 +49,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
 
-    private static UniversalUserService universalUserService;
+    private static org.kuali.rice.kim.service.PersonService personService;
     private static KualiModuleService kualiModuleService;
     private static DictionaryValidationService dictionaryValidationService;
     private static KualiWorkflowInfo workflowInfoService;
@@ -64,18 +61,18 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private int maxDictionaryValidationDepth = 100;
     
     private void initStatics() {
-	if (universalUserService == null) {
+	if (personService == null) {
 	    workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
 	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 	    kualiModuleService = KNSServiceLocator.getKualiModuleService();
 	    dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
-	    universalUserService = KNSServiceLocator.getUniversalUserService();
+	    personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
 	}
     }
 
-    protected UniversalUserService getUniversalUserService() {
+    protected org.kuali.rice.kim.service.PersonService getPersonService() {
 	initStatics();
-	return universalUserService;
+	return personService;
     }
 
     protected KualiModuleService getKualiModuleService() {
@@ -348,18 +345,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	}
 
 	if (StringUtils.isNotBlank(person.getId())) {
-	    UniversalUser user = null;
-	    // validate that they are a user from the user service by looking them up
-	    try {
-		user = getUniversalUserService().getUniversalUserByAuthenticationUserId(person.getId());
-	    } catch (UserNotFoundException userNotFoundException) {
-		LOG.warn("isAddHocRoutePersonValid(AdHocRoutePerson) - exception ignored", userNotFoundException);
-	    }
+		Person user = getPersonService().getPersonByPrincipalName(person.getId());
 	    if (user == null) {
 		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
 	    }
-	    else if (!universalUserService.canAccessAnyModule( user )) {
+	    else if (!getPersonService().canAccessAnyModule( user )) {
 		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
 	    } else {
@@ -501,3 +492,4 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
 }
+

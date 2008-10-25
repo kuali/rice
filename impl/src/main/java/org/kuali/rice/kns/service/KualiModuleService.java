@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 
 public interface KualiModuleService {
 
@@ -72,7 +72,7 @@ public interface KualiModuleService {
      * @param authType
      * @return
      */
-    public boolean isAuthorized(UniversalUser user, AuthorizationType authType);
+    public boolean isAuthorized(Person user, AuthorizationType authType);
 
     public void setInstalledModuleServices(List<ModuleService> moduleServices);
     
@@ -88,3 +88,4 @@ public interface KualiModuleService {
     public String getNamespaceName(String namespaceCode);
     
 }
+

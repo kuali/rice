@@ -33,7 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Timer;
@@ -76,25 +76,25 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#createWorkflowDocument(java.lang.String,
      *      org.kuali.rice.kew.user.WorkflowUser)
      */
-    public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, UniversalUser universalUser) throws WorkflowException {
+    public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person person) throws WorkflowException {
         Timer t0 = new Timer("createWorkflowDocument");
         
         if (StringUtils.isBlank(documentTypeId)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeId");
         }
-        if (universalUser == null) {
-            throw new IllegalArgumentException("invalid (null) universalUser");
+        if (person == null) {
+            throw new IllegalArgumentException("invalid (null) person");
         }
         
-        if ((null == universalUser) || StringUtils.isBlank(universalUser.getPersonUserIdentifier())) {
+        if ((null == person) || StringUtils.isBlank(person.getPrincipalName())) {
             throw new IllegalArgumentException("invalid (empty) authenticationUserId");
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("creating workflowDoc(" + documentTypeId + "," + universalUser.getPersonUserIdentifier() + ")");
+            LOG.debug("creating workflowDoc(" + documentTypeId + "," + person.getPrincipalName() + ")");
         }
 
-        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(universalUser), documentTypeId);
+        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(person), documentTypeId);
 
         // workflow doesn't complain about invalid docTypes until the first call to getRouteHeaderId, but the rest of our code
         // assumes that you get the exception immediately upon trying to create a document of that invalid type
@@ -122,19 +122,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#createWorkflowDocument(java.lang.Long,
      *      org.kuali.rice.kew.user.WorkflowUser)
      */
-    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, UniversalUser user) throws WorkflowException {
+    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, Person user) throws WorkflowException {
         if (documentHeaderId == null) {
             throw new IllegalArgumentException("invalid (null) documentHeaderId");
         }
         if (user == null) {
             throw new IllegalArgumentException("invalid (null) workflowUser");
         }
-        else if (StringUtils.isEmpty(user.getPersonUserIdentifier())) {
+        else if (StringUtils.isEmpty(user.getPrincipalName())) {
             throw new IllegalArgumentException("invalid (empty) workflowUser");
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("retrieving flexDoc(" + documentHeaderId + "," + user.getPersonUserIdentifier() + ")");
+            LOG.debug("retrieving flexDoc(" + documentHeaderId + "," + user.getPrincipalName() + ")");
         }
 
         KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(user), documentHeaderId);
@@ -300,7 +300,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("getting current route level name for flexDoc(" + workflowDocument.getRouteHeaderId());
         }
 //        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
-        KualiWorkflowDocument freshCopyWorkflowDoc = createWorkflowDocument(workflowDocument.getRouteHeaderId(), GlobalVariables.getUserSession().getUniversalUser());
+        KualiWorkflowDocument freshCopyWorkflowDoc = createWorkflowDocument(workflowDocument.getRouteHeaderId(), GlobalVariables.getUserSession().getPerson());
         return freshCopyWorkflowDoc.getCurrentRouteNodeNames();
     }
 
@@ -374,8 +374,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return realAdHocRecipients;
     }
 
-    private UserIdDTO getUserIdVO(UniversalUser user) {
-        return new NetworkIdDTO(user.getPersonUserIdentifier());
+    private UserIdDTO getUserIdVO(Person user) {
+        return new NetworkIdDTO(user.getPrincipalName());
     }
 
 

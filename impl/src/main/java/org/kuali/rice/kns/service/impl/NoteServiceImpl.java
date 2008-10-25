@@ -27,13 +27,13 @@ import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -53,7 +53,7 @@ public class NoteServiceImpl implements NoteService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteServiceImpl.class);
 
     private NoteDao noteDao;
-    private UniversalUserService universalUserService;
+    private org.kuali.rice.kim.service.PersonService personService;
     private WorkflowDocumentService workflowDocumentService;
     private KualiConfigurationService kualiConfigurationService;
 
@@ -125,9 +125,9 @@ public class NoteServiceImpl implements NoteService {
         // TODO: Why is a deep copy being done?  Nowhere that this is called uses the given note argument
         // again after calling this method.
         Note tmpNote = (Note) ObjectUtils.deepCopy(note);
-        UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
         tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
-        tmpNote.setAuthorUniversalIdentifier(kualiUser.getPersonUniversalIdentifier());
+        tmpNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
         return tmpNote;
     }
 
@@ -149,15 +149,15 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * @see org.kuali.rice.kns.service.NoteService#sendNoteNotification(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note,
-     *      org.kuali.rice.kns.bo.user.UniversalUser)
+     *      org.kuali.rice.kim.bo.Person)
      */
-    public void sendNoteRouteNotification(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException {
+    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws UserNotFoundException, WorkflowException {
         AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 
         // build notification request
-        UniversalUser requestedUser = universalUserService.getUniversalUserByAuthenticationUserId(routeRecipient.getId());
-        String senderName = sender.getPersonFirstName() + " " + sender.getPersonLastName();
-        String requestedName = requestedUser.getPersonFirstName() + " " + requestedUser.getPersonLastName();
+        Person requestedUser = personService.getPersonByPrincipalName(routeRecipient.getId());
+        String senderName = sender.getFirstName() + " " + sender.getLastName();
+        String requestedName = requestedUser.getFirstName() + " " + requestedUser.getLastName();
         
         String notificationText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
         if (StringUtils.isBlank(notificationText)) {
@@ -175,10 +175,10 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     * @param universalUserService the universalUserService to set
+     * @param personService the personService to set
      */
-    public void setUniversalUserService(UniversalUserService universalUserService) {
-        this.universalUserService = universalUserService;
+    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+        this.personService = personService;
     }
 
     /**

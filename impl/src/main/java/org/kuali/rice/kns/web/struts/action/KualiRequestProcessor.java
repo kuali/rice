@@ -50,7 +50,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.kns.service.UniversalUserService;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ErrorContainer;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
@@ -79,7 +79,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 
-	protected UniversalUserService universalUserService;
+	protected org.kuali.rice.kim.service.PersonService personService;
 	protected SessionDocumentService sessionDocumentService;
 	protected DataDictionaryService dataDictionaryService;
 	protected BusinessObjectService businessObjectService;
@@ -145,8 +145,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 				userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
 			}
 
-			if (!getUniversalUserService().canAccessAnyModule( userSession.getUniversalUser() ) ) {
-				throw new RuntimeException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + userSession.getUniversalUser().getPersonUserIdentifier() + ".\n");
+			if (!getPersonService().canAccessAnyModule( userSession.getPerson() ) ) {
+				throw new RuntimeException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + userSession.getPerson().getPrincipalName() + ".\n");
 			}
 			request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 			GlobalVariables.setUserSession(userSession);
@@ -649,13 +649,13 @@ public class KualiRequestProcessor extends RequestProcessor {
 	}
 
 	/**
-	 * @return the universalUserService
+	 * @return the personService
 	 */
-	public UniversalUserService getUniversalUserService() {
-		if ( universalUserService == null ) {
-			universalUserService = KNSServiceLocator.getUniversalUserService();
+	public org.kuali.rice.kim.service.PersonService getPersonService() {
+		if ( personService == null ) {
+			personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
 		}
-		return universalUserService;
+		return personService;
 	}
 
 	/**

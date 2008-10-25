@@ -39,7 +39,7 @@
   </bean>
   <bean id="AdHocRouteWorkgroup-id" parent="AdHocRouteWorkgroup-id-parentBean" />
 
-  <bean id="AdHocRouteWorkgroup-id-parentBean" abstract="true" parent="UniversalUser-personUserIdentifier">
+  <bean id="AdHocRouteWorkgroup-id-parentBean" abstract="true" parent="PersonImpl-principalName">
     <property name="shortLabel" value="Workgroup" />
     <property name="maxLength" value="70" />
     <property name="control" >
@@ -56,3 +56,4 @@
   <bean id="AdHocRouteWorkgroup-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 </beans>
+

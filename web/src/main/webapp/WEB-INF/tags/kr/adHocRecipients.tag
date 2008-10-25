@@ -20,20 +20,20 @@
         <kul:tab tabTitle="Ad Hoc Recipients" defaultOpen="false" tabErrorKey="${Constants.AD_HOC_ROUTE_ERRORS}">
         
         <div class="tab-container" align=center>     
-		<h3>Ad Hoc Recipients</h3>
+    <h3>Ad Hoc Recipients</h3>
             <table cellpadding="0" cellspacing="0" class="datatable" summary="view/edit ad hoc recipients">
-			  <%-- first do the persons --%>
+        <%-- first do the persons --%>
               <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}">
-				  <tr>
-	        		<th colspan=3>
-	            	<kul:errors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}" />
-	        		</th>
-	    		  </tr>    
-			  </kul:displayIfErrors>
+          <tr>
+              <th colspan=3>
+                <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}" />
+              </th>
+            </tr>    
+        </kul:displayIfErrors>
               <tr>
                 <td colspan=3 class="tab-subhead">Person Requests:</td>
               </tr>
-	          <tr>
+            <tr>
                   <kul:htmlAttributeHeaderCell
                       attributeEntry="${DataDictionary.AdHocRoutePerson.attributes.actionRequested}"
                       scope="col"
@@ -61,65 +61,65 @@
 <c:set var="accessibleTitle2" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle2}"/>
   </c:if>
                                                 <html:select title="${accessibleTitle}" property="newAdHocRoutePerson.actionRequested">
-                          		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
-	    		            <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
-	  			        </html:select></div>
+                                                  <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                      <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
+                  </html:select></div>
                     </td>
                     <td class="infoline" ><div align=center>
-	                    	<kul:user userIdFieldName="newAdHocRoutePerson.id" 
-	                    			  userId="${KualiForm.newAdHocRoutePerson.id}" 
-	                    			  universalIdFieldName=""
-	                    			  universalId=""
-	                    			  userNameFieldName="newAdHocRoutePerson.name"
-	                    			  userName="${KualiForm.newAdHocRoutePerson.name}"
-	                    			  readOnly="${displayReadOnly}" 
-	                    			  renderOtherFields="true"
-	                    			  fieldConversions="personUserIdentifier:newAdHocRoutePerson.id,personName:newAdHocRoutePerson.name" 
-	                    			  lookupParameters="newAdHocRoutePerson.id:personUserIdentifier" />
+                        <kul:user userIdFieldName="newAdHocRoutePerson.id" 
+                              userId="${KualiForm.newAdHocRoutePerson.id}" 
+                              universalIdFieldName=""
+                              universalId=""
+                              userNameFieldName="newAdHocRoutePerson.name"
+                              userName="${KualiForm.newAdHocRoutePerson.name}"
+                              readOnly="${displayReadOnly}" 
+                              renderOtherFields="true"
+                              fieldConversions="principalName:newAdHocRoutePerson.id,name:newAdHocRoutePerson.name" 
+                              lookupParameters="newAdHocRoutePerson.id:principalName" />
                     </td>
                     <td class="infoline" ><div align=center>
                         <html:image property="methodToCall.insertAdHocRoutePerson" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" title="Insert Additional Ad Hoc Person" alt="Insert Additional Ad Hoc Person" styleClass="tinybutton"/></div>
                     </td>
                 </tr>
-	            <logic:iterate name="KualiForm" id="person" property="adHocRoutePersons" indexId="ctr">
-	                <tr>
-	                    <td class="datacell center" ><div align=center>
-	                        <html:hidden property="adHocRoutePerson[${ctr}].type"/>
-	                        <html:hidden property="adHocRoutePerson[${ctr}].versionNumber"/> 
-	                        <html:select title="${accessibleTitle}" property="adHocRoutePerson[${ctr}].actionRequested">
-	  		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
-		    		            <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
-		  			        </html:select></div>
-	                    </td>
-	                    <td class="datacell center" ><div align=center>
-	                    	<kul:user userIdFieldName="adHocRoutePerson[${ctr}].id" 
-	                    			  userId="${KualiForm.document.adHocRoutePersons[ctr].id}" 
-	                    			  universalIdFieldName=""
-	                    			  universalId=""
-	                    			  userNameFieldName="adHocRoutePerson[${ctr}].name"
-	                    			  userName="${KualiForm.document.adHocRoutePersons[ctr].name}"
-	                    			  readOnly="${displayReadOnly}" 
-	                    			  renderOtherFields="true"
-	                    			  fieldConversions="personUserIdentifier:adHocRoutePerson[${ctr}].id,personName:adHocRoutePerson[${ctr}].name" 
-	                    			  lookupParameters="adHocRoutePerson[${ctr}].id:personUserIdentifier" />
-	                    </td>
-	                        <td class="datacell center" ><div align=center>
+              <logic:iterate name="KualiForm" id="person" property="adHocRoutePersons" indexId="ctr">
+                  <tr>
+                      <td class="datacell center" ><div align=center>
+                          <html:hidden property="adHocRoutePerson[${ctr}].type"/>
+                          <html:hidden property="adHocRoutePerson[${ctr}].versionNumber"/> 
+                          <html:select title="${accessibleTitle}" property="adHocRoutePerson[${ctr}].actionRequested">
+                            <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                        <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
+                    </html:select></div>
+                      </td>
+                      <td class="datacell center" ><div align=center>
+                        <kul:user userIdFieldName="adHocRoutePerson[${ctr}].id" 
+                              userId="${KualiForm.document.adHocRoutePersons[ctr].id}" 
+                              universalIdFieldName=""
+                              universalId=""
+                              userNameFieldName="adHocRoutePerson[${ctr}].name"
+                              userName="${KualiForm.document.adHocRoutePersons[ctr].name}"
+                              readOnly="${displayReadOnly}" 
+                              renderOtherFields="true"
+                              fieldConversions="principalName:adHocRoutePerson[${ctr}].id,name:adHocRoutePerson[${ctr}].name" 
+                              lookupParameters="adHocRoutePerson[${ctr}].id:principalName" />
+                      </td>
+                          <td class="datacell center" ><div align=center>
                             <html:image property="methodToCall.deleteAdHocRoutePerson.line${ctr}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete Additional Ad Hoc Person" alt="Delete Additional Ad Hoc Person" styleClass="tinybutton"/></div>
-	                    </td>
-	                </tr>
-	            </logic:iterate>
-			  <%-- next do the workgroups --%>
-			  <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}">
-				  <tr>
-	        		<th colspan=3>
-	            	<kul:errors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}" />
-	        		</th>
-	    		  </tr>    
-			  </kul:displayIfErrors>
-		      <tr>
+                      </td>
+                  </tr>
+              </logic:iterate>
+        <%-- next do the workgroups --%>
+        <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}">
+          <tr>
+              <th colspan=3>
+                <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}" />
+              </th>
+            </tr>    
+        </kul:displayIfErrors>
+          <tr>
                 <td colspan=3 class="tab-subhead">Ad Hoc Workgroup Requests:</td>
               </tr>
-	          <tr>
+            <tr>
                   <kul:htmlAttributeHeaderCell
                       attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested}"
                       scope="col"
@@ -137,9 +137,9 @@
                     <td class="infoline" ><div align=center>
                         <html:hidden property="newAdHocRouteWorkgroup.type"/>
                         <html:select title="${accessibleTitle2}" property="newAdHocRouteWorkgroup.actionRequested">
-  		                    <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
-    		                <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
-  			            </html:select></div>
+                          <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                        <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
+                    </html:select></div>
                     </td>
                     <td class="infoline" ><div align=center>
                         <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.id" attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.id}" readOnly="${displayReadOnly}" />
@@ -155,9 +155,9 @@
                             <html:hidden property="adHocRouteWorkgroup[${ctr}].type"/>
                             <html:hidden property="adHocRouteWorkgroup[${ctr}].versionNumber"/>
                             <html:select title="${accessibleTitle2}" property="adHocRouteWorkgroup[${ctr}].actionRequested">
-  		                        <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
-    		                    <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
-  			                </html:select></div>
+                              <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                            <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
+                        </html:select></div>
                         </td>
                         <td class="datacell center" ><div align=center>
                             <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].id" attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.id}" readOnly="${displayReadOnly}" />
@@ -168,7 +168,7 @@
                         </td>
                     </tr>
                 </logic:iterate>
-	        </table>
-	        </div>
-	    </kul:tab>
+          </table>
+          </div>
+      </kul:tab>
     </c:if>

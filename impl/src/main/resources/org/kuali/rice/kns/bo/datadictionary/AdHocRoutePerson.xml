@@ -39,7 +39,7 @@
   </bean>
   <bean id="AdHocRoutePerson-id" parent="AdHocRoutePerson-id-parentBean" />
 
-  <bean id="AdHocRoutePerson-id-parentBean" abstract="true" parent="UniversalUser-personUserIdentifier">
+  <bean id="AdHocRoutePerson-id-parentBean" abstract="true" parent="PersonImpl-principalName">
     <property name="shortLabel" value="Person" />
     <property name="maxLength" value="30" />
     <property name="control" >
@@ -56,3 +56,4 @@
   <bean id="AdHocRoutePerson-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 </beans>
+

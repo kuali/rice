@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
@@ -34,6 +34,7 @@ public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
      * @return MaintenanceDocumentAuthorizations
      * 
      */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, UniversalUser user);
+    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
 
 }
+

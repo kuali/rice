@@ -17,8 +17,8 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.dao.RiceKNSDefaultUserDAOImpl;
-import org.kuali.rice.kns.dao.UniversalUserDao;
+
+
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.TestBase;
@@ -32,11 +32,11 @@ import org.kuali.test.TestBase;
 public class NoteServiceTest extends TestBase {
 
     /**
-     * This method tests saving notes when using the {@link RiceKNSDefaultUserDAOImpl} as the implementation of {@link UniversalUserDao}
+     * This method tests saving notes when using the {@link RiceKNSDefaultUserDAOImpl} as the implementation of {@link PersonDao}
      * 
      * @throws Exception
      */
-    @Test public void testNoteSave_LargeUniversalUserId() throws Exception {
+    @Test public void testNoteSave_LargePersonId() throws Exception {
         Note note = new Note();
         note.setAuthorUniversalIdentifier("superLongNameUsersFromWorkflow");
         note.setNotePostedTimestamp(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
@@ -51,3 +51,4 @@ public class NoteServiceTest extends TestBase {
     }
     
 }
+

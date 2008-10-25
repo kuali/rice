@@ -40,7 +40,7 @@ import org.apache.ojb.broker.metadata.fieldaccess.PersistentField;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.exception.IntrospectionException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -380,10 +380,10 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 		// make sure the attribute designated is listed as a
 		// reference-descriptor
 		// on the clazz specified, otherwise throw an exception (OJB);
-		// UniversalUser objects
+		// Person objects
         // will be excluded from this
         ClassDescriptor classDescriptor = getClassDescriptor(bo.getClass());
-        if (! UniversalUser.class.equals(referenceClass)) {
+        if (! Person.class.equals(referenceClass)) {
             ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
             if (referenceDescriptor == null) {
                 throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");

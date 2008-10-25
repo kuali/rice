@@ -117,7 +117,7 @@
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/UniversalUser.xml</value>
+				
 
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
@@ -129,7 +129,7 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeStatusMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeTypeMaintenanceDocument.xml</value>
-				<value>classpath:org/kuali/rice/kns/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -151,9 +151,6 @@
 		</property>
 		<property name="persistenceService">
 			<ref bean="persistenceService" />
-		</property>
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
 		</property>
 		<property name="businessObjectMetaDataService">
 			<ref bean="businessObjectMetaDataService" />
@@ -319,14 +316,7 @@
 		</property>
 	</bean>
 
-	<bean id="kualiGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl">
-		<property name="workflowGroupService">
-			<ref bean="workflowGroupService" />
-		</property>
-		<property name="kualiWorkflowInfo">
-			<ref bean="workflowInfoService" />
-		</property>
-	</bean>
+	<bean id="kimGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl"/>
 
 	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
 		<property name="workflowInfoService">
@@ -343,9 +333,6 @@
 	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
 		<property name="noteDao">
 			<ref bean="noteDao" />
-		</property>
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
 		</property>
 		<property name="workflowDocumentService">
 			<ref bean="workflowDocumentService" />
@@ -456,30 +443,6 @@
 		</property>
 	</bean>
 
-	<bean id="universalUserService" class="org.kuali.rice.kns.service.impl.UniversalUserServiceImpl">
-		<property name="universalUserDao">
-			<ref bean="universalUserDao" />
-		</property>
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
-		</property>
-		<property name="lookupDao">
-			<ref bean="lookupDao" />
-		</property>
-		<property name="kualiModuleService">
-			<ref bean="kualiModuleService" />
-		</property>
-		<property name="dateTimeService">
-			<ref bean="dateTimeService" />
-		</property>
-		<property name="businessObjectMetaDataService">
-			<ref bean="businessObjectMetaDataService" />
-		</property>
-		<property name="maintenanceDocumentDictionaryService">
-			<ref bean="maintenanceDocumentDictionaryService" />
-		</property>
-	</bean>
-
 	<bean id="ojbCollectionHelper" class="org.kuali.rice.kns.util.OjbCollectionHelper" />
 
 	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
@@ -501,9 +464,6 @@
 		</property>
 		<property name="encryptionService">
 			<ref bean="encryptionService" />
-		</property>
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
 		</property>
 		<property name="lookupService">
 			<ref bean="lookupService" />
@@ -554,15 +514,6 @@
 		</property>
 	</bean>
 
-	<bean id="universalUserLookupable" class="org.kuali.rice.kns.lookup.UniversalUserLookupableImpl" parent="kualiLookupable">
-		<property name="lookupableHelperService">
-			<bean class="org.kuali.rice.kns.lookup.UniversalUserLookupableHelperServiceImpl"
-				parent="lookupableHelperService">
-				<property name="configService" ref="kualiConfigurationService" />
-			</bean>
-		</property>
-	</bean>
-
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
@@ -607,9 +558,6 @@
 		</property>
 		<property name="encryptionService">
 			<ref bean="encryptionService" />
-		</property>
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
 		</property>
 		<property name="lookupService">
 			<ref bean="lookupService" />
@@ -704,9 +652,6 @@
 		<property name="persistenceService">
 			<ref bean="persistenceService" />
 		</property>
-		<property name="universalUserService">
-			<ref bean="universalUserService" />
-		</property>
 	</bean>
 
 	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
@@ -746,8 +691,6 @@
     <property name="persistenceStructureService" ref="persistenceStructureService" />
 		<property name="dateTimeService" ref="dateTimeService" />
 	</bean>
-
-	<bean id="universalUserDao" class="org.kuali.rice.kns.dao.RiceKNSDefaultUserDAOImpl" />
  
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
@@ -896,3 +839,4 @@
 	</bean>	
 	
 </beans>
+

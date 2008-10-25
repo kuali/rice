@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.Set;
 
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 
 
@@ -32,7 +32,7 @@ public interface AuthorizationService {
      * @return true if the given user is a member of a group which is allowed to take the given action on objects matching the given
      *         targetType
      */
-    public boolean isAuthorized(UniversalUser user, String action, String targetType);
+    public boolean isAuthorized(Person user, String action, String targetType);
 
     /**
      * @param user
@@ -47,9 +47,10 @@ public interface AuthorizationService {
      * 
      * @return true if user is authorized to view attribute
      */
-    public boolean isAuthorizedToViewAttribute(UniversalUser user, String entryName, String attributeName);
+    public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName);
     
 //    public void completeInitialization( DataDictionary dataDictionary );
     
     public void setupAuthorizations(DocumentEntry documentEntry) ;
 }
+

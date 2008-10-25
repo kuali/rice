@@ -61,9 +61,9 @@ public class KualiLookupAction extends KualiAction {
                 Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
                 AuthorizationType lookupAuthorizationType = new AuthorizationType.Lookup(businessObjectClass);
                 // check if the lookup is allowed
-                if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), lookupAuthorizationType ) ) {                
+                if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), lookupAuthorizationType ) ) {                
                     LOG.error("User not authorized for lookup action for this object: " + businessObjectClass.getName() );
-                    throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), 
+                    throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		lookupAuthorizationType, getKualiModuleService().getResponsibleModuleService( businessObjectClass ) );
                 }
             } catch ( ClassNotFoundException ex ) {
@@ -83,7 +83,7 @@ public class KualiLookupAction extends KualiAction {
         if ((form instanceof LookupForm) && ( ((LookupForm)form).getBusinessObjectClassName() != null )) {
             Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
             // check if creating documents is allowed
-            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getUniversalUser(), new AuthorizationType.Document(businessObjectClass, null) ) ) {
+            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), new AuthorizationType.Document(businessObjectClass, null) ) ) {
                 ((LookupForm)form).setSuppressActions( true );
             }
         }

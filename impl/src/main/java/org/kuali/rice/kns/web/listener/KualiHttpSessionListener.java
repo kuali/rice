@@ -59,7 +59,7 @@ public class KualiHttpSessionListener implements HttpSessionListener {
                 GlobalVariables.setUserSession((UserSession)se.getSession().getAttribute(KNSConstants.USER_SESSION_KEY));
                 Document document = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(documentNumber);
                 if (ObjectUtils.isNotNull(document)) {
-                    KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getUniversalUser());
+                    KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
                 }
             } catch (WorkflowException e) {
                 throw new RuntimeException(e);
@@ -71,3 +71,4 @@ public class KualiHttpSessionListener implements HttpSessionListener {
     }
 
 }
+

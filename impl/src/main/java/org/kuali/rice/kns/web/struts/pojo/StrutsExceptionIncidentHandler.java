@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ExceptionHandler;
 import org.apache.struts.config.ExceptionConfig;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -101,14 +101,14 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
         // Get user information
         UserSession userSession = (UserSession)
         request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-        UniversalUser sessionUser=null;
+        Person sessionUser=null;
         if (userSession != null) {
-            sessionUser=userSession.getUniversalUser();
+            sessionUser=userSession.getPerson();
         }
         if (sessionUser != null) {
-            userEmail=sessionUser.getPersonEmailAddress();
-            userName=sessionUser.getPersonName();
-            uuid = sessionUser.getPersonUserIdentifier();
+            userEmail=sessionUser.getEmailAddress();
+            userName=sessionUser.getName();
+            uuid = sessionUser.getPrincipalName();
         }
         properties.put(KualiExceptionIncident.USER_EMAIL, userEmail);
         properties.put(KualiExceptionIncident.USER_NAME, userName);
@@ -136,3 +136,4 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
     }
 
 }
+

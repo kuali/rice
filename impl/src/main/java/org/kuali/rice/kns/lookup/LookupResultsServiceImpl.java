@@ -44,7 +44,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#persistResultsTable(java.lang.String, java.util.List, java.lang.String)
      */
-    public void persistResultsTable(String lookupResultsSequenceNumber, List<ResultRow> resultTable, String universalUserId) throws Exception {
+    public void persistResultsTable(String lookupResultsSequenceNumber, List<ResultRow> resultTable, String personId) throws Exception {
         String resultTableString = new String(Base64.encodeBase64(ObjectUtils.toByteArray(resultTable)));
         
         Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
@@ -55,7 +55,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
             lookupResults.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         }
         lookupResults.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
-        lookupResults.setLookupUniversalUserId(universalUserId);
+        lookupResults.setLookupPersonId(personId);
         lookupResults.setSerializedLookupResults(resultTableString);
         lookupResults.setLookupDate(now);
         businessObjectService.save(lookupResults);
@@ -64,14 +64,14 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#persistSelectedObjectIds(java.lang.String, java.util.Set, java.lang.String)
      */
-    public void persistSelectedObjectIds(String lookupResultsSequenceNumber, Set<String> selectedObjectIds, String universalUserId) throws Exception {
+    public void persistSelectedObjectIds(String lookupResultsSequenceNumber, Set<String> selectedObjectIds, String personId) throws Exception {
         SelectedObjectIds selectedObjectIdsBO = retrieveSelectedObjectIds(lookupResultsSequenceNumber);
         if (selectedObjectIdsBO == null) {
             selectedObjectIdsBO = new SelectedObjectIds();
             selectedObjectIdsBO.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         }
         selectedObjectIdsBO.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
-        selectedObjectIdsBO.setLookupUniversalUserId(universalUserId);
+        selectedObjectIdsBO.setLookupPersonId(personId);
         selectedObjectIdsBO.setSelectedObjectIds(LookupUtils.convertSetOfObjectIdsToString(selectedObjectIds));
         selectedObjectIdsBO.setLookupDate(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
         businessObjectService.save(selectedObjectIdsBO);
@@ -108,10 +108,10 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#isAuthorizedToAccessLookupResults(java.lang.String, java.lang.String)
      */
-    public boolean isAuthorizedToAccessLookupResults(String lookupResultsSequenceNumber, String universalUserId) {
+    public boolean isAuthorizedToAccessLookupResults(String lookupResultsSequenceNumber, String personId) {
         try {
             LookupResults lookupResults = retrieveLookupResults(lookupResultsSequenceNumber);
-            return isAuthorizedToAccessLookupResults(lookupResults, universalUserId);
+            return isAuthorizedToAccessLookupResults(lookupResults, personId);
         }
         catch (Exception e) {
             return false;
@@ -122,20 +122,20 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      * Returns whether the user ID parameter is allowed to view the results.
      * 
      * @param lookupResults
-     * @param universalUserId
+     * @param personId
      * @return
      */
-    protected boolean isAuthorizedToAccessLookupResults(LookupResults lookupResults, String universalUserId) {
-        return isAuthorizedToAccessMultipleValueLookupMetadata(lookupResults, universalUserId);
+    protected boolean isAuthorizedToAccessLookupResults(LookupResults lookupResults, String personId) {
+        return isAuthorizedToAccessMultipleValueLookupMetadata(lookupResults, personId);
     }
 
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#isAuthorizedToAccessSelectedObjectIds(java.lang.String, java.lang.String)
      */
-    public boolean isAuthorizedToAccessSelectedObjectIds(String lookupResultsSequenceNumber, String universalUserId) {
+    public boolean isAuthorizedToAccessSelectedObjectIds(String lookupResultsSequenceNumber, String personId) {
         try {
             SelectedObjectIds selectedObjectIds = retrieveSelectedObjectIds(lookupResultsSequenceNumber);
-            return isAuthorizedToAccessSelectedObjectIds(selectedObjectIds, universalUserId);
+            return isAuthorizedToAccessSelectedObjectIds(selectedObjectIds, personId);
         }
         catch (Exception e) {
             return false;
@@ -146,22 +146,22 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      * Returns whether the user ID parameter is allowed to view the selected object IDs
      * 
      * @param selectedObjectIds
-     * @param universalUserId
+     * @param personId
      * @return
      */
-    protected boolean isAuthorizedToAccessSelectedObjectIds(SelectedObjectIds selectedObjectIds, String universalUserId) {
-        return isAuthorizedToAccessMultipleValueLookupMetadata(selectedObjectIds, universalUserId);
+    protected boolean isAuthorizedToAccessSelectedObjectIds(SelectedObjectIds selectedObjectIds, String personId) {
+        return isAuthorizedToAccessMultipleValueLookupMetadata(selectedObjectIds, personId);
     }
     
 
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#retrieveResultsTable(java.lang.String, java.lang.String)
      */
-    public List<ResultRow> retrieveResultsTable(String lookupResultsSequenceNumber, String universalUserId) throws Exception {
+    public List<ResultRow> retrieveResultsTable(String lookupResultsSequenceNumber, String personId) throws Exception {
         LookupResults lookupResults = retrieveLookupResults(lookupResultsSequenceNumber);
-        if (!isAuthorizedToAccessLookupResults(lookupResults, universalUserId)) {
+        if (!isAuthorizedToAccessLookupResults(lookupResults, personId)) {
             // TODO: use the other identifier
-            throw new AuthorizationException(universalUserId, "retrieve lookup results", "lookup sequence number " + lookupResultsSequenceNumber);
+            throw new AuthorizationException(personId, "retrieve lookup results", "lookup sequence number " + lookupResultsSequenceNumber);
         }
         List<ResultRow> resultTable = (List<ResultRow>) ObjectUtils.fromByteArray(Base64.decodeBase64(lookupResults.getSerializedLookupResults().getBytes()));
         return resultTable;
@@ -175,12 +175,12 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      * 
      * @see org.kuali.rice.kns.lookup.LookupResultsService#retrieveSelectedResultBOs(java.lang.String, java.lang.Class, java.lang.String)
      */
-    public Collection<PersistableBusinessObject> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class boClass, String universalUserId) throws Exception {
+    public Collection<PersistableBusinessObject> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class boClass, String personId) throws Exception {
         SelectedObjectIds selectedObjectIds = retrieveSelectedObjectIds(lookupResultsSequenceNumber);
         
-        if (!isAuthorizedToAccessSelectedObjectIds(selectedObjectIds, universalUserId)) {
+        if (!isAuthorizedToAccessSelectedObjectIds(selectedObjectIds, personId)) {
             // TODO: use the other identifier
-            throw new AuthorizationException(universalUserId, "retrieve lookup results", "lookup sequence number " + lookupResultsSequenceNumber);
+            throw new AuthorizationException(personId, "retrieve lookup results", "lookup sequence number " + lookupResultsSequenceNumber);
         }
         
         Set<String> setOfSelectedObjIds = LookupUtils.convertStringOfObjectIdsToSet(selectedObjectIds.getSelectedObjectIds());
@@ -225,11 +225,11 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     /**
      * Determines whether the passed in user ID is allowed to view the lookup metadata (object IDs or results table)
      * @param mvlm
-     * @param universalUserId
+     * @param personId
      * @return
      */
-    protected boolean isAuthorizedToAccessMultipleValueLookupMetadata(MultipleValueLookupMetadata mvlm, String universalUserId) {
-        return universalUserId.equals(mvlm.getLookupUniversalUserId());
+    protected boolean isAuthorizedToAccessMultipleValueLookupMetadata(MultipleValueLookupMetadata mvlm, String personId) {
+        return personId.equals(mvlm.getLookupPersonId());
     }
 
     
@@ -250,3 +250,4 @@ public class LookupResultsServiceImpl implements LookupResultsService {
         this.persistedLookupMetadataDao = persistedLookupMetadataDao;
     }
 }
+

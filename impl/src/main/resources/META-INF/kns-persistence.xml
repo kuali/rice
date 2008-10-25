@@ -13,7 +13,7 @@
     <class>edu.sampleu.travel.bo.TravelAccountRules</class>    
     <class>edu.sampleu.travel.bo.TravelAccountType</class>    
     <class>edu.sampleu.travel.document.TravelDocument2</class>        
-    <class>org.kuali.rice.kns.bo.user.UniversalUser</class>
+    <class>org.kuali.rice.kim.bo.Person</class>
     <class>org.kuali.rice.kns.workflow.bo.WorkflowUser</class>
     <class>org.kuali.rice.kns.bo.user.KualiModuleUserProperty</class>
     <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
@@ -41,3 +41,4 @@
   </persistence-unit>
 
 </persistence>
+

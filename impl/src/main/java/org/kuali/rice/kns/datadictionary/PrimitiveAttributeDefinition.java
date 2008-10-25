@@ -99,13 +99,16 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
         Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
         Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
-        if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
-            String sourceClassName = rootBusinessObjectClass.getName();
+        if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {            
+        	String sourceClassName = rootBusinessObjectClass.getName();
             String targetClassName = otherBusinessObjectClass.getName();
             String sourcePath = sourceClassName + "." + sourceName;
             String targetPath = targetClassName + "." + targetName;
-
-            throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
+            
+            // Just a temp hack to ignore null Person objects
+            if ((sourcePath != null && !StringUtils.contains(sourcePath, "Person")) && (targetPath != null && !StringUtils.contains(targetPath, "Person"))) {
+            	throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
+            }
         }
     }
 

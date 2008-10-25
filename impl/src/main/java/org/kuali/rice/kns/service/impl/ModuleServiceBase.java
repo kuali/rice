@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
@@ -105,14 +105,14 @@ public class ModuleServiceBase implements ModuleService {
 	}
 	
 	/***
-	 * @see org.kuali.rice.kns.service.ModuleService#isAuthorized(org.kuali.rice.kns.bo.user.UniversalUser, org.kuali.rice.kns.authorization.AuthorizationType)
+	 * @see org.kuali.rice.kns.service.ModuleService#isAuthorized(org.kuali.rice.kim.bo.Person, org.kuali.rice.kns.authorization.AuthorizationType)
 	 */
-    public boolean isAuthorized(UniversalUser user, AuthorizationType authType) {
+    public boolean isAuthorized(Person user, AuthorizationType authType) {
         return true;
     }
     
     /** Check whether the user can access the module at all.  Default implementation just checks the user's active status on KFSUser */
-    public boolean canAccessModule( UniversalUser user ) {
+    public boolean canAccessModule( Person user ) {
         return true;
     }
     
@@ -430,3 +430,4 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 }
+

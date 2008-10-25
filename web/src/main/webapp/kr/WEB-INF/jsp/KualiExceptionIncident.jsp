@@ -32,7 +32,7 @@ request.setAttribute("test", incident);
 	<c:set var="documentId"       value="${parameters.documentId}" />
 	<c:set var="userEmail"        value="${parameters.userEmail}" />
 	<c:set var="userName"         value="${parameters.userName}" />
-	<c:set var="personUserIdentifier"         value="${parameters.personUserIdentifier}" />
+	<c:set var="principalName"         value="${parameters.principalName}" />
 	<c:set var="componentName"    value="${parameters.componentName}" />
 	<c:set var="exceptionReportSubject" value="${parameters.exceptionReportSubject}" />
 	<c:set var="exceptionMessage" value="${parameters.exceptionMessage}" />
@@ -51,8 +51,8 @@ request.setAttribute("test", incident);
 	<c:set var="userName"
        value="<%=request.getParameter(KualiExceptionIncident.USER_NAME)%>" />
 </c:if>
-<c:if test="${empty personUserIdentifier}">
-	<c:set var="personUserIdentifier"
+<c:if test="${empty principalName}">
+	<c:set var="principalName"
        value="<%=request.getParameter(KualiExceptionIncident.UUID)%>" />
 </c:if>
 <c:if test="${empty componentName}">
@@ -86,7 +86,7 @@ request.setAttribute("test", incident);
   <html:hidden property="documentId"       write="false" value="${documentId}" />
   <html:hidden property="userEmail"        write="false" value="${userEmail}" />
   <html:hidden property="userName"         write="false" value="${userName}" />
-  <html:hidden property="personUserIdentifier"         write="false" value="${personUserIdentifier}" />
+  <html:hidden property="principalName"         write="false" value="${principalName}" />
   <html:hidden property="componentName"    write="false" value="${componentName}" />
   <html:hidden property="exceptionReportSubject" write="false" value="${exceptionReportSubject}" />
   <html:hidden property="exceptionMessage" write="false" value="${exceptionMessage}" />
@@ -185,3 +185,4 @@ request.setAttribute("test", incident);
 		</table>
 	</c:if>
 </kul:page>
+

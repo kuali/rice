@@ -27,21 +27,18 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.AuthenticationUserId;
-import org.kuali.rice.kns.bo.user.UniversalUser;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.exception.ReferenceAttributeDoesntExistException;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.UniversalUserService;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +52,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private PersistenceService persistenceService;
     private PersistenceStructureService persistenceStructureService;
     private BusinessObjectDao businessObjectDao;
-    private UniversalUserService universalUserService;
+    private org.kuali.rice.kim.service.PersonService personService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
 
     /**
@@ -222,9 +219,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
 
         /*
-         * check for UniversalUser or EBO references in which case we can just get the reference through propertyutils
+         * check for Person or EBO references in which case we can just get the reference through propertyutils
          */
-        if (UniversalUser.class.isAssignableFrom(referenceClass) || ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
+        if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
             try {
                 return (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
             }
@@ -331,19 +328,19 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             return;
         }
 
-        UniversalUser universalUser = null;
+        Person person = null;
 
         for (PersistableBusinessObject bo : bos) {
             // get a list of the reference objects on the BO
             List<BusinessObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
             for ( BusinessObjectRelationship rel : relationships ) {
-                if ( UniversalUser.class.equals( rel.getRelatedClass() ) ) {
-                    universalUser = (UniversalUser) ObjectUtils.getPropertyValue(bo, rel.getParentAttributeName() );
-                    if (universalUser != null) {
+                if ( Person.class.equals( rel.getRelatedClass() ) ) {
+                    person = (Person) ObjectUtils.getPropertyValue(bo, rel.getParentAttributeName() );
+                    if (person != null) {
                         // find the universal user ID relationship and link the field
                         for ( Map.Entry<String,String> entry : rel.getParentToChildReferences().entrySet() ) {
-                            if ( entry.getValue().equals( "personUniversalIdentifier" ) ) {
-                                linkUserReference(bo, universalUser, rel.getParentAttributeName(), entry.getKey() );
+                            if ( entry.getValue().equals( "principalId" ) ) {
+                                linkUserReference(bo, person, rel.getParentAttributeName(), entry.getKey() );
                                 break;
                             }
                         }
@@ -353,17 +350,17 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             
             Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(bo);
 
-            // walk through the ref objects, only doing work if they are KualiUser or UniversalUser
+            // walk through the ref objects, only doing work if they are KualiUser or Person
             for (Iterator<String> iter = references.keySet().iterator(); iter.hasNext();) {
                 String refField = "";
                 Class refClass = null;
                 refField = iter.next();
                 refClass = references.get(refField);
-                if (UniversalUser.class.equals(refClass)) {
-                    String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "personUniversalIdentifier");
-                    universalUser = (UniversalUser) ObjectUtils.getPropertyValue(bo, refField);
-                    if (universalUser != null) {
-                        linkUserReference(bo, universalUser, refField, fkFieldName);
+                if (Person.class.equals(refClass)) {
+                    String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
+                    person = (Person) ObjectUtils.getPropertyValue(bo, refField);
+                    if (person != null) {
+                        linkUserReference(bo, person, refField, fkFieldName);
                     }
                 }
             }
@@ -372,37 +369,27 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
 
     /**
      * 
-     * This method links a single UniveralUser back to the parent BO based on the authoritative personUserIdentifier.
+     * This method links a single UniveralUser back to the parent BO based on the authoritative principalName.
      * 
      * @param bo
      * @param referenceFieldName
      * @param referenceClass
      */
-    private void linkUserReference(PersistableBusinessObject bo, UniversalUser user, String refFieldName, String fkFieldName) {
+    private void linkUserReference(PersistableBusinessObject bo, Person user, String refFieldName, String fkFieldName) {
 
         // if the UserId field is blank, there's nothing we can do, so quit
-        if (StringUtils.isBlank(user.getPersonUserIdentifier())) {
+        if (StringUtils.isBlank(user.getPrincipalName())) {
             return;
         }
 
         // attempt to load the user from the user-name, exit quietly if the user isnt found
-        UniversalUser userFromDb = getUniversalUserFromUserName(user.getPersonUserIdentifier().toUpperCase());
+        Person userFromDb = getPersonFromUserName(user.getPrincipalName().toUpperCase());
         if (userFromDb == null) {
             return;
         }
 
         // attempt to set the universalId on the parent BO
-        setBoField(bo, fkFieldName, userFromDb.getPersonUniversalIdentifier());
-
-        // setup a minimally populated user object ... this is not getting fully populated as this
-        // seems to cause errors in XStream, due to the system not really expecting all the sub-objects
-        // to be fully populated
-        UniversalUser newUserObject = new UniversalUser();
-        newUserObject.setPersonUniversalIdentifier(userFromDb.getPersonUniversalIdentifier());
-        newUserObject.setPersonUserIdentifier(userFromDb.getPersonUserIdentifier());
-
-        // attempt to set the minimally populated user object to the parent BO
-        setBoField(bo, refFieldName, newUserObject);
+        setBoField(bo, fkFieldName, userFromDb.getPrincipalId());
     }
 
     private void setBoField(PersistableBusinessObject bo, String fieldName, Object fieldValue) {
@@ -416,21 +403,15 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
 
     /**
      * 
-     * This method obtains a populated UniversalUser instance, if one exists by the userName, and returns it. Null instance is
+     * This method obtains a populated Person instance, if one exists by the userName, and returns it. Null instance is
      * returned if an account cannot be found by userName.
      * 
      * @param userName String containing the userName.
-     * @return Returns a populated UniversalUser for the given userName, or Null if a record cannot be found for this userName
+     * @return Returns a populated Person for the given userName, or Null if a record cannot be found for this userName
      * 
      */
-    private UniversalUser getUniversalUserFromUserName(String userName) {
-        UniversalUser user = null;
-        try {
-            user = universalUserService.getUniversalUserByAuthenticationUserId(userName);
-        } catch (UserNotFoundException e) {
-            // do nothing, return a null object
-        }
-        return user;
+    private Person getPersonFromUserName(String userName) {
+        return getPersonService().getPersonByPrincipalName(userName);
     }
 
     /**
@@ -465,8 +446,12 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * 
      * @param kualiUserService The kualiUserService to set.
      */
-    public final void setUniversalUserService(UniversalUserService kualiUserService) {
-        this.universalUserService = kualiUserService;
+    public final void setPersonService(org.kuali.rice.kim.service.PersonService kualiUserService) {
+        this.personService = kualiUserService;
+    }
+
+    protected org.kuali.rice.kim.service.PersonService getPersonService() {
+        return personService != null ? personService : org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
     }
 
     /**

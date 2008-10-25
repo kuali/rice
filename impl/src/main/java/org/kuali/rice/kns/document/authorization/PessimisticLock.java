@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
@@ -42,7 +42,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     private Timestamp generatedTimestamp;
     private String documentNumber; // foreign key to document
 
-    private UniversalUser ownedByUser;
+    private Person ownedByUser;
 
     /**
      * This constructs an empty lock using the logged in user and default lock descriptor type
@@ -55,15 +55,15 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     /**
      * This constructs a lock object using the logged in user and given lock type
      */
-    public PessimisticLock(String documentNumber, String lockDescriptor, UniversalUser user) {
+    public PessimisticLock(String documentNumber, String lockDescriptor, Person user) {
         this.documentNumber = documentNumber;
-        this.ownedByPersonUniversalIdentifier = user.getPersonUniversalIdentifier();
+        this.ownedByPersonUniversalIdentifier = user.getPrincipalId();
         this.lockDescriptor = lockDescriptor;  
         this.generatedTimestamp = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
     }
     
-    public boolean isOwnedByUser(UniversalUser user) {
-        return user.getPersonUniversalIdentifier().equals(getOwnedByPersonUniversalIdentifier());
+    public boolean isOwnedByUser(Person user) {
+        return user.getPrincipalId().equals(getOwnedByPersonUniversalIdentifier());
     }
     
     /**
@@ -139,15 +139,15 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     /**
      * @return the ownedByUser
      */
-    public UniversalUser getOwnedByUser() {
-        ownedByUser = KNSServiceLocator.getUniversalUserService().updateUniversalUserIfNecessary(ownedByPersonUniversalIdentifier, ownedByUser);
+    public Person getOwnedByUser() {
+        ownedByUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPersonUniversalIdentifier, ownedByUser);
         return ownedByUser;
     }
 
     /**
      * @param ownedByUser the ownedByUser to set
      */
-    public void setOwnedByUser(UniversalUser ownedByUser) {
+    public void setOwnedByUser(Person ownedByUser) {
         this.ownedByUser = ownedByUser;
     }
 
@@ -169,3 +169,4 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     }
 
 }
+

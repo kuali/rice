@@ -34,7 +34,7 @@ import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.SuperReferenceDescriptor;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.exception.IntrospectionException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -313,9 +313,9 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		
 		// make sure the attribute designated is listed as a
 		// reference-descriptor on the clazz specified, otherwise 
-		// throw an exception (OJB); UniversalUser objects
+		// throw an exception (OJB); Person objects
 		// will be excluded from this
-		if (!UniversalUser.class.equals(attributeClass)) {
+		if (!Person.class.equals(attributeClass)) {
 			ClassDescriptor classDescriptor = getClassDescriptor(clazz);
 			ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(attributeName);
 			if (referenceDescriptor == null) {
@@ -534,13 +534,13 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		// make sure the attribute designated is listed as a
 		// reference-descriptor
 		// on the clazz specified, otherwise throw an exception (OJB);
-		// UniversalUser objects
+		// Person objects
 		// will be excluded from this
 
 		ClassDescriptor classDescriptor = getClassDescriptor(bo.getClass());
 
 		// This block is a combination of legacy and jpa
-		if (!UniversalUser.class.equals(referenceClass)) {
+		if (!Person.class.equals(referenceClass)) {
 			ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
 			if (referenceDescriptor == null) {
 				throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
@@ -701,3 +701,4 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		return cd.getObjectReferenceDescriptorByName(referenceName) != null;
 	}
 }
+

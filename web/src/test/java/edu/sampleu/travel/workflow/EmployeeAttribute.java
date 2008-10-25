@@ -35,7 +35,6 @@ import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -138,7 +137,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
             // getSupervisor( user ), getDirector( user ), getSupervised( user
             // ), etc.
             // using q.uhuuid() as input
-            roleUserId = new EmplId("supervisr");
+            roleUserId = new AuthenticationUserId("supervisr");
 
         /* SUPERVISOR role routes to... director */
         } else if (StringUtils.equals(DIRECTOR_ROLE.getBaseName(), roleName)) {
@@ -147,7 +146,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
             // getSupervisor( user ), getDirector( user ), getSupervised( user
             // ), etc.
             // using q.uhuuid() as input
-            roleUserId = new EmplId("director");
+            roleUserId = new AuthenticationUserId("director");
         } else {
             // throw an exception if you get an unrecognized roleName
             throw new WorkflowRuntimeException("unable to process unknown role '" + roleName + "'");

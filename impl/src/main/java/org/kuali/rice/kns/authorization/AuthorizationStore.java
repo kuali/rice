@@ -24,7 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kns.bo.user.UniversalUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -49,7 +49,7 @@ public class AuthorizationStore {
     /**
      * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorized(String, String, String)
      */
-    public boolean isAuthorized(UniversalUser user, String action, String targetType) {
+    public boolean isAuthorized(Person user, String action, String targetType) {
         if (user == null) {
             throw new IllegalArgumentException("invalid (null) user");
         }
@@ -60,7 +60,7 @@ public class AuthorizationStore {
             throw new IllegalArgumentException("invalid (blank) targetType");
         }
 
-        LOG.debug("checking authorization for (user,action,targetType) = (" + user.getPersonUserIdentifier() + "," + action + "," + targetType + ")");
+        LOG.debug("checking authorization for (user,action,targetType) = (" + user.getPrincipalName() + "," + action + "," + targetType + ")");
 
         boolean isAuthorized = false;
 
@@ -73,7 +73,7 @@ public class AuthorizationStore {
             }
         }
 
-        LOG.debug("returning " + (isAuthorized ? "isAuthorized" : "isNotAuthorized") + " for (user,action,targetType) = (" + user.getPersonUserIdentifier() + "," + action + "," + targetType + ")");
+        LOG.debug("returning " + (isAuthorized ? "isAuthorized" : "isNotAuthorized") + " for (user,action,targetType) = (" + user.getPrincipalName() + "," + action + "," + targetType + ")");
 
         return isAuthorized;
     }
@@ -156,3 +156,4 @@ public class AuthorizationStore {
         return actionMap;
     }
 }
+

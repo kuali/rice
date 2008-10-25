@@ -27,7 +27,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 					setRecipientValue( universalIdFieldName, data.principalId );
 				}
 				if ( userNameFieldName != null && userNameFieldName != "" ) {
-					setRecipientValue( userNameFieldName, data.personName );
+					setRecipientValue( userNameFieldName, data.name );
 				}				
 			} else {
 				if ( universalIdFieldName != null && universalIdFieldName != "" ) {

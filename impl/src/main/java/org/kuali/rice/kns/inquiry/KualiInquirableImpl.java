@@ -107,10 +107,10 @@ public class KualiInquirableImpl implements Inquirable {
         CollectionIncomplete searchResults = null;
         // user inquiries need to go through user service
         // TODO: Remove with Universal user changes
-        if (Person.class.equals(getBusinessObjectClass())) {
-            searchResults = (CollectionIncomplete) getPersonService().findPeople(fieldValues);
-        }
-        else {
+//        if (Person.class.equals(getBusinessObjectClass())) {
+//            searchResults = (CollectionIncomplete) getPersonService().findPeople(fieldValues);
+//        }
+//        else {
     		ModuleService moduleService = 
     			KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
     		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
@@ -119,7 +119,7 @@ public class KualiInquirableImpl implements Inquirable {
     				searchResults = new CollectionIncomplete((Collection)list, new Long(list.size()));
     		} else
     			searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
-        }
+//        }
 
         BusinessObject foundObject = null;
         if (searchResults != null && searchResults.size() > 0) {

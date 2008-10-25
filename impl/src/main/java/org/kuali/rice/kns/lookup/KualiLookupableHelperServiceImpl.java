@@ -223,38 +223,44 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
         setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
         List searchResults;
+    	Map<String,String> nonBlankFieldValues = new HashMap<String, String>();
+    	for (String fieldName : fieldValues.keySet()) {
+    		if (StringUtils.isNotBlank(fieldValues.get(fieldName)) ) {
+    			nonBlankFieldValues.put(fieldName, fieldValues.get(fieldName));
+    		}
+    	}
         
         // If this class is an EBO, just call the module service to get the results
         if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
         	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
         	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();
-        	for (String fieldName : fieldValues.keySet()) {
-        		if (StringUtils.isNotBlank(fieldValues.get(fieldName)) && ddEntry.getAttributeNames().contains(fieldName)) {
-        			filteredFieldValues.put(fieldName, fieldValues.get(fieldName));
+        	for (String fieldName : nonBlankFieldValues.keySet()) {
+        		if (ddEntry.getAttributeNames().contains(fieldName)) {
+        			filteredFieldValues.put(fieldName, nonBlankFieldValues.get(fieldName));
         		}
         	}
         	searchResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(getBusinessObjectClass(), (Map)filteredFieldValues, unbounded);
         // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
-        } else if ( hasExternalBusinessObjectProperty( getBusinessObjectClass(), fieldValues ) ) {
+        } else if ( hasExternalBusinessObjectProperty( getBusinessObjectClass(), nonBlankFieldValues ) ) {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug( "has EBO reference: " + getBusinessObjectClass() );
-        		LOG.debug( "properties: " + fieldValues );
+        		LOG.debug( "properties: " + nonBlankFieldValues );
         	}
         	// remove the EBO criteria
-        	Map<String,String> nonEboFieldValues = removeExternalizableBusinessObjectFieldValues( getBusinessObjectClass(), fieldValues );
+        	Map<String,String> nonEboFieldValues = removeExternalizableBusinessObjectFieldValues( getBusinessObjectClass(), nonBlankFieldValues );
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug( "Non EBO properties removed: " + nonEboFieldValues );
         	}
         	// get the list of EBO properties attached to this object
-        	List<String> eboPropertyNames = getExternalizableBusinessObjectProperties( getBusinessObjectClass(), fieldValues );
+        	List<String> eboPropertyNames = getExternalizableBusinessObjectProperties( getBusinessObjectClass(), nonBlankFieldValues );
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug( "EBO properties: " + eboPropertyNames );
         	}
         	// loop over those properties
         	for ( String eboPropertyName : eboPropertyNames ) {
         		// extract the properties as known to the EBO
-        		Map<String,String> eboFieldValues = getExternalizableBusinessObjectFieldValues( eboPropertyName, fieldValues );
+        		Map<String,String> eboFieldValues = getExternalizableBusinessObjectFieldValues( eboPropertyName, nonBlankFieldValues );
             	if ( LOG.isDebugEnabled() ) {
             		LOG.debug( "EBO properties for master EBO property: " + eboPropertyName );
             		LOG.debug( "properties: " + eboFieldValues );
@@ -326,7 +332,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         	// run the normal search (but with the EBO critieria added)
     		searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonEboFieldValues, unbounded);
         } else {
-            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, unbounded);
+            searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonBlankFieldValues, unbounded);
         }
         
         // sort list if default sort column given

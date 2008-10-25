@@ -118,7 +118,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
 	public List<PersonImpl> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
-		if (externalIdentifierTypeCode == null || externalId == null) {
+		if (StringUtils.isBlank( externalIdentifierTypeCode )|| StringUtils.isBlank( externalId ) ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );

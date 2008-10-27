@@ -33,7 +33,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -47,7 +46,6 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -73,7 +71,6 @@ public class KualiInquirableImpl implements Inquirable {
     private PersistenceStructureService persistenceStructureService;
     private DataDictionaryService dataDictionaryService;
     private EncryptionService encryptionService;
-    private org.kuali.rice.kim.service.PersonService personService;
     private KualiConfigurationService kualiConfigurationService;
 
     private Class businessObjectClass;
@@ -105,22 +102,19 @@ public class KualiInquirableImpl implements Inquirable {
         }
 
         CollectionIncomplete searchResults = null;
-        // user inquiries need to go through user service
-        // TODO: Remove with Universal user changes
-//        if (Person.class.equals(getBusinessObjectClass())) {
-//            searchResults = (CollectionIncomplete) getPersonService().findPeople(fieldValues);
-//        }
-//        else {
-    		ModuleService moduleService = 
-    			KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
-    		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
-    			List<BusinessObject> list = moduleService.getExternalizableBusinessObjectsList(getBusinessObjectClass(), fieldValues);
-    			if(list!=null)
-    				searchResults = new CollectionIncomplete((Collection)list, new Long(list.size()));
-    		} else
-    			searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
-//        }
-
+		ModuleService moduleService = 
+			KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
+		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
+			BusinessObject bo = moduleService.getExternalizableBusinessObject(getBusinessObjectClass(), fieldValues);
+			if(bo!=null) {
+				ArrayList list = new ArrayList( 1 );
+				list.add( bo );
+				searchResults = new CollectionIncomplete(list, 1L);
+			}
+		} else {
+			// CHECK THIS: If this is to get a single BO, why using the lookup service?
+			searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
+		}
         BusinessObject foundObject = null;
         if (searchResults != null && searchResults.size() > 0) {
             foundObject = (BusinessObject) searchResults.get(0);
@@ -284,7 +278,7 @@ public class KualiInquirableImpl implements Inquirable {
                 	//Also, BOMDS.getBusinessObjectRelationship uses PersistenceStructureService, 
                 	//so both datadictionary and the persistance layer get covered
                 	BusinessObjectRelationship businessObjectRelationship = 
-                		KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+                		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
                 				businessObject, attributeRefName);
                 	BidiMap bidiMap = new DualHashBidiMap(businessObjectRelationship.getParentToChildReferences());
                 	keyConversion = (String)bidiMap.getKey(keyName);
@@ -333,7 +327,7 @@ public class KualiInquirableImpl implements Inquirable {
     protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String,String> fieldList, String inquiryUrl){
     	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING);
     	a.setTitle(AnchorHtmlData.getTitleText(
-                KNSServiceLocator.getKualiConfigurationService().getPropertyString(
+                getKualiConfigurationService().getPropertyString(
                         INQUIRY_TITLE_PREFIX) + " " + 
                         getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName()).getObjectLabel() +
                         " ", inquiryClass, fieldList));
@@ -370,18 +364,6 @@ public class KualiInquirableImpl implements Inquirable {
      */
     public void setBusinessObjectClass(Class businessObjectClass) {
         this.businessObjectClass = businessObjectClass;
-    }
-
-    /**
-     * Gets the kualiUserService attribute.
-     * 
-     * @return Returns the kualiUserService.
-     */
-    public org.kuali.rice.kim.service.PersonService getPersonService() {
-	if ( personService == null ) {
-	    personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
-	}
-        return personService;
     }
 
     /**
@@ -459,10 +441,6 @@ public class KualiInquirableImpl implements Inquirable {
         this.encryptionService = encryptionService;
     }
 
-    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
-        this.personService = personService;
-    }
-
     /**
      * Retrieves the {@link KualiConfigurationService}.  In the event that instances of this class are not created as Spring beans,
      * override this method to return an instance from the service locator.
@@ -470,6 +448,9 @@ public class KualiInquirableImpl implements Inquirable {
      * @return
      */
     protected KualiConfigurationService getKualiConfigurationService() {
+		if (kualiConfigurationService == null) {
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+		}
         return this.kualiConfigurationService;
     }
 

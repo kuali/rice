@@ -63,6 +63,8 @@ public abstract class KualiAction extends DispatchAction {
 
     private static KualiModuleService kualiModuleService;
 
+    private static Boolean OUTPUT_ENCRYPTION_WARNING = null;
+    
     /**
      * Entry point to all actions.
      *
@@ -101,7 +103,10 @@ public abstract class KualiAction extends DispatchAction {
         checkAuthorization(form, methodToCall);
 
         // check if demonstration encryption is enabled
-        if (KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration) {
+        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
+        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
+        }
+        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
             LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
         }
 
@@ -474,7 +479,7 @@ public abstract class KualiAction extends DispatchAction {
 		} catch(ClassNotFoundException cnfex){
 			throw new IllegalArgumentException("The classname does not represent a valid class.");
 		}
-    	ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+    	ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
 			Map<String, String> parameterMap = new HashMap<String, String>();
 			Enumeration<Object> e = parameters.keys();
@@ -739,7 +744,7 @@ public abstract class KualiAction extends DispatchAction {
             LOG.warn("KualiAction.checkAuthorization was deferred to.  Caller is unknown and methodToCall is " + methodToCall);
         }
         AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
-        if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), defaultAuthorizationType ) ) {
+        if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), defaultAuthorizationType ) ) {
             LOG.error("User not authorized to use this action: " + this.getClass().getName() );
             throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
             		defaultAuthorizationType, 

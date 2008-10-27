@@ -98,6 +98,7 @@ public class KualiForm extends PojoFormBase {
         }
     }
         
+    private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
     
     /**
      * Populates whether the each field will have field-level help associated with it.  Depending on how the jsp/tags are implemented, the value
@@ -106,8 +107,11 @@ public class KualiForm extends PojoFormBase {
      * @param request
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
-	setFieldLevelHelpEnabled(KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
-        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND));
+    	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
+    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
+    	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND);
+    	}
+    	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND.booleanValue() );
     }
 
     public Map getDisplayedErrors() {

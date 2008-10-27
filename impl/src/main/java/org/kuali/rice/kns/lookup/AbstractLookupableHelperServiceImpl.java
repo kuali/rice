@@ -614,14 +614,19 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return resultColumns.getContent();
     }
 
+    private static Integer RESULTS_DEFAULT_MAX_COLUMN_LENGTH = null;
+    
     protected int getColumnMaxLength(String attributeName) {
-	Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);
-	if (fieldDefinedMaxLength == null) {
-            String valueStr = getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH);
-            if (valueStr == null) {
-        	LOG.error("Lookup field max length parameter not found and field not set with max length value.");
-            }
-            return Integer.parseInt(valueStr);
+    	Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);
+    	if (fieldDefinedMaxLength == null) {
+    		if ( RESULTS_DEFAULT_MAX_COLUMN_LENGTH == null ) {
+    			try {
+    				RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf( getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH) );
+    			} catch ( NumberFormatException ex ) {
+    				LOG.error("Lookup field max length parameter not found and unable to parse default set in system parameters (RESULTS_DEFAULT_MAX_COLUMN_LENGTH).");
+    			}
+    		}
+            return RESULTS_DEFAULT_MAX_COLUMN_LENGTH.intValue();
 	}
         return fieldDefinedMaxLength.intValue();
     }

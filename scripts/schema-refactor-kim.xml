@@ -527,6 +527,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="MEMBER_GRP_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable="KRIM_GROUP_T"
             oldName="KR_KIM_GROUP_GROUP_TR1" newName="KRIM_GROUP_GROUP_TR1" onDelete="cascade">
@@ -546,6 +547,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable=KR_KIM_GROUP_T
             oldName="KR_KIM_GROUP_PRINCIPAL_TR1" newName="KRIM_GROUP_PRINCIPAL_TR1" onDelete="cascade">
@@ -726,6 +728,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_ROLE_T" newForeignTable="KRIM_ROLE_T" 
             oldName="KR_KIM_ROLE_GROUP_TR1"  newName="KRIM_ROLE_GROUP_TR1" onDelete="cascade">
@@ -777,6 +780,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_ROLE_T" newForeignTable="KRIM_ROLE_T"
             oldName="KR_KIM_ROLE_PRINCIPAL_TR1" newName="KRIM_ROLE_PRINCIPAL_TR1" onDelete="cascade">
@@ -792,6 +796,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="CONTAINED_ROLE_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_ROLE_T" newForeignTable="KRIM_ROLE_T"
             oldName="KR_KIM_ROLE_REL_TR1" newName="KRIM_ROLE_REL_TR1" onDelete="cascade">
@@ -813,7 +818,7 @@
         <column name="ROLE_RESP_ACTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="RESP_NM" size="100" type="VARCHAR"/>
+        <column name="RESP_ID" size="100" type="VARCHAR"/>
         <column name="ROLE_ID" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" size="40" type="VARCHAR"/>
         <column name="GRP_ID" size="40" type="VARCHAR"/>

@@ -40,6 +40,9 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 	@Column(name="GRP_ID")
 	protected String groupId;
 	
+	@Column(name="ACTV_IND")
+	protected boolean active;
+	
 	public String getGroupMemberId() {
 		return this.groupMemberId;
 	}
@@ -65,5 +68,11 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 		m.put( "groupMemberId", groupMemberId );
 		m.put( "groupId", groupId );
 		return m;
+	}
+	public boolean isActive() {
+		return this.active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

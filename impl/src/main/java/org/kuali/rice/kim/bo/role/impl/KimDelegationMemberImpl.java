@@ -27,6 +27,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -36,13 +37,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase {
+public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase implements Inactivateable{
 
 	@Id
 	@Column(name="DELE_MBR_ID")
 	protected String delegationMemberId;
 	@Column(name="DELE_ID")
 	protected String delegationId;
+	
+	@Column(name="ACTV_IND")
+	protected boolean active;
+
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DELE_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
@@ -97,6 +102,14 @@ public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectB
 			attribs.put( attr.getKimAttribute().getAttributeName(), attr.getAttributeValue() );
 		}
 		return attribs;
+	}
+
+	public boolean isActive() {
+		return this.active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

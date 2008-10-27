@@ -838,6 +838,7 @@ CREATE TABLE kr_kim_dele_role_t (
     obj_id        VARCHAR2(36) NOT NULL,
     dele_id        VARCHAR(40),
     role_id        VARCHAR(40),
+    actv_ind        VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_dele_role_tp1 PRIMARY KEY ( dele_mbr_id ),
     CONSTRAINT kr_kim_dele_role_tc0 UNIQUE ( obj_id ) 
 )
@@ -849,6 +850,7 @@ CREATE TABLE kr_kim_dele_principal_t (
     obj_id        VARCHAR2(36) NOT NULL,
     dele_id        VARCHAR(40),
     prncpl_id        VARCHAR(40),
+    actv_ind        VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_dele_principal_tp1 PRIMARY KEY ( dele_mbr_id ),
     CONSTRAINT kr_kim_dele_principal_tc0 UNIQUE ( obj_id ) 
 )
@@ -860,6 +862,7 @@ CREATE TABLE kr_kim_dele_group_t (
     obj_id        VARCHAR2(36) NOT NULL,
     dele_id        VARCHAR(40),
     grp_id        VARCHAR(40),
+    actv_ind        VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT kr_kim_dele_group_tp1 PRIMARY KEY ( dele_mbr_id ),
     CONSTRAINT kr_kim_dele_group_tc0 UNIQUE ( obj_id ) 
 )

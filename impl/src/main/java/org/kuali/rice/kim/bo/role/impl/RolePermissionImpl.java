@@ -26,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -33,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KR_KIM_ROLE_PERM_T")
-public class RolePermissionImpl extends PersistableBusinessObjectBase {
+public class RolePermissionImpl extends PersistableBusinessObjectBase implements Inactivateable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -44,6 +45,10 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase {
 	protected String roleId;
 	@Column(name="PERM_ID")
 	protected String permissionId;
+	
+	@Column(name="ACTV_IND")
+	protected boolean active;
+
 	
 	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
@@ -84,6 +89,18 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase {
 		m.put( "roleId", roleId );
 		m.put( "permissionId", permissionId );
 		return m;
+	}
+
+	public boolean isActive() {
+		return this.active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public void setRolePermissionId(String rolePermissionId) {
+		this.rolePermissionId = rolePermissionId;
 	}
 
 }

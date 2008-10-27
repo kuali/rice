@@ -433,6 +433,7 @@
     <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KR_KIM_GROUP_MEMBER_ID_SEQ" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberGroupId" column="MEMBER_GRP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
   </class-descriptor>
@@ -441,6 +442,7 @@
     <field-descriptor name="groupMemberId" column="GRP_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KR_KIM_GROUP_MEMBER_ID_SEQ" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberPrincipalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
   </class-descriptor>
@@ -494,6 +496,7 @@
     <field-descriptor name="roleRelationshipId" column="ROLE_REL_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="containedRoleId" column="CONTAINED_ROLE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
   </class-descriptor>
@@ -503,6 +506,7 @@
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
@@ -513,9 +517,10 @@
     <field-descriptor name="roleMemberId" column="ROLE_MEMBER_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
     </collection-descriptor>
   </class-descriptor>
@@ -559,7 +564,7 @@
       <inverse-foreignkey field-ref="delegationId" />
     </collection-descriptor>
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      <inverse-foreignkey field-ref="delegationId" />
+      <inverse-foreignkey field-ref="targetPrimaryKey" />
     </collection-descriptor>
     <reference-descriptor name="kimType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="kimTypeId" />
@@ -570,24 +575,36 @@
     <field-descriptor name="delegationMemberId" column="DELE_MBR_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="delegationId" column="DELE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="targetPrimaryKey" />
+    </collection-descriptor>
   </class-descriptor>  
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimDelegationPrincipalImpl" table="KR_KIM_DELE_PRINCIPAL_T">
     <field-descriptor name="delegationMemberId" column="DELE_MBR_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="delegationId" column="DELE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="targetPrimaryKey" />
+    </collection-descriptor>
   </class-descriptor>  	
   
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl" table="KR_KIM_DELE_ROLE_T">
     <field-descriptor name="delegationMemberId" column="DELE_MBR_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="delegationId" column="DELE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="targetPrimaryKey" />
+    </collection-descriptor>
   </class-descriptor>
   
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimDelegationAttributeDataImpl" table="KR_KIM_DELE_ATTR_DATA_T">
@@ -661,6 +678,7 @@
     <field-descriptor name="rolePermissionId" column="ROLE_PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <reference-descriptor name="kimPermission" class-ref="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
@@ -725,6 +743,7 @@
     <field-descriptor name="roleResponsibilityId" column="ROLE_RESP_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="responsibilityId" column="RESP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <reference-descriptor name="kimResponsibility" class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
@@ -750,7 +769,7 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl" table="KR_KIM_ROLE_RESP_ACTN_T">
     <field-descriptor name="roleResponsibilityActionId" column="ROLE_RESP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="responsibilityName" column="RESP_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="responsibilityId" column="RESP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />

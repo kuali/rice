@@ -47,8 +47,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		}
 		Criteria c = new Criteria();
 		c.addIn( "responsibilityId", responsibilityIds );
-		// TODO: add once effective dating in place
-		//c.addEqualTo( "active", true );
+		c.addEqualTo( "active", true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
 		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -69,8 +68,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 			KimResponsibilityImpl responsibility) {
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibility.getResponsibilityId() );
-		// TODO: add once effective dating in place
-		//c.addEqualTo( "active", true );
+		c.addEqualTo( "active", true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
 		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -85,14 +83,14 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityName,
+	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityId,
 			String principalId, String groupId) {
 		if ( principalId == null && groupId == null ) {
 			return null;
 		}
 		
 		Criteria c = new Criteria();
-		c.addEqualTo( "responsibilityName", responsibilityName );
+		c.addEqualTo( "responsibilityId", responsibilityId );
 		if ( principalId != null ) {
 			c.addEqualTo( "principalId", principalId );
 		}

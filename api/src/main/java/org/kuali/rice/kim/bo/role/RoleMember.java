@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.role;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.bo.Inactivateable;
 
 
 /**
@@ -33,7 +34,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googleRoles.com)
  *
  */
-public interface RoleMember {
+public interface RoleMember extends Inactivateable {
 
 	/** Unique identifier for a this join record. */
 	String getRoleMemberId();

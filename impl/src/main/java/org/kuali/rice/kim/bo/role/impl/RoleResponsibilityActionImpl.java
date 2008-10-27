@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase implements Inactivateable {
 
 	protected String roleResponsibilityActionId;
-	protected String responsibilityName;
+	protected String responsibilityId;
 	protected String roleId;
 	protected String principalId;
 	protected String groupId;
@@ -43,11 +43,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	public void setRoleResponsibilityActionId(String roleResponsibilityResolutionId) {
 		this.roleResponsibilityActionId = roleResponsibilityResolutionId;
 	}
-	public String getResponsibilityName() {
-		return this.responsibilityName;
+	public String getResponsibilityId() {
+		return this.responsibilityId;
 	}
-	public void setResponsibilityName(String responsibilityName) {
-		this.responsibilityName = responsibilityName;
+	public void setResponsibilityId(String responsibilityId) {
+		this.responsibilityId = responsibilityId;
 	}
 	public String getRoleId() {
 		return this.roleId;
@@ -88,7 +88,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap lhm = new LinkedHashMap();
 		lhm.put( "roleResponsibilityResolutionId", roleResponsibilityActionId );
-		lhm.put( "responsibilityName", responsibilityName );
+		lhm.put( "responsibilityName", responsibilityId );
 		lhm.put( "roleId", roleId );
 		lhm.put( "principalId", principalId );
 		lhm.put( "groupId", groupId );

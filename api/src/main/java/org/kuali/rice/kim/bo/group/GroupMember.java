@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.group;
 
+import org.kuali.rice.kns.bo.Inactivateable;
+
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -22,7 +24,7 @@ package org.kuali.rice.kim.bo.group;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface GroupMember {
+public interface GroupMember extends Inactivateable {
 
 	String getGroupMemberId();
 	String getGroupId();

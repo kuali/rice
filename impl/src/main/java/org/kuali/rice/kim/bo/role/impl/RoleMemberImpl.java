@@ -42,12 +42,9 @@ public abstract class RoleMemberImpl extends PersistableBusinessObjectBase imple
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
-	// TODO: uncomment this when the class has been implemented
-	//@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-//	@JoinColumns({
-//		@JoinColumn(name="ROLE_ID", insertable=false, updatable=false),
-//		@JoinColumn(name="MEMBER_ID", insertable=false, updatable=false)
-//	})	
+	@Column(name="ACTV_IND")
+	protected boolean active;
+	
 	protected List<RoleMemberAttributeDataImpl> attributes;
 	
 	public String getRoleMemberId() {
@@ -93,5 +90,11 @@ public abstract class RoleMemberImpl extends PersistableBusinessObjectBase imple
 	
 	public boolean hasQualifier() {
 		return !getAttributes().isEmpty();
+	}
+	public boolean isActive() {
+		return this.active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

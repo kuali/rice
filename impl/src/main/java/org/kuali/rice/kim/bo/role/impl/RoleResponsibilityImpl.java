@@ -17,13 +17,9 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
@@ -45,15 +41,9 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 	protected String roleId;
 	@Column(name="RESP_ID")
 	protected String responsibilityId;
+	@Column(name="ACTV_IND")
+	protected boolean active;
 	
-	@OneToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
-	protected KimResponsibilityImpl kimResponsibility;
-	
-	public KimResponsibilityImpl getResponsibility() {
-		return kimResponsibility;
-	}
-
 	/**
 	 * @see org.kuali.rice.kim.bo.role.RoleResponsibility#getResponsibilityId()
 	 */
@@ -94,6 +84,18 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 		m.put( "roleId", roleId );
 		m.put( "responsibilityId", responsibilityId );
 		return m;
+	}
+
+	public boolean isActive() {
+		return this.active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public void setRoleResponsibilityId(String roleResponsibilityId) {
+		this.roleResponsibilityId = roleResponsibilityId;
 	}
 
 }

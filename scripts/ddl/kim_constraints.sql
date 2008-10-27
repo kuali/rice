@@ -302,6 +302,11 @@ ALTER TABLE kr_kim_role_resp_t ADD CONSTRAINT kr_kim_role_resp_tr1
     REFERENCES kr_kim_resp_t
 /
 
+ALTER TABLE kr_kim_role_resp_actn_t ADD CONSTRAINT kr_kim_role_resp_actn_tr1
+    FOREIGN KEY (resp_id)
+    REFERENCES kr_kim_resp_t
+/
+
 ALTER TABLE kr_kim_resp_t ADD CONSTRAINT kr_kim_resp_tr1
     FOREIGN KEY (resp_tmpl_id)
     REFERENCES kr_kim_resp_tmpl_t

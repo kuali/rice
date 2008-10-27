@@ -473,6 +473,7 @@ CREATE TABLE kr_kim_group_group_t
     ver_nbr          NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_group_group_tn3 NOT NULL,
     grp_id           VARCHAR2(40) constraint kr_kim_group_group_tn4 NOT NULL,
     member_grp_id    VARCHAR2(40) CONSTRAINT kr_kim_group_group_tn5 NOT NULL,
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
     last_updt_dt     DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_group_group_tp1 PRIMARY KEY ( grp_member_id )
 )
@@ -489,6 +490,7 @@ CREATE TABLE kr_kim_group_principal_t
     ver_nbr          NUMBER(8,0) DEFAULT 1 CONSTRAINT kr_kim_group_principal_tn3 NOT NULL,
     grp_id           VARCHAR2(40) constraint kr_kim_group_principal_tn4 NOT NULL,
     prncpl_id    VARCHAR2(40) CONSTRAINT kr_kim_group_principal_tn5 NOT NULL,
+    actv_ind              VARCHAR2(1) DEFAULT 'Y',
     last_updt_dt     DATE DEFAULT SYSDATE,
     CONSTRAINT kr_kim_group_principal_tp1 PRIMARY KEY ( grp_member_id )
 )
@@ -734,7 +736,7 @@ CREATE TABLE kr_kim_role_resp_actn_t
     role_resp_actn_id    VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-    resp_nm               VARCHAR2(100),
+    resp_id               VARCHAR2(40),
     role_id               VARCHAR2(40),
     prncpl_id             VARCHAR2(40),
     grp_id                VARCHAR2(40),
@@ -755,7 +757,7 @@ CREATE TABLE kr_kim_perm_tmpl_t
     perm_tmpl_id         VARCHAR2(40),
     obj_id                VARCHAR2(36) NOT NULL,
     ver_nbr               NUMBER(8,0) DEFAULT 1 NOT NULL,
-	namespace_cd         VARCHAR2(40),
+	nmspc_cd         VARCHAR2(40),
     name               VARCHAR2(100),
     description           VARCHAR2(400),
     kim_type_id           VARCHAR2(40),

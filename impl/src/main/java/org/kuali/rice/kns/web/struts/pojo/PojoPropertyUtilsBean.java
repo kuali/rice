@@ -193,7 +193,9 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     public void setNestedProperty(Object bean, String name, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         if (bean == null) {
-            throw new IllegalArgumentException("No bean specified");
+            //throw new IllegalArgumentException("No bean specified");
+        	LOG.warn("No bean specified, name = " + name + ", value = " + value);
+        	return;
         }
         if (name == null) {
             throw new IllegalArgumentException("No name specified");
@@ -285,7 +287,9 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
      */
     public PropertyDescriptor getPropertyDescriptor(Object bean, String name) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         if (bean == null) {
-            throw new IllegalArgumentException("No bean specified");
+            //throw new IllegalArgumentException("No bean specified");
+        	LOG.warn("No bean specified, name = " + name);
+        	return null;
         }
         if (name == null) {
             throw new IllegalArgumentException("No name specified");
@@ -409,5 +413,100 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         return -1;
     }
 
+    /**
+     * Set the value of the specified simple property of the specified bean,
+     * with no type conversions.
+     *
+     * @param bean Bean whose property is to be modified
+     * @param name Name of the property to be modified
+     * @param value Value to which the property should be set
+     *
+     * @exception IllegalAccessException if the caller does not have
+     *  access to the property accessor method
+     * @exception IllegalArgumentException if <code>bean</code> or
+     *  <code>name</code> is null
+     * @exception IllegalArgumentException if the property name is
+     *  nested or indexed
+     * @exception InvocationTargetException if the property accessor method
+     *  throws an exception
+     * @exception NoSuchMethodException if an accessor method for this
+     *  propety cannot be found
+     */
+    public void setSimpleProperty(Object bean,
+                                         String name, Object value)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+
+        if (bean == null) {
+            //throw new IllegalArgumentException("No bean specified");
+        	LOG.warn("No bean specified, name = " + name);
+        	return;
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified");
+        }
+
+        // Validate the syntax of the property name
+        if (name.indexOf(PropertyUtils.NESTED_DELIM) >= 0) {
+            throw new IllegalArgumentException
+                    ("Nested property names are not allowed");
+        } else if (name.indexOf(PropertyUtils.INDEXED_DELIM) >= 0) {
+            throw new IllegalArgumentException
+                    ("Indexed property names are not allowed");
+        } else if (name.indexOf(PropertyUtils.MAPPED_DELIM) >= 0) {
+            throw new IllegalArgumentException
+                    ("Mapped property names are not allowed");
+        }
+
+        // Retrieve the property setter method for the specified property
+        PropertyDescriptor descriptor =
+                getPropertyDescriptor(bean, name);
+        if (descriptor == null) {
+            throw new NoSuchMethodException("Unknown property '" +
+                    name + "'");
+        }
+        Method writeMethod = getWriteMethod(descriptor);
+        if (writeMethod == null) {
+            //throw new NoSuchMethodException("Property '" + name + "' has no setter method");
+        	LOG.warn("Bean: " + bean.getClass().getName() + ", Property '" + name + "' has no setter method");
+        	return;
+        }
+
+        // Call the property setter method
+        Object values[] = new Object[1];
+        values[0] = value;
+        if (LOG.isDebugEnabled()) {
+            String valueClassName =
+                value == null ? "<null>" : value.getClass().getName();
+            LOG.debug("setSimpleProperty: Invoking method " + writeMethod
+                      + " with value " + value + " (class " + valueClassName + ")");
+        }
+        
+        
+        invokeMethod(writeMethod, bean, values);
+
+    }
+    
+    /** This just catches and wraps IllegalArgumentException. */
+    private Object invokeMethod(
+                        Method method, 
+                        Object bean, 
+                        Object[] values) 
+                            throws
+                                IllegalAccessException,
+                                InvocationTargetException {
+        try {
+            
+            return method.invoke(bean, values);
+        
+        } catch (IllegalArgumentException e) {
+            
+            LOG.error("Method invocation failed.", e);
+            throw new IllegalArgumentException(
+                "Cannot invoke " + method.getDeclaringClass().getName() + "." 
+                + method.getName() + " - " + e.getMessage());
+            
+        }
+    }
 
 }

@@ -40,7 +40,6 @@ import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.KualiInteger;
 import org.kuali.rice.kns.util.KualiPercent;
 import org.kuali.rice.kns.web.struts.pojo.ArrayUtils;
-import org.kuali.rice.kns.web.struts.pojo.PojoPropertyUtilsBean;
 
 
 // begin Kuali Foundation modification
@@ -54,7 +53,7 @@ import org.kuali.rice.kns.web.struts.pojo.PojoPropertyUtilsBean;
  * <p>
  * During request processing, the {@link PojoActionForm}uses <code>Formatter</code> instances to convert inbound request values
  * to JavaBean property types. Whenever a given value cannot be converted to its target type, the conversion method
- * {@link PojoPropertyUtilsBean#getProperty(Object, String)}throws a {@link FormatException}to signal this condition to the
+ * {@link PropertyUtils#getProperty(Object, String)}throws a {@link FormatException}to signal this condition to the
  * calling code.
  * <p>
  * During the response phase, Struts tags make calls to the {@link PojoRequestProcessor}in order to access bean property values.

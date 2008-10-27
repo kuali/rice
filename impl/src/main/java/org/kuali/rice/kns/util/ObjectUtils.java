@@ -45,7 +45,6 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.struts.pojo.PojoPropertyUtilsBean;
 
 /**
  * This class contains various Object, Proxy, and serialization utilities.
@@ -212,7 +211,7 @@ public class ObjectUtils {
         // FIXME (laran) This dependence should be inverted. Instead of having a core class
         // depend on PojoPropertyUtilsBean, which is in the web layer, the web layer
         // should depend downward to the core.
-        return (new PojoPropertyUtilsBean()).getPropertyType(object, propertyName);
+        return PropertyUtils.getPropertyType(object, propertyName);
 
     }
 
@@ -372,7 +371,7 @@ public class ObjectUtils {
 
 
         // set property in the object
-        (new PojoPropertyUtilsBean()).setNestedProperty(bo, propertyName, propertyValue);
+        PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
     }
 
 

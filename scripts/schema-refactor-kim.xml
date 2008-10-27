@@ -6,7 +6,7 @@
         <column name="ADDR_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="ADDR_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="ADDR_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
@@ -15,14 +15,14 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ADDR_TYPE_TC1" newName="KRIM_ADDR_TYPE_TI1">
-            <unique-column name="ADDR_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_AFLTN_TYPE_T" newName="KRIM_AFLTN_TYPE_T">
         <column name="AFLTN_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="AFLTN_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="AFLTN_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="N" name="EMP_AFLTN_TYP_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
@@ -31,17 +31,17 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_AFLTN_TYPE_TI1" newName="KRIM_AFLTN_TYPE_TI1">
-            <unique-column name="AFLTN_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
-    <table oldName="KR_KIM_ATTRIBUTE_T" newName="KRIM_ATTRIBUTE_T">
-        <column name="KIM_ATTRIB_ID" primaryKey="true" size="40" type="VARCHAR"/>
+    <table oldName="KR_KIM_ATTRIBUTE_T" newName="KRIM_ATTR_DEFN_T">
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="ATTRIB_NM" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column name="ATTRIB_LBL" size="40" type="VARCHAR"/>
-        <unique oldName="KR_KIM_ATTRIBUTE_TC0" newName="KRIM_ATTRIBUTE_TI1">
+        <column oldName="ATTRIB_LBL" newName="LBL" size="40" type="VARCHAR"/>
+        <unique oldName="KR_KIM_ATTRIBUTE_TC0" newName="KRIM_ATTR_DEFN_TI1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -49,7 +49,7 @@
         <column name="CTZNSHP_STAT_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="CTZNSHP_STAT_NM" size="40" type="VARCHAR"/>
+        <column oldName="CTZNSHP_STAT_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -57,17 +57,17 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_CTZNSHP_STAT_TC1" newName="KRIM_CTZNSHP_STAT_TI1">
-            <unique-column name="CTZNSHP_STAT_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_DELE_ATTR_DATA_T" newName="KRIM_DELE_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T"  oldName="KR_KIM_DELE_ATTR_DATA_TR1" newName="KRIM_DELE_ATTR_DATA_TR1">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
@@ -75,8 +75,8 @@
             oldName="KR_KIM_DELE_ATTR_DATA_TR3" newName="KRIM_DELE_ATTR_DATA_TR3" onDelete="cascade">
             <reference foreign="DELE_ID" local="TARGET_PRIMARY_KEY"/>
         </foreign-key>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T" oldName="KR_KIM_DELE_ATTR_DATA_TR2" newName="KRIM_DELE_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_DELE_ATTR_DATA_TR2" newName="KRIM_DELE_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_DELE_ATTR_DATA_TC0" newName="KRIM_DELE_ATTR_DATA_TI1">
             <unique-column name="OBJ_ID"/>
@@ -96,18 +96,18 @@
         </unique>
     </table>
     <table oldName="KR_KIM_DELE_MBR_ATTR_DATA_T" newName="KRIM_DELE_MBR_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T"  newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_DELE_MBR_ATTR_DATA_TR1" newName="KRIM_DELE_MBR_ATTR_DATA_TR1">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T"  oldName="KR_KIM_DELE_MBR_ATTR_DATA_TR2" newName="KRIM_DELE_MBR_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_DELE_MBR_ATTR_DATA_TR2" newName="KRIM_DELE_MBR_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_DELE_MBR_ATTR_DATA_TC0" newName="KRIM_DELE_MBR_ATTR_DATA_TI1">
             <unique-column name="OBJ_ID"/>
@@ -164,7 +164,7 @@
         <column name="EMAIL_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="EMAIL_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="EMAIL_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
@@ -173,14 +173,14 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMAIL_TYPE_TC1" newName="KRIM_EMAIL_TYPE_TI2">
-            <unique-column name="EMAIL_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EMP_STAT_T" newName="KRIM_EMP_STAT_T">
         <column name="EMP_STAT_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="EMP_STAT_NM" size="40" type="VARCHAR"/>
+        <column oldName="EMP_STAT_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -188,14 +188,14 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMP_STAT_TC1" newName="KRIM_EMP_STAT_TI2">
-            <unique-column name="EMP_STAT_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EMP_TYPE_T" newName="KRIM_EMP_TYPE_T">
         <column name="EMP_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="EMP_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="EMP_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -203,7 +203,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMP_TYPE_TC1" newName="KRIM_EMP_TYPE_TI2">
-            <unique-column name="EMP_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_ENTITY_ADDR_T"  newName="KRIM_ENTITY_ADDR_T">
@@ -457,7 +457,7 @@
         <column name="ENT_NAME_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="ENT_NAME_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="ENT_NAME_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
@@ -466,28 +466,28 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ENT_NAME_TYPE_TC1" newName="KRIM_ENT_NAME_TYPE_TC1" >
-            <unique-column name="ENT_NAME_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_ENT_TYPE_T" newName="KRIM_ENT_TYPE_T">
         <column name="ENT_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="ENT_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="ENT_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <unique oldName="KR_KIM_ENT_TYPE_TC0" newName="KRIM_ENT_TYPE_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ENT_TYPE_TC1" newName="KRIM_ENT_TYPE_TC1">
-            <unique-column name="ENT_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EXT_ID_TYPE_T" newName="KRIM_EXT_ID_TYPE_T">
         <column name="EXT_ID_TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="EXT_ID_TYP_NM" size="40" type="VARCHAR"/>
+        <column oldName="EXT_ID_TYP_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="N" name="ENCR_REQ_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
@@ -496,19 +496,19 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EXT_ID_TYPE_TC1" newName="KRIM_EXT_ID_TYPE_TC1">
-            <unique-column name="EXT_ID_TYP_NM"/>
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_GROUP_ATTR_DATA_T" newName="KRIM_GROUP_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T"  oldName="KR_KIM_GROUP_ATTR_DATA_TR2" newName="KRIM_GROUP_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_GROUP_ATTR_DATA_TR2" newName="KRIM_GROUP_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable="KRIM_GROUP_T"
             oldName="KR_KIM_GROUP_ATTR_DATA_TR3" newName="KRIM_GROUP_ATTR_DATA_TR3" onDelete="cascade">
@@ -549,7 +549,7 @@
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
-        <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable=KR_KIM_GROUP_T
+        <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable="KRIM_GROUP_T"
             oldName="KR_KIM_GROUP_PRINCIPAL_TR1" newName="KRIM_GROUP_PRINCIPAL_TR1" onDelete="cascade">
             <reference foreign="GRP_ID" local="GRP_ID"/>
         </foreign-key>
@@ -574,18 +574,18 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_GROUP_TC1" newName="KRIM_GROUP_TC1">
-            <unique-column name="GRP_NM"/>
             <unique-column name="NMSPC_CD"/>
+            <unique-column name="GRP_NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_PERM_ATTR_DATA_T" oldName="KR_KIM_PERM_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_PERM_ATTR_DATA_TR1" oldName="KR_KIM_PERM_ATTR_DATA_TR1">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
@@ -593,8 +593,8 @@
             oldName="KR_KIM_PERM_ATTR_DATA_TR3" newName="KRIM_PERM_ATTR_DATA_TR3" onDelete="cascade">
             <reference foreign="PERM_ID" local="TARGET_PRIMARY_KEY"/>
         </foreign-key>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T" oldName="KR_KIM_PERM_ATTR_DATA_TR2" newName="KRIM_PERM_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_PERM_ATTR_DATA_TR2" newName="KRIM_PERM_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_PERM_ATTR_DATA_TC0" newName="KRIM_PERM_ATTR_DATA_TC0">
             <unique-column name="OBJ_ID"/>
@@ -669,14 +669,14 @@
         </unique>
     </table>
     <table oldName="KR_KIM_RESP_ATTR_DATA_T" newName="KRIM_RESP_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T" oldName="KR_KIM_RESP_ATTR_DATA_TR2" newName="KRIM_RESP_ATTR_DATA_TR2">
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_RESP_ATTR_DATA_TR2" newName="KRIM_RESP_ATTR_DATA_TR2">
             <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_RESP_ATTR_DATA_TR1" newName="KRIM_RESP_ATTR_DATA_TR1">
@@ -710,9 +710,9 @@
         <column name="RESP_TMPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="NAME" size="100" type="VARCHAR"/>
+        <column oldName="NAME" newName="NM" size="100" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="DESCRIPTION" size="400" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC" size="400" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="NAMESPACE_CD" size="40" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_RESP_TMPL_TR1" newName="KRIM_RESP_TMPL_TR1">
@@ -743,18 +743,18 @@
         </unique>
     </table>
     <table oldName="KR_KIM_ROLE_MBR_ATTR_DATA_T" newName="KRIM_ROLE_MBR_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="400" type="VARCHAR"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TR1" newName="KRIM_ROLE_MBR_ATTR_DATA_TR1">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T"  oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TR2" newName="KRIM_ROLE_MBR_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TR2" newName="KRIM_ROLE_MBR_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TC0" newName="KRIM_ROLE_MBR_ATTR_DATA_TC0">
             <unique-column name="OBJ_ID"/>
@@ -830,15 +830,15 @@
         </unique>
     </table>
     <table oldName="KR_KIM_ROLE_RESP_ATTR_DATA_T" newName="KRIM_ROLE_RESP_ATTR_DATA_T">
-        <column name="ATTRIB_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_DATA_ID" newName="ATTR_DATA_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
-        <column name="ATTRIB_VAL" size="40" type="VARCHAR"/>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T"  oldName="KR_KIM_ROLE_RESP_ATTR_DATA_TR2" newName="KRIM_ROLE_RESP_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="VAL" size="40" type="VARCHAR"/>
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_ROLE_RESP_ATTR_DATA_TR2" newName="KRIM_ROLE_RESP_ATTR_DATA_TR2">
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T"  newForeignTable="KRIM_TYPE_T" oldName="KR_KIM_ROLE_RESP_ATTR_DATA_TR1" newName="KRIM_ROLE_RESP_ATTR_DATA_TR1">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
@@ -867,12 +867,12 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ROLE_NM" required="true" size="80" type="VARCHAR"/>
         <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
-        <column name="ROLE_DESC" size="4000" type="VARCHAR"/>
-        <column name="TYP_ID" size="40" type="VARCHAR"/>
+        <column oldName="ROLE_DESC" newName="DESC" size="4000" type="VARCHAR"/>
+        <column oldName="TYP_ID" newName="KIM_TYPE_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T"  oldName="KR_KIM_ROLE_TR1" newName="KRIM_ROLE_TR1">
-            <reference foreign="KIM_TYPE_ID" local="TYP_ID"/>
+            <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_ROLE_TC0" newName="KRIM_ROLE_TC0">
             <unique-column name="OBJ_ID"/>
@@ -882,21 +882,21 @@
             <unique-column name="NMSPC_CD"/>
         </unique>
     </table>
-    <table oldName="KR_KIM_TYPE_ATTRIBUTE_T" newName="KRIM_TYPE_ATTRIBUTE_T">
-        <column name="KIM_TYPE_ATTRIB_ID" primaryKey="true" size="40" type="VARCHAR"/>
+    <table oldName="KR_KIM_TYPE_ATTRIBUTE_T" newName="KRIM_TYPE_ATTR_T">
+        <column oldName="KIM_TYPE_ATTRIB_ID" newName="KIM_TYPE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
-        <column name="KIM_ATTRIB_ID" size="40" type="VARCHAR"/>
+        <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="SORT_CD" size="2" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYPE_T"
             oldName="KR_KIM_TYPE_ATTRIBUTE_TR1" newName="KRIM_TYPE_ATTRIBUTE_TR1" onDelete="cascade">
             <reference foreign="KIM_TYPE_ID" local="KIM_TYPE_ID"/>
         </foreign-key>
-        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTRIBUTE_T"
+        <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"
             oldName="KR_KIM_TYPE_ATTRIBUTE_TR2" newName="KRIM_TYPE_ATTRIBUTE_TR2" onDelete="cascade">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_TYPE_ATTRIBUTE_TC0" newName="KRIM_TYPE_ATTRIBUTE_TC0">
             <unique-column name="OBJ_ID"/>
@@ -906,41 +906,41 @@
         <column name="KIM_TYPE_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="TYPE_NM" size="40" type="VARCHAR"/>
+        <column oldName="TYPE_NM" newName="NM" size="40" type="VARCHAR"/>
         <column name="SRVC_NM" size="200" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <unique oldName="KR_KIM_TYPE_TC0" newName="KRIM_TYPE_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
-    <sequence name="KR_KIM_ATTRIB_DATA_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ATTRIB_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_DELE_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_DELE_MBR_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ENTITY_ADDR_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ENTITY_AFLTN_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_CTZNSHP_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ENTITY_EMAIL_ID_SEQ" nextval="1100"/>
-    <sequence name="KR_KIM_ENTITY_EMP_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_ENT_TYPE_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_EXT_ID_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_NAME_ID_SEQ" nextval="4200"/>
-    <sequence name="KR_KIM_ENTITY_PHONE_ID_SEQ" nextval="1100"/>
-    <sequence name="KR_KIM_GROUP_ID_SEQ" nextval="1000020"/>
-    <sequence name="KR_KIM_GROUP_MEMBER_ID_SEQ" nextval="2100"/>
-    <sequence name="KR_KIM_PERM_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_PERM_TMPL_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_PRNCPL_ID_SEQ" nextval="10000000000"/>
-    <sequence name="KR_KIM_RESP_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_RESP_TMPL_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ROLE_ID_SEQ" nextval="1200"/>
-    <sequence name="KR_KIM_ROLE_MEMBER_ID_SEQ" nextval="1500"/>
-    <sequence name="KR_KIM_ROLE_PERM_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ROLE_REL_ID_SEQ" nextval="1100"/>
-    <sequence name="KR_KIM_ROLE_RESP_ACTN_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ROLE_RESP_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_ROLE_RESP_RESOL_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_TYPE_ATTRIB_ID_SEQ" nextval="1000"/>
-    <sequence name="KR_KIM_TYPE_ID_SEQ" nextval="1000"/>
+    <sequence oldName="KR_KIM_ATTRIB_DATA_ID_SEQ" newName="KRIM_ATTR_DATA_ID_S" nextval="1000"/>
+    <sequence oldName="KR_KIM_ATTRIB_ID_SEQ" newName="KRIM_ATTR_DEFN_ID_S" nextval="1000"/>
+    <sequence newName="KRIM_DELE_ID_S" oldName="KR_KIM_DELE_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_DELE_MBR_ID_S" oldName="KR_KIM_DELE_MBR_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ENTITY_ADDR_ID_S" oldName="KR_KIM_ENTITY_ADDR_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ENTITY_AFLTN_ID_S" oldName="KR_KIM_ENTITY_AFLTN_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_CTZNSHP_ID_S" oldName="KR_KIM_ENTITY_CTZNSHP_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ENTITY_EMAIL_ID_S" oldName="KR_KIM_ENTITY_EMAIL_ID_SEQ" nextval="1100"/>
+    <sequence newName="KRIM_ENTITY_EMP_ID_S" oldName="KR_KIM_ENTITY_EMP_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_ENT_TYPE_ID_S" oldName="KR_KIM_ENTITY_ENT_TYPE_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_EXT_ID_ID_S" oldName="KR_KIM_ENTITY_EXT_ID_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_ID_S" oldName="KR_KIM_ENTITY_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_NAME_ID_S" oldName="KR_KIM_ENTITY_NAME_ID_SEQ" nextval="4200"/>
+    <sequence newName="KRIM_ENTITY_PHONE_ID_S" oldName="KR_KIM_ENTITY_PHONE_ID_SEQ" nextval="1100"/>
+    <sequence newName="KRIM_GROUP_ID_S" oldName="KR_KIM_GROUP_ID_SEQ" nextval="1000020"/>
+    <sequence newName="KRIM_GROUP_MEMBER_ID_S" oldName="KR_KIM_GROUP_MEMBER_ID_SEQ" nextval="2100"/>
+    <sequence newName="KRIM_PERM_ID_S" oldName="KR_KIM_PERM_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_PERM_TMPL_ID_S" oldName="KR_KIM_PERM_TMPL_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_PRNCPL_ID_S" oldName="KR_KIM_PRNCPL_ID_SEQ" nextval="10000000000"/>
+    <sequence newName="KRIM_RESP_ID_S" oldName="KR_KIM_RESP_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_RESP_TMPL_ID_S" oldName="KR_KIM_RESP_TMPL_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ROLE_ID_S" oldName="KR_KIM_ROLE_ID_SEQ" nextval="1200"/>
+    <sequence newName="KRIM_ROLE_MEMBER_ID_S" oldName="KR_KIM_ROLE_MEMBER_ID_SEQ" nextval="1500"/>
+    <sequence newName="KRIM_ROLE_PERM_ID_S" oldName="KR_KIM_ROLE_PERM_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ROLE_REL_ID_S" oldName="KR_KIM_ROLE_REL_ID_SEQ" nextval="1100"/>
+    <sequence newName="KRIM_ROLE_RESP_ACTN_ID_S" oldName="KR_KIM_ROLE_RESP_ACTN_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ROLE_RESP_ID_S" oldName="KR_KIM_ROLE_RESP_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_ROLE_RESP_RESOL_ID_S" oldName="KR_KIM_ROLE_RESP_RESOL_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_TYPE_ATTR_ID_SEQ" oldName="KR_KIM_TYPE_ATTRIB_ID_SEQ" nextval="1000"/>
+    <sequence newName="KRIM_TYPE_ID_S" oldName="KR_KIM_TYPE_ID_SEQ" nextval="1000"/>
 </database>

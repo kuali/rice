@@ -48,21 +48,21 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 
 /**
- * This is a description of what this class does - arh14 don't forget to fill this in. 
- * 
+ * This is a description of what this class does - arh14 don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @PerTestUnitTestData({
-  @UnitTestData(filename="file:ken/src/main/config/sql/KENBootstrap.sql", delimiter="/"),
-  @UnitTestData(filename="file:ken/src/test/resources/org/kuali/ken/test/DefaultTestData.sql", delimiter=";") 
+  @UnitTestData(filename="file:impl/src/main/config/sql/KENBootstrap.sql", delimiter="/"),
+  @UnitTestData(filename="file:ken/src/test/resources/org/kuali/rice/ken/test/DefaultTestData.sql", delimiter=";")
 })
 public class KENWebServiceTest extends ServerTestBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KENWebServiceTest.class);
 
 	private static final String notificationMessageAsXml;
 	private TransactionalLifecycle transactionalLifecycle;
-    
+
     static {
         InputStream notificationXML = KENWebServiceTest.class.getResourceAsStream("webservice_notification.xml");
         try {
@@ -92,8 +92,8 @@ public class KENWebServiceTest extends ServerTestBase {
 	@Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> list = super.getPerTestLifecycles();
-        list.add(0, new KEWXmlDataLoaderLifecycle("file:ken/src/test/resources/org/kuali/ken/test/DefaultTestData.xml"));
-        list.add(0, new KEWXmlDataLoaderLifecycle("file:ken/src/main/config/xml/KENBootstrap.xml"));
+        list.add(0, new KEWXmlDataLoaderLifecycle("file:ken/src/test/resources/org/kuali/rice/ken/test/DefaultTestData.xml"));
+        list.add(0, new KEWXmlDataLoaderLifecycle("file:impl/src/main/config/xml/KENBootstrap.xml"));
         return list;
     }
 
@@ -105,14 +105,14 @@ public class KENWebServiceTest extends ServerTestBase {
         IOUtils.copy(is, baos);
         assertTrue(new String(baos.toByteArray()).contains("wsdl"));
     }
-    
+
     @Test
     public void invokeService() throws IOException, Exception {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
         KSBXMLService service = (KSBXMLService) GlobalResourceLoader.getService(serviceName);
         service.invoke(notificationMessageAsXml);
     }
-    
+
     @Test
     public void invokeSOAPService() throws Exception {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
@@ -120,12 +120,12 @@ public class KENWebServiceTest extends ServerTestBase {
         ConfigContext.getCurrentContextConfig().overrideProperty("bam.enabled", "true");
         KSBXMLService service = (KSBXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
         service.invoke(notificationMessageAsXml);
-        
+
         Thread.sleep(40000);
-       
+
         Collection<Notification> ns = GlobalNotificationServiceLocator.getInstance().getNotificationService().getNotificationsForRecipientByType("Simple", "TestUser2");
         assertEquals(1, ns.size());
-        
+
         /*
         BAMService bamService = KSBServiceLocator.getBAMService();
         List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);

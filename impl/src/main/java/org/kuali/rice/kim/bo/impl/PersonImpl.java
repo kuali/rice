@@ -370,18 +370,10 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @return the groups
 	 */
-	public List<KimGroup> getGroups() {
+	public List<? extends KimGroup> getGroups() {
 		return groups;
 	}
 	
-	public List<KimGroup> getDirectGroups() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public void setGroups( List<KimGroup> groups ) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * @return the personService
 	 */
@@ -449,13 +441,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		return this.baseSalaryAmount;
 	}
 
-	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
-		this.baseSalaryAmount = baseSalaryAmount;
-	}
-	
 	@Deprecated
 	public String getPrimaryDepartmentCode() {
-		return "FIX ME!";
+		return "FIX ME - I DON'T HAVE A HOME!";
 	}
 
 	@Deprecated

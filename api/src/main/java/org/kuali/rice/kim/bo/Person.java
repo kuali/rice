@@ -97,22 +97,9 @@ public interface Person extends ExternalizableBusinessObject {
 	 * Return all groups to which this person has been assigned.  This will include
 	 * groups to which the user belongs because they are assigned to a nested group.
 	 */
-	List<KimGroup> getGroups();
-	
-	/**
-	 * Return the groups to which this person has been directly assigned.
-	 */
-	List<KimGroup> getDirectGroups();
+	List<? extends KimGroup> getGroups();
 	
 	boolean isMember( String groupName );
-	
-	/**
-	 * Temporarily here for conversion work but this needs to be removed.
-	 * 
-	 * @param groups
-	 */
-	@Deprecated 
-	void setGroups( List<KimGroup> groups );
 	
 	Map<String,String> getExternalIdentifiers();
 	

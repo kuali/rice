@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,15 +59,22 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected PersonDao<PersonImpl> personDao;
 	protected BusinessObjectMetaDataService businessObjectMetaDataService;
 	protected MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-	
+
+	protected HashMap<String,SoftReference<PersonImpl>> personByPrincipalNameCache = new HashMap<String,SoftReference<PersonImpl>>( 100 );
+	protected HashMap<String,SoftReference<PersonImpl>> personByPrincipalIdCache = new HashMap<String,SoftReference<PersonImpl>>( 100 );
 	// PERSON/ENTITY RELATED METHODS
 	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPerson(java.lang.String)
 	 */
 	public PersonImpl getPerson(String principalId) {
-		KimEntity entity = null;
 		PersonImpl person = null;
+		// check the cache		
+		person = getPersonImplFromPrincipalIdCache( principalId );
+		if ( person != null ) {
+			return person;
+		}
+		KimEntity entity = null;
 		// get the corresponding principal
 		KimPrincipal principal = identityManagementService.getPrincipal( principalId );
 		// get the entity
@@ -77,15 +85,42 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		if ( entity != null ) {
 			person = (PersonImpl)personDao.convertEntityToPerson( entity, principal );
 		}
+		addPersonImplToCache( person );
 		return person;
 	}
 
+	protected PersonImpl getPersonImplFromPrincipalNameCache( String principalName ) {
+		SoftReference<PersonImpl> personRef = personByPrincipalNameCache.get( principalName );
+		if ( personRef != null ) {
+			return personRef.get();
+		}
+		return null;
+	}
+
+	protected PersonImpl getPersonImplFromPrincipalIdCache( String principalId ) {
+		SoftReference<PersonImpl> personRef = personByPrincipalIdCache.get( principalId );
+		if ( personRef != null ) {
+			return personRef.get();
+		}
+		return null;
+	}
+	
+	protected void addPersonImplToCache( PersonImpl person ) {
+		personByPrincipalNameCache.put( person.getPrincipalName(), new SoftReference<PersonImpl>( person ) );
+		personByPrincipalIdCache.put( person.getPrincipalId(), new SoftReference<PersonImpl>( person ) );
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByPrincipalName(java.lang.String)
 	 */
 	public PersonImpl getPersonByPrincipalName(String principalName) {
-		KimEntity entity = null;
 		PersonImpl person = null;
+		// check the cache		
+		person = getPersonImplFromPrincipalNameCache( principalName );
+		if ( person != null ) {
+			return person;
+		}
+		KimEntity entity = null;
 		// get the corresponding principal
 		KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName( principalName );
 		// get the entity
@@ -96,6 +131,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		if ( entity != null ) {
 			person = (PersonImpl)personDao.convertEntityToPerson( entity, principal );
 		}
+		addPersonImplToCache( person );
 		return person;
 	}
 
@@ -111,7 +147,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(java.util.Map, boolean)
 	 */
 	public List<PersonImpl> findPeople(Map<String, String> criteria, boolean unbounded) {
-		return personDao.findPeople(criteria, unbounded);
+		List<PersonImpl> people = personDao.findPeople(criteria, unbounded); 
+		// QUESTION: Do we want to do this?
+		for ( PersonImpl p : people ) {
+			addPersonImplToCache( p );
+		}
+		return people;
 	}
 
 	/**

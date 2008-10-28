@@ -334,7 +334,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             // get a list of the reference objects on the BO
             List<BusinessObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
             for ( BusinessObjectRelationship rel : relationships ) {
-                if ( Person.class.equals( rel.getRelatedClass() ) ) {
+                if ( Person.class.isAssignableFrom( rel.getRelatedClass() ) ) {
                     person = (Person) ObjectUtils.getPropertyValue(bo, rel.getParentAttributeName() );
                     if (person != null) {
                         // find the universal user ID relationship and link the field
@@ -356,7 +356,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
                 Class refClass = null;
                 refField = iter.next();
                 refClass = references.get(refField);
-                if (Person.class.equals(refClass)) {
+                if (Person.class.isAssignableFrom(refClass)) {
                     String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
                     person = (Person) ObjectUtils.getPropertyValue(bo, refField);
                     if (person != null) {
@@ -383,13 +383,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
 
         // attempt to load the user from the user-name, exit quietly if the user isnt found
-        Person userFromDb = getPersonFromUserName(user.getPrincipalName().toUpperCase());
-        if (userFromDb == null) {
+        Person userFromService = getPersonService().getPersonByPrincipalName(user.getPrincipalName());
+        if (userFromService == null) {
             return;
         }
 
         // attempt to set the universalId on the parent BO
-        setBoField(bo, fkFieldName, userFromDb.getPrincipalId());
+        setBoField(bo, fkFieldName, userFromService.getPrincipalId());
     }
 
     private void setBoField(PersistableBusinessObject bo, String fieldName, Object fieldValue) {
@@ -399,19 +399,6 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         catch (Exception e) {
             throw new RuntimeException("Could not set field [" + fieldName + "] on BO to value: " + fieldValue.toString() + " (see nested exception for details).", e);
         }
-    }
-
-    /**
-     * 
-     * This method obtains a populated Person instance, if one exists by the userName, and returns it. Null instance is
-     * returned if an account cannot be found by userName.
-     * 
-     * @param userName String containing the userName.
-     * @return Returns a populated Person for the given userName, or Null if a record cannot be found for this userName
-     * 
-     */
-    private Person getPersonFromUserName(String userName) {
-        return getPersonService().getPersonByPrincipalName(userName);
     }
 
     /**
@@ -443,11 +430,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
 
     /**
      * Sets the kualiUserService attribute value.
-     * 
-     * @param kualiUserService The kualiUserService to set.
      */
-    public final void setPersonService(org.kuali.rice.kim.service.PersonService kualiUserService) {
-        this.personService = kualiUserService;
+    public final void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+        this.personService = personService;
     }
 
     protected org.kuali.rice.kim.service.PersonService getPersonService() {

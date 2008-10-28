@@ -363,7 +363,6 @@
 
   	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceServiceOjbImpl">
     	<property name="persistenceDao" ref="persistenceDao" />
-    	<property name="moduleService" ref="kualiModuleService" />
   	</bean>
   
 	<bean id="persistenceDao" class="org.kuali.rice.kns.dao.proxy.PersistenceDaoProxy">

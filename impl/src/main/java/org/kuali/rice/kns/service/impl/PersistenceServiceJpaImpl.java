@@ -31,7 +31,6 @@ import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.exception.IntrospectionException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -94,45 +93,43 @@ public class PersistenceServiceJpaImpl extends PersistenceServiceImplBase implem
         }
 
         EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(bo.getClass());
-        if (! Person.class.equals(referenceClass)) {
-        	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(referenceName);
-            if (objectDescriptor == null) {
-                throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
+    	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(referenceName);
+        if (objectDescriptor == null) {
+            throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
+        }
+
+		// get the list of the foreign-keys for this reference-descriptor
+        List fkFields = objectDescriptor.getForeignKeyFields();
+        Iterator fkIterator = fkFields.iterator();
+
+        // walk through the list of the foreign keys, get their types
+        while (fkIterator.hasNext()) {
+
+            // get the field name of the fk & pk field
+            String fkFieldName = (String) fkIterator.next();
+
+            // get the value for the fk field
+            Object fkFieldValue = null;
+            try {
+                fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
             }
 
-			// get the list of the foreign-keys for this reference-descriptor
-            List fkFields = objectDescriptor.getForeignKeyFields();
-            Iterator fkIterator = fkFields.iterator();
+            // if we cant retrieve the field value, then
+            // it doesnt have a value
+            catch (IllegalAccessException e) {
+                return false;
+			} catch (InvocationTargetException e) {
+                return false;
+			} catch (NoSuchMethodException e) {
+                return false;
+            }
 
-            // walk through the list of the foreign keys, get their types
-            while (fkIterator.hasNext()) {
-
-                // get the field name of the fk & pk field
-                String fkFieldName = (String) fkIterator.next();
-
-                // get the value for the fk field
-                Object fkFieldValue = null;
-                try {
-                    fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
-                }
-
-                // if we cant retrieve the field value, then
-                // it doesnt have a value
-                catch (IllegalAccessException e) {
+            // test the value
+            if (fkFieldValue == null) {
+                return false;
+			} else if (String.class.isAssignableFrom(fkFieldValue.getClass())) {
+                if (StringUtils.isBlank((String) fkFieldValue)) {
                     return false;
-				} catch (InvocationTargetException e) {
-                    return false;
-				} catch (NoSuchMethodException e) {
-                    return false;
-                }
-
-                // test the value
-                if (fkFieldValue == null) {
-                    return false;
-				} else if (String.class.isAssignableFrom(fkFieldValue.getClass())) {
-                    if (StringUtils.isBlank((String) fkFieldValue)) {
-                        return false;
-                    }
                 }
             }
         }

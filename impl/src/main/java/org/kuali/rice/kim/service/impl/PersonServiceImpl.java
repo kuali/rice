@@ -106,8 +106,10 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	}
 	
 	protected void addPersonImplToCache( PersonImpl person ) {
-		personByPrincipalNameCache.put( person.getPrincipalName(), new SoftReference<PersonImpl>( person ) );
-		personByPrincipalIdCache.put( person.getPrincipalId(), new SoftReference<PersonImpl>( person ) );
+		if ( person != null ) {
+			personByPrincipalNameCache.put( person.getPrincipalName(), new SoftReference<PersonImpl>( person ) );
+			personByPrincipalIdCache.put( person.getPrincipalId(), new SoftReference<PersonImpl>( person ) );
+		}
 	}
 	
 	/**

@@ -15,7 +15,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ADDR_TYPE_TC1" newName="KRIM_ADDR_TYP_TI1">
-            <unique-column name="NM"/>
+            <unique-column oldName="ADDR_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_AFLTN_TYPE_T" newName="KRIM_AFLTN_TYP_T">
@@ -31,7 +31,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_AFLTN_TYPE_TI1" newName="KRIM_AFLTN_TYP_TI1">
-            <unique-column name="NM"/>
+            <unique-column oldName="AFLTN_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_ATTRIBUTE_T" newName="KRIM_ATTR_DEFN_T">
@@ -57,7 +57,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_CTZNSHP_STAT_TC1" newName="KRIM_CTZNSHP_STAT_TI1">
-            <unique-column name="NM"/>
+            <unique-column oldName="CTZNSHP_STAT_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_DELE_ATTR_DATA_T" newName="KRIM_DLGN_ATTR_DATA_T">
@@ -67,7 +67,7 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T"  oldName="KR_KIM_DELE_ATTR_DATA_TR1" newName="KRIM_DLGN_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
@@ -76,7 +76,7 @@
             <reference oldForeign="DELE_ID" newForeign="DLGN_ID" local="TARGET_PRIMARY_KEY"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_DELE_ATTR_DATA_TR2" newName="KRIM_DLGN_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_DELE_ATTR_DATA_TC0" newName="KRIM_DLGN_ATTR_DATA_TI1">
             <unique-column name="OBJ_ID"/>
@@ -102,12 +102,12 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T"  newForeignTable="KRIM_TYP_T" oldName="KR_KIM_DELE_MBR_ATTR_DATA_TR1" newName="KRIM_DLGN_MBR_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_DELE_MBR_ATTR_DATA_TR2" newName="KRIM_DLGN_MBR_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_DELE_MBR_ATTR_DATA_TC0" newName="KRIM_DELE_MBR_ATTR_DATA_TI1">
             <unique-column name="OBJ_ID"/>
@@ -148,10 +148,10 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column name="ROLE_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column name="TYP_ID" size="40" type="VARCHAR"/>
+        <column oldName="TYP_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="DELE_TYP_CD" newName="DLGN_TYP_CD" size="1" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T"  oldName="KR_KIM_DELE_TR2" newName="KRIM_DLGN_TR2">
-            <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" local="TYP_ID"/>
+            <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="TYP_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ROLE_T" newForeignTable="KRIM_ROLE_T"  oldName="KR_KIM_DELE_TR1" newName="KRIM_DLGN_TR1">
             <reference foreign="ROLE_ID" local="ROLE_ID"/>
@@ -173,7 +173,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMAIL_TYPE_TC1" newName="KRIM_EMAIL_TYP_TI2">
-            <unique-column name="NM"/>
+            <unique-column oldName="EMAIL_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EMP_STAT_T" newName="KRIM_EMP_STAT_T">
@@ -188,7 +188,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMP_STAT_TC1" newName="KRIM_EMP_STAT_TI2">
-            <unique-column name="NM"/>
+            <unique-column oldName="EMP_STAT_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EMP_TYPE_T" newName="KRIM_EMP_TYP_T">
@@ -203,7 +203,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EMP_TYPE_TC1" newName="KRIM_EMP_TYP_TI2">
-            <unique-column name="NM"/>
+            <unique-column oldName="EMP_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_ENTITY_ADDR_T"  newName="KRIM_ENTITY_ADDR_T">
@@ -466,7 +466,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ENT_NAME_TYPE_TC1" newName="KRIM_ENT_NM_TYP_TC1" >
-            <unique-column name="NM"/>
+            <unique-column oldName="ENT_NAME_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_ENT_TYPE_T" newName="KRIM_ENT_TYP_T">
@@ -480,7 +480,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_ENT_TYPE_TC1" newName="KRIM_ENT_TYP_TC1">
-            <unique-column name="NM"/>
+            <unique-column oldName="ENT_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_EXT_ID_TYPE_T" newName="KRIM_EXT_ID_TYP_T">
@@ -496,7 +496,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
         <unique oldName="KR_KIM_EXT_ID_TYPE_TC1" newName="KRIM_EXT_ID_TYP_TC1">
-            <unique-column name="NM"/>
+            <unique-column oldName="EXT_ID_TYP_NM" newName="NM"/>
         </unique>
     </table>
     <table oldName="KR_KIM_GROUP_ATTR_DATA_T" newName="KRIM_GRP_ATTR_DATA_T">
@@ -506,9 +506,9 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_GROUP_ATTR_DATA_TR2" newName="KRIM_GRP_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_GROUP_T" newForeignTable="KRIM_GRP_T"
             oldName="KR_KIM_GROUP_ATTR_DATA_TR3" newName="KRIM_GRP_ATTR_DATA_TR3" onDelete="cascade">
@@ -586,7 +586,7 @@
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
         <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
-        <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T" oldName="KR_KIM_PERM_ATTR_DATA_TR1" newNName="KRIM_PERM_ATTR_DATA_TR1">
+        <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T" oldName="KR_KIM_PERM_ATTR_DATA_TR1" newName="KRIM_PERM_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_PERM_T" newForeignTable="KRIM_PERM_T"
@@ -594,7 +594,7 @@
             <reference foreign="PERM_ID" local="TARGET_PRIMARY_KEY"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_PERM_ATTR_DATA_TR2" newName="KRIM_PERM_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_PERM_ATTR_DATA_TC0" newName="KRIM_PERM_ATTR_DATA_TC0">
             <unique-column name="OBJ_ID"/>
@@ -675,16 +675,16 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T" oldName="KR_KIM_RESP_ATTR_DATA_TR2" newName="KRIM_RSP_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTRIB_ID" local="KIM_ATTRIB_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T" oldName="KR_KIM_RESP_ATTR_DATA_TR1" newName="KRIM_RSP_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_RESP_T" newForeignTable="KRIM_RSP_T"
             oldName="KR_KIM_RESP_ATTR_DATA_TR3" newName="KRIM_RSP_ATTR_DATA_TR3" onDelete="cascade">
-            <reference foreign="RESP_ID" local="TARGET_PRIMARY_KEY"/>
+            <reference oldForeign="RESP_ID" newForeign="RSP_ID" local="TARGET_PRIMARY_KEY"/>
         </foreign-key>
         <unique oldName="KR_KIM_RESP_ATTR_DATA_TC0" newName="KRIM_RSP_ATTR_DATA_TC0">
             <unique-column name="OBJ_ID"/>
@@ -749,12 +749,12 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="400" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="400" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T" oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TR1" newName="KRIM_ROLE_MBR_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TR2" newName="KRIM_ROLE_MBR_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_ROLE_MBR_ATTR_DATA_TC0" newName="KRIM_ROLE_MBR_ATTR_DATA_TC0">
             <unique-column name="OBJ_ID"/>
@@ -836,9 +836,9 @@
         <column name="TARGET_PRIMARY_KEY" size="40" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
-        <column oldName="ATTRIB_VAL" newName="VAL" size="40" type="VARCHAR"/>
+        <column oldName="ATTRIB_VAL" newName="ATTR_VAL" size="40" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"  oldName="KR_KIM_ROLE_RESP_ATTR_DATA_TR2" newName="KRIM_ROLE_RSP_ATTR_DATA_TR2">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T"  newForeignTable="KRIM_TYP_T" oldName="KR_KIM_ROLE_RESP_ATTR_DATA_TR1" newName="KRIM_ROLE_RSP_ATTR_DATA_TR1">
             <reference oldForeign="KIM_TYPE_ID" newForeign="KIM_TYP_ID" oldLocal="KIM_TYPE_ID" newLocal="KIM_TYP_ID"/>
@@ -886,7 +886,7 @@
         <column oldName="KIM_TYPE_ATTRIB_ID" newName="KIM_TYP_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="KIM_TYPE_ID" size="40" type="VARCHAR"/>
+        <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column oldName="KIM_ATTRIB_ID" newName="KIM_ATTR_DEFN_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="SORT_CD" size="2" type="VARCHAR"/>
@@ -896,7 +896,7 @@
         </foreign-key>
         <foreign-key oldForeignTable="KR_KIM_ATTRIBUTE_T" newForeignTable="KRIM_ATTR_DEFN_T"
             oldName="KR_KIM_TYPE_ATTRIBUTE_TR2" newName="KRIM_TYP_ATTR_TR2" onDelete="cascade">
-            <reference foreign="KIM_ATTR_DEFN_ID" local="KIM_ATTR_DEFN_ID"/>
+            <reference oldForeign="KIM_ATTRIB_ID" newForeign="KIM_ATTR_DEFN_ID" oldLocal="KIM_ATTRIB_ID" newLocal="KIM_ATTR_DEFN_ID"/>
         </foreign-key>
         <unique oldName="KR_KIM_TYPE_ATTRIBUTE_TC0" newName="KRIM_TYP_ATTR_TC0">
             <unique-column name="OBJ_ID"/>

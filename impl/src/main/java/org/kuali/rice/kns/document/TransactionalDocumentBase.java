@@ -23,7 +23,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * This is the base class implementation for all transaction processing eDocs. 
  */
 @MappedSuperclass
-public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument {
+public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument,  SessionDocument {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransactionalDocumentBase.class);
 
     /**

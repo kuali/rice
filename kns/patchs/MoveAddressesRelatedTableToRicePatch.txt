@@ -2,7 +2,7 @@
 #P rice
 Index: impl/src/main/java/org/kuali/rice/kns/util/KNSConstants.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/util/KNSConstants.java	(revision 4890)
+--- impl/src/main/java/org/kuali/rice/kns/util/KNSConstants.java	(revision 5087)
 +++ impl/src/main/java/org/kuali/rice/kns/util/KNSConstants.java	(working copy)
 @@ -459,6 +459,7 @@
          public static final String UNIVERSAL_USER_EDIT_WORKGROUP = "UNIVERSAL_USER_EDIT_GROUP";
@@ -12,6 +12,161 @@ Index: impl/src/main/java/org/kuali/rice/kns/util/KNSConstants.java
      }
  
      public static class SystemGroupParameterNames {
+@@ -534,4 +535,4 @@
+         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
+         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
+     }
+-}
++}
+\ No newline at end of file
+Index: scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-0.9.3-to-0.9.4.sql
+===================================================================
+--- scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-0.9.3-to-0.9.4.sql	(revision 5073)
++++ scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-0.9.3-to-0.9.4.sql	(working copy)
+@@ -6,4 +6,141 @@
+      CONSTRAINT KR_KNS_SESN_DOC_TP1 PRIMARY KEY (SESSION_ID, FDOC_NBR) 
+ );
+ 
+-CREATE INDEX KR_KNS_SESN_DOC_TI1 ON KR_KNS_SESN_DOC_T ( LST_UPDATE_DT );
+\ No newline at end of file
++CREATE INDEX KR_KNS_SESN_DOC_TI1 ON KR_KNS_SESN_DOC_T ( LST_UPDATE_DT );
++
++CREATE TABLE KR_COUNTRY_T 
++    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_CNTRY_NM VARCHAR2(40), 
++    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL, 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TP1 
++PRIMARY KEY (POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTRY_T 
++ADD CONSTRAINT KR_COUNTRY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++
++CREATE TABLE KR_COUNTY_T 
++    (COUNTY_CD VARCHAR2(10) NOT NULL, 
++    STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    COUNTY_NM VARCHAR2(100), 
++    ACTV_IND VARCHAR2(1)) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TP1 
++PRIMARY KEY (COUNTY_CD, STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_COUNTY_T 
++ADD CONSTRAINT KR_COUNTY_TR1 
++FOREIGN KEY (STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_STATE_T 
++/ 
++
++CREATE TABLE KR_POSTAL_CODE_T 
++    (POSTAL_CD VARCHAR2(20) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_STATE_CD VARCHAR2(2), 
++    COUNTY_CD VARCHAR2(10), 
++    POSTAL_CITY_NM VARCHAR2(30), 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TP1 
++PRIMARY KEY (POSTAL_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR1 
++FOREIGN KEY (POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTRY_T 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR2 
++FOREIGN KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_STATE_T 
++/ 
++ALTER TABLE KR_POSTAL_CODE_T 
++ADD CONSTRAINT KR_POSTAL_CODE_TR3 
++FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTY_T 
++/ 
++
++
++CREATE TABLE KR_STATE_T 
++    (POSTAL_STATE_CD VARCHAR2(2) NOT NULL, 
++    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
++    OBJ_ID VARCHAR2(36) NOT NULL, 
++    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
++    POSTAL_STATE_NM VARCHAR2(40), 
++    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TP1 
++PRIMARY KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TC0 
++UNIQUE (OBJ_ID) 
++/ 
++ALTER TABLE KR_STATE_T 
++ADD CONSTRAINT KR_STATE_TR1 
++FOREIGN KEY (POSTAL_CNTRY_CD) 
++REFERENCES KR_COUNTRY_T 
++/ 
++
++
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','State','STATE', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fstatemaintenancedocument.htm','Help URL for State document.','A','FP_OPERATIONS')
++/
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','Country','COUNTRY', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fcountrymaintenancedocument.htm','Help URL for Chart Country.','A','FP_OPERATIONS')
++/
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','PostalCode','POSTAL_CODE', SYS_GUID(),1,'HELP','default.htm?turl=WordDocuments%2Fpostalcodemaintenancedocument.htm','Help URL for Postal Code document.','A','FP_OPERATIONS')
++/
++
++INSERT INTO SH_PARM_T
++VALUES
++('KR-NS','All','DEFAULT_COUNTRY',  SYS_GUID(),1,'CONFG','US','Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected.','A','FP_OPERATIONS')
++/
++
++INSERT INTO FP_DOC_TYPE_T
++VALUES
++('ZIPC', SYS_GUID(),1,'Postal Code','Y')
++/
++INSERT INTO FP_DOC_TYPE_T
++VALUES
++('STAT', SYS_GUID(),1,'State','Y')
++/
++INSERT INTO FP_DOC_TYPE_T
++VALUES
++('CNTY', SYS_GUID(),1,'County','Y')
++/
++INSERT INTO FP_DOC_TYPE_T
++VALUES
++('CTRY',SYS_GUID(),1,'Country','Y')
++/
++
++COMMIT
++/
++
 Index: impl/src/main/java/org/kuali/rice/kns/bo/Country.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/bo/Country.java	(revision 0)
@@ -446,12 +601,360 @@ Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml
 \ No newline at end of file
 Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
 ===================================================================
---- impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(revision 5056)
+--- impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(revision 5105)
 +++ impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(working copy)
-@@ -36,6 +36,74 @@
- 		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
- 	</bean>
- 	
+@@ -1,837 +1,949 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<!--
+-	Copyright 2006-2007 The Kuali Foundation.
+-
+-	Licensed under the Educational Community License, Version 1.0 (the "License");
+-	you may not use this file except in compliance with the License.
+-	You may obtain a copy of the License at
+-
+-	http://www.opensource.org/licenses/ecl1.php
+-
+-	Unless required by applicable law or agreed to in writing, software
+-	distributed under the License is distributed on an "AS IS" BASIS,
+-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-	See the License for the specific language governing permissions and
+-	limitations under the License.
+--->
+-<beans xmlns="http://www.springframework.org/schema/beans"
+-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-       xmlns:aop="http://www.springframework.org/schema/aop"
+-       xmlns:tx="http://www.springframework.org/schema/tx"
+-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+-                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+-                           http://www.springframework.org/schema/tx
+-                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+-                           http://www.springframework.org/schema/aop
+-                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+-
+-	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+-	
+-	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+-		<property name="jcdAliases">
+-			<list>
+-				<value>knsDataSource</value>
+-			</list>
+-		</property>
+-		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
+-	</bean>
+-	
+-	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
+-
+-	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
+-		<property name="ojbPlatform" value="${datasource.ojb.platform}" />
+-		<property name="dataSource" ref="knsDataSource" />
+-	</bean>
+-
+-	<bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
+-
+-	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
+-		<property name="dataSource" ref="knsDataSource" />
+-		<property name="dbPlatform" ref="dbPlatform" />
+-	</bean>
+-
+-	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+-		<property name="jcdAlias" value="knsDataSource" />
+-		<property name="dbPlatform" ref="dbPlatform" />
+-	</bean>
+-
+-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
+-		<property name="transactionManager">
+-			<ref bean="transactionManager" />
+-		</property>
+-	</bean>
+-
+-	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
+-		<property name="name" value="scriptConfigurationFilePaths" />
+-		<property name="listItem" value="classpath:org/kuali/rice/kns/dwr-core.xml" />
+-	</bean>
+-
+-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
+-
+-	<bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+-		<property name="classFilter" ref="transactionAdvisorClassFilter" />
+-		<property name="transactionInterceptor" ref="transactionInterceptor" />
+-	</bean>
+-
+-	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.kns.util.spring.ClassOrMethodAnnotationFilter">
+-		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
+-	</bean>
+-
+-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+-		<property name="transactionManager" ref="transactionManager" />
+-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+-	</bean>
+-
+-	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
+-		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
+-		<property name="transactionTimeout" value="${transaction.timeout}" />
+-	</bean>
+-
+-	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+-
+-	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
+-		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
+-  	<property name="kualiModuleService" ref="kualiModuleService" />
+-		<property name="baselinePackages">
+-			<list>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Campus.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/CampusType.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentType.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentTypeAttribute.xml</value>
+-
+-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
+-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
+-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
+-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
+-
+-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
+-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
+-				
+-
+-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
+-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
+-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
+-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
+-
+-				<value>classpath:org/kuali/rice/kns/document/datadictionary/CampusMaintenanceDocument.xml</value>
+-				<value>classpath:org/kuali/rice/kns/document/datadictionary/CampusTypeMaintenanceDocument.xml</value>
+-				<value>classpath:org/kuali/rice/kns/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
+-			</list>
+-		</property>
+-	</bean>
+-
+-	<bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
+-
+-	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.kns.service.impl.PostDataLoadEncryptionServiceImpl">
+-		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
+-		<property name="businessObjectService" ref="businessObjectService" />
+-		<property name="encryptionService" ref="encryptionService" />
+-	</bean>
+-
+-	<bean id="businessObjectService" class="org.kuali.rice.kns.service.impl.BusinessObjectServiceImpl">
+-		<property name="businessObjectDao">
+-			<ref bean="businessObjectDao" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="persistenceService">
+-			<ref bean="persistenceService" />
+-		</property>
+-		<property name="businessObjectMetaDataService">
+-			<ref bean="businessObjectMetaDataService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
+-
+-	<bean id="authorizationService" class="org.kuali.rice.kns.service.impl.AuthorizationServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
+-
+-	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
+-		<property name="mailSender">
+-			<ref bean="mailSender" />
+-		</property>
+-		<property name="batchMailingList" value="${mailing.list.batch}" />
+-		<property name="incidentMailingList" value="${kr.incident.mailing.list}" />
+-	</bean>
+-
+-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+-		<property name="host" value="${mail.relay.server}" />
+-	</bean>
+-
+-	<bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
+-	  <property name="mailService"><ref bean="mailService"/></property>
+-	  <property name="messageTemplate">
+-        <bean class="org.kuali.rice.kns.mail.MailMessage">
+-          <!-- The property place holder below must be specified in          -->
+-          <!-- common-config-default.xml or any other KNS configuration file -->
+-          <property name="fromAddress"><value>${kr.incident.mailing.list}</value></property>
+-        </bean>
+-	  </property>
+-	</bean>
+-	
+-	<bean id="workflowGroupService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
+-
+-	<bean id="workflowInfoService" class="org.kuali.rice.kns.workflow.service.impl.KualiWorkflowInfoImpl" />
+-
+-	<bean id="xmlObjectSerializerService" class="org.kuali.rice.kns.service.impl.XmlObjectSerializerServiceImpl"></bean>
+-
+-	<bean id="documentService" class="org.kuali.rice.kns.service.impl.DocumentServiceImpl">
+-		<property name="documentDao">
+-			<ref bean="documentDao" />
+-		</property>
+-		<property name="documentTypeService">
+-			<ref bean="documentTypeService" />
+-		</property>
+-		<property name="dateTimeService">
+-			<ref bean="dateTimeService" />
+-		</property>
+-		<property name="workflowDocumentService">
+-			<ref bean="workflowDocumentService" />
+-		</property>
+-		<property name="kualiRuleService">
+-			<ref bean="kualiRuleService" />
+-		</property>
+-		<property name="documentHeaderService">
+-			<ref bean="documentHeaderService" />
+-		</property>
+-		<property name="documentAuthorizationService">
+-			<ref bean="documentAuthorizationService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="maintenanceDocumentService">
+-			<ref bean="maintenanceDocumentService" />
+-		</property>
+-		<property name="noteService">
+-			<ref bean="noteService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="documentHeaderService" class="org.kuali.rice.kns.service.impl.DocumentHeaderServiceImpl">
+-		<property name="documentHeaderDao">
+-			<ref bean="documentHeaderDao" />
+-		</property>
+-	</bean>
+-
+-	<bean id="kualiRuleService" class="org.kuali.rice.kns.service.impl.KualiRuleServiceImpl">
+-		<property name="transactionalDocumentDictionaryService">
+-			<ref bean="transactionalDocumentDictionaryService" />
+-		</property>
+-		<property name="maintenanceDocumentDictionaryService">
+-			<ref bean="maintenanceDocumentDictionaryService" />
+-		</property>
+-		<property name="dictionaryValidationService">
+-			<ref bean="dictionaryValidationService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-
+-	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl">
+-		<property name="sqlDateFormats">
+-			<list>
+-				<value>yyyy-MM-dd</value>
+-				<value>MM/dd/yyyy</value>
+-				<value>MM/dd/yy</value>
+-				<value>MM-dd-yyyy</value>
+-				<value>MM-dd-yy</value>
+-			</list>
+-		</property>
+-		<property name="stringDateFormat" value="MM/dd/yyyy" />
+-		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
+-	</bean>
+-
+-	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="maintenanceDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentDictionaryServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="transactionalDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.TransactionalDocumentDictionaryServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="documentTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="lookupService" class="org.kuali.rice.kns.service.impl.LookupServiceImpl">
+-		<property name="lookupDao">
+-			<ref bean="lookupDao" />
+-		</property>
+-		<property name="kualiConfigurationService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="authorizationService">
+-			<ref bean="authorizationService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-	</bean>
+-
++<?xml version="1.0" encoding="UTF-8"?>
++<!--
++	Copyright 2006-2007 The Kuali Foundation.
++
++	Licensed under the Educational Community License, Version 1.0 (the "License");
++	you may not use this file except in compliance with the License.
++	You may obtain a copy of the License at
++
++	http://www.opensource.org/licenses/ecl1.php
++
++	Unless required by applicable law or agreed to in writing, software
++	distributed under the License is distributed on an "AS IS" BASIS,
++	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++	See the License for the specific language governing permissions and
++	limitations under the License.
++-->
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xmlns:aop="http://www.springframework.org/schema/aop"
++       xmlns:tx="http://www.springframework.org/schema/tx"
++       xsi:schemaLocation="http://www.springframework.org/schema/beans
++                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
++                           http://www.springframework.org/schema/tx
++                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
++                           http://www.springframework.org/schema/aop
++                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
++
++	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
++	
++	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
++		<property name="jcdAliases">
++			<list>
++				<value>knsDataSource</value>
++			</list>
++		</property>
++		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
++	</bean>
++	
 +	
 +	<bean id="knsModuleConfiguration" parent="knsModuleConfiguration-parentBean"/>
 +	
@@ -520,108 +1023,1372 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
 +	</bean>
 +	
 +	
- 	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
- 
- 	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
-@@ -108,6 +176,10 @@
- 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentTypeAttribute.xml</value>
- 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/EmployeeStatus.xml</value>
- 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/EmployeeType.xml</value>
++	<bean id="knsDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
++
++	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
++		<property name="ojbPlatform" value="${datasource.ojb.platform}" />
++		<property name="dataSource" ref="knsDataSource" />
++	</bean>
++
++	<bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
++
++	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
++		<property name="dataSource" ref="knsDataSource" />
++		<property name="dbPlatform" ref="dbPlatform" />
++	</bean>
++
++	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
++		<property name="jcdAlias" value="knsDataSource" />
++		<property name="dbPlatform" ref="dbPlatform" />
++	</bean>
++
++	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
++		<property name="transactionManager">
++			<ref bean="transactionManager" />
++		</property>
++	</bean>
++
++	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
++		<property name="name" value="scriptConfigurationFilePaths" />
++		<property name="listItem" value="classpath:org/kuali/rice/kns/dwr-core.xml" />
++	</bean>
++
++	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
++
++	<bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
++		<property name="classFilter" ref="transactionAdvisorClassFilter" />
++		<property name="transactionInterceptor" ref="transactionInterceptor" />
++	</bean>
++
++	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.kns.util.spring.ClassOrMethodAnnotationFilter">
++		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
++	</bean>
++
++	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
++		<property name="transactionManager" ref="transactionManager" />
++		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
++	</bean>
++
++	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
++		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
++		<property name="transactionTimeout" value="${transaction.timeout}" />
++	</bean>
++
++	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
++
++	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
++		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
++  	<property name="kualiModuleService" ref="kualiModuleService" />
++		<property name="baselinePackages">
++			<list>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Campus.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/CampusType.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentType.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentTypeAttribute.xml</value>
 +				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Country.xml</value>
 +				<value>classpath:org/kuali/rice/kns/bo/datadictionary/County.xml</value>
 +				<value>classpath:org/kuali/rice/kns/bo/datadictionary/State.xml</value>
 +				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PostalCode.xml</value>
- 
-                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
-                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
-@@ -130,6 +202,10 @@
- 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeStatusMaintenanceDocument.xml</value>
- 				<value>classpath:org/kuali/rice/kns/document/datadictionary/EmployeeTypeMaintenanceDocument.xml</value>
- 				<value>classpath:org/kuali/rice/kns/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
++
++                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
++                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
++                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
++                <value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
++
++                <value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
++				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
++
++                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
++                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
++                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
++                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
++
++				<value>classpath:org/kuali/rice/kns/document/datadictionary/CampusMaintenanceDocument.xml</value>
++				<value>classpath:org/kuali/rice/kns/document/datadictionary/CampusTypeMaintenanceDocument.xml</value>
++				<value>classpath:org/kuali/rice/kns/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
 +				<value>classpath:org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml</value>
 +				<value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
 +				<value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
 +				<value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
- 			</list>
- 		</property>
- 	</bean>
-@@ -167,7 +243,7 @@
- 			<ref bean="dataDictionaryService" />
- 		</property>
- 	</bean>
++			</list>
++		</property>
++	</bean>
++
++	<bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
++
++	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.kns.service.impl.PostDataLoadEncryptionServiceImpl">
++		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
++		<property name="businessObjectService" ref="businessObjectService" />
++		<property name="encryptionService" ref="encryptionService" />
++	</bean>
++
++	<bean id="businessObjectService" class="org.kuali.rice.kns.service.impl.BusinessObjectServiceImpl">
++		<property name="businessObjectDao">
++			<ref bean="businessObjectDao" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="persistenceService">
++			<ref bean="persistenceService" />
++		</property>
++		<property name="businessObjectMetaDataService">
++			<ref bean="businessObjectMetaDataService" />
++		</property>
++	</bean>
++
++	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
++
++	<bean id="authorizationService" class="org.kuali.rice.kns.service.impl.AuthorizationServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++	
++	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
++
++	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
++		<property name="mailSender">
++			<ref bean="mailSender" />
++		</property>
++		<property name="batchMailingList" value="${mailing.list.batch}" />
++		<property name="incidentMailingList" value="${kr.incident.mailing.list}" />
++	</bean>
++
++	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
++		<property name="host" value="${mail.relay.server}" />
++	</bean>
++
++	<bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
++	  <property name="mailService"><ref bean="mailService"/></property>
++	  <property name="messageTemplate">
++        <bean class="org.kuali.rice.kns.mail.MailMessage">
++          <!-- The property place holder below must be specified in          -->
++          <!-- common-config-default.xml or any other KNS configuration file -->
++          <property name="fromAddress"><value>${kr.incident.mailing.list}</value></property>
++        </bean>
++	  </property>
++	</bean>
++	
++	<bean id="workflowGroupService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
++
++	<bean id="workflowInfoService" class="org.kuali.rice.kns.workflow.service.impl.KualiWorkflowInfoImpl" />
++
++	<bean id="xmlObjectSerializerService" class="org.kuali.rice.kns.service.impl.XmlObjectSerializerServiceImpl"></bean>
++
++	<bean id="documentService" class="org.kuali.rice.kns.service.impl.DocumentServiceImpl">
++		<property name="documentDao">
++			<ref bean="documentDao" />
++		</property>
++		<property name="documentTypeService">
++			<ref bean="documentTypeService" />
++		</property>
++		<property name="dateTimeService">
++			<ref bean="dateTimeService" />
++		</property>
++		<property name="workflowDocumentService">
++			<ref bean="workflowDocumentService" />
++		</property>
++		<property name="kualiRuleService">
++			<ref bean="kualiRuleService" />
++		</property>
++		<property name="documentHeaderService">
++			<ref bean="documentHeaderService" />
++		</property>
++		<property name="documentAuthorizationService">
++			<ref bean="documentAuthorizationService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="maintenanceDocumentService">
++			<ref bean="maintenanceDocumentService" />
++		</property>
++		<property name="noteService">
++			<ref bean="noteService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++
++	<bean id="documentHeaderService" class="org.kuali.rice.kns.service.impl.DocumentHeaderServiceImpl">
++		<property name="documentHeaderDao">
++			<ref bean="documentHeaderDao" />
++		</property>
++	</bean>
++
++	<bean id="kualiRuleService" class="org.kuali.rice.kns.service.impl.KualiRuleServiceImpl">
++		<property name="transactionalDocumentDictionaryService">
++			<ref bean="transactionalDocumentDictionaryService" />
++		</property>
++		<property name="maintenanceDocumentDictionaryService">
++			<ref bean="maintenanceDocumentDictionaryService" />
++		</property>
++		<property name="dictionaryValidationService">
++			<ref bean="dictionaryValidationService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++
++
++	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl">
++		<property name="sqlDateFormats">
++			<list>
++				<value>yyyy-MM-dd</value>
++				<value>MM/dd/yyyy</value>
++				<value>MM/dd/yy</value>
++				<value>MM-dd-yyyy</value>
++				<value>MM-dd-yy</value>
++			</list>
++		</property>
++		<property name="stringDateFormat" value="MM/dd/yyyy" />
++		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
++	</bean>
++
++	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++	</bean>
++
++	<bean id="maintenanceDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentDictionaryServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++
++	<bean id="transactionalDocumentDictionaryService" class="org.kuali.rice.kns.service.impl.TransactionalDocumentDictionaryServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++
++	<bean id="documentTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++	</bean>
++
++	<bean id="lookupService" class="org.kuali.rice.kns.service.impl.LookupServiceImpl">
++		<property name="lookupDao">
++			<ref bean="lookupDao" />
++		</property>
++		<property name="kualiConfigurationService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="authorizationService">
++			<ref bean="authorizationService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++	</bean>
++
+ 	<bean id="kimGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl"/>
 -
-+	
- 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
- 
- 	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
-@@ -531,6 +607,40 @@
- 		</property>
- 	</bean>
- 	
-+	<bean id="postalCodeService" class="org.kuali.kfs.sys.service.impl.PostalCodeServiceImpl">
-+		<property name="kualiModuleService">
-+			<ref bean="kualiModuleService" />
-+		</property>
-+		<property name="countryService">
-+			<ref bean="countryService" />
-+		</property>
-+	</bean>
-+	
-+	<bean id="countyService" class="org.kuali.kfs.sys.service.impl.CountyServiceImpl">
-+		<property name="kualiModuleService">
-+			<ref bean="kualiModuleService" />
-+		</property>
-+		<property name="countryService">
-+			<ref bean="countryService" />
-+		</property>
-+	</bean>
-+	
-+	<bean id="stateService" class="org.kuali.kfs.sys.service.impl.StateServiceImpl">
-+		<property name="kualiModuleService">
-+			<ref bean="kualiModuleService" />
-+		</property>
-+		<property name="countryService">
-+			<ref bean="countryService" />
-+		</property>
-+	</bean>
-+	
-+	<bean id="countryService" class="org.kuali.kfs.sys.service.impl.CountryServiceImpl">
-+		<property name="kualiModuleService">
-+			<ref bean="kualiModuleService" />
-+		</property>
-+	</bean>
-+	
-+	
-   <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
-     <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa" />
-     <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
-@@ -571,7 +681,7 @@
-         </property>
-     </bean>
- 
+-	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
+-		<property name="workflowInfoService">
+-			<ref bean="workflowInfoService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="maintenanceDocumentService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentServiceImpl">
+-		<property name="maintenanceDocumentDao">
+-			<ref bean="maintenanceDocumentDao" />
+-		</property>
+-	</bean>
+-
+-	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
+-		<property name="noteDao">
+-			<ref bean="noteDao" />
+-		</property>
+-		<property name="workflowDocumentService">
+-			<ref bean="workflowDocumentService" />
+-		</property>
+-		<property name="kualiConfigurationService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="attachmentService" class="org.kuali.rice.kns.service.impl.AttachmentServiceImpl">
+-		<property name="kualiConfigurationService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-	</bean>
+-	
+-	<bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
+-  
+-  	<bean id="persistenceStructureServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceOjbImpl" />
+-
+-  	<bean id="persistenceStructureService" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceImpl">
+-		<property name="persistenceStructureServiceJpa" ref="persistenceStructureServiceJpa" />
+-    	<property name="persistenceStructureServiceOjb" ref="persistenceStructureServiceOjb" />
+-	</bean>
+-
+-	<bean id="persistenceService" class="org.kuali.rice.kns.service.impl.PersistenceServiceImpl">
+-		<property name="persistenceServiceJpa" ref="persistenceServiceJpa" />
+-		<property name="persistenceServiceOjb" ref="persistenceServiceOjb" />
+-	</bean>
+-
+-  	<bean id="persistenceServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceServiceJpaImpl">
+-    	<property name="persistenceDao" ref="persistenceDao" />
+-  	</bean>
+-
+-  	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceServiceOjbImpl">
+-    	<property name="persistenceDao" ref="persistenceDao" />
+-    	<property name="moduleService" ref="kualiModuleService" />
+-  	</bean>
+-  
+-	<bean id="persistenceDao" class="org.kuali.rice.kns.dao.proxy.PersistenceDaoProxy">
+-    	<property name="persistenceDaoJpa" ref="persistenceDaoJpa" />
+-    	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
+-	</bean>
+-
+-  <bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
+-
+-  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb" />
+-	
+-	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="maintenanceDocumentDictionaryService">
+-			<ref bean="maintenanceDocumentDictionaryService" />
+-		</property>
+-		<property name="persistenceService">
+-			<ref bean="persistenceService" />
+-		</property>
+-		<property name="configService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService"/>
+-		</property>
+-	</bean>
+-
+-	<bean id="documentAuthorizationService" class="org.kuali.rice.kns.service.impl.DocumentAuthorizationServiceImpl">
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
+-
+-	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
+-		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />
+-	</bean>
+-
+-	<bean id="keyValuesService" class="org.kuali.rice.kns.service.impl.KeyValuesServiceImpl">
+-		<property name="businessObjectDao">
+-			<ref bean="businessObjectDao" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="encryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl">
+-		<property name="secretKey">
+-			<value>${encryption.key}</value>
+-		</property>
+-	</bean>
+-
+-	<bean id="postProcessorService" class="org.kuali.rice.kns.service.impl.PostProcessorServiceImpl">
+-		<property name="documentService">
+-			<ref bean="documentService" />
+-		</property>
+-		<property name="dateTimeService">
+-			<ref bean="dateTimeService" />
+-		</property>
+-	</bean>
+-	
+-	<bean id="pessimisticLockService" class="org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl">
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="ojbCollectionHelper" class="org.kuali.rice.kns.util.OjbCollectionHelper" />
+-
+-	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+-		<property name="lookupableHelperService">
+-			<ref bean="lookupableHelperService" />
+-		</property>
+-
+-	</bean>
+-
+-	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="businessObjectDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="encryptionService">
+-			<ref bean="encryptionService" />
+-		</property>
+-		<property name="lookupService">
+-			<ref bean="lookupService" />
+-		</property>
+-		<property name="businessObjectMetaDataService">
+-			<ref bean="businessObjectMetaDataService" />
+-		</property>
+-		<property name="sequenceAccessorService">
+-			<ref bean="sequenceAccessorService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="lookupResultsService">
+-			<ref bean="lookupResultsService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="lookupResultsService" class="org.kuali.rice.kns.lookup.LookupResultsServiceImpl">
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="persistedLookupMetadataDao">
+-			<ref bean="persistedLookupMetadataDao" />
+-		</property>
+-	</bean>
+-	
+-  <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
+-    <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa" />
+-    <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
+-  </bean>
+-  
+-	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoJpa" />
+-  
+-	<bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoOjb" />
+-	<bean id="businessObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
+-		<property name="businessObjectDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="kualiModuleService">
+-			<ref bean="kualiModuleService" />
+-		</property>
+-	</bean>
+-
+-    <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
+-        <property name="lookupableHelperService">
+-            <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
+-                parent="lookupableHelperService">
+-            </bean>
+-        </property>
+-    </bean>
+-
 -    <!-- placeholder so applications can override without making DD changes -->
-+    <!-- placeholder so applications can override without making DD changes-->
-     <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
-         <property name="lookupableHelperService">
-             <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
-@@ -847,7 +957,7 @@
-     <constructor-arg ref="knsDataSource"/>
-   </bean>
- 
+-    <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
+-        <property name="lookupableHelperService">
+-            <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
+-                parent="lookupableHelperService">
+-            </bean>
+-        </property>
+-    </bean>
+-
+-	<bean id="workflowLookupable" class="org.kuali.rice.kns.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
+-		<property name="configurationService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-		<property name="businessObjectDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="pessimisticLockLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+-		<property name="lookupableHelperService">
+-			<ref bean="pessimisticLockLookupableHelperService" />
+-		</property>
+-	</bean>
+-    
+-	<bean id="pessimisticLockLookupableHelperService" class="org.kuali.rice.kns.lookup.PessimisticLockLookupableHelperServiceImpl" scope="prototype">
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="businessObjectDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="encryptionService">
+-			<ref bean="encryptionService" />
+-		</property>
+-		<property name="lookupService">
+-			<ref bean="lookupService" />
+-		</property>
+-		<property name="businessObjectMetaDataService">
+-			<ref bean="businessObjectMetaDataService" />
+-		</property>
+-		<property name="sequenceAccessorService">
+-			<ref bean="sequenceAccessorService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="lookupResultsService">
+-			<ref bean="lookupResultsService" />
+-		</property>
+-	</bean>
+-
+-		<bean id="sessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
+-		<property name="maxCacheSize" value="${session.document.cache.size}" />
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="sessionDocumentDao">
+-			<ref bean="sessionDocumentDao" />
+-		</property>
+-	</bean>
+-	<!-- Since these beans are not a singletons, Spring does not inject their static
+-		members until the first one is created. This bean causes one to be created.
+-	-->
+-	<bean id="springStatefulStaticInitializer" class="java.util.ArrayList">
+-		<constructor-arg>
+-			<list>
+-				<ref bean="kualiLookupable" />
+-				<ref bean="workflowLookupable" />
+-			</list>
+-		</constructor-arg>
+-	</bean>
+-
+-	<bean id="lookupUtils" class="org.kuali.rice.kns.lookup.LookupUtils">
+-		<property name="businessObjectDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="businessObjectMetaDataService">
+-			<ref bean="businessObjectMetaDataService" />
+-		</property>
+-        <property name="kualiConfigurationService" ref="kualiConfigurationService" />
+-	</bean>
+-
+-	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype">
+-		<property name="kualiConfigurationService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
+-
+-	<bean id="maintenanceDocumentRuleBase" class="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
+-		<property name="configService">
+-			<ref bean="kualiConfigurationService" />
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="dictionaryValidationService">
+-			<ref bean="dictionaryValidationService" />
+-		</property>
+-		<property name="documentAuthorizationService">
+-			<ref bean="documentAuthorizationService" />
+-		</property>
+-		<property name="workflowDocumentService">
+-			<ref bean="workflowDocumentService" />
+-		</property>
+-		<property name="boDictionaryService">
+-			<ref bean="businessObjectDictionaryService" />
+-		</property>
+-		<property name="ddService">
+-			<ref bean="dataDictionaryService" />
+-		</property>
+-		<property name="boService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-		<property name="maintDocDictionaryService">
+-			<ref bean="maintenanceDocumentDictionaryService" />
+-		</property>
+-		<property name="persistenceService">
+-			<ref bean="persistenceService" />
+-		</property>
+-	</bean>
+-
+-	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
+-		<property name="businessObjectDao" ref="businessObjectDao" />
+-    <property name="documentDaoJpa" ref="documentDaoJpa" />
+-    <property name="documentDaoOjb" ref="documentDaoOjb" />
+-	</bean>
+-
+-  <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentDaoJpa">
+-    <property name="businessObjectDao" ref="businessObjectDao" />
+-  </bean>
+-
+-  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentDaoOjb">
+-    <property name="businessObjectDao" ref="businessObjectDao" />
+-  </bean>
+-
+-  <bean id="documentHeaderDao" class="org.kuali.rice.kns.dao.proxy.DocumentHeaderDaoProxy">
+-    <property name="documentHeaderDaoJpa" ref="documentHeaderDaoJpa" />
+-    <property name="documentHeaderDaoOjb" ref="documentHeaderDaoOjb" />
+-  </bean>
+-  
+-  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoJpa" />
+-	
+-	<bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoOjb" />
+-
+-  <bean id="lookupDao" class="org.kuali.rice.kns.dao.proxy.LookupDaoProxy">
+-    <property name="lookupDaoJpa" ref="lookupDaoJpa" />
+-    <property name="lookupDaoOjb" ref="lookupDaoOjb" />
+-  </bean>
+-  
+-  <bean id="lookupDaoJpa" class="org.kuali.rice.kns.dao.impl.LookupDaoJpa">
+-    <property name="persistenceStructureService" ref="persistenceStructureService" />
+-    <property name="dateTimeService" ref="dateTimeService" />
+-  </bean>
+-   
+-  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
+-    <property name="persistenceStructureService" ref="persistenceStructureService" />
+-		<property name="dateTimeService" ref="dateTimeService" />
+-	</bean>
+- 
+-  <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
+-    <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
+-    <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb" />
+-  </bean>
+-
+-	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa" />
+-
+-  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoOjb" />
+-
+-  <bean id="noteDao" class="org.kuali.rice.kns.dao.proxy.NoteDaoProxy">
+-    <property name="noteDaoJpa" ref="noteDaoJpa" />
+-    <property name="noteDaoOjb" ref="noteDaoOjb" />
+-  </bean>
+-
+-	<bean id="noteDaoJpa" class="org.kuali.rice.kns.dao.impl.NoteDaoJpa" />
+-
+-  <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.NoteDaoOjb" />
+-
+-  <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
+-    <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />
+-    <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb" />
+-  </bean>
+-
+-  <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa">
+-    <property name="persistenceStructureService" ref="persistenceStructureService" />
+-  </bean>
+-
+-	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb">
+-		<property name="persistenceStructureService" ref="persistenceStructureService" />
+-	</bean>
+-	
+-	<bean id="sessionDocumentDao" class="org.kuali.rice.kns.dao.proxy.SessionDocumentDaoProxy">
+-    	<property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa" />
+-    	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
+-  	</bean>
+-  
+-    <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoJpa" />
+-	
+-	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoOjb" />
+-	
+-	<bean id="inactivationBlockingDetectionService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDetectionServiceImpl">
+-		<property name="businessObjectMetaDataService">
+-			<ref bean="businessObjectMetaDataService"/>
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-		<property name="businessObjectService">
+-			<ref bean="businessObjectService" />
+-		</property>
+-	</bean>
+-	
+-	<bean id="inactivationBlockingDisplayService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDisplayServiceImpl">
+-		<property name="persistenceService">
+-			<ref bean="persistenceService"/>
+-		</property>
+-		<property name="dataDictionaryService">
+-			<ref bean="dataDictionaryService"/>
+-		</property>
+-		<property name="persistenceStructureService">
+-			<ref bean="persistenceStructureService" />
+-		</property>
+-	</bean>
+-	<bean id="kimPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
+-
+-	<bean id="documentStatusComponentAttributePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeServiceImpl" >
+-    	<property name="kimAttributesTranslators">
+-    		<list>
+-				<bean class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeTranslator">
+-					<property name="supportedAttributeNames">
+-						<list>
+-							<value>Document Number</value>
+-							<value>Property Name</value>
+-							<value>Component</value>
+-						</list>
+-					</property>
+-					<property name="resultAttributeNames">
+-						<list>
+-							<value>Document Type Name</value>
+-							<value>Route Status Code</value>
+-							<value>Route Node Name</value>
+-						</list>
+-					</property>
+-			    </bean>
+-    		</list>
+-    	</property>
+-	</bean>
+-			
+-  <!-- START JPA CONFIGURATION -->
+-
+-  <!-- Used for @PersistenceContext auto-injection -->
+-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+-
+-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+-    <constructor-arg value="rice.kns"/>
+-    <constructor-arg ref="knsDataSource"/>
+-  </bean>
+-
 -  <!-- Used for @Transactional so you don't have to wire services up in here -->
+-  <tx:annotation-driven transaction-manager="transactionManager"/>
+-  
+-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
+-
+-  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+-    <property name="interceptorNames">
+-      <list>
+-        <idref local="NoResultExceptionInterceptor" />
+-      </list>
+-    </property>
+-    <property name="beanNames">
+-      <list>
+-        <idref local="businessObjectDaoJpa"/>        
+-        <idref local="documentDaoJpa"/>
+-        <idref local="documentHeaderDao"/>        
+-        <idref local="lookupDaoJpa"/>
+-        <idref local="persistenceDaoJpa"/>
+-        <idref local="maintenanceDocumentDao"/>
+-        <idref local="noteDao"/>
+-        <idref local="persistedLookupMetadataDao"/>
+-        <idref local="sessionDocumentDao"/>        
+-        <idref local="postProcessorService"/>
+-      </list>
+-    </property>
+-  </bean>
+-  
+-  <!-- END JPA CONFIGURATION -->
+-
+-	
+-	<bean id="documentSerializerService" class="org.kuali.rice.kns.service.impl.DocumentSerializerServiceImpl">
+-		<property name="persistenceService">
+-			<ref bean="persistenceService" />
+-		</property>
+-		<property name="xmlObjectSerializerService">
+-			<ref bean="xmlObjectSerializerService"/>
+-		</property>
+-	</bean>
+-
+-	<bean id="businessObjectSerializerService" class="org.kuali.rice.kns.service.impl.BusinessObjectSerializerServiceImpl">
+-		<property name="persistenceService">
+-			<ref bean="persistenceService" />
+-		</property>
+-		<property name="xmlObjectSerializerService">
+-			<ref bean="xmlObjectSerializerService"/>
+-		</property>
+-	</bean>	
+-	
+-</beans>
+-
++
++	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
++		<property name="workflowInfoService">
++			<ref bean="workflowInfoService" />
++		</property>
++	</bean>
++
++	<bean id="maintenanceDocumentService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentServiceImpl">
++		<property name="maintenanceDocumentDao">
++			<ref bean="maintenanceDocumentDao" />
++		</property>
++	</bean>
++
++	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
++		<property name="noteDao">
++			<ref bean="noteDao" />
++		</property>
++		<property name="workflowDocumentService">
++			<ref bean="workflowDocumentService" />
++		</property>
++		<property name="kualiConfigurationService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++	</bean>
++
++	<bean id="attachmentService" class="org.kuali.rice.kns.service.impl.AttachmentServiceImpl">
++		<property name="kualiConfigurationService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++	</bean>
++	
++	<bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
++  
++  	<bean id="persistenceStructureServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceOjbImpl" />
++
++  	<bean id="persistenceStructureService" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceImpl">
++		<property name="persistenceStructureServiceJpa" ref="persistenceStructureServiceJpa" />
++    	<property name="persistenceStructureServiceOjb" ref="persistenceStructureServiceOjb" />
++	</bean>
++
++	<bean id="persistenceService" class="org.kuali.rice.kns.service.impl.PersistenceServiceImpl">
++		<property name="persistenceServiceJpa" ref="persistenceServiceJpa" />
++		<property name="persistenceServiceOjb" ref="persistenceServiceOjb" />
++	</bean>
++
++  	<bean id="persistenceServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceServiceJpaImpl">
++    	<property name="persistenceDao" ref="persistenceDao" />
++  	</bean>
++
++  	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceServiceOjbImpl">
++    	<property name="persistenceDao" ref="persistenceDao" />
++    	<property name="moduleService" ref="kualiModuleService" />
++  	</bean>
++  
++	<bean id="persistenceDao" class="org.kuali.rice.kns.dao.proxy.PersistenceDaoProxy">
++    	<property name="persistenceDaoJpa" ref="persistenceDaoJpa" />
++    	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
++	</bean>
++
++  <bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
++
++  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb" />
++	
++	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="maintenanceDocumentDictionaryService">
++			<ref bean="maintenanceDocumentDictionaryService" />
++		</property>
++		<property name="persistenceService">
++			<ref bean="persistenceService" />
++		</property>
++		<property name="configService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService"/>
++		</property>
++	</bean>
++
++	<bean id="documentAuthorizationService" class="org.kuali.rice.kns.service.impl.DocumentAuthorizationServiceImpl">
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++	</bean>
++
++	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
++
++	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
++		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />
++	</bean>
++
++	<bean id="keyValuesService" class="org.kuali.rice.kns.service.impl.KeyValuesServiceImpl">
++		<property name="businessObjectDao">
++			<ref bean="businessObjectDao" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++	</bean>
++
++	<bean id="encryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl">
++		<property name="secretKey">
++			<value>${encryption.key}</value>
++		</property>
++	</bean>
++
++	<bean id="postProcessorService" class="org.kuali.rice.kns.service.impl.PostProcessorServiceImpl">
++		<property name="documentService">
++			<ref bean="documentService" />
++		</property>
++		<property name="dateTimeService">
++			<ref bean="dateTimeService" />
++		</property>
++	</bean>
++	
++	<bean id="pessimisticLockService" class="org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl">
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++	</bean>
++
++	<bean id="ojbCollectionHelper" class="org.kuali.rice.kns.util.OjbCollectionHelper" />
++
++	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
++		<property name="lookupableHelperService">
++			<ref bean="lookupableHelperService" />
++		</property>
++
++	</bean>
++
++	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="businessObjectDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="encryptionService">
++			<ref bean="encryptionService" />
++		</property>
++		<property name="lookupService">
++			<ref bean="lookupService" />
++		</property>
++		<property name="businessObjectMetaDataService">
++			<ref bean="businessObjectMetaDataService" />
++		</property>
++		<property name="sequenceAccessorService">
++			<ref bean="sequenceAccessorService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="lookupResultsService">
++			<ref bean="lookupResultsService" />
++		</property>
++	</bean>
++
++	<bean id="lookupResultsService" class="org.kuali.rice.kns.lookup.LookupResultsServiceImpl">
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="persistedLookupMetadataDao">
++			<ref bean="persistedLookupMetadataDao" />
++		</property>
++	</bean>
++	
++	<bean id="postalCodeService" class="org.kuali.rice.kns.service.impl.PostalCodeServiceImpl">
++		<property name="kualiModuleService">
++			<ref bean="kualiModuleService" />
++		</property>
++		<property name="countryService">
++			<ref bean="countryService" />
++		</property>
++	</bean>
++	
++	<bean id="countyService" class="org.kuali.rice.kns.service.impl.CountyServiceImpl">
++		<property name="kualiModuleService">
++			<ref bean="kualiModuleService" />
++		</property>
++		<property name="countryService">
++			<ref bean="countryService" />
++		</property>
++	</bean>
++	
++	<bean id="stateService" class="org.kuali.rice.kns.service.impl.StateServiceImpl">
++		<property name="kualiModuleService">
++			<ref bean="kualiModuleService" />
++		</property>
++		<property name="countryService">
++			<ref bean="countryService" />
++		</property>
++	</bean>
++	
++	<bean id="countryService" class="org.kuali.rice.kns.service.impl.CountryServiceImpl">
++		<property name="kualiModuleService">
++			<ref bean="kualiModuleService" />
++		</property>
++	</bean>
++	
++	
++  <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
++    <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa" />
++    <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
++  </bean>
++  
++	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoJpa" />
++  
++	<bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoOjb" />
++	<bean id="businessObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
++		<property name="businessObjectDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="kualiModuleService">
++			<ref bean="kualiModuleService" />
++		</property>
++	</bean>
++
++    <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
++        <property name="lookupableHelperService">
++            <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
++                parent="lookupableHelperService">
++            </bean>
++        </property>
++    </bean>
++
++    <!-- placeholder so applications can override without making DD changes-->
++    <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
++        <property name="lookupableHelperService">
++            <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
++                parent="lookupableHelperService">
++            </bean>
++        </property>
++    </bean>
++
++	<bean id="workflowLookupable" class="org.kuali.rice.kns.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
++		<property name="configurationService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++		<property name="businessObjectDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++	</bean>
++
++	<bean id="pessimisticLockLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
++		<property name="lookupableHelperService">
++			<ref bean="pessimisticLockLookupableHelperService" />
++		</property>
++	</bean>
++    
++	<bean id="pessimisticLockLookupableHelperService" class="org.kuali.rice.kns.lookup.PessimisticLockLookupableHelperServiceImpl" scope="prototype">
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="businessObjectDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="encryptionService">
++			<ref bean="encryptionService" />
++		</property>
++		<property name="lookupService">
++			<ref bean="lookupService" />
++		</property>
++		<property name="businessObjectMetaDataService">
++			<ref bean="businessObjectMetaDataService" />
++		</property>
++		<property name="sequenceAccessorService">
++			<ref bean="sequenceAccessorService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="lookupResultsService">
++			<ref bean="lookupResultsService" />
++		</property>
++	</bean>
++
++		<bean id="sessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
++		<property name="maxCacheSize" value="${session.document.cache.size}" />
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="sessionDocumentDao">
++			<ref bean="sessionDocumentDao" />
++		</property>
++	</bean>
++	<!-- Since these beans are not a singletons, Spring does not inject their static
++		members until the first one is created. This bean causes one to be created.
++	-->
++	<bean id="springStatefulStaticInitializer" class="java.util.ArrayList">
++		<constructor-arg>
++			<list>
++				<ref bean="kualiLookupable" />
++				<ref bean="workflowLookupable" />
++			</list>
++		</constructor-arg>
++	</bean>
++
++	<bean id="lookupUtils" class="org.kuali.rice.kns.lookup.LookupUtils">
++		<property name="businessObjectDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="businessObjectMetaDataService">
++			<ref bean="businessObjectMetaDataService" />
++		</property>
++        <property name="kualiConfigurationService" ref="kualiConfigurationService" />
++	</bean>
++
++	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype">
++		<property name="kualiConfigurationService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++	</bean>
++
++	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
++
++	<bean id="maintenanceDocumentRuleBase" class="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
++		<property name="configService">
++			<ref bean="kualiConfigurationService" />
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="dictionaryValidationService">
++			<ref bean="dictionaryValidationService" />
++		</property>
++		<property name="documentAuthorizationService">
++			<ref bean="documentAuthorizationService" />
++		</property>
++		<property name="workflowDocumentService">
++			<ref bean="workflowDocumentService" />
++		</property>
++		<property name="boDictionaryService">
++			<ref bean="businessObjectDictionaryService" />
++		</property>
++		<property name="ddService">
++			<ref bean="dataDictionaryService" />
++		</property>
++		<property name="boService">
++			<ref bean="businessObjectService" />
++		</property>
++		<property name="maintDocDictionaryService">
++			<ref bean="maintenanceDocumentDictionaryService" />
++		</property>
++		<property name="persistenceService">
++			<ref bean="persistenceService" />
++		</property>
++	</bean>
++
++	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
++		<property name="businessObjectDao" ref="businessObjectDao" />
++    <property name="documentDaoJpa" ref="documentDaoJpa" />
++    <property name="documentDaoOjb" ref="documentDaoOjb" />
++	</bean>
++
++  <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentDaoJpa">
++    <property name="businessObjectDao" ref="businessObjectDao" />
++  </bean>
++
++  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentDaoOjb">
++    <property name="businessObjectDao" ref="businessObjectDao" />
++  </bean>
++
++  <bean id="documentHeaderDao" class="org.kuali.rice.kns.dao.proxy.DocumentHeaderDaoProxy">
++    <property name="documentHeaderDaoJpa" ref="documentHeaderDaoJpa" />
++    <property name="documentHeaderDaoOjb" ref="documentHeaderDaoOjb" />
++  </bean>
++  
++  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoJpa" />
++	
++	<bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoOjb" />
++
++  <bean id="lookupDao" class="org.kuali.rice.kns.dao.proxy.LookupDaoProxy">
++    <property name="lookupDaoJpa" ref="lookupDaoJpa" />
++    <property name="lookupDaoOjb" ref="lookupDaoOjb" />
++  </bean>
++  
++  <bean id="lookupDaoJpa" class="org.kuali.rice.kns.dao.impl.LookupDaoJpa">
++    <property name="persistenceStructureService" ref="persistenceStructureService" />
++    <property name="dateTimeService" ref="dateTimeService" />
++  </bean>
++   
++  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
++    <property name="persistenceStructureService" ref="persistenceStructureService" />
++		<property name="dateTimeService" ref="dateTimeService" />
++	</bean>
++
++  <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
++    <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
++    <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb" />
++  </bean>
++
++	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa" />
++
++  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoOjb" />
++
++  <bean id="noteDao" class="org.kuali.rice.kns.dao.proxy.NoteDaoProxy">
++    <property name="noteDaoJpa" ref="noteDaoJpa" />
++    <property name="noteDaoOjb" ref="noteDaoOjb" />
++  </bean>
++
++	<bean id="noteDaoJpa" class="org.kuali.rice.kns.dao.impl.NoteDaoJpa" />
++
++  <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.NoteDaoOjb" />
++
++  <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
++    <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />
++    <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb" />
++  </bean>
++
++  <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa">
++    <property name="persistenceStructureService" ref="persistenceStructureService" />
++  </bean>
++
++	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb">
++		<property name="persistenceStructureService" ref="persistenceStructureService" />
++	</bean>
++	
++	<bean id="sessionDocumentDao" class="org.kuali.rice.kns.dao.proxy.SessionDocumentDaoProxy">
++    	<property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa" />
++    	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
++  	</bean>
++  
++    <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoJpa" />
++	
++	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoOjb" />
++	
++	<bean id="inactivationBlockingDetectionService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDetectionServiceImpl">
++		<property name="businessObjectMetaDataService">
++			<ref bean="businessObjectMetaDataService"/>
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++		<property name="businessObjectService">
++			<ref bean="businessObjectService" />
++		</property>
++	</bean>
++	
++	<bean id="inactivationBlockingDisplayService" class="org.kuali.rice.kns.service.impl.InactivationBlockingDisplayServiceImpl">
++		<property name="persistenceService">
++			<ref bean="persistenceService"/>
++		</property>
++		<property name="dataDictionaryService">
++			<ref bean="dataDictionaryService"/>
++		</property>
++		<property name="persistenceStructureService">
++			<ref bean="persistenceStructureService" />
++		</property>
++	</bean>
++	<bean id="kimPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
++
++	<bean id="documentStatusComponentAttributePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeServiceImpl" >
++    	<property name="kimAttributesTranslators">
++    		<list>
++				<bean class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeTranslator">
++					<property name="supportedAttributeNames">
++						<list>
++							<value>Document Number</value>
++							<value>Property Name</value>
++							<value>Component</value>
++						</list>
++					</property>
++					<property name="resultAttributeNames">
++						<list>
++							<value>Document Type Name</value>
++							<value>Route Status Code</value>
++							<value>Route Node Name</value>
++						</list>
++					</property>
++			    </bean>
++    		</list>
++    	</property>
++	</bean>
++			
++  <!-- START JPA CONFIGURATION -->
++
++  <!-- Used for @PersistenceContext auto-injection -->
++  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
++
++  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
++    <constructor-arg value="rice.kns"/>
++    <constructor-arg ref="knsDataSource"/>
++  </bean>
++
 +  <!-- Used for @Transactional so you don't have to wire services up in here-->
-   <tx:annotation-driven transaction-manager="transactionManager"/>
-   
-   <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-@@ -895,4 +1005,8 @@
- 		</property>
- 	</bean>	
- 	
++  <tx:annotation-driven transaction-manager="transactionManager"/>
++  
++  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
++
++  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
++    <property name="interceptorNames">
++      <list>
++        <idref local="NoResultExceptionInterceptor" />
++      </list>
++    </property>
++    <property name="beanNames">
++      <list>
++        <idref local="businessObjectDaoJpa"/>        
++        <idref local="documentDaoJpa"/>
++        <idref local="documentHeaderDao"/>        
++        <idref local="lookupDaoJpa"/>
++        <idref local="persistenceDaoJpa"/>
++        <idref local="maintenanceDocumentDao"/>
++        <idref local="noteDao"/>
++        <idref local="persistedLookupMetadataDao"/>
++        <idref local="sessionDocumentDao"/>        
++        <idref local="postProcessorService"/>
++      </list>
++    </property>
++  </bean>
++  
++  <!-- END JPA CONFIGURATION -->
++
++	
++	<bean id="documentSerializerService" class="org.kuali.rice.kns.service.impl.DocumentSerializerServiceImpl">
++		<property name="persistenceService">
++			<ref bean="persistenceService" />
++		</property>
++		<property name="xmlObjectSerializerService">
++			<ref bean="xmlObjectSerializerService"/>
++		</property>
++	</bean>
++
++	<bean id="businessObjectSerializerService" class="org.kuali.rice.kns.service.impl.BusinessObjectSerializerServiceImpl">
++		<property name="persistenceService">
++			<ref bean="persistenceService" />
++		</property>
++		<property name="xmlObjectSerializerService">
++			<ref bean="xmlObjectSerializerService"/>
++		</property>
++	</bean>	
++	
 +	<bean id="knsModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase" >
 +    	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
 +    	<property name="kualiModuleService" ref="kualiModuleService" />
 +    </bean>
- </beans>
++</beans>
 Index: impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl
 ===================================================================
 --- impl/src/main/config/ddl/tables/KR_COUNTRY_T.table.ddl	(revision 0)
@@ -918,7 +2685,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/Postal
 ===================================================================
 --- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml	(revision 0)
 +++ impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml	(revision 0)
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,101 @@
 +<beans xmlns="http://www.springframework.org/schema/beans"
 +    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 +    xmlns:p="http://www.springframework.org/schema/p"
@@ -1008,8 +2775,6 @@ Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/Postal
 +        <bean parent="MaintainableFieldDefinition"
 +              p:defaultValue="true"
 +              p:name="active" />
-+        <bean parent="MaintainableFieldDefinition"
-+              p:name="versionNumber" />
 +      </list>
 +    </property>
 +  </bean>
@@ -1277,13 +3042,13 @@ Index: impl/src/main/config/ddl/tables/KR_POSTAL_CODE_T.table.ddl
 +
 Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 ===================================================================
---- impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml	(revision 4996)
+--- impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml	(revision 5105)
 +++ impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml	(working copy)
-@@ -372,5 +372,68 @@
+@@ -298,5 +298,68 @@
  	    <field-descriptor name="lastUpdatedDate" column="LST_UPDATE_DT" jdbc-type="TIMESTAMP" index="true" />
    </class-descriptor>
    
-+  <class-descriptor class="org.kuali.kfs.sys.businessobject.CountryImpl" table="KR_COUNTRY_T">
++  <class-descriptor class="org.kuali.rice.kns.bo.CountryImpl" table="KR_COUNTRY_T">
 +	    <field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 +    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -1292,7 +3057,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 +		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 +  </class-descriptor>
 +
-+  <class-descriptor class="org.kuali.kfs.sys.businessobject.StateImpl" table="KR_STATE_T">
++  <class-descriptor class="org.kuali.rice.kns.bo.StateImpl" table="KR_STATE_T">
 +		<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +    	<field-descriptor name="postalStateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +    	<field-descriptor name="postalStateName" column="POSTAL_STATE_NM" jdbc-type="VARCHAR" />
@@ -1300,14 +3065,14 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 +    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 +		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 +	
-+		<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++		<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
 +        	<foreignkey field-ref="postalCountryCode" />
 +    	</reference-descriptor>
 +  </class-descriptor>
 +
-+  <class-descriptor class="org.kuali.kfs.sys.businessobject.PostalCodeImpl" table="KR_POSTAL_CODE_T">
++  <class-descriptor class="org.kuali.rice.kns.bo.PostalCodeImpl" table="KR_POSTAL_CODE_T">
 +	<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-+    <field-descriptor name="postalCode" column="POSTAL_ZIP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
++    <field-descriptor name="postalCode" column="POSTAL_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +    <field-descriptor name="postalStateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" />
 +    <field-descriptor name="postalCityName" column="POSTAL_CITY_NM" jdbc-type="VARCHAR" />
 +    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -1315,18 +3080,18 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 +	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 +	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" />
 +	
-+	<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
++	<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
 +        <foreignkey field-ref="postalCountryCode" />
 +    </reference-descriptor>
 +    
-+    <reference-descriptor name="state" class-ref="org.kuali.kfs.sys.businessobject.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
++    <reference-descriptor name="state" class-ref="org.kuali.rice.kns.bo.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
 +        <foreignkey field-ref="postalCountryCode" />
 +        <foreignkey field-ref="postalStateCode" />
 +    </reference-descriptor>
 +  </class-descriptor>
 +
 +
-+<class-descriptor class="org.kuali.kfs.sys.businessobject.CountyImpl" table="KR_COUNTY_T" >
++<class-descriptor class="org.kuali.rice.kns.bo.CountyImpl" table="KR_COUNTY_T" >
 +	<field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 +	<field-descriptor name="stateCode" column="STATE_CD"  jdbc-type="VARCHAR" primarykey="true" index="true" />
@@ -1335,19 +3100,20 @@ Index: impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml
 +	<field-descriptor name="countyName" column="COUNTY_NM" jdbc-type="VARCHAR" />
 +	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 +	
-+	<reference-descriptor name="country" class-ref="org.kuali.kfs.sys.businessobject.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++	<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
 +        <foreignkey field-ref="postalCountryCode" />
 +    </reference-descriptor>
 +	
-+	<reference-descriptor name="state" class-ref="org.kuali.kfs.sys.businessobject.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
++	<reference-descriptor name="state" class-ref="org.kuali.rice.kns.bo.StateImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
 +        <foreignkey field-ref="postalCountryCode" />
 +        <foreignkey field-ref="stateCode" />
 +    </reference-descriptor>
 +</class-descriptor>
 +
    
+-</descriptor-repository>
 +  
- </descriptor-repository>
++</descriptor-repository>
 \ No newline at end of file
 Index: impl/src/main/java/org/kuali/rice/kns/bo/options/StateValuesFinder.java
 ===================================================================
@@ -1637,6 +3403,60 @@ Index: impl/src/main/java/org/kuali/rice/kns/bo/PostalCode.java
 +
 +}
 \ No newline at end of file
+Index: scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-workflow-documentType-0.9.3-to-0.9.4.xml
+===================================================================
+--- scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-workflow-documentType-0.9.3-to-0.9.4.xml	(revision 0)
++++ scripts/upgrades/0.9.3 to 0.9.4/kns-upgrade-workflow-documentType-0.9.3-to-0.9.4.xml	(revision 0)
+@@ -0,0 +1,49 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
++  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
++     <documentType>
++      <name>CountryMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>Country</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    <documentType>
++      <name>CountyMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>County</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    <documentType>
++      <name>StateMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>State</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    <documentType>
++      <name>PostalCodeMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>Postal Code</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>   
++  </documentTypes>
++</data>
 Index: impl/src/main/java/org/kuali/rice/kns/bo/StateImpl.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/bo/StateImpl.java	(revision 0)
@@ -1807,7 +3627,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Country.xml
 +  <bean id="Country" parent="Country-parentBean" />
 +
 +  <bean id="Country-parentBean" abstract="true" parent="BusinessObjectEntry">
-+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo..CountryImpl" />
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountryImpl" />
 +    <property name="inquiryDefinition" >
 +      <ref bean="Country-inquiryDefinition" />
 +    </property>
@@ -2218,156 +4038,6 @@ Index: impl/src/main/java/org/kuali/rice/kns/service/impl/CountyServiceImpl.java
 +        this.countryService = countryService;
 +    }
 +}
-Index: impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql
-===================================================================
---- impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(revision 4890)
-+++ impl/src/main/config/upgrades/release_0.9.4/upgrade-kns-0.9.4.sql	(working copy)
-@@ -11,3 +11,145 @@
- CREATE INDEX KR_KNS_SESN_DOC_TI1 ON KR_KNS_SESN_DOC_T (
-         LST_UPDATE_DT )
- /
-+
-+
-+CREATE TABLE KR_COUNTRY_T 
-+    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    POSTAL_CNTRY_NM VARCHAR2(40), 
-+    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL, 
-+    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
-+/ 
-+ALTER TABLE KR_COUNTRY_T 
-+ADD CONSTRAINT KR_COUNTRY_TP1 
-+PRIMARY KEY (POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_COUNTRY_T 
-+ADD CONSTRAINT KR_COUNTRY_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+
-+
-+CREATE TABLE KR_COUNTY_T 
-+    (COUNTY_CD VARCHAR2(10) NOT NULL, 
-+    STATE_CD VARCHAR2(2) NOT NULL, 
-+    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    COUNTY_NM VARCHAR2(100), 
-+    ACTV_IND VARCHAR2(1)) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TP1 
-+PRIMARY KEY (COUNTY_CD, STATE_CD, POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+ALTER TABLE KR_COUNTY_T 
-+ADD CONSTRAINT KR_COUNTY_TR1 
-+FOREIGN KEY (STATE_CD, POSTAL_CNTRY_CD) 
-+REFERENCES KR_STATE_T 
-+/ 
-+
-+CREATE TABLE KR_POSTAL_CODE_T 
-+    (POSTAL_ZIP_CD VARCHAR2(20) NOT NULL, 
-+    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    POSTAL_STATE_CD VARCHAR2(2), 
-+    COUNTY_CD VARCHAR2(10), 
-+    POSTAL_CITY_NM VARCHAR2(30), 
-+    BLDG_CD VARCHAR2(4), 
-+    BLDG_ROOM_NBR VARCHAR2(8), 
-+    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
-+/ 
-+ALTER TABLE KR_POSTAL_CODE_T 
-+ADD CONSTRAINT KR_POSTAL_CODE_TP1 
-+PRIMARY KEY (POSTAL_ZIP_CD, POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_POSTAL_CODE_T 
-+ADD CONSTRAINT KR_POSTAL_CODE_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+ALTER TABLE KR_POSTAL_CODE_T 
-+ADD CONSTRAINT KR_POSTAL_CODE_TR1 
-+FOREIGN KEY (POSTAL_CNTRY_CD) 
-+REFERENCES KR_COUNTRY_T 
-+/ 
-+ALTER TABLE KR_POSTAL_CODE_T 
-+ADD CONSTRAINT KR_POSTAL_CODE_TR2 
-+FOREIGN KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
-+REFERENCES KR_STATE_T 
-+/ 
-+ALTER TABLE KR_POSTAL_CODE_T 
-+ADD CONSTRAINT KR_POSTAL_CODE_TR3 
-+FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
-+REFERENCES KR_COUNTY_T 
-+/ 
-+
-+
-+CREATE TABLE KR_STATE_T 
-+    (POSTAL_STATE_CD VARCHAR2(2) NOT NULL, 
-+    POSTAL_CNTRY_CD VARCHAR2(2) DEFAULT 'US' NOT NULL, 
-+    OBJ_ID VARCHAR2(36) NOT NULL, 
-+    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL, 
-+    POSTAL_STATE_NM VARCHAR2(40), 
-+    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TP1 
-+PRIMARY KEY (POSTAL_STATE_CD, POSTAL_CNTRY_CD) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TC0 
-+UNIQUE (OBJ_ID) 
-+/ 
-+ALTER TABLE KR_STATE_T 
-+ADD CONSTRAINT KR_STATE_TR1 
-+FOREIGN KEY (POSTAL_CNTRY_CD) 
-+REFERENCES KR_COUNTRY_T 
-+/ 
-+
-+
-+INSERT INTO SH_PARM_T
-+VALUES
-+('KR-NS','State','STATE', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fstatemaintenancedocument.htm','Help URL for State document.','A','FP_OPERATIONS')
-+/
-+INSERT INTO SH_PARM_T
-+VALUES
-+('KR-NS','Country','COUNTRY', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fcountrymaintenancedocument.htm','Help URL for Chart Country.','A','FP_OPERATIONS')
-+/
-+INSERT INTO SH_PARM_T
-+VALUES
-+('KR-NS','PostalCode','POSTAL_CODE', SYS_GUID(),1,'HELP','default.htm?turl=WordDocuments%2Fpostalcodemaintenancedocument.htm','Help URL for Postal Code document.','A','FP_OPERATIONS')
-+/
-+
-+INSERT INTO SH_PARM_T
-+VALUES
-+('KR-NS','All','DEFAULT_COUNTRY',  SYS_GUID(),1,'CONFG','US','Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected.','A','FP_OPERATIONS')
-+/
-+
-+INSERT INTO FP_DOC_TYPE_T
-+VALUES
-+('ZIPC', SYS_GUID(),1,'Postal Code','Y')
-+/
-+INSERT INTO FP_DOC_TYPE_T
-+VALUES
-+('STAT', SYS_GUID(),1,'State','Y')
-+/
-+INSERT INTO FP_DOC_TYPE_T
-+VALUES
-+('CNTY', SYS_GUID(),1,'County','Y')
-+/
-+INSERT INTO FP_DOC_TYPE_T
-+VALUES
-+('CTRY',SYS_GUID(),1,'Country','Y')
-+/
-+
-+
-+COMMIT
-+/
-+
 Index: impl/src/main/java/org/kuali/rice/kns/bo/PostalCodeImpl.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/bo/PostalCodeImpl.java	(revision 0)
@@ -2744,7 +4414,7 @@ Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PostalCode.x
 +  <bean id="PostalCode" parent="PostalCode-parentBean" />
 +
 +  <bean id="PostalCode-parentBean" abstract="true" parent="BusinessObjectEntry">
-+    <property name="businessObjectClass" value="org.kuali.kfs.sys.businessobject.PostalCodeImpl" />
++    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 +    <property name="inquiryDefinition" >
 +      <ref bean="PostalCode-inquiryDefinition" />
 +    </property>
@@ -3097,9 +4767,9 @@ Index: impl/src/main/java/org/kuali/rice/kns/service/CountryService.java
 +}
 Index: impl/src/main/java/org/kuali/rice/kns/util/KNSPropertyConstants.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/util/KNSPropertyConstants.java	(revision 4890)
+--- impl/src/main/java/org/kuali/rice/kns/util/KNSPropertyConstants.java	(revision 5087)
 +++ impl/src/main/java/org/kuali/rice/kns/util/KNSPropertyConstants.java	(working copy)
-@@ -103,4 +103,11 @@
+@@ -103,5 +103,11 @@
  	public static final String WORKFLOW_DOCUMENT = "workflowDocument";
  	public static final String XML_DOCUMENT_CONTENTS = "xmlDocumentContents";
  	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
@@ -3111,6 +4781,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/util/KNSPropertyConstants.java
 +    public static final String POSTAL_STATE_CODE = "postalStateCode";
 +    public static final String POSTAL_CODE = "postalCode";
  }
+-
 Index: impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml
 ===================================================================
 --- impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml	(revision 0)
@@ -3501,15 +5172,852 @@ Index: impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/State.xml
 +</beans>
 Index: impl/src/main/java/org/kuali/rice/kns/service/KNSServiceLocator.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/service/KNSServiceLocator.java	(revision 4970)
+--- impl/src/main/java/org/kuali/rice/kns/service/KNSServiceLocator.java	(revision 5087)
 +++ impl/src/main/java/org/kuali/rice/kns/service/KNSServiceLocator.java	(working copy)
-@@ -427,5 +427,17 @@
-     public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
-         return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
-     }
+@@ -1,422 +1,433 @@
+-/*
+- * Copyright 2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+- * compliance with the License. You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+- * language governing permissions and limitations under the License.
+- */
+-package org.kuali.rice.kns.service;
+-
+-import java.util.ArrayList;
+-import java.util.Collection;
+-import java.util.Collections;
+-import java.util.HashMap;
+-import java.util.HashSet;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Set;
+-
+-import javax.persistence.EntityManagerFactory;
+-
+-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+-import org.kuali.rice.core.service.EncryptionService;
+-import org.kuali.rice.kns.inquiry.Inquirable;
+-import org.kuali.rice.kns.lookup.LookupResultsService;
+-import org.kuali.rice.kns.lookup.Lookupable;
+-import org.kuali.rice.kns.question.Question;
+-import org.kuali.rice.kns.util.OjbCollectionHelper;
+-import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
+-import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
+-import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+-import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
+-import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
+-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+-import org.springframework.transaction.PlatformTransactionManager;
+-import org.springframework.transaction.support.TransactionTemplate;
+-
+-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+-
+-public class KNSServiceLocator<T extends Object> {
+-
+-    public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
+-
+-    public static Object getService(String serviceName) {
+-	return GlobalResourceLoader.getService(serviceName);
+-    }
+-
+-    public static <T> T getNervousSystemContextBean(Class<T> type) {
+-	Collection<T> beansOfType = getBeansOfType(type).values();
+-	if (beansOfType.isEmpty()) {
+-	    throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: "
+-		    + type.getName());
+-	}
+-	if (beansOfType.size() > 1) {
+-	    return getNervousSystemContextBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
+-	}
+-	return beansOfType.iterator().next();
+-    }
+-
+-    @SuppressWarnings("unchecked")
+-    public static <T> T getNervousSystemContextBean(Class<T> type, String name) {
+-	return (T) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
+-    }
+-
+-    @SuppressWarnings("unchecked")
+-    public static <T> Map<String, T> getBeansOfType(Class<T> type) {
+-	return new HashMap((Map) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
+-    }
+-
+-    public static String[] getBeanNames() {
+-	return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
+-    }
+-
+-    public static Set<String> getSingletonNames() {
+-	Set<String> singletonNames = new HashSet<String>();
+-	Collections.addAll(singletonNames, RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
+-		.getSingletonNames());
+-	return singletonNames;
+-    }
+-
+-    public static Set<Class> getSingletonTypes() {
+-	Set<Class> singletonTypes = new HashSet<Class>();
+-	for (String singletonName : getSingletonNames()) {
+-	    singletonTypes.add(RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
+-		    singletonName));
+-	}
+-	return singletonTypes;
+-    }
+-
+-    public static boolean isSingleton( String beanName ) {
+-    	try {
+-    	    return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
+-    	} catch ( NoSuchBeanDefinitionException ex ) {
+-    	    // service is not in Spring so we can't assume
+-    	    return false;
+-    	}
+-    }
+-            
+-    public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
+-	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
+-	for (Object namedOrderedListBean : RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
+-		NamedOrderedListBean.class).values()) {
+-	    if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
+-		namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
+-	    }
+-	}
+-	return namedOrderedListBeans;
+-    }
+-
+-    public static final String ENCRYPTION_SERVICE = "encryptionService";
+-
+-    public static final EncryptionService getEncryptionService() {
+-	return (EncryptionService) getService(ENCRYPTION_SERVICE);
+-    }
+-
+-    public static final String MAIL_SERVICE = "mailService";
+-
+-    public static final MailService getMailService() {
+-	return (MailService) getService(MAIL_SERVICE);
+-    }
+-
+-    public static final String METHOD_CACHE_INTERCEPTOR = "methodCacheInterceptor";
+-
+-    public static MethodCacheInterceptor getMethodCacheInterceptor() {
+-	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
+-    }
+-
+-    public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
+-
+-    public static XmlObjectSerializerService getXmlObjectSerializerService() {
+-	return (XmlObjectSerializerService) getService(XML_OBJECT_SERIALIZER_SERVICE);
+-    }
+-
+-    public static final String DOCUMENT_SERVICE = "documentService";
+-
+-    public static DocumentService getDocumentService() {
+-	return (DocumentService) getService(DOCUMENT_SERVICE);
+-    }
+-
+-    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
+-
+-    public static DocumentHeaderService getDocumentHeaderService() {
+-    return (DocumentHeaderService) getService(DOCUMENT_HEADER_SERVICE);
+-    }
+-
+-    public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
+-
+-    public static PostProcessorService getPostProcessorService() {
+-	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
+-    }
+-
+-    public static final String DATETIME_SERVICE = "dateTimeService";
+-
+-    public static DateTimeService getDateTimeService() {
+-	return (DateTimeService) getService(DATETIME_SERVICE);
+-    }
+-
+-    public static final String WORKFLOW_GROUP_SERVICE = "workflowGroupService";
+-
+-    public static WorkflowGroupService getWorkflowGroupService() {
+-	return (WorkflowGroupService) getService(WORKFLOW_GROUP_SERVICE);
+-    }
+-
+-    public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";
+-
+-    public static DocumentTypeService getDocumentTypeService() {
+-	return (DocumentTypeService) getService(DOCUMENT_TYPE_SERVICE);
+-    }
+-
+-    public static final String LOOKUP_SERVICE = "lookupService";
+-
+-    public static LookupService getLookupService() {
+-	return (LookupService) getService(LOOKUP_SERVICE);
+-    }
+-
+-    public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
+-
+-    public static LookupResultsService getLookupResultsService() {
+-	return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
+-    }
+-
+-    public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
+-
+-    public static KualiModuleService getKualiModuleService() {
+-	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
+-    }
+-
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
++ * compliance with the License. You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
++ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
++ * language governing permissions and limitations under the License.
++ */
++package org.kuali.rice.kns.service;
++
++import java.util.ArrayList;
++import java.util.Collection;
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.HashSet;
++import java.util.List;
++import java.util.Map;
++import java.util.Set;
++
++import javax.persistence.EntityManagerFactory;
++
++import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
++import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
++import org.kuali.rice.core.service.EncryptionService;
++import org.kuali.rice.kns.inquiry.Inquirable;
++import org.kuali.rice.kns.lookup.LookupResultsService;
++import org.kuali.rice.kns.lookup.Lookupable;
++import org.kuali.rice.kns.question.Question;
++import org.kuali.rice.kns.util.OjbCollectionHelper;
++import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
++import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
++import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
++import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
++import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
++import org.springframework.beans.factory.NoSuchBeanDefinitionException;
++import org.springframework.transaction.PlatformTransactionManager;
++import org.springframework.transaction.support.TransactionTemplate;
++
++import com.opensymphony.oscache.general.GeneralCacheAdministrator;
++
++public class KNSServiceLocator<T extends Object> {
++
++    public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
++
++    public static Object getService(String serviceName) {
++	return GlobalResourceLoader.getService(serviceName);
++    }
++
++    public static <T> T getNervousSystemContextBean(Class<T> type) {
++	Collection<T> beansOfType = getBeansOfType(type).values();
++	if (beansOfType.isEmpty()) {
++	    throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: "
++		    + type.getName());
++	}
++	if (beansOfType.size() > 1) {
++	    return getNervousSystemContextBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
++	}
++	return beansOfType.iterator().next();
++    }
++
++    @SuppressWarnings("unchecked")
++    public static <T> T getNervousSystemContextBean(Class<T> type, String name) {
++	return (T) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
++    }
++
++    @SuppressWarnings("unchecked")
++    public static <T> Map<String, T> getBeansOfType(Class<T> type) {
++	return new HashMap((Map) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
++    }
++
++    public static String[] getBeanNames() {
++	return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
++    }
++
++    public static Set<String> getSingletonNames() {
++	Set<String> singletonNames = new HashSet<String>();
++	Collections.addAll(singletonNames, RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
++		.getSingletonNames());
++	return singletonNames;
++    }
++
++    public static Set<Class> getSingletonTypes() {
++	Set<Class> singletonTypes = new HashSet<Class>();
++	for (String singletonName : getSingletonNames()) {
++	    singletonTypes.add(RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
++		    singletonName));
++	}
++	return singletonTypes;
++    }
++
++    public static boolean isSingleton( String beanName ) {
++    	try {
++    	    return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
++    	} catch ( NoSuchBeanDefinitionException ex ) {
++    	    // service is not in Spring so we can't assume
++    	    return false;
++    	}
++    }
++            
++    public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
++	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
++	for (Object namedOrderedListBean : RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
++		NamedOrderedListBean.class).values()) {
++	    if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
++		namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
++	    }
++	}
++	return namedOrderedListBeans;
++    }
++
++    public static final String ENCRYPTION_SERVICE = "encryptionService";
++
++    public static final EncryptionService getEncryptionService() {
++	return (EncryptionService) getService(ENCRYPTION_SERVICE);
++    }
++
++    public static final String MAIL_SERVICE = "mailService";
++
++    public static final MailService getMailService() {
++	return (MailService) getService(MAIL_SERVICE);
++    }
++
++    public static final String METHOD_CACHE_INTERCEPTOR = "methodCacheInterceptor";
++
++    public static MethodCacheInterceptor getMethodCacheInterceptor() {
++	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
++    }
++
++    public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
++
++    public static XmlObjectSerializerService getXmlObjectSerializerService() {
++	return (XmlObjectSerializerService) getService(XML_OBJECT_SERIALIZER_SERVICE);
++    }
++
++    public static final String DOCUMENT_SERVICE = "documentService";
++
++    public static DocumentService getDocumentService() {
++	return (DocumentService) getService(DOCUMENT_SERVICE);
++    }
++
++    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
++
++    public static DocumentHeaderService getDocumentHeaderService() {
++    return (DocumentHeaderService) getService(DOCUMENT_HEADER_SERVICE);
++    }
++
++    public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
++
++    public static PostProcessorService getPostProcessorService() {
++	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
++    }
++
++    public static final String DATETIME_SERVICE = "dateTimeService";
++
++    public static DateTimeService getDateTimeService() {
++	return (DateTimeService) getService(DATETIME_SERVICE);
++    }
++
++    public static final String WORKFLOW_GROUP_SERVICE = "workflowGroupService";
++
++    public static WorkflowGroupService getWorkflowGroupService() {
++	return (WorkflowGroupService) getService(WORKFLOW_GROUP_SERVICE);
++    }
++
++    public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";
++
++    public static DocumentTypeService getDocumentTypeService() {
++	return (DocumentTypeService) getService(DOCUMENT_TYPE_SERVICE);
++    }
++
++    public static final String LOOKUP_SERVICE = "lookupService";
++
++    public static LookupService getLookupService() {
++	return (LookupService) getService(LOOKUP_SERVICE);
++    }
++
++    public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
++
++    public static LookupResultsService getLookupResultsService() {
++	return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
++    }
++
++    public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
++
++    public static KualiModuleService getKualiModuleService() {
++	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
++    }
++
+     public static final String KIM_GROUP_SERVICE = "kimGroupService";
+-
+-    public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
+-
+-    public static WorkflowDocumentService getWorkflowDocumentService() {
+-	return (WorkflowDocumentService) getService(WORKFLOW_DOCUMENT_SERVICE);
+-    }
+-
+-    public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
+-
+-    public static KualiWorkflowInfo getWorkflowInfoService() {
+-	return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
+-    }
+-
+-    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
+-
+-    public static KualiConfigurationService getKualiConfigurationService() {
+-	return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
+-    }
+-
+-    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
+-
+-    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+-	return (BusinessObjectDictionaryService) getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
+-    }
+-
+-    public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
+-
+-    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+-	return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
+-    }
+-
+-    public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
+-
+-    public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
+-	return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
+-    }
+-
+-    public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
+-
+-    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+-	return (MaintenanceDocumentDictionaryService) getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
+-    }
+-
+-    public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
+-
+-    public static DataDictionaryService getDataDictionaryService() {
+-	return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
+-    }
+-
+-    public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
+-
+-    public static MaintenanceDocumentService getMaintenanceDocumentService() {
+-	return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
+-    }
+-
+-    public static final String NOTE_SERVICE = "noteService";
+-
+-    public static NoteService getNoteService() {
+-	return (NoteService) getService(NOTE_SERVICE);
+-    }
+-
+-    public static final String PERSISTENCE_SERVICE = "persistenceService";
+-
+-    public static PersistenceService getPersistenceService() {
+-	return (PersistenceService) getService(PERSISTENCE_SERVICE);
+-    }
+-
+-    public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
+-
+-    public static PersistenceStructureService getPersistenceStructureService() {
+-	return (PersistenceStructureService) getService(PERSISTENCE_STRUCTURE_SERVICE);
+-    }
+-
+-    public static final String KUALI_RULE_SERVICE = "kualiRuleService";
+-
+-    public static KualiRuleService getKualiRuleService() {
+-	return (KualiRuleService) getService(KUALI_RULE_SERVICE);
+-    }
+-
+-    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
+-
+-    public static BusinessObjectService getBusinessObjectService() {
+-	return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
+-    }
+-
+-    // special ones for Inquirable and Lookupable
+-    public static final String KUALI_INQUIRABLE = "kualiInquirable";
+-
+-    public static Inquirable getKualiInquirable() {
+-	return (Inquirable) getService(KUALI_INQUIRABLE);
+-    }
+-
+-    public static final String KUALI_LOOKUPABLE = "kualiLookupable";
+-
+-    public static Lookupable getKualiLookupable() {
+-	return (Lookupable) getService(KUALI_LOOKUPABLE);
+-    }
+-
+-    public static final String GL_LOOKUPABLE = "glLookupable";
+-
+-    public static Lookupable getGLLookupable() {
+-	return (Lookupable) getService(GL_LOOKUPABLE);
+-    }
+-
+-    public static Lookupable getLookupable(String lookupableName) {
+-	return (Lookupable) getService(lookupableName);
+-    }
+-
+-    // special one for QuestionPrompt
+-    public static Question getQuestion(String questionName) {
+-	return (Question) getService(questionName);
+-    }
+-
+-    // DictionaryValidationService
+-    public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
+-
+-    public static DictionaryValidationService getDictionaryValidationService() {
+-	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
+-    }
+-
+-    // AuthorizationService
+-    public static final String AUTHORIZATION_SERVICE = "authorizationService";
+-
+-    public static AuthorizationService getAuthorizationService() {
+-	return (AuthorizationService) getService(AUTHORIZATION_SERVICE);
+-    }
+-
+-    // AttachmentService
+-    public static final String ATTACHMENT_SERVICE = "attachmentService";
+-
+-    public static AttachmentService getAttachmentService() {
+-	return (AttachmentService) getService(ATTACHMENT_SERVICE);
+-    }
+-
+-    // DocumentAuthorizationService
+-    public static final String DOCUMENT_AUTHORIZATION_SERVICE = "documentAuthorizationService";
+-
+-    public static DocumentAuthorizationService getDocumentAuthorizationService() {
+-	return (DocumentAuthorizationService) getService(DOCUMENT_AUTHORIZATION_SERVICE);
+-    }
+-
+-    // SequenceAccessorService
+-    public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
+-
+-    public static SequenceAccessorService getSequenceAccessorService() {
+-	return (SequenceAccessorService) getService(SEQUENCE_ACCESSOR_SERVICE);
+-    }
+-
+-    // KeyValuesService
+-    public static final String KEY_VALUES_SERVICE = "keyValuesService";
+-
+-    public static KeyValuesService getKeyValuesService() {
+-	return (KeyValuesService) getService(KEY_VALUES_SERVICE);
+-    }
+-
+-    public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
+-
+-    public static OjbCollectionHelper getOjbCollectionHelper() {
+-	return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
+-    }
+-
+-    public static final String PERSISTENCE_CACHE_ADMINISTRATOR = "persistenceCacheAdministrator";
+-
+-    public static final GeneralCacheAdministrator getPersistenceCacheAdministrator() {
+-	return (GeneralCacheAdministrator) getService(PERSISTENCE_CACHE_ADMINISTRATOR);
+-    }
+-
+-    public static final String TRANSACTION_MANAGER = "transactionManager";
+-
+-    public static PlatformTransactionManager getTransactionManager() {
+-	return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
+-    }
+-
+-    public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
+-
+-    public static TransactionTemplate getTransactionTemplate() {
+-	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+-    }
+-        
+-    public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
+-    
+-    public static PessimisticLockService getPessimisticLockService() {
+-        return (PessimisticLockService) getService(PESSIMISTIC_LOCK_SERVICE);
+-    }
+-    
+-    public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
+-    
+-    public static DocumentSerializerService getDocumentSerializerService() {
+-        return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
+-    }
+-    
+-    public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
+-
+-    public static EntityManagerFactory getEntityManagerFactory() {
+-    	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
+-    }
+-
+-    public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
+-    
+-    public static PersistenceService getPersistenceServiceOjb() {
+-        return (PersistenceService) getService(PERSISTENCE_SERVICE_OJB);
+-    }
+-    
+-    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
+-
+-    public static SessionDocumentService getSessionDocumentService() {
+-	return (SessionDocumentService) getService(SESSION_DOCUMENT_SERVICE);
+-    }
+-
+-    public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
+-    
+-    public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
+-        return (InactivationBlockingDetectionService) getService(serviceName);
+-    }
+-    
+-    public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
+-    
+-    public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
+-    	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
+-    }
+-    
+-    public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
+-    
+-    public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
+-        return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
+-    }
+-
+-}
+-
++
++    public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
++
++    public static WorkflowDocumentService getWorkflowDocumentService() {
++	return (WorkflowDocumentService) getService(WORKFLOW_DOCUMENT_SERVICE);
++    }
++
++    public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
++
++    public static KualiWorkflowInfo getWorkflowInfoService() {
++	return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
++    }
++
++    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
++
++    public static KualiConfigurationService getKualiConfigurationService() {
++	return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
++    }
++
++    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
++
++    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
++	return (BusinessObjectDictionaryService) getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
++    }
++
++    public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
++
++    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
++	return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
++    }
++
++    public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
++
++    public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
++	return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
++    }
++
++    public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
++
++    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
++	return (MaintenanceDocumentDictionaryService) getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
++    }
++
++    public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
++
++    public static DataDictionaryService getDataDictionaryService() {
++	return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
++    }
++
++    public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
++
++    public static MaintenanceDocumentService getMaintenanceDocumentService() {
++	return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
++    }
++
++    public static final String NOTE_SERVICE = "noteService";
++
++    public static NoteService getNoteService() {
++	return (NoteService) getService(NOTE_SERVICE);
++    }
++
++    public static final String PERSISTENCE_SERVICE = "persistenceService";
++
++    public static PersistenceService getPersistenceService() {
++	return (PersistenceService) getService(PERSISTENCE_SERVICE);
++    }
++
++    public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
++
++    public static PersistenceStructureService getPersistenceStructureService() {
++	return (PersistenceStructureService) getService(PERSISTENCE_STRUCTURE_SERVICE);
++    }
++
++    public static final String KUALI_RULE_SERVICE = "kualiRuleService";
++
++    public static KualiRuleService getKualiRuleService() {
++	return (KualiRuleService) getService(KUALI_RULE_SERVICE);
++    }
++
++    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
++
++    public static BusinessObjectService getBusinessObjectService() {
++	return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
++    }
++
++    // special ones for Inquirable and Lookupable
++    public static final String KUALI_INQUIRABLE = "kualiInquirable";
++
++    public static Inquirable getKualiInquirable() {
++	return (Inquirable) getService(KUALI_INQUIRABLE);
++    }
++
++    public static final String KUALI_LOOKUPABLE = "kualiLookupable";
++
++    public static Lookupable getKualiLookupable() {
++	return (Lookupable) getService(KUALI_LOOKUPABLE);
++    }
++
++    public static final String GL_LOOKUPABLE = "glLookupable";
++
++    public static Lookupable getGLLookupable() {
++	return (Lookupable) getService(GL_LOOKUPABLE);
++    }
++
++    public static Lookupable getLookupable(String lookupableName) {
++	return (Lookupable) getService(lookupableName);
++    }
++
++    // special one for QuestionPrompt
++    public static Question getQuestion(String questionName) {
++	return (Question) getService(questionName);
++    }
++
++    // DictionaryValidationService
++    public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
++
++    public static DictionaryValidationService getDictionaryValidationService() {
++	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
++    }
++
++    // AuthorizationService
++    public static final String AUTHORIZATION_SERVICE = "authorizationService";
++
++    public static AuthorizationService getAuthorizationService() {
++	return (AuthorizationService) getService(AUTHORIZATION_SERVICE);
++    }
++
++    // AttachmentService
++    public static final String ATTACHMENT_SERVICE = "attachmentService";
++
++    public static AttachmentService getAttachmentService() {
++	return (AttachmentService) getService(ATTACHMENT_SERVICE);
++    }
++
++    // DocumentAuthorizationService
++    public static final String DOCUMENT_AUTHORIZATION_SERVICE = "documentAuthorizationService";
++
++    public static DocumentAuthorizationService getDocumentAuthorizationService() {
++	return (DocumentAuthorizationService) getService(DOCUMENT_AUTHORIZATION_SERVICE);
++    }
++
++    // SequenceAccessorService
++    public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
++
++    public static SequenceAccessorService getSequenceAccessorService() {
++	return (SequenceAccessorService) getService(SEQUENCE_ACCESSOR_SERVICE);
++    }
++
++    // KeyValuesService
++    public static final String KEY_VALUES_SERVICE = "keyValuesService";
++
++    public static KeyValuesService getKeyValuesService() {
++	return (KeyValuesService) getService(KEY_VALUES_SERVICE);
++    }
++
++    public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
++
++    public static OjbCollectionHelper getOjbCollectionHelper() {
++	return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
++    }
++
++    public static final String PERSISTENCE_CACHE_ADMINISTRATOR = "persistenceCacheAdministrator";
++
++    public static final GeneralCacheAdministrator getPersistenceCacheAdministrator() {
++	return (GeneralCacheAdministrator) getService(PERSISTENCE_CACHE_ADMINISTRATOR);
++    }
++
++    public static final String TRANSACTION_MANAGER = "transactionManager";
++
++    public static PlatformTransactionManager getTransactionManager() {
++	return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
++    }
++
++    public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
++
++    public static TransactionTemplate getTransactionTemplate() {
++	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
++    }
++        
++    public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
++    
++    public static PessimisticLockService getPessimisticLockService() {
++        return (PessimisticLockService) getService(PESSIMISTIC_LOCK_SERVICE);
++    }
++    
++    public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
++    
++    public static DocumentSerializerService getDocumentSerializerService() {
++        return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
++    }
++    
++    public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
++
++    public static EntityManagerFactory getEntityManagerFactory() {
++    	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
++    }
++
++    public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
++    
++    public static PersistenceService getPersistenceServiceOjb() {
++        return (PersistenceService) getService(PERSISTENCE_SERVICE_OJB);
++    }
++    
++    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
++
++    public static SessionDocumentService getSessionDocumentService() {
++	return (SessionDocumentService) getService(SESSION_DOCUMENT_SERVICE);
++    }
++
++    public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
++    
++    public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
++        return (InactivationBlockingDetectionService) getService(serviceName);
++    }
++    
++    public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
++    
++    public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
++    	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
++    }
++    
++    public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
++    
++    public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
++        return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
++    }
 +    
 +    public static final String COUNTRY_SERVICE = "countryService";
- 
++
 +    public static CountryService getCountryService() {
 +	return (CountryService) getService(COUNTRY_SERVICE);
 +    }
@@ -3520,7 +6028,67 @@ Index: impl/src/main/java/org/kuali/rice/kns/service/KNSServiceLocator.java
 +	return (StateService) getService(STATE_SERVICE);
 +    }
 +
- }
++}
+Index: impl/src/main/config/xml/RiceBootstrapData.xml
+===================================================================
+--- impl/src/main/config/xml/RiceBootstrapData.xml	(revision 5087)
++++ impl/src/main/config/xml/RiceBootstrapData.xml	(working copy)
+@@ -1252,9 +1252,53 @@
+         </start>
+       </routeNodes>
+     </documentType>
+-
+-  
+ 
++    <documentType>
++      <name>CountryMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>Country</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>   
++    <documentType>
++      <name>CountyMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>County</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    <documentType>
++      <name>StateMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>State</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    <documentType>
++      <name>PostalCodeMaintenanceDocument</name>
++      <parent>KualiSimpleMaintenanceDocument</parent>
++      <label>Postal Code</label>
++      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
++      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
++      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
++      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
++      <active>true</active>
++      <routingVersion>1</routingVersion>
++    </documentType>
++    
++ 
+     </documentTypes>
+ 
+     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 Index: impl/src/main/java/org/kuali/rice/kns/service/CountyService.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/service/CountyService.java	(revision 0)

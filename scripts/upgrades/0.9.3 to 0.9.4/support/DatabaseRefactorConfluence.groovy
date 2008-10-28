@@ -1,10 +1,18 @@
 def dir = '.'
 xmlExtension = "schema-refactor.xml"
+outputFile = "confluence-output.txt"
+
+count = 0
+for (arg in args) {
+	if (arg == '-ext') xmlExtension = args[count + 1]
+	if (arg == '-out') outputFile = args[count + 1]
+	count++
+}	
 
 def processDir( dir ) {
         
 	def files = new File(dir).list()
-    def outputFile = new File ("confluence-output.txt")
+    def outputFile = new File (outputFile)
 	if (outputFile.exists()) {
 		outputFile.delete();
 	}

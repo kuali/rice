@@ -459,6 +459,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String UNIVERSAL_USER_EDIT_WORKGROUP = "UNIVERSAL_USER_EDIT_GROUP";
         public static final String WORKFLOW_EXCEPTION_WORKGROUP = "EXCEPTION_GROUP";
         public static final String SUPERVISOR_WORKGROUP = "SUPERVISOR_GROUP";
+        public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
     }
 
     public static class SystemGroupParameterNames {

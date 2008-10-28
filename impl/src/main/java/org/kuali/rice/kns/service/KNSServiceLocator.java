@@ -417,6 +417,17 @@ public class KNSServiceLocator<T extends Object> {
     public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
         return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
     }
+    
+    public static final String COUNTRY_SERVICE = "countryService";
+
+    public static CountryService getCountryService() {
+	return (CountryService) getService(COUNTRY_SERVICE);
+    }
+    
+    public static final String STATE_SERVICE = "stateService";
+
+    public static StateService getStateService() {
+	return (StateService) getService(STATE_SERVICE);
+    }
 
 }
-

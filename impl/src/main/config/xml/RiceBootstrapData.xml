@@ -1253,8 +1253,52 @@
       </routeNodes>
     </documentType>
 
-  
-
+    <documentType>
+      <name>CountryMaintenanceDocument</name>
+      <parent>KualiSimpleMaintenanceDocument</parent>
+      <label>Country</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+    </documentType>   
+    <documentType>
+      <name>CountyMaintenanceDocument</name>
+      <parent>KualiSimpleMaintenanceDocument</parent>
+      <label>County</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+    </documentType>
+    <documentType>
+      <name>StateMaintenanceDocument</name>
+      <parent>KualiSimpleMaintenanceDocument</parent>
+      <label>State</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+    </documentType>
+    <documentType>
+      <name>PostalCodeMaintenanceDocument</name>
+      <parent>KualiSimpleMaintenanceDocument</parent>
+      <label>Postal Code</label>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>SY_FUNCTIONAL_SUPER_USERS</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>SY_MAINTENANCE_USERS</blanketApproveWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+    </documentType>
+    
+ 
     </documentTypes>
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">

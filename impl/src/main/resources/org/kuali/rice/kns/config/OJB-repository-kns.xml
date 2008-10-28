@@ -24,62 +24,6 @@
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 	</jdbc-connection-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kim.bo.Person" table="FS_UNIVERSAL_USR_T">
-		<field-descriptor name="principalId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="principalName" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="personPayrollIdentifier" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="personTaxIdentifier" column="PRSN_TAX_ID" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
-		<field-descriptor name="personTaxIdentifierTypeCode" column="PRSN_TAX_ID_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="firstName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="lastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="personMiddleName" column="PRSN_MID_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="name" column="PERSON_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
-		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="primaryDepartmentCode" column="EMP_PRM_DEPT_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="addressLine1" column="PRSN_CMP_ADDR" jdbc-type="VARCHAR" />
-		<field-descriptor name="personLocalPhoneNumber" column="PRSN_LOC_PHN_NBR" jdbc-type="VARCHAR" />
-		<field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="employeeTypeCode" column="EMP_TYPE_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="student" column="PRSN_STU_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="staff" column="PRSN_STAFF_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="faculty" column="PRSN_FAC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="affiliate" column="PRSN_AFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="baseSalaryAmount" column="PRSN_BASE_SLRY_AMT" jdbc-type="DECIMAL"
-			conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" />
-		<field-descriptor name="financialSystemsEncryptedPasswordText" column="FS_ENCRPTD_PWD_TXT" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbKualiHashFieldConversion" />
-
-		<reference-descriptor name="campus" class-ref="org.kuali.rice.kns.bo.Campus" auto-retrieve="true" auto-update="none" auto-delete="none"
-			proxy="true">
-			<foreignkey field-ref="campusCode" />
-		</reference-descriptor>
-
-		<reference-descriptor name="employeeStatus" class-ref="org.kuali.rice.kns.bo.EmployeeStatus" auto-retrieve="true" auto-update="none"
-			auto-delete="none" proxy="true">
-			<foreignkey field-ref="employeeStatusCode" />
-		</reference-descriptor>
-
-		<reference-descriptor name="employeeType" class-ref="org.kuali.rice.kns.bo.EmployeeType" auto-retrieve="true" auto-update="none"
-			auto-delete="none" proxy="true">
-			<foreignkey field-ref="employeeTypeCode" />
-		</reference-descriptor>
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.kns.workflow.bo.WorkflowUser" table="FS_UNIVERSAL_USR_T">
-		<field-descriptor name="uuId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="workflowUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="authenticationUserId" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="emplId" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="givenName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="lastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="displayName" column="PERSON_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
-	</class-descriptor>
-
 	<!--  DOCUMENT MAPPINGS -->
 	<!--
 		NOTE:  we are not relating from document header to the other document
@@ -323,24 +267,6 @@
 		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="selectedObjectIds" column="SELECTED_OBJ_IDS" jdbc-type="CLOB" />
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.kns.bo.EmployeeType" table="SH_EMP_TYP_T">
-		<field-descriptor name="code" column="EMP_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="name" column="EMP_TYP_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.kns.bo.EmployeeStatus" table="SH_EMP_STAT_T">
-		<field-descriptor name="code" column="EMP_STAT_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="name" column="EMP_STAT_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="SH_CAMPUS_T">

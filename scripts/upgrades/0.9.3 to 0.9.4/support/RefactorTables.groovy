@@ -1,18 +1,27 @@
-def dir = 'F:/Shubhangi_RiceWorkspace/rice-0.9.4/scripts'
+def dir = '.'
 xmlExtension = "schema-refactor.xml"
+outputFile = "refactor.sql"
 
 oldTable = "";
 newTable = "";
 
+count = 0
+for (arg in args) {
+	if (arg == '-ext') xmlExtension = args[count + 1]
+	if (arg == '-out') outputFile = args[count + 1]
+	count++
+}	
+
+
 def processDir( dir ) {
     println "Processing Directory: " + dir
     def files = new File(dir).list()
-    def sqlFile = new File ("upgrades/0.9.3 to 0.9.4/Refactor.sql")
+    def sqlFile = new File (outputFile)
     if (sqlFile.exists()) {
 		sqlFile.delete();
 	}
 	
-    def LongerNames = new File("upgrades/0.9.3 to 0.9.4/LongerIncorrectNames.txt")
+    def LongerNames = new File("LongerIncorrectNames.txt")
     if (LongerNames.exists()) {
 		LongerNames.delete();
 	}
@@ -29,8 +38,7 @@ def processDir( dir ) {
             println "Processing File: " + file.getAbsolutePath()
             if ( file.isDirectory() ) {
                 processDir( file.getAbsolutePath() )
-            } 
-	    else {
+            } else {
 			println "Processing XML "+fileName     	
 			def root = new XmlParser().parseText(file.getText())	
 			def tables = root.table.findAll{ //tables

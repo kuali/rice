@@ -332,7 +332,7 @@
         <column default="1" oldName="DOC_TYP_RTE_VER_NBR" newName="RTE_VER_NBR" required="true"
             size="2" type="VARCHAR"/>
         <column oldName="DOC_TYP_NOTIFY_ADDR" newName="NOTIFY_ADDR" size="255" type="VARCHAR"/>
-        <column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT" size="10" type="VARCHAR"/>
+        <column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC" size="10" type="VARCHAR"/>
         <column oldName="DOC_TYP_EMAIL_XSL" newName="EMAIL_XSL" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_SECURITY_XML" newName="SEC_XML" type="CLOB"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
@@ -634,7 +634,7 @@
         <column oldName="RULE_ATTRIB_CLS_NM" newName="CLS_NM" size="2000" type="VARCHAR"/>
         <column oldName="RULE_ATTRIB_XML_RTE_TXT" newName="XML" type="CLOB"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
-        <column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT" size="10" type="VARCHAR"/>
+        <column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC" size="10" type="VARCHAR"/>
     </table>
     <table oldName="EN_RULE_BASE_VAL_T" newName="KREW_RULE_T">
         <column name="RULE_BASE_VAL_ID" primaryKey="true" size="19" type="DECIMAL"/>
@@ -788,7 +788,7 @@
         <column oldName="MESSAGE_QUE_RTRY_CNT" newName="RTRY_CNT" required="true" size="8" type="DECIMAL"/>
         <column oldName="MESSAGE_QUE_IP_NBR" newName="IP_NBR" required="true" size="2000" type="VARCHAR"/>
         <column oldName="MESSAGE_SERVICE_NM" newName="SVC_NM" size="255" type="VARCHAR"/>
-        <column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT" required="true" size="10" type="VARCHAR"/>
+        <column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC" required="true" size="10" type="VARCHAR"/>
         <column oldName="SERVICE_METHOD_NM" newName="SVC_MTHD_NM" size="2000" type="VARCHAR"/>
         <column oldName="VAL_ONE" newName="APP_VAL_ONE" size="2000" type="VARCHAR"/>
         <column oldName="VAL_TWO" newName="APP_VAL_TWO" size="2000" type="VARCHAR"/>
@@ -798,7 +798,7 @@
             <index-column oldName="SERVICE_METHOD_NM" newName="SVC_MTHD_NM"/>
         </index>
         <index oldName="EN_MSG_QUE_TI2" newName="KRSB_MSG_QUE_TI2">
-            <index-column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT"/>
+            <index-column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC"/>
             <index-column oldName="MESSAGE_QUE_STAT_CD" newName="STAT_CD"/>
             <index-column oldName="MESSAGE_QUE_IP_NBR" newName="IP_NBR"/>
             <index-column oldName="MESSAGE_QUE_DT" newName="DT"/>
@@ -809,13 +809,13 @@
         <column oldName="SERVICE_NM" newName="SVC_NM" required="true" size="255" type="VARCHAR"/>
         <column oldName="SERVICE_URL" newName="SVC_URL" required="true" size="500" type="VARCHAR"/>
         <column oldName="SERVER_IP" newName="SRVR_IP" required="true" size="40" type="VARCHAR"/>
-        <column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT" required="true" size="10" type="VARCHAR"/>
+        <column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC" required="true" size="10" type="VARCHAR"/>
         <column oldName="SERVICE_ALIVE" newName="SVC_ALIVE" required="true" size="1" type="DECIMAL"/>
         <column oldName="SERVICE_DEFINITION" newName="SVC_DEF" required="true" type="CLOB"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_SERVICE_DEF_DUEX_TI1" newName="KRSB_SVC_DEF_TI1">
             <index-column oldName="SERVER_IP" newName="SRVR_IP"/>
-            <index-column oldName="MESSAGE_ENTITY_NM" newName="MSG_ENT"/>
+            <index-column oldName="MESSAGE_ENTITY_NM" newName="SVC_NMSPC"/>
         </index>
     </table>
 

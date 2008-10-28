@@ -20,7 +20,7 @@
         <column oldName="DOC_TYP_LBL_TXT" newName="DOC_TYP_LBL" required="true" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM" required="true" size="255" type="VARCHAR"/>
-        <column oldName="ACTN_ITM_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_ITM_RESP_ID" newName="RSP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         
@@ -440,7 +440,7 @@
         <column oldName="DOC_TYP_LBL_TXT" newName="DOC_TYL_LBL" required="true" size="255" type="VARCHAR"/>
         <column oldName="DOC_TYP_HDLR_URL_ADDR" newName="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM"  required="true" size="255" type="VARCHAR"/>
-        <column oldName="ACTN_ITM_RESP_ID" newName="RESP_ID" required="true" size="14" type="DECIMAL"/>
+        <column oldName="ACTN_ITM_RESP_ID" newName="RSP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_OUT_BOX_ITM_TI1" newName="KREW_OUT_BOX_ITM_TI1">

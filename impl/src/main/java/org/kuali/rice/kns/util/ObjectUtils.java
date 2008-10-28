@@ -551,14 +551,14 @@ public class ObjectUtils {
 
 
     /**
-     * Compares two business objects for equality of type and key values.
+     * Compares two {@link PersistableBusinessObject} instances for equality of type and key values.
      * 
      * @param bo1
      * @param bo2
      *  
      * @return boolean indicating whether the two objects are equal.
      */
-    public static boolean equalByKeys(BusinessObject bo1, BusinessObject bo2) {
+    public static boolean equalByKeys(PersistableBusinessObject bo1, PersistableBusinessObject bo2) {
         boolean equal = true;
 
         if (bo1 == null && bo2 == null) {
@@ -590,18 +590,18 @@ public class ObjectUtils {
     }
 
     /**
-     * Compares a business object with a List of BOs to determine if an object with the same key as the BO exists in the list.
+     * Compares a business object with a List of {@link PersistableBusinessObject}s to determine if an object with the same key as the BO exists in the list.
      * 
      * @param controlList - The list of items to check
      * @param bo - The BO whose keys we are looking for in the controlList
      * 
      * @return boolean
      */
-    public static boolean collectionContainsObjectWithIdentitcalKey(Collection controlList, BusinessObject bo) {
+    public static boolean collectionContainsObjectWithIdentitcalKey(Collection<? extends PersistableBusinessObject> controlList, PersistableBusinessObject bo) {
         boolean objectExistsInList = false;
 
         for (Iterator i = controlList.iterator(); i.hasNext();) {
-            if (equalByKeys((BusinessObject) i.next(), bo)) {
+            if (equalByKeys((PersistableBusinessObject) i.next(), bo)) {
                 return true;
             }
         }
@@ -610,17 +610,17 @@ public class ObjectUtils {
     }
 
     /**
-     * Compares a business object with a Collection of BOs to count how many have the same key as the BO.
+     * Compares a business object with a Collection of {@link PersistableBusinessObject}s to count how many have the same key as the BO.
      * 
      * @param collection - The collection of items to check
      * @param bo - The BO whose keys we are looking for in the collection
      * 
      * @return how many have the same keys
      */
-    public static int countObjectsWithIdentitcalKey(Collection<? extends BusinessObject> collection, BusinessObject bo) {
+    public static int countObjectsWithIdentitcalKey(Collection<? extends PersistableBusinessObject> collection, PersistableBusinessObject bo) {
         // todo: genericize collectionContainsObjectWithIdentitcalKey() to leverage this method?
         int n = 0;
-        for (BusinessObject item : collection) {
+        for (PersistableBusinessObject item : collection) {
             if (equalByKeys(item, bo)) {
                 n++;
             }
@@ -629,16 +629,16 @@ public class ObjectUtils {
     }
 
     /**
-     * Compares a business object with a List of BOs to determine if an object with the same key as the BO exists in the list. If it
+     * Compares a business object with a List of {@link PersistableBusinessObject}s to determine if an object with the same key as the BO exists in the list. If it
      * does, the item is removed from the List. This is functionally similar to List.remove() that operates only on Key values.
      * 
      * @param controlList - The list of items to check
      * @param bo - The BO whose keys we are looking for in the controlList
      */
 
-    public static void removeObjectWithIdentitcalKey(Collection controlList, BusinessObject bo) {
-        for (Iterator i = controlList.iterator(); i.hasNext();) {
-            BusinessObject listBo = (BusinessObject) i.next();
+    public static void removeObjectWithIdentitcalKey(Collection<? extends PersistableBusinessObject> controlList, PersistableBusinessObject bo) {
+        for (Iterator<? extends PersistableBusinessObject> i = controlList.iterator(); i.hasNext();) {
+        	PersistableBusinessObject listBo = i.next();
             if (equalByKeys(listBo, bo)) {
                 i.remove();
             }
@@ -653,11 +653,11 @@ public class ObjectUtils {
      * @param bo - The BO whose keys we are looking for in the controlList
      */
 
-    public static BusinessObject retrieveObjectWithIdentitcalKey(Collection controlList, BusinessObject bo) {
+    public static BusinessObject retrieveObjectWithIdentitcalKey(Collection<? extends PersistableBusinessObject> controlList, PersistableBusinessObject bo) {
         BusinessObject returnBo = null;
 
-        for (Iterator i = controlList.iterator(); i.hasNext();) {
-            BusinessObject listBo = (BusinessObject) i.next();
+        for (Iterator<? extends PersistableBusinessObject> i = controlList.iterator(); i.hasNext();) {
+        	PersistableBusinessObject listBo = i.next();
             if (equalByKeys(listBo, bo)) {
                 returnBo = listBo;
             }

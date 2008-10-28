@@ -68,6 +68,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#getPerson(java.lang.String)
 	 */
 	public PersonImpl getPerson(String principalId) {
+		if ( StringUtils.isBlank(principalId) ) {
+			return null;
+		}
 		PersonImpl person = null;
 		// check the cache		
 		person = getPersonImplFromPrincipalIdCache( principalId );
@@ -116,6 +119,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByPrincipalName(java.lang.String)
 	 */
 	public PersonImpl getPersonByPrincipalName(String principalName) {
+		if ( StringUtils.isBlank(principalName) ) {
+			return null;
+		}
 		PersonImpl person = null;
 		// check the cache		
 		person = getPersonImplFromPrincipalNameCache( principalName );

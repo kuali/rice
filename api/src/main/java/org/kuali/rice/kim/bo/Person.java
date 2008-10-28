@@ -91,12 +91,13 @@ public interface Person extends ExternalizableBusinessObject {
 
 	String getCampusCode();
 
-	// TODO: change these to lists of simple GroupNameInfo objects 
-	// with the group ID, name space and group name but no group members 
 	/**
 	 * Return all groups to which this person has been assigned.  This will include
 	 * groups to which the user belongs because they are assigned to a nested group.
+	 * 
+	 * @deprecated Use a direct call to the IdentityManagementService.
 	 */
+	@Deprecated
 	List<? extends KimGroup> getGroups();
 	
 	boolean isMember( String groupName );

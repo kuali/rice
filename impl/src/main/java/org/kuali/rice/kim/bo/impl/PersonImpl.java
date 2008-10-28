@@ -77,7 +77,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	// phone data
 	protected String phoneNumber = "";
 	// affiliation data
-	protected List<EntityAffiliation> affiliations;
+	protected List<? extends EntityAffiliation> affiliations;
 	protected EntityAffiliation defaultAffiliation;
 	
 	protected String campusCode = "";
@@ -90,12 +90,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected KualiDecimal baseSalaryAmount;
 	
 	// group is a different sub-module - use the interface/DTO only
-	protected List<KimGroup> groups;
-//	// role is a different sub-module - use the interface only
-//	protected List<KimRole> roles;
-	
-	protected String primaryDepartmentCode = "";
-	protected String personPayrollIdentifiere = "";
+	protected List<? extends KimGroup> groups;
 	
 	public PersonImpl() {}
 	
@@ -302,7 +297,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		return emailAddress;
 	}
 	
-	public List<EntityAffiliation> getAffiliations() {
+	public List<? extends EntityAffiliation> getAffiliations() {
 		return affiliations;
 	}
 	
@@ -370,7 +365,12 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @return the groups
 	 */
+	@Deprecated
 	public List<? extends KimGroup> getGroups() {
+		// TODO: eliminate this method
+		if ( groups == null ) {
+			groups = getIdentityManagementService().getGroupsForPrincipal(getPrincipalId());
+		}
 		return groups;
 	}
 	

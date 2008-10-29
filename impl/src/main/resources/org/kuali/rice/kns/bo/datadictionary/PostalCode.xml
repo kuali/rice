@@ -81,7 +81,7 @@
 
   <bean id="PostalCode-active" parent="PostalCode-active-parentBean" />
 
-  <bean id="PostalCode-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="PostalCode-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

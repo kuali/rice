@@ -87,7 +87,7 @@
   </bean>
   <bean id="State-active" parent="State-active-parentBean" />
 
-  <bean id="State-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="State-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

@@ -81,7 +81,7 @@
   
   <bean id="County-active" parent="County-active-parentBean" />
 
-  <bean id="County-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="County-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
   

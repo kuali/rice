@@ -66,7 +66,7 @@
   </bean>
   <bean id="Country-postalCountryRestrictedIndicator" parent="Country-postalCountryRestrictedIndicator-parentBean" />
 
-  <bean id="Country-postalCountryRestrictedIndicator-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="Country-postalCountryRestrictedIndicator-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="postalCountryRestrictedIndicator" />
     <property name="label" value="Country Restricted Indicator" />
     <property name="shortLabel" value="Indicator" />
@@ -75,7 +75,7 @@
   </bean>
   <bean id="Country-active" parent="Country-active-parentBean" />
 
-  <bean id="Country-active-parentBean" abstract="true" parent="GenericAttributes-activeIndicator">
+  <bean id="Country-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active"/>
   </bean>
 

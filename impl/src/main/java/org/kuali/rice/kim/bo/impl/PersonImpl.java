@@ -336,6 +336,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * 
 	 * @see org.kuali.rice.kim.bo.Person#isMember(java.lang.String)
 	 */
+	@Deprecated
 	public boolean isMember(String groupName) {
 		return getPersonService().isMemberOfGroup(this, "KFS", groupName);
 	}

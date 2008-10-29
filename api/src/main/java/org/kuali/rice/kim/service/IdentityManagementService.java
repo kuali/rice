@@ -56,6 +56,7 @@ public interface IdentityManagementService {
     List<String> getDirectMemberGroupIds(String groupId);
 
 	boolean isMemberOfGroup(String principalId, String groupId);
+	boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName);
 	List<String> getGroupMemberPrincipalIds(String groupId);
 	List<String> getDirectGroupMemberPrincipalIds(String groupId);
 	

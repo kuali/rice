@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimPermission;
@@ -33,43 +31,44 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	protected IdentityService identityService;
 	protected GroupService groupService;
 	
-	protected HashMap<String,SoftReference<KimEntityImpl>> entityByIdCache = new HashMap<String,SoftReference<KimEntityImpl>>( 100 );
-	protected HashMap<String,SoftReference<KimEntityImpl>> entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntityImpl>>( 100 );
-	protected HashMap<String,SoftReference<KimPrincipalImpl>> principalByIdCache = new HashMap<String,SoftReference<KimPrincipalImpl>>( 100 );
-	protected HashMap<String,SoftReference<KimPrincipalImpl>> principalByNameCache = new HashMap<String,SoftReference<KimPrincipalImpl>>( 100 );
+	protected HashMap<String,SoftReference<KimEntity>> entityByIdCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
+	protected HashMap<String,SoftReference<KimEntity>> entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
+	protected HashMap<String,SoftReference<KimPrincipal>> principalByIdCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
+	protected HashMap<String,SoftReference<KimPrincipal>> principalByNameCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
 	protected HashMap<String,SoftReference<GroupInfo>> groupByIdCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
 	protected HashMap<String,SoftReference<GroupInfo>> groupByNameCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
 	protected HashMap<String,SoftReference<List<String>>> groupIdsForPrincipalCache = new HashMap<String,SoftReference<List<String>>>( 100 );
 	protected HashMap<String,SoftReference<List<? extends KimGroup>>> groupsForPrincipalCache = new HashMap<String,SoftReference<List<? extends KimGroup>>>( 100 );
 	protected HashMap<String,SoftReference<Boolean>> isMemberOfGroupCache = new HashMap<String,SoftReference<Boolean>>( 100 );
+	protected HashMap<String,SoftReference<Boolean>> isMemberOfGroupByNameCache = new HashMap<String,SoftReference<Boolean>>( 100 );
 	protected HashMap<String,SoftReference<List<String>>> groupMemberPrincipalIdsCache = new HashMap<String,SoftReference<List<String>>>( 100 );
 	
-	protected KimEntityImpl getEntityByIdCache( String entityId ) {
-		SoftReference<KimEntityImpl> entityRef = entityByIdCache.get( entityId );
+	protected KimEntity getEntityByIdCache( String entityId ) {
+		SoftReference<KimEntity> entityRef = entityByIdCache.get( entityId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityImpl getEntityByPrincipalNameCache( String entityName ) {
-		SoftReference<KimEntityImpl> entityRef = entityByPrincipalNameCache.get( entityName );
+	protected KimEntity getEntityByPrincipalNameCache( String entityName ) {
+		SoftReference<KimEntity> entityRef = entityByPrincipalNameCache.get( entityName );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 	
-	protected KimPrincipalImpl getPrincipalByIdCache( String principalId ) {
-		SoftReference<KimPrincipalImpl> principalRef = principalByIdCache.get( principalId );
+	protected KimPrincipal getPrincipalByIdCache( String principalId ) {
+		SoftReference<KimPrincipal> principalRef = principalByIdCache.get( principalId );
 		if ( principalRef != null ) {
 			return principalRef.get();
 		}
 		return null;
 	}
 
-	protected KimPrincipalImpl getPrincipalByNameCache( String principalName ) {
-		SoftReference<KimPrincipalImpl> principalRef = principalByNameCache.get( principalName );
+	protected KimPrincipal getPrincipalByNameCache( String principalName ) {
+		SoftReference<KimPrincipal> principalRef = principalByNameCache.get( principalName );
 		if ( principalRef != null ) {
 			return principalRef.get();
 		}
@@ -115,6 +114,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		}
 		return null;
 	}
+
+	protected Boolean getIsMemberOfGroupByNameCache( String principalId, String namespaceCode, String groupName ) {
+		SoftReference<Boolean> isMemberRef = isMemberOfGroupByNameCache.get( principalId + "-" + namespaceCode + "-" + groupName );
+		if ( isMemberRef != null ) {
+			return isMemberRef.get();
+		}
+		return null;
+	}
 	
 	protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
 		SoftReference<List<String>> memberIdsRef = groupMemberPrincipalIdsCache.get( groupId );
@@ -125,21 +132,21 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
 	
 	
-	protected void addEntityImplToCache( KimEntityImpl entity ) {
+	protected void addEntityToCache( KimEntity entity ) {
 		if ( entity != null ) {
-			entityByPrincipalNameCache.put( entity.getPrincipals().get(0).getPrincipalName(), new SoftReference<KimEntityImpl>( entity ) );
-			entityByIdCache.put( entity.getEntityId(), new SoftReference<KimEntityImpl>( entity ) );
+			entityByPrincipalNameCache.put( entity.getPrincipals().get(0).getPrincipalName(), new SoftReference<KimEntity>( entity ) );
+			entityByIdCache.put( entity.getEntityId(), new SoftReference<KimEntity>( entity ) );
 		}
 	}
 	
-	protected void addPrincipalImplToCache( KimPrincipalImpl principal ) {
+	protected void addPrincipalToCache( KimPrincipal principal ) {
 		if ( principal != null ) {
-			principalByNameCache.put( principal.getPrincipalName(), new SoftReference<KimPrincipalImpl>( principal ) );
-			principalByIdCache.put( principal.getPrincipalId(), new SoftReference<KimPrincipalImpl>( principal ) );
+			principalByNameCache.put( principal.getPrincipalName(), new SoftReference<KimPrincipal>( principal ) );
+			principalByIdCache.put( principal.getPrincipalId(), new SoftReference<KimPrincipal>( principal ) );
 		}
 	}
 	
-	protected void addGroupImplToCache( GroupInfo group ) {
+	protected void addGroupToCache( GroupInfo group ) {
 		if ( group != null ) {
 			groupByNameCache.put( group.getGroupName(), new SoftReference<GroupInfo>( group ) );
 			groupByIdCache.put( group.getGroupId(), new SoftReference<GroupInfo>( group ) );
@@ -161,7 +168,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	protected void addIsMemberOfGroupToCache( String principalId, String groupId, boolean member ) {
 		isMemberOfGroupCache.put( principalId + "-" + groupId, new SoftReference<Boolean>( member ) );
 	}
-
+	
+	protected void addIsMemberOfGroupByNameToCache( String principalId, String namespaceCode, String groupName, boolean member ) {
+		isMemberOfGroupCache.put( principalId + "-" + namespaceCode + "-" + groupName, new SoftReference<Boolean>( member ) );
+	}
+	
 	protected void addGroupMemberPrincipalIdsToCache( String groupId, List<String> ids ) {
 		if ( ids != null ) {
 			groupMemberPrincipalIdsCache.put( groupId, new SoftReference<List<String>>( ids ) );
@@ -255,6 +266,17 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     	return isMember;    	
 	}
 
+	public boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName) {
+    	Boolean isMember = getIsMemberOfGroupByNameCache(principalId, namespaceCode, groupName);
+		if (isMember != null) {
+			return isMember;
+		}
+		KimGroup group = getGroupByName(namespaceCode, groupName);
+		isMember = getGroupService().isMemberOfGroup(principalId, group.getGroupId());
+    	addIsMemberOfGroupByNameToCache(principalId, namespaceCode, groupName, isMember);
+    	return isMember;    	
+    }
+
 	public List<String> getGroupMemberPrincipalIds(String groupId) {
     	List<String> ids = getGroupMemberPrincipalIdsCache(groupId);
 		if (ids != null) {
@@ -317,7 +339,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return group;
 		}
 		group = getGroupService().getGroupInfo(groupId);
-    	addGroupImplToCache(group);
+    	addGroupToCache(group);
     	return group;
 	}
     
@@ -327,7 +349,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return group;
 		}
 		group = getGroupService().getGroupInfoByName( namespaceCode, groupName );
-    	addGroupImplToCache(group);
+    	addGroupToCache(group);
     	return group;    	
     }
     
@@ -349,7 +371,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return entity;
 		}
     	entity = getIdentityService().getEntityByPrincipalName(principalName);
-    	addEntityImplToCache((KimEntityImpl)entity);
+    	addEntityToCache(entity);
     	return entity;
 	}
 
@@ -359,7 +381,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return principal;
 		}
 		principal = getIdentityService().getPrincipal(principalId);
-    	addPrincipalImplToCache((KimPrincipalImpl)principal);
+    	addPrincipalToCache(principal);
     	return principal;
 	}
     
@@ -369,7 +391,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return principal;
 		}
 		principal = getIdentityService().getPrincipalByPrincipalName(principalName);
-    	addPrincipalImplToCache((KimPrincipalImpl)principal);
+    	addPrincipalToCache(principal);
     	return principal;
     }
 	
@@ -379,7 +401,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return entity;
 		}
     	entity = getIdentityService().getEntity(entityId);
-    	addEntityImplToCache((KimEntityImpl)entity);
+    	addEntityToCache(entity);
     	return entity;
 	}
 
@@ -506,4 +528,5 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
 	}
+
 }

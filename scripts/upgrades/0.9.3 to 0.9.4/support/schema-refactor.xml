@@ -1511,7 +1511,7 @@
         <unique oldName="NOTIFICATION_REVIEWERS_UK1"  newName="KREN_RVWER_UK1">
             <unique-column oldName="CHANNEL_ID" newName="CHNL_ID"/>
             <unique-column oldName="REVIEWER_TYPE" newName="TYP"/>
-            <unique-column oldName="PRNCPL_ID" newName="RVWER_ID"/>
+            <unique-column oldName="REVIEWER_ID" newName="PRNCPL_ID"/>
         </unique>
         <index oldName="KEN_REVIEWERSI1"  newName="KREN_RVWER_TI1">
             <index-column oldName="CHANNEL_ID" newName="CHNL_ID"/>

@@ -66,7 +66,7 @@
         <column name="ACTN_TKN_ID" size="14" type="DECIMAL"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="ACTN_RQST_CRTE_DT" newName="CRTE_DT"  required="true" type="DATE"/>
-        <column oldName="ACTN_RQST_RESP_DESC"  newName="RSP_DESC" size="200" type="VARCHAR"/>
+        <column oldName="ACTN_RQST_RESP_DESC"  newName="RSP_DESC_TXT" size="200" type="VARCHAR"/>
         <column default="0" oldName="ACTN_RQST_IGN_PREV_ACTN_IND"  newName="IGN_PREV_ACTN_IND" size="1" type="DECIMAL"/>
         <column oldName="ACTN_RQST_ANNOTN_TXT"  name="ANNOTN" size="2000" type="VARCHAR"/>
         <column name="DLGN_TYP" size="1" type="CHAR"/>
@@ -418,7 +418,7 @@
     <table oldName="EN_INIT_RTE_NODE_INSTN_T" newName="KREW_INIT_RTE_NODE_INSTN_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RTE_NODE_INSTN_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <index oldName="EN_INIT_RTE_NODE_INSTN_TI" newName="KREW_INIT_RTE_NODE_INSTN_TI1">
+        <index oldName="EN_INIT_RTE_NODE_INSTN_TI1" newName="KREW_INIT_RTE_NODE_INSTN_TI1">
             <index-column name="DOC_HDR_ID"/>
         </index>
         <index oldName="EN_INIT_RTE_NODE_INSTN_TI2" newName="KREW_INIT_RTE_NODE_INSTN_TI2">
@@ -443,7 +443,7 @@
         <column oldName="ACTN_ITM_RESP_ID" newName="RSP_ID" required="true" size="14" type="DECIMAL"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
-        <index oldName="EN_OUT_BOX_ITM_TI1" newName="KREW_OUT_BOX_ITM_TI1">
+        <index oldName="EN_OUT_BOX_ITM_T1" newName="KREW_OUT_BOX_ITM_TI1">
             <index-column oldName="ACTN_ITM_PRSN_EN_ID" newName="PRNCPL_ID"/>
         </index>
         <index oldName="EN_OUT_BOX_ITM_TI2" newName="KREW_OUT_BOX_ITM_TI2">
@@ -630,7 +630,7 @@
         <column oldName="RULE_ATTRIB_NM" newName="NM" required="true" size="255" type="VARCHAR"/>
         <column oldName="RULE_ATTRIB_LBL_TXT" newName="LBL" required="true" size="2000" type="VARCHAR"/>
         <column oldName="RULE_ATTRIB_TYP" newName="RULE_ATTR_TYP_CD" required="true" size="2000" type="VARCHAR"/>
-        <column oldName="RULE_ATTRIB_DESC" newName="DESC" size="2000" type="VARCHAR"/>
+        <column oldName="RULE_ATTRIB_DESC" newName="DESC_TXT" size="2000" type="VARCHAR"/>
         <column oldName="RULE_ATTRIB_CLS_NM" newName="CLS_NM" size="2000" type="VARCHAR"/>
         <column oldName="RULE_ATTRIB_XML_RTE_TXT" newName="XML" type="CLOB"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
@@ -951,7 +951,7 @@
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="LOCK_DESCRIPTOR" newName="LOCK_DESC" size="4000" type="VARCHAR"/>
+        <column oldName="LOCK_DESCRIPTOR" newName="LOCK_DESC_TXT" size="4000" type="VARCHAR"/>
         <column oldName="FDOC_NBR" newName="DOC_HDR_ID"  required="true" size="14" type="VARCHAR"/>
         <column oldName="LOCK_GENERATED_TS" newName="GNRT_DT" required="true" type="DATE"/>
         <column oldName="PERSON_UNVL_ID" newName="PRNCPL_ID" required="true" size="10" type="VARCHAR"/>
@@ -1021,7 +1021,7 @@
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="NTE_TYP_DESC" newName="TYP_DESC" size="100" type="VARCHAR"/>
+        <column oldName="NTE_TYP_DESC" newName="TYP_DESC_TXT" size="100" type="VARCHAR"/>
         <column oldName="NTE_TYP_ACTV_IND" newName="ACTV_IND" size="1" type="VARCHAR"/>
         <unique oldName="SH_NTE_TYP_TC0" newName="KRNS_NTE_TYP_TC0">
             <unique-column name="OBJ_ID"/>
@@ -1062,7 +1062,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="SH_PARM_TYP_CD" newName="PARM_TYP_CD" required="true" size="5" type="VARCHAR"/>
         <column oldName="SH_PARM_TXT" newName="TXT" size="4000" type="VARCHAR"/>
-        <column oldName="SH_PARM_DESC" newName="PARM_DESC" size="4000" type="VARCHAR"/>
+        <column oldName="SH_PARM_DESC" newName="PARM_DESC_TXT" size="4000" type="VARCHAR"/>
         <column oldName="SH_PARM_CONS_CD" newName="CONS_CD" size="1" type="VARCHAR"/>
         <column default="WorkflowAdmin" oldName="WRKGRP_NM" newName="GRP_NM" required="true"
             size="70" type="VARCHAR"/>
@@ -1169,7 +1169,7 @@
         <index oldName="IDX_KR_QRTZ_FT_JOB_NAME" newName="KRSB_QRTZ_FIRED_TRIGGERS_TI2">
             <index-column name="JOB_NAME"/>
         </index>
-        <index oldName="IDX_KR_QRTZ_FT_REQ_RECOV" newName="KRSB_QRTZ_FIRED_TRIGGERS_TI3">
+        <index oldName="IDX_KR_QRTZ_FT_JOB_REQ_RECOV" newName="KRSB_QRTZ_FIRED_TRIGGERS_TI3">
             <index-column name="REQUESTS_RECOVERY"/>
         </index>
         <index oldName="IDX_KR_QRTZ_FT_JOB_STATEFUL" newName="KRSB_QRTZ_FIRED_TRIGGERS_TI4">
@@ -1232,7 +1232,7 @@
         <column name="REPEAT_COUNT" required="true" size="7" type="DECIMAL"/>
         <column name="REPEAT_INTERVAL" required="true" size="12" type="DECIMAL"/>
         <column name="TIMES_TRIGGERED" required="true" size="7" type="DECIMAL"/>
-        <foreign-key oldForeignTable="KR_QRTZ_TRIGGERS" newForeignTable="KRSB_QRTZ_TRIGGERS" oldName="KR_QRTZ_SIMPLE_TRIGGERSFK1" newName="KRSB_QRTZ_SIMPLE_TRIGGERS_TR1">
+        <foreign-key oldForeignTable="KR_QRTZ_TRIGGERS" newForeignTable="KRSB_QRTZ_TRIGGERS" oldName="KR_QRTZ_SIMPLE_TRIGGERS" newName="KRSB_QRTZ_SIMPLE_TRIGGERS_TR1">
             <reference foreign="TRIGGER_NAME" local="TRIGGER_NAME"/>
             <reference foreign="TRIGGER_GROUP" local="TRIGGER_GROUP"/>
         </foreign-key>
@@ -1272,11 +1272,11 @@
             <index-column name="IS_VOLATILE"/>
         </index>
     </table>
-    <table oldName="KR_QRTZ_TRIGGERS_LISTENERS" newName="KRSB_QRTZ_TRIGGERS_LISTENERS">
+    <table oldName="KR_QRTZ_TRIGGER_LISTENERS" newName="KRSB_QRTZ_TRIGGER_LISTENERS">
         <column name="TRIGGER_NAME" primaryKey="true" size="80" type="VARCHAR"/>
         <column name="TRIGGER_GROUP" primaryKey="true" size="80" type="VARCHAR"/>
         <column name="TRIGGER_LISTENER" primaryKey="true" size="80" type="VARCHAR"/>
-        <foreign-key oldForeignTable="KR_QRTZ_TRIGGERS"  newForeignTable="KRSB_QRTZ_TRIGGERS" oldName="KR_QRTZ_TRIGGERS_LISTENERS_TR1" newName="KRSB_QRTZ_TRIGGERS_LISTENE_TR1">
+        <foreign-key oldForeignTable="KR_QRTZ_TRIGGERS"  newForeignTable="KRSB_QRTZ_TRIGGERS" oldName="KR_QRTZ_TRIGGER_LISTENERS_TR1" newName="KRSB_QRTZ_TRIGGER_LISTENE_TR1">
             <reference foreign="TRIGGER_NAME" local="TRIGGER_NAME"/>
             <reference foreign="TRIGGER_GROUP" local="TRIGGER_GROUP"/>
         </foreign-key>
@@ -1353,7 +1353,7 @@
     <table oldName="NOTIFICATION_PRODUCERS" newName="KREN_PRODCR_T">
         <column oldName="ID" newName="PRODCR_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column oldName="NAME" newName="NM" required="true" size="500" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" required="true" size="1000" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="1000" type="VARCHAR"/>
         <column oldName="CONTACT_INFO" newName="CNTCT_INFO" required="true" size="1000" type="VARCHAR"/>
         <unique oldName="NOTIFICATION_PRODUCERS_UK1" newName="KREN_PRODCR_UK1">
             <unique-column oldName="NAME" newName="NM"/>
@@ -1362,7 +1362,7 @@
     <table oldName="NOTIFICATION_CHANNELS" newName="KREN_CHNL_T">
         <column oldName="ID" newName="CHNL_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column oldName="NAME" newName="NM" required="true" size="1000" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" required="true" size="4000" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="4000" type="VARCHAR"/>
         <column oldName="SUBSCRIBABLE" newName="SUBSCRB_IND" required="true" size="1" type="CHAR"/>
         <unique oldName="NOTIFICATION_CHANNELS_UK1" newName="KREN_CHNL_UK1" >
             <unique-column oldName="NAME" newName="NM"/>
@@ -1371,7 +1371,7 @@
     <table oldName="NOTIFICATION_PRIORITIES" newName="KREN_PRIO_T">
         <column oldName="ID" newName="PRIO_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column oldName="NAME" newName="NM" required="true" size="40" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" required="true" size="500" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="500" type="VARCHAR"/>
         <column oldName="PRIORITY_ORDER" newName="PRIO_ORD" required="true" size="4" type="DECIMAL"/>
         <unique oldName="NOTIFICATION_PRIORITIES_UK1" newName="KREN_PRIO_UK1">
             <unique-column oldName="NAME" newName="NM"/>
@@ -1382,7 +1382,7 @@
         <column oldName="NAME" newName="NM" required="true" size="500" type="VARCHAR"/>
         <column default="T" name="CUR_IND" required="true" size="1" type="CHAR"/>
         <column default="0" oldName="VERSION" newName="CNTNT_TYP_VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="DESCRIPTION" newName="DESC" required="true" size="1000" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="1000" type="VARCHAR"/>
         <column oldName="NAMESPACE" newName="NMSPC" required="true" size="1000" type="VARCHAR"/>
         <column name="XSD" required="true" type="CLOB"/>
         <column name="XSL" required="true" type="CLOB"/>
@@ -1470,14 +1470,14 @@
         <column oldName="ID" newName="RECIP_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column oldName="NOTIFICATION_ID" newName="NTFCTN_ID" required="true" size="8" type="DECIMAL"/>
         <column oldName="RECIPIENT_TYPE" newName="RECIP_TYP_CD" required="true" size="10" type="VARCHAR"/>
-        <column oldName="RECIPIENT_ID" newName="RECIP_ID" required="true" size="300" type="VARCHAR"/>
+        <column oldName="RECIPIENT_ID" newName="PRNCPL_ID" required="true" size="300" type="VARCHAR"/>
         <foreign-key oldForeignTable="NOTIFICATIONS"  newForeignTable="KREN_NTFCTN_T" oldName="NOTIFICATION_RECIPIENTS_N_FK1" newName="KREN_RECIP_FK1">
             <reference oldForeign="ID" newForeign="NTFCTN_ID" oldLocal="NOTIFICATION_ID" newLocal="NTFCTN_ID"/>
         </foreign-key>
         <unique oldName="NOTIFICATION_RECIPIENTS_UK1" newName="KREN_RECIP_UK1">
             <unique-column oldName="NOTIFICATION_ID" newName="NTFCTN_ID"/>
             <unique-column oldName="RECIPIENT_TYPE" newName="RECIP_TYP_CD"/>
-            <unique-column oldName="RECIPIENT_ID" newName="RECIP_ID"/>
+            <unique-column oldName="RECIPIENT_ID" newName="PRNCPL_ID"/>
         </unique>
         <index oldName="KEN_RECIPIENTSI1" newName="KREN_RECIP_TI1" >
             <index-column oldName="NOTIFICATION_ID" newName="NTFCTN_ID"/>
@@ -1504,14 +1504,14 @@
         <column oldName="ID" newName="RVWER_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column oldName="CHANNEL_ID" newName="CHNL_ID" required="true" size="8" type="DECIMAL"/>
         <column oldName="REVIEWER_TYPE" newName="TYP" required="true" size="10" type="VARCHAR"/>
-        <column oldName="REVIEWER_ID" newName="RVWER_ID" required="true" size="300" type="VARCHAR"/>
+        <column oldName="REVIEWER_ID" newName="PRNCPL_ID" required="true" size="300" type="VARCHAR"/>
         <foreign-key oldForeignTable="NOTIFICATION_CHANNELS" newForeignTable="KREN_CHNL_T" name="NOTIFICATION_REVIEWERS_N_FK1" newName="KREN_RVWER_FK1" >
             <reference oldForeign="ID" newForeign="CHNL_ID" oldLocal="CHANNEL_ID" newLocal="CHNL_ID"/>
         </foreign-key>
         <unique oldName="NOTIFICATION_REVIEWERS_UK1"  newName="KREN_RVWER_UK1">
             <unique-column oldName="CHANNEL_ID" newName="CHNL_ID"/>
             <unique-column oldName="REVIEWER_TYPE" newName="TYP"/>
-            <unique-column oldName="REVIEWER_ID" newName="RVWER_ID"/>
+            <unique-column oldName="PRNCPL_ID" newName="RVWER_ID"/>
         </unique>
         <index oldName="KEN_REVIEWERSI1"  newName="KREN_RVWER_TI1">
             <index-column oldName="CHANNEL_ID" newName="CHNL_ID"/>
@@ -1570,14 +1570,13 @@
     <sequence oldName="NOTIFICATIONS_SEQ" newName="KREN_NTFCTN_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_CHANNELS_SEQ" newName="KREN_CHNL_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_CONTENT_TYPES_SEQ" newName="KREN_CNTNT_TYP_S" nextval="1000"/>
-    <sequence oldName="NOTIFICATION_MSG_DELIVS_SEQ" newName="KREN_MSG_DELIV_S" nextval="1000"/>
+    <sequence oldName="NOTIFICATION_MSG_DELIVS_SEQ" newName="KREN_NTFCTN_MSG_DELIV_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_PRIORITIES_SEQ" newName="KREN_PRIO_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_PRODUCERS_SEQ" newName="KREN_PRODCR_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_RECIPIENTS_SEQ" newName="KREN_RECIP_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_RECIPS_LISTS_SEQ" newName="KREN_RECIP_LIST_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_REVIEWERS_SEQ" newName="KREN_RVWER_S" nextval="1000"/>
     <sequence oldName="NOTIFICATION_SENDERS_SEQ" newName="KREN_SNDR_S" nextval="1000"/>
-    <sequence oldName="SEQ_DOCUMENT_TYPE_ATTRIBUTE" newName="KRNS_DOC_TYP_ATTR_S" nextval="2020"/>
     <sequence oldName="USER_CHANNEL_SUBSCRIPTIONS_SEQ" newName="KREN_CHNL_SUBSCRP_S" nextval="1000"/>
     
     <!-- KEW Sequences -->

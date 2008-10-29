@@ -44,15 +44,15 @@ def processDir( dir ) {
 			def tables = root.table.findAll{ //tables
 				table ->
 				table.attributes().findAll { 
-				if ( it.getKey() == "oldName" )	oldTable = it.getValue()
-				if ( it.getKey() == "newName" ) newTable = it.getValue()
-				
+					if ( it.getKey() == "oldName" )	oldTable = it.getValue()
+					if ( it.getKey() == "newName" ) newTable = it.getValue()
+					if ( it.getKey() == "name") {
+						oldTable = it.getValue()
+						newTable = it.getValue()
+					}
 				}
 
-				if (newTable!="" && newTable.length() > 30 )	
-					LongerNames.append(newTable+"\n")
-				else
-					sqlFile.append("ALTER TABLE ${oldTable} RENAME TO ${newTable}\n/\n")
+				sqlFile.append("ALTER TABLE ${oldTable} RENAME TO ${newTable}\n/\n")
 			
 				table.column.findAll{ //columns
 					col ->
@@ -61,47 +61,37 @@ def processDir( dir ) {
 					newCol = ""
 					col.attributes().findAll { 
 						if ( it.getKey() == "oldName" )	oldCol = it.getValue()
-						if ( it.getKey() == "newName" )	newCol = it.getValue()				
+						if ( it.getKey() == "newName" )	newCol = it.getValue()
+						if ( it.getKey() == "name") {
+							oldCol = it.getValue()
+							newCol = it.getValue()
+						}
 					} //colatt
-					if ( oldCol != "" && newCol != "" && newCol.length() < 30 && ctr ==0){
+					if ( oldCol != "" && newCol != "" && newCol.length() < 30 && ctr ==0 && oldCol != newCol){
 			   	        sqlFile.append("ALTER TABLE ${newTable} RENAME COLUMN ${oldCol} TO ${newCol}\n/\n")
 						ctr = ctr + 1
 					}
-					else if (newCol.length() > 30) 
-						LongerNames.append(newCol+"\n")			
 				} //columns
 		
-				table.index.findAll{ //indexes
+				table.index.findAll{
 					ind ->
-					indCols = "("
 					ctr = 0
 					newIndName= " "
 					oldIndName=" "
 			
 					ind.attributes().findAll{ 
 						if ( it.getKey()=="oldName" ) oldIndName= it.getValue()
-						if ( it.getKey() == "newName" )	newIndName = it.getValue()				
+						if ( it.getKey() == "newName" )	newIndName = it.getValue()
+						if ( it.getKey() == "name" ) {
+							 oldIndName= it.getValue()
+							 newIndName = it.getValue()
+						}
 					} //indAttr
 					
-					if (newIndName.length() > 30 )	LongerNames.append(newIndName+"\n")
-					
-						ind.children().findAll{ 
-							indCol ->
-							indCol.attributes().findAll{
-							if ( it.getKey()=="newName" || it.getKey()=="name") {	
-								ctr= ctr +1
-								if (ctr >1)
-									indCols +=","+it.getValue()
-								else
-									indCols+=it.getValue()				
-						} //indColAttr				
-					} //indCol
-					//Removed File Writes From Here....
-				} //indexes 
-				if (newIndName.length() < 30 ) 
-					sqlFile.append("DROP INDEX ${oldIndName} \n/\nCREATE INDEX ${newIndName} ON ${newTable} ${indCols})\n/\n")
-				else if (newIndName.length() > 30 )
-					LongerNames.append(newIndName+"\n/\n")
+					if (oldIndName != newIndName) {
+						sqlFile.append("ALTER INDEX ${oldIndName} RENAME TO ${newIndName}\n/\n")
+					}
+				}				
 				
 				indCols = "("
 				ctr = 0
@@ -110,7 +100,7 @@ def processDir( dir ) {
 
 				table.unique.findAll { //unique 
 					u ->
-					indCols = "("
+					//indCols = "("
 					ctr = 0
 					newIndName= " "
 					oldIndName=" "
@@ -118,29 +108,16 @@ def processDir( dir ) {
 					u.attributes().findAll{
 						if ( it.getKey()=="oldName" ) oldIndName= it.getValue()
 						if ( it.getKey() == "newName" )	newIndName = it.getValue()
+						if ( it.getKey() == "name" ) {
+							oldIndName= it.getValue()
+							newIndName = it.getValue()
+						}
 			      	} //uat
 			
-					u.children().findAll{ 
-						uc ->
-						uc.attributes().findAll{
-					
-						if (it.getKey()=="name" || it.getKey()=="newName" )
-						{
-							ctr= ctr +1
-							if (ctr >1)
-								indCols +=","+it.getValue()
-							else
-								indCols+=it.getValue()
-							if (it.getValue().length() > 30 )	LongerNames.append(it.getValue()+"\n/\n")
-						} //if
-					}//uattr
-				} //uchil //Removed File Writes From Here....
-			if (newIndName.length() < 30 ) 
-				sqlFile.append("ALTER TABLE ${oldTable} disable CONSTRAINT ${oldIndName} \n/\n ALTER TABLE ${newTable} ADD  CONSTRAINT ${newIndName} UNIQUE ${indCols})\n/\n")
-			else if (newIndName.length() > 30 ) 
-				LongerNames.append(newIndName+"\n/\n")
-
-			}//unique ALTER TABLE table_name drop CONSTRAINT constraint_name; ALTER TABLE supplier add CONSTRAINT supplier_unique UNIQUE (supplier_id);
+			      	if (oldIndName != newIndName) {
+			      		sqlFile.append("ALTER TABLE ${newTable} RENAME CONSTRAINT ${oldIndName} TO ${newIndName}\n/\n")
+			      	}
+				}
 
 	  	table."foreign-key".findAll { //foreign-key
 			f ->
@@ -157,36 +134,17 @@ def processDir( dir ) {
 			f.attributes().findAll{
 				if ( it.getKey()=="oldName" ) oldIndName= it.getValue()
 				if ( it.getKey() == "newName" )	newIndName = it.getValue()
-				if ( it.getKey()=="oldForeignTable" ) oldFtable= it.getValue()
-				if ( it.getKey() == "newForeignTable"  ) newFtable = it.getValue()
-	      	} //fat
-			f.children().findAll{ 
-				uc ->
-					uc.attributes().findAll{
-						if (it.getKey()=="foreign" || it.getKey()=="oldForeign" )
-						{
-							fctr = fctr +1
-							if (fctr > 1 && !fCols.endsWith(it.getValue())) fCols +=","+it.getValue()
-							else fCols+=it.getValue()
-						} //if
-						if (it.getKey()=="local" || it.getKey()=="newLocal" )
-						{
-							lctr = lctr +1
-							if (lctr > 1) lCols +=","+it.getValue()
-							else lCols+=it.getValue()					
-						} //if
-				}//fattr
-			} //fchil //Removed File Writes From Here....
-		if ( lCols != "(" && fCols != "(" && ctr ==0 && newIndName.length() < 30 ){
-		sqlFile.append("ALTER TABLE ${newTable} DROP CONSTRAINT ${oldIndName} \n/\nALTER TABLE ${newTable} ADD CONSTRAINT ${newIndName} FOREIGN KEY  ${lCols}) REFERENCES ${newFtable} ${fCols}) \n/\n")
-		ctr = ctr + 1
-		}//if
-		else if (newIndName.length() > 30)
-			LongerNames.append(newIndName+"\n/\n")	
+				if ( it.getKey() == "name" ) {
+					oldIndName= it.getValue()
+					newIndName = it.getValue()
+				}
+	      	}
+			if (oldIndName != newIndName) {
+				sqlFile.append("ALTER TABLE ${newTable} RENAME CONSTRAINT ${oldIndName} TO ${newIndName}\n/\n")
+			}
 	  }//foreign-key
 	  
 	}
-}
 
 	oldSeq =""
 	newSeq =""
@@ -195,12 +153,15 @@ def processDir( dir ) {
 		sequence.attributes().findAll { 
 			if ( it.getKey() == "oldName" )	oldSeq = it.getValue()
 			if ( it.getKey() == "newName" )	newSeq = it.getValue()
+			if ( it.getKey() == "name" ) {
+				oldSeq = it.getValue()
+				newSeq = it.getValue()
+			}
 		}
-		if ( newSeq.length() <30)
-			sqlFile.append("CREATE SEQUENCE ${newSeq} START WITH "+oldSeq+".NEXTVAL \n/\n DROP SEQUENCE ${oldSeq}\n/\n ")
-		else if(newSeq.length() > 30)
-			LongerNames.append(newSeq+"\n/\n")
-		}	
+		if (oldSeq != newSeq) {
+			sqlFile.append("RENAME ${oldSeq} TO ${newSeq}\n/\n")
+		}
+	}
 }//tables
 } //else
 println "Completed Processing XML "+fileName

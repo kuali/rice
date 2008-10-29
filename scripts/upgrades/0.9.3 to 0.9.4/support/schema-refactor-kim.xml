@@ -606,7 +606,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="PERM_TMPL_ID" size="40" type="VARCHAR"/>
         <column oldName="NAME" newName="NM" size="100" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" size="400" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" size="400" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column oldName="NAMESPACE_CD" newName="NMSPC_CD" size="40" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_PERM_TMPL_T" newForeignTable="KRIM_PERM_TMPL_T" oldName="KR_KIM_PERM_TR1" newName="KRIM_PERM_TR1">
@@ -621,7 +621,7 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="NAME" newName="NM" size="100" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" size="400" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" size="400" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column oldName="NAMESPACE_CD" newName="NMSPC_CD" size="40" type="VARCHAR"/>
@@ -696,7 +696,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="RESP_TMPL_ID" newName="RSP_TMPL_ID" size="40" type="VARCHAR"/>
         <column oldName="NAME" newName="NM" size="100" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" size="400" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" size="400" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column oldName="NAMESPACE_CD" newName="NMSPC_CD" size="40" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_RESP_TMPL_T" newForeignTable="KRIM_RSP_TMPL_T" oldName="KR_KIM_RESP_TR1" newName="KRIM_RSP_TR1">
@@ -712,7 +712,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="NAME" newName="NM" size="100" type="VARCHAR"/>
         <column oldName="KIM_TYPE_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
-        <column oldName="DESCRIPTION" newName="DESC" size="400" type="VARCHAR"/>
+        <column oldName="DESCRIPTION" newName="DESC_TXT" size="400" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column oldName="NAMESPACE_CD" newName="NMSPC_CD" size="40" type="VARCHAR"/>
         <foreign-key oldForeignTable="KR_KIM_TYPE_T" newForeignTable="KRIM_TYP_T" oldName="KR_KIM_RESP_TMPL_TR1" newName="KRIM_RSP_TMPL_TR1">
@@ -867,7 +867,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ROLE_NM" required="true" size="80" type="VARCHAR"/>
         <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
-        <column oldName="ROLE_DESC" newName="DESC" size="4000" type="VARCHAR"/>
+        <column oldName="ROLE_DESC" newName="DESC_TXT" size="4000" type="VARCHAR"/>
         <column oldName="TYP_ID" newName="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>

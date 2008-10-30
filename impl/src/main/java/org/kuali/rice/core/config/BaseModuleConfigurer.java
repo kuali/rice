@@ -73,7 +73,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {
-        LOG.info("Starting configuration of " + getModuleName() + " for message entity " + parentConfig.getMessageEntity());
+        LOG.info("Starting configuration of " + getModuleName() + " for message entity " + parentConfig.getServiceNamespace());
         return ConfigContext.getCurrentContextConfig();
     }
     

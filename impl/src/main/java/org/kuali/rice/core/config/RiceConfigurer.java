@@ -65,7 +65,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private static final Logger LOG = Logger.getLogger(RiceConfigurer.class);
 
 	private String environment = "dev";
-	private String messageEntity;
+	private String serviceNamespace;
 	private DataSource dataSource;
 	private DataSource nonTransactionalDataSource;
 	private String platform;
@@ -232,10 +232,10 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 
 	@SuppressWarnings("unchecked")
 	protected void initializeConfiguration() throws Exception {
-		LOG.info("Starting Rice configuration for message entity " + this.messageEntity);
+		LOG.info("Starting Rice configuration for message entity " + this.serviceNamespace);
 		Config currentConfig = parseConfig();
 		configureEnvironment(currentConfig);
-		configureMessageEntity(currentConfig);
+		configureServiceNamespace(currentConfig);
 		configureJta(currentConfig);
 		configureDataSource(currentConfig);
 		configurePlatform(currentConfig);
@@ -293,9 +293,9 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		}
 	}
 
-	protected void configureMessageEntity(Config config) {
-		if (!StringUtils.isBlank(this.messageEntity)) {
-			config.getProperties().put(Config.MESSAGE_ENTITY, this.messageEntity);
+	protected void configureServiceNamespace(Config config) {
+		if (!StringUtils.isBlank(this.serviceNamespace)) {
+			config.getProperties().put(Config.MESSAGE_ENTITY, this.serviceNamespace);
 		}
 	}
 
@@ -356,12 +356,12 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		this.environment = environment;
 	}
 
-	public String getMessageEntity() {
-		return this.messageEntity;
+	public String getServiceNamespace() {
+		return this.serviceNamespace;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceNamespace(String ServiceNamespace) {
+		this.serviceNamespace = ServiceNamespace;
 	}
 
 	public DataSource getDataSource() {

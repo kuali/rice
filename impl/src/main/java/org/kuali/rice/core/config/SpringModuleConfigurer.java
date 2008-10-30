@@ -49,7 +49,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
         return moduleName.toUpperCase() + "_SPRING_RESOURCE_LOADER";        
     }
     public static final QName getDefaultResourceLoaderQName(String moduleName) {
-        return new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), getDefaultResourceLoaderName(moduleName));
+        return new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), getDefaultResourceLoaderName(moduleName));
     }
 
     /**
@@ -93,7 +93,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     @Override
     protected ResourceLoader createResourceLoader() {
         String context = getSpringFileLocations();
-        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), resourceLoaderName), context);
+        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), resourceLoaderName), context);
         return resourceLoader;
     }
     

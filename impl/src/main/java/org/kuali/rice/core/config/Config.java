@@ -201,7 +201,7 @@ public interface Config {
 
 	public String getEDLConfigLocation();
 
-	public String getMessageEntity();
+	public String getServiceNamespace();
 
 	public String getDefaultNoteClass();
 

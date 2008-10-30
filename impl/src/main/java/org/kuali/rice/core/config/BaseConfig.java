@@ -307,7 +307,7 @@ public abstract class BaseConfig implements Config {
         return getProperty(EDL_CONFIG_LOCATION);
     }
 
-    public String getMessageEntity() {
+    public String getServiceNamespace() {
         return getProperty(MESSAGE_ENTITY);
     }
 

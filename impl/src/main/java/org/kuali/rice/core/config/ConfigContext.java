@@ -100,7 +100,7 @@ public class ConfigContext {
      */
     public static void validateCoreConfiguration() {
     	Config config = getRootConfig();
-    	if (StringUtils.isEmpty(config.getMessageEntity())) {
+    	if (StringUtils.isEmpty(config.getServiceNamespace())) {
     		throw new ConfigurationException("The " + Config.MESSAGE_ENTITY + " configuration parameter is required.");
     	}
     }

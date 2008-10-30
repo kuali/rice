@@ -29,7 +29,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.PostProcessorService;
@@ -244,7 +243,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     /**
      * Establishes the UserSession if one does not already exist.
      */
-    protected void establishGlobalVariables() throws WorkflowException, UserNotFoundException {
+    protected void establishGlobalVariables() throws WorkflowException {
         if (GlobalVariables.getUserSession() == null) {
             GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
         }

@@ -29,7 +29,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -73,11 +72,10 @@ public class UserSession implements Serializable {
      * Take in a netid, and construct the user from that.
      * 
      * @param networkId
-     * @throws UserNotFoundException
      * @throws KEWUserNotFoundException
      * @throws ResourceUnavailableException
      */
-    public UserSession(String networkId) throws UserNotFoundException, WorkflowException {
+    public UserSession(String networkId) throws WorkflowException {
         this.person = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
         this.workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO(networkId));
         this.nextObjectKey = 0;
@@ -136,11 +134,10 @@ public class UserSession implements Serializable {
      * reasons why you would need to assume an identity in the system
      * 
      * @param networkId
-     * @throws UserNotFoundException
      * @throws ResourceUnavailableException
      * @throws KEWUserNotFoundException
      */
-    public void setBackdoorUser(String networkId) throws UserNotFoundException, WorkflowException {
+    public void setBackdoorUser(String networkId) throws WorkflowException {
        // only allow backdoor in non-production environments
        if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
         this.backdoorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);

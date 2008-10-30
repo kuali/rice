@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -211,7 +207,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
         return group;
     }
 
-    private Person buildUser(String userName, KimGroup[] groups) throws UserNotFoundException {
+    private Person buildUser(String userName, KimGroup[] groups) {
         Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(userName);
         if(null == user) {
             return user;

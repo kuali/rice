@@ -354,7 +354,7 @@ public interface KualiWorkflowDocument {
      * 
      * @return a set of all approvers
      */
-    public Set<Person> getAllPriorApprovers() throws WorkflowException, org.kuali.rice.kns.exception.UserNotFoundException;
+    public Set<Person> getAllPriorApprovers() throws WorkflowException;
        
     public void setReceiveFutureRequests() throws WorkflowException;
     

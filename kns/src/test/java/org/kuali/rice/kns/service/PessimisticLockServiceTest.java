@@ -25,7 +25,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -99,7 +98,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
     }
 
-    private void verifyDelete(String userId, List<String> lockIds, Class expectedException, boolean expectException) throws UserNotFoundException, WorkflowException {
+    private void verifyDelete(String userId, List<String> lockIds, Class expectedException, boolean expectException) throws WorkflowException {
         GlobalVariables.setUserSession(new UserSession(userId));
         for (String lockId : lockIds) {
             try {

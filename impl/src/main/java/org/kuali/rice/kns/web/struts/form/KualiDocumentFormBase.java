@@ -40,7 +40,6 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -244,10 +243,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
         String principalId = null;
     	if (workflowDocument != null) {
-            try {
-            		principalId = getInitiator().getPrincipalId();
-    		} catch (UserNotFoundException e) {
-    			LOG.warn("UserNotFoundException thrown and swallowed while attempting to build inquiry link for document header fields");
+       		if (getInitiator() == null) {
+    			LOG.warn("User Not Found while attempting to build inquiry link for document header fields");
+    		} else {
+    			principalId = getInitiator().getPrincipalId();
     		}
     	}
         String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
@@ -542,7 +541,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         return false;
     }
 
-    public Person getInitiator() throws UserNotFoundException {
+    public Person getInitiator() {
 	String networkId = getWorkflowDocument().getInitiatorNetworkId();
 	if (!StringUtils.isBlank(networkId)) {
 		Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(getWorkflowDocument().getInitiatorNetworkId());

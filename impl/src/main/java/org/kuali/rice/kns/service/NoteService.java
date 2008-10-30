@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 
 
 /**
@@ -75,8 +74,7 @@ public interface NoteService {
      * @param document - document that contains the note
      * @param note - note to notify
      * @param sender - user who is sending the notification
-     * @throws UserNotFoundException 
      * @throws WorkflowException 
      */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws UserNotFoundException, WorkflowException;
+    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
 }

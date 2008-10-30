@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow.service.impl;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,8 +27,8 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -37,13 +38,9 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
-
-import java.io.Serializable;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
@@ -625,7 +622,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     /**
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
-    public Set<Person> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
+    public Set<Person> getAllPriorApprovers() throws WorkflowException {
         org.kuali.rice.kim.service.PersonService personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
         ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
         Set<String> personIds = new HashSet<String>();

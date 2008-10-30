@@ -22,18 +22,15 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -151,7 +148,7 @@ public class NoteServiceImpl implements NoteService {
      * @see org.kuali.rice.kns.service.NoteService#sendNoteNotification(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note,
      *      org.kuali.rice.kim.bo.Person)
      */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws UserNotFoundException, WorkflowException {
+    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
         AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 
         // build notification request

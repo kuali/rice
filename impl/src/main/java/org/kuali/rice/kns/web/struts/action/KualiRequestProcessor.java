@@ -14,7 +14,6 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,19 +37,16 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.UserNotFoundException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ErrorContainer;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
@@ -126,7 +122,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 				criteria.put("principalName", id);
 				KimPrincipal principal = idmService.getPrincipalByPrincipalName( id ); 
 				if ( principal == null ) {
-					throw new UserNotFoundException("User does not exist in KIM Principal table.");
+					LOG.error("Caught a User Not found exception: " + id);
+					throw new RuntimeException("Invalid User: " + id);
 				}
 				
 				userSession = new UserSession(id);
@@ -153,9 +150,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 			GlobalVariables.setErrorMap(new ErrorMap());
 			GlobalVariables.setMessageList(new ArrayList());
 			GlobalVariables.setAuditErrorMap(new HashMap());
-		} catch (UserNotFoundException e) {
-			LOG.error("Caught a User Not found exception: " + id, e);
-			throw new RuntimeException("Invalid User: " + id, e);
 		} catch (WorkflowException e) {
 			LOG.error("Caught a ResourceUnavailableException: " + id, e);
 			throw new RuntimeException("ResourceUnavailableException: ", e);

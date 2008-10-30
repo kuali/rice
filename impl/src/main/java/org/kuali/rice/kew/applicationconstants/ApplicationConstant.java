@@ -36,7 +36,7 @@ import org.kuali.rice.kew.util.Utilities;
  * 
  */
 @Entity
-@Table(name="EN_APPL_CNST_T")
+@Table(name="KREW_APP_CNST_T")
 @NamedQueries({
   @NamedQuery(name="ApplicationConstant.FindByApplicationConstantName", query="select ac from ApplicationConstant ac where ac.applicationConstantName = :applicationConstantName"), 
   @NamedQuery(name="ApplicationConstant.FindAll", query="select ac from ApplicationConstant ac")
@@ -49,11 +49,11 @@ public class ApplicationConstant implements Serializable {
 	@Column(name="APPL_CNST_NM")
 	private String applicationConstantName;
 
-    @Column(name="APPL_CNST_VAL_TXT")
+    @Column(name="VAL")
 	private String applicationConstantValue;
 
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     public ApplicationConstant() {}

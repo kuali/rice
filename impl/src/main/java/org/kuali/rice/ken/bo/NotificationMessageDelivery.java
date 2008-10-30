@@ -38,30 +38,30 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_MSG_DELIVS")
+@Table(name="KREN_NTFCTN_MSG_DELIV_T")
 public class NotificationMessageDelivery implements Lockable {
     @Id
-	@Column(name="ID")
+	@Column(name="NTFCTN_MSG_DELIV_ID")
 	private Long id;
-    @Column(name="MESSAGE_DELIVERY_STATUS", nullable=false)
+    @Column(name="STAT_CD", nullable=false)
 	private String messageDeliveryStatus;
-    @Column(name="USER_RECIPIENT_ID", nullable=false)
+    @Column(name="RECIP_ID", nullable=false)
 	private String userRecipientId;
-    @Column(name="DELIVERY_SYSTEM_ID", nullable=true)
+    @Column(name="SYS_ID", nullable=true)
 	private String deliverySystemId;  // can hold an identifier from the endpoint delivery mechanism system (i.e. workflow id, SMS id, etc)
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="LOCKED_DATE", nullable=true)
+	@Column(name="LOCKD_DTTM", nullable=true)
 	private Timestamp lockedDate;
 
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="NOTIFICATION_ID")
+	@JoinColumn(name="NTFCTN_ID")
 	private Notification notification;
 
     /**

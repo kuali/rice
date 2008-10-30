@@ -45,37 +45,37 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_SERVICE_DEF_DUEX_T")
-@Sequence(name="SERVICE_DEF_SEQ", property="messageEntryId")
+@Table(name="KRSB_SVC_DEF_T")
+@Sequence(name="KRSB_SVC_DEF_S", property="messageEntryId")
 public class ServiceInfo implements Serializable {
 	
 	private static final long serialVersionUID = -4244884858494208070L;
     @Transient
 	private ServiceDefinition serviceDefinition;
 	@Id
-	@Column(name="SERVICE_DEF_ID")
+	@Column(name="SVC_DEF_ID")
 	private Long messageEntryId;
     @Transient
 	private QName qname;
-	@Column(name="SERVICE_URL")
+	@Column(name="SVC_URL")
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SERVICE_DEFINITION")
+	@Column(name="SVC_DEF")
 	private String serializedMessageEntity;
-	@Column(name="SERVICE_NM")
+	@Column(name="SVC_NM")
 	private String serviceName;
 	@Type(type="yes_no")
-    @Column(name="SERVICE_ALIVE")
+    @Column(name="SVC_ALIVE")
 	private Boolean alive = true; 
-	@Column(name="MESSAGE_ENTITY_NM")
+	@Column(name="SVC_NMSPC")
 	private String messageEntity;
-	@Column(name="SERVER_IP")
+	@Column(name="SRVR_IP")
 	private String serverIp;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
 	@Transient

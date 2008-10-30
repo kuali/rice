@@ -33,14 +33,14 @@ import javax.persistence.Table;
  */
 @IdClass(org.kuali.rice.kew.removereplace.WorkgroupTargetId.class)
 @Entity
-@Table(name="EN_RMV_RPLC_WRKGRP_T")
+@Table(name="KREW_RMV_RPLC_GRP_T")
 public class WorkgroupTarget {
 
     @Id
 	@Column(name="DOC_HDR_ID")
 	private Long documentId;
     @Id
-	@Column(name="WRKGRP_ID")
+	@Column(name="GRP_ID")
 	private Long workgroupId;
     
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)

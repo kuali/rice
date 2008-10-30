@@ -55,9 +55,9 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 List docTypes = new ArrayList();
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from EN_ACTN_ITM_T where ACTN_ITM_PRSN_EN_ID = ? " +
+                    selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from KREW_ACTN_ITM_T where PRNCPL_ID = ? " +
                             "and (dlgn_typ is null or dlgn_typ != '" + KEWConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
-                    selectDocTypeLabel = connection.prepareStatement("select DOC_TYP_LBL_TXT from EN_DOC_TYP_T WHERE DOC_TYP_NM = ? and DOC_TYP_CUR_IND = 1");
+                    selectDocTypeLabel = connection.prepareStatement("select LBL from KREW_DOC_TYP_T WHERE DOC_TYP_NM = ? and CUR_IND = 1");
                     selectActionItems.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedActionItems = selectActionItems.executeQuery();
                     while (selectedActionItems.next()) {
@@ -117,10 +117,10 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
 //                  select the doc type only if the SUPPORTS_QUICK_INITIATE policy is NULL or true
-                    String sql = "select distinct B.DOC_TYP_NM, B.DOC_TYP_LBL_TXT from EN_DOC_HDR_T A, EN_DOC_TYP_T B "+
-                    	"where A.DOC_INITR_PRSN_EN_ID = ? and A.DOC_TYP_ID = B.DOC_TYP_ID and " +
-                    	"B.DOC_TYP_ACTV_IND = 1 and B.DOC_TYP_CUR_IND = 1 " +
-                    	"order by upper(B.DOC_TYP_LBL_TXT)";
+                    String sql = "select distinct B.DOC_TYP_NM, B.LBL from KREW_DOC_HDR_T A, KREW_DOC_TYP_T B "+
+                    	"where A.INITR_PRNCPL_ID = ? and A.DOC_TYP_ID = B.DOC_TYP_ID and " +
+                    	"B.ACTV_IND = 1 and B.CUR_IND = 1 " +
+                    	"order by upper(B.LBL)";
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
@@ -190,7 +190,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 ResultSet selectedWatchedDocuments = null;
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_RTE_STAT_CD, DOC_TTL, DOC_CRTE_DT from EN_DOC_HDR_T where DOC_INITR_PRSN_EN_ID = ? and DOC_RTE_STAT_CD in ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by DOC_CRTE_DT desc");
+                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_HDR_STAT_CD, TTL, CRTE_DT from KREW_DOC_HDR_T where INITR_PRNCPL_ID = ? and DOC_HDR_STAT_CD in ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by CRTE_DT desc");
                     selectWatchedDocuments.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_TYP_PROC_T")
+@Table(name="KREW_DOC_TYP_PROC_T")
 public class Process implements Serializable {
 
 	private static final long serialVersionUID = -6338857095673479752L;
@@ -48,7 +48,7 @@ public class Process implements Serializable {
     @Id
 	@Column(name="DOC_TYP_PROC_ID")
 	private Long processId;
-	@Column(name="PROC_NM")
+	@Column(name="NM")
 	private String name;
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_TYP_ID")
@@ -59,7 +59,7 @@ public class Process implements Serializable {
     @Column(name="INIT_IND")
 	private boolean initial = false;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
 	public Long getProcessId() {

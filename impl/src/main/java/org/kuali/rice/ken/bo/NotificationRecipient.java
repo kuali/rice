@@ -31,21 +31,21 @@ import javax.persistence.Table;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_RECIPIENTS")
+@Table(name="KREN_RECIP_T")
 public class NotificationRecipient {
     @Id
-	@Column(name="ID")
+	@Column(name="RECIP_ID")
 	private Long id;
-    @Column(name="NOTIFICATION_ID", nullable=false)
+    @Column(name="NTFCTN_ID", nullable=false)
 	private Long notificationId;
-    @Column(name="RECIPIENT_TYPE", nullable=false)
+    @Column(name="RECIP_TYP_CD", nullable=false)
 	private String recipientType;
-    @Column(name="RECIPIENT_ID", nullable=false)
+    @Column(name="PRNCPL_ID", nullable=false)
 	private String recipientId;
     
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="NOTIFICATION_ID", insertable=false, updatable=false)
+    @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
     private Notification notification;
     
     /**

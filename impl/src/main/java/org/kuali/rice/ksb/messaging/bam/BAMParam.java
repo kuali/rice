@@ -33,16 +33,16 @@ import org.apache.commons.lang.StringUtils;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_BAM_PARAM_T")
+@Table(name="KRSB_BAM_PARM_T")
 public class BAMParam {
 
 	@Id
-	@Column(name="BAM_PARAM_ID")
+	@Column(name="BAM_PARM_ID")
 	private Long bamParamId;
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="BAM_ID")
 	private BAMTargetEntry bamTargetEntry;
-	@Column(name="PARAM")
+	@Column(name="PARM")
 	private String param;
 	
 	

@@ -31,17 +31,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_REVIEWERS")
+@Table(name="KREN_RVWER_T")
 public class NotificationChannelReviewer {
     @Id
-	@Column(name="ID")
+	@Column(name="RVWER_ID")
 	private Long id;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CHANNEL_ID")
+	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
-    @Column(name="REVIEWER_TYPE", nullable=false)
+    @Column(name="TYP", nullable=false)
 	private String reviewerType;
-    @Column(name="REVIEWER_ID", nullable=false)
+    @Column(name="PRNCPL_ID", nullable=false)
 	private String reviewerId;
 
     /**

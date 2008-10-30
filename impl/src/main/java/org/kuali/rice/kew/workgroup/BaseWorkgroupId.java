@@ -27,7 +27,7 @@ import javax.persistence.Column;
  */
 public class BaseWorkgroupId implements Serializable {
 
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
     protected Long workgroupId;
     @Column(name="WRKGRP_VER_NBR")
     protected Integer versionNumber;

@@ -27,10 +27,10 @@ import org.kuali.rice.kim.bo.reference.EmailType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_EMAIL_TYPE_T")
+@Table(name="KRIM_EMAIL_TYP_T")
 @AttributeOverrides({
 	@AttributeOverride(name="code",column=@Column(name="EMAIL_TYP_CD")),
-	@AttributeOverride(name="name",column=@Column(name="EMAIL_TYP_NM"))
+	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
 public class EmailTypeImpl extends DefaultableKimCodeBase implements EmailType {
 

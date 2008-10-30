@@ -28,11 +28,11 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 @Entity
-@Table(name="FS_LOOKUP_RESULTS_MT")
+@Table(name="KRNS_LOOKUP_RSLT_T")
 public class LookupResults extends MultipleValueLookupMetadata {
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SERIALIZED_LOOKUP_RESULTS")
+	@Column(name="SERIALZD_RSLTS")
 	private String serializedLookupResults;
 
     public String getSerializedLookupResults() {

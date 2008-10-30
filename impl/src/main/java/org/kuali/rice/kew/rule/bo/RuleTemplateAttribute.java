@@ -49,16 +49,16 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_TMPL_ATTRIB_T")
+@Table(name="KREW_RULE_TMPL_ATTR_T")
 public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
-	@Column(name="RULE_TMPL_ATTRIB_ID")
+	@Column(name="RULE_TMPL_ATTR_ID")
 	private Long ruleTemplateAttributeId;
     @Column(name="RULE_TMPL_ID")
 	private Long ruleTemplateId;
-    @Column(name="RULE_ATTRIB_ID")
+    @Column(name="RULE_ATTR_ID")
 	private Long ruleAttributeId;
     @Column(name="REQ_IND")
 	private Boolean required;
@@ -69,14 +69,14 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     @Column(name="DFLT_VAL")
 	private String defaultValue;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private RuleTemplate ruleTemplate;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_ATTRIB_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private RuleAttribute ruleAttribute;
     @OneToMany(targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleTemplateAttribute")
 	private List ruleExtensions;

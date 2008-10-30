@@ -33,7 +33,7 @@ import javax.persistence.Table;
  */
 @IdClass(org.kuali.rice.kew.removereplace.RuleTargetId.class)
 @Entity
-@Table(name="EN_RMV_RPLC_RULE_T")
+@Table(name="KREW_RMV_RPLC_RULE_T")
 public class RuleTarget {
 
     @Id

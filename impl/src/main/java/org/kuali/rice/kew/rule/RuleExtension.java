@@ -49,7 +49,7 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_EXT_T")
+@Table(name="KREW_RULE_EXT_T")
 public class RuleExtension implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
@@ -58,22 +58,22 @@ public class RuleExtension implements WorkflowPersistable {
 	@Column(name="RULE_EXT_ID")
 	private Long ruleExtensionId;
 
-	@Column(name="RULE_TMPL_ATTRIB_ID")
+	@Column(name="RULE_TMPL_ATTR_ID")
 	private Long ruleTemplateAttributeId;
 
-	@Column(name="RULE_BASE_VAL_ID")
+	@Column(name="RULE_ID")
 	private Long ruleBaseValuesId;
 
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_ID", insertable=false, updatable=false)
 	private RuleBaseValues ruleBaseValues;
 
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_TMPL_ATTRIB_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},

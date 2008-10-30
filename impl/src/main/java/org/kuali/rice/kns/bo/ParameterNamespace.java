@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="SH_PARM_NMSPC_T")
-@AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="SH_PARM_NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="SH_PARM_NMSPC_NM"))})
+@Table(name="KRNS_NMSPC_T")
+@AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
 public class ParameterNamespace extends KualiCodeBase {
 	
 	public String getParameterNamespaceCode() {

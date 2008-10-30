@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
  *
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_PRIV_PREF_T")
+@Table(name = "KRIM_ENTITY_PRIV_PREF_T")
 public class EntityPrivacyPreferencesImpl extends EntityDataBase implements EntityPrivacyPreferences {
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +42,7 @@ public class EntityPrivacyPreferencesImpl extends EntityDataBase implements Enti
 	protected String entityId;
 	
 	@Type(type="yes_no")
-	@Column(name="SUPPRESS_NAME_IND")
+	@Column(name="SUPPRESS_NM_IND")
 	protected boolean suppressName;
 	
 	@Type(type="yes_no")

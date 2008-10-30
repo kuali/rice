@@ -67,7 +67,7 @@ import org.kuali.rice.kew.workgroup.WorkgroupService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_ACTN_RQST_T")
+@Table(name="KREW_ACTN_RQST_T")
 public class ActionRequestValue implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8781414791855848385L;
@@ -85,36 +85,36 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private java.lang.String actionRequested;
     @Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
-    @Column(name="ACTN_RQST_STAT_CD")
+    @Column(name="STAT_CD")
 	private java.lang.String status;
-    @Column(name="ACTN_RQST_RESP_ID")
+    @Column(name="RSP_ID")
 	private java.lang.Long responsibilityId;
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
 	private java.lang.Long workgroupId;
-    @Column(name="ACTN_RQST_RECP_TYP_CD")
+    @Column(name="RECIP_TYP_CD")
 	private java.lang.String recipientTypeCd;
-    @Column(name="ACTN_RQST_PRIO_NBR")
+    @Column(name="PRIO_NBR")
 	private java.lang.Integer priority;
-    @Column(name="ACTN_RQST_RTE_LVL_NBR")
+    @Column(name="RTE_LVL_NBR")
 	private java.lang.Integer routeLevel;
     @Column(name="ACTN_TKN_ID")
 	private java.lang.Long actionTakenId;
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(1);
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ACTN_RQST_CRTE_DT")
+	@Column(name="CRTE_DT")
 	private java.sql.Timestamp createDate;
-    @Column(name="ACTN_RQST_RESP_DESC")
+    @Column(name="RSP_DESC_TXT")
 	private java.lang.String responsibilityDesc;
     @Column(name="ACTN_RQST_ANNOTN_TXT")
 	private java.lang.String annotation;
-    @Column(name="DB_LOCK_VER_NBR")
+    @Column(name="VER_NBR")
 	private java.lang.Integer jrfVerNbr;
-    @Column(name="ACTN_RQST_PRSN_EN_ID")
+    @Column(name="PRNCPL_ID")
 	private java.lang.String workflowId;
-    @Column(name="ACTN_RQST_IGN_PREV_ACTN_IND")
+    @Column(name="IGN_PREV_ACTN_IND")
 	private Boolean ignorePrevAction;
-    @Column(name="ACTN_RQST_PARNT_ID")
+    @Column(name="PARNT_ID")
 	private Long parentActionRequestId;
     @Column(name="QUAL_ROLE_NM")
 	private String qualifiedRoleName;
@@ -124,16 +124,16 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private String qualifiedRoleNameLabel;
     @Transient
     private String displayStatus;
-    @Column(name="RULE_BASE_VALUES_ID")
+    @Column(name="RULE_ID")
 	private Long ruleBaseValuesId;
 
     @Column(name="DLGN_TYP")
     private String delegationType = KEWConstants.DELEGATION_NONE;
-    @Column(name="ACTN_RQST_APPR_PLCY")
+    @Column(name="APPR_PLCY")
 	private String approvePolicy;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="ACTN_RQST_PARNT_ID", insertable=false, updatable=false)
+	@JoinColumn(name="PARNT_ID", insertable=false, updatable=false)
 	private ActionRequestValue parentActionRequest;
     @Transient
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
@@ -145,7 +145,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private DocumentRouteHeaderValue routeHeader;
     @Transient
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
-    @Column(name="ACTN_RQST_CUR_IND")
+    @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient
     private String createDateString;
@@ -153,7 +153,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="ACTN_RQST_RTE_NODE_INSTN_ID")
+	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 
     public ActionRequestValue() {

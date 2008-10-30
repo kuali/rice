@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @IdClass(org.kuali.rice.kew.doctype.DocumentTypePolicyId.class)
 @Entity
-@Table(name="EN_DOC_TYP_PLCY_RELN_T")
+@Table(name="KREW_DOC_TYP_PLCY_RELN_T")
 public class DocumentTypePolicy implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -4612246888683336474L;
@@ -50,12 +50,12 @@ public class DocumentTypePolicy implements WorkflowPersistable {
     @Id
 	@Column(name="DOC_PLCY_NM")
 	private String policyName;
-    @Column(name="DOC_PLCY_VAL")
+    @Column(name="PLCY_NM")
 	private Boolean policyValue;
     @Transient
     private Boolean inheritedFlag;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_TYP_ID")

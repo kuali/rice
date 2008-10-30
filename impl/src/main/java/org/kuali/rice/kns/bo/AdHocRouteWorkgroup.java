@@ -28,7 +28,7 @@ import javax.persistence.IdClass;
  */
 @IdClass(org.kuali.rice.kns.bo.AdHocRouteWorkgroupId.class)
 @Entity
-@Table(name="FS_ADHOC_RTE_ACTN_RECP_T")
+@Table(name="KRNS_ADHOC_RTE_ACTN_RECIP_T")
 public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
 
     private static final long serialVersionUID = 1L;

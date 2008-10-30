@@ -67,7 +67,7 @@ import org.xml.sax.SAXException;
  * </maintainableDocumentContents> Maintenance Document
  */
 @Entity
-@Table(name="FP_MAINTENANCE_DOCUMENT_T")
+@Table(name="KRNS_MAINT_DOC_T")
 public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument , SessionDocument{
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
@@ -81,7 +81,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected Maintainable newMaintainableObject;
 
-    @Column(name="DOCUMENT_CONTENTS", length=4096)
+    @Column(name="DOC_CNTNT", length=4096)
 	protected String xmlDocumentContents;
     @Transient
     protected boolean fieldsClearedOnCopy;

@@ -56,7 +56,7 @@ public class WorkgroupTypeAttribute {
 	@Column(name="ORD_INDX")
 	private int orderIndex;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	public Object loadAttribute() {

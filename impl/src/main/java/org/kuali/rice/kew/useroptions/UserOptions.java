@@ -35,7 +35,7 @@ import org.kuali.rice.kew.preferences.Preferences;
  */
 @IdClass(org.kuali.rice.kew.useroptions.UserOptionsId.class)
 @Entity
-@Table(name="EN_USR_OPTN_T")
+@Table(name="KREW_USR_OPTN_T")
 @NamedQueries({
   @NamedQuery(name="UserOptions.FindByUserQualified", query="select uo from UserOptions uo where uo.workflowId = :workflowId and uo.optionId like :optionId"), 
   @NamedQuery(name="UserOptions.FindByWorkflowId",  query="select uo from UserOptions uo where uo.workflowId = :workflowId"),
@@ -45,15 +45,15 @@ import org.kuali.rice.kew.preferences.Preferences;
 public class UserOptions implements Comparable {
 
 	@Id
-	@Column(name="PRSN_EN_ID")
+	@Column(name="PRNCPL_ID")
 	private String workflowId;
 	@Id
 	@Column(name="PRSN_OPTN_ID")
 	private String optionId;
-	@Column(name="PRSN_OPTN_VAL")
+	@Column(name="VAL")
 	private String optionVal;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	/**

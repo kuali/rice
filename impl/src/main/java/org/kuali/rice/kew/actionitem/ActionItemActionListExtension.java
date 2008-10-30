@@ -41,7 +41,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
  * 
  */
 @Entity
-@Table(name="EN_ACTN_ITM_T")
+@Table(name="KREW_ACTN_ITM_T")
 public class ActionItemActionListExtension extends ActionItem {
     
     private static final long serialVersionUID = -8801104028828059623L;

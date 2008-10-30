@@ -30,19 +30,19 @@ import javax.persistence.Table;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_SENDERS")
+@Table(name="KREN_SNDR_T")
 public class NotificationSender {
     @Id
-	@Column(name="ID")
+	@Column(name="SNDR_ID")
 	private Long id;
-    @Column(name="NOTIFICATION_ID", nullable=false)
+    @Column(name="NTFCTN_ID", nullable=false)
 	private Long notificationId;
-    @Column(name="NAME", nullable=false)
+    @Column(name="NM", nullable=false)
 	private String senderName;
 
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="NOTIFICATION_ID", insertable=false, updatable=false)
+    @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
     private Notification notification;
 
     /**

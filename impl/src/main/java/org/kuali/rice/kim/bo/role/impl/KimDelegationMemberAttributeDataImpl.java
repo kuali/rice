@@ -24,6 +24,6 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ROLE_MBR_ATTR_DATA_T")
+@Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")
 public class KimDelegationMemberAttributeDataImpl extends KimAttributeDataImpl {
 }

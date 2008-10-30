@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_PHONE_T")
+@Table(name = "KRIM_ENTITY_PHONE_T")
 public class EntityPhoneImpl extends DefaultableEntityDataBase implements EntityPhone {
 	
 	private static final long serialVersionUID = 1L;

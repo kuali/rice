@@ -37,7 +37,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Represents a user note in the system.
  */
 @Entity
-@Table(name="SH_NTE_T")
+@Table(name="KRNS_NTE_T")
 public class Note extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -7647166354016356770L;
 
@@ -46,18 +46,18 @@ public class Note extends PersistableBusinessObjectBase {
 	private Long noteIdentifier;
     @Column(name="RMT_OBJ_ID")
 	private String remoteObjectIdentifier;
-    @Column(name="NTE_AUTH_ID")
+    @Column(name="AUTH_PRNCPL_ID")
 	private String authorUniversalIdentifier;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="NTE_POST_TS")
+	@Column(name="POST_TS")
 	private Timestamp notePostedTimestamp;
     @Column(name="NTE_TYP_CD")
 	private String noteTypeCode;
-    @Column(name="NTE_TXT")
+    @Column(name="TXT")
 	private String noteText;
-    @Column(name="NTE_TPC_TXT")
+    @Column(name="TPC_TXT")
 	private String noteTopicText;
-    @Column(name="NTE_PRG_CD")
+    @Column(name="PRG_CD")
 	private String notePurgeCode;
     @Transient
     private String attachmentIdentifier;

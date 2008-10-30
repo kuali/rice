@@ -36,7 +36,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_PERM_T")
+@Table(name="KRIM_PERM_T")
 public class KimPermissionImpl extends PersistableBusinessObjectBase implements KimPermission {
 
 	private static final long serialVersionUID = 1L;
@@ -44,11 +44,11 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@Id
 	@Column(name="PERM_ID")
 	protected String permissionId;
-	@Column(name="NAMESPACE_CD")
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	@Column(name="NAME")
+	@Column(name="NM")
 	protected String name;
-	@Column(name="DESCRIPTION", length=400)
+	@Column(name="DESC_TXT", length=400)
 	protected String description;
 	@Column(name="ACTV_IND")
 	protected boolean active;

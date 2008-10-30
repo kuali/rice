@@ -28,7 +28,7 @@ import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Entity
-@Table(name="EN_DOC_HDR_CNTNT_T")
+@Table(name="KREW_DOC_HDR_CNTNT_T")
 public class DocumentRouteHeaderValueContent implements Serializable {
 
 	/**

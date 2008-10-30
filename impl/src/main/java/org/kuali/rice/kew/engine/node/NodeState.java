@@ -32,7 +32,7 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_NODE_INSTN_ST_T")
+@Table(name="KREW_RTE_NODE_INSTN_ST_T")
 @AttributeOverride(name="stateId", column=@Column(name="RTE_NODE_INSTN_ST_ID"))
 public class NodeState extends State {
 
@@ -42,7 +42,7 @@ public class NodeState extends State {
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     public NodeState() {}

@@ -31,11 +31,11 @@ public class AdHocRouteRecipientId implements Serializable {
 
     private static final long serialVersionUID = 8497301760757033542L;
     
-	@Column(name="ACTN_RQST_RECP_TYP_CD")
+	@Column(name="RECIP_TYP_CD")
     protected Integer type;
     @Column(name="ACTN_RQST_CD")
     protected String actionRequested;
-    @Column(name="ACTN_RQST_RECP_ID")
+    @Column(name="ACTN_RQST_RECIP_ID")
     protected String id;
 
     public AdHocRouteRecipientId() {}

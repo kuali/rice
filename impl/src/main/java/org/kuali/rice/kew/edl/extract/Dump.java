@@ -20,7 +20,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 
 @Entity
-@Table(name="EN_EDL_DMP_T")
+@Table(name="KREW_EDL_DMP_T")
 public class Dump {
 
 	private static final long serialVersionUID = -6136544551121011531L;
@@ -30,22 +30,22 @@ public class Dump {
 	private Long docId;
 	@Column(name="DOC_TYP_NM")
 	private String docTypeName;
-	@Column(name="DOC_RTE_STAT_CD")
+	@Column(name="DOC_HDR_STAT_CD")
 	private String docRouteStatusCode;
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="DOC_MDFN_DT")
+	@Column(name="DOC_HDR_MDFN_DT")
 	private Timestamp docModificationDate;
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="DOC_CRTE_DT")
+	@Column(name="DOC_HDR_CRTE_DT")
 	private Timestamp docCreationDate;
-	@Column(name="DOC_TTL")
+	@Column(name="DOC_HDR_TTL")
 	private String docDescription;
-    @Column(name="DOC_INITR_ID")
+    @Column(name="DOC_HDR_INITR_PRNCPL_ID")
 	private String docInitiatorId;
-    @Column(name="DOC_CRNT_NODE_NM")
+    @Column(name="CRNT_NODE_NM")
 	private String docCurrentNodeName;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @Transient

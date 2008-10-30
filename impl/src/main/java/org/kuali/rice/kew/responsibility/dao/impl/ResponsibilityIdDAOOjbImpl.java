@@ -29,7 +29,7 @@ public class ResponsibilityIdDAOOjbImpl extends PersistenceBrokerDaoSupport impl
 	public Long getNewResponsibilityId() {
         return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	return getPlatform().getNextValSQL("SEQ_RESPONSIBILITY_ID", broker);
+            	return getPlatform().getNextValSQL("KREW_RSP_S", broker);
             }
         });
     }

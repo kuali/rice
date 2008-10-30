@@ -39,7 +39,7 @@ import org.kuali.rice.ksb.messaging.AsynchronousCallback;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_BAM_T")
+@Table(name="KRSB_BAM_T")
 public class BAMTargetEntry implements Serializable {
 
 	private static final long serialVersionUID = -8376674801367598316L;
@@ -47,26 +47,26 @@ public class BAMTargetEntry implements Serializable {
 	@Id
 	@Column(name="BAM_ID")
 	private Long bamId;
-	@Column(name="SERVICE_NM")
+	@Column(name="SVC_NM")
 	private String serviceName;
-	@Column(name="METHOD_NM")
+	@Column(name="MTHD_NM")
 	private String methodName;
-	@Column(name="THREAD_NM")
+	@Column(name="THRD_NM")
 	private String threadName;
 	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CALL_DT")
 	private Timestamp callDate;
-	@Column(name="SERVICE_URL")
+	@Column(name="SVC_URL")
 	private String serviceURL;
-	@Column(name="TARGET_TO_STRING")
+	@Column(name="TGT_TO_STR")
 	private String targetToString;
-	@Column(name="EXCEPTION_TO_STRING")
+	@Column(name="EXCPN_TO_STR")
 	private String exceptionToString;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="EXCEPTION_MSG")
+	@Column(name="EXCPN_MSG")
 	private String exceptionMessage;
-	@Column(name="SRVR_IND_IND")
+	@Column(name="SRVR_IND")
 	private Boolean serverInvocation;
     @Transient
 	private List<BAMParam> bamParams = new ArrayList<BAMParam>();

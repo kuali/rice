@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_BRCH_PROTO_T")
+@Table(name="KREW_RTE_BRCH_PROTO_T")
 public class BranchPrototype implements Serializable {
 
 	private static final long serialVersionUID = 8645994738204838275L;
@@ -40,10 +40,10 @@ public class BranchPrototype implements Serializable {
     @Id
 	@Column(name="RTE_BRCH_PROTO_ID")
 	private Long branchId;
-	@Column(name="RTE_BRCH_PROTO_NM")
+	@Column(name="NM")
 	private String name;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
 	public Long getBranchId() {

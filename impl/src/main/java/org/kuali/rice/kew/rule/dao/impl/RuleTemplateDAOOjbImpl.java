@@ -81,7 +81,7 @@ public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     public Long getNextRuleTemplateId() {
         return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	  return getPlatform().getNextValSQL("SEQ_ROUTE_TEMPLATE", broker);
+            	  return getPlatform().getNextValSQL("KREW_RTE_TMPL_S", broker);
             }
         });
     }

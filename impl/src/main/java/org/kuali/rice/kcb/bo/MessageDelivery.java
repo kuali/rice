@@ -34,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KCB_MSG_DELIVS")
+@Table(name="KREN_MSG_DELIV_T")
 public class MessageDelivery extends BaseLockable {
     private static final Integer ZERO = Integer.valueOf(0);
 
@@ -48,29 +48,29 @@ public class MessageDelivery extends BaseLockable {
     public static final String PROCESS_COUNT = "processCount";
     
     @Id
-	@Column(name="ID")
+	@Column(name="MSG_DELIV_ID")
 	private Long id;
-    @Column(name="DELIVERER_TYPE_NAME", nullable=false)
+    @Column(name="TYP_NM", nullable=false)
 	private String delivererTypeName;
-    @Column(name="DELIVERER_SYSTEM_ID", nullable=true)
+    @Column(name="SYS_ID", nullable=true)
 	private String delivererSystemId;  // can hold an identifier from the endpoint deliverer mechanism system (i.e. workflow id, SMS id, etc)
-    @Column(name="DELIVERY_STATUS", nullable=true)
+    @Column(name="STAT_CD", nullable=true)
     private String deliveryStatus = MessageDeliveryStatus.UNDELIVERED.name();
-    @Column(name="PROCESS_COUNT", nullable=true)
+    @Column(name="PROC_CNT", nullable=true)
     private Integer processCount = ZERO;
 
     /**
      * This delivery's message
      */
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="MESSAGE_ID")
+	@JoinColumn(name="MSG_ID")
 	private Message message;
 
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     /**

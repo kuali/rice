@@ -30,7 +30,7 @@ import org.apache.ojb.broker.accesslayer.LookupException;
 public class MySQLPlatform extends ANSISqlPlatform {
 
     public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
-        return "SELECT DOC_HDR_ID FROM EN_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
+        return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
     }
 
     public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {

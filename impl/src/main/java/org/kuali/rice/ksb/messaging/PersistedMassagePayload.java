@@ -36,17 +36,17 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 @Entity
-@Table(name="EN_MSG_PAYLOAD_T")
+@Table(name="KRSB_MSG_PYLD_T")
 public class PersistedMassagePayload implements Serializable {
     
     private static final long serialVersionUID = 508778527504899029L;
     
     @Id
-	@Column(name="MESSAGE_QUE_ID")
+	@Column(name="MSG_QUE_ID")
 	private Long routeQueueId;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="MESSAGE_PAYLOAD")
+	@Column(name="MSG_PYLD")
 	private String payload;
     @Transient
     private AsynchronousCall methodCall;

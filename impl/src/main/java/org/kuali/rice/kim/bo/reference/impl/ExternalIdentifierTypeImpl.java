@@ -28,10 +28,10 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_EXT_ID_TYPE_T")
+@Table(name="KRIM_EXT_ID_TYP_T")
 @AttributeOverrides({
 	@AttributeOverride(name="code",column=@Column(name="EXT_ID_TYP_CD")),
-	@AttributeOverride(name="name",column=@Column(name="EXT_ID_TYP_NM"))
+	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
 public class ExternalIdentifierTypeImpl extends KimCodeBase implements ExternalIdentifierType {
 

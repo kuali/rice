@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_PRINCIPAL_T")
+@Table(name="KRIM_PRNCPL_T")
 public class KimPrincipalImpl extends PersistableBusinessObjectBase implements KimPrincipal {
 
 	private static final long serialVersionUID = 4480581610252159266L;

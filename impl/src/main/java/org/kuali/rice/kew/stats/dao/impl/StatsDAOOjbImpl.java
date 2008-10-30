@@ -39,11 +39,11 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StatsDAOOjbImpl.class);
 
-    public static final String SQL_NUM_ACTIVE_ITEMS = "select count(*) from en_actn_itm_t";
-    public static final String SQL_NUM_DOC_TYPES_REPORT = "select count(*) as num from en_doc_typ_t where doc_typ_cur_ind = 1";
-    public static final String SQL_DOCUMENTS_ROUTED = "select count(*) as count, en_doc_hdr_t.doc_rte_stat_cd from en_doc_hdr_t where en_doc_hdr_t.doc_crte_dt between ? and ? group by doc_rte_stat_cd";
-    public static final String SQL_NUM_USERS = "select count(distinct prsn_en_id) as prsn_count from en_usr_optn_t";
-    public static final String SQL_NUM_DOCS_INITIATED = "select count(*), en_doc_typ_t.doc_typ_nm from en_doc_hdr_t, en_doc_typ_t where en_doc_hdr_t.doc_crte_dt > ? and en_doc_hdr_t.doc_typ_id = en_doc_typ_t.doc_typ_id group by en_doc_typ_t.doc_typ_nm";
+    public static final String SQL_NUM_ACTIVE_ITEMS = "select count(*) from krew_actn_itm_t";
+    public static final String SQL_NUM_DOC_TYPES_REPORT = "select count(*) as num from krew_doc_typ_t where cur_ind = 1";
+    public static final String SQL_DOCUMENTS_ROUTED = "select count(*) as count, krew_doc_hdr_t.doc_hdr_stat_cd from krew_doc_hdr_t where krew_doc_hdr_t.crte_dt between ? and ? group by doc_hdr_stat_cd";
+    public static final String SQL_NUM_USERS = "select count(distinct prncpl_id) as prsn_count from KREW_USR_OPTN_T";
+    public static final String SQL_NUM_DOCS_INITIATED = "select count(*), krew_doc_typ_t.doc_typ_nm from krew_doc_hdr_t, krew_doc_typ_t where krew_doc_hdr_t.crte_dt > ? and krew_doc_hdr_t.doc_typ_id = krew_doc_typ_t.doc_typ_id group by krew_doc_typ_t.doc_typ_nm";
 
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
 

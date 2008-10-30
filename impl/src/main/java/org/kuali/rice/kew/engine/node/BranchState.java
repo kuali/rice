@@ -32,7 +32,7 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_BRCH_ST_T")
+@Table(name="KREW_RTE_BRCH_ST_T")
 @AttributeOverride(name="stateId", column=@Column(name="RTE_BRCH_ST_ID"))
 public class BranchState extends State {
     /**
@@ -47,7 +47,7 @@ public class BranchState extends State {
 	@JoinColumn(name="RTE_BRCH_ID")
 	private Branch branch;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     public BranchState() {}

@@ -54,13 +54,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleDAOOjbImpl.class);
 
 	private static final String OLD_DELEGATIONS_SQL =
-		"select oldDel.dlgn_rule_base_val_id "+
-		"from en_rule_rsp_t oldRsp, en_dlgn_rsp_t oldDel "+
-		"where oldRsp.rule_base_val_id=? and "+
+		"select oldDel.dlgn_rule_id "+
+		"from krew_rule_rsp_t oldRsp, krew_dlgn_rsp_t oldDel "+
+		"where oldRsp.rule_id=? and "+
 		"oldRsp.rule_rsp_id=oldDel.rule_rsp_id and "+
 		"oldDel.dlgn_rule_base_val_id not in "+
-		"(select newDel.dlgn_rule_base_val_id from en_rule_rsp_t newRsp, en_dlgn_rsp_t newDel "+
-		"where newRsp.rule_base_val_id=? and "+
+		"(select newDel.dlgn_rule_base_val_id from krew_rule_rsp_t newRsp, krew_dlgn_rsp_t newDel "+
+		"where newRsp.rule_id=? and "+
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
 	public void save(RuleBaseValues ruleBaseValues) {
@@ -69,7 +69,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
 	public void saveDeactivationDate(final RuleBaseValues ruleBaseValues) {
 
-		final String sql = "update en_rule_base_val_t set RULE_BASE_VAL_ACTVN_DT = ?, RULE_BASE_VAL_DACTVN_DT = ? where rule_base_val_id = ?";
+		final String sql = "update krew_rule_t set ACTVN_DT = ?, DACTVN_DT = ? where rule_id = ?";
 		this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
 			public Object doInPersistenceBroker(PersistenceBroker pb) {
 				PreparedStatement ps = null;

@@ -49,7 +49,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_NODE_INSTN_T")
+@Table(name="KREW_RTE_NODE_INSTN_T")
 public class RouteNodeInstance implements Serializable {
     
 	private static final long serialVersionUID = 7183670062805580420L;
@@ -57,7 +57,7 @@ public class RouteNodeInstance implements Serializable {
 	@Id
 	@Column(name="RTE_NODE_INSTN_ID")
 	private Long routeNodeInstanceId;
-    @Column(name="DOC_ID")
+    @Column(name="DOC_HDR_ID")
 	private Long documentId;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
@@ -85,7 +85,7 @@ public class RouteNodeInstance implements Serializable {
     private List<NodeState> state = new ArrayList<NodeState>();
     	
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     public boolean isActive() {

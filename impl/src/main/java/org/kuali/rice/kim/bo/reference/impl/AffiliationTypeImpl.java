@@ -27,10 +27,10 @@ import org.kuali.rice.kim.bo.reference.AffiliationType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_AFLTN_TYPE_T")
+@Table(name="KRIM_AFLTN_TYP_T")
 @AttributeOverrides({
 	@AttributeOverride(name="code",column=@Column(name="AFLTN_TYP_CD")),
-	@AttributeOverride(name="name",column=@Column(name="AFLTN_TYP_NM"))
+	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
 public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType {
 

@@ -51,7 +51,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_TMPL_T")
+@Table(name="KREW_RULE_TMPL_T")
 public class RuleTemplate  extends PersistableBusinessObjectBase implements WorkflowPersistable  {
 
     private static final long serialVersionUID = -3387940485523951302L;
@@ -71,12 +71,12 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
     @Id
 	@Column(name="RULE_TMPL_ID")
 	private Long ruleTemplateId;
-    @Column(name="RULE_TMPL_NM")
+    @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_DESC")
 	private String description;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Column(name="DLGN_RULE_TMPL_ID")
 	private Long delegationTemplateId;

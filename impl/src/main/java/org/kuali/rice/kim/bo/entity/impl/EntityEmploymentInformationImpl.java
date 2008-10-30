@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_EMP_INFO_T")
+@Table(name = "KRIM_ENTITY_EMP_INFO_T")
 public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase implements EntityEmploymentInformation {
 
 	private static final long serialVersionUID = 1L;

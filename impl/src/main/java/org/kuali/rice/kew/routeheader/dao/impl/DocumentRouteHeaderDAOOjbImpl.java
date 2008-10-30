@@ -141,7 +141,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     public Long getNextRouteHeaderId() {
         return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	return getPlatform().getNextValSQL("SEQ_DOCUMENT_ROUTE_HEADER", broker);
+            	return getPlatform().getNextValSQL("KREW_DOC_HDR_S", broker);
                     }
         });
     }
@@ -168,12 +168,12 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
             }
             respIds += ")";
-            String query = "SELECT DISTINCT(doc_hdr_id) FROM EN_ACTN_RQST_T "+
-            	"WHERE (ACTN_RQST_STAT_CD='" +
+            String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+
+            	"WHERE (STAT_CD='" +
             	KEWConstants.ACTION_REQUEST_INITIALIZED+
-            	"' OR ACTN_RQST_STAT_CD='"+
+            	"' OR STAT_CD='"+
             	KEWConstants.ACTION_REQUEST_ACTIVATED+
-            	"') AND ACTN_RQST_RESP_ID IN "+respIds;
+            	"') AND RSP_ID IN "+respIds;
             LOG.debug("Query to find pending documents for requeue: " + query);
             rs = conn.createStatement().executeQuery(query);
             while (rs.next()) {
@@ -226,7 +226,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         try {
             broker = this.getPersistenceBroker(false);
             conn = broker.serviceConnectionManager().getConnection();
-            String query = "SELECT DT.MESSAGE_ENTITY_NM FROM EN_DOC_TYP_T DT, EN_DOC_HDR_T DH "+
+            String query = "SELECT DT.SVC_NMSPC FROM KREW_DOC_TYP_T DT, KREW_DOC_HDR_T DH "+
             	"WHERE DH.DOC_TYP_ID=DT.DOC_TYP_ID AND "+
             	"DH.DOC_HDR_ID=?";
             statement = conn.prepareStatement(query);

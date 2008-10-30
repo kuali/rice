@@ -31,11 +31,11 @@ public class ParameterId implements Serializable {
 
     private static final long serialVersionUID = -8210189691273413060L;
     
-	@Column(name="SH_PARM_NMSPC_CD")
+	@Column(name="NMSPC_CD")
     private String parameterNamespaceCode;
-    @Column(name="SH_PARM_DTL_TYP_CD")
+    @Column(name="PARM_DTL_TYP_CD")
     private String parameterDetailTypeCode;
-    @Column(name="SH_PARM_NM")
+    @Column(name="PARM_NM")
     private String parameterName;
 
     public ParameterId() {}

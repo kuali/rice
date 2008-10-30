@@ -82,7 +82,7 @@ public class OraclePlatform extends ANSISqlPlatform {
     	} else if (wait && timeoutSeconds > 0) {
     		waitClause = " WAIT " + timeoutSeconds;
     	}
-        return "SELECT DOC_HDR_ID FROM EN_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE" + waitClause;
+        return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE" + waitClause;
     }
 
     public String toString() {

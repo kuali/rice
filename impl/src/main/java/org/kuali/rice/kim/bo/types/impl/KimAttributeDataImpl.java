@@ -38,27 +38,27 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public class KimAttributeDataImpl extends PersistableBusinessObjectBase implements KimAttributeData {
 
 	@Id
-	@Column(name="ATTRIB_DATA_ID")
+	@Column(name="ATTR_DATA_ID")
 	protected String attributeDataId;
 	
 	@Column(name="TARGET_PRIMARY_KEY")
 	protected String targetPrimaryKey;
 	
-	@Column(name="KIM_TYPE_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 
-	@Column(name="KIM_ATTRIB_ID")
+	@Column(name="KIM_ATTR_DEFN_ID")
 	protected String kimAttributeId;
 	
-	@Column(name="ATTRIB_VAL")
+	@Column(name="ATTR_VAL")
 	protected String attributeValue;	
 
 	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 	
 	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
 	protected KimTypeImpl kimType;
 	
 	public String getAttributeDataId() {

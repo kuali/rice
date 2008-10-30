@@ -38,7 +38,7 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 	public Long getNewOptionIdForActionList() {
         return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	return getPlatform().getNextValSQL("SEQ_ACTION_LIST_OPTN", broker);
+            	return getPlatform().getNextValSQL("KREW_ACTN_LIST_OPTN_S", broker);
             }
         });
     }

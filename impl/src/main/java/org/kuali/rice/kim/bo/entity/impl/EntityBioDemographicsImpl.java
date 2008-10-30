@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_BIO_T")
+@Table(name = "KRIM_ENTITY_BIO_T")
 public class EntityBioDemographicsImpl extends EntityDataBase implements EntityBioDemographics {
 
 	private static final long serialVersionUID = 1L;

@@ -60,23 +60,23 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_BASE_VAL_T")
+@Table(name="KREW_RULE_T")
 public class RuleBaseValues implements WorkflowPersistable {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
-	@Column(name="RULE_BASE_VAL_ID")
+	@Column(name="RULE_ID")
 	private Long ruleBaseValuesId;
     /**
      * Unique Rule name
      */
-    @Column(name="RULE_NM")
+    @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_ID")
 	private Long ruleTemplateId;
-    @Column(name="RULE_BASE_VAL_PREV_VER")
+    @Column(name="PREV_RULE_VER_NBR")
 	private Long previousVersionId;
-    @Column(name="RULE_BASE_VAL_ACTV_IND")
+    @Column(name="ACTV_IND")
 	private Boolean activeInd;
     @Column(name="RULE_BASE_VAL_DESC")
 	private String description;
@@ -85,22 +85,22 @@ public class RuleBaseValues implements WorkflowPersistable {
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="RULE_BASE_VAL_FRM_DT")
+	@Column(name="FRM_DT")
 	private Timestamp fromDate;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="RULE_BASE_VAL_TO_DT", nullable=false)
+	@Column(name="TO_DT", nullable=false)
 	private Timestamp toDate;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="RULE_BASE_VAL_DACTVN_DT")
+	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
-    @Column(name="RULE_BASE_VAL_CUR_IND")
+    @Column(name="CUR_IND")
 	private Boolean currentInd;
-    @Column(name="RULE_BASE_VAL_VER_NBR")
+    @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @Column(name="RULE_BASE_VAL_IGNR_PRVS")
+    @Column(name="IGNR_PRVS")
 	private Boolean ignorePrevious;
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
@@ -117,9 +117,9 @@ public class RuleBaseValues implements WorkflowPersistable {
     @Transient
     private RuleBaseValues previousVersion;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="RULE_BASE_VAL_ACTVN_DT")
+	@Column(name="ACTVN_DT")
 	private Timestamp activationDate;
-    @Column(name="RULE_BASE_VAL_DLGN_IND")
+    @Column(name="DLGN_IND")
     private Boolean delegateRule = Boolean.FALSE;
     /**
      * Indicator that signifies that this rule is a defaults/template rule which contains

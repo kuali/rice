@@ -34,19 +34,19 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="FP_DOC_HEADER_T")
+@Table(name="KRNS_DOC_HDR_T")
 public class DocumentHeader extends PersistableBusinessObjectBase {
 
     @Id
-	@Column(name="FDOC_NBR")
+	@Column(name="DOC_HDR_ID")
 	private String documentNumber;
     @Column(name="FDOC_DESC")
 	private String documentDescription;
-    @Column(name="ORG_DOC_NBR")
+    @Column(name="ORG_DOC_HDR_ID")
 	private String organizationDocumentNumber;
-    @Column(name="FDOC_TMPL_NBR")
+    @Column(name="TMPL_DOC_HDR_ID")
 	private String documentTemplateNumber;
-    @Column(name="FDOC_EXPLAIN_TXT")
+    @Column(name="EXPLAIN")
 	private String explanation;
     
     @Transient

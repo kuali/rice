@@ -33,7 +33,7 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RMV_RPLC_DOC_T")
+@Table(name="KREW_RMV_RPLC_DOC_T")
 public class RemoveReplaceDocument implements Serializable {
 
     private static final long serialVersionUID = 6671410167992149054L;
@@ -44,9 +44,9 @@ public class RemoveReplaceDocument implements Serializable {
     @Id
 	@Column(name="DOC_HDR_ID")
 	private Long documentId;
-    @Column(name="PRSN_EN_ID")
+    @Column(name="PRNCPL_ID")
 	private String userWorkflowId;
-    @Column(name="RPLC_PRSN_EN_ID")
+    @Column(name="RPLC_PRNCPL_ID")
 	private String replacementUserWorkflowId;
     @Column(name="OPRN")
 	private String operation;
@@ -57,7 +57,7 @@ public class RemoveReplaceDocument implements Serializable {
            targetEntity=org.kuali.rice.kew.removereplace.RuleTarget.class, mappedBy="removeReplaceDocument")
 	private List<RuleTarget> ruleTargets;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     public Long getDocumentId() {

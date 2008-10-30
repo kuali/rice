@@ -31,10 +31,10 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     @Id
     @Column(name="CODE")
     protected String code;
-    @Column(name="NAME")
+    @Column(name="NM")
     protected String name;
     @Type(type="yes_no")
-    @Column(name="ACTIVE_IND")
+    @Column(name="ACTV_IND")
     protected boolean active;
 
     public KualiCodeBase() {

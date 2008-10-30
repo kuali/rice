@@ -122,7 +122,7 @@ public class ActionListTest extends KEWTestCase {
                     public Object doInPersistenceBroker(PersistenceBroker pb) {
                         try {
                             Connection conn = pb.serviceConnectionManager().getConnection();
-                            PreparedStatement ps = conn.prepareStatement("select distinct ACTN_ITM_PRSN_EN_ID from en_actn_itm_t");
+                            PreparedStatement ps = conn.prepareStatement("select distinct PRNCPL_ID from krew_actn_itm_t");
                             ResultSet rs = ps.executeQuery();
                             int emplIdCnt = 0;
                             int loopCnt = 0;
@@ -130,7 +130,7 @@ public class ActionListTest extends KEWTestCase {
                             //do first 5 for time sake
                             while (rs.next() && ++loopCnt < 6) {
                                 String workflowId = rs.getString(1);
-                                PreparedStatement ps1 = conn.prepareStatement("select count (*) from en_actn_itm_t where ACTN_ITM_PRSN_EN_ID = '" + workflowId + "'");
+                                PreparedStatement ps1 = conn.prepareStatement("select count (*) from krew_actn_itm_t where PRNCPL_ID = '" + workflowId + "'");
                                 ResultSet rsWorkflowIdCnt = ps1.executeQuery();
                                 if (rsWorkflowIdCnt.next()) {
                                     emplIdCnt = rsWorkflowIdCnt.getInt(1);

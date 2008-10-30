@@ -518,7 +518,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         filterDescription += labelToAdd;
     }
 
-    private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from en_actn_itm_t ai where ai.actn_itm_prsn_en_id = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
+    private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from krew_actn_itm_t ai where ai.PRNCPL_ID = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
     	return (Integer)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {

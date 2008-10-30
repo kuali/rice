@@ -36,7 +36,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_EDOCLT_DEF_T")
+@Table(name="KREW_EDL_DEF_T")
 public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
     /**
      * edoclt_def_id

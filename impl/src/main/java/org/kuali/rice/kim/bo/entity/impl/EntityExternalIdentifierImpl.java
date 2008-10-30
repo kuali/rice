@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_EXT_ID_T")
+@Table(name = "KRIM_ENTITY_EXT_ID_T")
 public class EntityExternalIdentifierImpl extends InactivatableEntityDataBase implements EntityExternalIdentifier {
 
 	private static final long serialVersionUID = 1L;

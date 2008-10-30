@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_EDOCLT_ASSOC_T")
+@Table(name="KREW_EDL_ASSCTN_T")
 public class EDocLiteAssociation  extends PersistableBusinessObjectBase implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_TMPL_OPTN_T")
+@Table(name="KREW_RULE_TMPL_OPTN_T")
 public class RuleTemplateOption implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8913119135197149224L;
@@ -49,12 +49,12 @@ public class RuleTemplateOption implements WorkflowPersistable {
 	private Long ruleTemplateOptionId;
     @Column(name="RULE_TMPL_ID")
 	private Long ruleTemplateId;
-    @Column(name="RULE_TMPL_OPTN_KEY")
+    @Column(name="KEY_CD")
 	private String key;
-    @Column(name="RULE_TMPL_OPTN_VAL")
+    @Column(name="VAL")
 	private String value;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

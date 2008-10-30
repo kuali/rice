@@ -36,22 +36,22 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_PRODUCERS")
+@Table(name="KREN_PRODCR_T")
 public class NotificationProducer {
     @Id
-	@Column(name="ID")
+	@Column(name="PRODCR_ID")
 	private Long id;
-    @Column(name="NAME", nullable=false)
+    @Column(name="NM", nullable=false)
 	private String name;
-    @Column(name="DESCRIPTION", nullable=false)
+    @Column(name="DESC_TXT", nullable=false)
 	private String description;
-    @Column(name="CONTACT_INFO", nullable=false)
+    @Column(name="CNTCT_INFO", nullable=false)
 	private String contactInfo;
     
     // List references
     @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})@JoinTable(name="NOTIFICATION_CHANNEL_PRODUCERS", 
-	           joinColumns=@JoinColumn(name="PRODUCER_ID"), 
-	           inverseJoinColumns=@JoinColumn(name="CHANNEL_ID"))
+	           joinColumns=@JoinColumn(name="PRODCR_ID"), 
+	           inverseJoinColumns=@JoinColumn(name="CHNL_ID"))
 	private List<NotificationChannel> channels;
     
     /**

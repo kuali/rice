@@ -34,11 +34,11 @@
 	-->
 
 	<!--  MAINTENANCE/REFERENCE TABLE DOCUMENT MAPPING -->
-	<class-descriptor class="org.kuali.rice.kns.document.MaintenanceDocumentBase" table="FP_MAINTENANCE_DOCUMENT_T">
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
+	<class-descriptor class="org.kuali.rice.kns.document.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="xmlDocumentContents" column="DOCUMENT_CONTENTS" jdbc-type="CLOB"
+		<field-descriptor name="xmlDocumentContents" column="DOC_CNTNT" jdbc-type="CLOB"
 			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 <!-- 
 		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
@@ -52,57 +52,57 @@
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentAttachment" table="FP_MAINT_DOC_ATTACHMENT_T">
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />  
-		<field-descriptor name="attachmentContent" column="ATTACHMENT" jdbc-type="LONGVARBINARY"/>
-		<field-descriptor name="fileName" column="FILE_NAME" jdbc-type="VARCHAR"/>
-		<field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR"/>
+	<class-descriptor class="org.kuali.rice.kns.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />  
+		<field-descriptor name="attachmentContent" column="ATT_CNTNT" jdbc-type="LONGVARBINARY"/>
+		<field-descriptor name="fileName" column="FILE_NM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="contentType" column="CNTNT_TYP" jdbc-type="VARCHAR"/>
 		  
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />  
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.rice.kns.document.MaintenanceLock" table="FP_MAINT_LOCK_T">
-		<field-descriptor name="lockingRepresentation" column="LOCK_REPRESENTATION_TXT" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.document.MaintenanceLock" table="KRNS_MAINT_LOCK_T">
+		<field-descriptor name="lockingRepresentation" column="MAINT_LOCK_REP_TXT" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" index="true" />
 	</class-descriptor>
 
 	<!--  DOCUMENT CORE MAPPINGS -->
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentHeader" table="FP_DOC_HEADER_T">
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.DocumentHeader" table="KRNS_DOC_HDR_T">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="documentDescription" column="FDOC_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_NBR" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="documentTemplateNumber" column="FDOC_TMPL_NBR" jdbc-type="VARCHAR" />
-		<field-descriptor name="explanation" column="FDOC_EXPLAIN_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_HDR_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="documentTemplateNumber" column="TMPL_DOC_HDR_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="explanation" column="EXPLAIN" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.document.authorization.PessimisticLock" table="KNS_PESSIMISTIC_LOCK_T">
-		<field-descriptor name="id" column="LOCK_ID" jdbc-type="BIGINT" primarykey="true" index="true"  autoincrement="true"
-			sequence-name="LOCK_ID_SEQ" />
+	<class-descriptor class="org.kuali.rice.kns.document.authorization.PessimisticLock" table="KRNS_PESSIMISTIC_LOCK_T">
+		<field-descriptor name="id" column="PESSIMISTIC_LOCK_ID" jdbc-type="BIGINT" primarykey="true" index="true"  autoincrement="true"
+			sequence-name="KRNS_LOCK_S" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-		<field-descriptor name="ownedByPersonUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="generatedTimestamp" column="LOCK_GENERATED_TS" jdbc-type="TIMESTAMP" />
-		<field-descriptor name="lockDescriptor" column="LOCK_DESCRIPTOR" jdbc-type="VARCHAR" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="ownedByPersonUniversalIdentifier" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="generatedTimestamp" column="GNRT_DT" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="lockDescriptor" column="LOCK_DESC_TXT" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.Note" table="SH_NTE_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.Note" table="KRNS_NTE_T">
 		<field-descriptor name="noteIdentifier" column="NTE_ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true"
-			sequence-name="NTE_ID_SEQ" />
+			sequence-name="KRNS_NTE_S" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="remoteObjectIdentifier" column="RMT_OBJ_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="authorUniversalIdentifier" column="NTE_AUTH_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="notePostedTimestamp" column="NTE_POST_TS" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="authorUniversalIdentifier" column="AUTH_PRNCPL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="notePostedTimestamp" column="POST_TS" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="noteTypeCode" column="NTE_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="noteText" column="NTE_TXT" jdbc-type="VARCHAR" />
-		<field-descriptor name="notePurgeCode" column="NTE_PRG_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="noteTopicText" column="NTE_TPC_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteText" column="TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="notePurgeCode" column="PRG_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteTopicText" column="TPC_TXT" jdbc-type="VARCHAR" />
 		<reference-descriptor name="noteType" class-ref="org.kuali.rice.kns.bo.NoteType" auto-retrieve="true" auto-update="none" auto-delete="none">
 			<foreignkey field-ref="noteTypeCode" />
 		</reference-descriptor>
@@ -112,23 +112,23 @@
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.NoteType" table="SH_NTE_TYP_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.NoteType" table="KRNS_NTE_TYP_T">
 		<field-descriptor name="noteTypeCode" column="NTE_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="noteTypeDescription" column="NTE_TYP_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="noteTypeActiveIndicator" column="NTE_TYP_ACTV_IND" jdbc-type="VARCHAR"
+		<field-descriptor name="noteTypeDescription" column="TYP_DESC_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteTypeActiveIndicator" column="ACTV_IND" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.Attachment" table="SH_ATT_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.Attachment" table="KRNS_ATT_T">
 		<field-descriptor name="noteIdentifier" column="NTE_ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="attachmentMimeTypeCode" column="ATT_MIME_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="attachmentFileName" column="ATT_FL_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="attachmentMimeTypeCode" column="MIME_TYP" jdbc-type="VARCHAR" />
+		<field-descriptor name="attachmentFileName" column="FILE_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="attachmentIdentifier" column="ATT_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="attachmentFileSize" column="ATT_FL_SZ" jdbc-type="BIGINT" />
+		<field-descriptor name="attachmentFileSize" column="FILE_SZ" jdbc-type="BIGINT" />
 		<field-descriptor name="attachmentTypeCode" column="ATT_TYP_CD" jdbc-type="VARCHAR" />
 		<reference-descriptor name="note" class-ref="org.kuali.rice.kns.bo.Note" auto-retrieve="object" auto-update="none" auto-delete="none">
 			<foreignkey field-ref="noteIdentifier" />
@@ -136,12 +136,12 @@
 	</class-descriptor>
 
 
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentType" table="FP_DOC_TYPE_T">
-		<field-descriptor name="documentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.DocumentType" table="KRNS_DOC_TYP_T">
+		<field-descriptor name="documentTypeCode" column="DOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="documentName" column="FDOC_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="documentTypeActiveIndicator" column="FDOC_TYP_ACTIVE_CD" jdbc-type="VARCHAR"
+		<field-descriptor name="documentName" column="NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="documentTypeActiveIndicator" column="ACTV_IND" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 
 		<collection-descriptor name="documentTypeAttributes" element-class-ref="org.kuali.rice.kns.bo.DocumentTypeAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
@@ -150,42 +150,42 @@
 
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentTypeAttribute" table="FP_DOC_TYPE_ATTR_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true" sequence-name="FP_DOC_TYPE_ATTR_ID_SEQ" />
-		<field-descriptor name="key" column="DOC_TYP_ATTR_CD" jdbc-type="VARCHAR"/>
-		<field-descriptor name="documentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR"/>
-		<field-descriptor name="value" column="DOC_TYP_ATTR_VAL" jdbc-type="VARCHAR" />
-		<field-descriptor name="label" column="DOC_TYP_ATTR_LBL" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.kns.bo.DocumentTypeAttribute" table="KRNS_DOC_TYP_ATTR_T">
+		<field-descriptor name="id" column="DOC_TYP_ATTR_ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true" sequence-name="KRNS_DOC_TYP_ATTR_S" />
+		<field-descriptor name="key" column="CD" jdbc-type="VARCHAR"/>
+		<field-descriptor name="documentTypeCode" column="DOC_TYP_CD" jdbc-type="VARCHAR"/>
+		<field-descriptor name="value" column="VAL" jdbc-type="VARCHAR" />
+		<field-descriptor name="label" column="LBL" jdbc-type="VARCHAR" />
 
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.ParameterNamespace" table="SH_PARM_NMSPC_T">
-		<field-descriptor name="code" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="SH_PARM_NMSPC_NM" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.kns.bo.ParameterNamespace" table="KRNS_NMSPC_T">
+		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.ParameterType" table="SH_PARM_TYP_T">
-		<field-descriptor name="code" column="SH_PARM_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="SH_PARM_TYP_NM" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.kns.bo.ParameterType" table="KRNS_PARM_TYP_T">
+		<field-descriptor name="code" column="PARM_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.ParameterDetailType" table="SH_PARM_DTL_TYP_T">
-		<field-descriptor name="parameterNamespaceCode" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="parameterDetailTypeCode" column="SH_PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="parameterDetailTypeName" column="SH_PARM_DTL_TYP_NM" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.kns.bo.ParameterDetailType" table="KRNS_PARM_DTL_TYP_T">
+		<field-descriptor name="parameterNamespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="parameterDetailTypeCode" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="parameterDetailTypeName" column="NM" jdbc-type="VARCHAR" />
 	
-		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
@@ -195,15 +195,15 @@
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.Parameter" table="SH_PARM_T">
-		<field-descriptor name="parameterNamespaceCode" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="parameterDetailTypeCode" column="SH_PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="parameterName" column="SH_PARM_NM" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="parameterValue" column="SH_PARM_TXT" jdbc-type="VARCHAR" />
-		<field-descriptor name="parameterDescription" column="SH_PARM_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="parameterTypeCode" column="SH_PARM_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="parameterConstraintCode" column="SH_PARM_CONS_CD" jdbc-type="VARCHAR" />
-        <field-descriptor name="parameterWorkgroupName" column="WRKGRP_NM" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.kns.bo.Parameter" table="KRNS_PARM_T">
+		<field-descriptor name="parameterNamespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="parameterDetailTypeCode" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="parameterName" column="PARM_NM" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="parameterValue" column="TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterDescription" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterConstraintCode" column="CONS_CD" jdbc-type="VARCHAR" />
+        <field-descriptor name="parameterWorkgroupName" column="GRP_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
@@ -223,50 +223,50 @@
 	</class-descriptor>
 
 
-	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRouteRecipient" table="FS_ADHOC_RTE_ACTN_RECP_T">
-		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRouteRecipient" table="KRNS_ADHOC_RTE_ACTN_RECIP_T">
+		<field-descriptor name="type" column="RECIP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
-		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECIP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRoutePerson" table="FS_ADHOC_RTE_ACTN_RECP_T">
-		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRoutePerson" table="KRNS_ADHOC_RTE_ACTN_RECIP_T">
+		<field-descriptor name="type" column="RECIP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
-		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECIP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRouteWorkgroup" table="FS_ADHOC_RTE_ACTN_RECP_T">
-		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.AdHocRouteWorkgroup" table="KRNS_ADHOC_RTE_ACTN_RECIP_T">
+		<field-descriptor name="type" column="RECIP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
-		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECIP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.LookupResults" table="FS_LOOKUP_RESULTS_MT">
-		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.LookupResults" table="KRNS_LOOKUP_RSLT_T">
+		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RSLT_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="lookupPersonId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="lookupPersonId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupDate" column="LOOKUP_DT" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="serializedLookupResults" column="SERIALIZED_LOOKUP_RESULTS" jdbc-type="CLOB"
+		<field-descriptor name="serializedLookupResults" column="SERIALZD_RSLTS" jdbc-type="CLOB"
 			conversion="org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.SelectedObjectIds" table="FS_LOOKUP_SELECTIONS_MT">
-		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.rice.kns.bo.SelectedObjectIds" table="KRNS_LOOKUP_SEL_T">
+		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RSLT_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="lookupPersonId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="lookupPersonId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupDate" column="LOOKUP_DT" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="selectedObjectIds" column="SELECTED_OBJ_IDS" jdbc-type="CLOB" />
+		<field-descriptor name="selectedObjectIds" column="SEL_OBJ_IDS" jdbc-type="CLOB" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="SH_CAMPUS_T">
@@ -291,11 +291,11 @@
 		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 	
-  <class-descriptor class="org.kuali.rice.kns.bo.SessionDocument" table="KR_KNS_SESN_DOC_T">
-	    <field-descriptor name="sessionId" column="SESSION_ID" jdbc-type="VARCHAR" primarykey="true" />
-	    <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primaryKey="true" />
-	    <field-descriptor name="serializedDocumentForm" column="SERIALIZED_DOC_FRM" jdbc-type="BLOB" />
-	    <field-descriptor name="lastUpdatedDate" column="LST_UPDATE_DT" jdbc-type="TIMESTAMP" index="true" />
+  <class-descriptor class="org.kuali.rice.kns.bo.SessionDocument" table="KRNS_SESN_DOC_T">
+	    <field-descriptor name="sessionId" column="SESN_DOC_ID" jdbc-type="VARCHAR" primarykey="true" />
+	    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primaryKey="true" />
+	    <field-descriptor name="serializedDocumentForm" column="SERIALZD_DOC_FRM" jdbc-type="BLOB" />
+	    <field-descriptor name="lastUpdatedDate" column="LAST_UPDT_DT" jdbc-type="TIMESTAMP" index="true" />
   </class-descriptor>
   
   <class-descriptor class="org.kuali.rice.kns.bo.CountryImpl" table="KR_COUNTRY_T">

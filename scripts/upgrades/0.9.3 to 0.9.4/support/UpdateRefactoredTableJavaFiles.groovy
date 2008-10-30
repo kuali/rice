@@ -1,6 +1,5 @@
-//impl/src/main/resources/org/kuali/rice/kcb/config/OJB-repository-kcb.xml
-def dir = 'F:/Shubhangi_RiceWorkspace/rice-0.9.4'
-def Schema  = new File (dir,'scripts/schema-refactor.xml')
+def dir = '/java/projects/rice-0.9.4'
+def Schema  = new File (dir,'scripts/upgrades/0.9.3 to 0.9.4/support/schema-refactor.xml')
 tablemap = [:]
 columnmap = [:]
 seqmap = [:]
@@ -15,7 +14,9 @@ columnlist = []
 			
 			def columns = root.table.column.findAll{ col ->
 			
-			col.attributes().findAll { 
+			col.attributes().findAll {
+				oldCol = ""
+            	newCol = ""
 				if ( it.getKey() == "oldName" )	oldCol = it.getValue()				
 				if ( it.getKey() == "newName" )	newCol = it.getValue()					
 				} //find all col atts

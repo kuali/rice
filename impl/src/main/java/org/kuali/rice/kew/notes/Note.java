@@ -44,7 +44,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_NTE_T")
+@Table(name="KREW_DOC_NTE_T")
 public class Note implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
@@ -53,15 +53,15 @@ public class Note implements WorkflowPersistable {
 	private Long noteId;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
-    @Column(name="DOC_NTE_AUTH_PRSN_EN_ID")
+    @Column(name="AUTH_PRNCPL_ID")
 	private String noteAuthorWorkflowId;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="DOC_NTE_CRT_DT")
+	@Column(name="CRT_DT")
 	private Timestamp noteCreateDate;
-    @Column(name="DOC_NTE_TXT")
+    @Column(name="TXT")
 	private String noteText;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @Transient

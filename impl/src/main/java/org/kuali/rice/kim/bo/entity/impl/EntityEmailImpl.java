@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_EMAIL_T")
+@Table(name = "KRIM_ENTITY_EMAIL_T")
 public class EntityEmailImpl extends DefaultableEntityDataBase implements EntityEmail {
 
 	private static final long serialVersionUID = 1L;

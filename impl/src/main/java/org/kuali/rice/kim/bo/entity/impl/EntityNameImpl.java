@@ -33,19 +33,19 @@ import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_NAME_T")
+@Table(name = "KRIM_ENTITY_NM_T")
 public class EntityNameImpl extends DefaultableEntityDataBase implements EntityName {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ENTITY_NAME_ID")
+	@Column(name = "ENTITY_NM_ID")
 	protected String entityNameId;
 
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
-	@Column(name = "NAME_TYP_CD")
+	@Column(name = "NM_TYP_CD")
 	protected String nameTypeCode ;
 
 	@Column(name = "FIRST_NM")
@@ -64,7 +64,7 @@ public class EntityNameImpl extends DefaultableEntityDataBase implements EntityN
 	protected String suffix;
 	
 	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "NAME_TYP_CD", insertable = false, updatable = false)
+	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
 	protected EntityNameType entityNameType;
 
 	/**

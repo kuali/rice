@@ -76,7 +76,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		try {
 			conn = broker.serviceConnectionManager().getConnection();
 			st = conn.createStatement();
-			rs = st.executeQuery("select DOC_TYP_ID from EN_DOC_TYP_T where DOC_TYP_CUR_IND = 1 and DOC_TYP_PARNT_ID = " + parentDocumentTypeId);
+			rs = st.executeQuery("select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = " + parentDocumentTypeId);
 			while (rs.next()) {
 				childrenIds.add(new Long(rs.getLong("DOC_TYP_ID")));
 			}	

@@ -30,15 +30,15 @@ import java.util.LinkedHashMap;
  * 
  */
 @Entity
-@Table(name="SH_NTE_TYP_T")
+@Table(name="KRNS_NTE_TYP_T")
 public class NoteType extends PersistableBusinessObjectBase {
 
 	@Id
 	@Column(name="NTE_TYP_CD")
 	private String noteTypeCode;
-	@Column(name="NTE_TYP_DESC")
+	@Column(name="TYP_DESC_TXT")
 	private String noteTypeDescription;
-	@Column(name="NTE_TYP_ACTV_IND")
+	@Column(name="ACTV_IND")
 	private boolean noteTypeActiveIndicator;
 
 	/**

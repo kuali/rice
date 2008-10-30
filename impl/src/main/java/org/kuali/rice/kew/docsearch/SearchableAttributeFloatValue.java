@@ -47,12 +47,12 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_HDR_EXT_FLT_T")
+@Table(name="KREW_DOC_HDR_EXT_FLT_T")
 public class SearchableAttributeFloatValue implements WorkflowPersistable, SearchableAttributeValue {
 
     private static final long serialVersionUID = -6682101853805320760L;
 
-    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "EN_DOC_HDR_EXT_FLT_T";
+    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "KREW_DOC_HDR_EXT_FLT_T";
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
@@ -61,11 +61,11 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     private static final String DEFAULT_FORMAT_PATTERN = "";
 
     @Id
-	@Column(name="DOC_HDR_EXT_ID")
+	@Column(name="DOC_HDR_EXT_FLT_ID")
 	private Long searchableAttributeValueId;
-    @Column(name="DOC_HDR_EXT_VAL_KEY")
+    @Column(name="KEY_CD")
 	private String searchableAttributeKey;
-    @Column(name="DOC_HDR_EXT_VAL")
+    @Column(name="VAL")
 	private BigDecimal searchableAttributeValue;
     @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!

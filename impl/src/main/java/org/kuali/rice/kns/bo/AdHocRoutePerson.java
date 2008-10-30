@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.Person;
  */
 @IdClass(org.kuali.rice.kns.bo.AdHocRoutePersonId.class)
 @Entity
-@Table(name="FS_ADHOC_RTE_ACTN_RECP_T")
+@Table(name="KRNS_ADHOC_RTE_ACTN_RECIP_T")
 public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     private static final long serialVersionUID = 1L;

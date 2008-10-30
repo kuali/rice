@@ -57,7 +57,7 @@ import org.kuali.rice.kew.workgroup.WorkgroupService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_RSP_T")
+@Table(name="KREW_RULE_RSP_T")
 public class RuleResponsibility implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -1565688857123316797L;
@@ -66,24 +66,24 @@ public class RuleResponsibility implements WorkflowPersistable {
 	private Long ruleResponsibilityKey;
     @Column(name="RSP_ID")
 	private Long responsibilityId;
-    @Column(name="RULE_BASE_VAL_ID")
+    @Column(name="RULE_ID")
 	private Long ruleBaseValuesId;
-    @Column(name="ACTION_RQST_CD")
+    @Column(name="ACTN_RQST_CD")
 	private String actionRequestedCd;
-    @Column(name="RULE_RSP_NM")
+    @Column(name="NM")
 	private String ruleResponsibilityName;
-    @Column(name="RULE_RSP_TYP")
+    @Column(name="TYP")
 	private String ruleResponsibilityType;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @Column(name="RULE_RSP_PRIO_NBR")
+    @Column(name="PRIO")
 	private Integer priority;
-    @Column(name="RULE_RSP_APPR_PLCY")
+    @Column(name="APPR_PLCY")
 	private String approvePolicy;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_ID", insertable=false, updatable=false)
 	private RuleBaseValues ruleBaseValues;
     @Transient
     private List delegationRules = new ArrayList();

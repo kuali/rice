@@ -39,12 +39,12 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_HDR_EXT_T")
+@Table(name="KREW_DOC_HDR_EXT_T")
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
 
     private static final long serialVersionUID = 8696089933682052078L;
 
-    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "EN_DOC_HDR_EXT_T";
+    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "KREW_DOC_HDR_EXT_T";
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = true;
     private static final boolean ALLOWS_RANGE_SEARCH = false;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = true;
@@ -54,9 +54,9 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     @Id
 	@Column(name="DOC_HDR_EXT_ID")
 	private Long searchableAttributeValueId;
-    @Column(name="DOC_HDR_EXT_VAL_KEY")
+    @Column(name="KEY_CD")
 	private String searchableAttributeKey;
-    @Column(name="DOC_HDR_EXT_VAL")
+    @Column(name="VAL")
 	private String searchableAttributeValue;
     @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!

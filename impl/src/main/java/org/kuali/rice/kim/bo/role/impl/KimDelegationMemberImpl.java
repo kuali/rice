@@ -40,9 +40,9 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase implements Inactivateable{
 
 	@Id
-	@Column(name="DELE_MBR_ID")
+	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
-	@Column(name="DELE_ID")
+	@Column(name="DLGN_ID")
 	protected String delegationId;
 	
 	@Column(name="ACTV_IND")
@@ -50,7 +50,7 @@ public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectB
 
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DELE_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
+	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
 	protected List<KimDelegationMemberAttributeDataImpl> attributes;
 	
 	/**

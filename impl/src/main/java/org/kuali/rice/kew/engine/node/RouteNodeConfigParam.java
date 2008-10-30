@@ -39,8 +39,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-@Table(name="EN_RTE_NODE_CFG_PARM_T")
-@AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="RTE_NODE_CFG_PARM_KEY")), @AttributeOverride(name="value", column=@Column(name="RTE_NODE_CFG_PARM_VAL"))})
+@Table(name="KREW_RTE_NODE_CFG_PARM_T")
+@AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="KEY_CD")), @AttributeOverride(name="value", column=@Column(name="VAL"))})
 public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
     private static final long serialVersionUID = 5592421070149273014L;
 
@@ -54,7 +54,7 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
      * Foreign key to routenode table
      */
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RTE_NODE_CFG_PARM_ND")
+	@JoinColumn(name="RTE_NODE_ID")
 	private RouteNode routeNode;
 
     public RouteNodeConfigParam() {}

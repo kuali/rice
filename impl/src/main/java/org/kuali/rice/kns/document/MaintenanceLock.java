@@ -32,12 +32,12 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * Most maintenance documents have only one lock, but globals have many 
  */
 @Entity
-@Table(name="FP_MAINT_LOCK_T")
+@Table(name="KRNS_MAINT_LOCK_T")
 public class MaintenanceLock extends PersistableBusinessObjectBase {
     @Id
-	@Column(name="LOCK_REPRESENTATION_TXT")
+	@Column(name="MAINT_LOCK_REP_TXT")
 	private String lockingRepresentation;
-    @Column(name="FDOC_NBR")
+    @Column(name="DOC_HDR_ID")
 	private String documentNumber;
 
     public String getLockingRepresentation() {

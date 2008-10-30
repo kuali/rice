@@ -29,7 +29,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class BaseWorkgroupMemberId implements Serializable {
 
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
     private Long workgroupId;
     @Column(name="WRKGRP_MBR_PRSN_EN_ID")
     private String workflowId;

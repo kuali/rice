@@ -75,10 +75,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     private static final Logger LOG = Logger.getLogger(DocumentBase.class);
     
     @Id
-    @Column(name="FDOC_NBR")
+    @Column(name="DOC_HDR_ID")
     protected String documentNumber;
     @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false)
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     protected DocumentHeader documentHeader;
     @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection

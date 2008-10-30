@@ -31,9 +31,9 @@ public class ParameterDetailTypeId implements Serializable {
 
     private static final long serialVersionUID = 1717772059578134310L;
     
-	@Column(name="SH_PARM_NMSPC_CD")
+	@Column(name="NMSPC_CD")
     private String parameterNamespaceCode;
-    @Column(name="SH_PARM_DTL_TYP_CD")
+    @Column(name="PARM_DTL_TYP_CD")
     private String parameterDetailTypeCode;
 
     public ParameterDetailTypeId() {}

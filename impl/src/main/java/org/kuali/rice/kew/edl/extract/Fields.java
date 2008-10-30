@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 @Entity
-@Table(name="EN_EDL_FIELD_DMP_T")
+@Table(name="KREW_EDL_FLD_DMP_T")
 public class Fields {
 
 	private static final long serialVersionUID = -6136544551121011531L;
@@ -26,7 +26,7 @@ public class Fields {
     @Column(name="FLD_VAL")
 	private String fieldValue;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

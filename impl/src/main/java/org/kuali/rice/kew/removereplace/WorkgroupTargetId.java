@@ -29,7 +29,7 @@ public class WorkgroupTargetId implements Serializable {
 
     @Column(name="DOC_HDR_ID")
     private Long documentId;
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
     private Long workgroupId;
 
     public WorkgroupTargetId() {}

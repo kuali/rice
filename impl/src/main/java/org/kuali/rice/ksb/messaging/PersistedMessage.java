@@ -31,44 +31,44 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_MSG_QUE_T")
+@Table(name="KRSB_MSG_QUE_T")
 public class PersistedMessage implements Serializable {
 
 	private static final long serialVersionUID = -7047766894738304195L;
 
 	@Id
-	@Column(name="MESSAGE_QUE_ID")
+	@Column(name="MSG_QUE_ID")
 	private Long routeQueueId;
-	@Column(name="MESSAGE_QUE_PRIO_NBR")
+	@Column(name="PRIO")
 	private Integer queuePriority;
-	@Column(name="MESSAGE_QUE_STAT_CD")
+	@Column(name="STAT_CD")
 	private String queueStatus;
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="MESSAGE_QUE_DT")
+	@Column(name="DT")
 	private Timestamp queueDate;
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="MESSAGE_EXP_DT")
+	@Column(name="EXP_DT")
 	private Timestamp expirationDate;
-	@Column(name="MESSAGE_QUE_RTRY_CNT")
+	@Column(name="RTRY_CNT")
 	private Integer retryCount;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @Column(name="MESSAGE_QUE_IP_NBR")
+    @Column(name="IP_NBR")
 	private String ipNumber;
-    @Column(name="MESSAGE_SERVICE_NM")
+    @Column(name="SVC_NM")
 	private String serviceName;
-    @Column(name="MESSAGE_ENTITY_NM")
+    @Column(name="SVC_NMSPC")
 	private String messageEntity;
-    @Column(name="SERVICE_METHOD_NM")
+    @Column(name="SVC_MTHD_NM")
 	private String methodName;
     @Transient
     private AsynchronousCall methodCall;
     @Transient
     private PersistedMassagePayload payload;
-    @Column(name="VAL_ONE")
+    @Column(name="APP_VAL_ONE")
 	private String value1;
-    @Column(name="VAL_TWO")
+    @Column(name="APP_VAL_TWO")
 	private String value2;
     
     public PersistedMessage() {

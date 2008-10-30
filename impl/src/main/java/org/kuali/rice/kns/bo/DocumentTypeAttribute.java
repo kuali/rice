@@ -33,25 +33,25 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="FP_DOC_TYPE_ATTR_T")
+@Table(name="KRNS_DOC_TYP_ATTR_T")
 public class DocumentTypeAttribute extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 3620282816261362785L;
     
 	@Id
-	@Column(name="ID")
+	@Column(name="DOC_TYP_ATTR_ID")
     protected Long id;
-	@Column(name="DOC_TYP_ATTR_CD")
+	@Column(name="CD")
     protected String key;
-	@Column(name="DOC_TYP_ATTR_LBL")
+	@Column(name="LBL")
     protected String label;
-	@Column(name="DOC_TYP_ATTR_VAL")
+	@Column(name="VAL")
     protected String value;
-	@Column(name="ACTIVE_IND")
+	@Column(name="ACTV_IND")
 	protected boolean active;
-	@Column(name="FDOC_TYP_CD")
+	@Column(name="DOC_TYP_CD")
 	protected String documentTypeCode;
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="FDOC_TYP_CD", insertable=false, updatable=false)
+	@JoinColumn(name="DOC_TYP_CD", insertable=false, updatable=false)
 	protected DocumentType documentType;
 
     /**

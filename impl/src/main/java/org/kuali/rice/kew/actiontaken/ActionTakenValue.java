@@ -60,7 +60,7 @@ import org.kuali.rice.kew.workgroup.WorkgroupService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_ACTN_TKN_T")
+@Table(name="KREW_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 
     /**
@@ -72,30 +72,30 @@ public class ActionTakenValue implements WorkflowPersistable {
 	private Long actionTakenId;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
-    @Column(name="ACTN_TKN_CD")
+    @Column(name="ACTN_CD")
 	private String actionTaken;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ACTN_TKN_DT")
+	@Column(name="ACTN_DT")
 	private Timestamp actionDate;
-    @Column(name="ACTN_TKN_ANNOTN_TXT")
+    @Column(name="ANNOTN")
     private String annotation = "";
     @Column(name="DOC_VER_NBR")
 	private Integer docVersion;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @Column(name="ACTN_TKN_PRSN_EN_ID")
+    @Column(name="PRNCPL_ID")
 	private String workflowId;
-    @Column(name="ACTN_TKN_DLGTR_PRSN_EN_ID")
+    @Column(name="DLGTR_PRNCPL_ID")
 	private String delegatorWorkflowId;
-    @Column(name="ACTN_TKN_DLGTR_WRKGRP_ID")
+    @Column(name="DLGTR_GRP_ID")
 	private Long delegatorWorkgroupId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
     @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private DocumentRouteHeaderValue routeHeader;
     @OneToMany(cascade={CascadeType.PERSIST}, mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
-    @Column(name="ACTN_TKN_CUR_IND")
+    @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient
     private String actionDateString;

@@ -31,7 +31,7 @@ public class UserOptionsId implements Serializable {
     
     @Column(name="PRSN_OPTN_ID")
     private String optionId;
-    @Column(name="PRSN_EN_ID")
+    @Column(name="PRNCPL_ID")
     private String workflowId;
 
     public UserOptionsId() {}

@@ -49,7 +49,7 @@ public class BaseWorkgroupExtensionData extends BaseWorkflowPersistable implemen
 	@Column(name="EXT_VAL")
 	private String value;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

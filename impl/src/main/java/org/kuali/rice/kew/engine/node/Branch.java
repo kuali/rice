@@ -38,7 +38,7 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_BRCH_T")
+@Table(name="KREW_RTE_BRCH_T")
 public class Branch implements Serializable {
 
 	private static final long serialVersionUID = 7164561979112939112L;
@@ -47,9 +47,9 @@ public class Branch implements Serializable {
 	@Column(name="RTE_BRCH_ID")
 	private Long branchId;
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="PARNT_RTE_BRCH_ID")
+	@JoinColumn(name="PARNT_ID")
 	private Branch parentBranch;
-	@Column(name="BRCH_NM")
+	@Column(name="NM")
 	private String name;
     @Transient
 	private List<BranchState> branchState = new ArrayList<BranchState>();
@@ -74,7 +74,7 @@ public class Branch implements Serializable {
 	private Long initialNodeId;
 	
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
 	public String getName() {

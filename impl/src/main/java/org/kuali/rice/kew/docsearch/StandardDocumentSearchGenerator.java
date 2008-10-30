@@ -63,10 +63,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
 
-    private static final String CREATE_DATE_FIELD_STRING = " DOC_HDR.DOC_CRTE_DT ";
-    private static final String APPROVE_DATE_FIELD_STRING = " DOC_HDR.DOC_APRV_DT ";
-    private static final String FINALIZATION_DATE_FIELD_STRING = " DOC_HDR.DOC_FNL_DT ";
-    private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.DOC_RTE_STAT_MDFN_DT ";
+    private static final String CREATE_DATE_FIELD_STRING = " DOC_HDR.CRTE_DT ";
+    private static final String APPROVE_DATE_FIELD_STRING = " DOC_HDR.APRV_DT ";
+    private static final String FINALIZATION_DATE_FIELD_STRING = " DOC_HDR.FNL_DT ";
+    private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.STAT_MDFN_DT ";
 
     private static List searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
@@ -260,7 +260,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     protected QueryComponent generateSearchableAttributeSql(SearchAttributeCriteriaComponent criteriaComponent,String whereSqlStarter,int tableIndex) {
         String tableIdentifier = "EXT" + tableIndex;
-        String queryTableColumnName = tableIdentifier + ".DOC_HDR_EXT_VAL";
+        String queryTableColumnName = tableIdentifier + ".VAL";
         QueryComponent joinSqlComponent = getSearchableAttributeJoinSql(criteriaComponent.getSearchableAttributeValue(), tableIdentifier, whereSqlStarter, criteriaComponent.getSavedKey());
         StringBuffer fromSql = new StringBuffer(joinSqlComponent.getFromSql());
         StringBuffer whereSql = new StringBuffer(joinSqlComponent.getWhereSql());
@@ -275,7 +275,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         StringBuffer whereSql = new StringBuffer();
     	boolean joinAlreadyPerformed = false;
         String tableIdentifier = "EXT" + tableIndex;
-        String queryTableColumnName = tableIdentifier + ".DOC_HDR_EXT_VAL";
+        String queryTableColumnName = tableIdentifier + ".VAL";
 
         for (Iterator iter = criteriaComponents.iterator(); iter.hasNext();) {
 			SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iter.next();
@@ -412,7 +412,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private StringBuffer generateSearchableAttributeWhereClauseJoin(String whereSqlStarter,String tableIdentifier,String attributeTableKeyColumnName) {
     	StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", tableIdentifier + ".DOC_HDR_ID", null, null));
-    	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".DOC_HDR_EXT_VAL_KEY", "=", attributeTableKeyColumnName, "'", "'"));
+    	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", attributeTableKeyColumnName, "'", "'"));
         return whereSql;
     }
 
@@ -587,12 +587,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         docCriteriaDTO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
 
-        String docTypeLabel = rs.getString("DOC_TYP_LBL_TXT");
-        String activeIndicatorCode = rs.getString("DOC_TYP_ACTV_IND");
+        String docTypeLabel = rs.getString("LBL");
+        String activeIndicatorCode = rs.getString("ACTV_IND");
 
-        docCriteriaDTO.setDocRouteStatusCode(rs.getString("DOC_RTE_STAT_CD"));
-        docCriteriaDTO.setDateCreated(rs.getTimestamp("DOC_CRTE_DT"));
-        docCriteriaDTO.setDocumentTitle(rs.getString("DOC_TTL"));
+        docCriteriaDTO.setDocRouteStatusCode(rs.getString("DOC_HDR_STAT_CD"));
+        docCriteriaDTO.setDateCreated(rs.getTimestamp("CRTE_DT"));
+        docCriteriaDTO.setDocumentTitle(rs.getString("TTL"));
         docCriteriaDTO.setDocTypeName(rs.getString("DOC_TYP_NM"));
         docCriteriaDTO.setDocTypeLabel(docTypeLabel);
 
@@ -605,10 +605,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docTypeLabel == null) || (docTypeLabel.trim().length() == 0)) {
             docCriteriaDTO.setDocTypeHandlerUrl("");
         } else {
-            docCriteriaDTO.setDocTypeHandlerUrl(rs.getString("DOC_TYP_HDLR_URL_ADDR"));
+            docCriteriaDTO.setDocTypeHandlerUrl(rs.getString("DOC_HDLR_URL"));
         }
 
-        docCriteriaDTO.setInitiatorWorkflowId(rs.getString("DOC_INITR_PRSN_EN_ID"));
+        docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(docCriteriaDTO.getInitiatorWorkflowId()));
 
@@ -640,13 +640,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
         for (Iterator iter = attributeValues.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
-            String attributeSql = "select DOC_HDR_EXT_VAL_KEY, DOC_HDR_EXT_VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = " + documentId;
+            String attributeSql = "select KEY_CD, VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = " + documentId;
             ResultSet attributeResultSet = null;
             try {
                 attributeResultSet = searchAttributeStatement.executeQuery(attributeSql);
                 while (attributeResultSet.next()) {
-                    searchAttValue.setSearchableAttributeKey(attributeResultSet.getString("DOC_HDR_EXT_VAL_KEY"));
-                    searchAttValue.setupAttributeValue(attributeResultSet, "DOC_HDR_EXT_VAL");
+                    searchAttValue.setSearchableAttributeKey(attributeResultSet.getString("KEY_CD"));
+                    searchAttValue.setupAttributeValue(attributeResultSet, "VAL");
                     if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
                         docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
                     }
@@ -687,10 +687,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
-        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.DOC_INITR_PRSN_EN_ID, DOC_HDR.DOC_RTE_STAT_CD, DOC_HDR.DOC_CRTE_DT, DOC_HDR.DOC_TTL, DOC1.DOC_TYP_NM, DOC1.DOC_TYP_LBL_TXT, DOC1.DOC_TYP_HDLR_URL_ADDR, DOC1.DOC_TYP_ACTV_IND");
-        StringBuffer fromSQL = new StringBuffer(" from EN_DOC_TYP_T DOC1 ");
+        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
+        StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T DOC1 ");
         String docHeaderTableAlias = "DOC_HDR";
-        StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", EN_DOC_HDR_T " + docHeaderTableAlias + " ");
+        StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
         StringBuffer whereSQL = new StringBuffer();
         whereSQL.append(getRouteHeaderIdSql(criteria.getRouteHeaderId(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getInitiatorSql(criteria.getInitiator(), getGeneratedPredicatePrefix(whereSQL.length())));
@@ -704,14 +704,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((!"".equals(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())))) || (!"".equals(getWorkgroupViewerSql(criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
             whereSQL.append(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())));
             whereSQL.append(getWorkgroupViewerSql(criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length())));
-            fromSQL.append(", EN_ACTN_RQST_T ");
+            fromSQL.append(", KREW_ACTN_RQST_T ");
             actionTakenTable = true;
         }
 
         if (!("".equals(getApproverSql(criteria.getApprover(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
             whereSQL.append(getApproverSql(criteria.getApprover(), getGeneratedPredicatePrefix(whereSQL.length())));
             if (!actionTakenTable) {
-                fromSQL.append(", EN_ACTN_TKN_T ");
+                fromSQL.append(", KREW_ACTN_TKN_T ");
             }
             actionTakenTable = true;
         }
@@ -725,8 +725,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
             whereSQL.append(docRouteNodeSql);
-            fromSQL.append(", EN_RTE_NODE_INSTN_T ");
-            fromSQL.append(", EN_RTE_NODE_T ");
+            fromSQL.append(", KREW_RTE_NODE_INSTN_T ");
+            fromSQL.append(", KREW_RTE_NODE_T ");
         }
 
         filterOutNonQueryAttributes();
@@ -821,7 +821,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	for (Iterator iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
 			String aliasComponentName = (String) iter.next();
 			if (aliasComponentName.equalsIgnoreCase(attributeValue.getAttributeDataType())) {
-				selectSql.append(", " + currentAttributeTableAlias + ".DOC_HDR_EXT_VAL_KEY as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".DOC_HDR_EXT_VAL as " + aliasComponentName + "_VALUE");
+				selectSql.append(", " + currentAttributeTableAlias + ".KEY_CD as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".VAL as " + aliasComponentName + "_VALUE");
 			} else {
 				selectSql.append(", NULL as " + aliasComponentName + "_KEY, NULL as " + aliasComponentName + "_VALUE");
 			}
@@ -843,7 +843,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             return "";
         } else {
             String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(initiator.trim())).getWorkflowUserId().getWorkflowId();
-            return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.DOC_INITR_PRSN_EN_ID = '").append(userWorkflowId).append("'").toString();
+            return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
         }
     }
 
@@ -858,7 +858,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             // quick and dirty ' replacement that isn't the best but should work for all dbs
             docTitle = docTitle.trim().replace('\'', '%');
-            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.DOC_TTL) like '%").append(docTitle.toUpperCase()).append("'").toString();
+            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.TTL) like '%").append(docTitle.toUpperCase()).append("'").toString();
         }
     }
 
@@ -873,7 +873,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else {
                 appDocId = appDocId.trim().replace('*', '%');
             }
-            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.DOC_APPL_DOC_ID) like '%").append(appDocId.toUpperCase()).append("'").toString();
+            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.APP_DOC_ID) like '%").append(appDocId.toUpperCase()).append("'").toString();
         }
     }
 
@@ -898,7 +898,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(viewer.trim()));
             String userWorkflowId = user.getWorkflowId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.ACTN_RQST_PRSN_EN_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }
@@ -907,7 +907,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
             Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName));
-        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.WRKGRP_ID = " + workgroup.getWorkflowGroupId().getGroupId();
+        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.GRP_ID = " + workgroup.getWorkflowGroupId().getGroupId();
         }
         return sql;
     }
@@ -916,7 +916,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(approver.trim())).getWorkflowUserId().getWorkflowId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_TKN_T.DOC_HDR_ID and upper(EN_ACTN_TKN_T.ACTN_TKN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and EN_ACTN_TKN_T.ACTN_TKN_PRSN_EN_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_TKN_T.DOC_HDR_ID and upper(EN_ACTN_TKN_T.ACTN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and EN_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }
@@ -968,7 +968,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         // render the node choices on the form.
     	String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
-        	StringBuffer routeNodeCriteria = new StringBuffer("and EN_RTE_NODE_T.RTE_NODE_NM ");
+        	StringBuffer routeNodeCriteria = new StringBuffer("and EN_RTE_NODE_T.NM ");
         	if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
         		routeNodeCriteria.append("= '" + docRouteLevel + "' ");
         	} else {
@@ -1002,16 +1002,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     			}
         		routeNodeCriteria.append(") ");
         	}
-            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
+            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_HDR_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
         }
         return returnSql;
     }
 
     protected String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
         if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
-            return whereClausePredicatePrefix + "DOC_HDR.DOC_RTE_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
+            return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
-            return whereClausePredicatePrefix + " DOC_HDR.DOC_RTE_STAT_CD = '" + docRouteStatus.trim() + "'";
+            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + docRouteStatus.trim() + "'";
         }
     }
 

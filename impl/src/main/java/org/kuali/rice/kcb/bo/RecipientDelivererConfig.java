@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KCB_RECIP_DELIVS")
+@Table(name="KREN_RECIP_DELIV_T")
 public class RecipientDelivererConfig {
     /**
      * Field names for queries
@@ -40,19 +40,19 @@ public class RecipientDelivererConfig {
     public static final String CHANNEL = "channel";
     
     @Id
-	@Column(name="ID")
+	@Column(name="RECIP_DELIV_ID")
 	private Long id;
-    @Column(name="RECIPIENT_ID", nullable=false)
+    @Column(name="RECIP_ID", nullable=false)
 	private String recipientId;
-    @Column(name="DELIVERER_NAME", nullable=false)
+    @Column(name="NM", nullable=false)
 	private String delivererName;
-    @Column(name="CHANNEL", nullable=false)
+    @Column(name="CHNL", nullable=false)
 	private String channel;
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     /**

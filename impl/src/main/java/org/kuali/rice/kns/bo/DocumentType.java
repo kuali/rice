@@ -32,17 +32,17 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * 
  */
 @Entity
-@Table(name="FP_DOC_TYPE_T")
+@Table(name="KRNS_DOC_TYP_T")
 public class DocumentType extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 2866566562262830639L;
 
     @Id
-	@Column(name="FDOC_TYP_CD")
+	@Column(name="DOC_TYP_CD")
 	private String documentTypeCode;
-    @Column(name="FDOC_NM")
+    @Column(name="NM")
 	private String documentName;
-    @Column(name="FDOC_TYP_ACTIVE_CD")
+    @Column(name="ACTV_IND")
 	private boolean documentTypeActiveIndicator;
     @OneToMany(cascade={CascadeType.PERSIST})
 	private List<DocumentTypeAttribute> documentTypeAttributes;

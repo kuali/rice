@@ -27,9 +27,9 @@ import javax.persistence.Transient;
 @MappedSuperclass
 public abstract class MultipleValueLookupMetadata extends PersistableBusinessObjectBase {
     @Id
-    @Column(name="LOOKUP_RESULT_SEQUENCE_NBR")
+    @Column(name="LOOKUP_RSLT_ID")
     private String lookupResultsSequenceNumber;
-    @Column(name="PERSON_UNVL_ID")
+    @Column(name="PRNCPL_ID")
     private String lookupPersonId;
     /**
      * the time the lookup data was persisted, used by a batch purge job

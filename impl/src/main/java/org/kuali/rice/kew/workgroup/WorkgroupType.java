@@ -53,7 +53,7 @@ public class WorkgroupType extends BaseWorkflowPersistable {
 	@Column(name="ACTV_IND")
 	private Boolean active = true;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     @Transient

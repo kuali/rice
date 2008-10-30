@@ -45,7 +45,7 @@ public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
 	private static final String MASKED = "xxxxxx";
 
 	@Id
-	@Column(name="PRSN_EN_ID")
+	@Column(name="PRNCPL_ID")
 	private String workflowUserId;
 	@Column(name="PRSN_NTWRK_ID")
 	private String authenticationUserId;
@@ -75,7 +75,7 @@ public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
     private boolean emailRestricted;
 
     @Version
-    @Column(name="DB_LOCK_VER_NBR")
+    @Column(name="VER_NBR")
     private Integer lockVerNbr = new Integer(0);
 
     public BaseWorkflowUser() {

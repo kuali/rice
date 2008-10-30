@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KCB_RECIP_PREFS")
+@Table(name="KREN_RECIP_PREFS_T")
 public class RecipientPreference {
 
 	/**
@@ -41,20 +41,20 @@ public class RecipientPreference {
     public static final String PROPERTY_FIELD = "property";
     
 	@Id
-	@Column(name="ID")
+	@Column(name="RECIP_PREFS_ID")
 	private Long id;
-	@Column(name="RECIPIENT_ID", nullable=false)
+	@Column(name="RECIP_ID", nullable=false)
 	private String recipientId;
-	@Column(name="PROPERTY", nullable=false)
+	@Column(name="PROP", nullable=false)
 	private String property;
-	@Column(name="VALUE", nullable=true)
+	@Column(name="VAL", nullable=true)
 	private String value;
 
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     /**

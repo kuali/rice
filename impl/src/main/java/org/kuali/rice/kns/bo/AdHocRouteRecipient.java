@@ -41,17 +41,17 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
     public static final Integer WORKGROUP_TYPE = new Integer(1);
 
     @Id
-	@Column(name="ACTN_RQST_RECP_TYP_CD")
+	@Column(name="RECIP_TYP_CD")
 	protected Integer type;
     @Id
 	@Column(name="ACTN_RQST_CD")
 	protected String actionRequested;
     @Id
-	@Column(name="ACTN_RQST_RECP_ID")
+	@Column(name="ACTN_RQST_RECIP_ID")
 	protected String id; // can be networkId or workgroupname
     @Transient
     protected String name;
-    @Column(name="FDOC_NBR")
+    @Column(name="DOC_HDR_ID")
 	protected String documentNumber;
 
     public AdHocRouteRecipient() {

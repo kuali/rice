@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DLGN_RSP_T")
+@Table(name="KREW_DLGN_RSP_T")
 public class RuleDelegation implements WorkflowPersistable {
     
 	private static final long serialVersionUID = 7989203310473741293L;
@@ -54,7 +54,7 @@ public class RuleDelegation implements WorkflowPersistable {
     @Column(name="DLGN_TYP")
     private String delegationType = KEWConstants.DELEGATION_PRIMARY;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

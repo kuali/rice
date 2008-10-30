@@ -45,7 +45,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_ATTRIB_T")
+@Table(name="KREW_RULE_ATTR_T")
 @NamedQueries({
   @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.ruleAttributeId = :ruleAttributeId"),
   @NamedQuery(name="RuleAttribute.FindByName",  query="select ra from RuleAttribute ra where ra.name = :name"),
@@ -56,26 +56,26 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 
 	private static final long serialVersionUID = 1027673603158346349L;
 	@Id
-	@Column(name="RULE_ATTRIB_ID")
+	@Column(name="RULE_ATTR_ID")
 	private Long ruleAttributeId;
-    @Column(name="RULE_ATTRIB_NM")
+    @Column(name="NM")
 	private String name;
-    @Column(name="RULE_ATTRIB_LBL_TXT")
+    @Column(name="LBL")
 	private String label;
-    @Column(name="RULE_ATTRIB_TYP")
+    @Column(name="RULE_ATTR_TYP_CD")
 	private String type;
-    @Column(name="RULE_ATTRIB_CLS_NM")
+    @Column(name="CLS_NM")
 	private String className;
-    @Column(name="RULE_ATTRIB_DESC")
+    @Column(name="DESC_TXT")
 	private String description;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="RULE_ATTRIB_XML_RTE_TXT")
+	@Column(name="XML")
 	private String xmlConfigData;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @Column(name="MESSAGE_ENTITY_NM")
+    @Column(name="SVC_NMSPC")
 	private String messageEntity;
     
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},

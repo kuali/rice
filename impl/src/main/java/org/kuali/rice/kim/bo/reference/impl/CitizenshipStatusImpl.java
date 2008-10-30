@@ -27,10 +27,10 @@ import org.kuali.rice.kim.bo.reference.CitizenshipStatus;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_CTZNSHP_STAT_T")
+@Table(name="KRIM_CTZNSHP_STAT_T")
 @AttributeOverrides({
 	@AttributeOverride(name="code",column=@Column(name="CTZNSHP_STAT_CD")),
-	@AttributeOverride(name="name",column=@Column(name="CTZNSHP_STAT_NM"))
+	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
 public class CitizenshipStatusImpl extends KimCodeBase implements CitizenshipStatus {
 

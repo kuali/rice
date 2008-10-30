@@ -41,7 +41,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  *
  */
 @Entity
-@Table(name="EN_DOC_TYP_ATTRIB_T")
+@Table(name="KREW_DOC_TYP_ATTR_T")
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
@@ -49,10 +49,10 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	@Id
 	@Column(name="DOC_TYP_ATTRIB_ID")
 	private Long documentTypeAttributeId; 
-    @Column(name="RULE_ATTRIB_ID")
+    @Column(name="RULE_ATTR_ID")
 	private Long ruleAttributeId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_ATTRIB_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private RuleAttribute ruleAttribute;
     @Column(name="DOC_TYP_ID")
 	private Long documentTypeId;

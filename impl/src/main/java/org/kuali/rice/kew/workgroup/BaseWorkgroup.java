@@ -56,12 +56,12 @@ public class BaseWorkgroup implements Workgroup, Routable {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseWorkgroup.class);
 
     @Id
-	@Column(name="WRKGRP_ID")
+	@Column(name="GRP_ID")
 	protected Long workgroupId;
     @Id
     @Column(name="WRKGRP_VER_NBR")
     protected Integer versionNumber = new Integer(0);
-    @Column(name="WRKGRP_NM")
+    @Column(name="GRP_NM")
 	protected String workgroupName;
     @Column(name="WRKGRP_DESC")
 	protected String description;
@@ -70,7 +70,7 @@ public class BaseWorkgroup implements Workgroup, Routable {
     @Column(name="WRKGRP_TYP_CD")
 	protected String workgroupType;
     @Version
-    @Column(name="DB_LOCK_VER_NBR")
+    @Column(name="VER_NBR")
     protected Integer lockVerNbr = new Integer(0);
     @Transient
     protected List<Recipient> members = new ArrayList<Recipient>();

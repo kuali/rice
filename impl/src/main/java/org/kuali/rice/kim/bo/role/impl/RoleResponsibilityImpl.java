@@ -29,17 +29,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ROLE_RESP_T")
+@Table(name="KRIM_ROLE_RSP_T")
 public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implements RoleResponsibility {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="ROLE_RESP_ID")
+	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
 	@Column(name="ROLE_ID")
 	protected String roleId;
-	@Column(name="RESP_ID")
+	@Column(name="RSP_ID")
 	protected String responsibilityId;
 	@Column(name="ACTV_IND")
 	protected boolean active;

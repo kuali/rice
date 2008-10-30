@@ -37,7 +37,7 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_ATTACHMENT_T")
+@Table(name="KREW_ATT_T")
 public class Attachment {
 
 	@Id
@@ -52,7 +52,7 @@ public class Attachment {
 	@Column(name="MIME_TYP")
 	private String mimeType;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Transient
 	private InputStream attachedObject;

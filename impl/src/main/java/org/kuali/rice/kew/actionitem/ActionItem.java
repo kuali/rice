@@ -58,7 +58,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
  * 
  */
 @Entity
-@Table(name="EN_ACTN_ITM_T")
+@Table(name="KREW_ACTN_ITM_T")
 public class ActionItem implements WorkflowPersistable, RowStyleable {
 
     private static final long serialVersionUID = -1079562205125660151L;
@@ -66,38 +66,38 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	@Id
 	@Column(name="ACTN_ITM_ID")
 	private Long actionItemId;
-    @Column(name="ACTN_ITM_PRSN_EN_ID")
+    @Column(name="PRNCPL_ID")
 	private String workflowId;
-	@Column(name="ACTN_ITM_ASND_DT")
+	@Column(name="ASND_DT")
 	private Timestamp dateAssigned;
-    @Column(name="ACTN_ITM_RQST_CD")
+    @Column(name="RQST_CD")
 	private String actionRequestCd;
     @Column(name="ACTN_RQST_ID", nullable=false)
 	private Long actionRequestId;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
 	private Long workgroupId;
-    @Column(name="DOC_TTL")
+    @Column(name="DOC_HDR_TTL")
 	private String docTitle;
-    @Column(name="DOC_TYP_LBL_TXT")
+    @Column(name="DOC_TYP_LBL")
 	private String docLabel;
-    @Column(name="DOC_TYP_HDLR_URL_ADDR")
+    @Column(name="DOC_HDLR_URL")
 	private String docHandlerURL;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Column(name="DOC_TYP_NM")
 	private String docName;
-    @Column(name="ACTN_ITM_RESP_ID")
+    @Column(name="RSP_ID")
     private Long responsibilityId = new Long(1);
     @Transient
     private String rowStyleClass;
     @Column(name="ROLE_NM")
 	private String roleName;
-    @Column(name="ACTN_ITM_DLGN_PRSN_EN_ID")
+    @Column(name="DLGN_PRNCPL_ID")
 	private String delegatorWorkflowId;
-    @Column(name="ACTN_ITM_DLGN_WRKGRP_ID")
+    @Column(name="DLGN_GRP_ID")
 	private Long delegatorWorkgroupId;
     @Transient
     private String dateAssignedString;

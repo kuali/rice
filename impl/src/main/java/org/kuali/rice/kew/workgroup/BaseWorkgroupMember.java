@@ -44,7 +44,7 @@ public class BaseWorkgroupMember implements Serializable {
 	private static final long serialVersionUID = -6343373525316948409L;
 
 	@Id
-	@Column(name="WRKGRP_ID")
+	@Column(name="GRP_ID")
 	private Long workgroupId;
     @Id
 	@Column(name="WRKGRP_MBR_PRSN_EN_ID")
@@ -55,11 +55,11 @@ public class BaseWorkgroupMember implements Serializable {
     @Column(name="WRKGRP_VER_NBR")
     private Integer workgroupVersionNumber = new Integer(0);
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, optional=true)
-	@JoinColumns({@JoinColumn(name="WRKGRP_ID", insertable=false, updatable=false), @JoinColumn(name="WRKGRP_VER_NBR", insertable=false, updatable=false)})
+	@JoinColumns({@JoinColumn(name="GRP_ID", insertable=false, updatable=false), @JoinColumn(name="WRKGRP_VER_NBR", insertable=false, updatable=false)})
 	private BaseWorkgroup workgroup;
 
     public Integer getLockVerNbr() {

@@ -28,7 +28,7 @@ import org.apache.commons.lang.ObjectUtils;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_EXPR_T")
+@Table(name="KREW_RULE_EXPR_T")
 public class RuleExpressionDef {
     /**
      * Primary key
@@ -39,7 +39,7 @@ public class RuleExpressionDef {
     /**
      * The type of the expression
      */
-    @Column(name="RULE_EXPR_TYP")
+    @Column(name="TYP")
 	private String type;
     /**
      * The content of the expression

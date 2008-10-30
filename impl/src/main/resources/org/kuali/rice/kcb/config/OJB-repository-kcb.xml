@@ -17,33 +17,33 @@
     </jdbc-connection-descriptor>
 
     <!-- Messages -->
-    <class-descriptor class="org.kuali.rice.kcb.bo.Message" table="KCB_MESSAGES">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_MESSAGES_SEQ" />
-        <field-descriptor name="originId" column="ORIGIN_ID" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="deliveryType" column="DELIVERY_TYPE" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="creationDateTime" column="CREATED_DATETIME" jdbc-type="TIMESTAMP" nullable="false" />
-        <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR" nullable="true" />
-        <field-descriptor name="channel" column="CHANNEL" jdbc-type="VARCHAR" nullable="false" />
-        <field-descriptor name="producer" column="PRODUCER" jdbc-type="VARCHAR" nullable="true" />
-        <field-descriptor name="content" column="CONTENT" jdbc-type="CLOB" nullable="false" />
-        <field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR" nullable="true" />
+    <class-descriptor class="org.kuali.rice.kcb.bo.Message" table="KREN_MSG_T">
+        <field-descriptor name="id" column="MSG_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREN_MSG_S" />
+        <field-descriptor name="originId" column="ORGN_ID" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="deliveryType" column="DELIV_TYP" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="creationDateTime" column="CRTE_DTTM" jdbc-type="TIMESTAMP" nullable="false" />
+        <field-descriptor name="title" column="TTL" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="channel" column="CHNL" jdbc-type="VARCHAR" nullable="false" />
+        <field-descriptor name="producer" column="PRODCR" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="content" column="CNTNT" jdbc-type="CLOB" nullable="false" />
+        <field-descriptor name="contentType" column="CNTNT_TYP" jdbc-type="VARCHAR" nullable="true" />
         <field-descriptor name="url" column="URL" jdbc-type="VARCHAR" nullable="true" />
-        <field-descriptor name="recipient" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+        <field-descriptor name="recipient" column="RECIP_ID" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
     </class-descriptor>
 
     <!-- MessageDelivery_s -->
-    <class-descriptor class="org.kuali.rice.kcb.bo.MessageDelivery" table="KCB_MSG_DELIVS">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_MSG_DELIVS_SEQ" />
-        <field-descriptor name="deliveryStatus" column="DELIVERY_STATUS" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="delivererTypeName" column="DELIVERER_TYPE_NAME" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="delivererSystemId" column="DELIVERER_SYSTEM_ID" jdbc-type="VARCHAR"  nullable="true" />
-        <field-descriptor name="processCount" column="PROCESS_COUNT" jdbc-type="INTEGER" nullable="false" />
-        <field-descriptor name="lockedDate" column="LOCKED_DATE" jdbc-type="TIMESTAMP" nullable="true" />
-        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+    <class-descriptor class="org.kuali.rice.kcb.bo.MessageDelivery" table="KREN_MSG_DELIV_T">
+        <field-descriptor name="id" column="MSG_DELIV_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREN_MSG_DELIV_S" />
+        <field-descriptor name="deliveryStatus" column="STAT_CD" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="delivererTypeName" column="TYP_NM" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="delivererSystemId" column="SYS_ID" jdbc-type="VARCHAR"  nullable="true" />
+        <field-descriptor name="processCount" column="PROC_CNT" jdbc-type="INTEGER" nullable="false" />
+        <field-descriptor name="lockedDate" column="LOCKD_DTTM" jdbc-type="TIMESTAMP" nullable="true" />
+        <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
 
         <!-- Anonymous keys - our foreign keys -->
-        <field-descriptor name="messageId" column="MESSAGE_ID" jdbc-type="BIGINT" access="anonymous"  nullable="false" />
+        <field-descriptor name="messageId" column="MSG_ID" jdbc-type="BIGINT" access="anonymous"  nullable="false" />
 
         <!-- Object references -->
         <reference-descriptor name="message" class-ref="org.kuali.rice.kcb.bo.Message" auto-retrieve="true" auto-update="false" auto-delete="false">
@@ -52,21 +52,21 @@
     </class-descriptor>
     
     <!-- RecipientPreference_s -->
-    <class-descriptor class="org.kuali.rice.kcb.bo.RecipientPreference" table="KCB_RECIP_PREFS">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_RECIP_PREFS_SEQ" />
-        <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="property" column="PROPERTY" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="value" column="VALUE" jdbc-type="VARCHAR"  nullable="true" />
-        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+    <class-descriptor class="org.kuali.rice.kcb.bo.RecipientPreference" table="KREN_RECIP_PREFS_T">
+        <field-descriptor name="id" column="RECIP_PREFS_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREN_RECIP_PREF_S" />
+        <field-descriptor name="recipientId" column="RECIP_ID" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="property" column="PROP" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="value" column="VAL" jdbc-type="VARCHAR"  nullable="true" />
+        <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
     </class-descriptor>
     
     <!-- RecipientDelivererConfig_s -->
-    <class-descriptor class="org.kuali.rice.kcb.bo.RecipientDelivererConfig" table="KCB_RECIP_DELIVS">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_RECIP_DELIVS_SEQ" />
-        <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR" nullable="false" />
-        <field-descriptor name="channel" column="CHANNEL" jdbc-type="VARCHAR"  nullable="false" />
-        <field-descriptor name="delivererName" column="DELIVERER_NAME" jdbc-type="VARCHAR" nullable="false" />
-        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+    <class-descriptor class="org.kuali.rice.kcb.bo.RecipientDelivererConfig" table="KREN_RECIP_DELIV_T">
+        <field-descriptor name="id" column="RECIP_DELIV_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREN_RECIP_DELIV_S" />
+        <field-descriptor name="recipientId" column="RECIP_ID" jdbc-type="VARCHAR" nullable="false" />
+        <field-descriptor name="channel" column="CHNL" jdbc-type="VARCHAR"  nullable="false" />
+        <field-descriptor name="delivererName" column="NM" jdbc-type="VARCHAR" nullable="false" />
+        <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
     </class-descriptor>
 
 </descriptor-repository>

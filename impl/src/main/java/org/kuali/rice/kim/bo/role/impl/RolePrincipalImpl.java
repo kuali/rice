@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.role.RolePrincipal;
  *
  */
 @Entity
-@Table(name="KR_KIM_ROLE_PRINCIPAL_T")
+@Table(name="KRIM_ROLE_PRNCPL_T")
 public class RolePrincipalImpl extends RoleMemberImpl implements RolePrincipal {
 
 	@Column(name="PRNCPL_ID")

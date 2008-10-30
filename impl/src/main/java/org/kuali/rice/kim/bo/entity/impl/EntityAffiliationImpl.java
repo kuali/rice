@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_AFLTN_T")
+@Table(name = "KRIM_ENTITY_AFLTN_T")
 public class EntityAffiliationImpl extends DefaultableEntityDataBase implements EntityAffiliation {
 
 	private static final long serialVersionUID = 1L;

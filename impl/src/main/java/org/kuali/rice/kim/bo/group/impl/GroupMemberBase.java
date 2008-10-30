@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public abstract class GroupMemberBase extends PersistableBusinessObjectBase implements GroupMember {
 
 	@Id
-	@Column(name="GRP_MEMBER_ID")
+	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 		
 	@Column(name="GRP_ID")

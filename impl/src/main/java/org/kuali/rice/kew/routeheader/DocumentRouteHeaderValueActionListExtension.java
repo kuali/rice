@@ -32,7 +32,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_HDR_T")
+@Table(name="KREW_DOC_HDR_T")
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 
 	private static final long serialVersionUID = 8458532812557846684L;

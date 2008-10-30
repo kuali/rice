@@ -28,10 +28,10 @@ import org.kuali.rice.kim.bo.group.GroupGroup;
  *
  */
 @Entity
-@Table(name="KR_KIM_GROUP_GROUP_T")
+@Table(name="KRIM_GRP_GRP_T")
 public class GroupGroupImpl extends GroupMemberBase implements GroupGroup {
 
-	@Column(name="MEMBER_GRP_ID")
+	@Column(name="MBR_GRP_ID")
 	protected String memberGroupId;
 
 	public String getMemberGroupId() {

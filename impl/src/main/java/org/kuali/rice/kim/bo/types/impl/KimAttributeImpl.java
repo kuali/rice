@@ -28,17 +28,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ATTRIBUTE_T")
+@Table(name="KRIM_ATTR_DEFN_T")
 public class KimAttributeImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="KIM_ATTRIB_ID")
+	@Column(name="KIM_ATTR_DEFN_ID")
 	protected String kimAttributeId;
-	@Column(name="ATTRIB_NM")
+	@Column(name="NM")
 	protected String attributeName;
-	@Column(name="ATTRIB_LBL")
+	@Column(name="LBL")
 	protected String attributeLabel;
 	@Column(name="ACTV_IND")
 	protected boolean active;

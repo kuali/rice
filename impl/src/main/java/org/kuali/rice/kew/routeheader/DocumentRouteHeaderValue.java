@@ -110,7 +110,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_HDR_T")
+@Table(name="KREW_DOC_HDR_T")
 public class DocumentRouteHeaderValue implements WorkflowPersistable {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
@@ -119,36 +119,36 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 
     @Column(name="DOC_TYP_ID")
 	private java.lang.Long documentTypeId;
-    @Column(name="DOC_RTE_STAT_CD")
+    @Column(name="DOC_HDR_STAT_CD")
 	private java.lang.String docRouteStatus;
-    @Column(name="DOC_RTE_LVL_NBR")
+    @Column(name="RTE_LVL")
 	private java.lang.Integer docRouteLevel;
-	@Column(name="DOC_STAT_MDFN_DT")
+	@Column(name="STAT_MDFN_DT")
 	private java.sql.Timestamp statusModDate;
-	@Column(name="DOC_CRTE_DT")
+	@Column(name="CRTE_DT")
 	private java.sql.Timestamp createDate;
-	@Column(name="DOC_APRV_DT")
+	@Column(name="APRV_DT")
 	private java.sql.Timestamp approvedDate;
-	@Column(name="DOC_FNL_DT")
+	@Column(name="FNL_DT")
 	private java.sql.Timestamp finalizedDate;
     @Transient
     private DocumentRouteHeaderValueContent documentContent;
-    @Column(name="DOC_TTL")
+    @Column(name="TTL")
 	private java.lang.String docTitle;
-    @Column(name="DOC_APPL_DOC_ID")
+    @Column(name="APP_DOC_ID")
 	private java.lang.String appDocId;
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(KEWConstants.DOCUMENT_VERSION_NODAL);
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private java.lang.Integer jrfVerNbr;
-    @Column(name="DOC_INITR_PRSN_EN_ID")
+    @Column(name="INITR_PRNCPL_ID")
 	private java.lang.String initiatorWorkflowId;
-    @Column(name="DOC_RTE_USR_PRSN_EN_ID")
+    @Column(name="RTE_PRNCPL_ID")
 	private java.lang.String routedByUserWorkflowId;
-	@Column(name="DOC_RTE_STAT_MDFN_DT")
+	@Column(name="RTE_STAT_MDFN_DT")
 	private java.sql.Timestamp routeStatusDate;
-	@Column(name="DOC_RTE_LVL_MDFN_DT")
+	@Column(name="RTE_LVL_MDFN_DT")
 	private java.sql.Timestamp routeLevelDate;
     @Id
 	@Column(name="DOC_HDR_ID")

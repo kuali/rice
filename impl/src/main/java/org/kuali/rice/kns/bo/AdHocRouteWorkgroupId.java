@@ -32,13 +32,13 @@ public class AdHocRouteWorkgroupId implements Serializable {
 
     private static final long serialVersionUID = -3782889247235043846L;
     
-	@Column(name="ACTN_RQST_RECP_TYP_CD")
+	@Column(name="RECIP_TYP_CD")
     private Integer type;
     @Id
     @Column(name="ACTN_RQST_CD")
     private String actionRequested;
     @Id
-    @Column(name="ACTN_RQST_RECP_ID")
+    @Column(name="ACTN_RQST_RECIP_ID")
     private String id;
 
     public AdHocRouteWorkgroupId() {}

@@ -27,48 +27,48 @@ import javax.persistence.Table;
  */
 @IdClass(org.kuali.rice.kns.bo.ParameterId.class)
 @Entity
-@Table(name="SH_PARM_T")
+@Table(name="KRNS_PARM_T")
 public class Parameter extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4874830226334867797L;
 
 	@Id
-	@Column(name="SH_PARM_NMSPC_CD")
+	@Column(name="NMSPC_CD")
 	private String parameterNamespaceCode;
 
 	@Id
-	@Column(name="SH_PARM_DTL_TYP_CD")
+	@Column(name="PARM_DTL_TYP_CD")
 	private String parameterDetailTypeCode;
 
 	@Id
-	@Column(name="SH_PARM_NM")
+	@Column(name="PARM_NM")
 	private String parameterName;
 
-	@Column(name="SH_PARM_TXT")
+	@Column(name="TXT")
 	private String parameterValue;
 
-	@Column(name="SH_PARM_DESC", length=2048)
+	@Column(name="PARM_DESC_TXT", length=2048)
 	private String parameterDescription;
 
-	@Column(name="SH_PARM_TYP_CD")
+	@Column(name="PARM_TYP_CD")
 	private String parameterTypeCode;
 
-	@Column(name="SH_PARM_CONS_CD")
+	@Column(name="CONS_CD")
 	private String parameterConstraintCode;
 
-	@Column(name="WRKGRP_NM")
+	@Column(name="GRP_NM")
 	private String parameterWorkgroupName;
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false)
+	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
 	private ParameterNamespace parameterNamespace;
 
 	@OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="SH_PARM_TYP_CD", insertable=false, updatable=false)
+	@JoinColumn(name="PARM_TYP_CD", insertable=false, updatable=false)
 	private ParameterType parameterType;
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false), @JoinColumn(name="SH_PARM_DTL_TYP_CD", insertable=false, updatable=false)})
+	@JoinColumns({@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false), @JoinColumn(name="PARM_DTL_TYP_CD", insertable=false, updatable=false)})
 	private ParameterDetailType parameterDetailType;
 
 	public Parameter() {

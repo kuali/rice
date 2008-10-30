@@ -38,23 +38,23 @@ import javax.persistence.Transient;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "NOTIFICATION_CHANNELS")
+@Table(name = "KREN_CHNL_T")
 public class NotificationChannel {
     @Id
-    @Column(name = "ID")
+    @Column(name = "CHNL_ID")
     private Long id;
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NM", nullable = false)
     private String name;
-    @Column(name = "DESCRIPTION", nullable = false)
+    @Column(name = "DESC_TXT", nullable = false)
     private String description;
-    @Column(name = "SUBSCRIBABLE", nullable = false)
+    @Column(name = "SUBSCRB_IND", nullable = false)
     private boolean subscribable;
 
     // List references
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, targetEntity = org.kuali.rice.ken.bo.NotificationRecipientList.class, mappedBy = "channel")
     private List<NotificationRecipientList> recipientLists;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "NOTIFICATION_CHANNEL_PRODUCERS", joinColumns = @JoinColumn(name = "CHANNEL_ID"), inverseJoinColumns = @JoinColumn(name = "PRODUCER_ID"))
+    @JoinTable(name = "NOTIFICATION_CHANNEL_PRODUCERS", joinColumns = @JoinColumn(name = "CHNL_ID"), inverseJoinColumns = @JoinColumn(name = "PRODCR_ID"))
     private List<NotificationProducer> producers;
     @Transient
     private List<NotificationChannelReviewer> reviewers = new ArrayList<NotificationChannelReviewer>();

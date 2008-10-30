@@ -57,11 +57,11 @@ public class BaseWorkgroupExtension extends BaseWorkflowPersistable implements E
 	@Column(name="WRKGRP_EXT_ID")
 	private Long workgroupExtensionId;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="WRKGRP_ID"), @JoinColumn(name="WRKGRP_VER_NBR")})
+	@JoinColumns({@JoinColumn(name="GRP_ID"), @JoinColumn(name="WRKGRP_VER_NBR")})
 	private BaseWorkgroup workgroup;
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="WRKGRP_TYP_ATTRIB_ID")

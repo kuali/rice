@@ -1,6 +1,8 @@
 def dir = '.'
 xmlExtension = "schema-refactor.xml"
 outputFile = "refactor.sql"
+includeIndexes = "true"
+includeConstraints = "true"
 
 oldTable = "";
 newTable = "";
@@ -9,6 +11,8 @@ count = 0
 for (arg in args) {
 	if (arg == '-ext') xmlExtension = args[count + 1]
 	if (arg == '-out') outputFile = args[count + 1]
+	if (arg == '-ind') includeIndexes = args[count + 1]
+	if (arg == '-con') includeConstraints = args[count + 1]
 	count++
 }	
 
@@ -73,6 +77,7 @@ def processDir( dir ) {
 					}
 				} //columns
 		
+				if (includeIndexes == "true") {
 				table.index.findAll{
 					ind ->
 					ctr = 0
@@ -92,7 +97,10 @@ def processDir( dir ) {
 						sqlFile.append("ALTER INDEX ${oldIndName} RENAME TO ${newIndName}\n/\n")
 					}
 				}				
+				}
 				
+				if (includeConstraints == "true") {
+					
 				indCols = "("
 				ctr = 0
 				newIndName= " "
@@ -143,6 +151,8 @@ def processDir( dir ) {
 				sqlFile.append("ALTER TABLE ${newTable} RENAME CONSTRAINT ${oldIndName} TO ${newIndName}\n/\n")
 			}
 	  }//foreign-key
+	  
+				}
 	  
 	}
 

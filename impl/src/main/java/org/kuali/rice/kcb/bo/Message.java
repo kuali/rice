@@ -36,7 +36,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 // this class could possibly just extend the MessageDTO
 @Entity
-@Table(name="KCB_MESSAGES")
+@Table(name="KREN_MSG_T")
 public class Message {
     /**
      * Field names
@@ -45,39 +45,39 @@ public class Message {
     public static final String ORIGINID_FIELD = "originId";
 
     @Id
-	@Column(name="ID")
+	@Column(name="MSG_ID")
 	private Long id;
     /**
      * The origin id is an id provided by the originating system that creates the message
      */
-    @Column(name="ORIGIN_ID", nullable=false)
+    @Column(name="ORGN_ID", nullable=false)
 	private String originId;
-    @Column(name="DELIVERY_TYPE", nullable=false)
+    @Column(name="DELIV_TYP", nullable=false)
 	private String deliveryType;
-    @Column(name="CHANNEL", nullable=false)
+    @Column(name="CHNL", nullable=false)
 	private String channel;
-    @Column(name="PRODUCER", nullable=true)
+    @Column(name="PRODCR", nullable=true)
 	private String producer;
-    @Column(name="CREATED_DATETIME", nullable=false)
+    @Column(name="CRTE_DTTM", nullable=false)
     private Timestamp creationDateTime = new Timestamp(System.currentTimeMillis());
-    @Column(name="TITLE", nullable=true)
+    @Column(name="TTL", nullable=true)
 	private String title;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="CONTENT", nullable=false)
+	@Column(name="CNTNT", nullable=false)
 	private String content;
-    @Column(name="CONTENT_TYPE", nullable=true)
+    @Column(name="CNTNT_TYP", nullable=true)
 	private String contentType;
     @Column(name="URL", nullable=true)
 	private String url;
-    @Column(name="USER_RECIPIENT_ID", nullable=false)
+    @Column(name="RECIP_ID", nullable=false)
 	private String recipient;
 
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     /**

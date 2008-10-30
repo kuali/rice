@@ -47,25 +47,25 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_HDR_EXT_DT_T")
+@Table(name="KREW_DOC_HDR_EXT_DT_T")
 public class SearchableAttributeDateTimeValue implements WorkflowPersistable, SearchableAttributeValue {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
 
     private static final long serialVersionUID = 3045621112943214772L;
 
-    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "EN_DOC_HDR_EXT_DT_T";
+    private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "KREW_DOC_HDR_EXT_DT_T";
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_DATE;
 
     @Id
-	@Column(name="DOC_HDR_EXT_ID")
+	@Column(name="DOC_HDR_EXT_DT_ID")
 	private Long searchableAttributeValueId;
-    @Column(name="DOC_HDR_EXT_VAL_KEY")
+    @Column(name="KEY_CD")
 	private String searchableAttributeKey;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="DOC_HDR_EXT_VAL")
+	@Column(name="VAL")
 	private Timestamp searchableAttributeValue;
     @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!

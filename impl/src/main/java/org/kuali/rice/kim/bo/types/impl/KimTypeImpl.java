@@ -33,13 +33,13 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_TYPE_T")
+@Table(name="KRIM_TYP_T")
 public class KimTypeImpl extends PersistableBusinessObjectBase {
 
 	@Id
-	@Column(name="KIM_TYPE_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
-	@Column(name="TYPE_NM")
+	@Column(name="NM")
 	protected String name;
 	@Column(name="SRVC_NM")
 	protected String kimTypeServiceName;
@@ -47,7 +47,7 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	protected boolean active; 
 	
 	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="KIM_TYPE_ID", insertable=false, updatable=false)
+	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected List<KimTypeAttributeImpl> attributeDefinitions;
 	
 	public List<KimTypeAttributeImpl> getAttributeDefinitions() {

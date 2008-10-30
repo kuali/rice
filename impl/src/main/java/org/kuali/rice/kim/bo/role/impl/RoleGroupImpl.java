@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.role.RoleGroup;
  *
  */
 @Entity
-@Table(name="KR_KIM_ROLE_GROUP_T")
+@Table(name="KRIM_ROLE_GRP_T")
 public class RoleGroupImpl extends RoleMemberImpl implements RoleGroup {
 
 	@Column(name="GRP_ID")

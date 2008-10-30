@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_ADDR_T")
+@Table(name = "KRIM_ENTITY_ADDR_T")
 public class EntityAddressImpl extends DefaultableEntityDataBase implements EntityAddress {
 
 	private static final long serialVersionUID = 1L;

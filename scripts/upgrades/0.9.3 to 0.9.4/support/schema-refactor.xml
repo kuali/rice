@@ -161,10 +161,10 @@
     <table oldName="EN_DOC_HDR_EXT_DT_T" newName="KREW_DOC_HDR_EXT_DT_T">
         <column oldName="DOC_HDR_EXT_ID" newName="DOC_HDR_EXT_DT_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" type="DATE"/>
         <index oldName="EN_DOC_HDR_EXT_DT_TI1" newName="KREW_DOC_HDR_EXT_DT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_DT_TI2" newName="KREW_DOC_HDR_EXT_DT_TI2">
@@ -177,10 +177,10 @@
     <table oldName="EN_DOC_HDR_EXT_FLT_T" newName="KREW_DOC_HDR_EXT_FLT_T">
         <column oldName="DOC_HDR_EXT_ID" newName="DOC_HDR_EXT_FLT_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" type="FLOAT"/>
         <index oldName="EN_DOC_HDR_EXT_FLT_TI1" newName="KREW_DOC_HDR_EXT_FLT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_FLT_TI2" newName="KREW_DOC_HDR_EXT_FLT_TI2">
@@ -193,10 +193,10 @@
     <table oldName="EN_DOC_HDR_EXT_LONG_T" newName="KREW_DOC_HDR_EXT_LONG_T">
         <column oldName="DOC_HDR_EXT_ID" newName="DOC_HDR_EXT_LONG_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" size="22" type="DECIMAL"/>
         <index oldName="EN_DOC_HDR_EXT_LONG_TI1" newName="KREW_DOC_HDR_EXT_LONG_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_LONG_TI2" newName="KREW_DOC_HDR_EXT_LONG_TI2">
@@ -209,10 +209,10 @@
     <table oldName="EN_DOC_HDR_EXT_T" newName="KREW_DOC_HDR_EXT_T">
         <column name="DOC_HDR_EXT_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="DECIMAL"/>
-        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY" required="true" size="256" type="VARCHAR"/>
+        <column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column oldName="DOC_HDR_EXT_VAL" newName="VAL" size="2000" type="VARCHAR"/>
         <index oldName="EN_DOC_HDR_EXT_TI1" newName="KREW_DOC_HDR_EXT_TI1">
-            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY"/>
+            <index-column oldName="DOC_HDR_EXT_VAL_KEY" newName="KEY_CD"/>
             <index-column oldName="DOC_HDR_EXT_VAL" newName="VAL"/>
         </index>
         <index oldName="EN_DOC_HDR_EXT_TI2" newName="KREW_DOC_HDR_EXT_TI2">
@@ -406,13 +406,13 @@
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
     <table oldName="EN_HLP_T" newName="KREW_HLP_T">
-        <column name="EN_HLP_ID"  primaryKey="true" size="19" type="DECIMAL"/>
+        <column oldName="EN_HLP_ID" newName="HLP_ID"  primaryKey="true" size="19" type="DECIMAL"/>
         <column oldName="EN_HLP_NM" newName="NM" required="true" size="500" type="VARCHAR"/>
-        <column name="EN_HLP_KY" required="true" size="500" type="VARCHAR"/>
-        <column oldName="EN_HLP_TXT" newName="TXT" required="true" size="4000" type="VARCHAR"/>
+        <column oldName="EN_HLP_KY" newName="KEY_CD" required="true" size="500" type="VARCHAR"/>
+        <column oldName="EN_HLP_TXT" newName="HLP_TXT" required="true" size="4000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_HLP_TI1" newName="KREW_HLP_TI1">
-            <index-column name="EN_HLP_KY"/>
+            <index-column oldName="EN_HLP_KY" newName="KEY_CD"/>
         </index>
     </table>
     <table oldName="EN_INIT_RTE_NODE_INSTN_T" newName="KREW_INIT_RTE_NODE_INSTN_T">
@@ -485,18 +485,18 @@
     <table oldName="EN_RTE_BRCH_ST_T" newName="KREW_RTE_BRCH_ST_T">
         <column name="RTE_BRCH_ST_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RTE_BRCH_ID" required="true" size="19" type="DECIMAL"/>
-        <column oldName="ST_KEY" newName="KEY" required="true" size="255" type="VARCHAR"/>
+        <column oldName="ST_KEY" newName="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column oldName="ST_VAL_TXT" newName="VAL" size="2000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_RTE_BRCH_ST_TI1" newName="KREW_RTE_BRCH_ST_TI1">
             <index-column name="RTE_BRCH_ID"/>
-            <index-column oldName="ST_KEY" newName="KEY"/>
+            <index-column oldName="ST_KEY" newName="KEY_CD"/>
         </index>
         <index oldName="EN_RTE_BRCH_ST_TI2" newName="KREW_RTE_BRCH_ST_TI2">
             <index-column name="RTE_BRCH_ID"/>
         </index>
         <index oldName="EN_RTE_BRCH_ST_TI3" newName="KREW_RTE_BRCH_ST_TI3">
-            <index-column oldName="ST_KEY" newName="KEY"/>
+            <index-column oldName="ST_KEY" newName="KEY_CD"/>
             <index-column oldName="ST_VAL_TXT" newName="VAL"/>
         </index>
     </table>
@@ -527,7 +527,7 @@
     <table oldName="EN_RTE_NODE_CFG_PARM_T" newName="KREW_RTE_NODE_CFG_PARM_T">
         <column name="RTE_NODE_CFG_PARM_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column oldName="RTE_NODE_CFG_PARM_ND" newName="RTE_NODE_ID" required="true" size="19" type="DECIMAL"/>
-        <column oldName="RTE_NODE_CFG_PARM_KEY" newName="KEY" required="true" size="255" type="VARCHAR"/>
+        <column oldName="RTE_NODE_CFG_PARM_KEY" newName="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column oldName="RTE_NODE_CFG_PARM_VAL" newName="VAL" size="4000" type="VARCHAR"/>
         <foreign-key oldForeignTable="EN_RTE_NODE_T" newForeignTable="KREW_RTE_NODE_T" name="KREW_RTE_NODE_CFG_PARM_TR1">
             <reference foreign="RTE_NODE_ID" oldLocal="RTE_NODE_CFG_PARM_ND" newLocal="RTE_NODE_ID"/>
@@ -547,18 +547,18 @@
     <table oldName="EN_RTE_NODE_INSTN_ST_T" newName="KREW_RTE_NODE_INSTN_ST_T">
         <column name="RTE_NODE_INSTN_ST_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RTE_NODE_INSTN_ID" required="true" size="19" type="DECIMAL"/>
-        <column oldName="ST_KEY" newName="KEY" required="true" size="255" type="VARCHAR"/>
+        <column oldName="ST_KEY" newName="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column oldName="ST_VAL_TXT" newName="VAL" size="2000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_RTE_NODE_INSTN_ST_TI1" newName="KREW_RTE_NODE_INSTN_ST_TI1">
             <index-column name="RTE_NODE_INSTN_ID"/>
-            <index-column oldName="ST_KEY" newName="KEY"/>
+            <index-column oldName="ST_KEY" newName="KEY_CD"/>
         </index>
         <index oldName="EN_RTE_NODE_INSTN_ST_TI2" newName="KREW_RTE_NODE_INSTN_ST_TI2">
             <index-column name="RTE_NODE_INSTN_ID"/>
         </index>
         <index oldName="EN_RTE_NODE_INSTN_ST_TI3" newName="KREW_RTE_NODE_INSTN_ST_TI3">
-            <index-column oldName="ST_KEY" newName="KEY"/>
+            <index-column oldName="ST_KEY" newName="KEY_CD"/>
             <index-column oldName="ST_VAL_TXT" newName="VAL"/>
         </index>
     </table>
@@ -678,14 +678,14 @@
         <column name="RULE_EXT_VAL_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RULE_EXT_ID" required="true" size="19" type="DECIMAL"/>
         <column oldName="RULE_EXT_VAL" newName="VAL" required="true" size="2000" type="VARCHAR"/>
-        <column oldName="RULE_EXT_VAL_KEY" newName="KEY" required="true" size="2000" type="VARCHAR"/>
+        <column oldName="RULE_EXT_VAL_KEY" newName="KEY_CD" required="true" size="2000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_RULE_EXT_VAL_T1" newName="KREW_RULE_EXT_VAL_T1">
             <index-column name="RULE_EXT_ID"/>
         </index>
         <index oldName="EN_RULE_EXT_VAL_T2" newName="KREW_RULE_EXT_VAL_T2">
             <index-column name="RULE_EXT_VAL_ID" />
-            <index-column oldName="RULE_EXT_VAL_KEY" newName="KEY"/>
+            <index-column oldName="RULE_EXT_VAL_KEY" newName="KEY_CD"/>
         </index>
     </table>
     <table oldName="EN_RULE_RSP_T" newName="KREW_RULE_RSP_T">
@@ -721,7 +721,7 @@
     <table oldName="EN_RULE_TMPL_OPTN_T" newName="KREW_RULE_TMPL_OPTN_T">
         <column name="RULE_TMPL_OPTN_ID"  primaryKey="true" size="19" type="DECIMAL"/>
         <column name="RULE_TMPL_ID" size="19" type="DECIMAL"/>
-        <column oldName="RULE_TMPL_OPTN_KEY" newName="KEY" size="250" type="VARCHAR"/>
+        <column oldName="RULE_TMPL_OPTN_KEY" newName="KEY_CD" size="250" type="VARCHAR"/>
         <column oldName="RULE_TMPL_OPTN_VAL" newName="VAL" size="2000" type="VARCHAR"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
@@ -749,7 +749,7 @@
     <!-- KSB Tables -->
     
     <table oldName="EN_BAM_PARAM_T" newName="KRSB_BAM_PARM_T">
-        <column name="BAM_PARAM_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column oldName="BAM_PARAM_ID" newName="BAM_PARM_ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="BAM_ID" required="true" size="14" type="DECIMAL"/>
         <column oldName="PARAM" newName="PARM" required="true" type="CLOB"/>
         <index oldName="EN_BAM_PARAM_TI1" newName="KREW_BAM_PARM_TI1">
@@ -1028,33 +1028,33 @@
         </unique>
     </table>
     <table oldName="SH_PARM_DTL_TYP_T" newName="KRNS_PARM_DTL_TYP_T">
-        <column oldName="SH_PARM_NMSPC_CD" newName="PARM_NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column oldName="SH_PARM_NMSPC_CD" newName="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
         <column oldName="SH_PARM_DTL_TYP_CD" newName="PARM_DTL_TYP_CD" primaryKey="true" size="100" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="SH_PARM_DTL_TYP_NM" newName="NM" size="255" type="VARCHAR"/>
         <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <foreign-key oldForeignTable="SH_PARM_NMSPC_T" newForeignTable="KRNS_PARM_NMSPC_T" oldName="SH_PARM_DTL_TYP_TR1" newName="KRNS_PARM_DTL_TYP_TR1">
-            <reference oldForeign="SH_PARM_NMSPC_CD" newForeign="PARM_NMSPC_CD" oldLocal="SH_PARM_NMSPC_CD" newLocal="PARM_NMSPC_CD"/>
+        <foreign-key oldForeignTable="SH_PARM_NMSPC_T" newForeignTable="KRNS_NMSPC_T" oldName="SH_PARM_DTL_TYP_TR1" newName="KRNS_PARM_DTL_TYP_TR1">
+            <reference oldForeign="SH_PARM_NMSPC_CD" newForeign="NMSPC_CD" oldLocal="SH_PARM_NMSPC_CD" newLocal="NMSPC_CD"/>
         </foreign-key>
         <unique oldName="SH_PARM_DTL_TYP_TC0" newName="KRNS_PARM_DTL_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
-    <table oldName="SH_PARM_NMSPC_T" newName="KRNS_PARM_NMSPC_T">
-        <column oldName="SH_PARM_NMSPC_CD" newName="PARM_NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+    <table oldName="SH_PARM_NMSPC_T" newName="KRNS_NMSPC_T">
+        <column oldName="SH_PARM_NMSPC_CD" newName="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="SH_PARM_NMSPC_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <unique oldName="SH_PARM_NMSPC_TC0" newName="KRNS_PARM_NMSPC_TC1">
+        <unique oldName="SH_PARM_NMSPC_TC0" newName="KRNS_NMSPC_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
     <table oldName="SH_PARM_T" newName="KRNS_PARM_T">
-        <column oldName="SH_PARM_NMSPC_CD" newName="PARM_NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column oldName="SH_PARM_NMSPC_CD" newName="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
         <column oldName="SH_PARM_DTL_TYP_CD" newName="PARM_DTL_TYP_CD" size="100" type="VARCHAR"/>
         <column oldName="SH_PARM_NM" newName="PARM_NM" primaryKey="true" size="100" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
@@ -1067,8 +1067,8 @@
         <column default="WorkflowAdmin" oldName="WRKGRP_NM" newName="GRP_NM" required="true"
             size="70" type="VARCHAR"/>
         <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <foreign-key oldForeignTable="SH_PARM_NMSPC_T" newForeignTable="KRNS_PARM_NMSPC_T" oldName="SH_PARM_TR1" newName="KRNS_PARM_TR1">
-            <reference oldForeign="SH_PARM_NMSPC_CD" newForeign="PARM_NMSPC_CD" oldLocal="SH_PARM_NMSPC_CD" newLocal="PARM_NMSPC_CD"/>
+        <foreign-key oldForeignTable="SH_PARM_NMSPC_T" newForeignTable="KRNS_NMSPC_T" oldName="SH_PARM_TR1" newName="KRNS_PARM_TR1">
+            <reference oldForeign="SH_PARM_NMSPC_CD" newForeign="NMSPC_CD" oldLocal="SH_PARM_NMSPC_CD" newLocal="NMSPC_CD"/>
         </foreign-key>
         <foreign-key oldForeignTable="SH_PARM_TYP_T" newForeignTable="KRNS_PARM_TYP_T" oldName="SH_PARM_TR2" newName="KRNS_PARM_TR2">
             <reference oldForeign="SH_PARM_TYP_CD" newForeign="PARM_TYP_CD" oldLocal="SH_PARM_TYP_CD" newLocal="PARM_TYP_CD"/>
@@ -1088,42 +1088,7 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
-    <table oldName="SH_USR_PROP_T" newName="KRNS_USR_PROP_T">
-        <column oldName="PERSON_UNVL_ID" newName="PRNCPL_ID" primaryKey="true" size="10" type="VARCHAR"/>
-        <column oldName="APPL_MOD_ID" newName="APP_MOD_ID" primaryKey="true" size="20" type="VARCHAR"/>
-        <column name="USR_PROP_NM" primaryKey="true" size="40" type="VARCHAR"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="USR_PROP_VAL" newName="VAL" size="4000" type="VARCHAR"/>
-        <unique oldName="SH_USR_PROP_TC0" newName="KRNS_USR_PROP_TC0">
-            <unique-column name="OBJ_ID"/>
-        </unique>
-    </table>
-    
-    <!--  KIM Tables -->
-    
-    <table oldName="KIM_AUTHN_SESN_PRINCIPAL_T" newName="KRIM_AUTHN_SESN_PRNCPL_T">
-        <column oldName="SESN_ID" newName="AUTHN_SESN_PRNCPL_ID" primaryKey="true" size="256" type="VARCHAR"/>
-        <column oldName="PRINCIPAL_NAME" newName="PRNCPL_NM" primaryKey="true" size="256" type="VARCHAR"/>
-        <index oldName="KIM_AUTHN_SESN_PRINCIPAL_TI2" newName="KRIM_AUTHN_SESN_PRNCPL_TI2">
-            <index-column oldName="PRINCIPAL_NAME" newName="PRNCPL_NM"/>
-        </index>
-    </table>
-    <table oldName="KIM_AUTHN_SESN_T" newName="KRIM_AUTHN_SESN_T">
-        <column oldName="ID" newName="AUTHN_SESN_ID" primaryKey="true" size="256" type="VARCHAR"/>
-        <column oldName="INSERT_DATETIME" newName="CRTE_DTTM" required="true" type="TIMESTAMP"/>
-        <column oldName="LAST_ACCESS_DATETIME" newName="LAST_ACC_DTTM" required="true" type="TIMESTAMP"/>
-        <column default="1" oldName="MAX_IDLE_TIME" newName="MAX_IDLE_TM" required="true"
-            size="20" type="DECIMAL"/>
-        <index oldName="KIM_AUTHN_SESN_TI1" newName="KRIM_AUTHN_SESN_TI1">
-            <index-column oldName="LAST_ACCESS_DATETIME" newName="LAST_ACC_DTTM"/>
-        </index>
-        <index oldName="KIM_AUTHN_SESN_TI2" newName="KRIM_AUTHN_SESN_TI2">
-            <index-column oldName="INSERT_DATETIME" newName="CRTE_DTTM"/>
-        </index>
-    </table>
-    
+        
     <!-- Quartz Tables -->
     
     <table oldName="KR_QRTZ_BLOB_TRIGGERS" newName="KRSB_QRTZ_BLOB_TRIGGERS">
@@ -1383,7 +1348,7 @@
         <column default="T" name="CUR_IND" required="true" size="1" type="CHAR"/>
         <column default="0" oldName="VERSION" newName="CNTNT_TYP_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="1000" type="VARCHAR"/>
-        <column oldName="NAMESPACE" newName="NMSPC" required="true" size="1000" type="VARCHAR"/>
+        <column oldName="NAMESPACE" newName="NMSPC_CD" required="true" size="1000" type="VARCHAR"/>
         <column name="XSD" required="true" type="CLOB"/>
         <column name="XSL" required="true" type="CLOB"/>
         <unique oldName="NOTIFICATION_CONTENT_TYPE_UK1" newName="KREN_CNTNT_TYP_UK1">

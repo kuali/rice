@@ -36,19 +36,19 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="SH_ATT_T")
+@Table(name="KRNS_ATT_T")
 public class Attachment extends PersistableBusinessObjectBase {
 
 	@Id
 	@Column(name="NTE_ID")
 	private Long noteIdentifier;
-	@Column(name="ATT_MIME_TYP_CD")
+	@Column(name="MIME_TYP")
 	private String attachmentMimeTypeCode;
-	@Column(name="ATT_FL_NM")
+	@Column(name="FILE_NM")
 	private String attachmentFileName;
 	@Column(name="ATT_ID")
 	private String attachmentIdentifier;
-	@Column(name="ATT_FL_SZ")
+	@Column(name="FILE_SZ")
 	private Long attachmentFileSize;
 	@Column(name="ATT_TYP_CD")
 	private String attachmentTypeCode;

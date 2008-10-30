@@ -30,16 +30,16 @@ import javax.persistence.Entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="USER_CHANNEL_SUBSCRIPTIONS")
+@Table(name="KREN_CHNL_SUBSCRP_T")
 public class UserChannelSubscription {
     @Id
-	@Column(name="ID")
+	@Column(name="CHNL_SUBSCRP_ID")
 	private Long id;
-    @Column(name="USER_ID", nullable=false)
+    @Column(name="PRNCPL_ID", nullable=false)
 	private String userId;
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CHANNEL_ID")
+	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
     
     /**

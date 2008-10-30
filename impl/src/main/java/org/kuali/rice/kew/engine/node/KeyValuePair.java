@@ -32,9 +32,9 @@ public class KeyValuePair implements KeyValue, Serializable {
 
 	private static final long serialVersionUID = -3819394562029060331L;
 
-	@Column(name="ST_KEY")
+	@Column(name="KEY_CD")
     protected String key;
-    @Column(name="ST_VAL_TXT")
+    @Column(name="VAL")
     protected String value;
 
     public KeyValuePair() {}

@@ -40,13 +40,13 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @Entity
-@Table(name="KR_KIM_DELE_T")
+@Table(name="KRIM_DLGN_T")
 public class KimDelegationImpl extends PersistableBusinessObjectBase implements KimDelegation {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="DELE_ID")
+	@Column(name="DLGN_ID")
 	protected String delegationId;
 	
 	@Column(name="ROLE_ID")
@@ -55,30 +55,30 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@Column(name="TYP_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 
-	@Column(name="DELE_TYP_CD")
+	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 	
 	@OneToMany(targetEntity=KimDelegationGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DELE_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationGroupImpl> memberGroups;
 
 	@OneToMany(targetEntity=KimDelegationPrincipalImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DELE_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationPrincipalImpl> memberPrincipals;
 
 	@OneToMany(targetEntity=KimDelegationRoleImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DELE_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationRoleImpl> memberRoles;
 	
 	@OneToMany(targetEntity=KimDelegationAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DELE_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationAttributeDataImpl> attributes;
 	
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="TYP_ID", insertable=false, updatable=false)
+	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected KimTypeImpl kimType; 
 	
 	/**

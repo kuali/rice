@@ -49,7 +49,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 @SuppressWarnings("unchecked")
 @Entity
-@Table(name = "KR_KIM_ENTITY_T")
+@Table(name = "KRIM_ENTITY_T")
 public class KimEntityImpl extends InactivatableEntityDataBase implements KimEntity {
 
 	private static final long serialVersionUID = 1L;

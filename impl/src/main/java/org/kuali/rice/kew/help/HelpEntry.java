@@ -33,24 +33,24 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_HLP_T")
+@Table(name="KREW_HLP_T")
 @NamedQueries({
   @NamedQuery(name="HelpEntry.FindById",  query="select he from HelpEntry he where he.helpId = :helpId"),
   @NamedQuery(name="HelpEntry.FindByKey",  query="select he from HelpEntry he where he.helpKey = :helpKey")
 })
-@Sequence(name="SEQ_HELP_ENTRY", property="helpId")
+@Sequence(name="KREW_HLP_S", property="helpId")
 public class HelpEntry {
     @Id
-	@Column(name="EN_HLP_ID")
+	@Column(name="HLP_ID")
 	private Long helpId;
-	@Column(name="EN_HLP_NM")
+	@Column(name="NM")
 	private String helpName;
-	@Column(name="EN_HLP_TXT")
+	@Column(name="HLP_TXT")
 	private String helpText;
-	@Column(name="EN_HLP_KY")
+	@Column(name="KEY_CD")
 	private String helpKey;
 	@Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
     public Long getHelpId() {

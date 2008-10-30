@@ -31,7 +31,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @Entity
-@Table(name="KR_KIM_ROLE_REL_T")
+@Table(name="KRIM_ROLE_REL_T")
 public class RoleRelationshipImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;

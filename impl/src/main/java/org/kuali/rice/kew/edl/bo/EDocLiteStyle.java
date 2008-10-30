@@ -36,7 +36,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_EDOCLT_STYLE_T")
+@Table(name="KREW_STYLE_T")
 public class EDocLiteStyle  extends PersistableBusinessObjectBase{
     /**
      * edoclt_style_id

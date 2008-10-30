@@ -46,7 +46,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  *
  */
 @Entity
-@Table(name="KR_KIM_GROUP_T")
+@Table(name="KRIM_GRP_T")
 public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGroup {
 
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	protected String groupDescription;
 	@Column(name="ACTV_IND")
 	protected boolean active;
-	@Column(name="TYP_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;

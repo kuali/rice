@@ -27,9 +27,9 @@ import org.kuali.rice.kim.bo.reference.EntityNameType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ENT_NAME_TYPE_T")
+@Table(name="KRIM_ENT_NM_TYP_T")
 @AttributeOverrides({
-	@AttributeOverride(name="code",column=@Column(name="NAME_TYP_CD")),
+	@AttributeOverride(name="code",column=@Column(name="NM_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="NAME_TYP_NM"))
 })
 public class EntityNameTypeImpl extends DefaultableKimCodeBase implements EntityNameType {

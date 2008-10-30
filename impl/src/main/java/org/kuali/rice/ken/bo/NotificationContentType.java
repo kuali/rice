@@ -29,20 +29,20 @@ import javax.persistence.Transient;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_CONTENT_TYPES")
+@Table(name="KREN_CNTNT_TYP_T")
 public class NotificationContentType {
     @Id
-	@Column(name="ID")
+	@Column(name="CNTNT_TYP_ID")
 	private Long id;
-    @Column(name="NAME", nullable=false)
+    @Column(name="NM", nullable=false)
 	private String name;
     @Transient
     private boolean current = true;
     @Transient
     private Integer version = Integer.valueOf(0);
-    @Column(name="DESCRIPTION", nullable=false)
+    @Column(name="DESC_TXT", nullable=false)
 	private String description;
-    @Column(name="NAMESPACE", nullable=false)
+    @Column(name="NMSPC_CD", nullable=false)
 	private String namespace;
     @Column(name="XSD", nullable=false, length=4096)
 	private String xsd;

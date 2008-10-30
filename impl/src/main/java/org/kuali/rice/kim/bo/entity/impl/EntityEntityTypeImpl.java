@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_ENT_TYPE_T")
+@Table(name = "KRIM_ENTITY_ENT_TYP_T")
 public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements EntityEntityType {
 
 	private static final long serialVersionUID = 1L;

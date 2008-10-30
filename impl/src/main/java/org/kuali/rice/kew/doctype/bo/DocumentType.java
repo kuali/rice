@@ -81,7 +81,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_DOC_TYP_T")
+@Table(name="KREW_DOC_TYP_T")
 public class DocumentType implements WorkflowPersistable {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
@@ -91,40 +91,40 @@ public class DocumentType implements WorkflowPersistable {
     @Id
 	@Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
-    @Column(name="DOC_TYP_PARNT_ID")
+    @Column(name="PARNT_ID")
 	private Long docTypeParentId;
     @Column(name="DOC_TYP_NM")
 	private String name;
     @Column(name="DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
-    @Column(name="DOC_TYP_ACTV_IND")
+    @Column(name="ACTV_IND")
 	private Boolean activeInd;
-    @Column(name="DOC_TYP_CUR_IND")
+    @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
 	private String description;
-    @Column(name="DOC_TYP_LBL_TXT")
+    @Column(name="LBL")
 	private String label;
-    @Column(name="DOC_TYP_PREV_VER")
+    @Column(name="PREV_DOC_TYP_VER_NBR")
 	private Long previousVersionId;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
-    @Column(name="DOC_TYP_HDLR_URL_ADDR")
+    @Column(name="DOC_HDLR_URL")
 	private String docHandlerUrl;
-    @Column(name="DOC_TYP_POST_PRCSR_NM")
+    @Column(name="POST_PRCSR")
 	private String postProcessorName;
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
 	private Long workgroupId;
-    @Column(name="BLNKT_APPR_WRKGRP_ID")
+    @Column(name="BLNKT_APPR_GRP_ID")
 	private Long blanketApproveWorkgroupId;
     @Column(name="BLNKT_APPR_PLCY")
 	private String blanketApprovePolicy;
-	@Column(name="RPT_WRKGRP_ID")
+	@Column(name="RPT_GRP_ID")
 	private Long reportingWorkgroupId;
-    @Column(name="MESSAGE_ENTITY_NM")
+    @Column(name="SVC_NMSPC")
 	private String messageEntity;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     /* these two fields are for the web tier lookupable
@@ -155,21 +155,21 @@ public class DocumentType implements WorkflowPersistable {
     /* New Workflow 2.1 Field */
     @Transient
     private List processes = new ArrayList();
-    @Column(name="DOC_TYP_RTE_VER_NBR")
+    @Column(name="RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
 
     /* Workflow 2.2 Fields */
-    @Column(name="DOC_TYP_NOTIFY_ADDR")
+    @Column(name="NOTIFY_ADDR")
 	private String notificationFromAddress;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="DOC_TYP_SECURITY_XML")
+	@Column(name="SEC_XML")
 	private String documentTypeSecurityXml;
     @Transient
     private DocumentTypeSecurity documentTypeSecurity;
 
     /* Workflow 2.4 XSLT-based email message customization */
-    @Column(name="DOC_TYP_EMAIL_XSL")
+    @Column(name="EMAIL_XSL")
 	private String customEmailStylesheet;
 
     public DocumentType() {

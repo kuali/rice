@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name = "KR_KIM_ENTITY_CTZNSHP_T")
+@Table(name = "KRIM_ENTITY_CTZNSHP_T")
 public class EntityCitizenshipImpl extends InactivatableEntityDataBase implements EntityCitizenship {
 
 	private static final long serialVersionUID = 1L;

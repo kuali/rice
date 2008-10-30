@@ -33,7 +33,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_ROLE_PERM_T")
+@Table(name="KRIM_ROLE_PERM_T")
 public class RolePermissionImpl extends PersistableBusinessObjectBase implements Inactivateable{
 
 	private static final long serialVersionUID = 1L;

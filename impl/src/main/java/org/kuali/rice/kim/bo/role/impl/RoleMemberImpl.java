@@ -36,7 +36,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public abstract class RoleMemberImpl extends PersistableBusinessObjectBase implements RoleMember {
 
 	@Id
-	@Column(name="ROLE_MEMBER_ID")
+	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	
 	@Column(name="ROLE_ID")

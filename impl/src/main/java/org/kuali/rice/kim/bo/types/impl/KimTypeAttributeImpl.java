@@ -32,17 +32,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_TYPE_ATTRIBUTE_T")
+@Table(name="KRIM_TYP_ATTR_T")
 public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="KIM_TYPE_ATTRIB_ID")
+	@Column(name="KIM_TYP_ATTR_ID")
 	protected String kimTypeAttributeId;
-	@Column(name="KIM_TYPE_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId; 	
-	@Column(name="KIM_ATTRIB_ID")
+	@Column(name="KIM_ATTR_DEFN_ID")
 	protected String kimAttributeId;
 	@Column(name="SORT_CD")
 	protected String sortCode;
@@ -50,7 +50,7 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 	protected boolean active; 	 
 	
 	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_ATTRIB_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 	
 	public KimAttributeImpl getKimAttribute() {

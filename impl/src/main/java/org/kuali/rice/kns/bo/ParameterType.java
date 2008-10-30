@@ -8,8 +8,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="SH_PARM_TYP_T")
-@AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="SH_PARM_TYP_CD")), @AttributeOverride(name="name", column=@Column(name="SH_PARM_TYP_NM"))})
+@Table(name="KRNS_PARM_TYP_T")
+@AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="PARM_TYP_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
 public class ParameterType extends KualiCodeBase implements Inactivateable {
 
 	public String getParameterTypeCode() {

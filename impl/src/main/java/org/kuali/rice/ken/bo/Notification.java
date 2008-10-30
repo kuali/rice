@@ -44,52 +44,52 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATIONS")
+@Table(name="KREN_NTFCTN_T")
 public class Notification implements Lockable {
     @Id
-	@Column(name="ID")
+	@Column(name="NTFCTN_ID")
 	private Long id;
-    @Column(name="DELIVERY_TYPE", nullable=false)
+    @Column(name="DELIV_TYP", nullable=false)
 	private String deliveryType;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME", nullable=false)
+	@Column(name="CRTE_DTTM", nullable=false)
 	private Timestamp creationDateTime;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="SEND_DATETIME", nullable=true)
+	@Column(name="SND_DTTM", nullable=true)
 	private Timestamp sendDateTime;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="AUTO_REMOVE_DATETIME", nullable=true)
+	@Column(name="AUTO_RMV_DTTM", nullable=true)
 	private Timestamp autoRemoveDateTime;
-    @Column(name="TITLE", nullable=true)
+    @Column(name="TTL", nullable=true)
 	private String title;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="CONTENT", nullable=false)
+	@Column(name="CNTNT", nullable=false)
 	private String content;
     @Column(name="PROCESSING_FLAG", nullable=false)
 	private String processingFlag;
     //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="LOCKED_DATE", nullable=true)
+	@Column(name="LOCKD_DTTM", nullable=true)
 	private Timestamp lockedDate;
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     // object references
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="PRIORITY_ID")
+	@JoinColumn(name="PRIO_ID")
 	private NotificationPriority priority;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CONTENT_TYPE_ID")
+	@JoinColumn(name="CNTNT_TYP_ID")
 	private NotificationContentType contentType;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="NOTIFICATION_CHANNEL_ID")
+	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="PRODUCER_ID")
+	@JoinColumn(name="PRODCR_ID")
 	private NotificationProducer producer;
     
     // lists

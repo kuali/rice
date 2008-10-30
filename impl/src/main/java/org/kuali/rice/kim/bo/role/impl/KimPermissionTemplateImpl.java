@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_PERM_TMPL_T")
+@Table(name="KRIM_PERM_TMPL_T")
 public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase implements KimPermissionTemplate {
 
 	private static final long serialVersionUID = 1L;
@@ -42,19 +42,19 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 	@Id
 	@Column(name="PERM_TMPL_ID")
 	protected String permissionTemplateId;
-	@Column(name="NAMESPACE_CD")
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	@Column(name="NAME")
+	@Column(name="NM")
 	protected String name;
-	@Column(name="KIM_TYPE_ID")
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
-	@Column(name="DESCRIPTION", length=400)
+	@Column(name="DESC_TXT", length=400)
 	protected String description;
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
 	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYPE_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
 	protected KimTypeImpl kimType;
 	
 	public String getKimTypeId() {

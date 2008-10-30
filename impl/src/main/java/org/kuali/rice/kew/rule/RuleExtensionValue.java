@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RULE_EXT_VAL_T")
+@Table(name="KREW_RULE_EXT_VAL_T")
 public class RuleExtensionValue implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8909789087052290261L;
@@ -50,12 +50,12 @@ public class RuleExtensionValue implements WorkflowPersistable {
 	private Long ruleExtensionValueId;
     @Column(name="RULE_EXT_ID")
 	private Long ruleExtensionId;
-    @Column(name="RULE_EXT_VAL")
+    @Column(name="VAL")
 	private String value;
-    @Column(name="RULE_EXT_VAL_KEY")
+    @Column(name="KEY_CD")
 	private String key;
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

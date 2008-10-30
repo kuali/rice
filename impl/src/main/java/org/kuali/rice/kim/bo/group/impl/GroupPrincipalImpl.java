@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.group.GroupPrincipal;
  *
  */
 @Entity
-@Table(name="KR_KIM_GROUP_PRINCIPAL_T")
+@Table(name="KRIM_GRP_PRNCPL_T")
 public class GroupPrincipalImpl extends GroupMemberBase implements GroupPrincipal {
 
 	@Column(name="PRNCPL_ID")

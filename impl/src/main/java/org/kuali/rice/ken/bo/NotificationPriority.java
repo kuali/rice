@@ -29,16 +29,16 @@ import javax.persistence.Entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_PRIORITIES")
+@Table(name="KREN_PRIO_T")
 public class NotificationPriority {
     @Id
-	@Column(name="ID")
+	@Column(name="PRIO_ID")
 	private Long id;
-    @Column(name="NAME", nullable=false)
+    @Column(name="NM", nullable=false)
 	private String name;
-    @Column(name="DESCRIPTION", nullable=false)
+    @Column(name="DESC_TXT", nullable=false)
 	private String description;
-    @Column(name="PRIORITY_ORDER", nullable=false)
+    @Column(name="PRIO_ORD", nullable=false)
 	private Integer order;
     
     /**

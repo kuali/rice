@@ -52,7 +52,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="EN_RTE_NODE_T")
+@Table(name="KREW_RTE_NODE_T")
 public class RouteNode implements Serializable {    
 
     private static final long serialVersionUID = 4891233177051752726L;
@@ -65,23 +65,23 @@ public class RouteNode implements Serializable {
 	private Long routeNodeId;
     @Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
-    @Column(name="RTE_NODE_NM")
+    @Column(name="NM")
 	private String routeNodeName;
-    @Column(name="DOC_RTE_MTHD_NM")
+    @Column(name="RTE_MTHD_NM")
 	private String routeMethodName;
-    @Column(name="DOC_FNL_APRVR_IND")
+    @Column(name="FNL_APRVR_IND")
 	private Boolean finalApprovalInd;
-    @Column(name="DOC_MNDTRY_RTE_IND")
+    @Column(name="MNDTRY_RTE_IND")
 	private Boolean mandatoryRouteInd;
-    @Column(name="WRKGRP_ID")
+    @Column(name="GRP_ID")
 	private Long exceptionWorkgroupId;
-    @Column(name="DOC_RTE_MTHD_CD")
+    @Column(name="RTE_MTHD_CD")
 	private String routeMethodCode;
-    @Column(name="DOC_ACTVN_TYP_TXT")
+    @Column(name="ACTVN_TYP")
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
 
     @Version
-	@Column(name="DB_LOCK_VER_NBR")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
@@ -91,7 +91,7 @@ public class RouteNode implements Serializable {
 
     @Transient
     private RuleTemplate ruleTemplate;
-    @Column(name="RTE_NODE_TYP")
+    @Column(name="TYP")
     private String nodeType = RequestsNode.class.getName();
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

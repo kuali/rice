@@ -29,18 +29,18 @@ import javax.persistence.Table;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="NOTIFICATION_RECIPIENTS_LISTS")
+@Table(name="KREN_RECIP_LIST_T")
 public class NotificationRecipientList {
     @Id
-	@Column(name="ID")
+	@Column(name="RECIP_LIST_ID")
 	private Long id;
-    @Column(name="RECIPIENT_TYPE", nullable=false)
+    @Column(name="RECIP_TYP_CD", nullable=false)
 	private String recipientType;
-    @Column(name="RECIPIENT_ID", nullable=false)
+    @Column(name="RECIP_ID", nullable=false)
 	private String recipientId;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CHANNEL_ID")
+	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
     
     /**

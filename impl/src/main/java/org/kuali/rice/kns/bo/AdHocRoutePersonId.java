@@ -32,13 +32,13 @@ public class AdHocRoutePersonId implements Serializable {
 
     private static final long serialVersionUID = -2030160650786561367L;
     
-	@Column(name="ACTN_RQST_RECP_TYP_CD")
+	@Column(name="RECIP_TYP_CD")
     private Integer type;
     @Id
     @Column(name="ACTN_RQST_CD")
     private String actionRequested;
     @Id
-    @Column(name="ACTN_RQST_RECP_ID")
+    @Column(name="ACTN_RQST_RECIP_ID")
     private String id;
 
     public AdHocRoutePersonId() {}

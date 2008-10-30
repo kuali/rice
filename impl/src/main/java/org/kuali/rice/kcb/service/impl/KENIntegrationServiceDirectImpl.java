@@ -45,6 +45,6 @@ public class KENIntegrationServiceDirectImpl implements KENIntegrationService {
      * @see org.kuali.rice.kcb.service.KENIntegrationService#getAllChannelNames()
      */
     public Collection<String> getAllChannelNames() {
-        return new JdbcTemplate(datasource).queryForList("select distinct NAME from NOTIFICATION_CHANNELS", String.class);
+        return new JdbcTemplate(datasource).queryForList("select distinct NM from KREN_CHNL_T", String.class);
     }
 }

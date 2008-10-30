@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.role.KimDelegationRole;
  *
  */
 @Entity
-@Table(name="KR_KIM_DELE_ROLE_T")
+@Table(name="KRIM_DLGN_ROLE_T")
 public class KimDelegationRoleImpl extends KimDelegationMemberImpl implements
 		KimDelegationRole {
 

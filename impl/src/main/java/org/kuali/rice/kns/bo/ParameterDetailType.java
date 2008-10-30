@@ -19,25 +19,25 @@ import org.hibernate.annotations.Type;
 
 @IdClass(org.kuali.rice.kns.bo.ParameterDetailTypeId.class)
 @Entity
-@Table(name="SH_PARM_DTL_TYP_T")
+@Table(name="KRNS_PARM_DTL_TYP_T")
 public class ParameterDetailType extends PersistableBusinessObjectBase implements Inactivateable {
 
 	@Id
-	@Column(name="SH_PARM_NMSPC_CD")
+	@Column(name="NMSPC_CD")
 	private String parameterNamespaceCode;
 	@Id
-	@Column(name="SH_PARM_DTL_TYP_CD")
+	@Column(name="PARM_DTL_TYP_CD")
 	private String parameterDetailTypeCode;
-	@Column(name="SH_PARM_DTL_TYP_NM")
+	@Column(name="NM")
 	private String parameterDetailTypeName;
 	@Type(type="yes_no")
-	@Column(name="ACTIVE_IND")
+	@Column(name="ACTV_IND")
 	private boolean active = true;
     @Transient
 	private boolean virtualDetailType;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false)
+	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
 	private ParameterNamespace parameterNamespace;
 
 	public ParameterDetailType() {

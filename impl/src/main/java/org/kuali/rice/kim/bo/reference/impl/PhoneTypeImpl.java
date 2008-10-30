@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.reference.PhoneType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KR_KIM_PHONE_TYPE_T")
+@Table(name="KRIM_PHONE_TYP_T")
 @AttributeOverrides({
 	@AttributeOverride(name="code",column=@Column(name="PHONE_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="PHONE_TYP_NM"))

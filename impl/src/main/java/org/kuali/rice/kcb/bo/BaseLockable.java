@@ -32,7 +32,7 @@ public class BaseLockable implements Lockable {
      */
     public static final String LOCKED_DATE = "lockedDate";
 
-    @Column(name="LOCKED_DATE", nullable=true)
+    @Column(name="LOCKD_DTTM", nullable=true)
     protected Timestamp lockedDate;
 
     /**

@@ -66,7 +66,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {
-		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader"));
+		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ThinClientResourceLoader"));
 	}
 
 	@Override

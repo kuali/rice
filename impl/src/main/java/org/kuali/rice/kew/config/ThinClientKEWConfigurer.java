@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
 public class ThinClientKEWConfigurer extends RiceConfigurer {
 
 	public ThinClientKEWConfigurer() {
-		setMessageEntity(KEWConstants.KEW_MESSAGING_ENTITY);
+		setServiceNamespace(KEWConstants.KEW_MESSAGING_ENTITY);
 		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
 		getModules().add(new KSBThinClientConfigurer());
 		getModules().add(new KEWConfigurer());

@@ -38,6 +38,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	String responsibilityId;
 	String roleId;
 	String actionTypeCode;
+	String actionPolicyCode;
 	Integer priorityNumber;
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
@@ -144,5 +145,13 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	 */
 	public void setResponsibilityId(String responsibilityId) {
 		this.responsibilityId = responsibilityId;
+	}
+
+	public String getActionPolicyCode() {
+		return this.actionPolicyCode;
+	}
+
+	public void setActionPolicyCode(String actionPolicyCode) {
+		this.actionPolicyCode = actionPolicyCode;
 	}
 }

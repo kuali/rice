@@ -34,6 +34,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String principalId;
 	protected String groupId;
 	protected String actionTypeCode;
+	protected String actionPolicyCode;
 	protected Integer priorityNumber;
 	protected boolean active;
 	
@@ -99,5 +100,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+	public String getActionPolicyCode() {
+		return this.actionPolicyCode;
+	}
+	public void setActionPolicyCode(String actionPolicyCode) {
+		this.actionPolicyCode = actionPolicyCode;
 	}
 }

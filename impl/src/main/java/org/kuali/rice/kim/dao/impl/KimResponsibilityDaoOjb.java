@@ -91,6 +91,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibilityId );
+		// TODO: also handle when principalID is "*" in table
 		if ( principalId != null ) {
 			c.addEqualTo( "principalId", principalId );
 		}

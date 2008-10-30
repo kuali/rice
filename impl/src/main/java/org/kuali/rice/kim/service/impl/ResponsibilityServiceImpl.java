@@ -206,6 +206,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getPrincipalId(), rm.getGroupId() );
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
+    		rai.setActionPolicyCode( action.getActionPolicyCode() );
     		rai.setPriorityNumber( action.getPriorityNumber() );
 
     		results.add( rai );

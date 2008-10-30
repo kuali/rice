@@ -31,6 +31,7 @@ public interface ResponsibilityAction {
 	String getGroupId();
 	String getResponsibilityName();
 	String getActionTypeCode();	
+	String getActionPolicyCode();
 	Integer getPriorityNumber();
 	AttributeSet getQualifier();
 	List<DelegateInfo> getDelegates();

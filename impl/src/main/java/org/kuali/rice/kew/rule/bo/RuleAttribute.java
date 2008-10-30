@@ -76,7 +76,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Column(name="SVC_NMSPC")
-	private String messageEntity;
+	private String serviceNamespace;
     
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
@@ -197,12 +197,12 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 		this.xmlConfigData = xmlConfigData;
 	}
 
-	public String getMessageEntity() {
-		return messageEntity;
+	public String getServiceNamespace() {
+		return serviceNamespace;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceNamespace(String ServiceNamespace) {
+		this.serviceNamespace = ServiceNamespace;
 	}
 		
 	@Override
@@ -214,7 +214,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 	    propMap.put("description", getDescription());
 	    propMap.put("type", getType());
 	    propMap.put("className", getClassName());
-	    propMap.put("messageEntity", getMessageEntity());
+	    propMap.put("serviceNamespace", getServiceNamespace());
 	    return propMap;
 	}
 

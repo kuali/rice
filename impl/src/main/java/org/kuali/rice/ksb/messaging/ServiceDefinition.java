@@ -56,7 +56,7 @@ public abstract class ServiceDefinition implements Serializable {
 	private URL serviceEndPoint;
 	private Boolean busSecurity = Boolean.TRUE;
 	private CredentialsType credentialsType;
-	private String messageEntity;
+	private String serviceNamespace;
 	
 	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
 	private transient ClassLoader serviceClassLoader;
@@ -113,7 +113,7 @@ public abstract class ServiceDefinition implements Serializable {
 				int i = 0;
 			}
 			if (this.serviceNameSpaceURI == null) {
-			    this.serviceName = new QName(this.messageEntity, this.localServiceName);	
+			    this.serviceName = new QName(this.serviceNamespace, this.localServiceName);	
 			} else {
 			    this.serviceName = new QName(this.serviceNameSpaceURI, this.localServiceName);
 			}
@@ -153,15 +153,15 @@ public abstract class ServiceDefinition implements Serializable {
 			throw new ConfigurationException("Must give a serviceName or localServiceName");
 		}
 		
-		String messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
-		if (messageEntity == null) {
-			throw new ConfigurationException("Must have a messageEntity");
+		String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+		if (serviceNamespace == null) {
+			throw new ConfigurationException("Must have a ServiceNamespace");
 		}
-		this.messageEntity = messageEntity;
+		this.serviceNamespace = serviceNamespace;
 		
 //		if (this.serviceName == null) {
 //			if (this.serviceNameSpaceURI == null) {
-//			    this.serviceName = new QName(messageEntity, this.localServiceName);	
+//			    this.serviceName = new QName(ServiceNamespace, this.localServiceName);	
 //			} else {
 //			    this.serviceName = new QName(this.serviceNameSpaceURI, this.localServiceName);
 //			}

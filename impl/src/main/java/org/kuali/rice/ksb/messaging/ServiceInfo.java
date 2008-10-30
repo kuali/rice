@@ -64,14 +64,14 @@ public class ServiceInfo implements Serializable {
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="SVC_DEF")
-	private String serializedMessageEntity;
+	private String serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;
 	@Type(type="yes_no")
     @Column(name="SVC_ALIVE")
 	private Boolean alive = true; 
 	@Column(name="SVC_NMSPC")
-	private String messageEntity;
+	private String serviceNamespace;
 	@Column(name="SRVR_IP")
 	private String serverIp;
 	@Version
@@ -88,7 +88,7 @@ public class ServiceInfo implements Serializable {
 	public ServiceInfo(ServiceDefinition serviceDefinition) {
 		this.setServiceDefinition(serviceDefinition);
 		this.setQname(serviceDefinition.getServiceName());
-		this.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
+		this.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 		this.setServerIp(RiceUtilities.getIpNumber());
 		this.setEndpointUrl(serviceDefinition.getServiceEndPoint().toString());
 		this.setServiceName(this.getQname().toString());
@@ -108,11 +108,11 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition(MessageHelper enMessageHelper) {
-		if (this.serviceDefinition == null && this.serializedMessageEntity != null) {
+		if (this.serviceDefinition == null && this.serializedServiceNamespace != null) {
 		    this.serviceDefinition = (ServiceDefinition)
 		    (enMessageHelper==null
-		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedMessageEntity)
-		    		:enMessageHelper.deserializeObject(this.serializedMessageEntity));
+		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedServiceNamespace)
+		    		:enMessageHelper.deserializeObject(this.serializedServiceNamespace));
 		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
@@ -174,12 +174,12 @@ public class ServiceInfo implements Serializable {
 	public void setLockVerNbr(Integer lockVerNbr) {
 		this.lockVerNbr = lockVerNbr;
 	}
-	public String getMessageEntity() {
-		return this.messageEntity;
+	public String getServiceNamespace() {
+		return this.serviceNamespace;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceNamespace(String ServiceNamespace) {
+		this.serviceNamespace = ServiceNamespace;
 	}
 	public String getServerIp() {
 		return this.serverIp;
@@ -195,12 +195,12 @@ public class ServiceInfo implements Serializable {
 	public void setAlive(Boolean alive) {
 		this.alive = alive;
 	}
-	public void setSerializedMessageEntity(String serializedMessageEntity) {
-		this.serializedMessageEntity = serializedMessageEntity;
+	public void setSerializedServiceNamespace(String serializedServiceNamespace) {
+		this.serializedServiceNamespace = serializedServiceNamespace;
 	}
 
-	public String getSerializedMessageEntity() {
-		return this.serializedMessageEntity;
+	public String getSerializedServiceNamespace() {
+		return this.serializedServiceNamespace;
 	}
 
 	public String getServiceName() {

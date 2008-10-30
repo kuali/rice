@@ -173,7 +173,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
-			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + ConfigContext.getCurrentContextConfig().getMessageEntity());
+			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
 			run();
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
@@ -298,10 +298,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		if (definition.isAtRemotingLayer()) {
 			return null;
 		}
-		if (StringUtils.isEmpty(definition.getMessageEntity())) {
+		if (StringUtils.isEmpty(definition.getServiceNamespace())) {
 			return null;
 		}
-		QName objectRemoterName = new QName(definition.getMessageEntity(), KSBServiceLocator.OBJECT_REMOTER);
+		QName objectRemoterName = new QName(definition.getServiceNamespace(), KSBServiceLocator.OBJECT_REMOTER);
 		ObjectRemoterService classRemoter = (ObjectRemoterService)GlobalResourceLoader.getService(objectRemoterName);
 		ServiceInfo serviceInfo = classRemoter.getRemotedClassURL(definition);
 

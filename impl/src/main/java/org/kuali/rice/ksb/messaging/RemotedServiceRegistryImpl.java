@@ -176,8 +176,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public synchronized void run() {
-	    	String messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
-		LOG.debug("Checking for newly published services on message entity " + messageEntity + " ...");
+	    	String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+		LOG.debug("Checking for newly published services on message entity " + serviceNamespace + " ...");
 
 		String serviceServletUrl = (String) ConfigContext.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
@@ -201,7 +201,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			fetchedServices = new ArrayList<ServiceInfo>();
 		} else {
 			//TODO we are not verifying that this read is not being done in dev mode in a test
-			fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), messageEntity);
+			fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), serviceNamespace);
 		}
 
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
@@ -257,7 +257,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			}
 			this.future = null;
 		}
-		List<ServiceInfo> fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), ConfigContext.getCurrentContextConfig().getMessageEntity());
+		List<ServiceInfo> fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), ConfigContext.getCurrentContextConfig().getServiceNamespace());
 		this.getServiceInfoService().markServicesDead(fetchedServices);
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();

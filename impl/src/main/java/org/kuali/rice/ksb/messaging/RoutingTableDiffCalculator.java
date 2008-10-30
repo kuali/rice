@@ -130,7 +130,7 @@ public class RoutingTableDiffCalculator {
 	private void updateDeployedServiceInfo(ServiceInfo configuredServiceInfo, ServiceInfo deployedServiceInfo) {
 		deployedServiceInfo.setAlive(configuredServiceInfo.getAlive());
 		deployedServiceInfo.setQname(configuredServiceInfo.getQname());
-		deployedServiceInfo.setMessageEntity(configuredServiceInfo.getMessageEntity());
+		deployedServiceInfo.setServiceNamespace(configuredServiceInfo.getServiceNamespace());
 		deployedServiceInfo.setServerIp(configuredServiceInfo.getServerIp());
 		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition(getEnMessageHelper()));
 	}
@@ -139,7 +139,7 @@ public class RoutingTableDiffCalculator {
 		return configured.getAlive().equals(deployed.getAlive()) &&  
 				configured.getQname().equals(deployed.getQname()) &&
 				configured.getServerIp().equals(deployed.getServerIp()) && 
-				configured.getMessageEntity().equals(deployed.getMessageEntity()) &&
+				configured.getServiceNamespace().equals(deployed.getServiceNamespace()) &&
 				configured.getServiceDefinition(getEnMessageHelper()).isSame(deployed.getServiceDefinition(getEnMessageHelper()));
 	}
 

@@ -59,7 +59,7 @@ public class PersistedMessage implements Serializable {
     @Column(name="SVC_NM")
 	private String serviceName;
     @Column(name="SVC_NMSPC")
-	private String messageEntity;
+	private String serviceNamespace;
     @Column(name="SVC_MTHD_NM")
 	private String methodName;
     @Transient
@@ -75,12 +75,12 @@ public class PersistedMessage implements Serializable {
         // default constructor
     }
     
-	public String getMessageEntity() {
-		return this.messageEntity;
+	public String getServiceNamespace() {
+		return this.serviceNamespace;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceNamespace(String ServiceNamespace) {
+		this.serviceNamespace = ServiceNamespace;
 	}
 
     public String getIpNumber() {

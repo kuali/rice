@@ -1561,7 +1561,7 @@
     <sequence oldName="SEQ_ROUTE_TEMPLATE" newName="KREW_RTE_TMPL_S" nextval="1040"/>
     <sequence oldName="SEQ_RTE_NODE" newName="KREW_RTE_NODE_S" nextval="2080"/>
     <sequence oldName="SEQ_RTE_NODE_CFG_PARM" newName="KREW_RTE_NODE_CFG_PARM_S" nextval="2160"/>
-    <sequence oldName="SEQ_RULE_EXPR_PARM" newName="KREW_RULE_EXPR_PARM_S" nextval="2000"/>
+    <sequence oldName="SEQ_RULE_EXPR" newName="KREW_RULE_EXPR_S" nextval="2000"/>
     <sequence oldName="SEQ_RULE_TMPL_OPTN" newName="KREW_RULE_TMPL_OPTN_S" nextval="2000"/>
     <sequence oldName="SEQ_SEARCHABLE_ATTRIBUTE_VALUE" newName="KREW_SRCH_ATTR_S" nextval="2000"/>
 

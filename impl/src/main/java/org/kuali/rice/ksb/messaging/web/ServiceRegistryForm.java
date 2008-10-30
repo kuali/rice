@@ -36,7 +36,7 @@ public class ServiceRegistryForm extends ActionForm {
     private List<ServiceInfo> globalRegistryServices = new ArrayList<ServiceInfo>();
 
     private String myIpAddress;
-    private String myMessageEntity;
+    private String myServiceNamespace;
     private Boolean devMode;
 
     public String getMethodToCall() {
@@ -69,11 +69,11 @@ public class ServiceRegistryForm extends ActionForm {
     public void setMyIpAddress(String myIpAddress) {
         this.myIpAddress = myIpAddress;
     }
-    public String getMyMessageEntity() {
-        return this.myMessageEntity;
+    public String getMyServiceNamespace() {
+        return this.myServiceNamespace;
     }
-    public void setMyMessageEntity(String myMessageEntity) {
-        this.myMessageEntity = myMessageEntity;
+    public void setMyServiceNamespace(String myServiceNamespace) {
+        this.myServiceNamespace = myServiceNamespace;
     }
     public Boolean getDevMode() {
         return this.devMode;

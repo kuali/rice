@@ -113,7 +113,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
 			message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));
 	}
-	message.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
+	message.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 	message.setMethodName(methodCall.getMethodName());
 	return message;
     }

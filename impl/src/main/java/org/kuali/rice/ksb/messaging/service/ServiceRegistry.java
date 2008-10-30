@@ -37,7 +37,7 @@ public interface ServiceRegistry {
 	public void remove(List<ServiceInfo> serviceEntries);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);
 	//public List<ServiceInfo> findLocallyPublishedServices();
-	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String messageEntity);
-	public void removeLocallyPublishedServices(String ipNumber, String messageEntity);
+	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
+	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	
 }

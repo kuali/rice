@@ -99,10 +99,10 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
          * A simple ThreadFactory which names the thread as follows:<br>
          * <br>
          *
-         * <i>messageEntity</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
+         * <i>serviceNamespace</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
          * <br>
          *
-         * Where <i>messageEntity</i> is the message entity of the application running the thread pool, <i>m</i> is the
+         * Where <i>serviceNamespace</i> is the message entity of the application running the thread pool, <i>m</i> is the
          * sequence number of the factory and <i>n</i> is the sequence number of the thread within the factory.
          *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -128,7 +128,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 	    // if the thread ends up getting spawned by an action inside of a workflow plugin or something along those lines, it will inherit the plugin's
 	    // classloader as it's ContextClassLoader.  Let's make sure it's set to the same ClassLoader that loaded the KSBConfigurer
 	    thread.setContextClassLoader(contextClassLoader);
-	    thread.setName(ConfigContext.getCurrentContextConfig().getMessageEntity() + "/KSB-pool-" + factorySequence + "-thread-"
+	    thread.setName(ConfigContext.getCurrentContextConfig().getServiceNamespace() + "/KSB-pool-" + factorySequence + "-thread-"
 		    + threadSequence);
 	    return thread;
 	}

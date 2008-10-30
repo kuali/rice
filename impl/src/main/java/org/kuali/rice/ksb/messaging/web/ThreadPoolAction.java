@@ -60,7 +60,7 @@ public class ThreadPoolAction extends KSBAction {
 	}
 	if (form.isAllServers()) {
 	    // if it's all servers, we need to find all of the BusAdmin services
-	    QName qName = new QName(form.getMessageEntity(), "busAdminService");
+	    QName qName = new QName(form.getServiceNamespace(), "busAdminService");
 	    RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
 	    List<RemotedServiceHolder> adminServices = remoteResourceLocator.getAllServices(qName);
 	    for (RemotedServiceHolder adminServiceHolder : adminServices) {

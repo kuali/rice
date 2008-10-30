@@ -53,14 +53,14 @@ public class KSBResourceLoaderFactory {
 
 	private static void initialize() {
 		Config config = ConfigContext.getCurrentContextConfig();
-		if (config.getMessageEntity() == null) {
+		if (config.getServiceNamespace() == null) {
 			throw new ConfigurationException("No message entity available at this time");
 		}
 		if (getRootResourceLoaderName() == null) {
-			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_ROOT_RESOURCE_LOACER_NAME));
+			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KSB_ROOT_RESOURCE_LOACER_NAME));
 		}
 		if (getRemoteResourceLoaderName() == null) {
-			setRemoteResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
+			setRemoteResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 

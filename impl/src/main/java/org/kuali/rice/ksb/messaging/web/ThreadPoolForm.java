@@ -70,7 +70,7 @@ public class ThreadPoolForm extends ActionForm {
     public void setAllServers(boolean allServers) {
         this.allServers = allServers;
     }
-    public String getMessageEntity() {
+    public String getServiceNamespace() {
 	return ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY);
     }
     public Long getMaxRetryAttempts() {

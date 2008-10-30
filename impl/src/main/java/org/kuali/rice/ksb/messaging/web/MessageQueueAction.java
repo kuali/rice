@@ -158,7 +158,7 @@ public class MessageQueueAction extends KSBAction {
 	existingMessage.setQueuePriority(message.getQueuePriority());
 	existingMessage.setIpNumber(message.getIpNumber());
 	existingMessage.setLockVerNbr(message.getLockVerNbr());
-	existingMessage.setMessageEntity(message.getMessageEntity());
+	existingMessage.setServiceNamespace(message.getServiceNamespace());
 	existingMessage.setMethodName(message.getMethodName());
 	existingMessage.setQueueStatus(message.getQueueStatus());
 	existingMessage.setRetryCount(message.getRetryCount());
@@ -271,7 +271,7 @@ public class MessageQueueAction extends KSBAction {
 	routeQueueForm.getMessageQueueFromForm().setRetryCount(null);
 	routeQueueForm.getMessageQueueFromForm().setIpNumber(null);
 	routeQueueForm.getMessageQueueFromForm().setServiceName(null);
-	routeQueueForm.getMessageQueueFromForm().setMessageEntity(null);
+	routeQueueForm.getMessageQueueFromForm().setServiceNamespace(null);
 	routeQueueForm.getMessageQueueFromForm().setMethodName(null);
 	routeQueueForm.getMessageQueueFromForm().setPayload(null);
 	routeQueueForm.getMessageQueueFromForm().setMethodCall(null);
@@ -321,7 +321,7 @@ public class MessageQueueAction extends KSBAction {
 	request.setAttribute("ksb_constant", new KSBConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyMessageEntity(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
 	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
 	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));

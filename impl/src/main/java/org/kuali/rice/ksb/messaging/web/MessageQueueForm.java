@@ -55,7 +55,7 @@ public class MessageQueueForm extends ActionForm {
     //  filter stuff
     private String routeQueueIdFilter;
     private String serviceNameFilter;
-    private String messageEntityFilter;
+    private String serviceNamespaceFilter;
     private String queueStatusFilter;
     private String ipNumberFilter;
     private String value1Filter;
@@ -65,7 +65,7 @@ public class MessageQueueForm extends ActionForm {
     private Integer maxMessageFetcherMessages = 50;
 
     private String myIpAddress;
-    private String myMessageEntity;
+    private String myServiceNamespace;
     private String messagePersistence;
     private String messageDelivery;
     private String messageOff;
@@ -195,17 +195,17 @@ public class MessageQueueForm extends ActionForm {
     }
 
     /**
-     * @return the messageEntityFilter
+     * @return the serviceNamespaceFilter
      */
-    public String getMessageEntityFilter() {
-      return messageEntityFilter;
+    public String getServiceNamespaceFilter() {
+      return serviceNamespaceFilter;
     }
 
     /**
-     * @param messageEntityFilter the messageEntityFilter to set
+     * @param serviceNamespaceFilter the serviceNamespaceFilter to set
      */
-    public void setMessageEntityFilter(String messageEntityFilter) {
-      this.messageEntityFilter = messageEntityFilter;
+    public void setServiceNamespaceFilter(String ServiceNamespaceFilter) {
+      this.serviceNamespaceFilter = ServiceNamespaceFilter;
     }
 
     /**
@@ -306,12 +306,12 @@ public class MessageQueueForm extends ActionForm {
         this.myIpAddress = myIpAddress;
     }
 
-    public String getMyMessageEntity() {
-        return this.myMessageEntity;
+    public String getMyServiceNamespace() {
+        return this.myServiceNamespace;
     }
 
-    public void setMyMessageEntity(String myMessageEntity) {
-        this.myMessageEntity = myMessageEntity;
+    public void setMyServiceNamespace(String myServiceNamespace) {
+        this.myServiceNamespace = myServiceNamespace;
     }
 
     public String getMessageDelivery() {

@@ -52,7 +52,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		try {
 			Object service = entry.getServiceDefinition().getService();
 			entry.getServiceDefinition().setService(null);
-			entry.setSerializedMessageEntity(serviceLocator==null?
+			entry.setSerializedServiceNamespace(serviceLocator==null?
 					KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()):
 						serviceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()));
 			entry.getServiceDefinition().setService(service);
@@ -70,19 +70,19 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	    return dao.fetchAllActive();
 	}
 
-	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String messageEntity) {
+	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
 		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			return new ArrayList<ServiceInfo>();
 		}
-		return getDao().findLocallyPublishedServices(ipNumber, messageEntity);
+		return getDao().findLocallyPublishedServices(ipNumber, serviceNamespace);
 	}
 
 	public void removeEntry(ServiceInfo entry) {
 		getDao().removeEntry(entry);
 	}
 
-	public void removeLocallyPublishedServices(String ipNumber, String messageEntity) {
-		getDao().removeLocallyPublishedServices(ipNumber, messageEntity);
+	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
+		getDao().removeLocallyPublishedServices(ipNumber, serviceNamespace);
 	}
 
 	public ServiceInfoDAO getDao() {

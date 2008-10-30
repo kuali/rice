@@ -45,10 +45,10 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     }
 
     @SuppressWarnings("unchecked")
-    public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String messageEntity) {
+    public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String ServiceNamespace) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("serverIp", ipNumber);
-	crit.addEqualTo("messageEntity", messageEntity);
+	crit.addEqualTo("ServiceNamespace", ServiceNamespace);
 	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
 		new QueryByCriteria(ServiceInfo.class, crit));
     }
@@ -63,10 +63,10 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 	return (ServiceInfo) getPersistenceBrokerTemplate().getObjectById(ServiceInfo.class, serviceInfoId);
     }
 
-    public void removeLocallyPublishedServices(String ipNumber, String messageEntity) {
+    public void removeLocallyPublishedServices(String ipNumber, String ServiceNamespace) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("serverIp", ipNumber);
-	crit.addEqualTo("messageEntity", messageEntity);
+	crit.addEqualTo("ServiceNamespace", ServiceNamespace);
 	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));
     }
 

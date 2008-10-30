@@ -26,7 +26,7 @@ public interface ServiceInfoDAO {
 	public void removeEntry(ServiceInfo entry);
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
-	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String messageEntity);
-	public void removeLocallyPublishedServices(String ipNumber, String messageEntity);
+	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
+	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public ServiceInfo findServiceInfo(Long serviceInfoId);
 }

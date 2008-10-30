@@ -125,8 +125,8 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	@SuppressWarnings("unchecked")
 	public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
 		Criteria crit = new Criteria();
-		String messagingEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
-		crit.addEqualTo("messageEntity", messagingEntity);
+		String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+		crit.addEqualTo("serviceNamespace", serviceNamespace);
 		crit.addNotEqualTo("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
 		crit.addEqualTo("ipNumber", RiceUtilities.getIpNumber());
 

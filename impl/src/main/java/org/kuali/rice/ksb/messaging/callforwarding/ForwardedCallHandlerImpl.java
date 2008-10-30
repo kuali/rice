@@ -40,7 +40,7 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 		PersistedMessage copy = new PersistedMessage();
 		copy.setExpirationDate(message.getExpirationDate());
 		copy.setIpNumber(RiceUtilities.getIpNumber());
-		copy.setMessageEntity(message.getMessageEntity());
+		copy.setServiceNamespace(message.getServiceNamespace());
 		copy.setMethodCall(message.getMethodCall());
 		copy.setMethodName(message.getMethodName());
 		copy.setQueueDate(new Timestamp(System.currentTimeMillis()));

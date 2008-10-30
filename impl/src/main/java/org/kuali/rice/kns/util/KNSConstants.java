@@ -222,7 +222,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX = "selectedObjId-";
     public static final String LOOKUP_ANCHOR = "lookupAnchor";
     public static final String LOOKUPABLE_IMPL_ATTRIBUTE_NAME = "lookupableImplServiceName";
-    public static final String LOOKUP_RESULTS_SEQUENCE = "LOOKUP_RESULT_SEQUENCE_NBR_SEQ";
+    public static final String LOOKUP_RESULTS_SEQUENCE = "KRNS_LOOKUP_RSLT_S";
     public static final String KUALI_LOOKUPABLE_IMPL = "kualiLookupable";
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";

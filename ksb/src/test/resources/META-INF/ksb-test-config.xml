@@ -41,7 +41,7 @@
 	<param name="useQuartzDatabase">false</param>
 	<!-- 
     <param name="org.quartz.jobStore.isClustered">false</param>
-    <param name="org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
+    <param name="org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param>
      -->
 	
     <param name="config.location">${additional.config.locations}</param>

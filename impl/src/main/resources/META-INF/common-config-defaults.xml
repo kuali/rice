@@ -20,7 +20,7 @@
 	<!-- <param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
     <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
     <param name="ksb.org.quartz.jobStore.isClustered">true</param>
-    <param name="ksb.org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
+    <param name="ksb.org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param>
 	-->
 
     <!-- TODO: doc this param -->

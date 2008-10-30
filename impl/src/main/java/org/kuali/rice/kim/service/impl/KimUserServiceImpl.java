@@ -77,12 +77,12 @@ public class KimUserServiceImpl extends BaseUserService {
 		if (user == null) {
 			return;
 		}
-		Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_ENTITY_ENT_TYPE_ID_seq");
+		Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ENT_TYP_ID_S");
 		KimEntityImpl entity = new KimEntityImpl();
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);
 		
-		Long entityTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_ENTITY_ENT_TYPE_ID_seq");
+		Long entityTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ENT_TYP_ID_S");
 		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
 		entity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode("PERSON");
@@ -90,7 +90,7 @@ public class KimUserServiceImpl extends BaseUserService {
 		entityType.setEntityEntityTypeId(""+entityTypeId);
 		entityType.setActive(true);
 		
-		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_entity_name_id_seq");
+		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
 		EntityNameImpl name = new EntityNameImpl();
 		name.setActive(true);
 		name.setEntityNameId("" + entityNameId);
@@ -106,7 +106,7 @@ public class KimUserServiceImpl extends BaseUserService {
 		KNSServiceLocator.getBusinessObjectService().save(entity);
 		
 		if (!StringUtils.isBlank(user.getEmailAddress())) {
-			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("kr_kim_entity_email_id_seq");
+			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_EMAIL_ID_S");
 			EntityEmailImpl email = new EntityEmailImpl();
 			email.setActive(true);
 			email.setEntityEmailId("" + emailId);

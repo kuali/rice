@@ -22,6 +22,6 @@ package org.kuali.rice.kim.lookup.valuefinder;
  */
 public class NextEntityIdFinder extends KIMNextIdFinder {
     public NextEntityIdFinder() {
-        super( "KR_KIM_ENTITY_ID_SEQ" );
+        super( "KRIM_ENTITY_ID_S" );
     }
 }

@@ -71,7 +71,7 @@ log4j.appender.StdOut.Threshold=INFO
     <param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
     <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
     <!-- <param name="ksb.org.quartz.jobStore.isClustered">true</param>
-    <param name="ksb.org.quartz.jobStore.tablePrefix">KR_QRTZ_</param> -->
+    <param name="ksb.org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param> -->
 
     <!-- Daily emails every day at 1 AM -->
     <param name="dailyEmail.cronExpression">0 0 1 * * ?</param>

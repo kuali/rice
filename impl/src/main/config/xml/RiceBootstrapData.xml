@@ -458,7 +458,7 @@
         <description>Notification Action List Attribute</description>
         <type>ActionListAttribute</type>
         <!--
-        <messageEntity>KEN</messageEntity>
+        <serviceNamespace>KEN</serviceNamespace>
          -->
       </ruleAttribute>
       <ruleAttribute>
@@ -578,7 +578,7 @@
             <description>Notification Action List Attribute</description>
             <type>ActionListAttribute</type>
             <!--
-            <messageEntity>KEN</messageEntity>
+            <serviceNamespace>KEN</serviceNamespace>
             -->
         </ruleAttribute>
         <ruleAttribute>
@@ -588,7 +588,7 @@
             <description>Channel Reviewer Role Attribute</description>
             <type>RuleAttribute</type>
             <!--
-            <messageEntity>KEN</messageEntity>
+            <serviceNamespace>KEN</serviceNamespace>
             -->
         </ruleAttribute>
     
@@ -1076,7 +1076,7 @@
           <description>This is the re-usable notification document type that will be used for delivering all notifications with KEW.</description>
           <label>Notification</label>
           <!--
-          <messageEntity>KEN</messageEntity>
+          <serviceNamespace>KEN</serviceNamespace>
           -->
           <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
           <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
@@ -1128,7 +1128,7 @@
             <description>Create a New Notification Request</description>
             <label>Send Notification Request</label>
             <!--
-            <messageEntity>KEN</messageEntity>
+            <serviceNamespace>KEN</serviceNamespace>
             -->
             <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>

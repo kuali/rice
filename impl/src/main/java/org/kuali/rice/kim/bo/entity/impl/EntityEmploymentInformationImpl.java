@@ -59,6 +59,9 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 	@Column(name = "EMP_TYP_CD")
 	protected String employeeTypeCode;
 
+	@Column(name = "PRMRY_DEPT_CD")
+	protected String primaryDepartmentCode;
+	
 	@Column(name = "BASE_SLRY_AMT")
 	protected KualiDecimal baseSalaryAmount;
 
@@ -192,6 +195,14 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 
 	public void setEmploymentStatus(EmploymentStatus employmentStatus) {
 		this.employmentStatus = employmentStatus;
+	}
+
+	public String getPrimaryDepartmentCode() {
+		return this.primaryDepartmentCode;
+	}
+
+	public void setPrimaryDepartmentCode(String primaryDepartmentCode) {
+		this.primaryDepartmentCode = primaryDepartmentCode;
 	}
 
 }

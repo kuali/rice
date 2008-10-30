@@ -41,7 +41,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(CoreResourceLoader.class);
 
-	public static final QName NAME = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
+	public static final QName NAME = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
 
 	private final PluginRegistry registry;
 

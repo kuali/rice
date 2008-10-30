@@ -61,7 +61,7 @@ public class WorkgroupTypeAttribute {
 
 	public Object loadAttribute() {
     	try {
-    		ObjectDefinition objectDefinition = new ObjectDefinition(getAttribute().getClassName(), getAttribute().getMessageEntity());
+    		ObjectDefinition objectDefinition = new ObjectDefinition(getAttribute().getClassName(), getAttribute().getServiceNamespace());
     		Object attribute = GlobalResourceLoader.getObject(objectDefinition);
     		if (attribute == null) {
             	throw new WorkflowRuntimeException("Could not find attribute " + objectDefinition);

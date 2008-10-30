@@ -261,8 +261,8 @@ public class SuperUserAction extends WorkflowAction {
     
     private WorkflowDocumentActions getWorkflowDocumentActions(Long documentId) {
 	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
-	String messageEntity = documentType.getMessageEntity();
-	WorkflowDocumentActions service = (WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(messageEntity, "WorkflowDocumentActionsService"));
+	String serviceNamespace = documentType.getServiceNamespace();
+	WorkflowDocumentActions service = (WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowDocumentActionsService"));
 	if (service == null) {
 	    service = KEWServiceLocator.getWorkflowDocumentActionsService();
 	}

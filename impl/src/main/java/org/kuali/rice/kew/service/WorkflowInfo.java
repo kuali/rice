@@ -86,7 +86,7 @@ public class WorkflowInfo implements java.io.Serializable {
     private synchronized void initializeBus() throws WorkflowException {
     	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
     		RiceConfigurer configurer = new RiceConfigurer();
-    		configurer.setMessageEntity(KEWConstants.KEW_MESSAGING_ENTITY);
+    		configurer.setServiceNamespace(KEWConstants.KEW_MESSAGING_ENTITY);
     		configurer.getModules().add(new KEWConfigurer());
     		try {
     			configurer.start();

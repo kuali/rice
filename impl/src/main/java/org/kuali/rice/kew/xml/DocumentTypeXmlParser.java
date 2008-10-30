@@ -195,9 +195,9 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
 
         String serviceNamespace = null; // by default set this to null and let the system sort out what the "default" is
-        if (((Boolean) xpath.evaluate("./" + MESSAGE_ENTITY, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
+        if (((Boolean) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
             try {
-                serviceNamespace = (String) xpath.evaluate("./" + MESSAGE_ENTITY, documentTypeNode, XPathConstants.STRING);
+                serviceNamespace = (String) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.STRING);
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type ServiceNamespace", xpee);
                 throw xpee;

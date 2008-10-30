@@ -42,30 +42,30 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
      * edoclt_style_id
      */
     @Id
-	@Column(name="edoclt_style_id")
+	@Column(name="STYLE_ID")
 	private Long eDocLiteStyleId;
     /**
      * edoclt_style_nm
      */
-    @Column(name="edoclt_style_nm")
+    @Column(name="NM")
 	private String name;
     /**
      * edoclt_style_xml
      */
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="edoclt_style_xml")
+	@Column(name="XML")
 	private String xmlContent;
     /**
      * edoclt_style_actv_ind
      */
-    @Column(name="edoclt_style_actv_ind")
+    @Column(name="ACTV_IND")
 	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
     @Version
-	@Column(name="db_lock_ver_nbr")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     public Long getEDocLiteStyleId() {

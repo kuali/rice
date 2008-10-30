@@ -158,7 +158,7 @@
       	</annotation>
       </element>
 
-      <element name="messageEntity" type="c:ShortStringType" minOccurs="0">
+      <element name="serviceNamespace" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
         	 To set the messaging entity. defaults to 'KEW' (or workflow server if not included).

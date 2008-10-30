@@ -40,30 +40,13 @@ public class SpringLifeCycle extends BaseLifecycle {
 
 	public void start() throws Exception {
 		LOG.warn("Initializing Spring from " + springFileNames);
-//		Config config = ConfigContext.getCurrentContextConfig();
-//		String originalME = config.getMessageEntity();
 		try {
-//			if (config.getRunningEmbeddedServerMode()) {
-//				ConfigContext.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, "KEW");
-//			}
 			SpringLoader.getInstance().setContextFiles(springFileNames);
-//			SpringLoader.getInstance().start();
 			super.start();
 		} catch (Exception e) {
 			LOG.error("Spring Initialization Failed.", e);
 			throw new RuntimeException("Spring Initialization Failed.");
 		}
-//		finally {
-//			ConfigContext.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, originalME);
-//		}
 	}
-
-//	public void stop() throws Exception {
-//		LOG.warn("Shutting down Spring");
-//		// destroying the GRL will kill Spring as well
-//		//GlobalResourceLoader.stop();
-//		SpringLoader.getInstance().stop();
-//		super.stop();
-//	}
 
 }

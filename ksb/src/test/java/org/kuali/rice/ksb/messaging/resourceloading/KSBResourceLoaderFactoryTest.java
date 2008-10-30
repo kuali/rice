@@ -45,7 +45,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getRemoteResourceLoaderName()));
 	}
 	
-	@Test public void testCreateKSBResourceLoaderNoMessageEntity() throws Exception {
+	@Test public void testCreateKSBResourceLoaderNoserviceNamespace() throws Exception {
 		
 		Properties props = new Properties();
 		Config config = new SimpleConfig(props);

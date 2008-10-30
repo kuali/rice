@@ -70,7 +70,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 
 				public void start() throws Exception {
 					//ModuleConfiguration moduleConfiguration = new ModuleConfiguration();
-					//moduleConfiguration.setNamespaceCode(ConfigContext.getCurrentContextConfig().getMessageEntity());
+					//moduleConfiguration.setNamespaceCode(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 					//moduleConfiguration.setDatabaseRepositoryFilePaths(getDatabaseRepositoryFilePaths());
 					//if (getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty()) {
 					//	moduleConfiguration.setDataDictionaryPackages(getDataDictionaryPackages());

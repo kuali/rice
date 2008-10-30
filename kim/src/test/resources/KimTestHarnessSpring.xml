@@ -48,7 +48,7 @@
     </bean>
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-		<property name="messageEntity" value="KIM" />
+		<property name="serviceNamespace" value="KIM" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="kimNonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />

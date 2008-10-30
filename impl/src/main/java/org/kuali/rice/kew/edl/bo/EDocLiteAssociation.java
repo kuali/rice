@@ -42,33 +42,33 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
      * edoclt_assoc_id
      */
     @Id
-	@Column(name="edoclt_assoc_id")
+	@Column(name="EDOCLT_ASSOC_ID")
 	private Long edocLiteAssocId;
     /**
      * edoclt_assoc_doctype_nm
      */
-    @Column(name="edoclt_assoc_doctype_nm")
+    @Column(name="DOC_TYP_NM")
 	private String edlName;
     /**
      * edoclt_assoc_def_nm
      */
-    @Column(name="edoclt_assoc_def_nm")
+    @Column(name="EDL_DEF_NM")
 	private String definition;
     /**
      * edoclt_assoc_style_nm
      */
-    @Column(name="edoclt_assoc_style_nm")
+    @Column(name="STYLE_NM")
 	private String style;
     /**
      * edoclt_assoc_actv_ind
      */
-    @Column(name="edoclt_assoc_actv_ind")
+    @Column(name="ACTV_IND")
 	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
     @Version
-	@Column(name="db_lock_ver_nbr")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Transient
     private String actionsUrl;//for quickfinder

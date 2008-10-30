@@ -50,7 +50,7 @@
 	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-		<property name="messageEntity" value="KEW" />
+		<property name="serviceNamespace" value="KEW" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />

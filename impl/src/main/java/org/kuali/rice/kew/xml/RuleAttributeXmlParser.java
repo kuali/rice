@@ -126,7 +126,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
 					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) ||
 					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
-			} else if (MESSAGE_ENTITY.equals(childNode.getNodeName())) {
+			} else if (SERVICE_NAMESPACE.equals(childNode.getNodeName())) {
 				serviceNamespace = childNode.getFirstChild().getNodeValue();
 			}
 		}

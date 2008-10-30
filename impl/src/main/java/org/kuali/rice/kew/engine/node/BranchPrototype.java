@@ -40,7 +40,7 @@ public class BranchPrototype implements Serializable {
     @Id
 	@Column(name="RTE_BRCH_PROTO_ID")
 	private Long branchId;
-	@Column(name="NM")
+	@Column(name="BRCH_NM")
 	private String name;
 	@Version
 	@Column(name="VER_NBR")

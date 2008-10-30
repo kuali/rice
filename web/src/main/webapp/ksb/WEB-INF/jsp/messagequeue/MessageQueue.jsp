@@ -55,7 +55,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${MessageQueueForm.myIpAddress}"/><br>
-        	Message Entity: <c:out value="${MessageQueueForm.myMessageEntity}"/>
+        	Message Entity: <c:out value="${MessageQueueForm.myserviceNamespace}"/>
         </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
    					Message Entity:&nbsp;
   				</td>
   				<td class="datacell">
-   					<html-el:text property="messageEntity${ksb_constant.ROUTE_QUEUE_FILTER_SUFFIX}" />
+   					<html-el:text property="serviceNamespace${ksb_constant.ROUTE_QUEUE_FILTER_SUFFIX}" />
    				</td>
    			</tr>
    			<tr>
@@ -181,7 +181,7 @@
     <td width="20" height="20">&nbsp;</td>
     <td>
 
-		  <display-el:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&messageEntityFilter=${messageEntityFilter}" defaultsort="1" defaultorder="descending"
+		  <display-el:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&serviceNamespaceFilter=${serviceNamespaceFilter}" defaultsort="1" defaultorder="descending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display-el:setProperty name="paging.banner.placement" value="both" />
 		    <display-el:setProperty name="export.banner" value="" />
@@ -192,7 +192,7 @@
 		    	<c:out value="${result.serviceName}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message<br />Entity</div>" >
-		    	<c:out value="${result.messageEntity}"/>&nbsp;
+		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.ipNumber}"/>&nbsp;

@@ -99,7 +99,7 @@ public class TestUtilities {
 //        routeQueue.setQueueStatus("Q");
 //        routeQueue.setRetryCount(new Integer(0));
 //        routeQueue.setPayload( KSBServiceLocator.getMessageHelper().serializeObject(payload));
-//        routeQueue.setMessageEntity(ConfigContext.getCurrentContextConfig().getMessageEntity());
+//        routeQueue.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 //        KEWServiceLocator.getRouteQueueService().save(routeQueue);
 //        return routeQueue;
 //    }
@@ -125,7 +125,7 @@ public class TestUtilities {
 //		}
 //		KEWServiceLocator.getServiceDeployer().registerService(serviceDef);
 //		// force a refresh on our node
-//		RemoteResourceServiceLocatorImpl remoteResourceServiceLocator = (RemoteResourceServiceLocatorImpl) GlobalResourceLoader.getResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(),
+//		RemoteResourceServiceLocatorImpl remoteResourceServiceLocator = (RemoteResourceServiceLocatorImpl) GlobalResourceLoader.getResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(),
 //				ResourceLoader.REMOTE_RESOURCE_LOADER_NAME));
 //		remoteResourceServiceLocator.run();
 //	}

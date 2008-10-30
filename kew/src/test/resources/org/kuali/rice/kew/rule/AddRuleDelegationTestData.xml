@@ -126,7 +126,7 @@
             <docHandler>_blank</docHandler>
             <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
-            <messageEntity>KEW</messageEntity>
+            <serviceNamespace>KEW</serviceNamespace>
             <policies>
                 <policy>
                     <name>PRE_APPROVE</name>

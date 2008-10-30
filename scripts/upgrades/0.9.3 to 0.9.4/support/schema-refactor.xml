@@ -399,7 +399,7 @@
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
     </table>
     <table oldName="EN_EDOCLT_STYLE_T" newName="KREW_STYLE_T">
-        <column name="EDOCLT_STYLE_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column oldName="EDOCLT_STYLE_ID" newName="STYLE_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column oldName="EDOCLT_STYLE_NM" newName="NM" required="true" size="200" type="VARCHAR"/>
         <column oldName="EDOCLT_STYLE_XML" newName="XML" required="true" type="CLOB"/>
         <column oldName="EDOCLT_STYLE_ACTV_IND" newName="ACTV_IND" required="true" size="1" type="DECIMAL"/>
@@ -477,7 +477,7 @@
     <table oldName="EN_RTE_BRCH_PROTO_T" newName="KREW_RTE_BRCH_PROTO_T">
         <column name="RTE_BRCH_PROTO_ID" primaryKey="true" size="19" type="DECIMAL"/>
         <column  oldName="RTE_BRCH_PROTO_NM" newName="BRCH_NM" required="true" size="255" type="VARCHAR"/>
-        <column default="0" oldName="DB_LOCK_VER_NBR" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" size="8" type="DECIMAL"/>
         <index oldName="EN_RTE_BRCH_PROTO_TI1" newName="KREW_RTE_BRCH_PROTO_TI1">
             <index-column  oldName="RTE_BRCH_PROTO_NM" newName="BRCH_NM"/>
         </index>

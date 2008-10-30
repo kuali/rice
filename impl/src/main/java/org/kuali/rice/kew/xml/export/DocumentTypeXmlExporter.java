@@ -88,7 +88,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderTextElement(docTypeElement, DESCRIPTION, documentType.getDescription());
         renderer.renderTextElement(docTypeElement, LABEL, documentType.getLabel());
         if (!StringUtils.isBlank(documentType.getActualServiceNamespace())) {
-            renderer.renderTextElement(docTypeElement, MESSAGE_ENTITY, documentType.getActualServiceNamespace());
+            renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
         Workgroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();

@@ -374,7 +374,7 @@
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
-			<messageEntity>KEW</messageEntity>
+			<serviceNamespace>KEW</serviceNamespace>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -417,8 +417,8 @@
 			<docHandler>_blank</docHandler>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
-			<!-- This is set to KEWNEW for the RouteQueueTest.testGetNextDocumentsWithMessageEntity() -->
-			<messageEntity>KEWNEW</messageEntity>
+			<!-- This is set to KEWNEW for the RouteQueueTest.testGetNextDocumentsWithserviceNamespace() -->
+			<serviceNamespace>KEWNEW</serviceNamespace>
 		</documentType>
 		<documentType>
 			<name>TestDocumentType3</name>

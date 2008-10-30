@@ -100,7 +100,7 @@
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Message Entity:</td>
-						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.messageEntity}" />&nbsp;</td>
+						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Method Name:</td>
@@ -143,13 +143,13 @@
 										</c:choose>
 					  		  </tr>
 					  		  <tr>
-										<td class="thnormal" align="right" width="20%">ServiceInfo.messageEntity:</td>
+										<td class="thnormal" align="right" width="20%">ServiceInfo.serviceNamespace:</td>
 										<c:choose>
 											<c:when test="${methodCall.serviceInfo == null}">
 								  		  <td class="datacell">ServiceInfo is null&nbsp;</td>
 											</c:when>
 											<c:otherwise>
-								  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.messageEntity}" />&nbsp;</td>
+								  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.serviceNamespace}" />&nbsp;</td>
 											</c:otherwise>
 										</c:choose>
 					  		  </tr>

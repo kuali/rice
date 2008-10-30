@@ -42,30 +42,30 @@ public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
      * edoclt_def_id
      */
     @Id
-	@Column(name="edoclt_def_id")
+	@Column(name="EDOCLT_DEF_ID")
 	private Long eDocLiteDefId;
     /**
      * edoclt_def_nm
      */
-    @Column(name="edoclt_def_nm")
+    @Column(name="NM")
 	private String name;
     /**
      * edoclt_def_xml
      */
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="edoclt_def_xml")
+	@Column(name="XML")
 	private String xmlContent;
     /**
      * edoclt_def_actv_ind
      */
-    @Column(name="edoclt_def_actv_ind")
+    @Column(name="ACTV_IND")
 	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
     @Version
-	@Column(name="db_lock_ver_nbr")
+	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
     public Long getEDocLiteDefId() {

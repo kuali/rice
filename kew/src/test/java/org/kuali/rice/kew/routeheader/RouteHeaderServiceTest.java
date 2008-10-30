@@ -79,17 +79,17 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         assertTrue("Should be greater than about 5000 bytes.", docContent.getBytes().length > 5000);
     }
 
-    @Test public void testGetMessageEntityByDocumentId() throws Exception {
+    @Test public void testGetServiceNamespaceByDocumentId() throws Exception {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType2");
     	Long documentId = document.getRouteHeaderId();
-    	String messageEntity = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
-    	assertEquals("Message entity should be KEWNEW", "KEWNEW", messageEntity);
+    	String serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
+    	assertEquals("Service Namespace should be KEWNEW", "KEWNEW", serviceNamespace);
 
     	// now check TestDocumentType
     	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
     	documentId = document.getRouteHeaderId();
-    	messageEntity = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
-    	assertEquals("Message entity should be KEW", "KEW", messageEntity);
+    	serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
+    	assertEquals("Service Namespace should be KEW", "KEW", serviceNamespace);
     }
 
     @Test public void testLockRouteHeader() throws Exception {

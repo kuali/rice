@@ -47,7 +47,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
-        	Message Entity: <c:out value="${ServiceRegistryForm.myMessageEntity}"/>
+        	Message Entity: <c:out value="${ServiceRegistryForm.myserviceNamespace}"/>
         </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
-		    	<c:out value="${result.messageEntity}"/>&nbsp;
+		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;
@@ -123,7 +123,7 @@
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
-		    	<c:out value="${result.messageEntity}"/>&nbsp;
+		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;
@@ -158,7 +158,7 @@
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
-		    	<c:out value="${result.messageEntity}"/>&nbsp;
+		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;

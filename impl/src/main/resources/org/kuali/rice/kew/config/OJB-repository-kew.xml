@@ -352,7 +352,7 @@
     <field-descriptor column="NOTIFY_ADDR" name="notificationFromAddress" jdbc-type="VARCHAR"/>
     <field-descriptor column="SEC_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>
     <field-descriptor column="EMAIL_XSL" name="customEmailStylesheet" jdbc-type="VARCHAR"/>
-    <field-descriptor column="SVC_NMSPC" name="messageEntity" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
       element-class-ref="org.kuali.rice.kew.doctype.DocumentTypePolicy"
@@ -455,7 +455,7 @@
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTR_TYP_CD" name="type" jdbc-type="VARCHAR" />
     <field-descriptor column="CLS_NM" name="className" jdbc-type="VARCHAR" />
-    <field-descriptor column="SVC_NMSPC" name="messageEntity" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
     <field-descriptor column="DESC_TXT" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="XML" name="xmlConfigData" jdbc-type="CLOB" />
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
@@ -528,7 +528,6 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <!-- Mapping for RuleExpressionDef/EN_RULE_EXPR_T; 1-to-1 relationship with Rule/RuleBaseValues/EN_RULE_BASE_VAL_T -->
   <class-descriptor class="org.kuali.rice.kew.rule.RuleExpressionDef" table="KREW_RULE_EXPR_T">
     <field-descriptor column="RULE_EXPR_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_RULE_EXPR_S"/>
     <field-descriptor column="TYP" name="type" jdbc-type="VARCHAR" />
@@ -678,7 +677,7 @@
   
   <class-descriptor class="org.kuali.rice.kew.engine.node.BranchPrototype" table="KREW_RTE_BRCH_PROTO_T">
     <field-descriptor column="RTE_BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_NODE_S"/>
-    <field-descriptor column="NM" name="name" jdbc-type="VARCHAR" />
+    <field-descriptor column="BRCH_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
@@ -799,29 +798,29 @@
   </class-descriptor>
 
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteStyle" table="en_edoclt_style_t">
-    <field-descriptor column="edoclt_style_id" name="eDocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
-    <field-descriptor column="edoclt_style_nm" name="name" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_style_xml" name="xmlContent" jdbc-type="CLOB"/>
-    <field-descriptor column="edoclt_style_actv_ind" name="activeInd" jdbc-type="BIT"/>
-    <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteStyle" table="KREW_STYLE_T">
+    <field-descriptor column="STYLE_ID" name="eDocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
+    <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
+    <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
+    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT"/>
+    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteDefinition" table="en_edoclt_def_t">
-    <field-descriptor column="edoclt_def_id" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
-    <field-descriptor column="edoclt_def_nm" name="name" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_def_xml" name="xmlContent" jdbc-type="CLOB"/>
-    <field-descriptor column="edoclt_def_actv_ind" name="activeInd" jdbc-type="BIT"/>
-    <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteDefinition" table="KREW_EDL_DEF_T">
+    <field-descriptor column="EDOCLT_DEF_ID" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
+    <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
+    <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
+    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT"/>
+    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="en_edoclt_assoc_t">
-    <field-descriptor column="edoclt_assoc_id" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
-    <field-descriptor column="edoclt_assoc_doctype_nm" name="edlName" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_assoc_def_nm" name="definition" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_assoc_style_nm" name="style" jdbc-type="VARCHAR"/>
-    <field-descriptor column="edoclt_assoc_actv_ind" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
-    <field-descriptor column="db_lock_ver_nbr" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
+  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="KREW_EDL_ASSCTN_T">
+    <field-descriptor column="EDOCLT_ASSOC_ID" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
+    <field-descriptor column="DOC_TYP_NM" name="edlName" jdbc-type="VARCHAR"/>
+    <field-descriptor column="EDL_DEF_NM" name="definition" jdbc-type="VARCHAR"/>
+    <field-descriptor column="STYLE_NM" name="style" jdbc-type="VARCHAR"/>
+    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
+    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.user.BaseWorkflowUser" table="EN_USR_T">

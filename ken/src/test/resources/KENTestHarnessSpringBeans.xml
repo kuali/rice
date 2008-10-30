@@ -11,7 +11,7 @@
     </bean>
 
     <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-        <property name="messageEntity" value="KEN" />
+        <property name="serviceNamespace" value="KEN" />
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="jotm" />
         <property name="userTransaction" ref="jotm" />

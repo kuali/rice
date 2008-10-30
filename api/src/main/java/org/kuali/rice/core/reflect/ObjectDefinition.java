@@ -105,7 +105,7 @@ public class ObjectDefinition implements Serializable {
 
     public String toString() {
         return "[ObjectDefinition: className: " + getClassName()
-               + ", messageEntity: " + getServiceNamespace()
+               + ", serviceNamespace: " + getServiceNamespace()
                + "]";
     }
 

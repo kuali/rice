@@ -235,18 +235,18 @@
 				  		    	<td class="thnormal" align="right" width="20%">Message Entity:&nbsp;</td>
 				  		    	<c:if test="${showOld}">
 					  		    	<td class="datacell">
-					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.messageEntity}" />
+					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.serviceNamespace}" />
 					  		    	</td>
 				  		    	</c:if>
 				  		    	<td class="datacell">
 				  		    		<c:choose>
 				  		    			<c:when test="${inEditMode}">
-													<html-el:text property="messageQueueFromForm.messageEntity" size="35" maxlength="50" />
+													<html-el:text property="messageQueueFromForm.serviceNamespace" size="35" maxlength="50" />
 													&nbsp;
-													<bean-el:message key="routequeue.help.messageEntity"/>
+													<bean-el:message key="routequeue.help.serviceNamespace"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
-				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.messageEntity}" />
+				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />
 				  		    			</c:otherwise>
 				  		    		</c:choose>
 				  		    	</td>

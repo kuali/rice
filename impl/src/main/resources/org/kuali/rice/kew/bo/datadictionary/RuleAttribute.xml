@@ -26,7 +26,7 @@
         <ref bean="RuleAttribute-type" />
         <ref bean="RuleAttribute-className" />
         <ref bean="RuleAttribute-xmlConfigData" />
-        <ref bean="RuleAttribute-messageEntity" />
+        <ref bean="RuleAttribute-serviceNamespace" />
       </list>
     </property>
   </bean>
@@ -137,16 +137,16 @@
     <property name="label" value="XML Configuration" />
   </bean>
   
-  <bean id="RuleAttribute-messageEntity" parent="RuleAttribute-messageEntity-parentBean" />
+  <bean id="RuleAttribute-serviceNamespace" parent="RuleAttribute-serviceNamespace-parentBean" />
 
-  <bean id="RuleAttribute-messageEntity-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Message Entity" />
+  <bean id="RuleAttribute-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Service Namespace" />
     <property name="control" >
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="messageEntity" />
-    <property name="label" value="Message Entity" />
+    <property name="name" value="serviceNamespace" />
+    <property name="label" value="Service Namespace" />
   </bean>
   
   <!-- Business Object Inquiry Definition -->
@@ -172,7 +172,7 @@
               <bean parent="FieldDefinition"
                     p:attributeName="className" />
               <bean parent="FieldDefinition"
-                    p:attributeName="messageEntity" />
+                    p:attributeName="serviceNamespace" />
               <bean parent="FieldDefinition"
                     p:attributeName="type" />
               <bean parent="FieldDefinition"
@@ -206,7 +206,7 @@
               p:attributeName="className"
               p:forceLookup="true" />
         <bean parent="FieldDefinition"
-              p:attributeName="messageEntity"
+              p:attributeName="serviceNamespace"
               p:forceLookup="true" />
         <bean parent="FieldDefinition"
               p:attributeName="type"
@@ -224,7 +224,7 @@
         <bean parent="FieldDefinition"
               p:attributeName="type" />
         <bean parent="FieldDefinition"
-              p:attributeName="messageEntity" />
+              p:attributeName="serviceNamespace" />
       </list>
     </property>
     <property name="title" value="Rule Attribute Lookup" />

@@ -27,7 +27,7 @@
 		<field-descriptor name="retryCount" column="RTRY_CNT" jdbc-type="INTEGER" />
 		<field-descriptor name="ipNumber" column="IP_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="serviceName" column="SVC_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="messageEntity" column="SVC_NMSPC" jdbc-type="VARCHAR" />
+		<field-descriptor name="serviceNamespace" column="SVC_NMSPC" jdbc-type="VARCHAR" />
 		<field-descriptor name="methodName" column="SVC_MTHD_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="value1" column="APP_VAL_ONE" jdbc-type="VARCHAR" />
 		<field-descriptor name="value2" column="APP_VAL_TWO" jdbc-type="VARCHAR" />
@@ -42,12 +42,12 @@
 	<class-descriptor class="org.kuali.rice.ksb.messaging.ServiceInfo" table="KRSB_SVC_DEF_T">
 		<field-descriptor column="SVC_DEF_ID" name="messageEntryId" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
 			sequence-name="KRSB_SVC_DEF_S" />
-		<field-descriptor column="SVC_NMSPC" name="messageEntity" jdbc-type="VARCHAR" />
+		<field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR" />
 		<field-descriptor column="SRVR_IP" name="serverIp" jdbc-type="VARCHAR" />
 		<field-descriptor column="SVC_URL" name="endpointUrl" jdbc-type="VARCHAR"></field-descriptor>
 		<field-descriptor column="SVC_ALIVE" name="alive" jdbc-type="BIT" />
 		<field-descriptor column="SVC_NM" name="serviceName" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor column="SVC_DEF" name="serializedMessageEntity" jdbc-type="CLOB" />
+		<field-descriptor column="SVC_DEF" name="serializedServiceNamespace" jdbc-type="CLOB" />
 		<field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"></field-descriptor>
 	</class-descriptor>
 

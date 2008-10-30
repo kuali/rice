@@ -64,7 +64,7 @@ public class RuleAttributeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderTextElement(attributeElement, LABEL, ruleAttribute.getLabel());
         renderer.renderTextElement(attributeElement, DESCRIPTION, ruleAttribute.getDescription());
         renderer.renderTextElement(attributeElement, TYPE, ruleAttribute.getType());
-        renderer.renderTextElement(attributeElement, MESSAGE_ENTITY, ruleAttribute.getServiceNamespace());
+        renderer.renderTextElement(attributeElement, SERVICE_NAMESPACE, ruleAttribute.getServiceNamespace());
         if (!Utilities.isEmpty(ruleAttribute.getXmlConfigData())) {
             try {
                 Document configDoc = new SAXBuilder().build(new StringReader(ruleAttribute.getXmlConfigData()));

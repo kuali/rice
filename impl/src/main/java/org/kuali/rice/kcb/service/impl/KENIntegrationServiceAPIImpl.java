@@ -37,7 +37,7 @@ public class KENIntegrationServiceAPIImpl implements KENIntegrationService {
      * @see org.kuali.rice.kcb.service.KENIntegrationService#getAllChannelNames()
      */
     public Collection<String> getAllChannelNames() {
-        KENAPIService api = (KENAPIService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KENServiceConstants.KENAPI_SERVICE));
+        KENAPIService api = (KENAPIService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KENServiceConstants.KENAPI_SERVICE));
         return api.getAllChannelNames();
     }
 

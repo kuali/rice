@@ -48,7 +48,7 @@ public class DocumentTypeSecurity {
    * @throws ParserConfigurationException
    * @throws IOException
    * @throws SAXException */
-  public DocumentTypeSecurity(String standardMessageEntity, String documentTypeSecurityXml)
+  public DocumentTypeSecurity(String standardServiceNamespace, String documentTypeSecurityXml)
   {
     try {
       if (Utilities.isEmpty(documentTypeSecurityXml)) {
@@ -142,7 +142,7 @@ public class DocumentTypeSecurity {
             Element attributeElement = (Element)attributeNodes.item(i);
             NamedNodeMap elemAttributes = attributeElement.getAttributes();
             String className = null;
-            String messageEntity = standardMessageEntity;
+            String serviceNamespace = standardServiceNamespace;
             if (elemAttributes.getNamedItem("name") != null) {
                 // found a name attribute so find the class name
                 String ruleAttributeName = elemAttributes.getNamedItem("name").getNodeValue().trim();
@@ -150,7 +150,7 @@ public class DocumentTypeSecurity {
                 if (ruleAttribute == null) {
                     throw new WorkflowException("Could not find rule attribute: " + ruleAttributeName);
                 }
-                messageEntity = ruleAttribute.getMessageEntity();
+                serviceNamespace = ruleAttribute.getServiceNamespace();
                 className = ruleAttribute.getClassName();
             } else if (elemAttributes.getNamedItem("class") != null) {
                 // class name defined
@@ -158,7 +158,7 @@ public class DocumentTypeSecurity {
             } else {
                 throw new WorkflowException("Cannot find attribute 'name' or attribute 'class' for securityAttribute Node");
             }
-            ObjectDefinition objDef = new ObjectDefinition(className, messageEntity);
+            ObjectDefinition objDef = new ObjectDefinition(className, serviceNamespace);
             if (objDef != null) {
                 try {
                     this.securityAttributes.add((SecurityAttribute)GlobalResourceLoader.getObject(objDef));

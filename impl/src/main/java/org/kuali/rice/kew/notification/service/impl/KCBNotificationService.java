@@ -46,7 +46,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
         
         // send it off to KCB
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
         MessageDTO mvo = new MessageDTO();
         mvo.setChannel("KEW");
         mvo.setContent("i'm a kew notification");
@@ -69,7 +69,7 @@ public class KCBNotificationService extends DefaultNotificationService {
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
         
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
             try {

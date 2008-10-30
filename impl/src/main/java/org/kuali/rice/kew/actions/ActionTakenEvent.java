@@ -210,7 +210,7 @@ public abstract class ActionTakenEvent {
 	 * Asynchronously queues the documented to be processed by the workflow engine.
 	 */
 	protected void queueDocumentProcessing() {
-		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
+		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
 		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
 //			String content = String.valueOf(getRouteHeaderId());

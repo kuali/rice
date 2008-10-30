@@ -82,13 +82,13 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     @Test public void testGetMessageEntityByDocumentId() throws Exception {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType2");
     	Long documentId = document.getRouteHeaderId();
-    	String messageEntity = routeHeaderService.getMessageEntityByDocumentId(documentId);
+    	String messageEntity = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Message entity should be KEWNEW", "KEWNEW", messageEntity);
 
     	// now check TestDocumentType
     	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
     	documentId = document.getRouteHeaderId();
-    	messageEntity = routeHeaderService.getMessageEntityByDocumentId(documentId);
+    	messageEntity = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Message entity should be KEW", "KEW", messageEntity);
     }
 

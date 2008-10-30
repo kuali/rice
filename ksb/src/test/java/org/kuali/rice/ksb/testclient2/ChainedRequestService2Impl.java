@@ -23,7 +23,7 @@ public class ChainedRequestService2Impl implements ChainedRequestService {
 
 	public String sendRequest(String value) {
 		StringBuffer buffer = new StringBuffer(value);
-		buffer.append(ConfigContext.getCurrentContextConfig().getMessageEntity());
+		buffer.append(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 		return buffer.toString();
 	}
 

@@ -41,7 +41,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	@Override
 	public void tearDown() throws Exception {
-		QName thinRLName = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader");
+		QName thinRLName = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ThinClientResourceLoader");
 		GlobalResourceLoader.getResourceLoader().removeResourceLoader(thinRLName);
 		ResourceLoader tempThinRL = GlobalResourceLoader.getResourceLoader(thinRLName);
 		if (tempThinRL != null) {

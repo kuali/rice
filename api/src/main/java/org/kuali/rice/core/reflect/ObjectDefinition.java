@@ -33,7 +33,7 @@ public class ObjectDefinition implements Serializable {
 	private static final long serialVersionUID = 835423601196288352L;
 
 	private String className;
-	private String messageEntity;
+	private String serviceNamespace;
 	private boolean atRemotingLayer;
 	private final List<DataDefinition> constructorParameters = new ArrayList<DataDefinition>();
 	private final Map<String, PropertyDefinition> properties = new HashMap<String, PropertyDefinition>();
@@ -42,9 +42,9 @@ public class ObjectDefinition implements Serializable {
 		this(objectClass.getName());
 	}
 	
-	public ObjectDefinition(String className, String messageEntity) {
+	public ObjectDefinition(String className, String serviceNamespace) {
 		this.className = className;
-		this.messageEntity = messageEntity;
+		this.serviceNamespace = serviceNamespace;
 	}
 	
 	public ObjectDefinition(String className) {
@@ -103,17 +103,9 @@ public class ObjectDefinition implements Serializable {
 		}
 	}
 
-	public String getMessageEntity() {
-		return this.messageEntity;
-	}
-
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
-	}
-
     public String toString() {
         return "[ObjectDefinition: className: " + getClassName()
-               + ", messageEntity: " + getMessageEntity()
+               + ", messageEntity: " + getServiceNamespace()
                + "]";
     }
 
@@ -123,5 +115,13 @@ public class ObjectDefinition implements Serializable {
 
 	public void setAtRemotingLayer(boolean atRemotingLayer) {
 		this.atRemotingLayer = atRemotingLayer;
+	}
+
+	public String getServiceNamespace() {
+		return this.serviceNamespace;
+	}
+
+	public void setServiceNamespace(String serviceNamespace) {
+		this.serviceNamespace = serviceNamespace;
 	}
 }

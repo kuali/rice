@@ -29,7 +29,7 @@ public class TestHarnessSharedTopic implements KSBJavaService {
 
 	public void invoke(Serializable payLoad) {
 	    	CALL_COUNT++;
-		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " !!! ");
+		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " !!! ");
 		ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
 		if (CALL_COUNT_NOTIFICATION_THRESHOLD > 0) {
 		    if (CALL_COUNT == CALL_COUNT_NOTIFICATION_THRESHOLD) {

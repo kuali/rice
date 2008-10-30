@@ -102,7 +102,7 @@ public class HotDeployTest extends KEWTestCase {
 		// verify that the resource loading and the registry are sane and properly set up with the new plugin
 		assertEquals("Resource loader should have 1 plugin child.", 1, registry.getResourceLoaders().size());
 		Plugin plugin = (Plugin)registry.getResourceLoaders().get(0);
-		assertEquals("Plugin has wrong name.", new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), "ziptest"), plugin.getName());
+		assertEquals("Plugin has wrong name.", new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ziptest"), plugin.getName());
 		assertTrue("Plugin should be started.", plugin.isStarted());
 		assertEquals("Plugin in resource loader and environment should be the same.", plugin, registry.getPluginEnvironment(plugin.getName().getLocalPart()).getPlugin());
 		

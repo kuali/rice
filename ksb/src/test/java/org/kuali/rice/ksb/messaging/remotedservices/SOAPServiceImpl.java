@@ -28,7 +28,7 @@ public class SOAPServiceImpl implements SOAPService {
 	
 	public String doTheThing(String param) {
 		CALL_COUNT++;
-		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getMessageEntity() + " !!! ");
+		System.out.println("!!!TestHarnessSharedTopic called with M.E " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " !!! ");
 		ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
 		return param;
 	}

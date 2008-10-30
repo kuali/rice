@@ -41,7 +41,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 	 */
 	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
-	    	LOG.info("Starting configuration of KIM for message entity " + parentConfig.getMessageEntity());
+	    	LOG.info("Starting configuration of KIM for message entity " + parentConfig.getServiceNamespace());
 		
 		Config currentConfig = ConfigContext.getCurrentContextConfig();
 		

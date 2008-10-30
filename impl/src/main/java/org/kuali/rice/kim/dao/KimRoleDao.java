@@ -22,6 +22,7 @@ import java.util.Map;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationPrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
@@ -52,4 +53,7 @@ public interface KimRoleDao {
 	Map<String,List<KimDelegationPrincipalImpl>> getDelegationPrincipalsForDelegationIds( List<String> delegationIds );
 	
 	Map<String,List<KimDelegationGroupImpl>> getDelegationGroupsForDelegationIds( List<String> delegationIds );
+	
+	public Map<String,List<KimDelegationRoleImpl>> getDelegationRolesForDelegationIds( List<String> delegationIds);
+
 }

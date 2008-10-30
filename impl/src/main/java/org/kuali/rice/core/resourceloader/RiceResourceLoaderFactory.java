@@ -36,14 +36,14 @@ public class RiceResourceLoaderFactory {
 
 	private static void initialize() {
 		Config config = ConfigContext.getCurrentContextConfig();
-		if (config.getMessageEntity() == null) {
+		if (config.getServiceNamespace() == null) {
 			throw new ConfigurationException("No message entity available at this time");
 		}
 		if (getRootResourceLoaderName() == null) {
-			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), RICE_ROOT_RESOURCE_LOADER_NAME));
+			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RICE_ROOT_RESOURCE_LOADER_NAME));
 		}
 		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), RICE_SPRING_RESOURCE_LOADER_NAME));
+			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RICE_SPRING_RESOURCE_LOADER_NAME));
 		}
 	}
 

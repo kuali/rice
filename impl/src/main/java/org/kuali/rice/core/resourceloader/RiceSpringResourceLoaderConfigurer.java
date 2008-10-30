@@ -47,7 +47,7 @@ public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, Ini
 	public void afterPropertiesSet() throws Exception {
 		if (this.name == null) {
 			if (this.getServiceNameSpaceURI() == null) {
-				this.setServiceNameSpaceURI(ConfigContext.getCurrentContextConfig().getMessageEntity());
+				this.setServiceNameSpaceURI(ConfigContext.getCurrentContextConfig().getServiceNamespace());
 			}
 			if (this.getLocalServiceName() == null) {
 				throw new ConfigurationException("Need to give " + this.getClass().getName() + " a LocalServiceName");

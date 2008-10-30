@@ -32,9 +32,9 @@ public class RootResourceLoaderLifecycle extends BaseLifecycle {
 
 	@Override
 	public void start() throws Exception {
-		ResourceLoaderContainer container = new ResourceLoaderContainer(new QName(getMessageEntity(), RiceConstants.ROOT_RESOURCE_LOADER_CONTAINER_NAME));
+		ResourceLoaderContainer container = new ResourceLoaderContainer(new QName(getServiceNamespace(), RiceConstants.ROOT_RESOURCE_LOADER_CONTAINER_NAME));
 		if (this.rootResourceLoader == null) {
-		    this.rootResourceLoader = new BaseResourceLoader(new QName(getMessageEntity(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
+		    this.rootResourceLoader = new BaseResourceLoader(new QName(getServiceNamespace(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
 		}
 		container.addResourceLoader(this.rootResourceLoader);
 		GlobalResourceLoader.addResourceLoader(container);
@@ -46,8 +46,8 @@ public class RootResourceLoaderLifecycle extends BaseLifecycle {
 		super.stop();
 	}
 
-	protected String getMessageEntity() {
-		return ConfigContext.getCurrentContextConfig().getMessageEntity();
+	protected String getServiceNamespace() {
+		return ConfigContext.getCurrentContextConfig().getServiceNamespace();
 	}
 
 

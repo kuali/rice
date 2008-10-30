@@ -99,7 +99,7 @@ public class GlobalResourceLoader {
 	protected static void initialize() {
 		if (getResourceLoader(ClassLoaderUtils.getDefaultClassLoader()) == null) {
 			LOG.info("Creating CompositeResourceLoader in GlobalResourceLoader");
-			rootResourceLoaders.put(ClassLoaderUtils.getDefaultClassLoader(), new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.ROOT_RESOURCE_LOADER_NAME)));
+			rootResourceLoaders.put(ClassLoaderUtils.getDefaultClassLoader(), new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.ROOT_RESOURCE_LOADER_NAME)));
 		}
 	}
 

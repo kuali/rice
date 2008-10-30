@@ -63,10 +63,10 @@ public class BaseResourceLoader extends ResourceLoaderContainer implements Resou
 		// if this resource locator has no NameSpaceURI(M.E.) or the
 		// objectDefinition has no M.E. just try to find the class here
 		// or if the M.E. of the object is the same as the M.E. of the locator
-		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getMessageEntity()) ||
-				objectDefinition.getMessageEntity() == null ||
+		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getServiceNamespace()) ||
+				objectDefinition.getServiceNamespace() == null ||
 				// TODO did we really want to check for the KEW_MESSAGING_ENTITY here???
-				//(KEWConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getMessageEntity()) && ConfigContext.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
+				//(KEWConstants.KEW_MESSAGING_ENTITY.equals(objectDefinition.getServiceNamespace()) && ConfigContext.getCurrentContextConfig().getRunningEmbeddedServerMode())) {
 				ConfigContext.getCurrentContextConfig().getRunningEmbeddedServerMode()) {
 			Object object = ObjectDefinitionResolver.createObject(objectDefinition, this.classLoader, true);
 			if (object != null) {

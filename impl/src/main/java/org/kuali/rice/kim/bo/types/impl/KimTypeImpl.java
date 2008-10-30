@@ -41,6 +41,8 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	protected String kimTypeId;
 	@Column(name="NM")
 	protected String name;
+	@Column(name="NMSPC_CD")
+	protected String namespaceCode;
 	@Column(name="SRVC_NM")
 	protected String kimTypeServiceName;
 	@Column(name="ACTV_IND")
@@ -104,6 +106,18 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 		m.put( "kimTypeServiceName", kimTypeServiceName );
 		m.put( "active", active );
 		return m;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
+	}
+
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
 	}
 	
 }

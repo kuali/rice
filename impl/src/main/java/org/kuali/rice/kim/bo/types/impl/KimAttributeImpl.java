@@ -38,6 +38,8 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 	protected String kimAttributeId;
 	@Column(name="NM")
 	protected String attributeName;
+	@Column(name="NMSPC_CD")
+	protected String namespaceCode;
 	@Column(name="LBL")
 	protected String attributeLabel;
 	@Column(name="ACTV_IND")
@@ -91,6 +93,14 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 
 	public void setKimAttributeId(String kimAttributeId) {
 		this.kimAttributeId = kimAttributeId;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
 	}
 
 }

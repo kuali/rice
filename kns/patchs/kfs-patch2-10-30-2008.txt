@@ -80,7 +80,12 @@ Index: C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/businessobject/options/Ve
 ===================================================================
 --- C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/businessobject/options/VendorOwnershipCodeValuesFinder.java	(revision 18365)
 +++ C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/businessobject/options/VendorOwnershipCodeValuesFinder.java	(working copy)
-@@ -37,17 +37,32 @@
+@@ -33,20 +33,29 @@
+  */
+ public class VendorOwnershipCodeValuesFinder extends KeyValuesBase {
+ 
+-    /*
++    /***
       * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
       */
      public List getKeyValues() {
@@ -88,34 +93,27 @@ Index: C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/businessobject/options/Ve
 +    }
  
 +    /***
-+     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getInactiveKeyValues()
++     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase#getKeyValues(boolean)
 +     */
 +    public List getKeyValues(boolean active){
          KeyValuesService boService = SpringContext.getBean(KeyValuesService.class);
 -        Collection codes = boService.findAll(OwnershipType.class);
 +        Collection codes;
-+        if(active)
-+            codes = boService.findAll(OwnershipType.class);
-+        else
-+            codes = boService.findAllInactive(OwnershipType.class);
          List labels = new ArrayList();
 -        labels.add(new KeyLabelPair("", ""));
-+        if(active)
++        if(active){
++            codes = boService.findAll(OwnershipType.class);
 +            labels.add(new KeyLabelPair("", ""));
++        } else
++            codes = boService.findAllInactive(OwnershipType.class);
          for (Iterator iter = codes.iterator(); iter.hasNext();) {
              OwnershipType ot = (OwnershipType) iter.next();
--            labels.add(new KeyLabelPair(ot.getVendorOwnershipCode(), ot.getVendorOwnershipDescription()));
-+            if(active)
-+                labels.add(new KeyLabelPair(ot.getVendorOwnershipCode(), ot.getVendorOwnershipDescription()));
-+            else
-+                labels.add(new KeyLabelPair(ot.getVendorOwnershipCode(), ot.getVendorOwnershipDescription()+(" (inactive)")));
+             labels.add(new KeyLabelPair(ot.getVendorOwnershipCode(), ot.getVendorOwnershipDescription()));
          }
- 
+-
          return labels;
-+
      }
  
- }
 Index: C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/document/datadictionary/VendorDetailMaintenanceDocument.xml
 ===================================================================
 --- C:/java/projects/kfs/work/src/org/kuali/kfs/vnd/document/datadictionary/VendorDetailMaintenanceDocument.xml	(revision 18365)

@@ -1272,12 +1272,18 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/fo
       */
 Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiDocumentFormBase.java
 ===================================================================
---- C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiDocumentFormBase.java	(revision 5164)
+--- C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiDocumentFormBase.java	(revision 5174)
 +++ C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiDocumentFormBase.java	(working copy)
-@@ -91,6 +91,12 @@
+@@ -89,7 +89,17 @@
+     // for session enhancement
      private String formKey;
      private String docNum;
-     
+-    
++
++    /***
++     * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
++     */
++    @Override
 +    public void addRequiredNonEditableProperties(){
 +    	super.addRequiredNonEditableProperties();
 +    	requiredNonEditableProperties.add(KNSConstants.DOCUMENT_TYPE_NAME);
@@ -1287,7 +1293,7 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/fo
  	/**
  	 * @return the docNum
  	 */
-@@ -756,5 +762,16 @@
+@@ -755,5 +765,16 @@
          super.customInitMaxUploadSizes();
          addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
      }
@@ -1566,10 +1572,10 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/po
 -                    formatter = buildFormatter(keypath, type, params);
 -
 -                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
-+                	if(isPropertyEditable(keypath) || isPropertyNonEditableButRequired(keypath)){
++                	//if(isPropertyEditable(keypath) || isPropertyNonEditableButRequired(keypath)){
 +	                    formatter = buildFormatter(keypath, type, params);
 +	                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
-+                	}
++                	//}
                  }
                  catch (FormatException e1) {
                      GlobalVariables.getErrorMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
@@ -1581,7 +1587,7 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/po
          t0.log();
      }
  
-@@ -491,4 +491,35 @@
+@@ -491,4 +491,38 @@
      }
      // end Kuali Foundation modification
      
@@ -1601,6 +1607,9 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/po
 +        return getEditableProperties().contains(propertyName);
 +    }
 +    
++    /***
++     * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#addRequiredNonEditableProperties()
++     */
 +    public void addRequiredNonEditableProperties(){
 +    }
 +    
@@ -1630,15 +1639,23 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/struts/po
  
  import javax.servlet.http.HttpServletRequest;
  
-@@ -40,4 +41,11 @@
+@@ -40,4 +41,19 @@
      // begin Kuali Foundation modification
      public void processValidationFail();
      // end Kuali Foundation modification
 +    
 +    Set<String> getRequiredNonEditableProperties();
++    
 +    void registerEditableProperty(String editablePropertyName);
++    
 +    void clearEditableProperties();
++
 +    Set<String> getEditableProperties();
++    /**
++     * 
++     * This method adds the required properties, that are not editable by user, to a list.
++     *
++     */
 +    void addRequiredNonEditableProperties();
 +
  }
@@ -1663,6 +1680,44 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/ui/FieldB
      }
  
      /**
+@@ -212,17 +205,32 @@
+             ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(fieldControl.getIncludeKeyInLabel());
+         }
+         List keyValues = finder.getKeyValues();
+-        if (prop != null) {
++        propValue = getPropertyValueFromList(prop, keyValues);
++        if(propValue==null)
++        	propValue = lookupInactiveFinderValue(prop, finder);
++        return propValue;
++    }
++    
++    private static String lookupInactiveFinderValue(Object property, KeyValuesFinder finder){
++    	List keyValues = finder.getKeyValues(false);
++    	return getPropertyValueFromList(property, keyValues);
++    	
++    }
++    
++    private static String getPropertyValueFromList(Object property, List keyValues){
++    	String propertyValue = null;
++        if (property != null) {
+             for (Iterator iter = keyValues.iterator(); iter.hasNext();) {
+                 KeyLabelPair element = (KeyLabelPair) iter.next();
+-                if (element.getKey().toString().equals(prop.toString())) {
+-                    propValue = element.getLabel();
++                if (element.getKey().toString().equals(property.toString())) {
++                    propertyValue = element.getLabel();
++                    break;
+                 }
+             }
+         }
+-        return propValue;
++        return propertyValue;
+     }
+-
++    
+     /**
+      * Determines whether field level help is enabled for the field corresponding to the businessObjectClass and attribute name
+      *
 Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
 ===================================================================
 --- C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java	(revision 5164)
@@ -2056,7 +2111,7 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/auth
 ===================================================================
 --- C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5164)
 +++ C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(working copy)
-@@ -1,174 +1,268 @@
+@@ -1,174 +1,269 @@
 -/*
 - * Copyright 2007 The Kuali Foundation.
 - * 
@@ -2288,8 +2343,8 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/auth
 +        // overridden by a subclass that adds restrictions
 +    	//return new MaintenanceDocumentAuthorizations();
 +    	
-+    	MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
-+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++    	//MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
++    	/*KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
 +    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 +    	String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
 +    	String documentNumber = document.getDocumentNumber();
@@ -2342,7 +2397,8 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/auth
 +    		   }
 +    	}
 +    		
-+    		return auths; 
++    		return auths;*/
++    	return new MaintenanceDocumentAuthorizations();
 +    }
 +
 +    /**
@@ -2519,65 +2575,6 @@ Index: C:/java/projects/rice/impl/src/main/java/org/kuali/rice/kns/document/auth
 +    public boolean isPropertyEditable(Document document, String propertyName, Set<String> registeredEditableProperties);
  }
  
-Index: C:/java/projects/rice/web/src/main/webapp/en/WEB-INF/jsp/RowDisplay.jsp
-===================================================================
---- C:/java/projects/rice/web/src/main/webapp/en/WEB-INF/jsp/RowDisplay.jsp	(revision 5164)
-+++ C:/java/projects/rice/web/src/main/webapp/en/WEB-INF/jsp/RowDisplay.jsp	(working copy)
-@@ -1,8 +1,8 @@
--<%@ taglib uri="../tld/struts-html-el.tld" prefix="html-el" %>
--<%@ taglib uri="../tld/struts-bean-el.tld" prefix="bean-el" %>
--<%@ taglib uri="../tld/struts-logic-el.tld" prefix="logic-el"%>
--<%@ taglib uri="../tld/c.tld" prefix="c" %>
--<%@ taglib uri="../tld/fmt.tld" prefix="fmt" %>
-+<%@ taglib uri="../tld/struts-html-el.tld" prefix="html-el" %>
-+<%@ taglib uri="../tld/struts-bean-el.tld" prefix="bean-el" %>
-+<%@ taglib uri="../tld/struts-logic-el.tld" prefix="logic-el"%>
-+<%@ taglib uri="../tld/c.tld" prefix="c" %>
-+<%@ taglib uri="../tld/fmt.tld" prefix="fmt" %>
- <%@ taglib uri="../tld/displaytag.tld" prefix="display-el" %>
- 	
- <c:set var="isRowLabel" value="" />	
-@@ -101,23 +101,23 @@
- 										<c:when test="${field.fieldType==field.QUICKFINDER}" >
- 								  	        <c:if test="${field.propertyValue!=null && field.propertyValue!=''}">
- 												<c:out value="${field.propertyValue}" />
--											</c:if>
--									        <c:set var="customConversionFields" value=""/>
--											<c:forEach items="${field.customConversions}" var="customKeyValue">
--										        <c:if test="${!empty customConversionFields}">
--												  <c:set var="customConversionFields" value="${customConversionFields},"/>
--												</c:if>
--										        <c:set var="customConversionFields" value="${customConversionFields}${customKeyValue.key}:${customKeyValue.value}"/>
--											</c:forEach>
--											<c:if test="${FormName != null}" >
--												<c:choose>
--													<c:when test="${!empty customConversionFields}">
--											            <a href="javascript:quick_finder_with_conversions('<c:out value="${field.quickFinderClassNameImpl}" />','<c:out value="${FormName}" />', '<c:out value="${ActionName}" />', '<c:out value="${customConversionFields}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
--													</c:when>
--													<c:otherwise>
--											            <a href="javascript:quick_finder('<c:out value="${field.quickFinderClassNameImpl}" />','<c:out value="${FormName}" />', '<c:out value="${ActionName}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
--													</c:otherwise>
--												</c:choose>
-+											</c:if>
-+									        <c:set var="customConversionFields" value=""/>
-+											<c:forEach items="${field.customConversions}" var="customKeyValue">
-+										        <c:if test="${!empty customConversionFields}">
-+												  <c:set var="customConversionFields" value="${customConversionFields},"/>
-+												</c:if>
-+										        <c:set var="customConversionFields" value="${customConversionFields}${customKeyValue.key}:${customKeyValue.value}"/>
-+											</c:forEach>
-+											<c:if test="${FormName != null}" >
-+												<c:choose>
-+													<c:when test="${!empty customConversionFields}">
-+											            <a href="javascript:quick_finder_with_conversions('<c:out value="${field.quickFinderClassNameImpl}" />','<c:out value="${FormName}" />', '<c:out value="${ActionName}" />', '<c:out value="${customConversionFields}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
-+													</c:when>
-+													<c:otherwise>
-+											            <a href="javascript:quick_finder('<c:out value="${field.quickFinderClassNameImpl}" />','<c:out value="${FormName}" />', '<c:out value="${ActionName}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
-+													</c:otherwise>
-+												</c:choose>
- 									        </c:if>
- 									      	<c:if test="${FormName == null}">  
- 											     <a href="javascript:lookup('<c:out value="${field.quickFinderClassNameImpl}"/>', '<c:out value="${ActionName}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
 Index: C:/java/projects/rice/web/src/main/webapp/WEB-INF/tags/kr/htmlControlAttribute.tag
 ===================================================================
 --- C:/java/projects/rice/web/src/main/webapp/WEB-INF/tags/kr/htmlControlAttribute.tag	(revision 5164)

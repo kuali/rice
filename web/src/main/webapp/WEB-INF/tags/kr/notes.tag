@@ -199,8 +199,8 @@
                               userName="${note.adHocRouteRecipient.name}"
                               readOnly="false" 
                               renderOtherFields="true"
-                              fieldConversions="<%--principalName:${propPrefix}boNote[${status.index}].adHocRouteRecipient.id,name:${propPrefix}boNote[${status.index}].adHocRouteRecipient.name--%>" 
-                              lookupParameters="<%--${propPrefix}boNote[${status.index}].adHocRouteRecipient.id:principalName--%>" />
+                              fieldConversions="principalName:${propPrefix}boNote[${status.index}].adHocRouteRecipient.id,name:${propPrefix}boNote[${status.index}].adHocRouteRecipient.name" 
+                              lookupParameters="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id:principalName" />
                             </c:if>
                             <c:if test="${!KualiForm.documentActionFlags.canAdHocRoute}">
                               &nbsp;

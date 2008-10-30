@@ -3,6 +3,7 @@ package org.kuali.rice.kim.service.impl;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,17 +32,19 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	protected IdentityService identityService;
 	protected GroupService groupService;
 	
-	protected HashMap<String,SoftReference<KimEntity>> entityByIdCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
-	protected HashMap<String,SoftReference<KimEntity>> entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
-	protected HashMap<String,SoftReference<KimPrincipal>> principalByIdCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
-	protected HashMap<String,SoftReference<KimPrincipal>> principalByNameCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
-	protected HashMap<String,SoftReference<GroupInfo>> groupByIdCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
-	protected HashMap<String,SoftReference<GroupInfo>> groupByNameCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
-	protected HashMap<String,SoftReference<List<String>>> groupIdsForPrincipalCache = new HashMap<String,SoftReference<List<String>>>( 100 );
-	protected HashMap<String,SoftReference<List<? extends KimGroup>>> groupsForPrincipalCache = new HashMap<String,SoftReference<List<? extends KimGroup>>>( 100 );
-	protected HashMap<String,SoftReference<Boolean>> isMemberOfGroupCache = new HashMap<String,SoftReference<Boolean>>( 100 );
-	protected HashMap<String,SoftReference<Boolean>> isMemberOfGroupByNameCache = new HashMap<String,SoftReference<Boolean>>( 100 );
-	protected HashMap<String,SoftReference<List<String>>> groupMemberPrincipalIdsCache = new HashMap<String,SoftReference<List<String>>>( 100 );
+	protected Map<String,SoftReference<KimEntity>> entityByIdCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
+	protected Map<String,SoftReference<KimEntity>> entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
+	protected Map<String,SoftReference<KimPrincipal>> principalByIdCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
+	protected Map<String,SoftReference<KimPrincipal>> principalByNameCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
+	protected Map<String,SoftReference<GroupInfo>> groupByIdCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
+	protected Map<String,SoftReference<GroupInfo>> groupByNameCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
+	protected Map<String,SoftReference<List<String>>> groupIdsForPrincipalCache = new HashMap<String,SoftReference<List<String>>>( 100 );
+	protected Map<String,SoftReference<List<? extends KimGroup>>> groupsForPrincipalCache = new HashMap<String,SoftReference<List<? extends KimGroup>>>( 100 );
+	protected Map<String,SoftReference<Boolean>> isMemberOfGroupCache = new HashMap<String,SoftReference<Boolean>>( 100 );
+	protected Map<String,SoftReference<Boolean>> isMemberOfGroupByNameCache = new HashMap<String,SoftReference<Boolean>>( 100 );
+	protected Map<String,SoftReference<List<String>>> groupMemberPrincipalIdsCache = new HashMap<String,SoftReference<List<String>>>( 100 );
+	protected Map<String,SoftReference<Boolean>> hasPermissionCache = new HashMap<String,SoftReference<Boolean>>( 100 );
+	protected Map<String,SoftReference<Boolean>> hasPermissionByTemplateCache = new HashMap<String,SoftReference<Boolean>>( 100 );
 	
 	protected KimEntity getEntityByIdCache( String entityId ) {
 		SoftReference<KimEntity> entityRef = entityByIdCache.get( entityId );
@@ -131,6 +134,21 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		return null;
 	}
 	
+	protected Boolean getHasPermissionCache( String key) {
+		SoftReference<Boolean> hasPermissionRef = hasPermissionCache.get( key );
+		if ( hasPermissionRef != null ) {
+			return hasPermissionRef.get();
+		}
+		return null;
+	}
+	
+	protected Boolean getHasPermissionByTemplateCache( String key) {
+		SoftReference<Boolean> hasPermissionRef = hasPermissionByTemplateCache.get( key );
+		if ( hasPermissionRef != null ) {
+			return hasPermissionRef.get();
+		}
+		return null;
+	}
 	
 	protected void addEntityToCache( KimEntity entity ) {
 		if ( entity != null ) {
@@ -179,6 +197,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		}
 	}
 
+	protected void addHasPermissionToCache( String key, boolean hasPerm ) {
+		hasPermissionCache.put( key, new SoftReference<Boolean>( hasPerm ) );
+	}
+
+	protected void addHasPermissionByTemplateToCache( String key, boolean hasPerm ) {
+		hasPermissionByTemplateCache.put( key, new SoftReference<Boolean>( hasPerm ) );
+	}
+	
 	// AUTHENTICATION SERVICE
 	
 	public String getAuthenticatedPrincipalName(HttpServletRequest request) {
@@ -192,22 +218,63 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     // AUTHORIZATION SERVICE
     
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
-    	return getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+		String key = principalId + "-" + namespaceCode + "-" + permissionName + "-";
+    	key = finishKey(permissionDetails, key);
+    	Boolean hasPerm = getHasPermissionCache(key);
+		if (hasPerm != null) {
+			return hasPerm;
+		}
+		hasPerm = getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+    	addHasPermissionToCache(key, hasPerm);
+    	return hasPerm;        	
     }
     
-    public boolean isAuthorized(String principalId, String namespaceCode, 
-    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {    	
+		String key = principalId + "-" + namespaceCode + "-" + permissionName + "-";
+    	key = finishKey(permissionDetails, key);
+    	Boolean hasPerm = getHasPermissionCache(key);
+		if (hasPerm != null) {
+			if (!hasPerm) {
+				return false;
+			} else {
+				addHasPermissionToCache(key, hasPerm);
+			}
+		}    	
     	return getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
     }
 
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
-    	return getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+		String key = principalId + "-" + namespaceCode + "-" + permissionTemplateName + "-";
+    	key = finishKey(permissionDetails, key);
+    	Boolean hasPerm = getHasPermissionByTemplateCache(key);
+		if (hasPerm != null) {
+			return hasPerm;
+		}
+		hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+    	addHasPermissionByTemplateToCache(key, hasPerm);
+    	return hasPerm;   
     }
     
-    public boolean isAuthorizedByTemplateName(String principalId,
-    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+		String key = principalId + "-" + namespaceCode + "-" + permissionTemplateName + "-";
+    	key = finishKey(permissionDetails, key);
+    	Boolean hasPerm = getHasPermissionByTemplateCache(key);
+		if (hasPerm != null) {
+			if (!hasPerm) {
+				return false;
+			} else {
+				addHasPermissionByTemplateToCache(key, hasPerm);
+			}
+		}
+		return getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
     }
+
+	private String finishKey(AttributeSet permissionDetails, String key) {
+		for ( Map.Entry<String, String> entry : permissionDetails.entrySet() ) {
+    		key += entry.getKey() + "-" + entry.getValue();
+    	}
+		return key;
+	}
     
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)

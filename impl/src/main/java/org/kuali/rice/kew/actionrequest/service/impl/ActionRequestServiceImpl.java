@@ -448,11 +448,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 + " milliseconds to avoid stale rule cache.");
         for (Iterator iterator = documentsAffected.iterator(); iterator.hasNext();) {
             Long routeHeaderId = (Long) iterator.next();
-            String messageEntity = KEWServiceLocator.getRouteHeaderService().getMessageEntityByDocumentId(routeHeaderId);
-            if (messageEntity == null) {
-                messageEntity = ConfigContext.getCurrentContextConfig().getMessageEntity();
+            String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(routeHeaderId);
+            if (serviceNamespace == null) {
+                serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
             }
-            DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(messageEntity,
+            DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(serviceNamespace,
                     routeHeaderId, cacheWait);
             documentRequeuer.requeueDocument(routeHeaderId);
         }

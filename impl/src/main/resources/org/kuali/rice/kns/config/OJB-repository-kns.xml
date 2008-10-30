@@ -77,7 +77,7 @@
 		<field-descriptor name="documentDescription" column="FDOC_DESC" jdbc-type="VARCHAR" />
 		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_HDR_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="documentTemplateNumber" column="TMPL_DOC_HDR_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="explanation" column="EXPLAIN" jdbc-type="VARCHAR" />
+		<field-descriptor name="explanation" column="EXPLANATION" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.document.authorization.PessimisticLock" table="KRNS_PESSIMISTIC_LOCK_T">
@@ -269,7 +269,7 @@
 		<field-descriptor name="selectedObjectIds" column="SEL_OBJ_IDS" jdbc-type="CLOB" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="SH_CAMPUS_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="KRNS_CAMPUS_T">
 		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="campusName" column="CAMPUS_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="campusShortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
@@ -282,7 +282,7 @@
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.CampusType" table="SH_CMP_TYP_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.CampusType" table="KRNS_CMP_TYP_T">
 		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />

@@ -32,7 +32,7 @@ import java.util.LinkedHashMap;
  * 
  */
 @Entity
-@Table(name="SH_CAMPUS_T")
+@Table(name="KRNS_CAMPUS_T")
 public class Campus extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 787567094298971223L;

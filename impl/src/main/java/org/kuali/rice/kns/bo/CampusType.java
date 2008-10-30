@@ -30,7 +30,7 @@ import java.util.LinkedHashMap;
  * 
  */
 @Entity
-@Table(name="SH_CMP_TYP_T")
+@Table(name="KRNS_CMP_TYP_T")
 public class CampusType extends PersistableBusinessObjectBase {
 
 	@Id

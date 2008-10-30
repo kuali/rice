@@ -46,7 +46,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 	private String organizationDocumentNumber;
     @Column(name="TMPL_DOC_HDR_ID")
 	private String documentTemplateNumber;
-    @Column(name="EXPLAIN")
+    @Column(name="EXPLANATION")
 	private String explanation;
     
     @Transient

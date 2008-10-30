@@ -423,7 +423,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 					continue;
 				}
-				WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName(), ruleTemplateAttribute.getRuleAttribute().getMessageEntity()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
+				WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName(), ruleTemplateAttribute.getRuleAttribute().getServiceNamespace()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
 				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 					((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);

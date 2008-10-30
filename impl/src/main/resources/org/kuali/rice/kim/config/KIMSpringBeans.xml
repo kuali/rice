@@ -307,9 +307,14 @@
     </property>
     <property name="daoOjb">
         <bean class="org.kuali.rice.kim.dao.impl.PersonDaoOjb" parent="platformAwareDao"
-		  	p:personImplementationClass="org.kuali.rice.kim.bo.impl.PersonImpl"
-		  	p:personEntityTypeCode="PERSON"
-        />
+		  	p:personImplementationClass="org.kuali.rice.kim.bo.impl.PersonImpl">
+          <property name="personEntityTypeCodes">
+            <list>
+              <value>PERSON</value>
+              <value>SYSTEM</value>
+            </list>
+          </property>
+        </bean>
     </property>
   </bean>
   

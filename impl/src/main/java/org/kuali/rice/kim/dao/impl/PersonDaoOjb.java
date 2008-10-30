@@ -56,22 +56,27 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
 
     protected Class<? extends T> personImplementationClass;
-	protected String personEntityTypeCode;
+	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
+	// String that can be passed to the lookup framework to create an type = X OR type = Y criteria
+	String personEntityTypeLookupCriteria = null;
     
 
 	public T convertEntityToPerson( KimEntity entity, KimPrincipal principal ) {
 		try {
 			T person = (T)getPersonImplementationClass().newInstance();
 			// get the EntityEntityType for the EntityType corresponding to a Person
-			EntityEntityType entType = entity.getEntityType( getPersonEntityTypeCode() );
-			// if no "person" entity type present for the given principal, return null
-			if ( entType == null ) {
-				return null;
+			for ( String entityTypeCode : personEntityTypeCodes ) {
+				EntityEntityType entType = entity.getEntityType( entityTypeCode );
+				// if no "person" entity type present for the given principal, skip to the next type in the list
+				if ( entType == null ) {
+					continue;
+				}
+				// attach the principal and entity objects
+				// PersonImpl has logic to pull the needed elements from the KimEntity-related classes
+				person.setPrincipal(principal, entity, entityTypeCode );
+				return person;
 			}
-			// attach the principal and entity objects
-			// PersonImpl has lazy-loading logic to pull the needed elements from the KimEntity as needed
-			person.setPrincipal(principal, entity, personEntityTypeCode );
-			return person;
+			return null;
 		} catch ( Exception ex ) {
 			// allow runtime exceptions to pass through
 			if ( ex instanceof RuntimeException ) {
@@ -167,7 +172,7 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		// add base lookups for all person lookups
 		HashMap<String,String> newCriteria = new HashMap<String,String>();
 		newCriteria.putAll( baseLookupCriteria );
-		newCriteria.put( "entityTypes.entityTypeCode", personEntityTypeCode );
+		newCriteria.put( "entityTypes.entityTypeCode", personEntityTypeLookupCriteria );
 		if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {
 				// if no value was passed, skip the entry in the Map
@@ -276,17 +281,35 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 	}
 
 	/**
-	 * @return the personEntityTypeCode
-	 */
-	public String getPersonEntityTypeCode() {
-		return this.personEntityTypeCode;
-	}
-
-	/**
 	 * @param personEntityTypeCode the personEntityTypeCode to set
 	 */
+	@Deprecated
 	public void setPersonEntityTypeCode(String personEntityTypeCode) {
-		this.personEntityTypeCode = personEntityTypeCode;
+		personEntityTypeCodes.add( personEntityTypeCode );
+		personEntityTypeLookupCriteria = null;
+		for ( String entityTypeCode : personEntityTypeCodes ) {
+			if ( personEntityTypeLookupCriteria == null ) {
+				personEntityTypeLookupCriteria = entityTypeCode;
+			} else {
+				personEntityTypeLookupCriteria = personEntityTypeLookupCriteria + "|" + entityTypeCode;
+			}
+		}
+	}
+
+	public List<String> getPersonEntityTypeCodes() {
+		return this.personEntityTypeCodes;
+	}
+
+	public void setPersonEntityTypeCodes(List<String> personEntityTypeCodes) {
+		this.personEntityTypeCodes = personEntityTypeCodes;
+		personEntityTypeLookupCriteria = null;
+		for ( String entityTypeCode : personEntityTypeCodes ) {
+			if ( personEntityTypeLookupCriteria == null ) {
+				personEntityTypeLookupCriteria = entityTypeCode;
+			} else {
+				personEntityTypeLookupCriteria = personEntityTypeLookupCriteria + "|" + entityTypeCode;
+			}
+		}
 	}
 	
 }

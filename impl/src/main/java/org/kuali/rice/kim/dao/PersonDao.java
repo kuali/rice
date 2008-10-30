@@ -42,10 +42,11 @@ public interface PersonDao<T extends Person> {
 	Class<? extends Person> getPersonImplementationClass();
 	
 	/**
-	 * Get the entityTypeCode that is associated with a Person.  This will determine
-	 * where EntityType-related data is pulled from within the KimEntity object.
+	 * Get the entityTypeCode that can be associated with a Person.  This will determine
+	 * where EntityType-related data is pulled from within the KimEntity object.  The codes
+	 * in the list will be examined in the order present.
 	 */
-	String getPersonEntityTypeCode();
+	List<String> getPersonEntityTypeCodes();
 	
 	Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria );
 	

@@ -53,12 +53,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected static PersonService<Person> personService;
 	protected static IdentityManagementService identityManagementService;
 	
-
-	
 	// principal data
 	protected String principalId;
 	protected String principalName;
 	protected String entityId;
+	protected String entityTypeCode;
 	// name data
 	protected String firstName = "";
 	protected String middleName = "";
@@ -86,6 +85,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	// employment data
 	protected String employeeStatusCode = "";
 	protected String employeeTypeCode = "";
+	protected String primaryDepartmentCode = "";
 	
 	protected KualiDecimal baseSalaryAmount;
 	
@@ -126,6 +126,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateEntityInfo( KimEntity entity, String personEntityTypeCode ) {
 		EntityEntityType entityEntityType = entity.getEntityType( personEntityTypeCode );  
+		entityTypeCode = personEntityTypeCode;
 		populateNameInfo( entity );
 		populateAddressInfo( entityEntityType );
 		populateEmailInfo( entityEntityType );
@@ -204,6 +205,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if ( employmentInformation != null ) {
 			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
 			employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
+			primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
 			if ( employmentInformation.getBaseSalaryAmount() != null ) {
 				baseSalaryAmount = employmentInformation.getBaseSalaryAmount();
 			} else {
@@ -212,6 +214,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		} else {
 			employeeStatusCode = "";
 			employeeTypeCode = "";
+			primaryDepartmentCode = "";
 			baseSalaryAmount = KualiDecimal.ZERO;
 		}
 	}
@@ -443,13 +446,16 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	@Deprecated
-	public String getPrimaryDepartmentCode() {
-		return "FIX ME - I DON'T HAVE A HOME!";
-	}
-
-	@Deprecated
 	public String getPersonPayrollIdentifier() {
 		return getExternalId(KimConstants.EMPLOYEE_EXT_ID_TYPE);
+	}
+
+	public String getPrimaryDepartmentCode() {
+		return this.primaryDepartmentCode;
+	}
+
+	public String getEntityTypeCode() {
+		return this.entityTypeCode;
 	}
 	
 }

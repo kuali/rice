@@ -74,7 +74,7 @@ public class PersonDaoJpa<T extends PersonImpl> implements PersonDao<T> {
 	 * 
 	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCode()
 	 */
-	public String getPersonEntityTypeCode() {
+	public List<String> getPersonEntityTypeCodes() {
 		throw new UnsupportedOperationException( "method not implemented" );
 	}
 

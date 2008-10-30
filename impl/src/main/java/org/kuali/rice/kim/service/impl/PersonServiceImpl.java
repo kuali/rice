@@ -50,7 +50,6 @@ import org.kuali.rice.kns.util.ObjectUtils;
 public class PersonServiceImpl implements PersonService<PersonImpl> {
 
 	private static final String PRINCIPAL_ID_PROPERTY_NAME = "principalId";
-
 	private static final String PRINCIPAL_NAME_PROPERTY_NAME = "principalName";
 
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
@@ -461,8 +460,13 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @return the personEntityTypeCode
 	 */
+	@Deprecated
 	public String getPersonEntityTypeCode() {
-		return personDao.getPersonEntityTypeCode();
+		return personDao.getPersonEntityTypeCodes().get( 0 );
+	}
+	
+	public List<String> getPersonEntityTypeCodes() {
+		return personDao.getPersonEntityTypeCodes();
 	}
 
 	/**

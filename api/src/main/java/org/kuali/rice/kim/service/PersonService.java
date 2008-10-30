@@ -108,7 +108,7 @@ public interface PersonService<T extends Person> {
 	 * Get the entityTypeCode that is associated with a Person.  This will determine
 	 * where EntityType-related data is pulled from within the KimEntity object.
 	 */
-	String getPersonEntityTypeCode();
+	List<String> getPersonEntityTypeCodes();
 	
 	/**
      * This method takes a map on its way to populate a business object and replaces all 

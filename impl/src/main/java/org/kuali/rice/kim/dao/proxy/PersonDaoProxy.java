@@ -65,7 +65,7 @@ public class PersonDaoProxy<T extends PersonImpl> extends PlatformAwareDaoBaseOj
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.v2.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
+	 * @see org.kuali.rice.kim.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
 	 */
 	public T convertEntityToPerson(KimEntity entity, KimPrincipal principal) {
 		return actualDao.convertEntityToPerson(entity, principal);
@@ -89,14 +89,12 @@ public class PersonDaoProxy<T extends PersonImpl> extends PlatformAwareDaoBaseOj
 	public List<T> findPeople(Map<String, String> criteria, boolean unbounded) {
 		return actualDao.findPeople(criteria, unbounded);
 	}
-
+	
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCode()
+	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCodes()
 	 */
-	public String getPersonEntityTypeCode() {
-		return actualDao.getPersonEntityTypeCode();
+	public List<String> getPersonEntityTypeCodes() {
+		return actualDao.getPersonEntityTypeCodes();
 	}
 
 	/**

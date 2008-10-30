@@ -112,7 +112,7 @@ public class RoleRouteModule implements RouteModule {
 	}
 	
     protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
-    	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
+    	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
     }
     
     protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, Map<String, String> qualification) {

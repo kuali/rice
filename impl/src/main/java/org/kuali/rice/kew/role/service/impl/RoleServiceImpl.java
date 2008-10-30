@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(routeHeaderIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
     	for (Iterator iterator = routeHeaderIds.iterator(); iterator.hasNext();) {
     		Long documentId = (Long) iterator.next();
-    		QName rolePokerName = new QName(documentType.getMessageEntity(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
 		}
@@ -88,7 +88,7 @@ public class RoleServiceImpl implements RoleService {
     	for (Iterator iterator = routeHeaderIds.iterator(); iterator.hasNext();) {
     		Long documentId = (Long) iterator.next();
 
-    		QName rolePokerName = new QName(documentType.getMessageEntity(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
@@ -246,7 +246,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     protected void requeueDocument(DocumentRouteHeaderValue document) {
-    	QName documentServiceName = new QName(document.getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
+    	QName documentServiceName = new QName(document.getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
     	KSBXMLService documentRoutingService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
     	try {
 			documentRoutingService.invoke(String.valueOf(document.getRouteHeaderId()));

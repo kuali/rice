@@ -167,12 +167,12 @@ public abstract class BasePluginLoader implements PluginLoader {
 
 
     protected QName getPluginName(PluginConfig pluginConfig) {
-    	String messageEntity = pluginConfig.getMessageEntity();
+    	String serviceNamespace = pluginConfig.getServiceNamespace();
     	QName qPluginName = null;
-        if (messageEntity == null) {
-        	qPluginName = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), simplePluginName);
+        if (serviceNamespace == null) {
+        	qPluginName = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), simplePluginName);
         } else {
-        	qPluginName = new QName(messageEntity, simplePluginName);
+        	qPluginName = new QName(serviceNamespace, simplePluginName);
         }
     	return qPluginName;
     }

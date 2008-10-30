@@ -59,7 +59,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 
 	public ServerPluginRegistry() {
-		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
+		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
 	}
 
 	public void start() throws Exception {

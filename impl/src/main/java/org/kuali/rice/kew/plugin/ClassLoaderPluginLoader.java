@@ -51,7 +51,7 @@ public class ClassLoaderPluginLoader implements PluginLoader {
 	
 	public Plugin load() throws Exception {
 		//for now default the embedded plugin to the M.E. of the current context
-		QName name = new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.EMBEDDED_PLUGIN);
+		QName name = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.EMBEDDED_PLUGIN);
 		Plugin plugin = new Plugin(name, loadPluginConfig(pluginConfigPath), classLoader);
 		plugin.bindThread();
 		try {

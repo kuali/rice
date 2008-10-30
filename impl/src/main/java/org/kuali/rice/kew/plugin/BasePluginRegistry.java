@@ -42,7 +42,7 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 	private List<PluginEnvironment> pluginEnvironments = Collections.synchronizedList(new ArrayList<PluginEnvironment>());
 	
 	public BasePluginRegistry() {
-		super(new QName(ConfigContext.getCurrentContextConfig().getMessageEntity(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
+		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
 	}
 	
 	public BasePluginRegistry(QName name) {

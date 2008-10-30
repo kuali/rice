@@ -54,7 +54,7 @@ public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
 	    }
 	    if (LOG.isDebugEnabled()) {
 		LOG.debug("#############################################################");
-		LOG.debug("Entering Message Entity " + ConfigContext.getCurrentContextConfig().getServiceNamespace()
+		LOG.debug("Entering Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace()
 			+ ".  Looking up handler for [" + serviceName + "]");
 		LOG.debug("#############################################################");
 	    }

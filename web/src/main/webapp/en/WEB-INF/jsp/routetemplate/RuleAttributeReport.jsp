@@ -78,7 +78,7 @@
           <td width="65%" class="datacell"><c:out value="${RuleAttributeReportForm.ruleAttribute.className}"/>&nbsp;</td>
         </tr>
         <tr>
-          <td width="35%" align="right" class="thnormal">Message Entity:</td>
+          <td width="35%" align="right" class="thnormal">Service Namespace:</td>
           <td width="65%" class="datacell"><c:out value="${RuleAttributeReportForm.ruleAttribute.serviceNamespace}"/>&nbsp;</td>
         </tr>
         <tr>

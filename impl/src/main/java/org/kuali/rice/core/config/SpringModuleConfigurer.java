@@ -87,7 +87,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
 
     /**
      * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
-     * resource loader name (and current context config message entity)
+     * resource loader name (and current context config service namespace)
      * @see org.kuali.rice.core.config.BaseModuleConfigurer#createResourceLoader()
      */
     @Override

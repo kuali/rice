@@ -12,7 +12,7 @@
     <param name="xml.pipeline.lifecycle.enabled">true</param>
     <param name="email.reminder.lifecycle.enabled">true</param>
 	<param name="environment">dev</param>
-	<param name="message.entity">KEW</param>
+	<param name="service.namespace">KEW</param>
 
 	<!-- default note attribute to use when none is given -->
 	<param name="default.note.class">DefaultNoteAttribute</param>

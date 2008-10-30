@@ -86,7 +86,7 @@ public interface Config {
 
 	public static final String INSTITUTIONAL_PLUGIN_NAME = "plugin.institutional.name";
 
-	public static final String MESSAGE_ENTITY = "message.entity";
+	public static final String SERVICE_NAMESPACE = "service.namespace";
 
 	public static final String THREAD_POOL_SIZE = "threadPool.size";
 	

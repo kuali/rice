@@ -37,7 +37,7 @@ public class RiceResourceLoaderFactory {
 	private static void initialize() {
 		Config config = ConfigContext.getCurrentContextConfig();
 		if (config.getServiceNamespace() == null) {
-			throw new ConfigurationException("No message entity available at this time");
+			throw new ConfigurationException("No service namespace available at this time");
 		}
 		if (getRootResourceLoaderName() == null) {
 			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RICE_ROOT_RESOURCE_LOADER_NAME));

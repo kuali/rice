@@ -96,12 +96,12 @@ public class ConfigContext {
 
     /**
      * Runs a series of validation checks against the core configuration to ensure that required properties
-     * are present.  For now, this just validates the message entity.
+     * are present.  For now, this just validates the service namespace.
      */
     public static void validateCoreConfiguration() {
     	Config config = getRootConfig();
     	if (StringUtils.isEmpty(config.getServiceNamespace())) {
-    		throw new ConfigurationException("The " + Config.MESSAGE_ENTITY + " configuration parameter is required.");
+    		throw new ConfigurationException("The " + Config.SERVICE_NAMESPACE + " configuration parameter is required.");
     	}
     }
     

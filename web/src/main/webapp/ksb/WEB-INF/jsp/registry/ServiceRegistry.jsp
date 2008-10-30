@@ -47,7 +47,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
-        	Message Entity: <c:out value="${ServiceRegistryForm.myserviceNamespace}"/>
+        	Service Namespace: <c:out value="${ServiceRegistryForm.myserviceNamespace}"/>
         </td>
         </tr>
         <tr>
@@ -88,7 +88,7 @@
 		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
+		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
@@ -122,7 +122,7 @@
 		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
+		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
@@ -157,7 +157,7 @@
 		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message Entity</div>" >
+		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >

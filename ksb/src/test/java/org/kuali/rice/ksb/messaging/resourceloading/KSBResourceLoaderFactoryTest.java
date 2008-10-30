@@ -36,7 +36,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 	@Test public void testCreateKSBResourceLoader() throws Exception {
 		String me = "TestME";
 		Properties props = new Properties();
-		props.put(Config.MESSAGE_ENTITY, me);
+		props.put(Config.SERVICE_NAMESPACE, me);
 		Config config = new SimpleConfig(props);
 		config.parseConfig();
 		ConfigContext.init(config);
@@ -55,7 +55,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		boolean errorThrown = false;
 		try {
 			KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader(new ArrayList<ServiceHolder>());
-			fail("should have thrown configuration exception with no message entity present");
+			fail("should have thrown configuration exception with no service namespace present");
 		} catch (ConfigurationException ce) {
 			errorThrown = true;
 		}

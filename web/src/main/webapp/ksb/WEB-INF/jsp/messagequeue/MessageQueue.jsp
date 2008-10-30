@@ -55,7 +55,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${MessageQueueForm.myIpAddress}"/><br>
-        	Message Entity: <c:out value="${MessageQueueForm.myserviceNamespace}"/>
+        	Service Namespace: <c:out value="${MessageQueueForm.myserviceNamespace}"/>
         </td>
         </tr>
         <tr>
@@ -86,7 +86,7 @@
    			</tr>
    			<tr>
   				<td class="thnormal" align="right" width="20%">
-   					Message Entity:&nbsp;
+   					Service Namespace:&nbsp;
   				</td>
   				<td class="datacell">
    					<html-el:text property="serviceNamespace${ksb_constant.ROUTE_QUEUE_FILTER_SUFFIX}" />

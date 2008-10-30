@@ -232,7 +232,7 @@
 				  		    </tr>
 
 				  		    <tr>
-				  		    	<td class="thnormal" align="right" width="20%">Message Entity:&nbsp;</td>
+				  		    	<td class="thnormal" align="right" width="20%">Service Namespace:&nbsp;</td>
 				  		    	<c:if test="${showOld}">
 					  		    	<td class="datacell">
 					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.serviceNamespace}" />

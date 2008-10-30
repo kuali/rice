@@ -104,7 +104,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private boolean isStarted = false;
 
 	public Config loadConfig(Config parentConfig) throws Exception {
-		LOG.info("Starting configuration of KSB for message entity " + getServiceNamespace(parentConfig));
+		LOG.info("Starting configuration of KSB for service namespace " + getServiceNamespace(parentConfig));
 		Config currentConfig = ConfigContext.getCurrentContextConfig();
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);
@@ -185,20 +185,20 @@ public class KSBConfigurer extends ModuleConfigurer {
 
     protected String getServiceNamespace(Config config) {
 		if (StringUtils.isBlank(config.getServiceNamespace())) {
-			throw new ConfigurationException("The 'message.entity' property was not properly configured.");
+			throw new ConfigurationException("The 'service.namespace' property was not properly configured.");
 		}
 		return config.getServiceNamespace();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void configureBus(Config config) throws Exception {
-		LOG.debug("Configuring services for Message Entity " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		configureServiceList(config, Config.BUS_DEPLOYED_SERVICES, getServices());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void configureServiceList(Config config, String key, List services) throws Exception {
-		LOG.debug("Configuring services for Message Entity " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
 		if (serviceDefinitions == null) {
 			config.getObjects().put(key, services);

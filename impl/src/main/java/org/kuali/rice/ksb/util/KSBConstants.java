@@ -26,7 +26,7 @@ public class KSBConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -958108423493026266L;
 
-    public static final String MESSAGE_ENTITY = "message.entity";
+    public static final String SERVICE_NAMESPACE = "service.namespace";
     public static final String MESSAGE_PERSISTENCE = "message.persistence";
     public static final String MESSAGING_OFF = "message.off";
     public static final String MESSAGE_DELIVERY = "message.delivery";

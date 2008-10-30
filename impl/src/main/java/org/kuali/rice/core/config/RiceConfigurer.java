@@ -232,7 +232,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 
 	@SuppressWarnings("unchecked")
 	protected void initializeConfiguration() throws Exception {
-		LOG.info("Starting Rice configuration for message entity " + this.serviceNamespace);
+		LOG.info("Starting Rice configuration for service namespace " + this.serviceNamespace);
 		Config currentConfig = parseConfig();
 		configureEnvironment(currentConfig);
 		configureServiceNamespace(currentConfig);
@@ -295,7 +295,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 
 	protected void configureServiceNamespace(Config config) {
 		if (!StringUtils.isBlank(this.serviceNamespace)) {
-			config.getProperties().put(Config.MESSAGE_ENTITY, this.serviceNamespace);
+			config.getProperties().put(Config.SERVICE_NAMESPACE, this.serviceNamespace);
 		}
 	}
 

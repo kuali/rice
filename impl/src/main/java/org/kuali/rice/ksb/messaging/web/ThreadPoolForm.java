@@ -71,7 +71,7 @@ public class ThreadPoolForm extends ActionForm {
         this.allServers = allServers;
     }
     public String getServiceNamespace() {
-	return ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY);
+	return ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.SERVICE_NAMESPACE);
     }
     public Long getMaxRetryAttempts() {
         return this.maxRetryAttempts;

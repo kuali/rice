@@ -128,7 +128,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	}
 
 	public Config loadConfig(Config parentConfig) throws Exception {
-		LOG.info("Starting configuration of KEW for message entity " + getServiceNamespace(parentConfig));
+		LOG.info("Starting configuration of KEW for service namespace " + getServiceNamespace(parentConfig));
 		Config currentConfig = parseConfig(parentConfig);
 		configureClientProtocol(currentConfig);
 		configureDataSource(currentConfig);
@@ -161,7 +161,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	protected String getServiceNamespace(Config config) {
 		if (StringUtils.isBlank(config.getServiceNamespace())) {
-			throw new ConfigurationException("The 'message.entity' property was not properly configured.");
+			throw new ConfigurationException("The 'service.namespace' property was not properly configured.");
 		}
 		return config.getServiceNamespace();
 	}

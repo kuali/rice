@@ -57,7 +57,7 @@ public class ObjectRemoterServiceImpl extends BaseLifecycle implements ObjectRem
 	}
 	
 	public void removeService(QName serviceName) {
-		LOG.debug("Removing service " + serviceName + " from message entity" + ConfigContext.getCurrentContextConfig().getServiceNamespace());
+		LOG.debug("Removing service " + serviceName + " from service namespace" + ConfigContext.getCurrentContextConfig().getServiceNamespace());
 		KSBServiceLocator.getServiceDeployer().removeRemoteServiceFromRegistry(serviceName);
 	}
 

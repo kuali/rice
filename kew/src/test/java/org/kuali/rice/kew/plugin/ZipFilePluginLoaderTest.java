@@ -63,7 +63,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
     // if (config == null) {
     // // because of previously running tests, the config might already be initialized
     // config = new SimpleConfig();
-    // config.getProperties().put(Config.MESSAGE_ENTITY, "KEW");
+    // config.getProperties().put(Config.SERVICE_NAMESPACE, "KEW");
     // ConfigContext.init(config);
     // }
     // // from RiceTestCase if this ever get put into that hierarchy
@@ -90,7 +90,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	if (config == null) {
 	    // because of previously running tests, the config might already be initialized
 	    config = new SimpleConfig();
-	    config.getProperties().put(Config.MESSAGE_ENTITY, "KEW");
+	    config.getProperties().put(Config.SERVICE_NAMESPACE, "KEW");
 	    ConfigContext.init(config);
 	}
 

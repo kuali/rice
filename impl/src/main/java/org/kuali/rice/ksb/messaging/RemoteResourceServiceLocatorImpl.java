@@ -173,7 +173,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
-			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
+			LOG.debug("Client proxies are null, Re-aquiring services.  Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
 			run();
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {

@@ -321,7 +321,7 @@ public class MessageQueueAction extends KSBAction {
 	request.setAttribute("ksb_constant", new KSBConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.SERVICE_NAMESPACE));
 	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
 	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));

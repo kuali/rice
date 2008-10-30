@@ -102,7 +102,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
          * <i>serviceNamespace</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
          * <br>
          *
-         * Where <i>serviceNamespace</i> is the message entity of the application running the thread pool, <i>m</i> is the
+         * Where <i>serviceNamespace</i> is the service namespace of the application running the thread pool, <i>m</i> is the
          * sequence number of the factory and <i>n</i> is the sequence number of the thread within the factory.
          *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

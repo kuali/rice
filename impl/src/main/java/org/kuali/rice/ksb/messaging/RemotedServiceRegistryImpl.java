@@ -177,7 +177,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 	public synchronized void run() {
 	    	String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-		LOG.debug("Checking for newly published services on message entity " + serviceNamespace + " ...");
+		LOG.debug("Checking for newly published services on service namespace " + serviceNamespace + " ...");
 
 		String serviceServletUrl = (String) ConfigContext.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {

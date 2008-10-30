@@ -308,7 +308,7 @@ public abstract class BaseConfig implements Config {
     }
 
     public String getServiceNamespace() {
-        return getProperty(MESSAGE_ENTITY);
+        return getProperty(SERVICE_NAMESPACE);
     }
 
     public String getDefaultNoteClass() {

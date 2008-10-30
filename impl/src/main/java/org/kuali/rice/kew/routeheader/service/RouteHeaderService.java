@@ -49,7 +49,7 @@ public interface RouteHeaderService {
     public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader);
 
     /**
-     * Returns the Message Entity of the {@link DocumentType} for the Document with the given ID.
+     * Returns the Service Namespace of the {@link DocumentType} for the Document with the given ID.
      */
     public String getServiceNamespaceByDocumentId(Long documentId);
 

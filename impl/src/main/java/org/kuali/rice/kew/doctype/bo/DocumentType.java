@@ -664,7 +664,7 @@ public class DocumentType implements WorkflowPersistable {
     	}
         Object searchGenerator = GlobalResourceLoader.getObject(objDef);
         if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at message entity " + getServiceNamespace() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
         }
         DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
         docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
@@ -682,7 +682,7 @@ public class DocumentType implements WorkflowPersistable {
     	}
         Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
         if (criteriaProcessor == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at message entity " + getServiceNamespace() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
         }
         return (DocumentSearchCriteriaProcessor) criteriaProcessor;
     }
@@ -779,7 +779,7 @@ public class DocumentType implements WorkflowPersistable {
     	ObjectDefinition objDef = getObjectDefinition(pname);
     	Object postProcessor = GlobalResourceLoader.getObject(objDef);
         if (postProcessor == null) {
-        	throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at message entity " + getServiceNamespace() + ": " + pname);
+        	throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
         }
     	if (postProcessor instanceof PostProcessorRemote) {
             postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote)postProcessor);
@@ -1003,8 +1003,8 @@ public class DocumentType implements WorkflowPersistable {
 
 
     /**
-     * Returns the message entity for this DocumentType which can be specified on the document type itself,
-     * inherited from the parent, or defaults to the configured message entity of the application.
+     * Returns the service namespace for this DocumentType which can be specified on the document type itself,
+     * inherited from the parent, or defaults to the configured service namespace of the application.
      */
 	public String getServiceNamespace() {
 		if (this.serviceNamespace != null) {
@@ -1022,7 +1022,7 @@ public class DocumentType implements WorkflowPersistable {
 	}
 
 	/**
-	 * Returns the actual specified message entity for this document type which could be null.
+	 * Returns the actual specified service namespace for this document type which could be null.
 	 */
 	public String getActualServiceNamespace() {
 		return serviceNamespace;

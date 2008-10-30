@@ -62,7 +62,7 @@ public class ServiceRegistryAction extends KSBAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ServiceRegistryForm form = (ServiceRegistryForm)actionForm;
 	form.setMyIpAddress(RiceUtilities.getIpNumber());
-	form.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	form.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.SERVICE_NAMESPACE));
 	form.setDevMode(ConfigContext.getCurrentContextConfig().getDevMode());
 	RemotedServiceRegistry registry = KSBServiceLocator.getServiceDeployer();
 	RemoteResourceServiceLocator remoteLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();

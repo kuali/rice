@@ -6,7 +6,7 @@
 	<param name="serviceServletUrl">http://localhost:9912/${app.context.name}/remoting/</param>
 
 	<param name="transaction.timeout">3600</param>
-	<param name="message.entity">TEST</param>
+	<param name="service.namespace">TEST</param>
 	<param name="serviceServletUrl">http://localhost:9912/${app.context.name}/remoting/</param>
 	
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>

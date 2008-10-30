@@ -99,7 +99,7 @@
 						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.serviceName}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
-								<td class="thnormal" align="right" width="20%">Message Entity:</td>
+								<td class="thnormal" align="right" width="20%">Service Namespace:</td>
 						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>

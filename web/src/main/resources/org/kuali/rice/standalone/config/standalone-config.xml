@@ -13,7 +13,7 @@
 
     <!-- KSB -->
 
-    <param name="message.entity">RICE</param>
+    <param name="service.namespace">RICE</param>
     <param name="http.port">8080</param>
     
     <param name="bam.enabled">false</param>

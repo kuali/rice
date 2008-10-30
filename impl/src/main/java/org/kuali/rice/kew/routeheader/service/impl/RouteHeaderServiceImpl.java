@@ -121,8 +121,8 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         }
     }
 
-    public String getMessageEntityByDocumentId(Long documentId) {
-    	return getRouteHeaderDAO().getMessageEntityByDocumentId(documentId);
+    public String getServiceNamespaceByDocumentId(Long documentId) {
+    	return getRouteHeaderDAO().getServiceNamespaceByDocumentId(documentId);
     }
 
     public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {

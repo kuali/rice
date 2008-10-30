@@ -51,7 +51,7 @@ public interface RouteHeaderService {
     /**
      * Returns the Message Entity of the {@link DocumentType} for the Document with the given ID.
      */
-    public String getMessageEntityByDocumentId(Long documentId);
+    public String getServiceNamespaceByDocumentId(Long documentId);
 
     public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
 

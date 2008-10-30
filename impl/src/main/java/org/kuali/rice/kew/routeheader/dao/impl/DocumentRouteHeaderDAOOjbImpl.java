@@ -214,11 +214,11 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return false;
     }
 
-    public String getMessageEntityByDocumentId(Long documentId) {
+    public String getServiceNamespaceByDocumentId(Long documentId) {
     	if (documentId == null) {
     		throw new IllegalArgumentException("Encountered a null document ID.");
     	}
-    	String messageEntity = null;
+    	String serviceNamespace = null;
         PersistenceBroker broker = null;
         Connection conn = null;
         PreparedStatement statement = null;
@@ -233,9 +233,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             statement.setLong(1, documentId);
             rs = statement.executeQuery();
             if (rs.next()) {
-                messageEntity = rs.getString(1);
+                serviceNamespace = rs.getString(1);
                 if (rs.wasNull()) {
-                	messageEntity = null;
+                	serviceNamespace = null;
                 }
             }
             rs.close();
@@ -254,7 +254,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 LOG.error("Failed closing connection: " + e.getMessage(), e);
             }
         }
-        return messageEntity;
+        return serviceNamespace;
     }
 
     public String getDocumentStatus(Long documentId) {

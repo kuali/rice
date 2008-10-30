@@ -40,7 +40,7 @@ public interface DocumentRouteHeaderDAO {
   public Long getNextRouteHeaderId();
   public Collection findPendingByResponsibilityIds(Set responsibilityIds);
   public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader);
-  public String getMessageEntityByDocumentId(Long documentId);
+  public String getServiceNamespaceByDocumentId(Long documentId);
   public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
   public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
   public String getDocumentStatus(Long documentId);

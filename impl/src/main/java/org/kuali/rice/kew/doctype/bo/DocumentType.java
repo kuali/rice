@@ -75,7 +75,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
- * can construct {@link ObjectDefinition} objects correctly to account for MessageEntity inheritance.
+ * can construct {@link ObjectDefinition} objects correctly to account for ServiceNamespace inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -122,7 +122,7 @@ public class DocumentType implements WorkflowPersistable {
 	@Column(name="RPT_GRP_ID")
 	private Long reportingWorkgroupId;
     @Column(name="SVC_NMSPC")
-	private String messageEntity;
+	private String serviceNamespace;
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
@@ -352,7 +352,7 @@ public class DocumentType implements WorkflowPersistable {
     public void setDocumentTypeSecurityXml(String documentTypeSecurityXml) {
       this.documentTypeSecurityXml = documentTypeSecurityXml;
       if (!Utilities.isEmpty(documentTypeSecurityXml.trim())) {
-        this.documentTypeSecurity = new DocumentTypeSecurity(this.getMessageEntity(), documentTypeSecurityXml);
+        this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
       }
       else {
         this.documentTypeSecurity = null;
@@ -364,7 +364,7 @@ public class DocumentType implements WorkflowPersistable {
           this.documentTypeSecurityXml != null &&
           !Utilities.isEmpty(documentTypeSecurityXml.trim()))
       {
-           this.documentTypeSecurity = new DocumentTypeSecurity(this.getMessageEntity(), documentTypeSecurityXml);
+           this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
       }
       if ( (this.documentTypeSecurity == null) && (getParentDocType() != null) ) {
     	  return getParentDocType().getDocumentTypeSecurity();
@@ -664,7 +664,7 @@ public class DocumentType implements WorkflowPersistable {
     	}
         Object searchGenerator = GlobalResourceLoader.getObject(objDef);
         if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at message entity " + getMessageEntity() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at message entity " + getServiceNamespace() + ": " + objDef.getClassName());
         }
         DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
         docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
@@ -682,7 +682,7 @@ public class DocumentType implements WorkflowPersistable {
     	}
         Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
         if (criteriaProcessor == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at message entity " + getMessageEntity() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at message entity " + getServiceNamespace() + ": " + objDef.getClassName());
         }
         return (DocumentSearchCriteriaProcessor) criteriaProcessor;
     }
@@ -751,10 +751,10 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
-    	if (ruleAttribute.getMessageEntity() == null) {
-    		return new ObjectDefinition(ruleAttribute.getClassName(), this.getMessageEntity());
+    	if (ruleAttribute.getServiceNamespace() == null) {
+    		return new ObjectDefinition(ruleAttribute.getClassName(), this.getServiceNamespace());
     	} else {
-    		return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
+    		return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
     	}
     }
 
@@ -779,7 +779,7 @@ public class DocumentType implements WorkflowPersistable {
     	ObjectDefinition objDef = getObjectDefinition(pname);
     	Object postProcessor = GlobalResourceLoader.getObject(objDef);
         if (postProcessor == null) {
-        	throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at message entity " + getMessageEntity() + ": " + pname);
+        	throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at message entity " + getServiceNamespace() + ": " + pname);
         }
     	if (postProcessor instanceof PostProcessorRemote) {
             postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote)postProcessor);
@@ -789,7 +789,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public ObjectDefinition getObjectDefinition(String objectName) {
-    	return new ObjectDefinition(objectName, getMessageEntity());
+    	return new ObjectDefinition(objectName, getServiceNamespace());
     }
 
     /**
@@ -1006,17 +1006,17 @@ public class DocumentType implements WorkflowPersistable {
      * Returns the message entity for this DocumentType which can be specified on the document type itself,
      * inherited from the parent, or defaults to the configured message entity of the application.
      */
-	public String getMessageEntity() {
-		if (this.messageEntity != null) {
-			return messageEntity;
+	public String getServiceNamespace() {
+		if (this.serviceNamespace != null) {
+			return serviceNamespace;
 		}
 		String returnVal = null;
 		if (getParentDocType() != null) {
-			returnVal = getParentDocType().getMessageEntity();
+			returnVal = getParentDocType().getServiceNamespace();
 		}
 		if (returnVal == null) {
 //			returnVal = "KEW";
-			returnVal = ConfigContext.getCurrentContextConfig().getMessageEntity();
+			returnVal = ConfigContext.getCurrentContextConfig().getServiceNamespace();
 		}
 		return returnVal;
 	}
@@ -1024,12 +1024,12 @@ public class DocumentType implements WorkflowPersistable {
 	/**
 	 * Returns the actual specified message entity for this document type which could be null.
 	 */
-	public String getActualMessageEntity() {
-		return messageEntity;
+	public String getActualServiceNamespace() {
+		return serviceNamespace;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceNamespace(String ServiceNamespace) {
+		this.serviceNamespace = ServiceNamespace;
 	}
 
 

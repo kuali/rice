@@ -69,6 +69,7 @@ public interface XmlConstants {
     public static final String DOCUMENT_TYPE = "documentType";
     public static final String PARENT = "parent";
     public static final String MESSAGE_ENTITY = "messageEntity";
+    public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String POST_PROCESSOR_NAME = "postProcessorName";
     public static final String SUPER_USER_WORKGROUP_NAME = "superUserWorkgroupName";
     public static final String BLANKET_APPROVE_WORKGROUP_NAME = "blanketApproveWorkgroupName";

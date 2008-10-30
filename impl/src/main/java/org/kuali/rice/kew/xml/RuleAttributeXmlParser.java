@@ -108,7 +108,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
 		String label = "";
 		String description = "";
 		String type = "";
-		String messageEntity = null;
+		String serviceNamespace = null;
 		Node xmlConfig = null;
 		for (int i = 0; i < ruleAttributeNode.getChildNodes().getLength(); i++) {
 			Node childNode = ruleAttributeNode.getChildNodes().item(i);
@@ -127,7 +127,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
 					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
 			} else if (MESSAGE_ENTITY.equals(childNode.getNodeName())) {
-				messageEntity = childNode.getFirstChild().getNodeValue();
+				serviceNamespace = childNode.getFirstChild().getNodeValue();
 			}
 		}
 		if (Utilities.isEmpty(name)) {
@@ -155,7 +155,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
             description = label;
         }
 		ruleAttribute.setDescription(description);
-		ruleAttribute.setMessageEntity(messageEntity);
+		ruleAttribute.setServiceNamespace(serviceNamespace);
 		
 		if(xmlConfig != null){
 			try {

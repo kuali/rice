@@ -755,7 +755,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 	public ActionForward queueDocumentRequeuer(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		DocumentRequeuerService docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getMessageEntity(), docForm.getRouteHeader().getRouteHeaderId(), 0);
+		DocumentRequeuerService docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getServiceNamespace(), docForm.getRouteHeader().getRouteHeaderId(), 0);
 		docRequeue.requeueDocument(docForm.getRouteHeader().getRouteHeaderId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document Requeuer was successfully scheduled"));

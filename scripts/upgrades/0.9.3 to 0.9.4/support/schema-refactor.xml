@@ -829,7 +829,7 @@
         <column name="FDOC_DESC" size="40" type="VARCHAR"/>
         <column oldName="ORG_DOC_NBR" newName="ORG_DOC_HDR_ID" size="10" type="VARCHAR"/>
         <column oldName="FDOC_TMPL_NBR" newName="TMPL_DOC_HDR_ID"  size="14" type="VARCHAR"/>
-        <column oldName="FDOC_EXPLAIN_TXT" newName="EXPLAIN"  size="400" type="VARCHAR"/>
+        <column oldName="FDOC_EXPLAIN_TXT" newName="EXPLANATION"  size="400" type="VARCHAR"/>
         <unique oldName="FP_DOC_HEADER_TC0" newName="KRNS_DOC_HDR_TI1">
             <unique-column name="OBJ_ID"/>
         </unique>

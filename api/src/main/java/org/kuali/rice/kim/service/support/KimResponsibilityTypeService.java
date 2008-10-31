@@ -61,5 +61,11 @@ public interface KimResponsibilityTypeService extends KimTypeService {
     List<Map<String,String>> getAllImplyingDetails( Map<String,String> requestedDetails );
     // TODO: need list versions of the implyed/ing methods?
 
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.) 
+     */
+    boolean areActionsAtAssignmentLevel();
 	
 }

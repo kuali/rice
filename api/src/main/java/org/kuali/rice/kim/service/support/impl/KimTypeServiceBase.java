@@ -32,9 +32,9 @@ import org.kuali.rice.kim.service.support.KimTypeService;
  */
 public class KimTypeServiceBase implements KimTypeService {
 
-	protected List<String> acceptedAttributeNames;
+	protected List<String> acceptedAttributeNames = new ArrayList<String>();;
 	
-	protected List<KimAttributesTranslator> kimAttributesTranslators;
+	protected List<KimAttributesTranslator> kimAttributesTranslators = new ArrayList<KimAttributesTranslator>();
 
 	/**
 	 * Returns null, to indicate that there is no custom workflow document needed for this type.
@@ -49,12 +49,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 * This method matches input attribute set entries and standard attribute set entries using liternal string match.
 	 * 
-	 * @param qualification
-	 * @param roleQualifier
-	 * @return
 	 */
-	public boolean performMatch(final AttributeSet inputAttributeSet, final AttributeSet standardAttributeSet) {
-		for ( Map.Entry<String, String> entry : standardAttributeSet.entrySet() ) {
+	public boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;
 			}
@@ -69,13 +66,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 * This method matches input attribute set entries and standard attribute set entries using wild card match.
 	 * "*" is the only wildcard supported currently.
-	 * 
-	 * @param qualification
-	 * @param roleQualifier
-	 * @return
 	 */
-	public boolean performMatchUsingWildcard(final AttributeSet inputAttributeSet, final AttributeSet standardAttributeSet) {
-		for ( Map.Entry<String, String> entry : standardAttributeSet.entrySet() ) {
+	public boolean performMatchUsingWildcard(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;
 			}
@@ -94,7 +87,10 @@ public class KimTypeServiceBase implements KimTypeService {
 		return false;
 	}
 	
-	public AttributeSet translateInputAttributeSet(final AttributeSet qualification){
+	public AttributeSet translateInputAttributeSet(AttributeSet qualification){
+		if ( qualification == null ) {
+			return null;
+		}
 		AttributeSet translatedQualification = new AttributeSet();
 		translatedQualification.putAll(qualification);
 		List<String> attributeNames;
@@ -111,15 +107,11 @@ public class KimTypeServiceBase implements KimTypeService {
 	/**
 	 * 
 	 * This method ...
-	 * 
-	 * @param qualification
-	 * @param roleQualifierList
-	 * @return
 	 */
-	public boolean performMatches(final AttributeSet inputAttributeSet, final List<AttributeSet> standardAttributeSets){
-		for ( AttributeSet standardAttributeSet : standardAttributeSets ) {
+	public boolean performMatches(AttributeSet inputAttributeSet, List<AttributeSet> storedAttributeSets){
+		for ( AttributeSet storedAttributeSet : storedAttributeSets ) {
 			// if one matches, return true
-			if ( performMatch(inputAttributeSet, standardAttributeSet) ) {
+			if ( performMatch(inputAttributeSet, storedAttributeSet) ) {
 				return true;
 			}
 		}
@@ -133,7 +125,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
-	public AttributeSet validateAttributes(final AttributeSet attributes) {
+	public AttributeSet validateAttributes( AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
 		// call the individual field validators
 		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
@@ -155,9 +147,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	public List<String> validateAttribute(String attributeName, String attributeValue) {
 		return null;
 	}
-	
+
 	/**
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getAcceptedQualificationAttributeNames()
+	 * @see org.kuali.rice.kim.service.support.KimTypeService#getAcceptedAttributeNames()
 	 */
 	public List<String> getAcceptedAttributeNames() {
 		return this.acceptedAttributeNames;
@@ -167,8 +159,12 @@ public class KimTypeServiceBase implements KimTypeService {
 		this.acceptedAttributeNames = acceptedQualificationAttributeNames;
 	}
 	
+	public void addAcceptedAttributeName( String acceptedAttributeName ) {
+		acceptedAttributeNames.add( acceptedAttributeName );
+	}
+
 	/**
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#supportsQualificationAttributes(java.util.List)
+	 * @see org.kuali.rice.kim.service.support.KimTypeService#supportsAttributes(java.util.List)
 	 */
 	public boolean supportsAttributes(List<String> attributeNames) {
 		for ( String attributeName : attributeNames ) {
@@ -182,7 +178,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	/**
 	 * Returns null - no inquiry.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getInquiryUrl(java.lang.String, java.util.Map)
+	 * @see org.kuali.rice.kim.service.support.KimTypeService#getInquiryUrl(java.lang.String, AttributeSet)
 	 */
 	public String getInquiryUrl(String attributeName, AttributeSet relevantAttributeData) {
 		return null;
@@ -211,5 +207,10 @@ public class KimTypeServiceBase implements KimTypeService {
 			List<KimAttributesTranslator> kimAttributesTranslators) {
 		this.kimAttributesTranslators = kimAttributesTranslators;
 	}
+	
+	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
+		kimAttributesTranslators.add( attributesTranslator );
+	}
+	
 
 }

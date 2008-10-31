@@ -343,7 +343,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             // we are adding to a collection; get the relationships for that object; 
                         	// is there one for personUniversalIdentifier?
                             List<BusinessObjectRelationship> relationships = 
-                            		businessObjectMetaDataService.getBusinessObjectRelationships( collectionBusinessObjectClass );
+                            		getBusinessObjectMetaDataService().getBusinessObjectRelationships( collectionBusinessObjectClass );
                             // JHK: this seems like a hack - looking at all relationships for a BO does not guarantee that we get the right one
                             // JHK: why not inspect the objects like above?  Is it the property path problems because of the .add. portion?
                             for ( BusinessObjectRelationship rel : relationships ) {

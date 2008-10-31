@@ -226,7 +226,16 @@
     </property>  
   </bean>
 
-  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl" />
+  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
+    p:entityPrincipalCacheMaxSize="200"
+    p:entityPrincipalCacheMaxAge="1000"
+    p:groupCacheMaxSize="200"
+    p:groupCacheMaxAge="1000"
+    p:permissionCacheMaxSize="200"
+    p:permissionCacheMaxAge="1000"
+    p:responsibilityCacheMaxSize="200"
+    p:responsibilityCacheMaxAge="1000"
+  />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />

@@ -22,8 +22,9 @@ import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.ResponsibilityService;
+import org.springframework.beans.factory.InitializingBean;
 
-public class IdentityManagementServiceImpl implements IdentityManagementService {
+public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
 	
 	protected AuthenticationService authenticationService; 
 //	protected AuthorizationService authorizationService; 
@@ -32,19 +33,77 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	protected IdentityService identityService;
 	protected GroupService groupService;
 	
-	protected Map<String,SoftReference<KimEntity>> entityByIdCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
-	protected Map<String,SoftReference<KimEntity>> entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntity>>( 100 );
-	protected Map<String,SoftReference<KimPrincipal>> principalByIdCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
-	protected Map<String,SoftReference<KimPrincipal>> principalByNameCache = new HashMap<String,SoftReference<KimPrincipal>>( 100 );
-	protected Map<String,SoftReference<GroupInfo>> groupByIdCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
-	protected Map<String,SoftReference<GroupInfo>> groupByNameCache = new HashMap<String,SoftReference<GroupInfo>>( 100 );
-	protected Map<String,SoftReference<List<String>>> groupIdsForPrincipalCache = new HashMap<String,SoftReference<List<String>>>( 100 );
-	protected Map<String,SoftReference<List<? extends KimGroup>>> groupsForPrincipalCache = new HashMap<String,SoftReference<List<? extends KimGroup>>>( 100 );
-	protected Map<String,SoftReference<Boolean>> isMemberOfGroupCache = new HashMap<String,SoftReference<Boolean>>( 100 );
-	protected Map<String,SoftReference<Boolean>> isMemberOfGroupByNameCache = new HashMap<String,SoftReference<Boolean>>( 100 );
-	protected Map<String,SoftReference<List<String>>> groupMemberPrincipalIdsCache = new HashMap<String,SoftReference<List<String>>>( 100 );
-	protected Map<String,SoftReference<Map<AttributeSet, Boolean>>> hasPermissionCache = new HashMap<String,SoftReference<Map<AttributeSet, Boolean>>>( 100 );
-	protected Map<String,SoftReference<Map<AttributeSet, Boolean>>> hasPermissionByTemplateCache = new HashMap<String,SoftReference<Map<AttributeSet, Boolean>>>( 100 );
+	protected int entityPrincipalCacheMaxSize = 200;
+	protected int entityPrincipalCacheMaxAge = 1000;
+	protected int groupCacheMaxSize = 200;
+	protected int groupCacheMaxAge = 1000;
+	protected int permissionCacheMaxSize = 200;
+	protected int permissionCacheMaxAge = 1000;
+	protected int responsibilityCacheMaxSize = 200;
+	protected int responsibilityCacheMaxAge = 1000;
+	
+	protected Map<String,SoftReference<KimEntity>> entityByIdCache;
+	protected Map<String,SoftReference<KimEntity>> entityByPrincipalNameCache;
+	protected Map<String,SoftReference<KimPrincipal>> principalByIdCache;
+	protected Map<String,SoftReference<KimPrincipal>> principalByNameCache;
+	protected Map<String,SoftReference<GroupInfo>> groupByIdCache;
+	protected Map<String,SoftReference<GroupInfo>> groupByNameCache;
+	protected Map<String,SoftReference<List<String>>> groupIdsForPrincipalCache;
+	protected Map<String,SoftReference<List<? extends KimGroup>>> groupsForPrincipalCache;
+	protected Map<String,SoftReference<Boolean>> isMemberOfGroupCache;
+	protected Map<String,SoftReference<Boolean>> isMemberOfGroupByNameCache;
+	protected Map<String,SoftReference<List<String>>> groupMemberPrincipalIdsCache;
+	protected Map<String,SoftReference<Map<AttributeSet, Boolean>>> hasPermissionCache;
+	protected Map<String,SoftReference<Map<AttributeSet, Boolean>>> hasPermissionByTemplateCache;
+	
+	public void afterPropertiesSet() throws Exception {
+		entityByIdCache = new HashMap<String,SoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
+		entityByPrincipalNameCache = new HashMap<String,SoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
+		principalByIdCache = new HashMap<String,SoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
+		principalByNameCache = new HashMap<String,SoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
+		groupByIdCache = new HashMap<String,SoftReference<GroupInfo>>( groupCacheMaxSize );
+		groupByNameCache = new HashMap<String,SoftReference<GroupInfo>>( groupCacheMaxSize );
+		groupIdsForPrincipalCache = new HashMap<String,SoftReference<List<String>>>( groupCacheMaxSize );
+		groupsForPrincipalCache = new HashMap<String,SoftReference<List<? extends KimGroup>>>( groupCacheMaxSize );
+		isMemberOfGroupCache = new HashMap<String,SoftReference<Boolean>>( groupCacheMaxSize );
+		isMemberOfGroupByNameCache = new HashMap<String,SoftReference<Boolean>>( groupCacheMaxSize );
+		groupMemberPrincipalIdsCache = new HashMap<String,SoftReference<List<String>>>( groupCacheMaxSize );
+		hasPermissionCache = new HashMap<String,SoftReference<Map<AttributeSet, Boolean>>>( permissionCacheMaxSize );
+		hasPermissionByTemplateCache = new HashMap<String,SoftReference<Map<AttributeSet, Boolean>>>( permissionCacheMaxSize );	
+	}
+
+	public void flushAllCaches() {
+		flushEntityPrincipalCaches();
+		flushGroupCaches();
+		flushPermissionCaches();
+		flushResponsibilityCaches();
+	}
+	
+	public void flushEntityPrincipalCaches() {
+		entityByIdCache.clear();
+		entityByPrincipalNameCache.clear();
+		principalByIdCache.clear();
+		principalByNameCache.clear();
+	}
+	
+	public void flushGroupCaches() {
+		groupByIdCache.clear();
+		groupByNameCache.clear();
+		groupIdsForPrincipalCache.clear();
+		groupsForPrincipalCache.clear();
+		isMemberOfGroupCache.clear();
+		isMemberOfGroupByNameCache.clear();
+		groupMemberPrincipalIdsCache.clear();
+	}
+	
+	public void flushPermissionCaches() {
+		hasPermissionCache.clear();
+		hasPermissionByTemplateCache.clear();
+	}
+
+	public void flushResponsibilityCaches() {
+		// nothing currently being cached
+	}
 	
 	protected KimEntity getEntityByIdCache( String entityId ) {
 		SoftReference<KimEntity> entityRef = entityByIdCache.get( entityId );
@@ -562,6 +621,38 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
 		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
+	}
+
+	public void setEntityPrincipalCacheMaxSize(int entityPrincipalCacheMaxSize) {
+		this.entityPrincipalCacheMaxSize = entityPrincipalCacheMaxSize;
+	}
+
+	public void setEntityPrincipalCacheMaxAge(int entityPrincipalCacheMaxAge) {
+		this.entityPrincipalCacheMaxAge = entityPrincipalCacheMaxAge;
+	}
+
+	public void setGroupCacheMaxSize(int groupCacheMaxSize) {
+		this.groupCacheMaxSize = groupCacheMaxSize;
+	}
+
+	public void setGroupCacheMaxAge(int groupCacheMaxAge) {
+		this.groupCacheMaxAge = groupCacheMaxAge;
+	}
+
+	public void setPermissionCacheMaxSize(int permissionCacheMaxSize) {
+		this.permissionCacheMaxSize = permissionCacheMaxSize;
+	}
+
+	public void setPermissionCacheMaxAge(int permissionCacheMaxAge) {
+		this.permissionCacheMaxAge = permissionCacheMaxAge;
+	}
+
+	public void setResponsibilityCacheMaxSize(int responsibilityCacheMaxSize) {
+		this.responsibilityCacheMaxSize = responsibilityCacheMaxSize;
+	}
+
+	public void setResponsibilityCacheMaxAge(int responsibilityCacheMaxAge) {
+		this.responsibilityCacheMaxAge = responsibilityCacheMaxAge;
 	}
 
 }

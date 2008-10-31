@@ -35,7 +35,6 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -64,27 +63,11 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
-     */
-    @Deprecated
-    public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
-    	return hasPermission(principalId, KNSConstants.KNS_NAMESPACE, permissionName, permissionDetails);
-    }
-
-    /**
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
-    }
-
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-     */
-    @Deprecated
-    public boolean isAuthorized(String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return isAuthorized(principalId, KNSConstants.KNS_NAMESPACE, permissionName, permissionDetails, qualification);
     }
 
     /**
@@ -102,23 +85,6 @@ public class PermissionServiceImpl implements PermissionService {
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
-     */
-    @Deprecated
-    public boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails) {
-    	return isAuthorized( principalId, permissionTemplateName, permissionDetails, null );
-    }
-
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-     */
-    @Deprecated
-    public boolean isAuthorizedByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<String> roleIds = getRoleIdsForPermissionTemplate( KNSConstants.KNS_NAMESPACE, permissionTemplateName, permissionDetails, qualification );
-    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
-    }
-    
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
@@ -160,18 +126,6 @@ public class PermissionServiceImpl implements PermissionService {
     	
     	return results;    	
     }
-
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    @Deprecated
-    public List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( KNSConstants.KNS_NAMESPACE, permissionName );
-    	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
-    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
-    }
     
     /**
      * Compare each of the passed in permissions with the given permissionDetails.  Those that
@@ -210,20 +164,6 @@ public class PermissionServiceImpl implements PermissionService {
     public List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails, qualification );
-    	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
-    	for ( RoleMembershipInfo rm : roleMembers ) {
-    		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );
-    	}
-    	return results;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    @Deprecated
-    public List<PermissionAssigneeInfo> getPermissionAssignees( String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
-    	List<String> roleIds = getRoleIdsForPermission( KNSConstants.KNS_NAMESPACE, permissionName, permissionDetails, qualification );
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );

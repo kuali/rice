@@ -54,23 +54,6 @@ public interface ResponsibilityService {
      */
     boolean hasResponsibilityByTemplateName( String principalId, String namespaceCode, String responsibilityTemplateName, AttributeSet qualification, AttributeSet responsibilityDetails );
     
- 	/** 
- 	 * Return the responsibility object for the given unique combination of namespace,
- 	 * component and responsibility name.
- 	 */
-    @Deprecated
-    List<KimResponsibilityInfo> getResponsibilitiesByName( String responsibilityName );
-    
-    /**
-     * Check whether the principal has the given responsibility within the passed qualifier.
-     */
-    @Deprecated
-    boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
-    
-	@Deprecated
-   	List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
-   	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails);
-   	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails);
+   	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
+   	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
 }

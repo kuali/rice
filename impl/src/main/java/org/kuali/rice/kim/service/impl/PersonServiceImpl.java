@@ -456,14 +456,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	public Class<? extends Person> getPersonImplementationClass() {
 		return personDao.getPersonImplementationClass();
 	}
-
-	/**
-	 * @return the personEntityTypeCode
-	 */
-	@Deprecated
-	public String getPersonEntityTypeCode() {
-		return personDao.getPersonEntityTypeCodes().get( 0 );
-	}
 	
 	public List<String> getPersonEntityTypeCodes() {
 		return personDao.getPersonEntityTypeCodes();

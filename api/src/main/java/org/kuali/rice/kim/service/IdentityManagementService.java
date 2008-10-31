@@ -59,8 +59,6 @@ public interface IdentityManagementService {
 	boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName);
 	List<String> getGroupMemberPrincipalIds(String groupId);
 	List<String> getDirectGroupMemberPrincipalIds(String groupId);
-	
-//    boolean groupExistsByName( String namespaceCode, String groupName );
     
 	// *******************************
 	// AuthenticationService
@@ -96,26 +94,8 @@ public interface IdentityManagementService {
      * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
      */
     List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-    List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId,
-    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
-    @Deprecated
-    boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails);
-    @Deprecated
-    boolean isAuthorized( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );  
+    List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
 
-    @Deprecated
-    boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails);
-    @Deprecated
-    boolean isAuthorizedByTemplateName( String principalId, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );  
-
-    /**
-     * Returns the matching permission objects for a principal.
-     * 
-     * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
-     */
-    @Deprecated
-    List<? extends KimPermission> getAuthorizedPermissions( String principalId, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-    
     // ----------------------
     // Responsibility Methods
     // ----------------------
@@ -141,23 +121,6 @@ public interface IdentityManagementService {
      */
     boolean hasResponsibilityByTemplateName( String principalId, String namespaceCode, String responsibilityTemplateName, AttributeSet qualification, AttributeSet responsibilityDetails );
 
- 	/** 
- 	 * Return the responsibility object for the given unique combination of namespace,
- 	 * component and responsibility name.
- 	 */
-    @Deprecated
-    List<? extends KimResponsibility> getResponsibilitiesByName( String responsibilityName );
-    
-    /**
-     * Check whether the principal has the given responsibility within the passed qualifier.
-     */
-    @Deprecated
-    boolean hasResponsibility( String principalId, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
-    
-	@Deprecated
-    List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
-    List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails);
-    List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails);
+    List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
+    List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
 }

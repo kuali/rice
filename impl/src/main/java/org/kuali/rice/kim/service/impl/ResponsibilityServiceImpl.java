@@ -76,14 +76,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	}
     	return results;
     }
-
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilitiesByName(java.lang.String)
-     */
-    @Deprecated
-    public List<KimResponsibilityInfo> getResponsibilitiesByName( String responsibilityName) {
-    	return getResponsibilitiesByName(KNSConstants.KNS_NAMESPACE, responsibilityName);
-    }
     
     protected KimResponsibilityImpl getResponsibilityImpl(String responsibilityId) {
     	if ( StringUtils.isBlank( responsibilityId ) ) {
@@ -142,26 +134,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	List<String> roleIds = getRoleIdsForResponsibilities( applicableResponsibilities, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
-    
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-     */
-    @Deprecated
-    public boolean hasResponsibility(String principalId,
-    		String responsibilityName, AttributeSet qualification,
-    		AttributeSet responsibilityDetails) {
-    	return hasResponsibility(principalId, KNSConstants.KNS_NAMESPACE, responsibilityName, qualification, responsibilityDetails);
-    }
-    
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
-     */
-    @Deprecated
-    public List<ResponsibilityActionInfo> getResponsibilityActions( String responsibilityName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails) {
-    	// FIXME: remove this version of the method once external code converted
-    	return getResponsibilityActions( KNSConstants.KNS_NAMESPACE, responsibilityName, qualification, responsibilityDetails );
-	}
 
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(String, java.lang.String, AttributeSet, AttributeSet)

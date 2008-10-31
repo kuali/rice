@@ -224,7 +224,6 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertNotNull( "criteria must filter for entities with active principals", entityCriteria.get( "principals.active" ) );
 		assertNotNull( "criteria must filter for active entity types", entityCriteria.get( "entityTypes.active" ) );
 		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypes.entityTypeCode" ) );
-		assertEquals( "criteria must filter for PERSON entity types", personService.getPersonEntityTypeCode(), entityCriteria.get( "entityTypes.entityTypeCode" ) );
 		assertNotNull( "criteria must filter for first name", entityCriteria.get( "entityTypes.names.firstName" ) );
 		assertNotNull( "criteria must filter for active names", entityCriteria.get( "entityTypes.names.active" ) );
 		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "entityTypes.names.dflt" ) );

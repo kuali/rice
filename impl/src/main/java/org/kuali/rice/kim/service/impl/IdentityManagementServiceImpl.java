@@ -315,39 +315,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
     
-    @Deprecated
-    public boolean hasPermission(String principalId, String permissionName, AttributeSet permissionDetails) {
-    	return getPermissionService().hasPermission( principalId, permissionName, permissionDetails );
-    }
-    
-    @Deprecated
-    public boolean isAuthorized(String principalId,
-    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return getPermissionService().isAuthorized( principalId, permissionName, permissionDetails, qualification );
-    }
-
-    @Deprecated
-    public boolean hasPermissionByTemplateName(String principalId, String permissionTemplateName, AttributeSet permissionDetails) {
-    	return getPermissionService().hasPermissionByTemplateName( principalId, permissionTemplateName, permissionDetails );
-    }
-    
-    @Deprecated
-    public boolean isAuthorizedByTemplateName(String principalId,
-    		String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return getPermissionService().isAuthorizedByTemplateName( principalId, permissionTemplateName, permissionDetails, qualification );
-    }
-    
-    /**
-     * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    @Deprecated
-    public List<? extends KimPermission> getAuthorizedPermissions(String principalId,
-    		String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
-    	return getPermissionService().getAuthorizedPermissions( principalId, permissionName, permissionDetails, qualification );
-    }
-    
     // GROUP SERVICE
-    
     
 	public boolean isMemberOfGroup(String principalId, String groupId) {
     	Boolean isMember = getIsMemberOfGroupCache(principalId, groupId);
@@ -555,12 +523,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public KimResponsibility getResponsibility(String responsibilityId) {
 		return getResponsibilityService().getResponsibility( responsibilityId );
 	}
-
-	@Deprecated
-	public List<? extends KimResponsibility> getResponsibilitiesByName( String responsibilityName) {
-		return getResponsibilityService().getResponsibilitiesByName( responsibilityName );
-	}
-	
 	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
@@ -573,26 +535,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
 	public List<? extends KimResponsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName) {
 		return getResponsibilityService().getResponsibilitiesByName( namespaceCode, responsibilityName );
-	}
-	
-	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, java.lang.String, AttributeSet, AttributeSet)
-	 */
-	@Deprecated
-	public boolean hasResponsibility(String principalId,
-			String responsibilityName, AttributeSet qualification,
-			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasResponsibility( principalId, responsibilityName, qualification, responsibilityDetails );
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActions(java.lang.String, AttributeSet, AttributeSet)
-	 */
-	@Deprecated
-	public List<ResponsibilityActionInfo> getResponsibilityActions(String responsibilityName,
-			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityActions( responsibilityName, qualification, responsibilityDetails );
 	}
 	
 	public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,

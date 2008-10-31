@@ -74,7 +74,7 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
      */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
-    	return isAuthorized( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
+    	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
     /**

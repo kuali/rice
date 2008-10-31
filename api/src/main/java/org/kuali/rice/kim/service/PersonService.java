@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
@@ -61,41 +60,6 @@ public interface PersonService<T extends Person> {
 	 */
 	List<? extends Person> findPeople( Map<String, String> criteria, boolean unbounded );
 	
-	List<Person> getGroupMembersByGroupName(String namespace, String groupName); 
-	
-	/**
-	 * Check whether the given person belongs to the given group.  This method will do deep inspection
-	 * (through the group service) of contained workgroups and return true if the user is in any of them.
-	 * 
-	 * @return <b>true</b> if the user is in the group or sub groups.  *false* if any parameter
-	 * is null or the group does not exist.
-	 */
-	boolean isMemberOfGroup( Person person, String namespaceCode, String groupName );
-
-	/**
-	 * Check whether the given person belongs to the given group.  This method will do deep inspection
-	 * (through the group service) of contained workgroups and return true if the user is in any of them.
-	 * 
-	 * @return <b>true</b> if the user is in the group or sub groups.  *false* if any parameter
-	 * is null or the group does not exist.
-	 */
-	boolean isMemberOfGroup( Person person, String groupId );
-	
-	/** Get all the groups to which a Person belongs within a given namespace.
-	 *  If the namespaceCode is null, then all namespaces are searched.
-	 *  
-	 *  @return List of KimGroup objects.  List will be empty if the Person object 
-	 *  is null or the person does not belong to any groups within the given namespace.
-	 */
-	List<? extends KimGroup> getPersonGroups( Person person, String namespaceCode );
-
-	/** Get all the groups to which a Person belongs across all namespaces.
-	 *  
-	 *  @return List of KimGroup objects.  List will be empty if the Person object 
-	 *  is null or the person does not belong to any groups.
-	 */
-	List<? extends KimGroup> getPersonGroups( Person person );
-		
 	/**
 	 * Get the class object which points to the class used by the underlying implementation.
 	 * 

@@ -21,8 +21,9 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kns.authorization.AuthorizationStore;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.authorization.AuthorizationStore;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.AuthorizationService;
@@ -115,7 +116,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         String displayWorkgroupName = this.dataDictionaryService.getAttributeDisplayWorkgroup(entryName, attributeName);
         if (StringUtils.isNotBlank(displayWorkgroupName)) {
-            if (!user.isMember( displayWorkgroupName )) {
+            if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, displayWorkgroupName )) {
                 authorized = false;
             }
         }

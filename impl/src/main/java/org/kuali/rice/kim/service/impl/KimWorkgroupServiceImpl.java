@@ -104,7 +104,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			KimGroup group = getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 			return convertToWorkgroup(group);
 		} else {
-			KimGroup group = getIdentityManagementService().getGroupByName("KFS", ((GroupNameId)groupId).getNameId());
+			KimGroup group = getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, ((GroupNameId)groupId).getNameId());
 			return convertToWorkgroup(group);
 		}
 	}
@@ -132,7 +132,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			KimGroup group = getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 			id = group.getGroupId();
 		} else {
-			KimGroup group = getIdentityManagementService().getGroupByName("KFS", ((GroupNameId)groupId).getNameId());
+			KimGroup group = getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, ((GroupNameId)groupId).getNameId());
 			id = group.getGroupId();
 		}
 		return getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), id);
@@ -228,7 +228,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			group.setGroupId("" + workgroup.getWorkflowGroupId().getGroupId());
 		}
 		group.setGroupName(workgroup.getGroupNameId().getNameId());
-		group.setNamespaceCode("KFS");
+		group.setNamespaceCode(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE);
 		group.setGroupDescription(workgroup.getDescription());
 		group.setKimTypeId(workgroup.getWorkgroupType());
 		group.setActive(true);

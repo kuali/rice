@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -88,9 +87,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String primaryDepartmentCode = "";
 	
 	protected KualiDecimal baseSalaryAmount;
-	
-	// group is a different sub-module - use the interface/DTO only
-	protected List<? extends KimGroup> groups;
 	
 	public PersonImpl() {}
 	
@@ -335,16 +331,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-	 * Convenience method that simply calls the corresponding method on the PersonService.
-	 * 
-	 * @see org.kuali.rice.kim.bo.Person#isMember(java.lang.String)
-	 */
-	@Deprecated
-	public boolean isMember(String groupName) {
-		return getPersonService().isMemberOfGroup(this, "KFS", groupName);
-	}
-	
-	/**
 	 * Pulls the campus code from the default affiliation for the entity.
 	 * Returns null if no default affiliation is set.
 	 * @see org.kuali.rice.kim.bo.Person#getCampusCode()
@@ -366,18 +352,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		return m;
 	}
 
-	/**
-	 * @return the groups
-	 */
-	@Deprecated
-	public List<? extends KimGroup> getGroups() {
-		// TODO: eliminate this method
-		if ( groups == null ) {
-			groups = getIdentityManagementService().getGroupsForPrincipal(getPrincipalId());
-		}
-		return groups;
-	}
-	
 	/**
 	 * @return the personService
 	 */

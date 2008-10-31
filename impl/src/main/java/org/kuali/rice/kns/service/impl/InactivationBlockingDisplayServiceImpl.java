@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
@@ -35,9 +34,6 @@ import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-import org.kuali.rice.kns.web.format.CollectionFormatter;
-import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -134,7 +130,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 				fieldAuthorizations.put(pkFieldName, Boolean.TRUE);
 			}
 			else {
-				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(GlobalVariables.getUserSession().getPerson().isMember(authorizedWorkgroup)));
+				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, authorizedWorkgroup)));
 			}
 		}
 		

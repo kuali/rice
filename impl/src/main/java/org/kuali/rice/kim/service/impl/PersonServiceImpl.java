@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +26,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -383,61 +380,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
         }
         return processedFieldValues;
     }
-    
-	// GROUP RELATED METHODS
-
-    public List<Person> getGroupMembersByGroupName(String namespace, String groupName) { 
-		List<Person> members = new ArrayList<Person>();
-		KimGroup group = identityManagementService.getGroupByName(namespace, groupName);
-		for (String id: identityManagementService.getGroupMemberPrincipalIds(group.getGroupId())) {
-			Person person = KIMServiceLocator.getPersonService().getPerson(id);
-			members.add(person);
-		}
-		return members;
-	}
-    
-    /**
-	 * @see org.kuali.rice.kim.service.PersonService#getPersonGroups(org.kuali.rice.kim.bo.Person, String)
-	 */
-	public List<? extends KimGroup> getPersonGroups(Person person, String namespaceCode) {
-		return identityManagementService.getGroupsForPrincipal( person.getPrincipalId(), namespaceCode );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.PersonService#getPersonGroups(org.kuali.rice.kim.bo.Person)
-	 */
-	public List<? extends KimGroup> getPersonGroups(Person person) {
-		return getPersonGroups( person, null );
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.PersonService#isMemberOfGroup(org.kuali.rice.kim.bo.Person, String, java.lang.String)
-	 */
-	public boolean isMemberOfGroup(Person person, String namespaceCode, String groupName) {
-		if ( person == null || namespaceCode == null || groupName == null ) {
-			return false;
-		}
-		if ("kualiUniversalGroup".equals(groupName)) {
-			return true;
-		}
-		KimGroup group = identityManagementService.getGroupByName( namespaceCode, groupName );
-		if ( group == null ) {
-			return false;
-		}
-		return isMemberOfGroup( person, group.getGroupId() );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.PersonService#isMemberOfGroup(org.kuali.rice.kim.bo.Person, java.lang.String)
-	 */
-	public boolean isMemberOfGroup( Person person, String groupId ) {
-		if ( person == null || groupId == null ) {
-			return false;
-		}
-		return identityManagementService.isMemberOfGroup( person.getPrincipalId(), groupId );
-	}
-
-	
 	
 	public boolean canAccessAnyModule( Person person ) {
 		return true;

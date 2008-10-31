@@ -199,7 +199,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
     }
 
     private KimGroup buildGroup(String groupName) throws GroupNotFoundException {
-        KimGroup group = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName("KFS", groupName);
+        KimGroup group = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, groupName);
         if(null == group) {
             return group;
         }

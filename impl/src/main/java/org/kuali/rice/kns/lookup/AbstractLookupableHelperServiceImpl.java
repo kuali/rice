@@ -45,6 +45,7 @@ import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -763,7 +764,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 fieldNm = (String) fieldConversions.get(fieldNm);
             }
 
-            if (StringUtils.isNotBlank(displayWorkgroup) && !GlobalVariables.getUserSession().getPerson().isMember( displayWorkgroup )) {
+            if (StringUtils.isNotBlank(displayWorkgroup) && !KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, displayWorkgroup )) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
                 }

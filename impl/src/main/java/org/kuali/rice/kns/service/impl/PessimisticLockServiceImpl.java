@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -117,7 +118,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     public boolean isPessimisticLockAdminUser(Person user) {
         String workgroupName = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM);
         if (StringUtils.isNotBlank(workgroupName)) {
-            boolean returnValue = user.isMember(workgroupName);
+            boolean returnValue = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
             return returnValue;
         }
         return false;

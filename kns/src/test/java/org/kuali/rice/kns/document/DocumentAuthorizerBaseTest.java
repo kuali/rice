@@ -716,7 +716,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         private MockPerson() {};
 
         public MockPerson(Person user) {
-            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocator.getPersonService().isMemberOfGroup(user, "KFS", KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
+            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
         }
 
         public MockPerson(String universalId, String userId, boolean supervisor) {

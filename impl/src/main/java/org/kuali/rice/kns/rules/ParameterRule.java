@@ -9,6 +9,7 @@ package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
@@ -41,7 +42,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		// don't check if workgroup is blank
 		if ( StringUtils.isNotBlank( newBO.getParameterWorkgroupName() ) ) {
 			// check that the workgroup exists
-			result = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName("KFS", newBO.getParameterWorkgroupName() ) != null;
+			result = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, newBO.getParameterWorkgroupName() ) != null;
 			if ( result ) {
 				// get the initiator user record
 			    	Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorUserId);
@@ -53,15 +54,15 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 																									// a
 																									// new
 																									// parameter
-					result = user.isMember( newBO.getParameterWorkgroupName() );
+					result = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, newBO.getParameterWorkgroupName() );
 					if ( !result ) {
 						putFieldError( "parameterWorkgroupName",
 								"error.document.parameter.workgroupName.notinnew", newBO
 										.getParameterWorkgroupName() );
 					}
 				} else { // editing an existing parameter
-					result = user.isMember( oldBO.getParameterWorkgroupName() )
-							&& user.isMember( newBO.getParameterWorkgroupName() );
+					result = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, oldBO.getParameterWorkgroupName() )
+							&& KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, newBO.getParameterWorkgroupName() );
 					if ( !result ) {
 						putFieldError( "parameterWorkgroupName",
 								"error.document.parameter.workgroupName.notinboth" );

@@ -156,7 +156,7 @@ public class RoleRouteModule implements RouteModule {
         	/*
         	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
         	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName("KFS", "WorkflowAdmin");
+        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
         	info.setGroupId(group.getGroupId());
         	info.setPriorityNumber(1);
         	info.setResponsibilityId("321456");

@@ -16,8 +16,9 @@
 package org.kuali.rice.kns.document.authorization;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
@@ -46,7 +47,7 @@ public class ParameterMaintenanceDocumentAuthorizer extends MaintenanceDocumentA
                 Parameter parm = (Parameter)((MaintenanceDocument)document).getNewMaintainableObject().getBusinessObject();
                 if ( parm != null 
             	    && StringUtils.isNotBlank( parm.getParameterWorkgroupName() ) 
-            	    && !user.isMember( parm.getParameterWorkgroupName() ) ) {
+            	    && !KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, parm.getParameterWorkgroupName() ) ) {
                 	hasInitiateAuth = false;
                 }
             }

@@ -18,8 +18,6 @@ package org.kuali.rice.kim.bo;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -92,24 +90,7 @@ public interface Person extends ExternalizableBusinessObject {
 	String getPhoneNumber();
 
 	String getCampusCode();
-
-	/**
-	 * Return all groups to which this person has been assigned.  This will include
-	 * groups to which the user belongs because they are assigned to a nested group.
-	 * 
-	 * @deprecated Use a direct call to the IdentityManagementService.
-	 */
-	@Deprecated
-	List<? extends KimGroup> getGroups();
-	
-	/**
-	 * 
-	 * 
-	 * @deprecated Replace with call to {@link IdentityManagementService#isMemberOfGroup(String, String, String)}
-	 */
-	@Deprecated
-	boolean isMember( String groupName );
-	
+		
 	Map<String,String> getExternalIdentifiers();
 	
 	/** Checks whether the person has an affiliation of a particular type: staff/faculty/student/etc... */

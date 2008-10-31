@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -69,7 +70,7 @@ public class AuthorizationStore {
             for (Iterator i = authorizedGroups.iterator(); !isAuthorized && i.hasNext();) {
                 String group = (String) i.next();
                 // The first part of this check will be removed after the Universal User conversion : KULRICE-2323
-                isAuthorized = "kualiUniversalGroup".equals(group) || user.isMember( group );
+                isAuthorized = "kualiUniversalGroup".equals(group) || KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, group) ;
             }
         }
 

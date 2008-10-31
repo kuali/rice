@@ -113,7 +113,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             // to the supervisor buttons. If they're the initiator, but for some reason they are also
             // approving the document, then they can have the supervisor button & functions.
             boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
-            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().isMemberOfGroup(user, "KFS", KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
+            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
 
             // default normal documents to be unable to copy
             flags.setCanCopy(false);

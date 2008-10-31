@@ -30,7 +30,6 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
@@ -119,55 +118,12 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertEquals( "the returned principal is not correct", "p1", people.get(0).getPrincipalId() );
 	}
 
-	/**
-	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#getPersonGroups(org.kuali.rice.kim.bo.Person, String)}.
-	 */
-	@Test
-	public void testGetPersonGroups() {
-		Person p = personService.getPerson( "p1" );
-		assertNotNull( "person object must not be null", p );
-		List<? extends KimGroup> groups = personService.getPersonGroups( p, "TEST" );
-		assertNotNull( "group list must not be null", groups );		
-		System.out.println( groups );
-		assertTrue( "group list must have non-zero length", groups.size() > 0 );
-		KimGroup g = KIMServiceLocator.getGroupService().getGroupInfo( "g2" );
-		assertTrue( "one of the groups must be g2", groups.contains( g ) );
-		
-		p = personService.getPerson( "p2" );
-		assertNotNull( "person object must not be null", p );
-		groups = personService.getPersonGroups( p, "TEST" );
-		assertNotNull( "group list must not be null", groups );		
-		System.out.println( groups );
-		g = KIMServiceLocator.getGroupService().getGroupInfo( "g3" );
-		assertTrue( "one of the groups must be g3", groups.contains( g ) );
-		g = KIMServiceLocator.getGroupService().getGroupInfo( "g2" );
-		assertTrue( "one of the groups must be g2 (parent group)", groups.contains( g ) );
-	}
-
-	/**
-	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#isMemberOfGroup(org.kuali.rice.kim.bo.Person, String, java.lang.String)}.
-	 */
-	@Test
-	public void testIsMemberOfGroup() {
-		Person p = personService.getPerson( "KULUSER" );
-		assertNotNull( "person object must not be null", p );
-		assertTrue( "person must be a member of SY_FUNCTIONAL_SUPER_USERS", personService.isMemberOfGroup( p, "KFS", "SY_FUNCTIONAL_SUPER_USERS" ) );
-	}
-
-	@Test
-	public void testIsMemberOfGroup_Inherited() {
-		Person p = personService.getPersonByPrincipalName( "wwren" );
-		assertNotNull( "person object must not be null", p );
-		assertTrue( "person must be a member of PA_AP_MAINTENANCE_USERS", personService.isMemberOfGroup( p, "KFS", "PA_AP_MAINTENANCE_USERS" ) );
-		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.isMemberOfGroup( p, "KFS", "PA_MAINTENANCE_USERS" ) );
-	}
-
 //	@Test
 //	public void testHasRole_Inherited() {
 //		Person p = personService.getPersonByPrincipalName( "wwren" );
 //		assertNotNull( "person object must not be null", p );
-//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, "KFS", "PA_AP_MAINTENANCE_USERS" ) );
-//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, "KFS", "PA_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "PA_AP_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "PA_MAINTENANCE_USERS" ) );
 //	}
 //
 //	@Test
@@ -178,14 +134,14 @@ public class PersonServiceImplTest extends RiceTestCase {
 //		assertNotNull( "role list must not be null", roles );		
 //		System.out.println( roles );
 //		assertTrue( "role list must have non-zero length", roles.size() > 0 );
-//		KimRole r = KIMServiceLocator.getAuthorizationService().getRoleByName( "KFS", "SY_FUNCTIONAL_SUPER_USERS" );
+//		KimRole r = KIMServiceLocator.getAuthorizationService().getRoleByName( org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "SY_FUNCTIONAL_SUPER_USERS" );
 //		assertTrue( "one of the roles must be SY_FUNCTIONAL_SUPER_USERS", roles.contains( r ) );
 //	}
 //	
 //	@Test
 //	public void testHasRole() {
 //		Person p = personService.getPerson( "KULUSER" );
-//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, "KFS", "SY_FUNCTIONAL_SUPER_USERS" ) );
+//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "SY_FUNCTIONAL_SUPER_USERS" ) );
 //	}
 	
 	@Test

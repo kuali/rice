@@ -355,9 +355,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
 
 	private String finishKey(AttributeSet permissionDetails, String key) {
-		for ( Map.Entry<String, String> entry : permissionDetails.entrySet() ) {
-    		key += entry.getKey() + "-" + entry.getValue();
-    	}
+		if ( permissionDetails != null ) {
+			for ( Map.Entry<String, String> entry : permissionDetails.entrySet() ) {
+	    		key += entry.getKey() + "-" + entry.getValue();
+	    	}
+		}
 		return key;
 	}
     

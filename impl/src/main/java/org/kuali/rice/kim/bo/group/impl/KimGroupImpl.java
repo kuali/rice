@@ -32,7 +32,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -203,6 +202,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public void setGroupUsers(List groupMembers) {
 		if (memberGroups == null) {
 			memberGroups = new ArrayList<GroupGroupImpl>();
@@ -217,18 +217,5 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 			p.setMemberPrincipalId(dto.getNetworkId());
 			memberPrincipals.add(p);
 		}	
-	}
-	
-	public boolean hasMember(Person person) {
-		if (person == null) {
-			return false;
-		}
-		for (GroupPrincipalImpl groupPrincipal : memberPrincipals) {
-			if (groupPrincipal.getMemberPrincipalId().equals(person.getPrincipalId())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
+	}	
 }

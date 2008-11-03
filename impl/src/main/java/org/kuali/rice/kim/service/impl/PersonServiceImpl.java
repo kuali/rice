@@ -56,8 +56,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected BusinessObjectMetaDataService businessObjectMetaDataService;
 	protected MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
-	protected HashMap<String,SoftReference<PersonImpl>> personByPrincipalNameCache = new HashMap<String,SoftReference<PersonImpl>>( 100 );
-	protected HashMap<String,SoftReference<PersonImpl>> personByPrincipalIdCache = new HashMap<String,SoftReference<PersonImpl>>( 100 );
+	// Max age defined in seconds
+	protected int personCacheMaxSize = 200;
+	protected int personCacheMaxAge = 30;
+
+	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personByPrincipalNameCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
+	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personByPrincipalIdCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
 	// PERSON/ENTITY RELATED METHODS
 	
 	/**
@@ -106,8 +110,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	
 	protected void addPersonImplToCache( PersonImpl person ) {
 		if ( person != null ) {
-			personByPrincipalNameCache.put( person.getPrincipalName(), new SoftReference<PersonImpl>( person ) );
-			personByPrincipalIdCache.put( person.getPrincipalId(), new SoftReference<PersonImpl>( person ) );
+			personByPrincipalNameCache.put( person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
+			personByPrincipalIdCache.put( person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 		}
 	}
 	
@@ -429,6 +433,14 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
+	}
+
+	public void setPersonCacheMaxSize(int personCacheMaxSize) {
+		this.personCacheMaxSize = personCacheMaxSize;
+	}
+
+	public void setPersonCacheMaxAge(int personCacheMaxAge) {
+		this.personCacheMaxAge = personCacheMaxAge;
 	}
 	
 }

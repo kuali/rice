@@ -1,7 +1,5 @@
 package org.kuali.rice.kim.service.impl;
 
-import java.lang.ref.SoftReference;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +107,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected KimEntity getEntityByIdCache( String entityId ) {
 		MaxAgeSoftReference<KimEntity> entityRef = entityByIdCache.get( entityId );
-		if ( entityRef != null && entityRef.isValid() ) {
+		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
@@ -117,7 +115,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected KimEntity getEntityByPrincipalNameCache( String entityName ) {
 		MaxAgeSoftReference<KimEntity> entityRef = entityByPrincipalNameCache.get( entityName );
-		if ( entityRef != null && entityRef.isValid() ) {
+		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
@@ -125,7 +123,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected KimPrincipal getPrincipalByIdCache( String principalId ) {
 		MaxAgeSoftReference<KimPrincipal> principalRef = principalByIdCache.get( principalId );
-		if ( principalRef != null && principalRef.isValid() ) {
+		if ( principalRef != null ) {
 			return principalRef.get();
 		}
 		return null;
@@ -133,7 +131,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected KimPrincipal getPrincipalByNameCache( String principalName ) {
 		MaxAgeSoftReference<KimPrincipal> principalRef = principalByNameCache.get( principalName );
-		if ( principalRef != null && principalRef.isValid() ) {
+		if ( principalRef != null ) {
 			return principalRef.get();
 		}
 		return null;
@@ -141,7 +139,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected GroupInfo getGroupByIdCache( String groupId ) {
 		MaxAgeSoftReference<GroupInfo> groupRef = groupByIdCache.get( groupId );
-		if ( groupRef != null && groupRef.isValid() ) {
+		if ( groupRef != null ) {
 			return groupRef.get();
 		}
 		return null;
@@ -149,7 +147,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected GroupInfo getGroupByNameCache( String groupName ) {
 		MaxAgeSoftReference<GroupInfo> groupRef = groupByNameCache.get( groupName );
-		if ( groupRef != null && groupRef.isValid() ) {
+		if ( groupRef != null ) {
 			return groupRef.get();
 		}
 		return null;
@@ -157,7 +155,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected List<String> getGroupIdsForPrincipalCache( String principalId ) {
 		MaxAgeSoftReference<List<String>> groupIdsRef = groupIdsForPrincipalCache.get( principalId );
-		if ( groupIdsRef != null && groupIdsRef.isValid() ) {
+		if ( groupIdsRef != null ) {
 			return groupIdsRef.get();
 		}
 		return null;
@@ -165,7 +163,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected List<? extends KimGroup> getGroupsForPrincipalCache( String principalId ) {
 		MaxAgeSoftReference<List<? extends KimGroup>> groupsRef = groupsForPrincipalCache.get( principalId );
-		if ( groupsRef != null && groupsRef.isValid() ) {
+		if ( groupsRef != null ) {
 			return groupsRef.get();
 		}
 		return null;
@@ -173,7 +171,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected Boolean getIsMemberOfGroupCache( String principalId, String groupId ) {
 		MaxAgeSoftReference<Boolean> isMemberRef = isMemberOfGroupCache.get( principalId + "-" + groupId );
-		if ( isMemberRef != null && isMemberRef.isValid() ) {
+		if ( isMemberRef != null ) {
 			return isMemberRef.get();
 		}
 		return null;
@@ -181,7 +179,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected Boolean getIsMemberOfGroupByNameCache( String principalId, String namespaceCode, String groupName ) {
 		MaxAgeSoftReference<Boolean> isMemberRef = isMemberOfGroupByNameCache.get( principalId + "-" + namespaceCode + "-" + groupName );
-		if ( isMemberRef != null && isMemberRef.isValid() ) {
+		if ( isMemberRef != null ) {
 			return isMemberRef.get();
 		}
 		return null;
@@ -189,7 +187,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
 		MaxAgeSoftReference<List<String>> memberIdsRef = groupMemberPrincipalIdsCache.get( groupId );
-		if ( memberIdsRef != null && memberIdsRef.isValid() ) {
+		if ( memberIdsRef != null ) {
 			return memberIdsRef.get();
 		}
 		return null;
@@ -197,7 +195,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected Boolean getHasPermissionCache( String key, AttributeSet attrs ) {
 		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionCache.get( key );
-		if ( hasPermissionRef != null && hasPermissionRef.isValid() ) {
+		if ( hasPermissionRef != null ) {
 			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
 			Boolean permission = hasPermissionMap.get(attrs);
 			if (permission != null) {
@@ -209,7 +207,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected Boolean getHasPermissionByTemplateCache( String key, AttributeSet attrs ) {
 		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionByTemplateCache.get( key );
-		if ( hasPermissionRef != null && hasPermissionRef.isValid() ) {
+		if ( hasPermissionRef != null ) {
 			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
 			Boolean permission = hasPermissionMap.get(attrs);
 			if (permission != null) {
@@ -657,30 +655,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	public void setResponsibilityCacheMaxAge(int responsibilityCacheMaxAge) {
 		this.responsibilityCacheMaxAge = responsibilityCacheMaxAge;
-	}
-
-	/*
-	 * An extension to SoftReference that stores an expiration time for the 
-	 * value stored in the SoftReference. If no expiration time is passed in
-	 * the value will never be cached.  
-	 */
-	private class MaxAgeSoftReference<T> extends SoftReference<T> {
-		
-		private long expires;
-
-		public MaxAgeSoftReference(T referent) {
-			super(referent);
-		}
-		
-		public MaxAgeSoftReference(long expires, T referent) {
-			super(referent);
-			this.expires = new Date().getTime() + expires * 1000;
-		}
-		
-		public boolean isValid() {
-			return new Date().getTime() < expires;
-		}
-		
 	}
 	
 }

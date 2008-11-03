@@ -263,7 +263,9 @@
   
   <bean id="kimPersonService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
   	p:identityManagementService-ref="kimIdentityManagementService"
-    p:personDao-ref="kimPersonDao" />
+    p:personDao-ref="kimPersonDao" 
+    p:personCacheMaxSize="200" 
+    p:personCacheMaxAge="30" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -325,5 +325,16 @@
         </bean>
     </property>
   </bean>
+
+  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kns.authorization.ActivePrincipalRoleTypeServiceImpl" />
+
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="activePrincipalRoleTypeService"
+        p:localServiceName="activePrincipalRoleTypeService" />
+    </property>  
+  </bean>
   
 </beans>

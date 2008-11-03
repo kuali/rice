@@ -144,7 +144,7 @@ public class RoleServiceImpl implements RoleService {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
     	// get all implying roles (this also filters to active roles only)
-    	for ( String roleId : allRoleIds ) {
+    	for ( String roleId : roleIds ) {
     		allRoleIds.addAll( getImplyingRoleIds(roleId) );
     	}
     	// short-circuit if no roles match
@@ -157,7 +157,7 @@ public class RoleServiceImpl implements RoleService {
     	// again, for efficiency, obtain and store all role-type services by roleId
     	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
     	
-    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForRoleIds( roleIds );
+    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForRoleIds( allRoleIds );
     	// check each membership to see if the qualifier matches
     	for ( RolePrincipalImpl rp : rps ) {
 			// check the qualifications
@@ -170,7 +170,7 @@ public class RoleServiceImpl implements RoleService {
 			}
     	}   	
     	
-    	List<RoleGroupImpl> rgs = roleDao.getRoleGroupsForRoleIds( roleIds );
+    	List<RoleGroupImpl> rgs = roleDao.getRoleGroupsForRoleIds( allRoleIds );
     	// check each membership to see if the qualifier matches
     	for ( RoleGroupImpl rg : rgs ) {
 			// check the qualifications

@@ -394,7 +394,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			return isMember;
 		}
 		KimGroup group = getGroupByName(namespaceCode, groupName);
-		isMember = getGroupService().isMemberOfGroup(principalId, group.getGroupId());
+		if ( group == null ) {
+			isMember = Boolean.FALSE;
+		} else {
+			isMember = getGroupService().isMemberOfGroup(principalId, group.getGroupId());
+		}
     	addIsMemberOfGroupByNameToCache(principalId, namespaceCode, groupName, isMember);
     	return isMember;    	
     }

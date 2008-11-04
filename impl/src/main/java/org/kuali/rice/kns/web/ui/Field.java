@@ -92,6 +92,7 @@ public class Field implements java.io.Serializable {
     private boolean fieldRequired;
     private String fieldType;
     private List fieldValidValues;
+    private List fieldInactiveValidValues;
     private Formatter formatter;
     private boolean highlightField;
     private boolean isReadOnly;
@@ -1379,5 +1380,18 @@ public class Field implements java.io.Serializable {
         this.fieldDirectInquiryEnabled = fieldDirectInquiryEnabled;
     }
     
+	/**
+	 * @return the fieldInactiveValidValues
+	 */
+	public List getFieldInactiveValidValues() {
+		return this.fieldInactiveValidValues;
+	}
+
+	/**
+	 * @param fieldInactiveValidValues the fieldInactiveValidValues to set
+	 */
+	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
+		this.fieldInactiveValidValues = fieldInactiveValidValues;
+	}
     
 }

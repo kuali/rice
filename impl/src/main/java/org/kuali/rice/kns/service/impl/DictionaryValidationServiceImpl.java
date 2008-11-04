@@ -135,11 +135,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
     
-    private void validateUpdatabableReferencesRecursively(PersistableBusinessObject businessObject, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
+    private void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
     if (ObjectUtils.isNull(businessObject)) {
 	    return;
 	}
-	Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(businessObject);
+	Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(businessObject.getClass());
 	for (String referenceName : references.keySet()) {
 	    if (persistenceStructureService.isReferenceUpdatable(businessObject.getClass(), referenceName)) {
 	        Object referenceObj = ObjectUtils.getPropertyValue(businessObject, referenceName);
@@ -148,7 +148,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	            continue;
 	        }
 
-	        PersistableBusinessObject referenceBusinessObject = (PersistableBusinessObject) referenceObj;
+	        BusinessObject referenceBusinessObject = (BusinessObject) referenceObj;
 	        GlobalVariables.getErrorMap().addToErrorPath(referenceName);
 	        validateBusinessObject(referenceBusinessObject, validateRequired);
 	        if (maxDepth > 0) {
@@ -158,7 +158,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
 	    }
 	}
-	Map<String, Class> collections = persistenceStructureService.listCollectionObjectTypes(businessObject);
+	Map<String, Class> collections = persistenceStructureService.listCollectionObjectTypes(businessObject.getClass());
 	for (String collectionName : collections.keySet()) {
 	    if (persistenceStructureService.isCollectionUpdatable(businessObject.getClass(), collectionName)) {
 		Object listObj = ObjectUtils.getPropertyValue(businessObject, collectionName);
@@ -182,7 +182,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			else {
 			    errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
 			}
-			PersistableBusinessObject element = (PersistableBusinessObject) list.get(i);
+			BusinessObject element = (BusinessObject) list.get(i);
 			
 			GlobalVariables.getErrorMap().addToErrorPath(errorPathAddition);
 			validateBusinessObject(element, validateRequired);
@@ -199,14 +199,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public void validateBusinessObject(PersistableBusinessObject businessObject) {
+    public void validateBusinessObject(BusinessObject businessObject) {
         validateBusinessObject(businessObject, true);
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject,boolean)
      */
-    public void validateBusinessObject(PersistableBusinessObject businessObject, boolean validateRequired) {
+    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
@@ -218,14 +218,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean isBusinessObjectValid(PersistableBusinessObject businessObject) {
+    public boolean isBusinessObjectValid(BusinessObject businessObject) {
         return isBusinessObjectValid(businessObject, null);
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject, String)
      */
-    public boolean isBusinessObjectValid(PersistableBusinessObject businessObject, String prefix) {
+    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
         boolean retval = false;
         final ErrorMap errorMap = GlobalVariables.getErrorMap();
         int originalErrorCount = errorMap.getErrorCount();
@@ -241,7 +241,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @param businessObject - business object to validate
      */
-    public void validateBusinessObjectsRecursively(PersistableBusinessObject businessObject, int depth) {
+    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
@@ -361,7 +361,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
             // validate the properties that are descended from BusinessObject
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
-                PersistableBusinessObject bo = (PersistableBusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+                BusinessObject bo = (BusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
                 if (depth == 0) {
                     GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
                     validateBusinessObject(bo);
@@ -382,11 +382,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         if (depth == 0) {
                             GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
-                            validateBusinessObject((PersistableBusinessObject) propertyList.get(j));
+                            validateBusinessObject((BusinessObject) propertyList.get(j));
                             GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                         }
                         else {
-                            validateBusinessObjectsRecursively((PersistableBusinessObject) propertyList.get(j), depth - 1);
+                            validateBusinessObjectsRecursively((BusinessObject) propertyList.get(j), depth - 1);
                         }
                     }
                 }
@@ -444,7 +444,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceExists(PersistableBusinessObject bo, ReferenceDefinition reference) {
+    public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference) {
         return validateReferenceExists(bo, reference.getAttributeName());
     }
 
@@ -452,7 +452,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String)
      */
-    public boolean validateReferenceExists(PersistableBusinessObject bo, String referenceName) {
+    public boolean validateReferenceExists(BusinessObject bo, String referenceName) {
 
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
@@ -473,7 +473,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceIsActive(PersistableBusinessObject bo, ReferenceDefinition reference) {
+    public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference) {
         return validateReferenceIsActive(bo, reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed());
     }
 
@@ -481,7 +481,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String, java.lang.String, boolean)
      */
-    public boolean validateReferenceIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed) {
+    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed) {
 
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
@@ -522,7 +522,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, ReferenceDefinition reference) {
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference) {
         boolean success = true;
         // intelligently use the fieldname from the reference, or get it out
         // of the dataDictionaryService
@@ -553,7 +553,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *        each subcollection
      * @return
      */
-    private boolean validateCollectionReferenceExistsAndIsActive(PersistableBusinessObject bo, ReferenceDefinition reference, String displayFieldName, String[] intermediateCollections, String pathToAttributeI) {
+    private boolean validateCollectionReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference, String displayFieldName, String[] intermediateCollections, String pathToAttributeI) {
         boolean success = true;
         Collection<PersistableBusinessObject> referenceCollection;
         String collectionName = intermediateCollections[0];
@@ -588,7 +588,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
      */
 
-    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName) {
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName) {
         boolean success = true;
         boolean exists;
         boolean active;
@@ -625,8 +625,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 }
             }
         }
-        else { // if no DD relationship exists, check the persistence service
-            fkFieldsPopulated = persistenceService.allForeignKeyValuesPopulatedForReference(bo, referenceName);
+        else if ( bo instanceof PersistableBusinessObject ) { // if no DD relationship exists, check the persistence service
+            fkFieldsPopulated = persistenceService.allForeignKeyValuesPopulatedForReference((PersistableBusinessObject)bo, referenceName);
         }
 
         // only bother if all the fk fields have values
@@ -656,7 +656,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecks(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean validateDefaultExistenceChecks(PersistableBusinessObject bo) {
+    public boolean validateDefaultExistenceChecks(BusinessObject bo) {
 
         boolean success = true;
 
@@ -677,7 +677,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRule(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ApcRuleDefinition)
      */
-    public boolean validateApcRule(PersistableBusinessObject bo, ApcRuleDefinition apcRule) {
+    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule) {
         boolean success = true;
         Object attrValue;
         try {
@@ -704,7 +704,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRules(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean validateApcRules(PersistableBusinessObject bo) {
+    public boolean validateApcRules(BusinessObject bo) {
         boolean success = true;
 
         // get a collection of all the apcRuleDefinitions setup for this object

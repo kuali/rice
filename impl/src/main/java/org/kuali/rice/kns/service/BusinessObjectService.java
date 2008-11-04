@@ -174,7 +174,7 @@ public interface BusinessObjectService {
      * @return A populated object from the DB, if it exists
      * 
      */
-    public BusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName);
+    public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName);
 
     /**
      * 

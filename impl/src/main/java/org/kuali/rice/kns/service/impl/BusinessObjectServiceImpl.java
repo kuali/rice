@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -187,7 +186,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
      */
-    public BusinessObject getReferenceIfExists(PersistableBusinessObject bo, String referenceName) {
+    public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
 
         PersistableBusinessObject referenceBo = null;
         boolean allFkeysHaveValues = true;
@@ -224,22 +223,15 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
             try {
                 return (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
-            }
-            catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-            catch (InvocationTargetException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-            catch (NoSuchMethodException e) {
-                throw new RuntimeException(e.getMessage());
+            } catch (Exception ex) {
+                throw new RuntimeException("Unable to get property " + referenceName + " from a BO of class: " + bo.getClass().getName(),ex);
             }
         }
 
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception
         if (!PersistableBusinessObject.class.isAssignableFrom(referenceClass)) {
-            throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + referenceName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
+            throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + referenceName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of PersistableBusinessObject.  Only descendents of PersistableBusinessObject " + "can be used.");
         }
 
         // get the list of foreign-keys for this reference. if the reference

@@ -84,7 +84,7 @@ public interface DictionaryValidationService {
      * 
      * @param businessObject - business object to validate
      */
-    public void validateBusinessObject(PersistableBusinessObject businessObject);
+    public void validateBusinessObject(BusinessObject businessObject);
 
     /**
      * Validates the business object primitive attributes against the data dictionary. Adds errors to the map as they are
@@ -93,7 +93,7 @@ public interface DictionaryValidationService {
      * @param businessObject - business object to validate
      * @param validateRequired - whether to execute required field checks
      */
-    public void validateBusinessObject(PersistableBusinessObject businessObject, boolean validateRequired);
+    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
     
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to check the 
@@ -105,7 +105,7 @@ public interface DictionaryValidationService {
      * @param businessObject - business object to validate
      * @return boolean validOrNot
      */
-    public boolean isBusinessObjectValid(PersistableBusinessObject businessObject);
+    public boolean isBusinessObjectValid(BusinessObject businessObject);
 
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to check the 
@@ -118,7 +118,7 @@ public interface DictionaryValidationService {
      * @param prefix - error prefix
      * @return boolean valid or not
      */
-    public boolean isBusinessObjectValid(PersistableBusinessObject businessObject, String prefix);
+    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix);
 
     /**
      * Validates the business object against the dictionary, uses reflection to get any child business objects, and recursively
@@ -127,7 +127,7 @@ public interface DictionaryValidationService {
      * @param businessObject - business object to validate
      * @param depth - Specify how deep the recrusion should go (0 based). If a negative number is supplied, it's infinite.
      */
-    public void validateBusinessObjectsRecursively(PersistableBusinessObject businessObject, int depth);
+    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth);
 
     /**
      * Validates an attribute of a given class for proper min, max length, syntax, and required.
@@ -167,7 +167,7 @@ public interface DictionaryValidationService {
      * @return True if no exceptions occur and the object exists in the db, false otherwise.
      * 
      */
-    public boolean validateReferenceExists(PersistableBusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference);
 
     /**
      * 
@@ -186,7 +186,7 @@ public interface DictionaryValidationService {
      * @return True if no exceptions occur and the object exists in the db, false otherwise.
      * 
      */
-    public boolean validateReferenceExists(PersistableBusinessObject bo, String referenceName);
+    public boolean validateReferenceExists(BusinessObject bo, String referenceName);
 
     /**
      * 
@@ -206,7 +206,7 @@ public interface DictionaryValidationService {
      * @return
      * 
      */
-    public boolean validateReferenceIsActive(PersistableBusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference);
 
     /**
      * 
@@ -228,7 +228,7 @@ public interface DictionaryValidationService {
      * @return
      * 
      */
-    public boolean validateReferenceIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed);
+    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed);
 
     /**
      * 
@@ -251,7 +251,7 @@ public interface DictionaryValidationService {
      * @return true or false as per the criteria above
      * 
      */
-    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference);
 
     /**
      * 
@@ -281,7 +281,7 @@ public interface DictionaryValidationService {
      * @param displayFieldName - the human-readable display name of the failed field, to go in the error message
      * @return true or false as per the criteria above
      */
-    public boolean validateReferenceExistsAndIsActive(PersistableBusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName);
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName);
 
     /**
      * 
@@ -297,7 +297,7 @@ public interface DictionaryValidationService {
      * @return true if all passed existence tests, false if any failed
      * 
      */
-    public boolean validateDefaultExistenceChecks(PersistableBusinessObject bo);
+    public boolean validateDefaultExistenceChecks(BusinessObject bo);
 
     /**
      * 
@@ -312,7 +312,7 @@ public interface DictionaryValidationService {
      * @param apcRule
      * @return true if rule passes
      */
-    public boolean validateApcRule(PersistableBusinessObject bo, ApcRuleDefinition apcRule);
+    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule);
 
     /**
      * This method applies all rules against the given BusinessObject as defined in the MaintenanceDocument.xml file.
@@ -325,5 +325,5 @@ public interface DictionaryValidationService {
      * @param bo
      * @return true if rule passes
      */
-    public boolean validateApcRules(PersistableBusinessObject bo);
+    public boolean validateApcRules(BusinessObject bo);
 }

@@ -250,6 +250,7 @@ public class FieldUtils {
                                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control.getIncludeKeyInLabel());
                             }
                             field.setFieldValidValues(finder.getKeyValues());
+                            field.setFieldInactiveValidValues(finder.getKeyValues(false));
                         }
                     }
                     catch (InstantiationException e) {

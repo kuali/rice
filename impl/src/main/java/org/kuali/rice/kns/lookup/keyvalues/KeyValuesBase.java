@@ -80,4 +80,11 @@ public abstract class KeyValuesBase implements KeyValuesFinder {
             return "";
         }
     }
+    
+    /***
+     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getInactiveKeyValues()
+     */
+    public List getKeyValues(boolean includeActiveOnly){
+    	return new ArrayList();
+    }
 }

@@ -34,7 +34,7 @@ public class KeyValuesServiceImpl implements KeyValuesService {
 
     private BusinessObjectDao businessObjectDao;
     private PersistenceStructureService persistenceStructureService;
-
+    
     /**
      * @see org.kuali.rice.kns.service.KeyValuesService#findAll(java.lang.Class)
      */
@@ -123,4 +123,13 @@ public class KeyValuesServiceImpl implements KeyValuesService {
 
         return containsActive;
     }
+    
+    /**
+     * @see org.kuali.rice.kns.service.KeyValuesService#findAll(java.lang.Class)
+     */
+    public Collection findAllInactive(Class clazz) {
+    	if (LOG.isDebugEnabled()) LOG.debug("Active indicator not found for class " + clazz.getName());
+        return businessObjectDao.findAllInactive(clazz);
+    }
+
 }

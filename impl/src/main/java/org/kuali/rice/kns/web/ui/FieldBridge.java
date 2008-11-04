@@ -212,17 +212,32 @@ public class FieldBridge {
             ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(fieldControl.getIncludeKeyInLabel());
         }
         List keyValues = finder.getKeyValues();
-        if (prop != null) {
+        propValue = getPropertyValueFromList(prop, keyValues);
+        if(propValue==null)
+        	propValue = lookupInactiveFinderValue(prop, finder);
+        return propValue;
+    }
+    
+    private static String lookupInactiveFinderValue(Object property, KeyValuesFinder finder){
+    	List keyValues = finder.getKeyValues(false);
+    	return getPropertyValueFromList(property, keyValues);
+    	
+    }
+    
+    private static String getPropertyValueFromList(Object property, List keyValues){
+    	String propertyValue = null;
+        if (property != null) {
             for (Iterator iter = keyValues.iterator(); iter.hasNext();) {
                 KeyLabelPair element = (KeyLabelPair) iter.next();
-                if (element.getKey().toString().equals(prop.toString())) {
-                    propValue = element.getLabel();
+                if (element.getKey().toString().equals(property.toString())) {
+                    propertyValue = element.getLabel();
+                    break;
                 }
             }
         }
-        return propValue;
+        return propertyValue;
     }
-
+    
     /**
      * Determines whether field level help is enabled for the field corresponding to the businessObjectClass and attribute name
      *

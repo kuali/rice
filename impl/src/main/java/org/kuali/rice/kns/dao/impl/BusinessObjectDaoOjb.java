@@ -98,6 +98,13 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     }
 
     /**
+     * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActive(java.lang.Class)
+     */
+    public Collection findAllInactive(Class clazz) {
+        return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(clazz, buildInactiveCriteria()));
+    }
+
+    /**
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActiveOrderBy(java.lang.Class, java.lang.String, boolean)
      */
     public Collection findAllActiveOrderBy(Class clazz, String sortField, boolean sortAscending) {
@@ -276,6 +283,17 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private Criteria buildActiveCriteria(){
         Criteria criteria = new Criteria();
         criteria.addEqualTo(KNSPropertyConstants.ACTIVE, true);
+        
+        return criteria;
+    }
+    
+    /**
+     * Builds a Criteria object for active field set to true
+     * @return Criteria
+     */
+    private Criteria buildInactiveCriteria(){
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(KNSPropertyConstants.ACTIVE, false);
         
         return criteria;
     }

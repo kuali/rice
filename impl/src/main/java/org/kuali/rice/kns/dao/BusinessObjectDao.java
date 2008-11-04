@@ -80,6 +80,8 @@ public interface BusinessObjectDao {
      */
     public Collection findAllActive(Class clazz);
 
+    public Collection findAllInactive(Class clazz);
+    
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
      * instance. This will only retrieve business objects by class type. Orders the results by the given field.

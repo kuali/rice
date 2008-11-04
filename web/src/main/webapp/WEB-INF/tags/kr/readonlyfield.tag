@@ -30,6 +30,14 @@
           </c:if>
         </c:forEach>
         <c:if test="${!value_found}">
+			<c:forEach items="${field.fieldInactiveValidValues}" var="select">
+	          <c:if test="${field.propertyValue==select.key}">
+	            <c:out value="${select.label}" />
+	            <c:set var="value_found" value="true" />
+	          </c:if>
+	        </c:forEach>
+        </c:if>
+        <c:if test="${!value_found}">
           <c:out value="${KualiForm.unconvertedValues[field.propertyName]}" default="${field.propertyValue}" />
         </c:if>
       </c:when>

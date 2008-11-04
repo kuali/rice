@@ -33,6 +33,15 @@ public interface KeyValuesFinder {
     public List getKeyValues();
 
     /**
+     * Builds a list of key values representations for valid value selections.
+     *
+     * @param includeActiveOnly whether to only include active values in the list
+     *  
+     * @return List of KeyValue objects.
+     */
+    public List getKeyValues(boolean includeActiveOnly);
+
+    /**
      * Returns a map with the key as the key of the map and the label as the value. Used to render the label instead of the code in
      * the jsp when the field is readonly.
      *

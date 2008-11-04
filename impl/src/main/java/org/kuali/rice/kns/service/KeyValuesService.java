@@ -56,4 +56,14 @@ public interface KeyValuesService {
      * @return
      */
     public Collection findMatching(Class clazz, Map fieldValues);
+    
+    /**
+     * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
+     * instance. This will only retrieve business objects by class type.
+     * 
+     * @param clazz
+     * @return
+     */
+    public Collection findAllInactive(Class clazz);
+
 }

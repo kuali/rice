@@ -103,6 +103,13 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActive(java.lang.Class)
+	 */
+	public Collection findAllInactive(Class clazz) {
+		return new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildInactiveJpaCriteria(clazz)).toQuery().getResultList();
+	}
+	
+	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActiveOrderBy(java.lang.Class,
 	 *      java.lang.String, boolean)
 	 */
@@ -258,6 +265,12 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	private org.kuali.rice.core.jpa.criteria.Criteria buildActiveJpaCriteria(Class clazz) {
 		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
 		criteria.eq(KNSPropertyConstants.ACTIVE, true);
+		return criteria;
+	}
+
+	private org.kuali.rice.core.jpa.criteria.Criteria buildInactiveJpaCriteria(Class clazz) {
+		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+		criteria.eq(KNSPropertyConstants.ACTIVE, false);
 		return criteria;
 	}
 

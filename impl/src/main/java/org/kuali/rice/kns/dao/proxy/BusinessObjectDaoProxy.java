@@ -90,6 +90,13 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllInactive(java.lang.Class)
+	 */
+	public Collection findAllInactive(Class clazz) {
+		return getDao(clazz).findAllInactive(clazz);
+	}
+	
+	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActiveOrderBy(java.lang.Class, java.lang.String, boolean)
 	 */
 	public Collection findAllActiveOrderBy(Class clazz, String sortField, boolean sortAscending) {

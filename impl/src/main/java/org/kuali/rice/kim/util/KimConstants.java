@@ -33,6 +33,9 @@ public class KimConstants {
     public static final String KEY_EDIT_MODE = "keyEditMode";
 	public static final String PERMISSION_UNMARK = "Unmark";
 	public static final String PERMISSION_UNMASK_PROPERTY = "Completely Unmask Property";
+	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partially Unmask Property";
+	public static final String PERMISSION_VIEW_PROPERTY = "View Property";
+	public static final String PERMISSION_EDIT_PROPERTY = "Edit Property";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
 	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";

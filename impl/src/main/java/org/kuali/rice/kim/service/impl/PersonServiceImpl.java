@@ -62,6 +62,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 
 	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personByPrincipalNameCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
 	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personByPrincipalIdCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
+	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personByEmployeeIdCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
 	// PERSON/ENTITY RELATED METHODS
 	
 	/**
@@ -108,10 +109,19 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		return null;
 	}
 	
+	protected PersonImpl getPersonImplFromEmployeeIdCache( String principalId ) {
+		SoftReference<PersonImpl> personRef = personByEmployeeIdCache.get( principalId );
+		if ( personRef != null ) {
+			return personRef.get();
+		}
+		return null;
+	}
+	
 	protected void addPersonImplToCache( PersonImpl person ) {
 		if ( person != null ) {
 			personByPrincipalNameCache.put( person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 			personByPrincipalIdCache.put( person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
+			personByEmployeeIdCache.put( person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 		}
 	}
 	
@@ -143,6 +153,23 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		return person;
 	}
 
+	public PersonImpl getPersonByEmployeeId(String employeeId) {
+		if ( StringUtils.isBlank( employeeId  ) ) {
+			return null;
+		}
+		
+		PersonImpl person = getPersonImplFromEmployeeIdCache( employeeId );
+		if ( person != null ) {
+			return person;
+		}
+		
+		Map<String,String> criteria = new HashMap<String,String>( 1 );
+		criteria.put( "employeeId", employeeId );
+		person = findPeople( criteria ).get(0);
+		addPersonImplToCache( person );
+		return person;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(Map)
 	 */
@@ -167,7 +194,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
 	public List<PersonImpl> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
-		if (StringUtils.isBlank( externalIdentifierTypeCode )|| StringUtils.isBlank( externalId ) ) {
+		if (StringUtils.isBlank( externalIdentifierTypeCode ) || StringUtils.isBlank( externalId ) ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );

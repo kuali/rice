@@ -32,7 +32,9 @@ public interface EntityEmploymentInformation extends Inactivateable {
 	String getEmployeeStatusCode();
 	String getEmployeeTypeCode();
 	String getPrimaryDepartmentCode();
+	String getEmployeeId();
+	String getEmploymentRecordId();
 	KualiDecimal getBaseSalaryAmount();
 	boolean isPrimary();
-	
+
 }

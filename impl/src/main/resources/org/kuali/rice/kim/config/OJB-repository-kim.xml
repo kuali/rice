@@ -268,6 +268,8 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="employmentRecordId" column="EMP_REC_ID" jdbc-type="VARCHAR"  />
     <reference-descriptor name="employmentType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="employeeTypeCode" />
     </reference-descriptor>

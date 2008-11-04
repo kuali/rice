@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -49,6 +48,12 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
+
+	@Column(name = "EMP_ID")
+	protected String employeeId;
+
+	@Column(name = "EMP_REC_ID")
+	protected String employmentRecordId;
 
 	@Column(name = "ENTITY_AFLTN_ID")
 	protected String entityAffiliationId;
@@ -157,6 +162,7 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
@@ -164,6 +170,7 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 		m.put( "entityAffiliationId", entityAffiliationId );
 		m.put( "employeeStatusCode", employeeStatusCode );
 		m.put( "employeeTypeCode", employeeTypeCode );
+		m.put( "employeeId", employeeId );
 		m.put( "baseSalaryAmount", baseSalaryAmount );
 		m.put( "primary", primary );
 		return m;
@@ -203,6 +210,22 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 
 	public void setPrimaryDepartmentCode(String primaryDepartmentCode) {
 		this.primaryDepartmentCode = primaryDepartmentCode;
+	}
+
+	public String getEmployeeId() {
+		return this.employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getEmploymentRecordId() {
+		return this.employmentRecordId;
+	}
+
+	public void setEmploymentRecordId(String employmentRecordId) {
+		this.employmentRecordId = employmentRecordId;
 	}
 
 }

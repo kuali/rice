@@ -53,6 +53,8 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 
 	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "entityTypes.names.";
 
+	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "entityTypes.employmentInformation.";
+
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
 
     protected Class<? extends T> personImplementationClass;
@@ -153,6 +155,7 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		criteriaConversion.put( "postalCode", "entityTypes.addresses.postalCode" );
 		criteriaConversion.put( "countryCode", "entityTypes.addresses.countryCode" );
 		criteriaConversion.put( "campusCode", "affiliations.campusCode" );
+		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
 		criteriaConversion.put( "affiliationTypeCode", "affiliations.affiliationTypeCode" );
 		criteriaConversion.put( "externalIdentifierTypeCode", "externalIdentifiers.externalIdentifierTypeCode" );
 		criteriaConversion.put( "externalId", "externalIdentifiers.externalId" );		
@@ -169,6 +172,7 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		boolean affiliationDefaultOnlyCriteria = false;
 		boolean phoneCriteria = false;
 		boolean emailCriteria = false;
+		boolean employeeIdCriteria = false;
 		// add base lookups for all person lookups
 		HashMap<String,String> newCriteria = new HashMap<String,String>();
 		newCriteria.putAll( baseLookupCriteria );
@@ -207,6 +211,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 				if ( isEmailEntityCriteria( entityProperty ) ) {
 					emailCriteria = true;
 				}
+				if ( isEmployeeIdEntityCriteria( entityProperty ) ) {
+					employeeIdCriteria = true;
+				}				
 				// special handling for the campus code, since that forces the query to look
 				// at the default affiliation record only
 				if ( key.equals( "campusCode" ) ) {
@@ -228,6 +235,10 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 			if ( emailCriteria ) {
 				newCriteria.put( ENTITY_EMAIL_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_EMAIL_PROPERTY_PREFIX + "dflt", "Y" );
+			}
+			if ( employeeIdCriteria ) {
+				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "active", "Y" );
+				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "dflt", "Y" );
 			}
 			if ( affiliationCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "active", "Y" );
@@ -257,6 +268,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 	}
 	protected boolean isEmailEntityCriteria( String propertyName ) {
 		return propertyName.startsWith( ENTITY_EMAIL_PROPERTY_PREFIX );
+	}
+	protected boolean isEmployeeIdEntityCriteria( String propertyName ) {
+		return propertyName.startsWith( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX );
 	}
 	protected boolean isAffiliationEntityCriteria( String propertyName ) {
 		return propertyName.startsWith( ENTITY_AFFILIATION_PROPERTY_PREFIX );

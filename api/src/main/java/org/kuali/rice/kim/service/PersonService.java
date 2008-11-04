@@ -51,6 +51,11 @@ public interface PersonService<T extends Person> {
 	T getPersonByPrincipalName( String principalName );
 	
 	/**
+	 * Gets a single Person by their employee id.
+	 */
+	T getPersonByEmployeeId( String employeeId ); 
+	
+	/**
 	 * Perform an unbounded search for person records.
 	 */
 	List<? extends Person> findPeople( Map<String, String> criteria );

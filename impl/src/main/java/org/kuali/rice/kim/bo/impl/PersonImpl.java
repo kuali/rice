@@ -35,7 +35,6 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -85,6 +84,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String employeeStatusCode = "";
 	protected String employeeTypeCode = "";
 	protected String primaryDepartmentCode = "";
+	protected String employeeId = "";
 	
 	protected KualiDecimal baseSalaryAmount;
 	
@@ -202,6 +202,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
 			employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
 			primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
+			employeeId = unNullify( employmentInformation.getEmployeeId() );
 			if ( employmentInformation.getBaseSalaryAmount() != null ) {
 				baseSalaryAmount = employmentInformation.getBaseSalaryAmount();
 			} else {
@@ -211,6 +212,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			employeeStatusCode = "";
 			employeeTypeCode = "";
 			primaryDepartmentCode = "";
+			employeeId = "";
 			baseSalaryAmount = KualiDecimal.ZERO;
 		}
 	}
@@ -419,9 +421,8 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		return this.baseSalaryAmount;
 	}
 
-	@Deprecated
-	public String getPersonPayrollIdentifier() {
-		return getExternalId(KimConstants.EMPLOYEE_EXT_ID_TYPE);
+	public String getEmployeeId() {
+		return this.employeeId;
 	}
 
 	public String getPrimaryDepartmentCode() {

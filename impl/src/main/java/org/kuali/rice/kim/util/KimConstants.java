@@ -23,7 +23,6 @@ package org.kuali.rice.kim.util;
  */
 public class KimConstants {
 
-	public static final String EMPLOYEE_EXT_ID_TYPE = "EMPLOYEE";
 	public static final String TAX_EXT_ID_TYPE = "TAX";
 
 	public static final String STAFF_AFFILIATION_TYPE = "STAFF";

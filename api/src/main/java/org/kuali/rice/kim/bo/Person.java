@@ -106,7 +106,6 @@ public interface Person extends ExternalizableBusinessObject {
 	
 	String getPrimaryDepartmentCode();
 	
-	@Deprecated
-	String getPersonPayrollIdentifier();
+	String getEmployeeId();
 	
 }

@@ -212,5 +212,11 @@ public class KimTypeServiceBase implements KimTypeService {
 		kimAttributesTranslators.add( attributesTranslator );
 	}
 	
+	/**
+	 * @see org.kuali.rice.kim.service.support.KimTypeService#getValidValues(java.lang.String)
+	 */
+	public AttributeSet getValidValues(String attributeName) {
+		return new AttributeSet( 0 );
+	}
 
 }

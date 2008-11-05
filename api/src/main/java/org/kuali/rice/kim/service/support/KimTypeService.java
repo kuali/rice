@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.support;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -74,6 +75,9 @@ public interface KimTypeService {
 	// AND: is that feasible if we are looking toward a web service implementation
 	// do we need a DTO for some DD artifacts?
 	//AttributeDefinition getAttributeDefinition( String attributeName );
+	
+	
+	AttributeSet getValidValues( String attributeName ); // ?
 	
 	// more?
 	

@@ -35,8 +35,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -50,6 +50,7 @@ public class RoleRouteModule implements RouteModule {
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	protected static final String RESPONSIBILITY_NAME_ELEMENT = "responsibilityName";
 	protected static final String APPROVE_POLICY_ELEMENT = "approvePolicy";
+	protected static final String NAMESPACE_ELEMENT = "namespace";
 	
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {
@@ -57,12 +58,14 @@ public class RoleRouteModule implements RouteModule {
 		ActionRequestFactory arFactory = new ActionRequestFactory(context.getDocument(), context.getNodeInstance());
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 		QualifierResolver qualifierResolver = loadQualifierResolver(context);
-		List<Map<String, String>> qualifiers = qualifierResolver.resolve(context);
-		String documentTypeName = context.getDocument().getDocumentType().getName();
-		String nodeName = context.getNodeInstance().getName();
+		List<AttributeSet> qualifiers = qualifierResolver.resolve(context);
 		String approvePolicy = loadApprovePolicy(context);
-		for (Map<String, String> qualifier : qualifiers) {
-			List<ResponsibilityActionInfo> responsibilities = thisIsWhereWeCallTheResponsibilityService(loadResponsibilityName(context), documentTypeName, nodeName, qualifier);
+		String responsibilityName = loadResponsibilityName(context);
+		String namespaceCode = loadNamespace(context);
+		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
+		for (AttributeSet qualifier : qualifiers) {
+			List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActions(namespaceCode, responsibilityName, qualifier, responsibilityDetails);
+			//List<ResponsibilityActionInfo> responsibilities = thisIsWhereWeCallTheResponsibilityService(loadResponsibilityName(context), documentTypeName, nodeName, qualifier);
 			// in the case of "all approve" from KIM roles, we really want this to be treated as separate and distinct requests, let's
 			// handle the demultiplexing manually
 			if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
@@ -95,12 +98,28 @@ public class RoleRouteModule implements RouteModule {
 		return resolver;
 	}
 	
+	protected AttributeSet loadResponsibilityDetails(RouteContext context) {
+		String documentTypeName = context.getDocument().getDocumentType().getName();
+		String nodeName = context.getNodeInstance().getName();
+		AttributeSet responsibilityDetails = new AttributeSet();
+		// TODO 
+		return responsibilityDetails;
+	}
+	
 	protected String loadResponsibilityName(RouteContext context) {
 		String responsibilityName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_NAME_ELEMENT);
 		if (StringUtils.isBlank(responsibilityName)) {
 			throw new RiceRuntimeException("Failed to determine the responsibility name.  Please ensure that <responsibilityName> is configured in your Document Type XML.");
 		}
 		return responsibilityName;
+	}
+	
+	protected String loadNamespace(RouteContext context) {
+		String namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
+		if (StringUtils.isBlank(namespace)) {
+			namespace = "";
+		}
+		return namespace;
 	}
 	
 	protected String loadApprovePolicy(RouteContext context) {
@@ -115,7 +134,8 @@ public class RoleRouteModule implements RouteModule {
     	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
     }
     
-    protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, Map<String, String> qualification) {
+    protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, AttributeSet qualification) {
+    	//KIMServiceLocator.getResponsibilityService().getResponsibilityActions("", responsibilityName, qualification, responsibilityDetails)
     	// for now, let's stub in something dumb
     	//KIMServiceLocator.getResponsibilityService().getResponsibilityInfoByName(responsibilityName, qualification, responsibilityDetails);
         List<ResponsibilityActionInfo> responsibilityInfos = new ArrayList<ResponsibilityActionInfo>();

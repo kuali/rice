@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -29,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
             parameterName: name of the parameter that has the path to the help page
             parameterDetailType: detail type of the parameter that has the path to the help page
  */
-public class HelpDefinition extends DataDictionaryDefinitionBase {
+public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
 
     protected String parameterNamespace;
     protected String parameterDetailType;

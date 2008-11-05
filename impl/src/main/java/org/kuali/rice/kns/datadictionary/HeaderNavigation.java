@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import java.io.Serializable;
+
 /**
             The headerNavigation element defines a set of additional
             tabs which will appear on the document.
@@ -23,7 +25,7 @@ package org.kuali.rice.kns.datadictionary;
                 will appear on the document.
 
  */
-public class HeaderNavigation extends DataDictionaryDefinitionBase {
+public class HeaderNavigation extends DataDictionaryDefinitionBase implements Serializable {
 
     protected String headerTabMethodToCall;
     protected String headerTabNavigateTo;

@@ -38,7 +38,6 @@ import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
@@ -81,8 +80,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private String webservicesUrl;
 
 	private String webserviceRetry;
-
-	//private RiceCacheAdministrator cache;
 
 	private DataSource registryDataSource;
 

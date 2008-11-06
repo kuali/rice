@@ -663,6 +663,9 @@
     <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
     </collection-descriptor>
+    <collection-descriptor name="requiredRoleQualifierAttributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="permissionId" />
+    </collection-descriptor>
   </class-descriptor>
   
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" table="KRIM_PERM_TMPL_T">
@@ -705,6 +708,18 @@
     </reference-descriptor>
     <reference-descriptor name="kimType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="kimTypeId" />
+    </reference-descriptor>
+  </class-descriptor>     
+
+  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl" table="KRIM_PERM_RQRD_ATTR_T">
+    <field-descriptor name="kimPermissionRequiredAttributeId" column="PERM_RQRD_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.bo.types.impl.KimAttributeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="kimAttributeId" />
     </reference-descriptor>
   </class-descriptor>     
 

@@ -55,7 +55,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${MessageQueueForm.myIpAddress}"/><br>
-        	Service Namespace: <c:out value="${MessageQueueForm.myserviceNamespace}"/>
+        	Service Namespace: <c:out value="${MessageQueueForm.myServiceNamespace}"/>
         </td>
         </tr>
         <tr>

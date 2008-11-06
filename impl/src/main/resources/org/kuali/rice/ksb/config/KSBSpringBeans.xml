@@ -23,7 +23,13 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
                            http://www.springframework.org/schema/aop
-                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                           http://cxf.apache.org/simple
+                           http://cxf.apache.org/schemas/simple.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 	
@@ -193,55 +199,6 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="xfire.serviceRegistry" class="org.codehaus.xfire.service.DefaultServiceRegistry" lazy-init="true" />
-
-	<bean id="xfire.transportManager" class="org.codehaus.xfire.transport.DefaultTransportManager" lazy-init="true"
-		init-method="initialize" destroy-method="dispose">
-	</bean>
-
-	<bean id="xfire" class="org.codehaus.xfire.DefaultXFire" scope="prototype">
-		<constructor-arg index="0">
-			<ref bean="xfire.serviceRegistry" />
-		</constructor-arg>
-		<constructor-arg index="1">
-			<ref bean="xfire.transportManager" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="xfire.typeMappingRegistry" class="org.codehaus.xfire.aegis.type.DefaultTypeMappingRegistry" init-method="createDefaultMappings"
-		lazy-init="true">
-	</bean>
-
-
-	<bean id="xfire.aegisBindingProvider" class="org.codehaus.xfire.aegis.AegisBindingProvider" lazy-init="true">
-		<constructor-arg index="0">
-			<ref bean="xfire.typeMappingRegistry" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="xfire.serviceFactory" class="org.codehaus.xfire.service.binding.ObjectServiceFactory" lazy-init="true">
-		<constructor-arg index="0">
-			<ref bean="xfire.transportManager" />
-		</constructor-arg>
-		<constructor-arg index="1">
-			<ref bean="xfire.aegisBindingProvider" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="xfire.servletController" class="org.codehaus.xfire.transport.http.XFireServletController" lazy-init="true">
-		<constructor-arg>
-			<ref bean="xfire" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="xfire.messageServiceFactory" class="org.codehaus.xfire.service.binding.ObjectServiceFactory" lazy-init="true">
-		<constructor-arg index="0" ref="xfire.transportManager" />
-		<constructor-arg index="1" ref="xfire.messageBindingProvider" />
-		<property name="style" value="message" />
-	</bean>
-
-	<bean id="xfire.messageBindingProvider" class="org.codehaus.xfire.service.binding.MessageBindingProvider" lazy-init="true" />
-
 	<bean id="ksbScheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" lazy-init="true" destroy-method="stop">
 		<property name="jobListeners">
 			<list>
@@ -303,8 +260,8 @@
 				<entry key="enMessageHelper"><ref bean="enMessageHelper"/></entry>
 				<entry key="enThreadPool"><ref bean="enThreadPool"/></entry>
 				<entry key="enScheduledThreadPool"><ref bean="enScheduledThreadPool"/></entry>
-				<entry key="xfire.serviceFactory"><ref bean="xfire.serviceFactory"/></entry>
-				<entry key="xfire"><ref bean="xfire"/></entry>
+				<entry key="cxf"><ref bean="cxf"/></entry>
+				<entry key="org.apache.cxf.endpoint.ServerRegistry"><ref bean="org.apache.cxf.endpoint.ServerRegistry"/></entry>
 			</map>
 		</property>
 	</bean>

@@ -16,26 +16,18 @@
  */
 package org.kuali.rice.kew.server;
 
-import java.net.URL;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.URIException;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.aegis.AegisBindingProvider;
-import org.codehaus.xfire.client.Client;
-import org.codehaus.xfire.client.XFireProxyFactory;
-import org.codehaus.xfire.exchange.OutMessage;
-import org.codehaus.xfire.service.Service;
-import org.codehaus.xfire.service.binding.ObjectServiceFactory;
-import org.codehaus.xfire.transport.http.AbstractMessageSender;
-import org.codehaus.xfire.transport.http.CommonsHttpMessageSender;
-import org.codehaus.xfire.util.LoggingHandler;
-import org.codehaus.xfire.util.dom.DOMInHandler;
-import org.codehaus.xfire.util.dom.DOMOutHandler;
+import org.apache.cxf.aegis.databinding.AegisDatabinding;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
+import org.apache.cxf.frontend.ClientProxyFactoryBean;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -62,11 +54,11 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
-	private static final String WSDL_URL1 = "http://localhost:9952/en-test/remoting/{KEW}simpleDocumentActionsService?wsdl";
+	private static final String WSDL_URL1 = "http://localhost:9952/en-test/remoting/simpleDocumentActionsService?wsdl";
 
-	private static final String WSDL_URL2 = "http://localhost:9952/en-test/wsdl/{KEW}simpleDocumentActionsService.wsdl";
+	private static final String WSDL_URL2 = "http://localhost:9952/en-test/wsdl/simpleDocumentActionsService.wsdl";
 
-	private static final String ENDPOINT_URL = "http://localhost:9952/en-test/remoting/{KEW}simpleDocumentActionsService";
+	private static final String ENDPOINT_URL = "http://localhost:9952/en-test/remoting/simpleDocumentActionsService";
 
 	private SimpleDocumentActionsWebService service;
 
@@ -85,34 +77,6 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         loadXmlFile("SimpleDocumentActionsConfig.xml");
     }
 
-	@Test
-	public void testWsdlGeneration() throws Exception {
-
-
-		Client client = new Client(new URL(WSDL_URL1));
-		client.setProperty(AbstractMessageSender.MESSAGE_SENDER_CLASS_NAME, EncodedCommonsHttpMessageSender.class.getName());
-		client.addInHandler(new DOMInHandler());
-		client.addInHandler(new LoggingHandler());
-
-		client.addOutHandler(new DOMOutHandler());
-		client.addOutHandler(new LoggingHandler());
-		Object[] results = client.invoke("create", new Object[] { "ewestfal", "123", "TestDocumentType", "Testing create via webservices" });
-		assertNotNull(results);
-		assertTrue(results.length > 0);
-
-		// do it again, this time with the other wsdl
-		client = new Client(new URL(WSDL_URL2));
-		client.setProperty(AbstractMessageSender.MESSAGE_SENDER_CLASS_NAME, EncodedCommonsHttpMessageSender.class.getName());
-		client.addInHandler(new DOMInHandler());
-		client.addInHandler(new LoggingHandler());
-
-		client.addOutHandler(new DOMOutHandler());
-		client.addOutHandler(new LoggingHandler());
-		results = client.invoke("create", new Object[] { "ewestfal", "123", "TestDocumentType", "Testing create via webservices" });
-		assertNotNull(results);
-		assertTrue(results.length > 0);
-
-	}
 
 	private static final String TEST_USER_DISPLAY_NAME = "User One";
 	private static final String TEST_USER = "user1";
@@ -1578,28 +1542,48 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	}
 
 	private SimpleDocumentActionsWebService createStaticBindingService() throws Exception {
+		/*
 		ObjectServiceFactory serviceFactory = new ObjectServiceFactory(new AegisBindingProvider());
 		XFireProxyFactory proxyFactory = new XFireProxyFactory();
 		Service serviceModel = serviceFactory.create(SimpleDocumentActionsWebService.class);
 		return (SimpleDocumentActionsWebService) proxyFactory.create(serviceModel, new URI(ENDPOINT_URL, false).toString());
+		*/
+		
+		//I think the above code was creating a client.
+		ClientProxyFactoryBean clientFactory;		
+		clientFactory = new ClientProxyFactoryBean();
+		clientFactory.setBus(KSBServiceLocator.getCXFBus());
+		clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());	
+		clientFactory.setServiceClass(SimpleDocumentActionsWebService.class);
+		clientFactory.setServiceName(new QName("KEW", "simpleDocumentActionsService"));
+		clientFactory.setAddress(new URI(ENDPOINT_URL, false).toString());
+		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+	
+		return (SimpleDocumentActionsWebService)clientFactory.create();
 	}
 
-	public static class EncodedCommonsHttpMessageSender extends CommonsHttpMessageSender {
+	@Test
+	public void testWsdlGeneration() throws Exception {
 
-		public EncodedCommonsHttpMessageSender(OutMessage message, MessageContext context) {
-			super(message, context);
-		}
+		DynamicClientFactory dcf = DynamicClientFactory.newInstance(KSBServiceLocator.getCXFBus());
 
-		@Override
-		public String getUri() {
-			System.err.println("super.getUri(): " + super.getUri());
-			try {
-				return new URI(super.getUri(), false).toString();
-			} catch (URIException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		Client client = dcf.createClient(new URI(WSDL_URL1, false).toString());
+		client.getInInterceptors().add(new LoggingInInterceptor());
+		client.getOutInterceptors().add(new LoggingOutInterceptor());
+		Object[] results = client.invoke("create", new Object[] { "ewestfal", "123", "TestDocumentType", "Testing create via webservices" });
+		assertNotNull(results);
+		assertTrue(results.length > 0);
+		
+
+		// do it again, this time with the other wsdl
+		client = dcf.createClient(new URI(WSDL_URL2, false).toString());
+		client.getInInterceptors().add(new LoggingInInterceptor());
+		client.getOutInterceptors().add(new LoggingOutInterceptor());
+
+		results = client.invoke("create", new Object[] { "ewestfal", "123", "TestDocumentType", "Testing create via webservices" });
+		assertNotNull(results);
+		assertTrue(results.length > 0);
 
 	}
-
 }

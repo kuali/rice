@@ -118,4 +118,7 @@ public interface WorkflowUtility {
     public String getDocumentStatus(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long documentId) throws WorkflowException;
     
+    
+    // added for KS per Scott
+    ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException;
 }

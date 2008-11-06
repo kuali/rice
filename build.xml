@@ -27,7 +27,7 @@
 		<property name="junit.report.dir" value="target/junitreport"/>
 		<property name="groovy.lib.dir" value="scripts/groovy-1.5.4/lib"/>
 		
-		<property name="oracle.driver.version" value="10.2.0.2.0"/>
+		<property name="oracle.driver.version" value="10.2.0.3.0"/>
 
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->

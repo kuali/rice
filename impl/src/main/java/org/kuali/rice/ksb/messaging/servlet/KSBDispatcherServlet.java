@@ -23,8 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
+import org.apache.cxf.Bus;
+import org.apache.cxf.transport.servlet.ServletController;
+import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -55,6 +59,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 6790121225857950019L;
 	private KSBHttpInvokerHandler httpInvokerHandler;
+	private ServletController cxfServletController;
 
 	/**
 	 * Instantiate the WebApplicationContext for this servlet, either a default
@@ -73,6 +78,12 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
+		
+        Bus bus = KSBServiceLocator.getCXFBus();
+		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
+				
+		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletContext(), bus);
+		
 		this.setPublishEvents(false);
 	}
 
@@ -80,6 +91,8 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		if (handler instanceof HttpRequestHandler) {
 			return new HttpRequestHandlerAdapter();
 		} else if (handler instanceof Controller) {
+			((CXFServletControllerAdapter)ClassLoaderUtils.unwrapFromProxy(handler)).setController(cxfServletController);			
+			
 			return new SimpleControllerHandlerAdapter();
 		}
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());
@@ -127,8 +140,8 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		}
 		ServerSideRemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName);
 		if (serviceHolder == null) {
-		    LOG.error("Attempting to acquire non-existent service " + serviceName);
-		    throw new RiceRuntimeException("Attempting to acquire non-existent service " + serviceName);
+			LOG.error("Attempting to acquire non-existent service " + request.getRequestURI());
+		    throw new RiceRuntimeException("Attempting to acquire non-existent service.");
 		}
 		ServiceInfo serviceInfo = serviceHolder.getServiceInfo();
 		if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {

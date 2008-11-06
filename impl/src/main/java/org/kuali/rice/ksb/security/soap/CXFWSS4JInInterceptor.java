@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.config.xfire;
+package org.kuali.rice.ksb.security.soap;
 
 import java.util.Properties;
 
+import javax.xml.ws.handler.MessageContext;
+
+import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.log4j.Logger;
 import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
-/*
-import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
-*/
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -39,22 +39,18 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 
-//TODO: Replace this class with a cxf wss4j out interceptor
-public class XFireWSS4JOutHandler {}
+//TODO: Replace this class with cxf wss4j in interceptor
+public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 
-/*
-public class XFireWSS4JOutHandler extends WSS4JOutHandler {
-
-	private static final Logger LOG = Logger.getLogger(XFireWSS4JOutHandler.class);
-
+	private static final Logger LOG = Logger.getLogger(CXFWSS4JInInterceptor.class);
 	private ServiceInfo serviceInfo;
 
-	public XFireWSS4JOutHandler(ServiceInfo serviceInfo) {
+	public CXFWSS4JInInterceptor(ServiceInfo serviceInfo) {
+		this.serviceInfo = serviceInfo;
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
 		this.setProperty(WSHandlerConstants.USER, ConfigContext.getCurrentContextConfig().getKeystoreAlias());
-		this.serviceInfo = serviceInfo;
 	}
 
 	@Override
@@ -82,14 +78,18 @@ public class XFireWSS4JOutHandler extends WSS4JOutHandler {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());
 		}
-
 		return props;
 	}
 
+	/**
+	 * This overridden method will not apply security headers if bus security is disabled.
+	 * 
+	 * @see org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor#handleMessage(org.apache.cxf.binding.soap.SoapMessage)
+	 */
 	@Override
-	public void invoke(MessageContext context) throws Exception {
+	public void handleMessage(SoapMessage mc)  {
 		if (getServiceInfo().getServiceDefinition().getBusSecurity()) {
-			super.invoke(context);
+			super.handleMessage(mc);
 		}
 	}
 
@@ -102,4 +102,3 @@ public class XFireWSS4JOutHandler extends WSS4JOutHandler {
 	}
 
 }
-*/

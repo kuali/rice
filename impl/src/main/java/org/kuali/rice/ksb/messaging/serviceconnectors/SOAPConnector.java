@@ -16,18 +16,17 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.codehaus.xfire.aegis.AegisBindingProvider;
-import org.codehaus.xfire.client.Client;
-import org.codehaus.xfire.client.XFireProxyFactory;
-import org.codehaus.xfire.service.Service;
-import org.codehaus.xfire.service.binding.ObjectServiceFactory;
-import org.codehaus.xfire.util.dom.DOMInHandler;
-import org.codehaus.xfire.util.dom.DOMOutHandler;
-import org.kuali.rice.ksb.config.xfire.XFireWSS4JInHandler;
-import org.kuali.rice.ksb.config.xfire.XFireWSS4JOutHandler;
+import org.apache.cxf.aegis.databinding.AegisDatabinding;
+import org.apache.cxf.frontend.ClientProxyFactoryBean;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
+import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -41,26 +40,39 @@ public class SOAPConnector extends AbstractServiceConnector {
 		super(serviceInfo);
 	}
 
+	
+	/**
+	 * This overridden method returns a CXF client proxy for web service.
+	 * 
+	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector#getService()
+	 */
 	public Object getService() throws Exception {
-		ObjectServiceFactory serviceFactory = new ObjectServiceFactory(new AegisBindingProvider());
-		XFireProxyFactory proxyFactory = new XFireProxyFactory();
-		Service serviceModel = serviceFactory.create(Class.forName(((SOAPServiceDefinition) getServiceInfo().getServiceDefinition()).getServiceInterface()));
-		Object service = proxyFactory.create(serviceModel, getServiceInfo().getActualEndpointUrl());
-		configureClient(Client.getInstance(service));
-		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
-	}
+		ClientProxyFactoryBean clientFactory;
+		
+		//Use the correct bean factory depending on pojo service or jaxws service
+		if (((SOAPServiceDefinition)getServiceInfo().getServiceDefinition()).isJaxWsService()){			
+			clientFactory = new JaxWsProxyFactoryBean();
+		} else {
+			clientFactory = new ClientProxyFactoryBean();
+			clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());
+		}		
 
-	protected void configureClient(final Client client) {
-		client.addOutHandler(new DOMOutHandler());
-		client.addOutHandler(new org.codehaus.xfire.util.LoggingHandler());
-
+		clientFactory.setBus(KSBServiceLocator.getCXFBus());
+		clientFactory.setServiceClass(Class.forName(((SOAPServiceDefinition) getServiceInfo().getServiceDefinition()).getServiceInterface()));
+		clientFactory.setServiceName(getServiceInfo().getQname());
+		clientFactory.setAddress(getServiceInfo().getActualEndpointUrl());
+		
+		//Set logging and security interceptors
+		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getServiceInfo()));
 		if (getCredentialsSource() != null) {
-			client.addOutHandler(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
+			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
 		}
-
-		client.addOutHandler(new XFireWSS4JOutHandler(getServiceInfo()));
-		client.addInHandler(new DOMInHandler());
-		client.addInHandler(new org.codehaus.xfire.util.LoggingHandler());
-		client.addInHandler(new XFireWSS4JInHandler(getServiceInfo()));
-	}
+		
+		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getServiceInfo()));
+		
+		Object service = clientFactory.create();		
+		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
+	}	
 }

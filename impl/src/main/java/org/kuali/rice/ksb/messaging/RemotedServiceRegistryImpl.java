@@ -51,6 +51,16 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 	private Map<QName, ServerSideRemotedServiceHolder> publishedTempServices = Collections.synchronizedMap(new HashMap<QName, ServerSideRemotedServiceHolder>());
 
+	/**
+	 * A service URL to service QName mapper for published services, to provide ability to lookup services by URL.
+	 */
+	private Map<String, QName> publishedServicesURLMapper = Collections.synchronizedMap(new HashMap<String, QName>());
+
+	/**
+	 * A service URL to service QName mapper for published temp services, to provide ability to lookup services by URL.
+	 */
+	private Map<String, QName> publishedTempServicesURLMapper = Collections.synchronizedMap(new HashMap<String, QName>());
+
 	private boolean started;
 
 	private ScheduledFuture future;
@@ -66,6 +76,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	private void registerService(ServiceInfo entry, Object serviceImpl) throws Exception {
 		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry, serviceLocator).getServiceExporter(serviceImpl);
 		this.publishedServices.put(entry.getQname(), serviceHolder);
+		this.publishedServicesURLMapper.put(entry.getEndpointUrl(), entry.getQname());
 
 	}
 
@@ -118,6 +129,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			ServerSideRemotedServiceHolder serviceHolder = 
 				ServiceExporterFactory.getServiceExporter(serviceInfo, serviceLocator).getServiceExporter(service);
 			this.publishedTempServices.put(serviceInfo.getQname(), serviceHolder);
+			this.publishedTempServicesURLMapper.put(serviceInfo.getEndpointUrl(), serviceInfo.getQname());
 			LOG.debug("Registered temp service " + serviceDefinition.getServiceName());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -167,8 +179,27 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		return null;
 	}
 
+	/**
+	 * This method is used to obtain the qualified service name for the service deployed at the given url.
+	 *  
+	 * @param url
+	 * @return the service
+	 */
+	public QName getServiceName(String url){
+		QName qname = this.publishedServicesURLMapper.get(url.toString());
+		if (qname == null){
+			qname = this.publishedTempServicesURLMapper.get(url.toString());
+		}
+		
+		return qname;
+	}
+	
 	public void removeRemoteServiceFromRegistry(QName serviceName) {
-		this.publishedTempServices.remove(serviceName);
+		ServerSideRemotedServiceHolder serviceHolder;
+		serviceHolder = this.publishedTempServices.remove(serviceName);
+		if (serviceHolder != null){
+			this.publishedTempServicesURLMapper.remove(serviceHolder.getServiceInfo().getEndpointUrl());
+		}
 	}
 
 	public void refresh() {
@@ -226,7 +257,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 				registerService(serviceInfo, serviceInfo.getServiceDefinition(serviceLocator.getMessageHelper()).getService());
 			} catch (Exception e) {
 				LOG.error("Encountered error registering service " + serviceInfo.getQname(), e);
-				this.publishedServices.remove(serviceInfo);
+				this.publishedServices.remove(serviceInfo.getQname());
+				this.publishedServicesURLMapper.remove(serviceInfo.getEndpointUrl());
 				continue;
 			}
 		}

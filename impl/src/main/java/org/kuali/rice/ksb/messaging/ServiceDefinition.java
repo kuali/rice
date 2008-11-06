@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -53,6 +54,7 @@ public abstract class ServiceDefinition implements Serializable {
 	private Integer retryAttempts;
 	private Long millisToLive;
 	private String messageExceptionHandler;
+	private String servicePath;
 	private URL serviceEndPoint;
 	private Boolean busSecurity = Boolean.TRUE;
 	private CredentialsType credentialsType;
@@ -169,8 +171,19 @@ public abstract class ServiceDefinition implements Serializable {
 //		}
 		if (this.serviceName != null && this.localServiceName == null) {
 			this.localServiceName = this.getServiceName().getLocalPart();
-			}
+		}
 			
+		if (this.servicePath != null){
+			if (this.servicePath.endsWith("/")){
+				this.servicePath = StringUtils.chop(servicePath);
+			}
+			if (!this.servicePath.startsWith("/")){
+				this.servicePath = "/" + this.servicePath;
+			}
+		} else {
+			this.servicePath = "/";
+		}
+		
 		LOG.debug("Validating service " + this.serviceName);
 		
 		String endPointURL = ConfigContext.getCurrentContextConfig().getEndPointUrl();
@@ -178,10 +191,16 @@ public abstract class ServiceDefinition implements Serializable {
 			throw new ConfigurationException("Must provide a serviceEndPoint or serviceServletURL");
 		} else if (this.serviceEndPoint == null) {
 			if (! endPointURL.endsWith("/")) {
-				endPointURL += "/";
+				endPointURL += servicePath;
+			} else {
+				endPointURL = StringUtils.chop(endPointURL) + servicePath;
 			}
 			try {
-			    this.serviceEndPoint = new URL(endPointURL + URLEncoder.encode(this.getServiceName().toString(), "UTF-8"));	
+				if (servicePath.equals("/")){
+					this.serviceEndPoint = new URL(endPointURL + this.getServiceName().getLocalPart());
+				} else {
+					this.serviceEndPoint = new URL(endPointURL + "/" + this.getServiceName().getLocalPart());
+				}
 			} catch (Exception e) {
 				throw new ConfigurationException("Service Endpoint URL creation failed.", e);
 			}
@@ -240,5 +259,19 @@ public abstract class ServiceDefinition implements Serializable {
 	
 	public String toString() {
 	    return ReflectionToStringBuilder.toString(this);
+	}
+
+	/**
+	 * @return the servicePath
+	 */
+	public String getServicePath() {
+		return this.servicePath;
+	}
+
+	/**
+	 * @param servicePath the servicePath to set
+	 */
+	public void setServicePath(String servicePath) {
+		this.servicePath = servicePath;
 	}
 }

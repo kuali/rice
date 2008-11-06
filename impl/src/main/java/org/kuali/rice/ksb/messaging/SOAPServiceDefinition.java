@@ -16,6 +16,12 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.net.URL;
+import java.net.URLEncoder;
+
+import org.apache.derby.tools.sysinfo;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 
 /**
@@ -27,12 +33,29 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 	private static final long serialVersionUID = 5892163789061959602L;
 
 	private String serviceInterface;
-	
+	private boolean jaxWsService = false;
+
 	/**
-	 * Constructor that sets the bus security (i.e. digital signing) to FALSE by default.
+	 * @return the jaxWsService
+	 */
+	public boolean isJaxWsService() {
+		return this.jaxWsService;
+	}
+
+	/**
+	 * @param jaxWsService
+	 *            define service as jaxws service.
+	 */
+	public void setJaxWsService(boolean jaxWsService) {
+		this.jaxWsService = jaxWsService;
+	}
+
+	/**
+	 * Constructor that sets the bus security (i.e. digital signing) to FALSE by
+	 * default.
 	 */
 	public SOAPServiceDefinition() {
-	    super(Boolean.TRUE);
+		super(Boolean.TRUE);
 	}
 
 	public String getServiceInterface() {
@@ -45,13 +68,17 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 
 	@Override
 	public void validate() {
+
 		super.validate();
+
 		// if interface is null grab the first one and use it
 		if (getServiceInterface() == null) {
 			if (this.getService().getClass().getInterfaces().length == 0) {
-				throw new ConfigurationException("Service needs to implement interface to be exported as SOAP service");
+				throw new ConfigurationException(
+						"Service needs to implement interface to be exported as SOAP service");
 			}
-			setServiceInterface(this.getService().getClass().getInterfaces()[0].getName());
+			setServiceInterface(this.getService().getClass().getInterfaces()[0]
+					.getName());
 		}
 		if (getBusSecurity() == null) {
 			setBusSecurity(false);
@@ -60,10 +87,12 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 
 	@Override
 	public boolean isSame(final ServiceDefinition serviceDefinition) {
-		boolean same = super.isSame(serviceDefinition) && serviceDefinition instanceof SOAPServiceDefinition;
+		boolean same = super.isSame(serviceDefinition)
+				&& serviceDefinition instanceof SOAPServiceDefinition;
 		if (!same) {
 			return same;
 		}
-		return ((SOAPServiceDefinition) serviceDefinition).getServiceInterface().equals(this.getServiceInterface());
+		return ((SOAPServiceDefinition) serviceDefinition)
+				.getServiceInterface().equals(this.getServiceInterface());
 	}
 }

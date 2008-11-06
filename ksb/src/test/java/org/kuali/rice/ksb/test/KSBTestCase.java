@@ -55,6 +55,12 @@ public abstract class KSBTestCase extends RiceTestCase {
         // because we are sometimes using the GRL to fetch a specific servers
         // spring file out for testing purposes.
         ConfigContext.destroy();
+        
+		// Turn off http keep-alive. Repeated jetty start/stop using same port
+		// results sockets held by client not to close properly, resulting in
+        // cxf test failures.
+		System.setProperty("http.keepAlive", "false");
+
         super.setUp();
         if (startClient1() || startClient2()) {
             ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();

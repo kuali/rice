@@ -1,13 +1,15 @@
 package org.kuali.rice.kew.webservice;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 /**
  * Response object encapsulating a note on a document
  */
 public class NoteDetail {
-    public String author;
-    public String id;
-    public String timestamp;
-    public String noteText;
+    private String author;
+    private String id;
+    private String timestamp;
+    private String noteText;
     
     public String getAuthor() {
         return author;
@@ -32,6 +34,8 @@ public class NoteDetail {
     }
     public void setNoteText(String noteText) {
         this.noteText = noteText;
-    }   
+    }
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }
- 

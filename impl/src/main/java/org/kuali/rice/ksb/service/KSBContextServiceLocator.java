@@ -17,8 +17,9 @@ package org.kuali.rice.ksb.service;
 
 import java.util.Map;
 
-import org.codehaus.xfire.XFire;
-import org.codehaus.xfire.service.ServiceFactory;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.CXFBusImpl;
+import org.apache.cxf.endpoint.ServerRegistry;
 import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
@@ -61,12 +62,13 @@ public class KSBContextServiceLocator {
         return (KSBScheduledPool) getService(SCHEDULED_THREAD_POOL_SERVICE);
     }
 
-    public ServiceFactory getXFireServiceFactory() {
-        return (ServiceFactory) getService("xfire.serviceFactory");
+    public Bus getCXFBus(){
+    	return (CXFBusImpl) getService("cxf");
+    }
+    
+    public ServerRegistry getCXFServerRegistry(){
+    	return (ServerRegistry)getService("org.apache.cxf.endpoint.ServerRegistry");
     }
 
-    public XFire getXFire() {
-        return (XFire) getService("xfire");
-    }
 
 }

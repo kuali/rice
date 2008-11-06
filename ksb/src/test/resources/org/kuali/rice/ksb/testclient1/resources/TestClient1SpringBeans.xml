@@ -59,6 +59,8 @@
 	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="testLocalServiceFavoriteCall" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="org.kuali.rice.ksb.testclient1.Client1SOAPService" />
+	<bean id="jaxwsService" class="org.kuali.rice.ksb.testclient1.JaxWsEchoServiceImpl" />
+
 
 	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 	
@@ -118,7 +120,21 @@
 							<property name="service" ref="echoService" />
 							<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
 							<property name="localServiceName" value="soap-echoService" />
+								<property name="busSecurity" value="false"></property>
+							</bean>
+							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+								<property name="service" ref="echoService" />
+								<property name="servicePath" value="secure" />
+								<property name="serviceNameSpaceURI" value="urn:TestCl1" />
+								<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
+								<property name="localServiceName" value="soap-echoServiceSecure" />
+								<property name="busSecurity" value="true"></property>
+							</bean>
+							<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+								<property name="service" ref="jaxwsService" />
+								<property name="localServiceName" value="jaxwsEchoService" />
 							<property name="busSecurity" value="false"></property>
+								<property name="jaxWsService" value="true"></property>
 						</bean>
 						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 							<property name="service">

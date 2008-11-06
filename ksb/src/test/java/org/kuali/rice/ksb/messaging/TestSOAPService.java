@@ -18,10 +18,20 @@ package org.kuali.rice.ksb.messaging;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.httpclient.URI;
+import org.apache.cxf.aegis.databinding.AegisDatabinding;
+import org.apache.cxf.binding.soap.SoapFault;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
+import org.apache.cxf.frontend.ClientProxyFactoryBean;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
+import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 
@@ -31,11 +41,17 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  */
 public class TestSOAPService extends KSBTestCase {
 
+	private static final String ENDPOINT_URL = "http://localhost:9913/TestClient1/remoting/secure/soap-echoServiceSecure";
+	private static final String WSDL_URL1 = "http://localhost:9913/TestClient1/remoting/soap-echoService?wsdl";
+	
 	public boolean startClient1() {
 		return true;
 	}
+
 	
-	@Test public void testSimpleSOAPService() {
+	@Test public void testSimpleSOAPService() throws Exception{
+ 
+		
 		EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
 		String result = echoService.trueEcho("Yo yo yo");
 		assertNotNull(result);
@@ -44,4 +60,58 @@ public class TestSOAPService extends KSBTestCase {
 		SOAPService soapService = (SOAPService) GlobalResourceLoader.getService(serviceName);
 		soapService.doTheThing("hello");
 	}
+	
+	@Test
+	public void testJaxWsSOAPService(){	
+		
+		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService)GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
+		String result = jaxwsEchoService.doEcho("Fi Fi Fo Fum");
+		assertTrue(("Fi Fi Fo Fum").equals(result));
+	}
+	
+	@Test 
+	public void testBusSecureSoapService() throws Exception{
+		//Create non-secure client to access secure service
+		ClientProxyFactoryBean clientFactory;		
+		clientFactory = new ClientProxyFactoryBean();
+
+		clientFactory.setBus(KSBServiceLocator.getCXFBus());
+		clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());	
+		clientFactory.setServiceClass(EchoService.class);
+		clientFactory.setServiceName(new QName("urn:TestCl1", "soap-echoServiceSecure"));
+		clientFactory.setAddress(new URI(ENDPOINT_URL, false).toString());
+		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+		EchoService echoService = (EchoService)clientFactory.create();
+		
+		try{
+			echoService.echo("I can't echo");
+			fail("Expected failure using non-secure client with secure service");
+		} catch (SoapFault sf){
+			sf.printStackTrace();
+			assertTrue("Non-secure client did not get expected exception.",
+					sf.getMessage().startsWith("An error was discovered processing the <wsse:Security> header"));
+		}
+		
+		//Now try a secure client
+		echoService = (EchoService)GlobalResourceLoader.getService(new QName("urn:TestCl1", "soap-echoServiceSecure"));
+		String result = echoService.echo("I can echo");
+		assertTrue("I can echo".equals(result));		
+	}
+
+	@Test
+	public void testWsdlGeneration() throws Exception {
+		//This is similar to a KEW test, but good to have it as part of KSB tests.
+		
+		DynamicClientFactory dcf = DynamicClientFactory.newInstance(KSBServiceLocator.getCXFBus());
+		
+		Client client = dcf.createClient(new URI(WSDL_URL1, false).toString());
+		client.getInInterceptors().add(new LoggingInInterceptor());
+		client.getOutInterceptors().add(new LoggingOutInterceptor());
+		Object[] results = client.invoke("trueEcho", new Object[] { "testing" });
+		assertNotNull(results);
+		assertTrue(results.length > 0);
+		
+	}
+
 }

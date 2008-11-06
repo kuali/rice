@@ -17,8 +17,10 @@ package org.kuali.rice.ksb.service;
 
 import javax.sql.DataSource;
 
-import org.codehaus.xfire.XFire;
-import org.codehaus.xfire.service.ServiceFactory;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.CXFBusImpl;
+import org.apache.cxf.endpoint.ServerRegistry;
+import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
@@ -103,12 +105,16 @@ public class KSBServiceLocator {
         return (ServiceRegistry) getService("enRoutingTableService");
     }
 
-    public static ServiceFactory getXFireServiceFactory() {
-        return (ServiceFactory) getService("xfire.serviceFactory");
+    public static Bus getCXFBus(){
+    	return (CXFBusImpl) getService("cxf");
     }
 
-    public static XFire getXFire() {
-        return (XFire) getService("xfire");
+    public static ServletTransportFactory getCXFServletTransportFactory(){
+    	return (ServletTransportFactory)getService("org.apache.cxf.transport.servlet.ServletTransportFactory");
+    }
+    
+    public static ServerRegistry getCXFServerRegistry(){
+    	return (ServerRegistry)getService("org.apache.cxf.endpoint.ServerRegistry");
     }
 
     public static DataSource getMessageDataSource() {

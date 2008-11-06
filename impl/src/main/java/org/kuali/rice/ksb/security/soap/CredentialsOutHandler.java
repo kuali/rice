@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.ksb.security.soap;
 
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
-import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
 import org.kuali.rice.core.security.credentials.Credentials;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
  * @since 0.9
  * 
  */
-public class CredentialsOutHandler extends WSS4JOutHandler {
+public class CredentialsOutHandler extends WSS4JOutInterceptor {
 
 	private final CredentialsSource credentialsSource;
 
@@ -66,3 +66,4 @@ public class CredentialsOutHandler extends WSS4JOutHandler {
 				WSPasswordCallback.USERNAME_TOKEN);
 	}
 }
+

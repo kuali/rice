@@ -14,19 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.config.xfire;
+package org.kuali.rice.ksb.security.soap;
 
 import java.util.Properties;
 
+import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.log4j.Logger;
 import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
-/*
-import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
-*/
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -39,17 +37,13 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 
-//TODO: Replace this class with a cxf wss4j out interceptor
-public class XFireWSS4JOutHandler {}
+public class CXFWSS4JOutInterceptor extends WSS4JOutInterceptor {
 
-/*
-public class XFireWSS4JOutHandler extends WSS4JOutHandler {
-
-	private static final Logger LOG = Logger.getLogger(XFireWSS4JOutHandler.class);
+	private static final Logger LOG = Logger.getLogger(CXFWSS4JOutInterceptor.class);
 
 	private ServiceInfo serviceInfo;
 
-	public XFireWSS4JOutHandler(ServiceInfo serviceInfo) {
+	public CXFWSS4JOutInterceptor(ServiceInfo serviceInfo) {
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
@@ -86,10 +80,15 @@ public class XFireWSS4JOutHandler extends WSS4JOutHandler {
 		return props;
 	}
 
+	/**
+	 * This overridden method will not apply security headers if bus security is disabled.
+	 * 
+	 * @see org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor#handleMessage(org.apache.cxf.binding.soap.SoapMessage)
+	 */
 	@Override
-	public void invoke(MessageContext context) throws Exception {
+	public void handleMessage(SoapMessage mc) {
 		if (getServiceInfo().getServiceDefinition().getBusSecurity()) {
-			super.invoke(context);
+			super.handleMessage(mc);
 		}
 	}
 
@@ -102,4 +101,3 @@ public class XFireWSS4JOutHandler extends WSS4JOutHandler {
 	}
 
 }
-*/

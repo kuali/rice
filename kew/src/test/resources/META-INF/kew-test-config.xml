@@ -14,7 +14,6 @@
 	<param name="findServicesLocally">true</param>
 	<param name="http.service.port">9952</param>
 	<param name="kew.url.host">http://localhost</param>
-	<param name="serviceServletUrl">${kew.url.host}:${http.service.port}/en-test/remoting/</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>
 	<param name="message.persistence">true</param>
@@ -84,4 +83,6 @@ log4j.appender.StdOut.Threshold=INFO
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 
     <param name="config.location">${alt.config.location}</param>
+
+	<param name="serviceServletUrl">${kew.url.host}:${http.service.port}/en-test/remoting</param>
 </config>

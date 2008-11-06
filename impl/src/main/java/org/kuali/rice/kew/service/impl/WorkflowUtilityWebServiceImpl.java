@@ -256,6 +256,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(getWorkflowUserInternal(userId)));
     }
     
+    public ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException {
+        //added by Derek
+        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(getWorkflowUserInternal(userId), null);
+        ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
+        int i = 0;
+        for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
+            ActionItem actionItem = (ActionItem) iterator.next();
+            actionItemVOs[i] = DTOConverter.convertActionItem(actionItem);
+        }
+        return actionItemVOs;
+    }
+    
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(routeHeaderId);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];

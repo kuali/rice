@@ -64,23 +64,30 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 	}
 
 	protected Object invokeInternal(Object proxyObject, Method method, Object[] params) throws Throwable {
-		try {
-			return method.invoke(getTarget(), params);
-		} catch (Throwable throwable) {
-			if (isServiceRemovalException(throwable)) {
-				LOG.error("Exception caught accessing remote service " + this.serviceInfo.getQname(), throwable);
-				RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-				remoteResourceLocator.removeService(this.serviceInfo);
-
-				Object service = remoteResourceLocator.getService(this.serviceInfo.getQname());
-				if (service != null) {
-					LOG.info("Refetched replacement service for service " + this.serviceInfo.getQname());
-					return method.invoke(service, params);
+		Object service = getTarget();
+		
+		do {
+			try {
+				return method.invoke(service, params);
+			} catch (Throwable throwable) {			
+				if (isServiceRemovalException(throwable)) {
+					LOG.error("Exception caught accessing remote service " + this.serviceInfo.getQname(), throwable);
+					RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
+					remoteResourceLocator.removeService(this.serviceInfo);
+	
+					service = remoteResourceLocator.getService(this.serviceInfo.getQname());
+				
+					if (service != null) {
+						LOG.info("Refetched replacement service for service " + this.serviceInfo.getQname());
+					} else {
+						LOG.error("Didn't find replacement service throwing exception");
+						throw throwable;					
+					}
+				} else {
+					throw throwable;
 				}
-				LOG.error("Didn't find replacement service throwing exception");
 			}
-			throw throwable;
-		}
+		} while (true);
 	}
 
 	private static boolean isServiceRemovalException(Throwable throwable) {

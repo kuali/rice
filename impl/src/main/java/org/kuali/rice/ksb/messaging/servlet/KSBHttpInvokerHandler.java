@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
@@ -44,23 +45,7 @@ public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
         return ((RemotedServiceRegistry) GlobalResourceLoader.getService("enServiceInvoker")).getService(serviceName);
     }
 
-    public QName getServiceNameFromRequest(HttpServletRequest request) {
-	try {
-	    String lookupPath = this.urlPathHelper.getLookupPathForRequest(request);
-	    String serviceName = URLDecoder.decode(lookupPath.substring(1, lookupPath.length()), "UTF-8");
-	    //decode the decoded service name in case the client has encoded xfire's encoded name
-	    if (serviceName.indexOf("%7B") > -1) {
-		serviceName = URLDecoder.decode(serviceName, "UTF-8");
-	    }
-	    if (LOG.isDebugEnabled()) {
-		LOG.debug("#############################################################");
-		LOG.debug("Entering Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace()
-			+ ".  Looking up handler for [" + serviceName + "]");
-		LOG.debug("#############################################################");
-	    }
-	    return QName.valueOf(serviceName);
-	} catch (UnsupportedEncodingException e) {
-	    throw new RuntimeException(e);
-	}
+    public QName getServiceNameFromRequest(HttpServletRequest request) {   	    	
+    	return KSBServiceLocator.getServiceDeployer().getServiceName(request.getRequestURL().toString()); 
     }
 }

@@ -47,7 +47,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
-        	Service Namespace: <c:out value="${ServiceRegistryForm.myserviceNamespace}"/>
+        	Service Namespace: <c:out value="${ServiceRegistryForm.myServiceNamespace}"/>
         </td>
         </tr>
         <tr>
@@ -86,7 +86,14 @@
 		    	<c:out value="${result.serviceName}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
+				<c:choose>
+				<c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.SOAPServiceDefinition"}'>
+		    	<a href="${result.endpointUrl}?wsdl"><c:out value="${result.endpointUrl}"/></a>&nbsp;
+				</c:when>
+				<c:otherwise>
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
+				</c:otherwise>
+				</c:choose>
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;

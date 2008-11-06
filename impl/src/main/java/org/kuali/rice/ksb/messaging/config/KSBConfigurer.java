@@ -22,11 +22,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.xfire.transport.http.EasySSLProtocolSocketFactory;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
@@ -142,11 +142,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 			}
 
 			public void start() throws Exception {
-		// first check if we want to allow self-signed certificates for SSL communication
-		if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
-		    Protocol.registerProtocol("https", new Protocol("https",
-			    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
-		}
+				// first check if we want to allow self-signed certificates for SSL communication
+				if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
+				    Protocol.registerProtocol("https", new Protocol("https",
+					    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
+				}
+	
 				for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
 					serviceDef.validate();
 				}

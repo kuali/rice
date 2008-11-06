@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.net.URL;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -35,6 +36,7 @@ public interface RemotedServiceRegistry extends ServiceLocator {
 	public static final String FORWARD_HANDLER_SUFFIX = "-forwardHandler";
 
 	public Object getService(QName qName, String url);
+	public QName getServiceName(String url);
 	public void removeRemoteServiceFromRegistry(QName serviceName);
 	public void registerService(ServiceDefinition serviceDefinition, boolean forceRegistryRefresh);
 	public void registerTempService(ServiceDefinition serviceDefinition, Object service);

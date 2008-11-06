@@ -23,9 +23,11 @@ import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
+/*
 import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.fault.XFireFault;
 import org.codehaus.xfire.security.wss4j.WSS4JInHandler;
+*/
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -37,6 +39,10 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+//TODO: Replace this class with cxf wss4j in interceptor
+public class XFireWSS4JInHandler{}
+/*
 public class XFireWSS4JInHandler extends WSS4JInHandler {
 
 	private static final Logger LOG = Logger.getLogger(XFireWSS4JInHandler.class);
@@ -94,3 +100,4 @@ public class XFireWSS4JInHandler extends WSS4JInHandler {
 	}
 
 }
+*/

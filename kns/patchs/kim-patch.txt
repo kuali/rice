@@ -2224,11 +2224,11 @@ Index: impl/src/main/java/org/kuali/rice/kns/authorization/FieldAuthorization.ja
 +        } else if(fieldAuthorizationFlag.equals(Field.MASKED)){
 +			this.masked = true;
 +			this.viewable = true;
-+			this.editable = true;
++			this.editable = false;
 +		} else if(fieldAuthorizationFlag.equals(Field.PARTIALLY_MASKED)){
 +			this.partiallyMasked = true;
 +			this.viewable = true;
-+			this.editable = true;
++			this.editable = false;
 +		}
 +
 +    }

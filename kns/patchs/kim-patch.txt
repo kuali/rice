@@ -2,9 +2,9 @@
 #P rice
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5087)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5223)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(working copy)
-@@ -1,174 +1,307 @@
+@@ -1,174 +1,302 @@
 -/*
 - * Copyright 2007 The Kuali Foundation.
 - * 
@@ -201,15 +201,16 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +import java.util.List;
 +import java.util.Map;
 +import java.util.Set;
-+import org.apache.commons.lang.StringUtils;
++
 +import org.kuali.rice.kim.bo.FieldAttributeSecurity;
++import org.kuali.rice.kim.bo.Person;
 +import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 +import org.kuali.rice.kim.service.IdentityManagementService;
 +import org.kuali.rice.kim.service.KIMServiceLocator;
 +import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 +import org.kuali.rice.kim.util.KimConstants;
 +import org.kuali.rice.kns.authorization.AuthorizationConstants;
-+import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 +import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 +import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 +import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
@@ -220,10 +221,9 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 +import org.kuali.rice.kns.util.KNSConstants;
 +import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
-+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-+
 +
 +public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
++
 +	private static IdentityManagementService identityManagementService;
 +	private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
 +
@@ -232,11 +232,10 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +     *      org.kuali.rice.kns.bo.user.KualiUser)
 +     */
 +    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user) {
-+       
 +        // by default, there are no restrictions, only if this method is
 +        // overridden by a subclass that adds restrictions
-+        //return new MaintenanceDocumentAuthorizations();
-+       
++    	//return new MaintenanceDocumentAuthorizations();
++    	
 +    	MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
 +    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
 +    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
@@ -275,14 +274,12 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
 +    		   if(maintainableFieldAttributeSecurity.isMask()){  
 +    			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
-+    				   //TODO:
-+    				   auths.addReadonlyAuthField(fullFieldName);
++    				   auths.addMaskedAuthField(fullFieldName);
 +    			   }
 +    		   }
 +    		   else if(maintainableFieldAttributeSecurity.isPartialMask()){
 +    			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
-+    				   //TODO:
-+    				   auths.addReadonlyAuthField(fullFieldName);
++    				   auths.addPartiallyMaskedAuthField(fullFieldName);
 +    			   }
 +    		   }
 +    		   else if(maintainableFieldAttributeSecurity.isHide()){
@@ -303,14 +300,12 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
 +    		   if( businessObjectAttributeSecurity.isMask()){
 +               	   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
-+               		   //TODO:
-+               		   auths.addReadonlyAuthField(fullFieldName);
++               		   auths.addMaskedAuthField(fullFieldName);
 +               	   }
 +    		   }
 +    		   else if(businessObjectAttributeSecurity.isPartialMask()){
 +    			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
-+    				   //TODO:
-+    				   auths.addReadonlyAuthField(fullFieldName);
++    				   auths.addPartiallyMaskedAuthField(fullFieldName);
 +    			   }
 +    		   }
 +    		   else if(businessObjectAttributeSecurity.isHide()){
@@ -428,10 +423,10 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +        for ( MaintainableSectionDefinition sectionDefinition : sectionDefinitions ) {
 +            for ( MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems() ) {
 +                if (itemDefinition instanceof MaintainableFieldDefinition) {
-+                    String displayEditMode = ((MaintainableFieldDefinition) itemDefinition).getDisplayEditMode();
++                    /*String displayEditMode = ((MaintainableFieldDefinition) itemDefinition).getDisplayEditMode();
 +                    if (StringUtils.isNotBlank(displayEditMode)) {
 +                        editModes.put(displayEditMode, "TRUE");
-+                    }
++                    }*/
 +                }
 +                // TODO: what about MaintainableCollectionDefinition?
 +            }
@@ -486,15 +481,2078 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    
 +}
 +
-Index: impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml
+Index: impl/src/main/java/org/kuali/rice/kns/util/FieldUtils.java
 ===================================================================
---- impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(revision 5113)
-+++ impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml	(working copy)
-@@ -939,4 +939,7 @@
-     	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
-     	<property name="kualiModuleService" ref="kualiModuleService" />
-     </bean>
-+    <bean id="DocumentStatusComponentAttributePermissionType" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" >
-+	</bean>
+--- impl/src/main/java/org/kuali/rice/kns/util/FieldUtils.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/util/FieldUtils.java	(working copy)
+@@ -460,26 +460,7 @@
+                     element.setPropertyValue(null);
+                 }
+                 else if (PropertyUtils.isReadable(bo, propertyName)) {
+-                    Object obj = ObjectUtils.getNestedValue(bo, element.getPropertyName());
+-                    if (obj != null) {
+-                        element.setPropertyValue(obj);
+-                    }
+-
+-                    // set encrypted & masked value if user does not have permission to see real value in UI
+-                    if (element.isSecure()) {
+-                        try {
+-                            if (obj != null && obj.toString().endsWith(EncryptionService.HASH_POST_PREFIX)) {
+-                                element.setEncryptedValue(obj.toString());
+-                            }
+-                            else {
+-                                element.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(obj) + EncryptionService.ENCRYPTION_POST_PREFIX);
+-                            }
+-                        }
+-                        catch (GeneralSecurityException e) {
+-                            throw new RuntimeException("Unable to encrypt secure field " + e.getMessage());
+-                        }
+-                        element.setDisplayMaskValue(element.getDisplayMask().maskValue(obj));
+-                    }
++                	populateReadableField(element, bo);
+                 }
+             }
+             populatedFields.add(element);
+@@ -488,6 +469,33 @@
+         return populatedFields;
+     }
+ 
++    public static void populateReadableField(Field field, BusinessObject businessObject){
++        Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
++        if (obj != null) {
++        	field.setPropertyValue(obj);
++        }
++        populateSecureField(field, obj);
++    }
++
++    public static void populateSecureField(Field field, Object fieldValue){
++        // set encrypted & masked value if user does not have permission to see real value in UI
++        // element.isSecure() => a non-null AttributeSecurity object is set in the field
++        if (field.isSecure()) {
++            try {
++                if (fieldValue != null && fieldValue.toString().endsWith(EncryptionService.HASH_POST_PREFIX)) {
++                	field.setEncryptedValue(fieldValue.toString());
++                }
++                else {
++                	field.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
++                }
++            }
++            catch (GeneralSecurityException e) {
++                throw new RuntimeException("Unable to encrypt secure field " + e.getMessage());
++            }
++            field.setDisplayMaskValue(field.getAttributeSecurity().getDisplayMaskValue(fieldValue));
++        }
++    }
++
+     /**
+      * This method indicates whether or not propertyName refers to a nested attribute.
+      *
+@@ -777,15 +785,17 @@
+ 
+     public static void applyAuthorization(Field field, MaintenanceDocumentAuthorizations auths) {
+ 
++    	String fieldName = "";
++    	FieldAuthorization fieldAuth = null;
+         // only apply this on the newMaintainable
+         if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+ 
+             // get just the actual fieldName, with the document.newMaintainableObject, etc etc removed
+-            String fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
++            fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+ 
+             // if the field is restricted somehow
+             if (auths.hasAuthFieldRestricted(fieldName)) {
+-                FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
++                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+ 
+                 // if its an editable field, allow decreasing availability to readonly or hidden
+                 if (Field.isInputField(field.getFieldType()) || field.getFieldType().equalsIgnoreCase(Field.CHECKBOX)) {
+@@ -809,22 +819,29 @@
+                 if (field.isReadOnly() && fieldAuth.isHidden()) {
+                     field.setFieldType(Field.HIDDEN);
+                 }
++                
+             }
+             // special check for old maintainable - need to ensure that fields hidden on the
+             // "new" side are also hidden on the old side
+         }
+         else if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE)) {
+             // get just the actual fieldName, with the document.oldMaintainableObject, etc etc removed
+-            String fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
++            fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+             // if the field is restricted somehow
+             if (auths.hasAuthFieldRestricted(fieldName)) {
+-                FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
++                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+ 
+                 if (fieldAuth.isHidden()) {
+                     field.setFieldType(Field.HIDDEN);
+                 }
+             }
+         }
++        //For both new and old maintainable, set authorization
++        if(fieldAuth!=null){
++            field.setAuthorization(fieldAuth);
++            if(!field.areSecuredFieldsValid())
++            	populateSecureField(field, field.getPropertyValue());
++        }
+     }
+ 
+     /**
+Index: impl/src/main/java/org/kuali/rice/kns/web/ui/FieldBridge.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/web/ui/FieldBridge.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/web/ui/FieldBridge.java	(working copy)
+@@ -83,15 +83,7 @@
+         /* setup security of field (sensitive data) if needed, note this will always be true on old maintainables since
+          * maintenanceAction is not set
+          */
+-        String displayEditMode = definition.getDisplayEditMode();
+-        if (StringUtils.isNotBlank(displayEditMode)) {
+-
+-            field.setSecure(true);
+-            field.setDisplayEditMode(displayEditMode);
+-            field.setDisplayMask(definition.getDisplayMask());
+-
+-        }
+-
++        field.setAttributeSecurity(definition.getAttributeSecurity());
+     }
+ 
+     /**
+Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java	(working copy)
+@@ -1,26 +1,27 @@
+-/*
+- * Copyright 2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.kuali.rice.kns.datadictionary;
+-
+-import org.kuali.rice.kns.datadictionary.mask.Mask;
+-
+-public interface FieldDefinitionI {
+-    public String getName();
+-    public boolean isReadOnlyAfterAdd();
+-    public Mask getDisplayMask();
+-    public String getDisplayEditMode();
+-
+-}
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.datadictionary;
++
++
++public interface FieldDefinitionI {
++    public String getName();
++    public boolean isReadOnlyAfterAdd();
++
++	/**
++	 * @return the attributeSecurity
++	 */
++	public AttributeSecurity getAttributeSecurity();
++}
+Index: web/src/main/webapp/WEB-INF/tags/kr/htmlControlAttribute.tag
+===================================================================
+--- web/src/main/webapp/WEB-INF/tags/kr/htmlControlAttribute.tag	(revision 4907)
++++ web/src/main/webapp/WEB-INF/tags/kr/htmlControlAttribute.tag	(working copy)
+@@ -35,7 +35,7 @@
+ <%@ attribute name="encryptValue" required="false"
+ 			  description="when readOnly or hidden field, boolean to indicate whether the value should
+ 			  be encrypted and display masked. Defaults to false." %>
+-<%@ attribute name="displayMask" required="false"
++<%@ attribute name="displayMaskValue" required="false"
+ 			  description="when a field is not to be displayed in clear text and encrypted as hidden, the
+ 			  string to display." %>
+ <%@ attribute name="styleClass" required="false"
+@@ -109,7 +109,7 @@
+             %>
+             <html:hidden property="encryptedProperties('${fn:replace(property,'.','_')}')" value="true"/>
+             <html:hidden write="false" property="${property}" style="${textStyle}"/>
+-            ${displayMask}
++            ${displayMaskValue}
+          </c:when>
+          <c:otherwise>
+          <logic:empty name="KualiForm" property="${property}">
+Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java	(working copy)
+@@ -21,6 +21,9 @@
+ import java.util.Map;
+ 
+ import org.apache.commons.lang.StringUtils;
++import org.kuali.rice.kns.authorization.FieldAuthorization;
++import org.kuali.rice.kns.datadictionary.AttributeSecurity;
++import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+ import org.kuali.rice.kns.datadictionary.mask.Mask;
+ import org.kuali.rice.kns.lookup.HtmlData;
+ import org.kuali.rice.kns.util.KNSConstants;
+@@ -54,6 +57,10 @@
+     public static final String KUALIUSER = "kualiuser";
+     public static final String READONLY = "readOnly";
+     public static final String EDITABLE = "editable";
++    public static final String MASKED = "masked";
++    public static final String MASKED_READONLY = "maskedReadOnly";
++    public static final String PARTIALLY_MASKED = "partiallyMasked";
++    public static final String PARTIALLY_MASKED_READONLY = "partiallyMaskedReadOnly";
+     public static final String LOOKUP_HIDDEN = "lookuphidden";
+     public static final String LOOKUP_READONLY = "lookupreadonly";
+     public static final String WORKFLOW_WORKGROUP = "workflowworkgroup";
+@@ -98,8 +105,14 @@
+     private boolean isReadOnly;
+     private String lookupParameters;
+     private int maxLength;
++    
+     private String propertyName;
+     private String propertyValue;
++    private String encryptedValue;
++    private String displayMaskValue;
++    private AttributeSecurity attributeSecurity;
++    private FieldAuthorization authorization;
++    
+     private HtmlData inquiryURL;
+     private String propertyPrefix;
+     private String quickFinderClassNameImpl;
+@@ -117,11 +130,7 @@
+     private String personNameAttributeName;
+     private String defaultValue = KNSConstants.EMPTY_STRING;
+     private boolean keyField;
+-    private String displayEditMode;
+     private Mask displayMask;
+-    private String displayMaskValue;
+-    private String encryptedValue;
+-    private boolean secure;
+     private String webOnBlurHandler;
+     private String webOnBlurHandlerCallback;
+     private String styleClass;
+@@ -263,7 +272,6 @@
+         this.isReadOnly = false;
+         this.upperCase = false;
+         this.keyField = false;
+-        this.secure = false;
+         this.fieldLevelHelpEnabled = false;
+     }
+ 
+@@ -529,7 +537,24 @@
+ 
+         return propertyValue;
+     }
++    
++    /**
++     * Gets the displayMaskValue attribute.
++     * 
++     * @return Returns the displayMaskValue.
++     */
++    public String getDisplayMaskValue() {
++        return displayMaskValue;
++    }
+ 
++    /**
++     * Sets the displayMaskValue attribute value.
++     * 
++     * @param displayMaskValue The displayMaskValue to set.
++     */
++    public void setDisplayMaskValue(String displayMaskValue) {
++        this.displayMaskValue = displayMaskValue;
++    }
+ 
+     /**
+      * Gets the propertyPrefix attribute.
+@@ -1070,26 +1095,7 @@
+         this.keyField = keyField;
+     }
+ 
+-
+     /**
+-     * Gets the displayEditMode attribute.
+-     * 
+-     * @return Returns the displayEditMode.
+-     */
+-    public String getDisplayEditMode() {
+-        return displayEditMode;
+-    }
+-
+-    /**
+-     * Sets the displayEditMode attribute value.
+-     * 
+-     * @param displayEditMode The displayEditMode to set.
+-     */
+-    public void setDisplayEditMode(String displayEditMode) {
+-        this.displayEditMode = displayEditMode;
+-    }
+-
+-    /**
+      * Gets the displayMask attribute.
+      * 
+      * @return Returns the displayMask.
+@@ -1097,35 +1103,8 @@
+     public Mask getDisplayMask() {
+         return displayMask;
+     }
+-
++    
+     /**
+-     * Sets the displayMask attribute value.
+-     * 
+-     * @param displayMask The displayMask to set.
+-     */
+-    public void setDisplayMask(Mask displayMask) {
+-        this.displayMask = displayMask;
+-    }
+-
+-    /**
+-     * Gets the displayMaskValue attribute.
+-     * 
+-     * @return Returns the displayMaskValue.
+-     */
+-    public String getDisplayMaskValue() {
+-        return displayMaskValue;
+-    }
+-
+-    /**
+-     * Sets the displayMaskValue attribute value.
+-     * 
+-     * @param displayMaskValue The displayMaskValue to set.
+-     */
+-    public void setDisplayMaskValue(String displayMaskValue) {
+-        this.displayMaskValue = displayMaskValue;
+-    }
+-
+-    /**
+      * Gets the encryptedValue attribute.
+      * 
+      * @return Returns the encryptedValue.
+@@ -1149,19 +1128,10 @@
+      * @return Returns the secure.
+      */
+     public boolean isSecure() {
+-        return secure;
++        return attributeSecurity!=null && authorization!=null && authorization.shouldBeEncrypted();
+     }
+ 
+     /**
+-     * Sets the secure attribute value.
+-     * 
+-     * @param secure The secure to set.
+-     */
+-    public void setSecure(boolean secure) {
+-        this.secure = secure;
+-    }
+-
+-    /**
+      * Returns the method name of a function present in the page which should be called
+      * when the user tabs away from the field.
+      * 
+@@ -1379,7 +1349,7 @@
+     public void setFieldDirectInquiryEnabled(boolean fieldDirectInquiryEnabled) {
+         this.fieldDirectInquiryEnabled = fieldDirectInquiryEnabled;
+     }
+-    
++
+ 	/**
+ 	 * @return the fieldInactiveValidValues
+ 	 */
+@@ -1393,5 +1363,54 @@
+ 	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
+ 		this.fieldInactiveValidValues = fieldInactiveValidValues;
+ 	}
+-    
++
++	/**
++	 * @return the attributeSecurity
++	 */
++	public AttributeSecurity getAttributeSecurity() {
++		return this.attributeSecurity;
++	}
++
++	/**
++	 * @param attributeSecurity the attributeSecurity to set
++	 */
++	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
++		this.attributeSecurity = attributeSecurity;
++	}
++
++	/**
++	 * @return the authorization
++	 */
++	public FieldAuthorization getAuthorization() {
++		return this.authorization;
++	}
++
++	/**
++	 * @param authorization the authorization to set
++	 */
++	public void setAuthorization(FieldAuthorization authorization) {
++		this.authorization = authorization;
++	}
 +	
- </beans>
++	public boolean isMasked(){
++		return (authorization!=null && authorization.isMasked());
++	}
++
++	public boolean isPartiallyMasked(){
++		return (authorization!=null && authorization.isPartiallyMasked());
++	}
++
++	/**
++	 * This overridden method ...
++	 * 
++	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
++	 *      java.lang.Class)
++	 */
++	public boolean areSecuredFieldsValid(){
++		if(isSecure()){
++			if(authorization.isMasked() && (getDisplayMaskValue()==null || getEncryptedValue()==null))
++				return false;
++		}
++		return true;
++	}
+ }
+\ No newline at end of file
+Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java	(working copy)
+@@ -147,4 +147,17 @@
+ 		}
+ 	}
+ 
++	public String getDisplayMaskValue(Object value){
++		String displayMaskValue = "";
++        if(isMask())
++        	displayMaskValue = getMaskFormatter().maskValue(value);
++        else if(isPartialMask())
++        	displayMaskValue = getPartialMaskFormatter().maskValue(value);
++        return displayMaskValue;
++	}
++	
++	public boolean shouldBeEncrypted(){
++		return isMask() || isPartialMask();
++	}
++	
+ }
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(working copy)
+@@ -1,175 +1,213 @@
+-/*
+- * Copyright 2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.kuali.rice.kns.document.authorization;
+-
+-import java.io.Serializable;
+-import java.util.ArrayList;
+-import java.util.Collection;
+-import java.util.HashMap;
+-import java.util.Iterator;
+-import java.util.List;
+-import java.util.Map;
+-
+-import org.apache.log4j.Logger;
+-import org.kuali.rice.kns.authorization.FieldAuthorization;
+-import org.kuali.rice.kns.web.ui.Field;
+-
+-/**
+- * 
+- * This class holds all the information needed to describe the authorization related restrictions for a MaintenanceDocument.
+- * 
+- * IMPORTANT NOTE: This class defaults to fully editable, if not otherwise specified. So if this class is queried for the status of
+- * a field, and the field has not been specified in this class, it will return a FieldAuthorization class populated with the
+- * fieldName and EDITABLE.
+- * 
+- * 
+- */
+-public class MaintenanceDocumentAuthorizations  implements  Serializable {
+-
+-    private static final Logger LOG = Logger.getLogger(MaintenanceDocumentAuthorizations.class);
+-
+-    private Map authFields;
+-    private List hiddenSections; // not implemented, does nothing yet
+-
+-    public MaintenanceDocumentAuthorizations() {
+-        authFields = new HashMap();
+-        hiddenSections = new ArrayList();
+-    }
+-
+-    /**
+-     * 
+-     * Returns a collection of all the fields that have non-default authorization restrictions.
+-     * 
+-     * @return Collection of field names that are restricted
+-     * 
+-     */
+-    public Collection getAuthFieldNames() {
+-        return authFields.keySet();
+-    }
+-
+-    /**
+-     * 
+-     * This method is a convenience method to determine whether there are any restricted fields at all in this
+-     * MaintDocAuthorization.
+-     * 
+-     * If any fields are listed as restricted, this will return true, otherwise it will return false.
+-     * 
+-     * @return true if any fields restricted, false otherwise
+-     * 
+-     */
+-    public boolean hasAnyFieldRestrictions() {
+-
+-        boolean anyRestricted = false;
+-
+-        // walk through each field listed here
+-        for (Iterator iter = authFields.keySet().iterator(); iter.hasNext();) {
+-            String fieldName = (String) iter.next();
+-            FieldAuthorization fieldAuth = getAuthFieldAuthorization(fieldName);
+-
+-            // if a field is restricted, then we know there are some restricted, so we're done
+-            if (fieldAuth.isRestricted()) {
+-                return true;
+-            }
+-        }
+-        return anyRestricted;
+-    }
+-
+-    /**
+-     * 
+-     * This method is a quick way to lookup whether the field has a definition in this authorization. If it isnt defined with some
+-     * authorization flag, this returns false.
+-     * 
+-     * @param fieldName
+-     * @return boolean
+-     */
+-    public boolean hasAuthFieldRestricted(String fieldName) {
+-        if (authFields.containsKey(fieldName)) {
+-            return true;
+-        }
+-        else {
+-            return false;
+-        }
+-    }
+-
+-    /**
+-     * 
+-     * This method adds a new authorization field instance.
+-     * 
+-     * @param fieldName
+-     * @param authorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE;
+-     * 
+-     */
+-    public void addAuthField(String fieldName, String authorizationFlag) {
+-        authFields.put(fieldName, authorizationFlag);
+-    }
+-
+-    /**
+-     * This method adds the fieldName specified as Editable.
+-     * 
+-     * @param fieldName
+-     */
+-    public void addEditableAuthField(String fieldName) {
+-        addAuthField(fieldName, Field.EDITABLE);
+-    }
+-
+-    /**
+-     * This method adds the fieldName specified as Read-Only.
+-     * 
+-     * @param fieldName
+-     */
+-    public void addReadonlyAuthField(String fieldName) {
+-        addAuthField(fieldName, Field.READONLY);
+-    }
+-
+-    /**
+-     * This method adds the fieldName specified as Hidden.
+-     * 
+-     * @param fieldName
+-     */
+-    public void addHiddenAuthField(String fieldName) {
+-        addAuthField(fieldName, Field.HIDDEN);
+-    }
+-
+-    /**
+-     * 
+-     * Returns a collection of all the sections that have non-default authorization restrictions.
+-     * 
+-     * @return Collection of section names that are restricted
+-     * 
+-     */
+-    public List getHiddenSectionNames() {
+-        return hiddenSections;
+-    }
+-
+-    /**
+-     * 
+-     * This method returns the authorization setting for the given field name. If the field name is not restricted in any way, a
+-     * default full-editable value is returned.
+-     * 
+-     * @param fieldName - name of field to get authorization restrictions for.
+-     * @return a populated FieldAuthorization class for this field
+-     * 
+-     */
+-    public FieldAuthorization getAuthFieldAuthorization(String fieldName) {
+-        if (authFields.containsKey(fieldName)) {
+-            return new FieldAuthorization(fieldName, (String) authFields.get(fieldName));
+-        }
+-        else {
+-            return new FieldAuthorization(fieldName, Field.EDITABLE);
+-        }
+-    }
+-
+-}
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.io.Serializable;
++import java.util.ArrayList;
++import java.util.Collection;
++import java.util.HashMap;
++import java.util.Iterator;
++import java.util.List;
++import java.util.Map;
++
++import org.apache.commons.lang.StringUtils;
++import org.apache.log4j.Logger;
++import org.kuali.rice.kns.authorization.FieldAuthorization;
++import org.kuali.rice.kns.web.ui.Field;
++
++/**
++ * 
++ * This class holds all the information needed to describe the authorization related restrictions for a MaintenanceDocument.
++ * 
++ * IMPORTANT NOTE: This class defaults to fully editable, if not otherwise specified. So if this class is queried for the status of
++ * a field, and the field has not been specified in this class, it will return a FieldAuthorization class populated with the
++ * fieldName and EDITABLE.
++ * 
++ * 
++ */
++public class MaintenanceDocumentAuthorizations  implements  Serializable {
++
++    private static final Logger LOG = Logger.getLogger(MaintenanceDocumentAuthorizations.class);
++
++    private Map authFields;
++    private List hiddenSections; // not implemented, does nothing yet
++
++    public MaintenanceDocumentAuthorizations() {
++        authFields = new HashMap();
++        hiddenSections = new ArrayList();
++    }
++
++    /**
++     * 
++     * Returns a collection of all the fields that have non-default authorization restrictions.
++     * 
++     * @return Collection of field names that are restricted
++     * 
++     */
++    public Collection getAuthFieldNames() {
++        return authFields.keySet();
++    }
++
++    /**
++     * 
++     * This method is a convenience method to determine whether there are any restricted fields at all in this
++     * MaintDocAuthorization.
++     * 
++     * If any fields are listed as restricted, this will return true, otherwise it will return false.
++     * 
++     * @return true if any fields restricted, false otherwise
++     * 
++     */
++    public boolean hasAnyFieldRestrictions() {
++
++        boolean anyRestricted = false;
++
++        // walk through each field listed here
++        for (Iterator iter = authFields.keySet().iterator(); iter.hasNext();) {
++            String fieldName = (String) iter.next();
++            FieldAuthorization fieldAuth = getAuthFieldAuthorization(fieldName);
++
++            // if a field is restricted, then we know there are some restricted, so we're done
++            if (fieldAuth.isRestricted()) {
++                return true;
++            }
++        }
++        return anyRestricted;
++    }
++
++    /**
++     * 
++     * This method is a quick way to lookup whether the field has a definition in this authorization. If it isnt defined with some
++     * authorization flag, this returns false.
++     * 
++     * @param fieldName
++     * @return boolean
++     */
++    public boolean hasAuthFieldRestricted(String fieldName) {
++        if (authFields.containsKey(fieldName)) {
++            return true;
++        }
++        else {
++            return false;
++        }
++    }
++
++    /**
++     * 
++     * This method adds a new authorization field instance.
++     * 
++     * @param fieldName
++     * @param authorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE;
++     * 
++     */
++    public void addAuthField(String fieldName, String authorizationFlag) {
++        authFields.put(fieldName, authorizationFlag);
++    }
++
++    /**
++     * This method adds the fieldName specified as Editable.
++     * 
++     * @param fieldName
++     */
++    public void addEditableAuthField(String fieldName) {
++        addAuthField(fieldName, Field.EDITABLE);
++    }
++
++    /**
++     * This method adds the fieldName specified as Read-Only.
++     * 
++     * @param fieldName
++     */
++    public void addReadonlyAuthField(String fieldName) {
++        addAuthField(fieldName, Field.READONLY);
++    }
++
++    /**
++     * This method adds the fieldName specified as Hidden.
++     * 
++     * @param fieldName
++     */
++    public void addHiddenAuthField(String fieldName) {
++        addAuthField(fieldName, Field.HIDDEN);
++    }
++
++    /**
++     * This method adds the fieldName specified as masked.
++     * 
++     * @param fieldName
++     */
++    public void addMaskedAuthField(String fieldName) {
++        addAuthField(fieldName, Field.MASKED);
++    }
++
++    /**
++     * This method adds the fieldName specified as partially masked.
++     * 
++     * @param fieldName
++     */
++    public void addPartiallyMaskedAuthField(String fieldName) {
++        addAuthField(fieldName, Field.PARTIALLY_MASKED);
++    }
++
++    /**
++     * This method adds the fieldName specified as masked.
++     * 
++     * @param fieldName
++     */
++    public void addMaskedReadOnlyAuthField(String fieldName) {
++        addAuthField(fieldName, Field.MASKED_READONLY);
++    }
++
++    /**
++     * This method adds the fieldName specified as partially masked.
++     * 
++     * @param fieldName
++     */
++    public void addPartiallyMaskedReadOnlyAuthField(String fieldName) {
++        addAuthField(fieldName, Field.PARTIALLY_MASKED_READONLY);
++    }
++    
++    /**
++     * 
++     * Returns a collection of all the sections that have non-default authorization restrictions.
++     * 
++     * @return Collection of section names that are restricted
++     * 
++     */
++    public List getHiddenSectionNames() {
++        return hiddenSections;
++    }
++
++    /**
++     * 
++     * This method returns the authorization setting for the given field name. If the field name is not restricted in any way, a
++     * default full-editable value is returned.
++     * 
++     * @param fieldName - name of field to get authorization restrictions for.
++     * @return a populated FieldAuthorization class for this field
++     * 
++     */
++    public FieldAuthorization getAuthFieldAuthorization(String fieldName) {
++    	//fieldName.replaceAll("(\\[[0-9]*\\])", "");
++    	if (authFields.containsKey(fieldName)) {
++            return new FieldAuthorization(fieldName, (String) authFields.get(fieldName));
++        }
++        else {
++            return new FieldAuthorization(fieldName, Field.EDITABLE);
++        }
++    }
++    
++}
+Index: impl/src/main/java/org/kuali/rice/kim/util/DocumentAttributeSecurityUtils.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kim/util/DocumentAttributeSecurityUtils.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kim/util/DocumentAttributeSecurityUtils.java	(working copy)
+@@ -22,6 +22,7 @@
+ import org.apache.commons.lang.StringUtils;
+ import org.kuali.rice.kim.bo.FieldAttributeSecurity;
+ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
++import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
+ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
+ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+@@ -39,16 +40,15 @@
+  */
+ public class DocumentAttributeSecurityUtils {
+ 
+-	public static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(
+-			MaintenanceDocumentEntry objectEntry) {
++	public static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(MaintenanceDocumentEntry objectEntry) {
+ 		List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry
+ 				.getMaintainableSections();
+ 		Map<String, FieldAttributeSecurity> fieldAttributeSecurities = new HashMap<String, FieldAttributeSecurity>();
+ 		for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
+ 			List<MaintainableItemDefinition> maintainableItems = maintainableSectionDefinition
+ 					.getMaintainableItems();
+-			getRestrictionMaintainableFieldList(fieldAttributeSecurities,
+-					maintainableItems, null, objectEntry.getDocumentTypeName(), KNSConstants.EMPTY_STRING);
++			fieldAttributeSecurities.putAll(getRestrictionMaintainableFieldList(fieldAttributeSecurities,
++					maintainableItems, objectEntry.getBusinessObjectClass(), objectEntry.getDocumentTypeName(), KNSConstants.EMPTY_STRING));
+ 		}
+ 		return fieldAttributeSecurities;
+ 	}
+@@ -56,25 +56,29 @@
+ 	private static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFieldList(
+ 			Map<String, FieldAttributeSecurity> returnList, List items, Class boClass,
+ 			String documentTypeName, String key) {
++		if(boClass==null) return null;
+ 		for (Object item: items) {
+ 			if (item instanceof MaintainableFieldDefinition) {
+ 				MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
+-				//retrieve attribDef from the DD for the BO (DDS.getDD().getBOE(boClass).getAttributeDefinition(item.getName());
+-				AttributeDefinition attributeDefinition = 
+-					(KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(
+-							boClass.getName()).getAttributeDefinition(maintainableFieldDefinition.getName()));
+-
+-				if(maintainableFieldDefinition.getAttributeSecurity()!=null || 
+-						(attributeDefinition!=null && attributeDefinition.getAttributeSecurity()!=null)){
+-					FieldAttributeSecurity fieldAttributeSecurity = new FieldAttributeSecurity();
+-					fieldAttributeSecurity.setMaintainableFieldAttributeSecurity(
+-							((MaintainableFieldDefinition) item).getAttributeSecurity());
+-					fieldAttributeSecurity.setBusinessObjectAttributeSecurity(attributeDefinition.getAttributeSecurity());
+-					fieldAttributeSecurity.setAttributeName(maintainableFieldDefinition.getName());
+-					fieldAttributeSecurity.setBusinessObjectClass(boClass);
+-					fieldAttributeSecurity.setDocumentTypeName(documentTypeName);
+-					returnList.put(
+-							(StringUtils.isEmpty(key)?"":key+".")+maintainableFieldDefinition.getName(), fieldAttributeSecurity);
++				BusinessObjectEntry businessObejctEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(
++						boClass.getName());
++				if(businessObejctEntry!=null){
++					//retrieve attribDef from the DD for the BO (DDS.getDD().getBOE(boClass).getAttributeDefinition(item.getName());
++					AttributeDefinition attributeDefinition = 
++						businessObejctEntry.getAttributeDefinition(maintainableFieldDefinition.getName());
++	
++					if(maintainableFieldDefinition.getAttributeSecurity()!=null || 
++							(attributeDefinition!=null && attributeDefinition.getAttributeSecurity()!=null)){
++						FieldAttributeSecurity fieldAttributeSecurity = new FieldAttributeSecurity();
++						fieldAttributeSecurity.setMaintainableFieldAttributeSecurity(
++								((MaintainableFieldDefinition) item).getAttributeSecurity());
++						fieldAttributeSecurity.setBusinessObjectAttributeSecurity(attributeDefinition.getAttributeSecurity());
++						fieldAttributeSecurity.setAttributeName(maintainableFieldDefinition.getName());
++						fieldAttributeSecurity.setBusinessObjectClass(boClass);
++						fieldAttributeSecurity.setDocumentTypeName(documentTypeName);
++						returnList.put(
++								(StringUtils.isEmpty(key)?"":key+".")+maintainableFieldDefinition.getName(), fieldAttributeSecurity);
++					}
+ 				}
+ 			} else if (item instanceof MaintainableCollectionDefinition) {
+ 				MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) item;
+Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java	(working copy)
+@@ -45,6 +45,8 @@
+     protected String displayEditMode;
+     protected Mask displayMask;
+ 
++    private AttributeSecurity attributeSecurity;
++    
+     public FieldDefinition() {
+     }
+ 
+@@ -259,7 +261,6 @@
+         this.displayMask = displayMask;
+     }
+ 
+-
+     public boolean isReadOnlyAfterAdd() {
+         return false;
+     }
+@@ -294,4 +295,18 @@
+         }
+         this.defaultValueFinderClass = defaultValueFinderClass;
+     }
++    
++	/**
++	 * @return the attributeSecurity
++	 */
++	public AttributeSecurity getAttributeSecurity() {
++		return this.attributeSecurity;
++	}
++
++	/**
++	 * @param attributeSecurity the attributeSecurity to set
++	 */
++	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
++		this.attributeSecurity = attributeSecurity;
++	}
+ }
+\ No newline at end of file
+Index: impl/src/main/java/org/kuali/rice/kim/util/InquiryAttributeSecurityUtils.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kim/util/InquiryAttributeSecurityUtils.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kim/util/InquiryAttributeSecurityUtils.java	(revision 0)
+@@ -0,0 +1,101 @@
++/*
++ * Copyright 2007 The Kuali Foundation
++ *
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.opensource.org/licenses/ecl1.php
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kim.util;
++
++import java.util.Collection;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++import org.apache.commons.lang.StringUtils;
++import org.kuali.rice.kim.bo.FieldAttributeSecurity;
++import org.kuali.rice.kns.datadictionary.AttributeDefinition;
++import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
++import org.kuali.rice.kns.datadictionary.FieldDefinition;
++import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
++import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
++import org.kuali.rice.kns.service.KNSServiceLocator;
++import org.kuali.rice.kns.util.KNSConstants;
++
++/**
++ * This is a description of what this class does - mpham don't forget to fill
++ * this in.
++ * 
++ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
++ * 
++ */
++public class InquiryAttributeSecurityUtils {
++
++	public static Map<String, FieldAttributeSecurity> getRestrictedInquiryFields(
++			BusinessObjectEntry objectEntry) {
++		List<InquirySectionDefinition> inquirySections = objectEntry
++				.getInquiryDefinition().getInquirySections();
++		Map<String, FieldAttributeSecurity> returnInquiryFieldList = new HashMap<String, FieldAttributeSecurity>();
++		for (InquirySectionDefinition inquirySectionDefinition : inquirySections) {
++			returnInquiryFieldList.putAll(getRestrictedInquiryFieldList(inquirySectionDefinition
++							.getInquiryFields(), objectEntry
++							.getBusinessObjectClass(),
++					KNSConstants.EMPTY_STRING));
++			Map inquiryCollectionDefinition = inquirySectionDefinition
++			.getInquiryCollections();
++			if(inquiryCollectionDefinition != null && !inquiryCollectionDefinition.isEmpty()){
++				returnInquiryFieldList.putAll(getRestrictedInquiryFieldList(inquirySectionDefinition
++						.getInquiryCollections().values(), objectEntry
++						.getBusinessObjectClass(),
++				KNSConstants.EMPTY_STRING));
++			}
++		}
++		return returnInquiryFieldList;
++	}
++
++	public static Map<String, FieldAttributeSecurity> getRestrictedInquiryFieldList(
++			Collection fieldDefinitions, Class boClass, String key) {
++		key = StringUtils.isEmpty(key) ? "" : key + ".";
++		Map<String, FieldAttributeSecurity> returnInquiryFieldList = new HashMap<String, FieldAttributeSecurity>();
++		for (Object fieldDefinition : fieldDefinitions) {
++			if (fieldDefinition instanceof InquiryCollectionDefinition) {
++				InquiryCollectionDefinition collection = (InquiryCollectionDefinition) fieldDefinition;
++				returnInquiryFieldList.putAll(getRestrictedInquiryFieldList(
++						collection.getInquiryCollections(), collection
++								.getBusinessObjectClass(), key
++								+ collection.getAttributeName()));
++				returnInquiryFieldList.putAll(getRestrictedInquiryFieldList(
++						collection.getInquiryFields(), collection
++								.getBusinessObjectClass(), key));
++			} else if (fieldDefinition instanceof FieldDefinition) {
++				FieldDefinition fields = (FieldDefinition) fieldDefinition;
++				AttributeDefinition attributeDefinition = (KNSServiceLocator
++						.getDataDictionaryService().getDataDictionary()
++						.getBusinessObjectEntry(boClass.getName())
++						.getAttributeDefinition(fields.getAttributeName()));
++				if (attributeDefinition != null
++						&& attributeDefinition.getAttributeSecurity() != null) {
++					FieldAttributeSecurity fieldAttributeSecurity = new FieldAttributeSecurity();
++					fieldAttributeSecurity.setAttributeName(fields
++							.getAttributeName());
++					fieldAttributeSecurity.setBusinessObjectClass(boClass);
++					fieldAttributeSecurity
++							.setBusinessObjectAttributeSecurity(attributeDefinition
++									.getAttributeSecurity());
++
++					returnInquiryFieldList.put(key + fields.getAttributeName(),
++							fieldAttributeSecurity);
++				}
++			}
++		}
++		return returnInquiryFieldList;
++	}
++}
+Index: web/src/main/webapp/WEB-INF/tags/kr/rowDisplay.tag
+===================================================================
+--- web/src/main/webapp/WEB-INF/tags/kr/rowDisplay.tag	(revision 5223)
++++ web/src/main/webapp/WEB-INF/tags/kr/rowDisplay.tag	(working copy)
+@@ -98,7 +98,7 @@
+                 
+ 			<%-- isFieldSecure determines whether or not the encrypted value should be shown for 
+ 			non-collections and a similar function for collections --%>
+-			<c:set var="isFieldSecure" value="${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" />
++			<c:set var="isFieldSecure" value="${field.secure}" />
+ 				
+ 			<%-- textStyle is used to store the style of the field value. i.e. whether or not it 
+ 			should display as red text. --%>
+@@ -168,20 +168,23 @@
+ 			<c:choose>
+ 
+ 				<c:when test="${isFieldSecure and field.fieldType ne field.FILE}">
+-					<input type="hidden" name="${field.propertyName}" 
+-						value='<c:out value="${field.encryptedValue}"/>' />
++					<!-- hidden -->
++					<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" 
++						value="${field.encryptedValue}" />
+ 
+ 				</c:when>
+ 
+-				<c:when test="${isFieldReadOnly && not isFieldAContainer and field.fieldType ne field.FILE}">
++				<c:when test="${isFieldReadOnly && not isFieldSecure && not isFieldAContainer and field.fieldType ne field.FILE}">
+ 					<c:choose>
+ 						<c:when test= "${isInquiry || isLookup}">
+-					  		<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
++							<!-- hidden -->
++					  		<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" value="${fieldValue}" />
+ 				  		</c:when>
+ 				  		<c:otherwise>
+ 							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
+-								<input type="hidden" name="${field.propertyName}" 
+-									   value='<c:out value="${fieldValue}"/>' />
++								<!-- hidden -->
++								<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" 
++									   value="${fieldValue}" />
+ 							</c:if>
+ 						</c:otherwise>
+ 				  	 </c:choose>
+@@ -275,8 +278,9 @@
+ 			    		     so we'll just render the input parameter, but not display anything.  Of course, inquiries are read only, so there's really no reason
+ 			    		     to have the input tag for inquiries, but it doesn't cause any harm. --%>
+ 			    		<%-- prevent the field from being written a 2nd time --%>
+-						<input type="hidden" name='${field.propertyName}'
+-							value='<c:out value="${isFieldSecure ? field.encryptedValue : fieldValue}"/>' />
++						<!-- hidden -->
++						<html:hidden renderHiddenField="${isLookup}" name='${field.propertyName}'
++							value="${isFieldSecure ? field.encryptedValue : fieldValue}" />
+ 					</c:if>
+ 				</c:when>
+ 					
+@@ -320,13 +324,14 @@
+ 							</c:when>
+ 
+ 							<c:otherwise>
+-
+-								<input type="text" id='${field.propertyName}' name='${field.propertyName}'
+-									value='<c:out value="${fieldValue}"/>'
++								<!-- ${onblurcall} ? -->
++								<html:text id='${field.propertyName}' name='${field.propertyName}'
++									value='${fieldValue}'
+ 									size='${field.size}'
+ 									maxlength='${field.formattedMaxLength}'
+-									style="${textStyle}" ${onblurcall} 
+-									class="${field.styleClass }"/>
++									style="${textStyle}" 
++									onblur="${onblurcall}" 
++									styleClass="${field.styleClass }"></html:text>
+ 						    
+ 								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
+ 
+@@ -353,14 +358,15 @@
+ 							</c:when>
+ 									
+ 							<c:otherwise>
+-									
+-								<input type="text" name='${field.propertyName}'
++								<!-- ${onblurcall} ? -->
++								<html:text name='${field.propertyName}'
+ 									id='${field.propertyName}'
+-									value='<c:out value="${fieldValue}"/>'
++									value='${fieldValue}'
+ 									size='${field.size}'
+ 									maxlength='${field.maxLength}'
+-									style="${textStyle}" ${onblurcall} 
+-									class="${field.styleClass}"/>
++									style="${textStyle}"
++									onblur="${onblurcall}" 
++									styleClass="${field.styleClass}"/>
+ 						    
+ 								<c:if test="${field.datePicker eq true}">
+ 											
+@@ -412,12 +418,14 @@
+ 
+ 							<c:otherwise>
+ 
+-								<textarea id='${field.propertyName}' name='${field.propertyName}'
++								<!-- ${onblurcall} ? -->
++								<input type="textarea" id='${field.propertyName}' name='${field.propertyName}'
+ 									rows='${field.rows}'
+ 									cols='${field.cols}'
+-									style="${textStyle}" ${onblurcall}
++									style="${textStyle}"
++									onblur="${onblurcall}" 
+ 									maxlength='${field.maxLength}' ><c:out
+-									value="${fieldValue}"/></textarea>
++									value="${fieldValue}"/>
+ 								
+ 								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
+ 
+@@ -447,10 +455,14 @@
+ 									
+ 							<c:otherwise>
+ 									
+-								<input type="checkbox" id='${field.propertyName}' name="${field.propertyName}" 
+-									${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
+-									${onblurcall} />
+-								<input type="hidden" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
++								<!--${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
++									${onblurcall}? -->
++								<html:checkbox id='${field.propertyName}' 
++									name="${field.propertyName}" 
++									onblur="${onblurcall}" 
++									value='${fieldValue}'/>
++								<!-- hidden -->
++								<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
+ 									
+ 							</c:otherwise>
+ 					
+@@ -636,13 +648,15 @@
+ 							</c:when>
+ 									
+ 							<c:otherwise>
+-								<input type="text" name='${field.propertyName}'
++								<!-- ${onblurcall} ? -->
++								<html:text name='${field.propertyName}'
+ 									id='${field.propertyName}'
+-									value='<c:out value="${fieldValue}"/>'
++									value='${fieldValue}'
+ 									size='${field.size}'
+ 									maxlength='${field.maxLength}'
+-									style="${textStyle}" ${onblurcall} 
+-									class="${field.styleClass}"/>
++									style="${textStyle}" 
++									onblur="${onblurcall}" 
++									styleClass="${field.styleClass}"/>
+ 								
+ 								<!--  adding a lookup here because it goes to workflow as opposed to Kuali -->
+ 								<kul:workflowWorkgroupLookup fieldConversions="workgroupName:${field.propertyName}" />	
+@@ -653,68 +667,69 @@
+ 					</td>
+ 				
+ 				</c:when>
+-				
+-				<c:when test="${field.fieldType eq field.FILE}">
+-					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" isReadOnly="${isFieldReadOnly}" 
+-						cellWidth="${dataCellWidth}%" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" fieldName="${field.propertyName}"/>
+-								
+-					<td class="grid" width="${dataCellWidth}%">
+-						<c:choose>
+-							<c:when test="${isFieldReadOnly}">
+-								<c:if test="${empty fieldValue}" >
+-									<c:out value="<%=((String) request.getAttribute("fileName"))%>" />&nbsp;
+-								</c:if>
+-								<c:if test="${not empty fieldValue}" >
+-									<kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" />
+-								</c:if>
+-							</c:when> 
+-									
+-							<c:otherwise>
+-									<c:choose>
+-										<c:when test="${empty fieldValue}" >
+-											<c:if test="${isMaintenance}" >
+-											<input type="file" name='${field.propertyName}'
+-												id='${field.propertyName}' 
+-												size='${field.size}'
+-												class="${field.styleClass}"/>
+-											</c:if>
+-										</c:when>
+-										<c:otherwise>
+-										<div id="replaceDiv" style="display:block;">
+-											<html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+-											<c:out value="${fieldValue}"/>
+-	                                    	&nbsp;&nbsp;
+-	                                    		                                    	<input type="hidden" name='methodToCall' />
+-    										<script type="text/javascript">
+-												function replaceAttachment() {
+-													excludeSubmitRestriction=true;
+-													showHide('replaceFileDiv','replaceDiv');
+-													document.forms[0].methodToCall.value='replaceAttachment';
+-													submitForm();
+-												}
+-											</script>
+-	                                    	<html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
+-	                                    </div>
+-                                    	<div id="replaceFileDiv" valign="middle" style="display:none;">
+-				                			<input type="file" name='${field.propertyName}'
+-												id='${field.propertyName}' 
+-												size='${field.size}'
+-												class="${field.styleClass}"/>  
+-										</div>
+-										</c:otherwise>
+-									</c:choose>
+-									
+-								 	
+-								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
+-							
+-							</c:otherwise>
+-					
+-						</c:choose>
+-						</div>
+-					</td>
+-				    
+-				</c:when>
+-									
++				
++				<c:when test="${field.fieldType eq field.FILE}">
++					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" isReadOnly="${isFieldReadOnly}" 
++						cellWidth="${dataCellWidth}%" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" fieldName="${field.propertyName}"/>
++								
++					<td class="grid" width="${dataCellWidth}%">
++						<c:choose>
++							<c:when test="${isFieldReadOnly}">
++								<c:if test="${empty fieldValue}" >
++									<c:out value="<%=((String) request.getAttribute("fileName"))%>" />&nbsp;
++								</c:if>
++								<c:if test="${not empty fieldValue}" >
++									<kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" />
++								</c:if>
++							</c:when> 
++									
++							<c:otherwise>
++									<c:choose>
++										<c:when test="${empty fieldValue}" >
++											<c:if test="${isMaintenance}" >
++											<input type="file" name='${field.propertyName}'
++												id='${field.propertyName}' 
++												size='${field.size}'
++												class="${field.styleClass}"/>
++											</c:if>
++										</c:when>
++										<c:otherwise>
++										<div id="replaceDiv" style="display:block;">
++											<html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
++											<c:out value="${fieldValue}"/>
++	                                    	&nbsp;&nbsp;
++                           					<!-- hidden -->
++	                                    	<html:hidden renderHiddenField="${isLookup}" name='methodToCall' />
++    										<script type="text/javascript">
++												function replaceAttachment() {
++													excludeSubmitRestriction=true;
++													showHide('replaceFileDiv','replaceDiv');
++													document.forms[0].methodToCall.value='replaceAttachment';
++													submitForm();
++												}
++											</script>
++	                                    	<html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
++	                                    </div>
++                                    	<div id="replaceFileDiv" valign="middle" style="display:none;">
++				                			<input type="file" name='${field.propertyName}'
++												id='${field.propertyName}' 
++												size='${field.size}'
++												class="${field.styleClass}"/>  
++										</div>
++										</c:otherwise>
++									</c:choose>
++									
++								 	
++								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
++							
++							</c:otherwise>
++					
++						</c:choose>
++						</div>
++					</td>
++				    
++				</c:when>
++									
+ 				<c:when test="${field.fieldType eq field.LOOKUP_HIDDEN || field.fieldType eq field.LOOKUP_READONLY}">
+ 			    
+ 					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" 
+@@ -722,8 +737,8 @@
+ 						fieldLabel="${field.fieldLabel}" />
+ 								
+ 					<td class="grid" width="${dataCellWidth}%">
+-								
+-						<input type="hidden" name='${field.propertyName}' value='<c:out value="${fieldValue}"/>' />
++						<!-- hidden -->
++						<html:hidden renderHiddenField="${isLookup}" name='${field.propertyName}' value="${fieldValue}" />
+ 					
+ 						<c:if test="${field.fieldType eq field.LOOKUP_READONLY}">
+ 					
+Index: impl/src/main/java/org/kuali/rice/kns/authorization/FieldAuthorization.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/authorization/FieldAuthorization.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/authorization/FieldAuthorization.java	(working copy)
+@@ -1,278 +1,303 @@
+-/*
+- * Copyright 2006-2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.kuali.rice.kns.authorization;
+-
+-import org.apache.commons.lang.StringUtils;
+-import org.kuali.rice.kns.web.ui.Field;
+-
+-/**
+- * This class represents the authorization restrictions (or lack of) for a given field.
+- * 
+- * 
+- */
+-public class FieldAuthorization {
+-
+-    private String fieldName;
+-    private boolean editable;
+-    private boolean viewable;
+-
+-    /**
+-     * Constructs a FieldAuthorization.java.
+-     */
+-    public FieldAuthorization() {
+-        editable = true;
+-        viewable = true;
+-    }
+-
+-    /**
+-     * 
+-     * Constructs a FieldAuthorization.java.
+-     * 
+-     * @param fieldName - name of field to represent
+-     * @param canEdit - true if the field is editable in this context, false otherwise
+-     * @param canView - true if thie field is viewable in this context, false otherwise
+-     * 
+-     */
+-    public FieldAuthorization(String fieldName, boolean canEdit, boolean canView) {
+-        this.fieldName = fieldName;
+-        setEditable(canEdit); // using setters here to run impossible combinations check
+-        setViewable(canView);
+-    }
+-
+-    /**
+-     * 
+-     * Constructs a FieldAuthorization.java.
+-     * 
+-     * @param fieldName - name of the field to represent
+-     * @param fieldAuthorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE
+-     * 
+-     */
+-    public FieldAuthorization(String fieldName, String fieldAuthorizationFlag) {
+-
+-        // if an invalid flag is passed in, the choke on it
+-        if (!fieldAuthorizationFlag.equals(Field.EDITABLE) && !fieldAuthorizationFlag.equals(Field.READONLY) && !fieldAuthorizationFlag.equals(Field.HIDDEN)) {
+-            throw new IllegalArgumentException("The only allowable values are Field.HIDDEN, Field.READONLY, and Field.EDITABLE");
+-        }
+-
+-        this.fieldName = fieldName;
+-
+-        if (fieldAuthorizationFlag.equals(Field.EDITABLE)) {
+-            this.editable = true;
+-            this.viewable = true;
+-        }
+-
+-        if (fieldAuthorizationFlag.equals(Field.READONLY)) {
+-            this.editable = false;
+-            this.viewable = true;
+-        }
+-
+-        if (fieldAuthorizationFlag.equals(Field.HIDDEN)) {
+-            this.editable = false;
+-            this.viewable = false;
+-        }
+-
+-    }
+-
+-    /**
+-     * 
+-     * This method returns the correct flag from the Kuali Field object, that corresponds to the particular combination of editable
+-     * and viewable set on this object.
+-     * 
+-     * @return Field.HIDDEN, Field.READONLY, or Field.EDITABLE
+-     * 
+-     */
+-    public String getKualiFieldDisplayFlag() {
+-
+-        if (!editable && !viewable) {
+-            return Field.HIDDEN;
+-        }
+-        if (!editable && viewable) {
+-            return Field.READONLY;
+-        }
+-        else {
+-            return Field.EDITABLE;
+-        }
+-
+-    }
+-
+-    /**
+-     * 
+-     * This method returns true if the FieldAuthorization is some kind of restriction, and returns false if it is an editable field.
+-     * 
+-     * @return boolean
+-     * 
+-     */
+-    public boolean isRestricted() {
+-        if (!editable || !viewable) {
+-            return true;
+-        }
+-        else {
+-            return false;
+-        }
+-    }
+-
+-    /**
+-     * 
+-     * This method returns true if this authorization prohibits Viewing and Editing, resulting in a hidden field.
+-     * 
+-     * @return boolean
+-     * 
+-     */
+-    public boolean isHidden() {
+-        if (!editable && !viewable) {
+-            return true;
+-        }
+-        else {
+-            return false;
+-        }
+-    }
+-
+-    /**
+-     * 
+-     * This method returns true if this authorization prohibits Editing but not Viewing, resulting in a ReadOnly field.
+-     * 
+-     * @return boolean
+-     * 
+-     */
+-    public boolean isReadOnly() {
+-        if (!editable && viewable) {
+-            return true;
+-        }
+-        else {
+-            return false;
+-        }
+-    }
+-
+-    /**
+-     * Gets the editable attribute.
+-     * 
+-     * @return Returns the editable.
+-     */
+-    public boolean isEditable() {
+-        return editable;
+-    }
+-
+-    /**
+-     * Sets the editable attribute value.
+-     * 
+-     * Note that if editable is being set to true, and the internal value of viewable is false, viewable will be flipped to true, to
+-     * avoid impossible combinations of flags.
+-     * 
+-     * @param editable The editable to set.
+-     */
+-    public void setEditable(boolean editable) {
+-        if (editable && !this.viewable) {
+-            this.viewable = true;
+-        }
+-        this.editable = editable;
+-    }
+-
+-    /**
+-     * Gets the fieldName attribute.
+-     * 
+-     * @return Returns the fieldName.
+-     */
+-    public String getFieldName() {
+-        return fieldName;
+-    }
+-
+-    /**
+-     * Sets the fieldName attribute value.
+-     * 
+-     * @param fieldName The fieldName to set.
+-     */
+-    public void setFieldName(String fieldName) {
+-        this.fieldName = fieldName;
+-    }
+-
+-    /**
+-     * Gets the viewable attribute.
+-     * 
+-     * @return Returns the viewable.
+-     */
+-    public boolean isViewable() {
+-        return viewable;
+-    }
+-
+-    /**
+-     * Sets the viewable attribute value.
+-     * 
+-     * Note that if viewable is being set to false, and the internal value of editable is true, then editable will be silently
+-     * flipped to false. This is done to avoid impossible combinations of authorization flags.
+-     * 
+-     * @param viewable The viewable to set.
+-     */
+-    public void setViewable(boolean viewable) {
+-        if (!viewable && this.editable) {
+-            this.editable = false;
+-        }
+-        this.viewable = viewable;
+-    }
+-
+-    /**
+-     * @see java.lang.Object#toString()
+-     */
+-    public String toString() {
+-        StringBuffer sb = new StringBuffer();
+-        sb.append(this.fieldName);
+-        sb.append(" [");
+-        if (this.editable) {
+-            sb.append("editable");
+-        }
+-        else {
+-            sb.append("not editable");
+-        }
+-        sb.append(",");
+-        if (this.viewable) {
+-            sb.append("viewable");
+-        }
+-        else {
+-            sb.append("not viewable");
+-        }
+-        sb.append("]");
+-        return sb.toString();
+-    }
+-
+-    /**
+-     * @see java.lang.Object#equals(java.lang.Object)
+-     */
+-    public boolean equals(Object obj) {
+-        boolean equal = false;
+-
+-        if (obj != null) {
+-            if (this.getClass().equals(obj.getClass())) {
+-                FieldAuthorization other = (FieldAuthorization) obj;
+-
+-                if (StringUtils.equals(this.fieldName, other.getFieldName())) {
+-                    if (this.editable == other.isEditable() && this.viewable == other.isViewable()) {
+-                        equal = true;
+-                    }
+-                }
+-            }
+-        }
+-
+-        return equal;
+-    }
+-
+-    /**
+-     * @see java.lang.Object#hashCode()
+-     */
+-    public int hashCode() {
+-        return toString().hashCode();
+-    }
+-
+-
+-}
++/*
++ * Copyright 2006-2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.authorization;
++
++import org.apache.commons.lang.StringUtils;
++import org.kuali.rice.kns.web.ui.Field;
++
++/**
++ * This class represents the authorization restrictions (or lack of) for a given field.
++ * 
++ * 
++ */
++public class FieldAuthorization {
++
++    private String fieldName;
++    private boolean editable;
++    private boolean viewable;
++    private boolean masked;
++    private boolean partiallyMasked;
++
++    /**
++     * Constructs a FieldAuthorization.java.
++     */
++    public FieldAuthorization() {
++        editable = true;
++        viewable = true;
++    }
++
++    /**
++     * 
++     * Constructs a FieldAuthorization.java.
++     * 
++     * @param fieldName - name of field to represent
++     * @param canEdit - true if the field is editable in this context, false otherwise
++     * @param canView - true if thie field is viewable in this context, false otherwise
++     * 
++     */
++    public FieldAuthorization(String fieldName, boolean canEdit, boolean canView) {
++        this.fieldName = fieldName;
++        setEditable(canEdit); // using setters here to run impossible combinations check
++        setViewable(canView);
++    }
++
++    /**
++     * 
++     * Constructs a FieldAuthorization.java.
++     * 
++     * @param fieldName - name of the field to represent
++     * @param fieldAuthorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE
++     * 
++     */
++    public FieldAuthorization(String fieldName, String fieldAuthorizationFlag) {
++
++        // if an invalid flag is passed in, the choke on it
++        if (!fieldAuthorizationFlag.equals(Field.EDITABLE) && !fieldAuthorizationFlag.equals(Field.READONLY) 
++        		&& !fieldAuthorizationFlag.equals(Field.HIDDEN) && !fieldAuthorizationFlag.equals(Field.MASKED)
++        		&& !fieldAuthorizationFlag.equals(Field.PARTIALLY_MASKED)) {
++            throw new IllegalArgumentException("The only allowable values are " +
++            		"Field.HIDDEN, Field.READONLY, Field.EDITABLE, Field.MASKED and Field.PARTIALLY_MASKED");
++        }
++
++        this.fieldName = fieldName;
++
++        if (fieldAuthorizationFlag.equals(Field.EDITABLE)) {
++            this.editable = true;
++            this.viewable = true;
++        } else if (fieldAuthorizationFlag.equals(Field.READONLY)) {
++            this.editable = false;
++            this.viewable = true;
++        } else if (fieldAuthorizationFlag.equals(Field.HIDDEN)) {
++            this.editable = false;
++            this.viewable = false;
++        } else if(fieldAuthorizationFlag.equals(Field.MASKED)){
++			this.masked = true;
++			this.viewable = true;
++			this.editable = true;
++		} else if(fieldAuthorizationFlag.equals(Field.PARTIALLY_MASKED)){
++			this.partiallyMasked = true;
++			this.viewable = true;
++			this.editable = true;
++		}
++
++    }
++
++    /**
++     * 
++     * This method returns the correct flag from the Kuali Field object, that corresponds to the particular combination of editable
++     * and viewable set on this object.
++     * 
++     * @return Field.HIDDEN, Field.READONLY, or Field.EDITABLE
++     * 
++     */
++    public String getKualiFieldDisplayFlag() {
++
++        if (!editable && !viewable) {
++            return Field.HIDDEN;
++        }
++        if (!editable && viewable) {
++            return Field.READONLY;
++        }
++        else {
++            return Field.EDITABLE;
++        }
++
++    }
++
++    /**
++     * 
++     * This method returns true if the FieldAuthorization is some kind of restriction, and returns false if it is an editable field.
++     * 
++     * @return boolean
++     * 
++     */
++    public boolean isRestricted() {
++        if (!editable || !viewable || masked || partiallyMasked) {
++            return true;
++        }
++        else {
++            return false;
++        }
++    }
++
++    /**
++     * 
++     * This method returns true if this authorization prohibits Viewing and Editing, resulting in a hidden field.
++     * 
++     * @return boolean
++     * 
++     */
++    public boolean isHidden() {
++        if (!editable && !viewable) {
++            return true;
++        }
++        else {
++            return false;
++        }
++    }
++
++    /**
++     * 
++     * This method returns true if this authorization prohibits Editing but not Viewing, resulting in a ReadOnly field.
++     * 
++     * @return boolean
++     * 
++     */
++    public boolean isReadOnly() {
++        if (!editable && viewable) {
++            return true;
++        }
++        else {
++            return false;
++        }
++    }
++
++    /**
++     * Gets the editable attribute.
++     * 
++     * @return Returns the editable.
++     */
++    public boolean isEditable() {
++        return editable;
++    }
++
++    /**
++     * Sets the editable attribute value.
++     * 
++     * Note that if editable is being set to true, and the internal value of viewable is false, viewable will be flipped to true, to
++     * avoid impossible combinations of flags.
++     * 
++     * @param editable The editable to set.
++     */
++    public void setEditable(boolean editable) {
++        if (editable && !this.viewable) {
++            this.viewable = true;
++        }
++        this.editable = editable;
++    }
++
++    /**
++     * Gets the fieldName attribute.
++     * 
++     * @return Returns the fieldName.
++     */
++    public String getFieldName() {
++        return fieldName;
++    }
++
++    /**
++     * Sets the fieldName attribute value.
++     * 
++     * @param fieldName The fieldName to set.
++     */
++    public void setFieldName(String fieldName) {
++        this.fieldName = fieldName;
++    }
++
++    /**
++     * Gets the viewable attribute.
++     * 
++     * @return Returns the viewable.
++     */
++    public boolean isViewable() {
++        return viewable;
++    }
++
++    /**
++     * Sets the viewable attribute value.
++     * 
++     * Note that if viewable is being set to false, and the internal value of editable is true, then editable will be silently
++     * flipped to false. This is done to avoid impossible combinations of authorization flags.
++     * 
++     * @param viewable The viewable to set.
++     */
++    public void setViewable(boolean viewable) {
++        if (!viewable && this.editable) {
++            this.editable = false;
++        }
++        this.viewable = viewable;
++    }
++
++    /**
++     * @see java.lang.Object#toString()
++     */
++    public String toString() {
++        StringBuffer sb = new StringBuffer();
++        sb.append(this.fieldName);
++        sb.append(" [");
++        if (this.editable) {
++            sb.append("editable");
++        }
++        else {
++            sb.append("not editable");
++        }
++        sb.append(",");
++        if (this.viewable) {
++            sb.append("viewable");
++        }
++        else {
++            sb.append("not viewable");
++        }
++        sb.append("]");
++        return sb.toString();
++    }
++
++    /**
++     * @see java.lang.Object#equals(java.lang.Object)
++     */
++    public boolean equals(Object obj) {
++        boolean equal = false;
++
++        if (obj != null) {
++            if (this.getClass().equals(obj.getClass())) {
++                FieldAuthorization other = (FieldAuthorization) obj;
++
++                if (StringUtils.equals(this.fieldName, other.getFieldName())) {
++                    if (this.editable == other.isEditable() && this.viewable == other.isViewable()) {
++                        equal = true;
++                    }
++                }
++            }
++        }
++
++        return equal;
++    }
++
++    /**
++     * @see java.lang.Object#hashCode()
++     */
++    public int hashCode() {
++        return toString().hashCode();
++    }
++
++	/**
++	 * @return the masked
++	 */
++	public boolean isMasked() {
++		return this.masked;
++	}
++
++	/**
++	 * @return the partiallyMasked
++	 */
++	public boolean isPartiallyMasked() {
++		return this.partiallyMasked;
++	}
++
++	public boolean shouldBeEncrypted(){
++		return isMasked() || isPartiallyMasked();
++	}
++}
+Index: impl/src/main/java/org/kuali/rice/kns/maintenance/KualiMaintainableImpl.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/maintenance/KualiMaintainableImpl.java	(revision 5223)
++++ impl/src/main/java/org/kuali/rice/kns/maintenance/KualiMaintainableImpl.java	(working copy)
+@@ -30,6 +30,7 @@
+ import org.apache.commons.beanutils.PropertyUtils;
+ import org.apache.commons.lang.StringUtils;
+ import org.kuali.rice.core.service.EncryptionService;
++import org.kuali.rice.kns.authorization.FieldAuthorization;
+ import org.kuali.rice.kns.bo.BusinessObject;
+ import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+ import org.kuali.rice.kns.bo.DocumentHeader;
+@@ -38,11 +39,10 @@
+ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
+ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+-import org.kuali.rice.kns.document.Document;
+ import org.kuali.rice.kns.document.MaintenanceDocument;
+ import org.kuali.rice.kns.document.MaintenanceLock;
+-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+-import org.kuali.rice.kns.exception.KualiException;
++import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
++import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+ import org.kuali.rice.kns.lookup.LookupUtils;
+ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+@@ -51,7 +51,6 @@
+ import org.kuali.rice.kns.service.KNSServiceLocator;
+ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+ import org.kuali.rice.kns.service.PersistenceStructureService;
+-import org.kuali.rice.kim.service.PersonService;
+ import org.kuali.rice.kns.util.FieldUtils;
+ import org.kuali.rice.kns.util.GlobalVariables;
+ import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
+@@ -190,6 +189,7 @@
+         return cachedValues;
+     }
+ 
++
+     /**
+      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
+      * encrypted. This field finds the those parameters in the map, whose value gives us the property name that has an encrypted
+@@ -198,7 +198,7 @@
+      * @param fieldValues - possibly with encrypted values
+      * @return Map fieldValues - with no encrypted values
+      */
+-    private Map decryptEncryptedData(Map fieldValues, Document maintenanceDocument) {
++    private Map decryptEncryptedData(Map fieldValues, MaintenanceDocument maintenanceDocument) {
+     	try {
+ 	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+ 	                String fieldName = (String) iter.next();
+@@ -228,24 +228,30 @@
+         return fieldValues;
+     }
+ 
+-    private boolean shouldFieldBeEncrypted(Document maintenanceDocument, String fieldName){
+-    	DocumentAuthorizer authorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
+-    	Map editMap = authorizer.getEditMode(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
+-    	String displayEditMode = getDisplayEditMode(maintenanceDocument, fieldName);
+-    	// Non-blank displayEditMode implies that this field should be encrypted, if the user does not have appropriate permissions
++    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName){
++    	MaintenanceDocumentAuthorizer authorizer = (MaintenanceDocumentAuthorizer)
++    		KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
++    	MaintenanceDocumentAuthorizations auths = 
++    		authorizer.getFieldAuthorizations(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
++    	// If the user does not have appropriate permissions, a non-blank displayEditMode implies that this field should be encrypted
+     	// If the logged in user has the permission to view or edit this field, 
+-    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted 
+-    	if(StringUtils.isNotBlank(displayEditMode) && (editMap==null || !editMap.containsKey(displayEditMode)))
+-    		return true;
++    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted
++    	// The corresponding value in editMap actually does not matter;
++    	// just the presence of the displayEditMode inside that map is enough.
++    	// Note: this "if" stmt is same as "${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" of rowDisplay.jsp
++    	if(auths!=null && auths.hasAuthFieldRestricted(fieldName)){
++    		FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
++    		return fieldAuth.shouldBeEncrypted();
++    	}
+     	return false;
+     }
+     
+-    private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
++    /*private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
+     	String docTypeName = maintenanceDocument.getDocumentHeader().getWorkflowDocument().getDocumentType();
+     	MaintainableFieldDefinition fieldDefinition =
+     		KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableField(docTypeName, fieldName);
+     	return fieldDefinition==null?null:fieldDefinition.getDisplayEditMode();
+-	}
++	}*/
+     
+     /**
+      * Calls method to get all the core sections for the business object defined in the data dictionary. Then determines if the bo
+@@ -1091,4 +1097,4 @@
+     }
+ 
+ 	
+-}
++}

@@ -2282,7 +2282,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/authorization/FieldAuthorization.ja
 +     * 
 +     */
 +    public boolean isRestricted() {
-+        if (!editable || !viewable || masked || partiallyMasked) {
++        if (!editable || !viewable) {
 +            return true;
 +        }
 +        else {

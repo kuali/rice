@@ -714,18 +714,16 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
  import org.kuali.rice.kns.datadictionary.mask.Mask;
  import org.kuali.rice.kns.lookup.HtmlData;
  import org.kuali.rice.kns.util.KNSConstants;
-@@ -54,6 +57,10 @@
+@@ -54,6 +57,8 @@
      public static final String KUALIUSER = "kualiuser";
      public static final String READONLY = "readOnly";
      public static final String EDITABLE = "editable";
 +    public static final String MASKED = "masked";
-+    public static final String MASKED_READONLY = "maskedReadOnly";
 +    public static final String PARTIALLY_MASKED = "partiallyMasked";
-+    public static final String PARTIALLY_MASKED_READONLY = "partiallyMaskedReadOnly";
      public static final String LOOKUP_HIDDEN = "lookuphidden";
      public static final String LOOKUP_READONLY = "lookupreadonly";
      public static final String WORKFLOW_WORKGROUP = "workflowworkgroup";
-@@ -98,8 +105,14 @@
+@@ -98,8 +103,14 @@
      private boolean isReadOnly;
      private String lookupParameters;
      private int maxLength;
@@ -740,7 +738,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
      private HtmlData inquiryURL;
      private String propertyPrefix;
      private String quickFinderClassNameImpl;
-@@ -117,11 +130,7 @@
+@@ -117,11 +128,7 @@
      private String personNameAttributeName;
      private String defaultValue = KNSConstants.EMPTY_STRING;
      private boolean keyField;
@@ -752,7 +750,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
      private String webOnBlurHandler;
      private String webOnBlurHandlerCallback;
      private String styleClass;
-@@ -263,7 +272,6 @@
+@@ -263,7 +270,6 @@
          this.isReadOnly = false;
          this.upperCase = false;
          this.keyField = false;
@@ -760,7 +758,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
          this.fieldLevelHelpEnabled = false;
      }
  
-@@ -529,7 +537,24 @@
+@@ -529,7 +535,24 @@
  
          return propertyValue;
      }
@@ -785,7 +783,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
  
      /**
       * Gets the propertyPrefix attribute.
-@@ -1070,26 +1095,7 @@
+@@ -1070,26 +1093,7 @@
          this.keyField = keyField;
      }
  
@@ -812,7 +810,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
       * Gets the displayMask attribute.
       * 
       * @return Returns the displayMask.
-@@ -1097,35 +1103,8 @@
+@@ -1097,35 +1101,8 @@
      public Mask getDisplayMask() {
          return displayMask;
      }
@@ -849,7 +847,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
       * Gets the encryptedValue attribute.
       * 
       * @return Returns the encryptedValue.
-@@ -1149,19 +1128,10 @@
+@@ -1149,19 +1126,10 @@
       * @return Returns the secure.
       */
      public boolean isSecure() {
@@ -870,7 +868,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
       * Returns the method name of a function present in the page which should be called
       * when the user tabs away from the field.
       * 
-@@ -1379,7 +1349,7 @@
+@@ -1379,7 +1347,7 @@
      public void setFieldDirectInquiryEnabled(boolean fieldDirectInquiryEnabled) {
          this.fieldDirectInquiryEnabled = fieldDirectInquiryEnabled;
      }
@@ -879,7 +877,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
  	/**
  	 * @return the fieldInactiveValidValues
  	 */
-@@ -1393,5 +1363,54 @@
+@@ -1393,5 +1361,54 @@
  	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
  		this.fieldInactiveValidValues = fieldInactiveValidValues;
  	}
@@ -962,7 +960,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(revision 5223)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(working copy)
-@@ -1,175 +1,213 @@
+@@ -1,175 +1,196 @@
 -/*
 - * Copyright 2007 The Kuali Foundation.
 - * 
@@ -1302,23 +1300,6 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +        addAuthField(fieldName, Field.PARTIALLY_MASKED);
 +    }
 +
-+    /**
-+     * This method adds the fieldName specified as masked.
-+     * 
-+     * @param fieldName
-+     */
-+    public void addMaskedReadOnlyAuthField(String fieldName) {
-+        addAuthField(fieldName, Field.MASKED_READONLY);
-+    }
-+
-+    /**
-+     * This method adds the fieldName specified as partially masked.
-+     * 
-+     * @param fieldName
-+     */
-+    public void addPartiallyMaskedReadOnlyAuthField(String fieldName) {
-+        addAuthField(fieldName, Field.PARTIALLY_MASKED_READONLY);
-+    }
 +    
 +    /**
 +     * 

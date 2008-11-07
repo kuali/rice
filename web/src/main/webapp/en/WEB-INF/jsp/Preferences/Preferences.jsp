@@ -176,7 +176,7 @@
 			  <table style="border:none">
 			    <tbody><tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorSaved" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorSaved" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </tbody>
@@ -191,7 +191,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorInitiated" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorInitiated" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -205,7 +205,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio  styleClass="nobord" property="preferences.colorDissaproved" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio  styleClass="nobord" property="preferences.colorDissaproved" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -218,7 +218,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorEnroute" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorEnroute" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -231,7 +231,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorApproved" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorApproved" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -244,7 +244,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorFinal" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorFinal" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -257,7 +257,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorProccessed" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorProccessed" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -270,7 +270,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorException" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorException" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -283,7 +283,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>'><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorCanceled" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorCanceled" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
 			  </table>
@@ -305,11 +305,6 @@
   </tr>
 </table>
 </html-el:form>
-</td>
-<td></td>
-</tr>
-</table>
-
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
 
 </body>

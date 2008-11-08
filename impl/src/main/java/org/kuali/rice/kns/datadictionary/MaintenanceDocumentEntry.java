@@ -41,10 +41,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
     protected List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
     protected List<String> lockingKeys = new ArrayList<String>();
-    protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
     protected List<ApcRuleDefinition> apcRules = new ArrayList<ApcRuleDefinition>();
     protected Map<String,MaintainableSectionDefinition> maintainableSectionMap = new LinkedHashMap<String, MaintainableSectionDefinition>();
-    protected Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
     protected Map<String,ApcRuleDefinition> apcRuleMap = new LinkedHashMap<String, ApcRuleDefinition>();
     
     protected boolean allowsNewOrCopy = true;
@@ -105,29 +103,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      */
     public List<String> getLockingKeyFieldNames() {
         return lockingKeys;
-    }
-
-    /**
-     * 
-     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the order in
-     *         which they were added
-     * 
-     */
-    public List<ReferenceDefinition> getDefaultExistenceChecks() {
-        return defaultExistenceChecks;
-    }
-
-    /**
-     * 
-     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the order in
-     *         which they were added
-     * 
-     */
-    public List<String> getDefaultExistenceCheckFieldNames() {
-        List<String> fieldNames = new ArrayList<String>();
-        fieldNames.addAll(this.defaultExistenceCheckMap.keySet());
-
-        return fieldNames;
     }
 
     /**
@@ -279,33 +254,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         }
         this.maintainableSections = maintainableSections;
     }
-
-
-    /*
-            The defaultExistenceChecks element contains a list of
-            reference object names which are required to exist when maintaining a BO.
-            Optionally, the reference objects can be required to be active.
-
-            JSTL: defaultExistenceChecks is a Map of Reference elements,
-            whose entries are keyed by attributeName
-     */
-    public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
-        defaultExistenceCheckMap.clear();
-        for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
-            if (reference == null) {
-                throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
-            }
-    
-            String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
-            if (defaultExistenceCheckMap.containsKey(keyName)) {
-                throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
-            }
-    
-            defaultExistenceCheckMap.put(keyName, reference);
-        }
-        this.defaultExistenceChecks = defaultExistenceChecks;
-    }
-
 
     /*
                     The apcRule element is used to specifiy legal values

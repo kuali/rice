@@ -873,5 +873,4 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     	}
     	return encryptedFieldsList;
     }
-    
 }

@@ -20,6 +20,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.TransactionalDocument;
 
 
 /**
@@ -299,6 +300,38 @@ public interface DictionaryValidationService {
      */
     public boolean validateDefaultExistenceChecks(BusinessObject bo);
 
+	/**
+	 * 
+	 * This method does an existence check against all references of a transactionalDocument
+	 * 
+	 * Appropriate errors will also be placed in the GlobalVariables.ErrorMap.
+	 * 
+	 * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
+	 * prefix, other than what has already been pushed onto the errorMap.
+	 * 
+	 * @param doc document instance that should be tested
+	 * @return true if all passed existence tests, false if any failed
+	 * 
+	 */
+	public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document);
+	
+	/**
+	 * 
+	 * This method does an existence check against all references of a transactionalDocument
+	 * 
+	 * Appropriate errors will also be placed in the GlobalVariables.ErrorMap.
+	 * 
+	 * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
+	 * prefix, other than what has already been pushed onto the errorMap.
+	 * 
+	 * @param doc document instance that should be tested
+	 * @param accountingLine that should be tested
+	 * @param collectionName that should be tested
+	 * @return true if all passed existence tests, false if any failed
+	 * 
+	 */
+	public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document, BusinessObject accountingLine, String collectionName);
+    
     /**
      * 
      * This method applies a specific rule against the given BusinessObject as defined in the MaintenanceDocument.xml file.

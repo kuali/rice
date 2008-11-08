@@ -23,6 +23,7 @@ import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.rule.AddAdHocRoutePersonRule;
 import org.kuali.rice.kns.rule.AddAdHocRouteWorkgroupRule;
 import org.kuali.rice.kns.rule.AddNoteRule;
@@ -162,6 +163,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	isValid &= isDocumentOverviewValid(document);
 	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 	getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), false);
+	KNSServiceLocator.getDictionaryValidationService().validateDefaultExistenceChecksForTransDoc((TransactionalDocument) document);
 	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 	isValid &= GlobalVariables.getErrorMap().isEmpty();
 	isValid &= processCustomSaveDocumentBusinessRules(document);

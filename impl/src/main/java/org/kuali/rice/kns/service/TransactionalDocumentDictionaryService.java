@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service;
 
+import java.util.Collection;
+
 import org.kuali.rice.kns.document.TransactionalDocument;
 
 /**
@@ -77,4 +79,19 @@ public interface TransactionalDocumentDictionaryService {
      * @return businessRulesClass associated with the given document's type
      */
     public Class getBusinessRulesClass(TransactionalDocument document);
+    /**
+     * The collection of ReferenceDefinition objects defined as DefaultExistenceChecks for the MaintenanceDocument.
+     * 
+     * @param document
+     * @return A Collection of ReferenceDefinitions
+     */
+    public Collection getDefaultExistenceChecks(TransactionalDocument document);
+
+    /**
+     * The collection of ReferenceDefinition objects defined as DefaultExistenceChecks for the MaintenanceDocument.
+     * 
+     * @param docTypeName
+     * @return A Collection of ReferenceDefinitions
+     */
+    public Collection getDefaultExistenceChecks(String docTypeName);
 }

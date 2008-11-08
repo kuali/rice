@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.datadictionary;
 
 
+
 /**
  * TransactionalDocumentEntry
  */
@@ -33,11 +34,24 @@ public class TransactionalDocumentEntry extends DocumentEntry {
         this.allowsErrorCorrection = allowsErrorCorrection;
     }
 
-    public boolean getAllowsErrorCorrection() {
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.datadictionary.DocumentEntry#completeValidation()
+	 */
+	@Override
+	public void completeValidation() {
+		super.completeValidation();
+        for ( ReferenceDefinition reference : defaultExistenceChecks ) {
+            reference.completeValidation(documentClass, null);
+        }
+	}
+
+	public boolean getAllowsErrorCorrection() {
         return allowsErrorCorrection;
     }
 
-    @Override
+	@Override
     public String toString() {
         return "TransactionalDocumentEntry for documentType " + getDocumentTypeName();
     }

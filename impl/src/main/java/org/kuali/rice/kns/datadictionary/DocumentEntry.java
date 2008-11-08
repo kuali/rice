@@ -18,7 +18,9 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -72,6 +74,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected boolean allowsCopy = false;
     protected WorkflowProperties workflowProperties;
     
+    protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
+    protected Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
+
     protected boolean sessionDocument = false;
 
     /**
@@ -493,6 +498,56 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         }
         this.authorizations = authorizations;
     }
+
+    /**
+     * 
+     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the order in
+     *         which they were added
+     * 
+     */
+    public List<ReferenceDefinition> getDefaultExistenceChecks() {
+        return defaultExistenceChecks;
+    }
+
+
+    /*
+            The defaultExistenceChecks element contains a list of
+            reference object names which are required to exist when maintaining a BO.
+            Optionally, the reference objects can be required to be active.
+
+            JSTL: defaultExistenceChecks is a Map of Reference elements,
+            whose entries are keyed by attributeName
+     */
+    public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
+        defaultExistenceCheckMap.clear();
+        for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
+            if (reference == null) {
+                throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
+            }
+    
+            String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
+            if (defaultExistenceCheckMap.containsKey(keyName)) {
+                throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+            }
+    
+            defaultExistenceCheckMap.put(keyName, reference);
+        }
+        this.defaultExistenceChecks = defaultExistenceChecks;
+    }
+    /**
+     * 
+     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the order in
+     *         which they were added
+     * 
+     */
+    public List<String> getDefaultExistenceCheckFieldNames() {
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.addAll(this.defaultExistenceCheckMap.keySet());
+
+        return fieldNames;
+    }
+
+
 
 	public boolean getSessionDocument() {
 		return this.sessionDocument;

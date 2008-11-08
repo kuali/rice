@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.Collection;
+
 import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -177,4 +180,29 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
 
         return entry;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getDefaultExistenceChecks(java.lang.String)
+	 */
+	public Collection getDefaultExistenceChecks(String docTypeName) {
+        Collection defaultExistenceChecks = null;
+
+        TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(docTypeName);
+        if (entry != null) {
+            defaultExistenceChecks = entry.getDefaultExistenceChecks();
+        }
+
+        return defaultExistenceChecks;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getDefaultExistenceChecks(org.kuali.rice.kns.document.TransactionalDocument)
+	 */
+	public Collection getDefaultExistenceChecks(TransactionalDocument document) {
+		return getDefaultExistenceChecks(getTransactionalDocumentEntry(document).getDocumentTypeName());
+	}
 }

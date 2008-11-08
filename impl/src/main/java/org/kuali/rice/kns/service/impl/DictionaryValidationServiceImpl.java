@@ -35,6 +35,7 @@ import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -43,6 +44,7 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -66,6 +68,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private DataDictionaryService dataDictionaryService;
     private BusinessObjectService businessObjectService;
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private TransactionalDocumentDictionaryService transactionalDocumentDictionaryService;
     private PersistenceService persistenceService;
     private KualiConfigurationService configService;
 
@@ -674,6 +677,61 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.kns.document.TransactionalDocument)
+	 */
+	public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
+        boolean success = true;
+
+        // get a collection of all the referenceDefinitions setup for this object
+        Collection references = transactionalDocumentDictionaryService.getDefaultExistenceChecks(document);
+
+        // walk through the references, doing the tests on each
+        for (Iterator iter = references.iterator(); iter.hasNext();) {
+            ReferenceDefinition reference = (ReferenceDefinition) iter.next();
+
+            // do the existence and validation testing
+            success &= validateReferenceExistsAndIsActive(document.getDocumentBusinessObject(), reference);
+        }
+        return success;
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.kns.document.TransactionalDocument, org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	public boolean validateDefaultExistenceChecksForNewCollectionItem(
+			TransactionalDocument document,
+			BusinessObject newCollectionItem, String collectionName) {
+        boolean success = true;
+        if (StringUtils.isNotBlank(collectionName)) {
+	        // get a collection of all the referenceDefinitions setup for this object
+	        Collection references = transactionalDocumentDictionaryService.getDefaultExistenceChecks(document);
+	
+	        // walk through the references, doing the tests on each
+	        for (Iterator iter = references.iterator(); iter.hasNext();) {
+	            ReferenceDefinition reference = (ReferenceDefinition) iter.next();
+				if(collectionName != null && collectionName.equals(reference.getCollection())){
+					String displayFieldName;
+		            if (reference.isDisplayFieldNameSet()) {
+		                displayFieldName = reference.getDisplayFieldName();
+		            }
+		            else {
+		                Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : document.getDocumentBusinessObject().getClass();
+		                displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
+		            }
+		
+		            success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed(), reference.isActiveIndicatorSet(), reference.getAttributeToHighlightOnFail(), displayFieldName);
+				}
+	        }
+        }
+        return success;
+	}
+
+	/**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRule(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ApcRuleDefinition)
      */
@@ -755,6 +813,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
 
     /**
+	 * @param transactionalDocumentDictionaryService the transactionalDocumentDictionaryService to set
+	 */
+	public void setTransactionalDocumentDictionaryService(
+			TransactionalDocumentDictionaryService transactionalDocumentDictionaryService) {
+		this.transactionalDocumentDictionaryService = transactionalDocumentDictionaryService;
+	}
+
+
+	/**
      * Sets the persistenceService attribute value.
      * 
      * @param persistenceService The persistenceService to set.
@@ -776,6 +843,5 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
-
 
 }

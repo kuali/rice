@@ -40,6 +40,7 @@ import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -827,7 +828,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(this.newMaintainableObject.getBoClass());
         DocumentEntry documentEntry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(docTypeName);
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
-        return createPropertySerializabilityEvaluator(workflowProperties);
+        WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
+        return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
     }
     
     public DocumentAttachment getAttachment() {

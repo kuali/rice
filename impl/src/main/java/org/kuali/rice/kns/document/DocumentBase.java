@@ -45,6 +45,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
@@ -59,6 +60,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
+import org.kuali.rice.kns.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
@@ -450,18 +452,24 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
         DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
-        return createPropertySerializabilityEvaluator(workflowProperties);
+        WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
+        return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
     }
     
-    protected PropertySerializabilityEvaluator createPropertySerializabilityEvaluator(WorkflowProperties workflowProperties) {
-        if (workflowProperties == null) {
-            return new AlwaysTruePropertySerializibilityEvaluator();
-        }
-        else {
-            PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
-            evaluator.initializeEvaluator(this);
-            return evaluator;
-        }
+    protected PropertySerializabilityEvaluator createPropertySerializabilityEvaluator(WorkflowProperties workflowProperties, WorkflowAttributes workflowAttributes) {
+    	if (workflowAttributes != null) {
+    		return new AlwaysFalsePropertySerializabilityEvaluator();
+    	}
+    	else {
+	        if (workflowProperties == null) {
+	            return new AlwaysTruePropertySerializibilityEvaluator();
+	        }
+	        else {
+	            PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
+	            evaluator.initializeEvaluator(this);
+	            return evaluator;
+	        }
+    	}
     }
     
     /**

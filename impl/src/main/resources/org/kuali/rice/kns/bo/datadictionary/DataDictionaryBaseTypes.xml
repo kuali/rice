@@ -237,6 +237,9 @@
         class="org.kuali.rice.kns.datadictionary.AttributeSecurity"
         abstract="true"
     />
-    
+    <bean id="WorkflowAttributes"
+    	class="org.kuali.rice.kns.datadictionary.WorkflowAttributes"
+    	abstract="true"
+   	/>
 </beans>
 

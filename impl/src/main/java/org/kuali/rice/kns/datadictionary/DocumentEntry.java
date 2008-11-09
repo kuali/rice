@@ -73,7 +73,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     protected boolean allowsCopy = false;
     protected WorkflowProperties workflowProperties;
-    
+    protected WorkflowAttributes workflowAttributes;
+
     protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
     protected Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
 
@@ -248,6 +249,10 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
         for ( AuthorizationDefinition auth : authorizations ) {
             auth.completeValidation(null, null);
+        }
+        
+        if (workflowProperties != null && workflowAttributes != null) {
+        	throw new DataDictionaryException("workflowProperties and workflowAttributes cannot both be defined for a document");
         }
     }
 
@@ -460,7 +465,15 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         this.workflowProperties = workflowProperties;
     }
 
-    /**
+    public WorkflowAttributes getWorkflowAttributes() {
+		return this.workflowAttributes;
+	}
+
+	public void setWorkflowAttributes(WorkflowAttributes workflowAttributes) {
+		this.workflowAttributes = workflowAttributes;
+	}
+
+	/**
             The headerNavigation element defines a set of additional
             tabs which will appear on the document.
      */

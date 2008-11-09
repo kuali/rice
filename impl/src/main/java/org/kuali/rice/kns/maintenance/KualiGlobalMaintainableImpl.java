@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObjectDetail;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -171,4 +172,6 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         }
 
     }
+    
+    public abstract Class<? extends PersistableBusinessObject> getPrimaryEditedBusinessObjectClass();
 }

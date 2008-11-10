@@ -53,9 +53,11 @@
   		  	<html-el:file styleClass="dataCell" name="IngesterForm" property="file[1]"/>
   		  <br>
   			<html-el:file styleClass="dataCell" name="IngesterForm" property="file[2]"/>
-  		  <br>
-          <br>	
-          <html-el:image src="images/buttonsmall_uploadxml.gif" border="0" value="Upload XML data" styleClass="nobord" styleId="imageField"></html-el:image>
+  		  </div></td>
+       </tr>
+       <tr>
+          <td class="column-left"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
+           <td><div align="center"><br><html-el:image src="images/buttonsmall_uploadxml.gif" value="Upload XML data" styleClass="nobord" styleId="imageField"></html-el:image>
           </div></td>
       <td class="column-right"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
     </tr>

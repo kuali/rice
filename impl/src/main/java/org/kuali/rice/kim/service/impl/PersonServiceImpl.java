@@ -165,8 +165,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		
 		Map<String,String> criteria = new HashMap<String,String>( 1 );
 		criteria.put( "employeeId", employeeId );
-		person = findPeople( criteria ).get(0);
-		addPersonImplToCache( person );
+		List<PersonImpl> people = findPeople( criteria ); 
+		if ( !people.isEmpty() ) {
+			person = people.get(0);
+			addPersonImplToCache( person );
+		}
 		return person;
 	}
 	

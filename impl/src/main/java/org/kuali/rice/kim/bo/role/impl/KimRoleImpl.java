@@ -74,6 +74,10 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RolePrincipalImpl> memberPrincipals;
 
+	@OneToMany(targetEntity=RoleRoleImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
+	protected List<RoleRoleImpl> memberRoles;
+	
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@Transient
 	protected KimTypeImpl kimRoleType; 
@@ -203,6 +207,14 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		dto.setActive( isActive() );
 		
 		return dto;
+	}
+
+	public List<RoleRoleImpl> getMemberRoles() {
+		return this.memberRoles;
+	}
+
+	public void setMemberRoles(List<RoleRoleImpl> memberRoles) {
+		this.memberRoles = memberRoles;
 	}
 	
 }

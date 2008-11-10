@@ -8,6 +8,22 @@
 			<description>RoleRouteModule-TestQualifierResolver</description>
 			<type>QualifierResolver</type>
 		</ruleAttribute>
+		<ruleAttribute>
+			<name>RoleRouteModule-TestXPathQualifierResolver</name>
+			<className>org.kuali.rice.kew.role.XPathQualifierResolver</className>
+			<label>RoleRouteModule-TestXPathQualifierResolver</label>
+			<description>RoleRouteModule-TestXPathQualifierResolver</description>
+			<type>QualifierResolver</type>
+			<resolverConfig>
+				<baseXPathExpression>/xmlData/chartOrg</baseXPathExpression>
+				<qualifier name="chart">
+					<xPathExpression>./chart</xPathExpression>
+				</qualifier>
+				<qualifier name="org">
+					<xPathExpression>./org</xPathExpression>
+				</qualifier>
+ 			</resolverConfig>
+		</ruleAttribute>
 	</ruleAttributes>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
  		<documentType>

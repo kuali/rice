@@ -18,7 +18,6 @@ package org.kuali.rice.kew.role;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -30,11 +29,11 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routemodule.RouteModule;
+import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -49,8 +48,10 @@ public class RoleRouteModule implements RouteModule {
 	
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	protected static final String RESPONSIBILITY_NAME_ELEMENT = "responsibilityName";
-	protected static final String APPROVE_POLICY_ELEMENT = "approvePolicy";
 	protected static final String NAMESPACE_ELEMENT = "namespace";
+	
+	protected static final String DOCUMENT_TYPE_DETAIL = "documentType";
+	protected static final String NODE_NAME_DETAIL = "nodeName";
 	
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {
@@ -59,21 +60,21 @@ public class RoleRouteModule implements RouteModule {
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 		QualifierResolver qualifierResolver = loadQualifierResolver(context);
 		List<AttributeSet> qualifiers = qualifierResolver.resolve(context);
-		String approvePolicy = loadApprovePolicy(context);
 		String responsibilityName = loadResponsibilityName(context);
 		String namespaceCode = loadNamespace(context);
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
 		for (AttributeSet qualifier : qualifiers) {
 			List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActions(namespaceCode, responsibilityName, qualifier, responsibilityDetails);
-			//List<ResponsibilityActionInfo> responsibilities = thisIsWhereWeCallTheResponsibilityService(loadResponsibilityName(context), documentTypeName, nodeName, qualifier);
-			// in the case of "all approve" from KIM roles, we really want this to be treated as separate and distinct requests, let's
-			// handle the demultiplexing manually
-			if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
-				for (ResponsibilityActionInfo responsibility : responsibilities) {
-					arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
+			List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
+			for (ResponsibilitySet responsibilitySet : responsibilitySets) {
+				String approvePolicy = responsibilitySet.getApprovePolicy();
+				if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
+					for (ResponsibilityActionInfo responsibility : responsibilities) {
+						arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
+					}
+				} else {
+					arFactory.addRoleResponsibilityRequest(responsibilities, approvePolicy);
 				}
-			} else {
-				arFactory.addRoleResponsibilityRequest(responsibilities, approvePolicy);
 			}
 		}		
 		actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
@@ -90,6 +91,9 @@ public class RoleRouteModule implements RouteModule {
 			}
 			ObjectDefinition definition = getAttributeObjectDefinition(ruleAttribute);
 			resolver = (QualifierResolver)GlobalResourceLoader.getObject(definition);
+			if (resolver instanceof XmlConfiguredAttribute) {
+				((XmlConfiguredAttribute)resolver).setRuleAttribute(ruleAttribute);
+			}
 		}
 		if (resolver == null) {
 			// TODO alternatively, in future could provide a default implementation?
@@ -102,7 +106,8 @@ public class RoleRouteModule implements RouteModule {
 		String documentTypeName = context.getDocument().getDocumentType().getName();
 		String nodeName = context.getNodeInstance().getName();
 		AttributeSet responsibilityDetails = new AttributeSet();
-		// TODO 
+		responsibilityDetails.put(DOCUMENT_TYPE_DETAIL, documentTypeName);
+		responsibilityDetails.put(NODE_NAME_DETAIL, nodeName);
 		return responsibilityDetails;
 	}
 	
@@ -122,71 +127,81 @@ public class RoleRouteModule implements RouteModule {
 		return namespace;
 	}
 	
-	protected String loadApprovePolicy(RouteContext context) {
-		String approvePolicy = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), APPROVE_POLICY_ELEMENT);
-		if (StringUtils.isBlank(approvePolicy)) {
-			approvePolicy = KEWConstants.APPROVE_POLICY_FIRST_APPROVE;
-		}
-		return approvePolicy;
-	}
-	
     protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
     	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
     }
     
-    protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, AttributeSet qualification) {
-    	//KIMServiceLocator.getResponsibilityService().getResponsibilityActions("", responsibilityName, qualification, responsibilityDetails)
-    	// for now, let's stub in something dumb
-    	//KIMServiceLocator.getResponsibilityService().getResponsibilityInfoByName(responsibilityName, qualification, responsibilityDetails);
-        List<ResponsibilityActionInfo> responsibilityInfos = new ArrayList<ResponsibilityActionInfo>();
-        String chart = qualification.get("chart");
-        String org = qualification.get("org");
-        if (chart.equals("BL")) {
-        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
-        	info.setPrincipalId(principal.getPrincipalId());
-        	info.setPriorityNumber(1);
-        	info.setResponsibilityName("123");
-        	info.setResponsibilityName(responsibilityName);
-        	info.setRoleId("1234");
-        	responsibilityInfos.add(info);
-        	// add a second one
-        	info = new ResponsibilityActionInfo();
-        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        	principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
-        	info.setPrincipalId(principal.getPrincipalId());
-        	info.setPriorityNumber(1);
-        	info.setResponsibilityName("1235");
-        	info.setResponsibilityName(responsibilityName);
-        	info.setRoleId("1234");
-        	responsibilityInfos.add(info);
-        } else if (chart.equals("IN")) {
-        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
-        	info.setPrincipalId(principal.getPrincipalId());
-        	info.setPriorityNumber(1);
-        	info.setResponsibilityName("321");
-        	info.setResponsibilityName(responsibilityName);
-        	info.setRoleId("4321");
-        	responsibilityInfos.add(info);
-        
-        	// not quite ready for groups yet
-        	/*
-        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
-        	info.setGroupId(group.getGroupId());
-        	info.setPriorityNumber(1);
-        	info.setResponsibilityId("321456");
-        	info.setResponsibilityName(responsibilityName);
-        	info.setRoleId("4321");
-        	responsibilityInfos.add(info);
-        	*/
-        } 
-        return responsibilityInfos;
+    protected List<ResponsibilitySet> partitionResponsibilities(List<ResponsibilityActionInfo> responsibilities) {
+    	List<ResponsibilitySet> responsibilitySets = new ArrayList<ResponsibilitySet>();
+    	for (ResponsibilityActionInfo responsibility : responsibilities) {
+    		ResponsibilitySet targetResponsibilitySet = null;
+    		for (ResponsibilitySet responsibiliySet : responsibilitySets) {
+    			if (responsibiliySet.matches(responsibility)) {
+    				targetResponsibilitySet = responsibiliySet;
+    			}
+    		}
+    		if (targetResponsibilitySet == null) {
+    			targetResponsibilitySet = new ResponsibilitySet(responsibility);
+    			responsibilitySets.add(targetResponsibilitySet);
+    		}
+    		targetResponsibilitySet.getResponsibilities().add(responsibility);
+    	}
+    	return responsibilitySets;
     }
+    
+//    protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, AttributeSet qualification) {
+//    	//KIMServiceLocator.getResponsibilityService().getResponsibilityActions("", responsibilityName, qualification, responsibilityDetails)
+//    	// for now, let's stub in something dumb
+//    	//KIMServiceLocator.getResponsibilityService().getResponsibilityInfoByName(responsibilityName, qualification, responsibilityDetails);
+//        List<ResponsibilityActionInfo> responsibilityInfos = new ArrayList<ResponsibilityActionInfo>();
+//        String chart = qualification.get("chart");
+//        String org = qualification.get("org");
+//        if (chart.equals("BL")) {
+//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
+//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+//        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
+//        	info.setPrincipalId(principal.getPrincipalId());
+//        	info.setPriorityNumber(1);
+//        	info.setResponsibilityName("123");
+//        	info.setResponsibilityName(responsibilityName);
+//        	info.setRoleId("1234");
+//        	responsibilityInfos.add(info);
+//        	// add a second one
+//        	info = new ResponsibilityActionInfo();
+//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+//        	principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
+//        	info.setPrincipalId(principal.getPrincipalId());
+//        	info.setPriorityNumber(1);
+//        	info.setResponsibilityName("1235");
+//        	info.setResponsibilityName(responsibilityName);
+//        	info.setRoleId("1234");
+//        	responsibilityInfos.add(info);
+//        } else if (chart.equals("IN")) {
+//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
+//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+//        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+//        	info.setPrincipalId(principal.getPrincipalId());
+//        	info.setPriorityNumber(1);
+//        	info.setResponsibilityName("321");
+//        	info.setResponsibilityName(responsibilityName);
+//        	info.setRoleId("4321");
+//        	responsibilityInfos.add(info);
+//        
+//        	// not quite ready for groups yet
+//        	/*
+//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
+//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+//        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
+//        	info.setGroupId(group.getGroupId());
+//        	info.setPriorityNumber(1);
+//        	info.setResponsibilityId("321456");
+//        	info.setResponsibilityName(responsibilityName);
+//        	info.setRoleId("4321");
+//        	responsibilityInfos.add(info);
+//        	*/
+//        } 
+//        return responsibilityInfos;
+//    }
 	
 	/**
 	 * Return null so that the responsibility ID will remain the same.
@@ -196,6 +211,35 @@ public class RoleRouteModule implements RouteModule {
 	public ResponsibleParty resolveResponsibilityId(Long responsibilityId)
 			throws WorkflowException {
 		return null;
+	}
+	
+	class ResponsibilitySet {
+		private String actionRequestCode;
+		private String approvePolicy;
+		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
+
+		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
+			this.actionRequestCode = responsibility.getActionTypeCode();
+			this.approvePolicy = responsibility.getActionPolicyCode();
+		}
+		
+		public boolean matches(ResponsibilityActionInfo responsibility) {
+			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
+				responsibility.getActionPolicyCode().equals(approvePolicy);
+		}
+
+		public String getActionRequestCode() {
+			return this.actionRequestCode;
+		}
+
+		public String getApprovePolicy() {
+			return this.approvePolicy;
+		}
+
+		public List<ResponsibilityActionInfo> getResponsibilities() {
+			return this.responsibilities;
+		}		
+		
 	}
 
 }

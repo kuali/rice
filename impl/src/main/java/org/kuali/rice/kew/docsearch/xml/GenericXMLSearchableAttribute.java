@@ -19,7 +19,7 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 
 
 /**
@@ -27,9 +27,9 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface GenericXMLSearchableAttribute extends SearchableAttribute {
+public interface GenericXMLSearchableAttribute extends SearchableAttribute, XmlConfiguredAttribute {
 
-	public void setRuleAttribute(RuleAttribute ruleAttribute);
 	public void setParamMap(Map paramMap);
 	public Map getParamMap();
+	
 }

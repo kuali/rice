@@ -34,6 +34,7 @@
   <!-- defined these in separate files for clarity -->
   <include schemaLocation="resource:SearchingConfig"/>
   <include schemaLocation="resource:RoutingConfig"/>
+  <include schemaLocation="resource:ResolverConfig"/>
   <import namespace="ns:workflow/common" schemaLocation="resource:common"/>
 
 <!-- List of ruleAttributes -->
@@ -325,6 +326,7 @@
 	      	<attribute name="overrideSearchableAttributes" type="boolean" default="true" />
       	</complexType>
       </element>
+      <element name="resolverConfig" type="ra:ResolverConfigType" minOccurs="0"/>
       
       <element name="configuration" minOccurs="0">
       	<annotation>

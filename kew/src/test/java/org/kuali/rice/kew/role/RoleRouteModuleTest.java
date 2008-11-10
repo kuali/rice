@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kew.role;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -22,6 +25,13 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
 
 /**
  * Tests Role-based routing integration between KEW and KIM. 
@@ -29,10 +39,39 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@UnitTestData(sqlFiles = {@UnitTestFile(filename = "classpath:org/kuali/rice/kew/role/RoleRouteModuleTest.sql", delimiter = ";")})
 public class RoleRouteModuleTest extends KEWTestCase {
 
+	String namespace = "TEST";
+	
 	protected void loadTestData() throws Exception {
         loadXmlFile("RoleRouteModuleTestConfig.xml");
+        KimRoleImpl role = new KimRoleImpl();
+        role.setNamespaceCode(namespace);
+        role.setRoleDescription("abc");
+        role.setRoleName("RoleRouteModuleTestRole");
+        KNSServiceLocator.getBusinessObjectService().save(role);
+        
+        // yikes, there's a lot to set up here, come back to this later
+        
+//        KimTypeImpl kimTypeImpl = new KimTypeImpl();
+//        kimTypeImpl.
+//        
+//        List<ResponsibilityAttributeDataImpl> detailObjects = new ArrayList<ResponsibilityAttributeDataImpl>();
+//        ResponsibilityAttributeDataImpl documentTypeDetail = new ResponsibilityAttributeDataImpl();
+//        documentTypeDetail.setAttributeDataId("chart");
+//        documentTypeDetail.setAttributeValue("BL");
+//        documentTypeDetail.setKimAttribute(attribute);
+//        documentTYpeDetail.setKimType(type);
+//        
+//        KimResponsibilityImpl responsibility = new KimResponsibilityImpl();
+//        responsibility.setActive(true);
+//        responsibility.setDescription("cba");
+//        responsibility.setDetails(detailObjects);
+//        responsibility.setName("VoluntaryReview");
+//        responsibility.setNamespaceCode(namespace);
+//        responsibility.setResponsibilityId("155463");
+        
     }
 	
 	@Test

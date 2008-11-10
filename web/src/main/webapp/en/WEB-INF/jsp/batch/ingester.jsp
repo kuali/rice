@@ -12,15 +12,17 @@
 <head>
   <title>Ingester</title>
   <link href="../kr/css/kuali.css" rel="stylesheet" type="text/css">  
+  <style type="text/css">
+@import url(scripts/jscalendar-1.0/calendar-win2k-1.css);
+. {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; }
+</style>
 </head>
 
 <body>
-<div class="headerarea-small">
-<h2>Ingester</h2>
+<div class="headerarea-small" id="headerarea-small">
+<h1>Ingester</h1>
 </div>
-
-<h4>Select files to upload</h4>
-<div id="lookup" align="center">
+<input class="tinybutton" name="methodToCall.search" src="images/pixel_clear.gif" type="image" border="0" height="0" width="0">
 <%
     List list = (List) request.getAttribute("messages");
     if (list != null) {
@@ -39,23 +41,25 @@
     }
 %>
 <html-el:form method="post" action="/Ingester" enctype="multipart/form-data">
-<table class="datatable-80">
-  <tr><td>
-    <html-el:file styleClass="infocell" name="IngesterForm" property="file[0]"/>
-  </td></tr>
-  <tr><td>
-    <html-el:file styleClass="infocell" name="IngesterForm" property="file[1]"/>
-  </td></tr>
-  <tr><td>
-    <html-el:file styleClass="infocell" name="IngesterForm" property="file[2]"/>
-  </td></tr>
-  <tr><td>
-    <html-el:file styleClass="infocell" name="IngesterForm" property="file[3]"/>
-  </td></tr>
-  <tr><td align="center" class="infoline" >
-    <html-el:submit value="Upload XML data"></html-el:submit>
-  </td></tr>
-</table>
+ <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="column-left"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
+      <td><div align="center"><br>
+          <br>
+          <br>
+          <br>
+  		    <html-el:file styleClass="dataCell" name="IngesterForm" property="file[0]"/>
+  		  <br>
+  		  	<html-el:file styleClass="dataCell" name="IngesterForm" property="file[1]"/>
+  		  <br>
+  			<html-el:file styleClass="dataCell" name="IngesterForm" property="file[2]"/>
+  		  <br>
+          <br>	
+          <html-el:image src="images/buttonsmall_uploadxml.gif" border="0" value="Upload XML data" styleClass="nobord" styleId="imageField"></html-el:image>
+          </div></td>
+      <td class="column-right"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
+    </tr>
+  </table>
 </html-el:form>
 
 </div>

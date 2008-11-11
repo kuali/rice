@@ -855,7 +855,8 @@
 			<ref bean="persistenceStructureService" />
 		</property>
 	</bean>
-	<bean id="kimPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
+
+	<bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
 
 	<bean id="documentStatusComponentAttributePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeServiceImpl" >
     	<property name="kimAttributesTranslators">

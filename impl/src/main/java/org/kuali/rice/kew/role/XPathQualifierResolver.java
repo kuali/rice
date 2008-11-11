@@ -122,7 +122,7 @@ import org.xml.sax.InputSource;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class XPathQualifierResolver implements XmlConfiguredAttribute {
+public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredAttribute {
 
 	private RuleAttribute ruleAttribute;
 	

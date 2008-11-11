@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
@@ -167,6 +168,20 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
 		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RoleGroupImpl>( coll );
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleRolesForGroupIdsAndRoleIds(java.util.Collection,
+	 *      java.util.Collection)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RoleRoleImpl> getRoleRolesForRoleIds( Collection<String> roleIds ) {
+		Criteria c = new Criteria();
+		c.addIn("roleId", roleIds);
+		c.addEqualTo("active", "Y");
+		Query query = QueryFactory.newQuery(RoleRoleImpl.class, c);
+		Collection<RoleRoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleRoleImpl>( coll );
 	}
 	
 	/**

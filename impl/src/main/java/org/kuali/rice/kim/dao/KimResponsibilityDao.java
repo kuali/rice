@@ -34,5 +34,5 @@ public interface KimResponsibilityDao {
 	
 	List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility );
 	
-	RoleResponsibilityActionImpl getResponsibilityAction( String responsibilityId, String principalId, String groupId );
+	RoleResponsibilityActionImpl getResponsibilityAction( String responsibilityId, String principalId, String groupId, String memberRoleId );
 }

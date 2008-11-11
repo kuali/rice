@@ -33,6 +33,8 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String roleId;
 	protected String principalId;
 	protected String groupId;
+	protected String memberRoleId; // used when the group or principal was derived from a member role
+									// i.e., when the member of the role is actually another role
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
@@ -106,5 +108,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setActionPolicyCode(String actionPolicyCode) {
 		this.actionPolicyCode = actionPolicyCode;
+	}
+	public String getMemberRoleId() {
+		return this.memberRoleId;
+	}
+	public void setMemberRoleId(String memberRoleId) {
+		this.memberRoleId = memberRoleId;
 	}
 }

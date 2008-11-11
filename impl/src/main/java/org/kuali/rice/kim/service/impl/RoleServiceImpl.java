@@ -35,6 +35,7 @@ import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.GroupService;
@@ -164,7 +165,7 @@ public class RoleServiceImpl implements RoleService {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
 			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( rp.getPrincipalId(), null, rp.getRoleId(), rp.getQualifier() );
+				RoleMembershipInfo mi = new RoleMembershipInfo( rp.getPrincipalId(), null, null, rp.getRoleId(), rp.getQualifier() );
 				results.add( mi );
 				matchingRoleIds.add( rp.getRoleId() );
 			}
@@ -177,9 +178,31 @@ public class RoleServiceImpl implements RoleService {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rg.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
 			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( null, rg.getGroupId(), rg.getRoleId(), rg.getQualifier() );
+				RoleMembershipInfo mi = new RoleMembershipInfo( null, rg.getGroupId(), null, rg.getRoleId(), rg.getQualifier() );
 				results.add( mi );
 				matchingRoleIds.add( rg.getRoleId() );
+			}
+    	}
+    	List<RoleRoleImpl> rrs = roleDao.getRoleRolesForRoleIds( allRoleIds );
+    	// check each membership to see if the qualifier matches
+    	for ( RoleRoleImpl rr : rrs ) {
+			// check the qualifications
+    		KimRoleTypeService roleTypeService = roleTypeServices.get( rr.getRoleId() );
+    		// if the role type service is null, assume that all qualifiers match
+			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
+				ArrayList<String> roleIdList = new ArrayList<String>( 1 );
+				roleIdList.add( rr.getMemberRoleId() );
+				// get the list of members from the nested role - ignore delegations on those sub-roles
+				Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false );
+				if ( !nestedRoleMembers.isEmpty() ) {
+					results.addAll( nestedRoleMembers );
+					matchingRoleIds.add( rr.getRoleId() );
+					// add the roles  whose members matched to the list for delegation checks later
+					for ( RoleMembershipInfo rmi : nestedRoleMembers ) {
+						rmi.setMemberRoleId( rr.getMemberRoleId() );
+						//matchingRoleIds.add( rr.getMemberRoleId() );
+					}
+				}
 			}
     	}
     	
@@ -194,7 +217,7 @@ public class RoleServiceImpl implements RoleService {
     			if ( !rolePrincipalIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String rolePrincipalId : rolePrincipalIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( rolePrincipalId, null, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( rolePrincipalId, null, null, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}
@@ -203,7 +226,7 @@ public class RoleServiceImpl implements RoleService {
     			if ( !roleGroupIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String roleGroupId : roleGroupIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( null, roleGroupId, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( null, roleGroupId, null, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}

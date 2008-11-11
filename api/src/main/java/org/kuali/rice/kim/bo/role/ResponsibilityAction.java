@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public interface ResponsibilityAction {
 	String getPrincipalId();
 	String getGroupId();
+	String getMemberRoleId();
 	String getResponsibilityName();
 	String getActionTypeCode();	
 	String getActionPolicyCode();

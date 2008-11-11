@@ -59,8 +59,6 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibility(org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl)
 	 */
 	@SuppressWarnings("unchecked")
@@ -78,27 +76,40 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		}
 		return roleIds;
 	}
-	
+
 	/**
-	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityId,
-			String principalId, String groupId) {
+			String principalId, String groupId, String memberRoleId ) {
 		if ( principalId == null && groupId == null ) {
 			return null;
 		}
 		
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibilityId );
-		// TODO: also handle when principalID is "*" in table
-		if ( principalId != null ) {
-			c.addEqualTo( "principalId", principalId );
-		}
-		if ( groupId != null ) {
-			c.addEqualTo( "groupId", groupId );
-		}
 		c.addEqualTo( "active", true );
+		Criteria idCriteria = new Criteria();
+		String searchProperty = null;
+		String searchValue = null;
+		// check for a role first, since that overrides the derived principals or groups
+		if ( memberRoleId != null ) {
+			searchProperty = "memberRoleId";
+			searchValue = memberRoleId;
+		} else if ( principalId != null ) {
+			searchProperty = "principalId";
+			searchValue = principalId;
+		} else if ( groupId != null ) {
+			searchProperty = "groupId";
+			searchValue = groupId;
+		}
+		idCriteria.addEqualTo( searchProperty, searchValue );
+		// also handle when principalID/groupId/memberRoleId is "*" in table
+		Criteria starCrit = new Criteria();
+		starCrit.addEqualTo( searchProperty, "*" );
+		idCriteria.addOrCriteria( starCrit );
+		c.addAndCriteria( idCriteria );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityActionImpl.class, c );
 		Collection<RoleResponsibilityActionImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);

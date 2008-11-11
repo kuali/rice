@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -49,6 +50,7 @@ public interface KimRoleDao {
 	
 	List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds );
 	List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds );
+	public List<RoleRoleImpl> getRoleRolesForRoleIds( Collection<String> roleIds );
 	
 	Map<String,List<KimDelegationPrincipalImpl>> getDelegationPrincipalsForDelegationIds( List<String> delegationIds );
 	

@@ -35,7 +35,6 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -173,9 +172,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getMemberRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
     		// get associated resp resolution objects
-    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getPrincipalId(), rm.getGroupId() );
+    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getPrincipalId(), rm.getGroupId(), rm.getMemberRoleId() );
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setActionPolicyCode( action.getActionPolicyCode() );

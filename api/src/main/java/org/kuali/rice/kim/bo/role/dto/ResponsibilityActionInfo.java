@@ -31,15 +31,16 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public class ResponsibilityActionInfo implements ResponsibilityAction {
 
-	String principalId;
-	String groupId;
-	String responsibilityNamespaceCode;
-	String responsibilityName;
-	String responsibilityId;
-	String roleId;
-	String actionTypeCode;
-	String actionPolicyCode;
-	Integer priorityNumber;
+	protected String principalId;
+	protected String groupId;
+	protected String memberRoleId; 
+	protected String responsibilityNamespaceCode;
+	protected String responsibilityName;
+	protected String responsibilityId;
+	protected String roleId;
+	protected String actionTypeCode;
+	protected String actionPolicyCode;
+	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 
@@ -49,10 +50,11 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 	public ResponsibilityActionInfo() {
 	}
 	
-	public ResponsibilityActionInfo(String principalId, String groupId, KimResponsibility responsibility,
+	public ResponsibilityActionInfo(String principalId, String groupId, String memberRoleId, KimResponsibility responsibility,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;
 		this.groupId = groupId;
+		this.memberRoleId = memberRoleId;
 		this.responsibilityNamespaceCode = responsibility.getNamespaceCode();
 		this.responsibilityName = responsibility.getName();
 		this.responsibilityId = responsibility.getResponsibilityId();
@@ -153,5 +155,13 @@ public class ResponsibilityActionInfo implements ResponsibilityAction {
 
 	public void setActionPolicyCode(String actionPolicyCode) {
 		this.actionPolicyCode = actionPolicyCode;
+	}
+
+	public String getMemberRoleId() {
+		return this.memberRoleId;
+	}
+
+	public void setMemberRoleId(String memberRoleId) {
+		this.memberRoleId = memberRoleId;
 	}
 }

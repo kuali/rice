@@ -73,7 +73,6 @@
 					<activationType>P</activationType>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
 					<responsibilityName>VoluntaryReview</responsibilityName>
-					<approvePolicy>A</approvePolicy>
 				</role>
 			</routeNodes>
 		</documentType>

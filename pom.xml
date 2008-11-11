@@ -56,7 +56,7 @@
         <commons-dbcp.version>1.2.1</commons-dbcp.version>
         <backport-util-concurrent.version>2.1</backport-util-concurrent.version>
         <log4j.version>1.2.14</log4j.version>
-        <xapool.version>1.5.0-patch2</xapool.version>
+        <xapool.version>1.5.0-patch3</xapool.version>
         <jotm.version>2.0.10</jotm.version>
         <derby.version>10.2.2.0</derby.version>
         <ojdbc14.version>10.2.0.3.0</ojdbc14.version>

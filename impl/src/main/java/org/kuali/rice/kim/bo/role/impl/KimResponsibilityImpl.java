@@ -58,6 +58,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects;
 
+	@OneToMany(targetEntity=KimResponsibilityRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
+	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes;
+	
+	
 	protected String templateId;
 	protected KimResponsibilityTemplateImpl template;
 	
@@ -183,6 +188,15 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public void setDetailObjects(List<ResponsibilityAttributeDataImpl> detailObjects) {
 		this.detailObjects = detailObjects;
+	}
+
+	public List<KimResponsibilityRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {
+		return this.requiredRoleQualifierAttributes;
+	}
+
+	public void setRequiredRoleQualifierAttributes(
+			List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes) {
+		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
 	}
 
 	

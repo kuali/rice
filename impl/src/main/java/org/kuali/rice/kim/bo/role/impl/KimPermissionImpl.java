@@ -59,7 +59,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	@OneToMany(targetEntity=KimPermissionRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<PermissionAttributeDataImpl> requiredRoleQualifierAttributes;
+	protected List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes;
 	
 	protected String templateId;
 	protected KimPermissionTemplateImpl template;
@@ -183,6 +183,15 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public void setDetailObjects(List<PermissionAttributeDataImpl> detailObjects) {
 		this.detailObjects = detailObjects;
+	}
+
+	public List<KimPermissionRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {
+		return this.requiredRoleQualifierAttributes;
+	}
+
+	public void setRequiredRoleQualifierAttributes(
+			List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes) {
+		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
 	}
 	
 	

@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.reference.AddressType;
 	@AttributeOverride(name="code",column=@Column(name="ADDR_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
-public class AddressTypeImpl extends DefaultableKimCodeBase implements AddressType {
+public class AddressTypeImpl extends KimCodeBase implements AddressType {
 
 	private static final long serialVersionUID = 1L;
 

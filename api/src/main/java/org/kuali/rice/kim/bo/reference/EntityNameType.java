@@ -21,7 +21,7 @@ package org.kuali.rice.kim.bo.reference;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityNameType extends DefaultableKimCode {
+public interface EntityNameType extends KimCode {
 	String getEntityNameTypeCode();
 	String getEntityNameTypeName();
 }

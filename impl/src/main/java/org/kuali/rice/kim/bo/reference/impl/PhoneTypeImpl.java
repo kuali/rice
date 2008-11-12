@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.reference.PhoneType;
 	@AttributeOverride(name="code",column=@Column(name="PHONE_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="PHONE_TYP_NM"))
 })
-public class PhoneTypeImpl extends DefaultableKimCodeBase implements PhoneType {
+public class PhoneTypeImpl extends KimCodeBase implements PhoneType {
 
 	private static final long serialVersionUID = 1L;
 

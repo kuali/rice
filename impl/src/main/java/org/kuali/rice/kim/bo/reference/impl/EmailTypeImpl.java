@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.reference.EmailType;
 	@AttributeOverride(name="code",column=@Column(name="EMAIL_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="NM"))
 })
-public class EmailTypeImpl extends DefaultableKimCodeBase implements EmailType {
+public class EmailTypeImpl extends KimCodeBase implements EmailType {
 
 	private static final long serialVersionUID = 1L;
 

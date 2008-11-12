@@ -21,7 +21,7 @@ package org.kuali.rice.kim.bo.reference;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface PhoneType extends DefaultableKimCode {
+public interface PhoneType extends KimCode {
 	String getPhoneTypeCode();
 	String getPhoneTypeName();
 }

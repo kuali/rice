@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.reference.EntityNameType;
 	@AttributeOverride(name="code",column=@Column(name="NM_TYP_CD")),
 	@AttributeOverride(name="name",column=@Column(name="NAME_TYP_NM"))
 })
-public class EntityNameTypeImpl extends DefaultableKimCodeBase implements EntityNameType {
+public class EntityNameTypeImpl extends KimCodeBase implements EntityNameType {
 
 	private static final long serialVersionUID = 1L;
 

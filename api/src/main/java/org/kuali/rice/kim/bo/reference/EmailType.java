@@ -22,7 +22,7 @@ package org.kuali.rice.kim.bo.reference;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EmailType extends DefaultableKimCode {
+public interface EmailType extends KimCode {
 	String getEmailTypeCode();
 	String getEmailTypeName();
 }

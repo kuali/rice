@@ -218,7 +218,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateExternalIdentifiers( KimEntity entity ) {
-		List<EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
+		List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
 		externalIdentifiers = new HashMap<String,String>( externalIds.size() );
 		for ( EntityExternalIdentifier eei : externalIds ) {
 			externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );

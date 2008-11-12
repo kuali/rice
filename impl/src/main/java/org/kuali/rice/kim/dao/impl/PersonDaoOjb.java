@@ -51,9 +51,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 
 	protected static final String ENTITY_ADDRESS_PROPERTY_PREFIX = "entityTypes.addresses.";
 
-	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "entityTypes.names.";
+	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "names.";
 
-	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "entityTypes.employmentInformation.";
+	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
 
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
 
@@ -155,10 +155,14 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		criteriaConversion.put( "postalCode", "entityTypes.addresses.postalCode" );
 		criteriaConversion.put( "countryCode", "entityTypes.addresses.countryCode" );
 		criteriaConversion.put( "campusCode", "affiliations.campusCode" );
-		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
 		criteriaConversion.put( "affiliationTypeCode", "affiliations.affiliationTypeCode" );
 		criteriaConversion.put( "externalIdentifierTypeCode", "externalIdentifiers.externalIdentifierTypeCode" );
 		criteriaConversion.put( "externalId", "externalIdentifiers.externalId" );		
+		criteriaConversion.put( "employeeTypeCode", "employmentInformation.employeeTypeCode" );
+		criteriaConversion.put( "employeeStatusCode", "employmentInformation.employeeStatusCode" );
+		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
+		criteriaConversion.put( "baseSalaryAmount", "employmentInformation.baseSalaryAmount" );
+		criteriaConversion.put( "primaryDepartmentCode", "employmentInformation.primaryDepartmentCode" );
 	}
 	
 	public Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria ) {
@@ -238,7 +242,7 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 			}
 			if ( employeeIdCriteria ) {
 				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "active", "Y" );
-				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "primary", "Y" );
 			}
 			if ( affiliationCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "active", "Y" );

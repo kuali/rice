@@ -30,11 +30,11 @@ public interface KimEntity extends Inactivateable {
 	
 	String getEntityId();
 	
-	List<EntityEntityType> getEntityTypes();
-	List<KimPrincipal> getPrincipals();
+	List<? extends EntityEntityType> getEntityTypes();
+	List<? extends KimPrincipal> getPrincipals();
 	
-	List<EntityExternalIdentifier> getExternalIdentifiers();
-	List<EntityAffiliation> getAffiliations();
+	List<? extends EntityExternalIdentifier> getExternalIdentifiers();
+	List<? extends EntityAffiliation> getAffiliations();
 
 	/**
 	 * Return the list of EntityName objects associated with this EntityType.
@@ -42,7 +42,7 @@ public interface KimEntity extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<EntityName> getNames();
+	List<? extends EntityName> getNames();
 	
 	
 	/**
@@ -52,7 +52,7 @@ public interface KimEntity extends Inactivateable {
 	 * This method shall not return null.
 	 * 
 	 */
-	List<EntityEmploymentInformation> getEmploymentInformation();
+	List<? extends EntityEmploymentInformation> getEmploymentInformation();
 
 	/**
 	 * Returns the privacy preferences object for this Entity.
@@ -72,7 +72,7 @@ public interface KimEntity extends Inactivateable {
 	 */
 	EntityBioDemographics getBioDemographics();
 	
-	List<EntityCitizenship> getCitizenships();
+	List<? extends EntityCitizenship> getCitizenships();
 	
 	/**
 	 * Returns the EntityEntityType object corresponding to the given code or null if this

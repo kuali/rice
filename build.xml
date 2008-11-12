@@ -104,7 +104,8 @@
 	</target>
 
 	<target name="install-oracle-jar" depends="init">
-		<property name="oracle.driver.jar"  location="/java/drivers/ojdbc14.jar"/>
+		<property name="drivers.directory" location="/java/drivers" />
+		<property name="oracle.driver.jar"  location="${drivers.directory}/ojdbc14.jar"/>
 		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
 	</target>
 	

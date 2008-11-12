@@ -31,7 +31,6 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" table="KRIM_ADDR_TYP_T">
     <field-descriptor name="code" column="ADDR_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
@@ -59,7 +58,6 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" table="KRIM_EMAIL_TYP_T">
     <field-descriptor name="code" column="EMAIL_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
@@ -87,7 +85,6 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" table="KRIM_ENT_NM_TYP_T">
     <field-descriptor name="code" column="NM_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NAME_TYP_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
@@ -116,7 +113,6 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" table="KRIM_PHONE_TYP_T">
     <field-descriptor name="code" column="PHONE_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="PHONE_TYP_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />

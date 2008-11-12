@@ -129,23 +129,15 @@ public class KimTypeServiceBase implements KimTypeService {
 		AttributeSet validationErrors = new AttributeSet();
 		// call the individual field validators
 		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
-			List<String> attributeErrors = validateAttribute( attribute.getKey(), attribute.getValue() );
-			if ( attributeErrors != null ) {
-				for ( String err : attributeErrors ) {
-					validationErrors.put(attribute.getKey(), err);
-				}
-			}
+			// TODO implement dd format and existence validation - ask warren if you don't know the method
+//			List<String> attributeErrors = validateAttribute( attribute.getKey(), attribute.getValue() );
+//			if ( attributeErrors != null ) {
+//				for ( String err : attributeErrors ) {
+//					validationErrors.put(attribute.getKey(), err);
+//				}
+//			}
 		}
 		return validationErrors;
-	}
-
-	/**
-	 * Returns null to indicate no errors (does not perform any validation.)
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttribute(java.lang.String, java.lang.String)
-	 */
-	public List<String> validateAttribute(String attributeName, String attributeValue) {
-		return null;
 	}
 
 	/**
@@ -176,24 +168,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	}	
 	
 	/**
-	 * Returns null - no inquiry.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getInquiryUrl(java.lang.String, AttributeSet)
-	 */
-	public String getInquiryUrl(String attributeName, AttributeSet relevantAttributeData) {
-		return null;
-	}
-	
-	/**
-	 * Returns null - no lookup.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getLookupUrl(java.lang.String)
-	 */
-	public String getLookupUrl(String attributeName) {
-		return null;
-	}
-	
-	/**
 	 * @return the kimAttributesTranslators
 	 */
 	public List<KimAttributesTranslator> getKimAttributesTranslators() {
@@ -211,12 +185,4 @@ public class KimTypeServiceBase implements KimTypeService {
 	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
 		kimAttributesTranslators.add( attributesTranslator );
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getValidValues(java.lang.String)
-	 */
-	public AttributeSet getValidValues(String attributeName) {
-		return new AttributeSet( 0 );
-	}
-
 }

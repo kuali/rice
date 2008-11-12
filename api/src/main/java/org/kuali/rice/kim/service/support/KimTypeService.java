@@ -31,7 +31,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public interface KimTypeService {
 
-
 	/** 
 	 * Get the workflow document type which is needed to route objects with this type.
 	 * 
@@ -48,39 +47,7 @@ public interface KimTypeService {
 	 * attributes attached to an object.
 	 */
 	AttributeSet validateAttributes( AttributeSet attributes );
-	
-	/** Validates a single attribute data element.
-	 * 
-	 * @return List of validation error message.  Returning an empty list or null indicates that
-	 * there are no errors.
-	 */
-	List<String> validateAttribute( String attributeName, String attributeValue );
-	
-	/** Provide an absolute URL for performing a lookup on this field. 
-	 * 
-	 * Return null for no lookup.
-	 */
-	String getLookupUrl( String attributeName );
-	
-	/** Provides the absolute inquiry URL for the given attribute.  All attributes on the
-	 * KimAttributeContainer will be passed so that other field values may be used if needed.
-	 * (As in the case of a multi-part primary key.)
-	 * 
-	 * Return null for no inquiry URL.
-	 */
-	String getInquiryUrl( String attributeName, AttributeSet relevantAttributeData );
-	
-	/** Return a data dictionary AttributeDefinition for use rendering in the UI. */
-	// QUESTION: Do some DD classes need to be moved into the API for use like this?  ANSWER: Yes
-	// AND: is that feasible if we are looking toward a web service implementation
-	// do we need a DTO for some DD artifacts?
-	//AttributeDefinition getAttributeDefinition( String attributeName );
-	
-	
-	AttributeSet getValidValues( String attributeName ); // ?
-	
-	// more?
-	
+		
 	/**
 	 * This method matches two attribute sets. Will be overriden by child classes according to their functional needs.
 	 */

@@ -18,7 +18,7 @@
 <table width="100%" >
   <tr>
     <td><h1>Action List Preferences</h1></td>
-    <td width="80%"><html-el:link action="ActionList">Return to Action List</html-el:link></td>
+    <td width="60%"><html-el:link action="ActionList">Return to Action List</html-el:link></td>
   	</tr>
 </table>
 <jsp:include page="../WorkflowMessages.jsp" flush="true" />
@@ -297,8 +297,9 @@
             <td align="right" class="footer-right"><img src="images/pixel_clear.gif" alt="" width="12" height="14" class="br3"></td>
           </tr>
         </table>
-	 <div class="globalbuttons"> <a href="overview.html"><img src="images/buttonsmall_save.gif" alt="save" width="53" height="18" hspace="5" border="0" property="methodToCall.save" ></a>
-	 							<a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" alt="cancel" width="59" height="18" hspace="5" border="0"></a> </div>
+	 <div class="globalbuttons">
+	 			<a href="overview.html"><img src="images/buttonsmall_save.gif" alt="save" width="53" height="18" hspace="5" border="0" property="methodToCall.save"></a>
+	 				<a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" alt="cancel" width="59" height="18" hspace="5" border="0"></a> </div>
     </div>
       <div class="globalbuttons"></div></td>
     <td class="column-right"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>

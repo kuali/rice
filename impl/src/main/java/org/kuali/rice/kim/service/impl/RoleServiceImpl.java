@@ -210,7 +210,7 @@ public class RoleServiceImpl implements RoleService {
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( roleId );
     		// check if an application role
-    		if ( roleTypeService.isApplicationRoleType() ) {
+    		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
     			KimRoleImpl role = roles.get( roleId );
         		// for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
     			List<String> rolePrincipalIds = roleTypeService.getPrincipalIdsFromApplicationRole( role.getNamespaceCode(), role.getRoleName(), qualification );
@@ -438,7 +438,7 @@ public class RoleServiceImpl implements RoleService {
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( roleId );
     		// check if an application role
-    		if ( roleTypeService.isApplicationRoleType() ) {
+    		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
     			KimRoleImpl role = roles.get( roleId );
         		// for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
     			List<String> rolePrincipalIds = roleTypeService.getPrincipalIdsFromApplicationRole( role.getNamespaceCode(), role.getRoleName(), qualification );

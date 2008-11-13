@@ -35,7 +35,7 @@
 <%@ attribute name="encryptValue" required="false"
 			  description="when readOnly or hidden field, boolean to indicate whether the value should
 			  be encrypted and display masked. Defaults to false." %>
-<%@ attribute name="displayMaskValue" required="false"
+<%@ attribute name="displayMask" required="false"
 			  description="when a field is not to be displayed in clear text and encrypted as hidden, the
 			  string to display." %>
 <%@ attribute name="styleClass" required="false"
@@ -109,7 +109,7 @@
             %>
             <html:hidden property="encryptedProperties('${fn:replace(property,'.','_')}')" value="true"/>
             <html:hidden write="false" property="${property}" style="${textStyle}"/>
-            ${displayMaskValue}
+            ${displayMask}
          </c:when>
          <c:otherwise>
          <logic:empty name="KualiForm" property="${property}">

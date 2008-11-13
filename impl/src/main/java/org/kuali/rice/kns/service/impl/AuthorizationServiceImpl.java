@@ -22,10 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationStore;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
@@ -43,7 +40,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private AuthorizationStore authorizationStore;
     private DataDictionaryService dataDictionaryService;
-    private static IdentityManagementService identityManagementService;
 
     private boolean disabled;
 
@@ -116,19 +112,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      *      java.lang.String, java.lang.String)
      */
     public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName) {
-        boolean authorized = false;
-        //TODO:Should use ParameterService.getDetailType to get the componentName
-        String componentName = entryName;
-        //TODO: Should use ParameterService getNameSpace to get name space
-        String nameSpaceCode = "KFS-SYS";
-        
-        AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
- 	    permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, attributeName);
- 	    
- 	   //if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
- 	   //	   authorized = true;
- 	   //} 
+        boolean authorized = true;
+
+        String displayWorkgroupName = this.dataDictionaryService.getAttributeDisplayWorkgroup(entryName, attributeName);
+        if (StringUtils.isNotBlank(displayWorkgroupName)) {
+            if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, displayWorkgroupName )) {
+                authorized = false;
+            }
+        }
+
         return authorized;
     }
 
@@ -151,17 +143,5 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public DataDictionaryService getDataDictionaryService() {
         return this.dataDictionaryService;
     }
-    
-	/**
-	 * @return the identityManagementService
-	 */
-	public static IdentityManagementService getIdentityManagementService() {
-		
-		if (identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		}
-		return identityManagementService;
-	}
-    
 }
 

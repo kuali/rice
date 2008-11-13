@@ -17,7 +17,6 @@ package org.kuali.rice.kns.authorization;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 /**
  * This class represents the authorization restrictions (or lack of) for a given field.
@@ -29,9 +28,7 @@ public class FieldAuthorization {
     private String fieldName;
     private boolean editable;
     private boolean viewable;
-    private boolean masked;
-    private boolean partiallyMasked;
-    private MaskFormatter maskFormatter;
+
     /**
      * Constructs a FieldAuthorization.java.
      */
@@ -54,21 +51,20 @@ public class FieldAuthorization {
         setEditable(canEdit); // using setters here to run impossible combinations check
         setViewable(canView);
     }
-    
+
     /**
      * 
      * Constructs a FieldAuthorization.java.
      * 
      * @param fieldName - name of the field to represent
      * @param fieldAuthorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE
+     * 
      */
     public FieldAuthorization(String fieldName, String fieldAuthorizationFlag) {
+
         // if an invalid flag is passed in, the choke on it
-        if (!fieldAuthorizationFlag.equals(Field.EDITABLE) && !fieldAuthorizationFlag.equals(Field.READONLY) 
-        		&& !fieldAuthorizationFlag.equals(Field.HIDDEN) && !fieldAuthorizationFlag.equals(Field.MASKED)
-        		&& !fieldAuthorizationFlag.equals(Field.PARTIALLY_MASKED)) {
-            throw new IllegalArgumentException("The only allowable values are " +
-            		"Field.HIDDEN, Field.READONLY, Field.EDITABLE, Field.MASKED and Field.PARTIALLY_MASKED");
+        if (!fieldAuthorizationFlag.equals(Field.EDITABLE) && !fieldAuthorizationFlag.equals(Field.READONLY) && !fieldAuthorizationFlag.equals(Field.HIDDEN)) {
+            throw new IllegalArgumentException("The only allowable values are Field.HIDDEN, Field.READONLY, and Field.EDITABLE");
         }
 
         this.fieldName = fieldName;
@@ -76,21 +72,18 @@ public class FieldAuthorization {
         if (fieldAuthorizationFlag.equals(Field.EDITABLE)) {
             this.editable = true;
             this.viewable = true;
-        } else if (fieldAuthorizationFlag.equals(Field.READONLY)) {
+        }
+
+        if (fieldAuthorizationFlag.equals(Field.READONLY)) {
             this.editable = false;
             this.viewable = true;
-        } else if (fieldAuthorizationFlag.equals(Field.HIDDEN)) {
+        }
+
+        if (fieldAuthorizationFlag.equals(Field.HIDDEN)) {
             this.editable = false;
             this.viewable = false;
-        } else if(fieldAuthorizationFlag.equals(Field.MASKED)){
-			this.masked = true;
-			this.viewable = true;
-			this.editable = false;
-		} else if(fieldAuthorizationFlag.equals(Field.PARTIALLY_MASKED)){
-			this.partiallyMasked = true;
-			this.viewable = true;
-			this.editable = false;
-		}
+        }
+
     }
 
     /**
@@ -281,37 +274,5 @@ public class FieldAuthorization {
         return toString().hashCode();
     }
 
-	/**
-	 * @return the masked
-	 */
-	public boolean isMasked() {
-		return this.masked;
-	}
 
-	/**
-	 * @return the partiallyMasked
-	 */
-	public boolean isPartiallyMasked() {
-		return this.partiallyMasked;
-	}
-
-	public boolean shouldBeEncrypted(){
-		return isMasked() || isPartiallyMasked();
-	}
-
-	/**
-	 * @return the maskFormatter
-	 */
-	public MaskFormatter getMaskFormatter() {
-		return this.maskFormatter;
-	}
-
-	/**
-	 * @param maskFormatter the maskFormatter to set
-	 */
-	public void setMaskFormatter(MaskFormatter maskFormatter) {
-		this.maskFormatter = maskFormatter;
-	}
-	
-	
 }

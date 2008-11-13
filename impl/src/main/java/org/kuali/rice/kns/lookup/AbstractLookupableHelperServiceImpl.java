@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -1042,21 +1041,17 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
+                // check security on field and do masking if necessary
                 boolean viewAuthorized = getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), element.getClass().getName(), col.getPropertyName());
                 if (!viewAuthorized) {
-                	AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(element.getClass().getName(), col.getPropertyName());
-                	if(attributeSecurity != null && attributeSecurity.isMask()){
-                		propValue = attributeSecurity.getMaskFormatter().maskValue(propValue);
-                	}
-                	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                		propValue = attributeSecurity.getPartialMaskFormatter().maskValue(propValue);
-                	}
+                    Mask displayMask = getDataDictionaryService().getAttributeDisplayMask(element.getClass().getName(), col.getPropertyName());
+                    propValue = displayMask.maskValue(propValue);
                 }
                 col.setPropertyValue(propValue);
 
+
                 if (StringUtils.isNotBlank(propValue)) {
                     col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
-                    
                 }
             }
 

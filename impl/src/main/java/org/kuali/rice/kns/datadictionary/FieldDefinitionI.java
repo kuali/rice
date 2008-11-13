@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.datadictionary.mask.Mask;
 
 public interface FieldDefinitionI {
     public String getName();
     public boolean isReadOnlyAfterAdd();
+    public Mask getDisplayMask();
+    public String getDisplayEditMode();
 
 }

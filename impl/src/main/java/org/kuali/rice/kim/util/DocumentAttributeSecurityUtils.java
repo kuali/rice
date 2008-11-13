@@ -22,7 +22,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -40,15 +39,16 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class DocumentAttributeSecurityUtils {
 
-	public static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(MaintenanceDocumentEntry objectEntry) {
+	public static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFields(
+			MaintenanceDocumentEntry objectEntry) {
 		List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry
 				.getMaintainableSections();
 		Map<String, FieldAttributeSecurity> fieldAttributeSecurities = new HashMap<String, FieldAttributeSecurity>();
 		for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
 			List<MaintainableItemDefinition> maintainableItems = maintainableSectionDefinition
 					.getMaintainableItems();
-			fieldAttributeSecurities.putAll(getRestrictionMaintainableFieldList(fieldAttributeSecurities,
-					maintainableItems, objectEntry.getBusinessObjectClass(), objectEntry.getDocumentTypeName(), KNSConstants.EMPTY_STRING));
+			getRestrictionMaintainableFieldList(fieldAttributeSecurities,
+					maintainableItems, null, objectEntry.getDocumentTypeName(), KNSConstants.EMPTY_STRING);
 		}
 		return fieldAttributeSecurities;
 	}
@@ -56,29 +56,25 @@ public class DocumentAttributeSecurityUtils {
 	private static Map<String, FieldAttributeSecurity> getRestrictionMaintainableFieldList(
 			Map<String, FieldAttributeSecurity> returnList, List items, Class boClass,
 			String documentTypeName, String key) {
-		if(boClass==null) return null;
 		for (Object item: items) {
 			if (item instanceof MaintainableFieldDefinition) {
 				MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
-				BusinessObjectEntry businessObejctEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(
-						boClass.getName());
-				if(businessObejctEntry!=null){
-					//retrieve attribDef from the DD for the BO (DDS.getDD().getBOE(boClass).getAttributeDefinition(item.getName());
-					AttributeDefinition attributeDefinition = 
-						businessObejctEntry.getAttributeDefinition(maintainableFieldDefinition.getName());
-	
-					if(maintainableFieldDefinition.getAttributeSecurity()!=null || 
-							(attributeDefinition!=null && attributeDefinition.getAttributeSecurity()!=null)){
-						FieldAttributeSecurity fieldAttributeSecurity = new FieldAttributeSecurity();
-						fieldAttributeSecurity.setMaintainableFieldAttributeSecurity(
-								((MaintainableFieldDefinition) item).getAttributeSecurity());
-						fieldAttributeSecurity.setBusinessObjectAttributeSecurity(attributeDefinition.getAttributeSecurity());
-						fieldAttributeSecurity.setAttributeName(maintainableFieldDefinition.getName());
-						fieldAttributeSecurity.setBusinessObjectClass(boClass);
-						fieldAttributeSecurity.setDocumentTypeName(documentTypeName);
-						returnList.put(
-								(StringUtils.isEmpty(key)?"":key+".")+maintainableFieldDefinition.getName(), fieldAttributeSecurity);
-					}
+				//retrieve attribDef from the DD for the BO (DDS.getDD().getBOE(boClass).getAttributeDefinition(item.getName());
+				AttributeDefinition attributeDefinition = 
+					(KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(
+							boClass.getName()).getAttributeDefinition(maintainableFieldDefinition.getName()));
+
+				if(maintainableFieldDefinition.getAttributeSecurity()!=null || 
+						(attributeDefinition!=null && attributeDefinition.getAttributeSecurity()!=null)){
+					FieldAttributeSecurity fieldAttributeSecurity = new FieldAttributeSecurity();
+					fieldAttributeSecurity.setMaintainableFieldAttributeSecurity(
+							((MaintainableFieldDefinition) item).getAttributeSecurity());
+					fieldAttributeSecurity.setBusinessObjectAttributeSecurity(attributeDefinition.getAttributeSecurity());
+					fieldAttributeSecurity.setAttributeName(maintainableFieldDefinition.getName());
+					fieldAttributeSecurity.setBusinessObjectClass(boClass);
+					fieldAttributeSecurity.setDocumentTypeName(documentTypeName);
+					returnList.put(
+							(StringUtils.isEmpty(key)?"":key+".")+maintainableFieldDefinition.getName(), fieldAttributeSecurity);
 				}
 			} else if (item instanceof MaintainableCollectionDefinition) {
 				MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) item;

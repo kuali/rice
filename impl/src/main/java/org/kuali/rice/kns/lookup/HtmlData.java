@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -206,21 +205,11 @@ public abstract class HtmlData implements Serializable {
 									.getPerson(),
 							element.getName(), key);
 			if (!viewAuthorized) {
-				/*Mask displayMask = KNSServiceLocator
+				Mask displayMask = KNSServiceLocator
 						.getDataDictionaryService()
 						.getAttributeDisplayMask(
 								element.getName(), key);
-				fieldVal = displayMask.maskValue(fieldVal); */
-				AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(element.getName(), key);
-            	if(attributeSecurity != null && attributeSecurity.isMask()){
-            		fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
-                   
-            	}
-            	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-            		fieldVal = attributeSecurity.getPartialMaskFormatter().maskValue(fieldVal);
-                    
-            	}
-                
+				fieldVal = displayMask.maskValue(fieldVal);
 			}
 			titleText.append(KNSServiceLocator.getDataDictionaryService()
 					.getAttributeLabel(element, key)

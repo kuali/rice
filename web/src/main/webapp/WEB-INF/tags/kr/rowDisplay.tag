@@ -98,7 +98,7 @@
                 
 			<%-- isFieldSecure determines whether or not the encrypted value should be shown for 
 			non-collections and a similar function for collections --%>
-			<c:set var="isFieldSecure" value="${field.secure}" />
+			<c:set var="isFieldSecure" value="${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" />
 				
 			<%-- textStyle is used to store the style of the field value. i.e. whether or not it 
 			should display as red text. --%>
@@ -168,23 +168,20 @@
 			<c:choose>
 
 				<c:when test="${isFieldSecure and field.fieldType ne field.FILE}">
-					<!-- hidden -->
-					<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" 
-						value="${field.encryptedValue}" />
+					<input type="hidden" name="${field.propertyName}" 
+						value='<c:out value="${field.encryptedValue}"/>' />
 
 				</c:when>
 
-				<c:when test="${isFieldReadOnly && not isFieldSecure && not isFieldAContainer and field.fieldType ne field.FILE}">
+				<c:when test="${isFieldReadOnly && not isFieldAContainer and field.fieldType ne field.FILE}">
 					<c:choose>
 						<c:when test= "${isInquiry || isLookup}">
-							<!-- hidden -->
-					  		<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" value="${fieldValue}" />
+					  		<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
 				  		</c:when>
 				  		<c:otherwise>
 							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
-								<!-- hidden -->
-								<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}" 
-									   value="${fieldValue}" />
+								<input type="hidden" name="${field.propertyName}" 
+									   value='<c:out value="${fieldValue}"/>' />
 							</c:if>
 						</c:otherwise>
 				  	 </c:choose>
@@ -278,9 +275,8 @@
 			    		     so we'll just render the input parameter, but not display anything.  Of course, inquiries are read only, so there's really no reason
 			    		     to have the input tag for inquiries, but it doesn't cause any harm. --%>
 			    		<%-- prevent the field from being written a 2nd time --%>
-						<!-- hidden -->
-						<html:hidden renderHiddenField="${isLookup}" name='${field.propertyName}'
-							value="${isFieldSecure ? field.encryptedValue : fieldValue}" />
+						<input type="hidden" name='${field.propertyName}'
+							value='<c:out value="${isFieldSecure ? field.encryptedValue : fieldValue}"/>' />
 					</c:if>
 				</c:when>
 					
@@ -324,14 +320,13 @@
 							</c:when>
 
 							<c:otherwise>
-								<!-- ${onblurcall} ? -->
-								<html:text id='${field.propertyName}' name='${field.propertyName}'
-									value='${fieldValue}'
+
+								<input type="text" id='${field.propertyName}' name='${field.propertyName}'
+									value='<c:out value="${fieldValue}"/>'
 									size='${field.size}'
 									maxlength='${field.formattedMaxLength}'
-									style="${textStyle}" 
-									onblur="${onblurcall}" 
-									styleClass="${field.styleClass }"></html:text>
+									style="${textStyle}" ${onblurcall} 
+									class="${field.styleClass }"/>
 						    
 								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
 
@@ -358,15 +353,14 @@
 							</c:when>
 									
 							<c:otherwise>
-								<!-- ${onblurcall} ? -->
-								<html:text name='${field.propertyName}'
+									
+								<input type="text" name='${field.propertyName}'
 									id='${field.propertyName}'
-									value='${fieldValue}'
+									value='<c:out value="${fieldValue}"/>'
 									size='${field.size}'
 									maxlength='${field.maxLength}'
-									style="${textStyle}"
-									onblur="${onblurcall}" 
-									styleClass="${field.styleClass}"/>
+									style="${textStyle}" ${onblurcall} 
+									class="${field.styleClass}"/>
 						    
 								<c:if test="${field.datePicker eq true}">
 											
@@ -418,14 +412,12 @@
 
 							<c:otherwise>
 
-								<!-- ${onblurcall} ? -->
-								<input type="textarea" id='${field.propertyName}' name='${field.propertyName}'
+								<textarea id='${field.propertyName}' name='${field.propertyName}'
 									rows='${field.rows}'
 									cols='${field.cols}'
-									style="${textStyle}"
-									onblur="${onblurcall}" 
+									style="${textStyle}" ${onblurcall}
 									maxlength='${field.maxLength}' ><c:out
-									value="${fieldValue}"/>
+									value="${fieldValue}"/></textarea>
 								
 								<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
 
@@ -455,14 +447,10 @@
 									
 							<c:otherwise>
 									
-								<!--${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
-									${onblurcall}? -->
-								<html:checkbox id='${field.propertyName}' 
-									name="${field.propertyName}" 
-									onblur="${onblurcall}" 
-									value='${fieldValue}'/>
-								<!-- hidden -->
-								<html:hidden renderHiddenField="${isLookup}" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
+								<input type="checkbox" id='${field.propertyName}' name="${field.propertyName}" 
+									${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
+									${onblurcall} />
+								<input type="hidden" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
 									
 							</c:otherwise>
 					
@@ -648,15 +636,13 @@
 							</c:when>
 									
 							<c:otherwise>
-								<!-- ${onblurcall} ? -->
-								<html:text name='${field.propertyName}'
+								<input type="text" name='${field.propertyName}'
 									id='${field.propertyName}'
-									value='${fieldValue}'
+									value='<c:out value="${fieldValue}"/>'
 									size='${field.size}'
 									maxlength='${field.maxLength}'
-									style="${textStyle}" 
-									onblur="${onblurcall}" 
-									styleClass="${field.styleClass}"/>
+									style="${textStyle}" ${onblurcall} 
+									class="${field.styleClass}"/>
 								
 								<!--  adding a lookup here because it goes to workflow as opposed to Kuali -->
 								<kul:workflowWorkgroupLookup fieldConversions="workgroupName:${field.propertyName}" />	
@@ -698,8 +684,7 @@
 											<html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
 											<c:out value="${fieldValue}"/>
 	                                    	&nbsp;&nbsp;
-                           					<!-- hidden -->
-	                                    	<html:hidden renderHiddenField="${isLookup}" name='methodToCall' />
+	                                    		                                    	<input type="hidden" name='methodToCall' />
     										<script type="text/javascript">
 												function replaceAttachment() {
 													excludeSubmitRestriction=true;
@@ -737,8 +722,8 @@
 						fieldLabel="${field.fieldLabel}" />
 								
 					<td class="grid" width="${dataCellWidth}%">
-						<!-- hidden -->
-						<html:hidden renderHiddenField="${isLookup}" name='${field.propertyName}' value="${fieldValue}" />
+								
+						<input type="hidden" name='${field.propertyName}' value='<c:out value="${fieldValue}"/>' />
 					
 						<c:if test="${field.fieldType eq field.LOOKUP_READONLY}">
 					

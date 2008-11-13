@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.CollectionDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -61,6 +62,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private KualiConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
 
+    
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
@@ -256,6 +258,21 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return displayMask;
     }
+    
+    /**
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
+     */
+    public AttributeSecurity getAttributeSecurity(String entryName, String attributeName) {
+        AttributeSecurity attributeSecurity = null;
+
+        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+        if (attributeDefinition != null) {
+            attributeSecurity = attributeDefinition.getAttributeSecurity();
+        }
+
+        return attributeSecurity;
+    }
+
 
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayWorkgroup(java.lang.String, java.lang.String)
@@ -866,10 +883,15 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     	BusinessObjectEntry boEntry = getDataDictionary().getBusinessObjectEntry(entryClassName);
     	List<String> encryptedFieldsList = new ArrayList<String>();
     	Mask displayMask;
+    	AttributeSecurity attributeSecurity;
     	for(AttributeDefinition attributeDefinition: boEntry.getAttributes()){
     		displayMask = attributeDefinition.getDisplayMask();
+    		attributeSecurity = attributeDefinition.getAttributeSecurity();
         	if(displayMask != null)
         		encryptedFieldsList.add(attributeDefinition.getName());
+        	if(attributeSecurity != null && (attributeSecurity.isMask() || attributeSecurity.isPartialMask())){
+        		encryptedFieldsList.add(attributeDefinition.getName());
+        	}
     	}
     	return encryptedFieldsList;
     }

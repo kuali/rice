@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Summarizable;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -64,7 +65,7 @@ public class FieldBridge {
 
             MaintainableFieldDefinition maintainableFieldDefinition = ((MaintainableFieldDefinition) definition);
             field.setFieldRequired(maintainableFieldDefinition.isRequired());
-            field.setReadOnly(maintainableFieldDefinition.isReadOnly());
+            field.setReadOnly(maintainableFieldDefinition.isUnconditionallyReadOnly());
             if (maintainableFieldDefinition.isLookupReadOnly()) {
             	field.setFieldType(Field.LOOKUP_READONLY);
             }
@@ -83,15 +84,7 @@ public class FieldBridge {
         /* setup security of field (sensitive data) if needed, note this will always be true on old maintainables since
          * maintenanceAction is not set
          */
-        String displayEditMode = definition.getDisplayEditMode();
-        if (StringUtils.isNotBlank(displayEditMode)) {
-
-            field.setSecure(true);
-            field.setDisplayEditMode(displayEditMode);
-            field.setDisplayMask(definition.getDisplayMask());
-
-        }
-
+        //field.setAttributeSecurity(definition.getAttributeSecurity());
     }
 
     /**
@@ -160,14 +153,24 @@ public class FieldBridge {
             boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), bo.getClass().getName(), propertyName);
             if (!viewAuthorized) {
                 // set mask as field value
-                Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(bo.getClass(), propertyName);
-                if (propertyMask == null) {
-                    throw new RuntimeException("No mask specified for secure field.");
-                }
+                //Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(bo.getClass(), propertyName);
+                //if (propertyMask == null) {
+                //    throw new RuntimeException("No mask specified for secure field.");
+                //}
 
-                field.setPropertyValue(propertyMask.maskValue(propValue));
-                field.setDisplayMaskValue(propertyMask.maskValue(propValue));
-
+                //field.setPropertyValue(propertyMask.maskValue(propValue));
+                //field.setDisplayMaskValue(propertyMask.maskValue(propValue));
+            	AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(bo.getClass().getName(), propertyName);
+            	if(attributeSecurity != null && attributeSecurity.isMask()){
+            		field.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
+                    field.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
+            		
+            	}
+            	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+            		field.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
+                    field.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
+            	}
+                
             } else {
                 field.setPropertyValue(propValue);
                 FieldUtils.setInquiryURL(field, bo, propertyName);
@@ -324,7 +327,7 @@ public class FieldBridge {
             // if this flag is set, and the current field is required, and readonly, and blank, use the
             // defaultValueFinder if one exists
             if (autoFillBlankRequiredValues) {
-                if ( maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isReadOnly() ) {
+                if ( maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
                     if ( StringUtils.isBlank( field.getPropertyValue() ) ) {
                         Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
                         if (defaultValueFinderClass != null) {

@@ -34,6 +34,15 @@ public interface DocumentAuthorizer {
      *         allowed to take on that document.
      */
     public Map getEditMode(Document document, Person user);
+    
+    /**
+     * 
+     * @param document
+     * @param user
+     * @return user has permission to edit the document or not
+     */
+    public boolean isViewOnly(Document document, Person user);
+
 
     /**
      * @param document - the document locks are to be established against or by

@@ -33,6 +33,10 @@ import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
@@ -59,7 +63,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static AuthorizationService authorizationService;
     private static KualiWorkflowInfo kualiWorkflowInfo;
     private static KualiConfigurationService kualiConfigurationService;
-
+    private static IdentityManagementService identityManagementService;
+    
     /**
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
@@ -82,6 +87,35 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
         return editModeMap;
     }
+    
+    /**
+     * 
+     * This method is used to get overall document edit permission
+     * 
+     * @param document
+     * @param user
+     * @return
+     */
+    public boolean isViewOnly(Document document, Person user){
+    	boolean isViewOnly = true;
+    	//TODO: Should use ParameterService getNameSpace to get name space
+        String nameSpaceCode = "KR-KNS";
+    	
+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+    	String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
+    	
+    	AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentType);
+ 	 
+ 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_DOCUMENT, permissionDetails, null)){
+ 		   isViewOnly = false;
+	   }
+ 	   
+    	return isViewOnly;
+    }
+
     
     /**
      * Individual document families will need to reimplement this according to their own needs; this version should be good enough
@@ -572,5 +606,17 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     protected boolean useCustomLockDescriptors() {
         return false;
     }
+    
+	/**
+	 * @return the identityManagementService
+	 */
+	public static IdentityManagementService getIdentityManagementService() {
+		
+		if (identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
+    
     
 }

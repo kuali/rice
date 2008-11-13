@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -51,6 +52,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -356,14 +358,21 @@ public class SectionBridge {
                             if (!viewAuthorized) {
 
                                 // set mask as field value
-                                Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineBusinessObject.getClass(), name);
-                                if (propertyMask == null) {
-                                    throw new RuntimeException("No mask specified for secure field.");
-                                }
-
-                                collField.setPropertyValue(propertyMask.maskValue(propertyValue));
-                                collField.setDisplayMaskValue(propertyMask.maskValue(propertyValue));
-
+                                //Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineBusinessObject.getClass(), name);
+                                //if (propertyMask == null) {
+                                //    throw new RuntimeException("No mask specified for secure field.");
+                                //}
+                            	AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
+                            	if(attributeSecurity != null && attributeSecurity.isMask()){
+                            		collField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                                    collField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                            		
+                            	}
+                            	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+                            		collField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                                    collField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                            	}
+                                
                             }
                             else {
                                 collField.setPropertyValue(propertyValue);

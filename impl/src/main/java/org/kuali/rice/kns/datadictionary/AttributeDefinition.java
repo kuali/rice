@@ -518,4 +518,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
 	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
 		this.attributeSecurity = attributeSecurity;
 	}
+	
+	 public boolean hasAttributeSecurity() {
+	        return (attributeSecurity != null);
+	    }
 }

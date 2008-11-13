@@ -32,10 +32,11 @@ public class KimConstants {
 	public static final String DOC_STATUS = "Route Status Code";
     public static final String KEY_EDIT_MODE = "keyEditMode";
 	public static final String PERMISSION_UNMARK = "Unmark";
-	public static final String PERMISSION_UNMASK_PROPERTY = "Completely Unmask Property";
-	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partially Unmask Property";
-	public static final String PERMISSION_VIEW_PROPERTY = "View Property";
-	public static final String PERMISSION_EDIT_PROPERTY = "Edit Property";
+	public static final String PERMISSION_UNMASK_PROPERTY = "Full Unmask Field";
+	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partial Unmask Field";
+	public static final String PERMISSION_VIEW_PROPERTY = "View Inquiry or Maintenance Document Field(s)";
+	public static final String PERMISSION_EDIT_PROPERTY = "Modify Maintenance Document Field(s)";
+	public static final String PERMISSION_EDIT_DOCUMENT = "Edit Document";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
 	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
@@ -47,8 +48,8 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "Route Status Code";
 	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "Route Node Name";
 	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "Document Number";
-	public static final String KIM_ATTRIB_PROPERTY_NAME = "Property Name";
-	public static final String KIM_ATTRIB_COMPONENT_NAME = "Component";
+	public static final String KIM_ATTRIB_PROPERTY_NAME = "propertyName";
+	public static final String KIM_ATTRIB_COMPONENT_NAME = "parameterDetailTypeCode";
 	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";

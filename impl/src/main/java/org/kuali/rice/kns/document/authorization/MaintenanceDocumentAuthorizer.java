@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.Map;
+
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
@@ -35,6 +38,7 @@ public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
      * 
      */
     public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
-
+    
+   
 }
 

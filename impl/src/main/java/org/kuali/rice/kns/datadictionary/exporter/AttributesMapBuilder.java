@@ -92,6 +92,10 @@ public class AttributesMapBuilder {
             attributeMap.set("displayWorkgroup", attribute.getDisplayWorkgroup());
             attributeMap.set("displayMaskClass",attribute.getDisplayMask().getClass().toString());
         }
+        
+        if(attribute.hasAttributeSecurity()){
+        	attributeMap.set("attributeSecurityClass", attribute.getDisplayMask().getClass().toString());
+        }
 
         attributeMap.set(buildControlMap(attribute));
         attributeMap.set("fullClassName", fullClassName);

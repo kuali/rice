@@ -147,4 +147,17 @@ public class AttributeSecurity extends DataDictionaryDefinitionBase {
 		}
 	}
 
+	public String getDisplayMaskValue(Object value){
+		String displayMaskValue = "";
+        if(isMask())
+        	displayMaskValue = getMaskFormatter().maskValue(value);
+        else if(isPartialMask())
+        	displayMaskValue = getPartialMaskFormatter().maskValue(value);
+        return displayMaskValue;
+	}
+	
+	public boolean shouldBeEncrypted(){
+		return isMask() || isPartialMask();
+	}
+	
 }

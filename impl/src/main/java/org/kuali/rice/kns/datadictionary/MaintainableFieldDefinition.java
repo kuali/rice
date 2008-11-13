@@ -58,6 +58,7 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
     protected boolean required = false;
     protected boolean readOnly = false;
+    protected boolean unconditionallyReadOnly = false;
     protected boolean readOnlyAfterAdd = false;
     private boolean noLookup = false;
     private boolean lookupReadOnly = false;
@@ -119,10 +120,17 @@ required is true if the field must contain a non-null value
     }
 
     /**
-     * @return Returns the readOnly.
+     * @return Returns the unconditionallyReadOnly.
      */
-    public boolean isReadOnly() {
-        return readOnly;
+    public boolean isUnconditionallyReadOnly() {
+        return unconditionallyReadOnly;
+    }
+    
+    /**
+     * unconditionallyReadOnly is true if it cannot be updated
+     */
+    public void setUnconditionallyReadOnly(boolean unconditionallyReadOnly) {
+        this.unconditionallyReadOnly = unconditionallyReadOnly;
     }
 
     /**

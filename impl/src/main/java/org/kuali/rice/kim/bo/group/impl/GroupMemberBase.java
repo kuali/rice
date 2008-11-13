@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -40,8 +41,8 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 	@Column(name="GRP_ID")
 	protected String groupId;
 	
-	@Column(name="ACTV_IND")
-	protected boolean active;
+	@Transient
+	protected boolean active = true;
 	
 	public String getGroupMemberId() {
 		return this.groupMemberId;

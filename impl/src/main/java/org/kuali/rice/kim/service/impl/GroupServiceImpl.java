@@ -160,7 +160,6 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 3 );
 		criteria.put("memberPrincipals.memberPrincipalId", principalId);
-		criteria.put("memberPrincipals.active", "Y");
 		criteria.put("active", "Y");
 		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
 			criteria.put("namespaceCode", namespaceCode);
@@ -340,7 +339,6 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("memberGroups.memberGroupId", groupId);
-		criteria.put("memberGroups.active", "Y");
 		criteria.put("active", "Y");
 		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
 	}
@@ -413,7 +411,6 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("groupId", groupId);
-		criteria.put("active", "Y");
 		List<GroupGroup> groups = (List<GroupGroup>)getBusinessObjectService().findMatching(GroupGroupImpl.class, criteria);
 		ArrayList<String> groupIds = new ArrayList<String>( groups.size() );
 		for ( GroupGroup group : groups ) {
@@ -460,7 +457,6 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("memberPrincipals.memberPrincipalId", principalId);
-		criteria.put("memberPrincipals.active", "Y");
 		criteria.put("groupId", groupId);
 		criteria.put("active", "Y");
 		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) != 0;

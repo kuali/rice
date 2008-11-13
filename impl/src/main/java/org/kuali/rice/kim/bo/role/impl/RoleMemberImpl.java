@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.role.RoleMember;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -42,8 +43,8 @@ public abstract class RoleMemberImpl extends PersistableBusinessObjectBase imple
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
-	@Column(name="ACTV_IND")
-	protected boolean active;
+	@Transient
+	protected boolean active = true;
 	
 	protected List<RoleMemberAttributeDataImpl> attributes;
 	

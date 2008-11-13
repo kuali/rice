@@ -28,6 +28,7 @@
         <ref bean="PersonImpl-employeeStatusCode" />
         <ref bean="PersonImpl-employeeTypeCode" />
         <ref bean="PersonImpl-employeeId" />
+        <ref bean="PersonImpl-active" />
       </list>
     </property>
   </bean>
@@ -185,6 +186,12 @@
   <bean id="PersonImpl-principalName" parent="PersonImpl-principalName-parentBean" />
   <bean id="PersonImpl-principalName-parentBean" parent="KimBaseBeans-principalName" abstract="true" />
 
+  <bean id="PersonImpl-active" parent="PersonImpl-active-parentBean" />
+
+  <bean id="PersonImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active" />
+  </bean>
+
 
   <bean id="PersonImpl-inquiryDefinition" parent="PersonImpl-inquiryDefinition-parentBean" />
 
@@ -211,6 +218,7 @@
               <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode" />
               <bean parent="FieldDefinition" p:attributeName="employeeStatusCode" />
               <bean parent="FieldDefinition" p:attributeName="employeeTypeCode" />
+              <bean parent="FieldDefinition" p:attributeName="active" />
             </list>
           </property>
         </bean>
@@ -248,6 +256,7 @@
         <bean parent="FieldDefinition" p:attributeName="employeeStatusCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeTypeCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeId" />
+        <bean parent="FieldDefinition" p:attributeName="active" />
       </list>
     </property>
     <property name="resultFields" >
@@ -259,6 +268,8 @@
         <bean parent="FieldDefinition" p:attributeName="campusCode" />
         <bean parent="FieldDefinition" p:attributeName="emailAddress" />
         <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+        <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode" />
+        <bean parent="FieldDefinition" p:attributeName="employeeId" />
       </list>
     </property>
   </bean>

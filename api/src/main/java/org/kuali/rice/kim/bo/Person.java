@@ -107,5 +107,5 @@ public interface Person extends ExternalizableBusinessObject {
 	String getPrimaryDepartmentCode();
 	
 	String getEmployeeId();
-	
+	boolean isActive();
 }

@@ -87,6 +87,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String employeeId = "";
 	
 	protected KualiDecimal baseSalaryAmount;
+	protected boolean active = true;
 	
 	public PersonImpl() {}
 	
@@ -118,6 +119,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		entityId = principal.getEntityId();
 		principalId = principal.getPrincipalId();
 		principalName = principal.getPrincipalName();
+		active = principal.isActive();
 	}
 	
 	protected void populateEntityInfo( KimEntity entity, String personEntityTypeCode ) {
@@ -431,6 +433,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 
 	public String getEntityTypeCode() {
 		return this.entityTypeCode;
+	}
+
+	public boolean isActive() {
+		return this.active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

@@ -109,9 +109,6 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		LookupService lookupService = KNSServiceLocator.getLookupService();
 		Collection<KimEntity> entities = lookupService.findCollectionBySearchHelper(KimEntityImpl.class, entityCriteria, unbounded);
 
-//		// use the normal BO service to get the entity objects
-//		Collection<KimEntity> entities = KNSServiceLocator.getBusinessObjectService().findMatching( KimEntityImpl.class, entityCriteria );
-
 		for ( KimEntity e : entities ) {
 			// get to get all principals for the entity as well
 			for ( KimPrincipal p : e.getPrincipals() ) {
@@ -135,11 +132,11 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		// init the criteria which will need to be applied to every lookup against
 		// the entity data tables
 		baseLookupCriteria.put( "active", "Y" );
-		baseLookupCriteria.put( "principals.active", "Y" );
 		baseLookupCriteria.put( "entityTypes.active", "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
 		criteriaConversion.put( "entityId", "entityId" );
+		criteriaConversion.put( "active", "principals.active" );
 		criteriaConversion.put( "principalId", "principals.principalId" );
 		criteriaConversion.put( "principalName", "principals.principalName" );
 		criteriaConversion.put( "firstName", "names.firstName" );

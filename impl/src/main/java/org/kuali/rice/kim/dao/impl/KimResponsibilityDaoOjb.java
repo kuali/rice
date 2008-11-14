@@ -62,8 +62,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibility(org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForResponsibility(
-			KimResponsibilityImpl responsibility) {
+	public List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility) {
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibility.getResponsibilityId() );
 		c.addEqualTo( "active", true );
@@ -81,9 +80,8 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityId,
-			String principalId, String groupId, String memberRoleId ) {
-		if ( principalId == null && groupId == null ) {
+	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityId, String roleMemberId ) {
+		if ( roleMemberId == null || responsibilityId == null ) {
 			return null;
 		}
 		
@@ -91,23 +89,10 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		c.addEqualTo( "responsibilityId", responsibilityId );
 		c.addEqualTo( "active", true );
 		Criteria idCriteria = new Criteria();
-		String searchProperty = null;
-		String searchValue = null;
-		// check for a role first, since that overrides the derived principals or groups
-		if ( memberRoleId != null ) {
-			searchProperty = "memberRoleId";
-			searchValue = memberRoleId;
-		} else if ( principalId != null ) {
-			searchProperty = "principalId";
-			searchValue = principalId;
-		} else if ( groupId != null ) {
-			searchProperty = "groupId";
-			searchValue = groupId;
-		}
-		idCriteria.addEqualTo( searchProperty, searchValue );
-		// also handle when principalID/groupId/memberRoleId is "*" in table
+		idCriteria.addEqualTo( "roleMemberId", roleMemberId );
+		// also handle when roleMemberId is "*" in table
 		Criteria starCrit = new Criteria();
-		starCrit.addEqualTo( searchProperty, "*" );
+		starCrit.addEqualTo( "roleMemberId", "*" );
 		idCriteria.addOrCriteria( starCrit );
 		c.addAndCriteria( idCriteria );
 		

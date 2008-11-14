@@ -165,7 +165,7 @@ public class RoleServiceImpl implements RoleService {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
 			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( rp.getPrincipalId(), null, null, rp.getRoleId(), rp.getQualifier() );
+				RoleMembershipInfo mi = new RoleMembershipInfo( rp.getPrincipalId(), null, null, rp.getRoleId(), rp.getRoleMemberId(), rp.getQualifier() );
 				results.add( mi );
 				matchingRoleIds.add( rp.getRoleId() );
 			}
@@ -178,7 +178,7 @@ public class RoleServiceImpl implements RoleService {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rg.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
 			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( null, rg.getGroupId(), null, rg.getRoleId(), rg.getQualifier() );
+				RoleMembershipInfo mi = new RoleMembershipInfo( null, rg.getGroupId(), null, rg.getRoleId(), rg.getRoleMemberId(), rg.getQualifier() );
 				results.add( mi );
 				matchingRoleIds.add( rg.getRoleId() );
 			}
@@ -217,7 +217,7 @@ public class RoleServiceImpl implements RoleService {
     			if ( !rolePrincipalIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String rolePrincipalId : rolePrincipalIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( rolePrincipalId, null, null, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( rolePrincipalId, null, null, roleId, "*", null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}
@@ -226,7 +226,7 @@ public class RoleServiceImpl implements RoleService {
     			if ( !roleGroupIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String roleGroupId : roleGroupIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( null, roleGroupId, null, roleId, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( null, roleGroupId, null, roleId, "*", null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}

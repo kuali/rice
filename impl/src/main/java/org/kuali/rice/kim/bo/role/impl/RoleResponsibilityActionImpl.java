@@ -31,10 +31,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String roleResponsibilityActionId;
 	protected String responsibilityId;
 	protected String roleId;
-	protected String principalId;
-	protected String groupId;
-	protected String memberRoleId; // used when the group or principal was derived from a member role
-									// i.e., when the member of the role is actually another role
+	protected String roleMemberId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
@@ -57,12 +54,6 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-	public String getPrincipalId() {
-		return this.principalId;
-	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
 	}
 	public String getActionTypeCode() {
 		return this.actionTypeCode;
@@ -93,15 +84,8 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 		lhm.put( "roleResponsibilityResolutionId", roleResponsibilityActionId );
 		lhm.put( "responsibilityName", responsibilityId );
 		lhm.put( "roleId", roleId );
-		lhm.put( "principalId", principalId );
-		lhm.put( "groupId", groupId );
+		lhm.put( "roleMemberId", roleMemberId );
 		return lhm;
-	}
-	public String getGroupId() {
-		return this.groupId;
-	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
 	}
 	public String getActionPolicyCode() {
 		return this.actionPolicyCode;
@@ -109,10 +93,10 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	public void setActionPolicyCode(String actionPolicyCode) {
 		this.actionPolicyCode = actionPolicyCode;
 	}
-	public String getMemberRoleId() {
-		return this.memberRoleId;
+	public String getRoleMemberId() {
+		return this.roleMemberId;
 	}
-	public void setMemberRoleId(String memberRoleId) {
-		this.memberRoleId = memberRoleId;
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 }

@@ -796,9 +796,7 @@
     <field-descriptor name="roleResponsibilityActionId" column="ROLE_RSP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="memberRoleId" column="MBR_ROLE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="actionTypeCode" column="ACTN_TYP_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="actionPolicyCode" column="ACTN_PLCY_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="priorityNumber" column="PRIORITY_NBR" jdbc-type="INTEGER" />

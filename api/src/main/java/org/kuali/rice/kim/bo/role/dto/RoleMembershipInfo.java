@@ -31,17 +31,19 @@ public class RoleMembershipInfo {
 	protected String groupId;
 	protected String roleId;
 	protected String memberRoleId;
+	protected String roleMemberId;
 	protected AttributeSet qualifier;
 	protected List<String> delegationIds = new ArrayList<String>();
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
-	public RoleMembershipInfo(String principalId, String groupId, String memberRoleId, String roleId,
+	public RoleMembershipInfo(String principalId, String groupId, String memberRoleId, String roleId, String roleMemberId,
 			AttributeSet qualifier) {
 		super();
 		this.principalId = principalId;
 		this.groupId = groupId;
 		this.roleId = roleId;
 		this.memberRoleId = memberRoleId;
+		this.roleMemberId = roleMemberId;
 		this.qualifier = qualifier;
 	}
 	
@@ -95,6 +97,16 @@ public class RoleMembershipInfo {
 
 	public void setMemberRoleId(String memberRoleId) {
 		this.memberRoleId = memberRoleId;
+	}
+
+
+	public String getRoleMemberId() {
+		return this.roleMemberId;
+	}
+
+
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 	
 	

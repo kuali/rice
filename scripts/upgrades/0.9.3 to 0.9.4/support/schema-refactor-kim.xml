@@ -941,6 +941,6 @@
     <sequence oldName="KR_KIM_ROLE_RESP_ACTN_ID_SEQ" newName="KRIM_ROLE_RSP_ACTN_ID_S" nextval="1000"/>
     <sequence oldName="KR_KIM_ROLE_RESP_ID_SEQ" newName="KRIM_ROLE_RSP_ID_S" nextval="1000"/>
     <sequence oldName="KR_KIM_ROLE_RESP_RESOL_ID_SEQ" newName="KRIM_ROLE_RSP_RESOL_ID_S" nextval="1000"/>
-    <sequence oldName="KR_KIM_TYPE_ATTRIB_ID_SEQ" newName="KRIM_TYP_ATTR_ID_SEQ" nextval="1000"/>
+    <sequence oldName="KR_KIM_TYPE_ATTRIB_ID_SEQ" newName="KRIM_TYP_ATTR_ID_S" nextval="1000"/>
     <sequence oldName="KR_KIM_TYPE_ID_SEQ" newName="KRIM_TYP_ID_S" nextval="1000"/>
 </database>

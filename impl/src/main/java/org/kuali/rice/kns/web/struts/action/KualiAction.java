@@ -743,6 +743,7 @@ public abstract class KualiAction extends DispatchAction {
         } catch (Exception e) {
             LOG.warn("KualiAction.checkAuthorization was deferred to.  Caller is unknown and methodToCall is " + methodToCall);
         }
+        // TODO: add "Use Screen" check based on current module - use KR-SYS if no module found
         AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
         if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), defaultAuthorizationType ) ) {
             LOG.error("User not authorized to use this action: " + this.getClass().getName() );

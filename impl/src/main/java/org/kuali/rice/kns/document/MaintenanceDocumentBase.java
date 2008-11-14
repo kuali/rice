@@ -775,7 +775,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         DocumentHeader documentHeader = lockedDocument.getDocumentHeader();
 
         // get the user-id. if no user-id, then we can do this test, so exit
-        String userId = GlobalVariables.getUserSession().getNetworkId().trim();
+        String userId = GlobalVariables.getUserSession().getPrincipalName().trim();
         if (StringUtils.isBlank(userId)) {
             return false; // dont bypass locking
         }

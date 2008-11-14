@@ -15,7 +15,6 @@ package org.kuali.rice.kns.web.struts.action;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
@@ -35,8 +35,8 @@ import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -54,7 +54,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -75,7 +74,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 
-	protected org.kuali.rice.kim.service.PersonService personService;
 	protected SessionDocumentService sessionDocumentService;
 	protected DataDictionaryService dataDictionaryService;
 	protected BusinessObjectService businessObjectService;
@@ -83,10 +81,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 	
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-		Timer t0 = new Timer("KualiRequestProcessor.process");
-
-		LOG.info(new StringBuffer("Started processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info(new StringBuffer("Started processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
+		}
 
 		try {
 			super.process(request, response);
@@ -94,8 +91,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 			GlobalVariables.setKualiForm(null);
 		}
 
-		LOG.info(new StringBuffer("Finished processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
-		t0.log();
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info(new StringBuffer("Finished processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
+		}
 	}
 
 	/**
@@ -107,54 +105,58 @@ public class KualiRequestProcessor extends RequestProcessor {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
-		Timer t0 = new Timer("KualiRequestProcessor.processPreprocess");
-
-		String id = null;
-		try {
-			UserSession userSession = null;
-			if (!isUserSessionEstablished(request)) {
-				IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService")); 
-				id = idmService.getAuthenticatedPrincipalName(request);
-
-				// This is a temp solution to show KIM AuthN checking existence of Principals.
-				// We may want to move this code to the IdentityService once it is finished.
-				Map<String,String> criteria = new HashMap<String,String>( 1 );
-				criteria.put("principalName", id);
-				KimPrincipal principal = idmService.getPrincipalByPrincipalName( id ); 
-				if ( principal == null ) {
-					LOG.error("Caught a User Not found exception: " + id);
-					throw new RuntimeException("Invalid User: " + id);
+		UserSession userSession = null;
+		if (!isUserSessionEstablished(request)) {
+			IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService")); 
+			String principalName = idmService.getAuthenticatedPrincipalName(request);
+			if ( StringUtils.isNotBlank(principalName) ) {
+				KimPrincipal principal = idmService.getPrincipalByPrincipalName( principalName );
+				if ( principal != null ) {
+					AttributeSet qualification = new AttributeSet();
+					qualification.put( "principalId", principal.getPrincipalId() );
+					// check to see if the given principal is an active principal/entity
+					if ( idmService.isAuthorized( principal.getPrincipalId(), 
+							"KUALI", "Log In", null, qualification ) ) {
+					
+						// This is a temp solution to show KIM AuthN checking existence of Principals.
+						// We may want to move this code to the IdentityService once it is finished.
+						userSession = new UserSession(principalName);
+						if ( userSession.getPerson() == null ) {
+							LOG.warn("Unknown User: " + principalName);
+							throw new RuntimeException("Invalid User: " + principalName);
+						}
+						
+						String kualiSessionId = this.getKualiSessionId(request, response);
+						if (kualiSessionId == null) {
+							kualiSessionId = new Guid().toString();
+							response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
+						}
+						userSession.setKualiSessionId(kualiSessionId);
+					} /* if: principal is active */ else {
+						LOG.warn("Principal is Inactive: " + principalName);
+						throw new RuntimeException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + principalName + ".\n");
+					}
+				} /* if: principal is null */ else {
+					LOG.warn("Principal Name not found in IdentityManagementService: " + principalName);
+					throw new RuntimeException("Unknown User: " + principalName);
 				}
-				
-				userSession = new UserSession(id);
-				String kualiSessionId = this.getKualiSessionId(request, response);
-				if (kualiSessionId == null) {
-					kualiSessionId = new Guid().toString();
-					Cookie kualiSessionIdCookie = new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId);
-					response.addCookie(kualiSessionIdCookie);
-				}
-				userSession.setKualiSessionId(kualiSessionId);
-			} else {
-				userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+			} /* if: principalName blank */ else {
+				LOG.error( "Principal Name from the authentication service was blank!" );
+				throw new RuntimeException( "Blank User from AuthenticationService - This should never happen." );
 			}
-			if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
-				userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-				userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
-			}
-
-			if (!getPersonService().canAccessAnyModule( userSession.getPerson() ) ) {
-				throw new RuntimeException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + userSession.getPerson().getPrincipalName() + ".\n");
-			}
-			request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
-			GlobalVariables.setUserSession(userSession);
-			GlobalVariables.setErrorMap(new ErrorMap());
-			GlobalVariables.setMessageList(new ArrayList());
-			GlobalVariables.setAuditErrorMap(new HashMap());
-		} catch (WorkflowException e) {
-			LOG.error("Caught a ResourceUnavailableException: " + id, e);
-			throw new RuntimeException("ResourceUnavailableException: ", e);
+		} else {
+			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 		}
-		t0.log();
+		if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
+			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
+		}
+
+		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
+		GlobalVariables.setUserSession(userSession);
+		GlobalVariables.setErrorMap(new ErrorMap());
+		GlobalVariables.setMessageList(new ArrayList());
+		GlobalVariables.setAuditErrorMap(new HashMap());
 		return true;
 	}
 
@@ -166,9 +168,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * @return true if the user session has been established, false otherwise
 	 */
 	private boolean isUserSessionEstablished(HttpServletRequest request) {
-		Timer t0 = new Timer("KualiRequestProcessor.isUserSessionEstablished");
 		boolean result = (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
-		t0.log();
 		return result;
 	}
 
@@ -178,9 +178,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	@Override
 	protected void processPopulate(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMapping mapping) throws ServletException {
-
-		Timer t0 = new Timer("KualiRequestProcessor.processPopulate");
-
 		if (form instanceof KualiForm) {
 			// Add the ActionForm to GlobalVariables
 			// This will allow developers to retrieve both the Document and any
@@ -193,7 +190,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		// if not PojoForm, call struts populate
 		if (!(form instanceof PojoForm)) {
 			super.processPopulate(request, response, form, mapping);
-			t0.log();
 			return;
 		}
 
@@ -209,9 +205,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		((PojoForm) form).populate(request);
 		request.setAttribute("UnconvertedValues", ((PojoForm) form).getUnconvertedValues().keySet());
 		request.setAttribute("UnconvertedHash", ((PojoForm) form).getUnconvertedValues());
-
-		t0.log();
-
 	}
 
 	/**
@@ -228,8 +221,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 			// Was this request cancelled?
 			if (request.getAttribute(Globals.CANCEL_KEY) != null) {
-				if (log.isDebugEnabled()) {
-					log.debug(" Cancelled transaction, skipping validation");
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(" Cancelled transaction, skipping validation");
 				}
 				return (true);
 			}
@@ -247,8 +240,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			publishErrorMessages(request);
 			// Special handling for multipart request
 			if (form.getMultipartRequestHandler() != null) {
-				if (log.isTraceEnabled()) {
-					log.trace("  Rolling back multipart request");
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("  Rolling back multipart request");
 				}
 				form.getMultipartRequestHandler().rollback();
 			}
@@ -260,8 +253,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			// Was an input path (or forward) specified for this mapping?
 			String input = mapping.getInput();
 			if (input == null) {
-				if (log.isTraceEnabled()) {
-					log.trace("  Validation failed but no input form available");
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("  Validation failed but no input form available");
 				}
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, getInternal().getMessage("noInput", mapping.getPath()));
 				return (false);
@@ -287,8 +280,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	@Override
 	protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
-		Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
-
 		UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
 		String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
@@ -322,8 +313,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
 				userSession.removeObject(docFormKey);
 			}
-			t0.log();
-
 			// we should check whether this is a multipart request because we
 			// could have had a combination of query parameters and a multipart
 			// request
@@ -387,8 +376,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 				}
 			}
 		}
-
-		t0.log();
 		return form;
 	}
 
@@ -404,9 +391,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	@Override
 	protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping) throws IOException, ServletException {
-
-		Timer t0 = new Timer("KualiRequestProcessor.processActionPerform");
-
 		try {
 			TransactionTemplate template = new TransactionTemplate(getTransactionManager());
 			ActionForward forward = null;
@@ -490,7 +474,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 			saveMessages(request);
 			saveAuditErrors(request);
 
-			t0.log();
 			return forward;
 
 		} catch (Exception e) {
@@ -506,13 +489,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 				// display error messages and return to originating page
 				publishErrorMessages(request);
-				t0.log();
 				return mapping.findForward(RiceConstants.MAPPING_BASIC);
 			}
 
 			publishErrorMessages(request);
 
-			t0.log();
 			return (processException(request, response, e, form, mapping));
 		}
 	}
@@ -525,14 +506,12 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	@Override
 	protected ActionForward processException(HttpServletRequest request, HttpServletResponse response, Exception exception, ActionForm form, ActionMapping mapping) throws IOException, ServletException {
-		Timer t0 = new Timer("KualiRequestProcessor.processException");
 		ActionForward actionForward = null;
 
 		try {
 			actionForward = super.processException(request, response, exception, form, mapping);
 		} catch (IOException e) {
 			logException(e);
-			t0.log();
 			throw e;
 		} catch (ServletException e) {
 			// special case, to make OptimisticLockExceptions easier to read
@@ -558,10 +537,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 
 			logException(e);
-			t0.log();
 			throw e;
 		}
-		t0.log();
 		return actionForward;
 	}
 
@@ -640,16 +617,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 				kualiSessionId = cookie.getValue();
 		}
 		return kualiSessionId;
-	}
-
-	/**
-	 * @return the personService
-	 */
-	public org.kuali.rice.kim.service.PersonService getPersonService() {
-		if ( personService == null ) {
-			personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
-		}
-		return personService;
 	}
 
 	/**

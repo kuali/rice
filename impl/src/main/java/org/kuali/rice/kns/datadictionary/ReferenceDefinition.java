@@ -37,8 +37,6 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  */
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     protected String attributeName;
-    protected String activeIndicatorAttributeName;
-    protected boolean activeIndicatorReversed = false;
     protected String attributeToHighlightOnFail;
     protected String displayFieldName;
     protected String collection;
@@ -66,47 +64,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
         this.attributeName = attributeName;
-    }
-
-    /**
-     * @return activeIndicatorAttributeName
-     */
-    public String getActiveIndicatorAttributeName() {
-        return activeIndicatorAttributeName;
-    }
-
-    /**
-     * activeIndicatorAttributeName is the name of field
-                        in the reference object ( or collection attribute)
-                        that is used to determine if the reference object
-                        is active
-                        
-     * @throws IllegalArgumentException if the given activeIndicatorAttributeName is blank
-     */
-    public void setActiveIndicatorAttributeName(String activeIndicatorAttributeName) {
-        this.activeIndicatorAttributeName = activeIndicatorAttributeName;
-    }
-
-    /**
-     * Gets the activeIndicatorReversed attribute.
-     * 
-     * @return Returns the activeIndicatorReversed.
-     */
-    public boolean isActiveIndicatorReversed() {
-        return activeIndicatorReversed;
-    }
-
-    /**
-     * activeIndicatorReversed = true means that the field
-                        specified by the activeIndicatorAttributeName will
-                        contain a false value to indicate active.
-
-                      activeIndicatorReversed = false means that the field
-                        specified by the activeIndicatorAttributeName will
-                        contain a true value to indicate active.
-     */
-    public void setActiveIndicatorReversed(boolean activeIndicatorReversed) {
-        this.activeIndicatorReversed = activeIndicatorReversed;
     }
 
     /**
@@ -157,13 +114,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return StringUtils.isNotBlank(displayFieldName);
     }
 
-    /**
-     * @return Returns true if there is an ActiveIndicatorAttributeName set, false if not.
-     */
-    public boolean isActiveIndicatorSet() {
-        return StringUtils.isNotBlank(activeIndicatorAttributeName);
-    }
-
     public String getCollection() {
         return collection;
     }
@@ -206,25 +156,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if(isCollectionReference()){
             collectionBusinessObjectClass=DataDictionary.getCollectionElementClass(rootBusinessObjectClass, collection);
         }
-        // if there's an activeIndicator set, then validate it
-        if (isActiveIndicatorSet()) {
-
-            // make sure named activeIndicator field exists in the reference class
-
-            Class referenceClass = isCollectionReference() ? DataDictionary.getAttributeClass(collectionBusinessObjectClass, attributeName) : DataDictionary.getAttributeClass(rootBusinessObjectClass, attributeName);
-
-            if (!DataDictionary.isPropertyOf(referenceClass, activeIndicatorAttributeName)) {
-                throw new AttributeValidationException("unable to find attribute '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' (" + "" + ")");
-            }
-
-            // make sure named activeIndicator field is a boolean in the reference class
-            Class activeIndicatorClass = DataDictionary.getAttributeClass(referenceClass, activeIndicatorAttributeName);
-            if (!activeIndicatorClass.equals(boolean.class)) {
-                throw new AttributeValidationException("Active Indicator Attribute Name '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' is not a boolean, it is a '" + activeIndicatorClass.getName() + "' " + " (" + "" + ")");
-            }
-
-        }
-
         // make sure the attributeToHighlightOnFail is actually a property of the BO
         if (isCollectionReference()) {
 

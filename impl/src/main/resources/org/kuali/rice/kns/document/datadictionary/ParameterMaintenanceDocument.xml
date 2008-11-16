@@ -18,15 +18,12 @@
       <list>
         <bean parent="ReferenceDefinition"
               p:attributeName="parameterNamespace"
-              p:activeIndicatorAttributeName="active"
               p:attributeToHighlightOnFail="parameterNamespaceCode" />
         <bean parent="ReferenceDefinition"
               p:attributeName="parameterType"
-              p:activeIndicatorAttributeName="active"
               p:attributeToHighlightOnFail="parameterTypeCode" />
         <bean parent="ReferenceDefinition"
               p:attributeName="parameterDetailType"
-              p:activeIndicatorAttributeName="active"
               p:attributeToHighlightOnFail="parameterDetailTypeCode" />
       </list>
     </property>

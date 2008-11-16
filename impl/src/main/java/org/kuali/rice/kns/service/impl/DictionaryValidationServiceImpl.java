@@ -477,47 +477,24 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
     public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference) {
-        return validateReferenceIsActive(bo, reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed());
+        return validateReferenceIsActive(bo, reference.getAttributeName());
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String, java.lang.String, boolean)
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed) {
+    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
 
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
-
-        // if the retrieved referenceBo is null, then we're done, return negative
         if (referenceBo == null) {
-            return false;
+        	return false;
         }
-
-        // We dont have to check that the field exists or is of type boolean here because
-        // the datadictionary validates this on load. If you're using this from anything other
-        // than a ReferenceDefinition loaded from the DataDictionary, you'll need to do some
-        // validation, and make sure the named attribute exists and is a boolean.
-
-        // get the value in the field
-        Boolean activeIndicator;
-        try {
-            activeIndicator = (Boolean) PropertyUtils.getSimpleProperty(referenceBo, activeIndicatorAttributeName);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        // if we've ended up with a null
-        if (activeIndicator == null) {
-            throw new RuntimeException("Value of activeIndicator was Null.  This should never happen.");
-        }
-
-        if (activeIndicatorReversed) {
-            return !activeIndicator.booleanValue();
-        }
-        else {
-            return activeIndicator.booleanValue();
+        if (!(referenceBo instanceof Inactivateable) || ((Inactivateable) referenceBo).isActive()) {
+            return true;
+        }else{
+        	return false;
         }
     }
 
@@ -542,7 +519,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             success = validateCollectionReferenceExistsAndIsActive(bo, reference, displayFieldName, StringUtils.split(reference.getCollection(), "."), null);
         }
         else {
-            success = validateReferenceExistsAndIsActive(bo, reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed(), reference.isActiveIndicatorSet(), reference.getAttributeToHighlightOnFail(), displayFieldName);
+            success = validateReferenceExistsAndIsActive(bo, reference.getAttributeName(),reference.getAttributeToHighlightOnFail(), displayFieldName);
         }
         return success;
     }
@@ -578,7 +555,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             }
             else {
                 String attributeToHighlightOnFail = pathToAttribute + reference.getAttributeToHighlightOnFail();
-                success &= validateReferenceExistsAndIsActive(iterator.next(), reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed(), reference.isActiveIndicatorSet(), attributeToHighlightOnFail, displayFieldName);
+                success &= validateReferenceExistsAndIsActive(iterator.next(), reference.getAttributeName(), attributeToHighlightOnFail, displayFieldName);
             }
         }
 
@@ -591,7 +568,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
      */
 
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName) {
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName) {
         boolean success = true;
         boolean exists;
         boolean active;
@@ -640,8 +617,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exists) {
 
                 // do the active test, if appropriate
-                if (activeIndicatorSet && (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive())) {
-                    active = validateReferenceIsActive(bo, referenceName, activeIndicatorAttributeName, activeIndicatorReversed);
+                if (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive()) {
+                    active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
                         GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
                         success &= false;
@@ -724,7 +701,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		                displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
 		            }
 		
-		            success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(), reference.getActiveIndicatorAttributeName(), reference.isActiveIndicatorReversed(), reference.isActiveIndicatorSet(), reference.getAttributeToHighlightOnFail(), displayFieldName);
+		            success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(), reference.getAttributeToHighlightOnFail(), displayFieldName);
 				}
 	        }
         }

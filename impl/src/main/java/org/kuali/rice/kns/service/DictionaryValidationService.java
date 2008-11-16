@@ -224,12 +224,10 @@ public interface DictionaryValidationService {
      * 
      * @param bo
      * @param referenceName
-     * @param activeIndicatorAttributeName
-     * @param activeIndicatorReversed
      * @return
      * 
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed);
+    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName);
 
     /**
      * 
@@ -282,7 +280,7 @@ public interface DictionaryValidationService {
      * @param displayFieldName - the human-readable display name of the failed field, to go in the error message
      * @return true or false as per the criteria above
      */
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String activeIndicatorAttributeName, boolean activeIndicatorReversed, boolean activeIndicatorSet, String attributeToHighlightOnFail, String displayFieldName);
+    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName);
 
     /**
      * 

@@ -27,8 +27,10 @@ import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.kns.web.ui.HeaderField;
@@ -296,5 +298,25 @@ public class KualiForm extends PojoFormBase {
 
     public void setFieldLevelHelpEnabled(boolean fieldLevelHelpEnabled) {
         this.fieldLevelHelpEnabled = fieldLevelHelpEnabled;
+    }
+    
+    
+    /**
+     * Retrieves a value from the form for the purposes of passing it as a parameter into the lookup or inquiry frameworks 
+     * 
+     * @param parameterName the name of the parameter, as expected by the lookup or inquiry frameworks
+     * @param parameterValueLocation the name of the property containing the value of the parameter
+     * @return the value of the parameter
+     */
+    public String retrieveFormValueForLookupInquiryParameters(String parameterName, String parameterValueLocation) {
+    	Object value = ObjectUtils.getPropertyValue(this, parameterValueLocation);
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof String) {
+			return (String) value;
+		}
+		Formatter formatter = Formatter.getFormatter(value.getClass());
+		return (String) formatter.format(value);	
     }
 }

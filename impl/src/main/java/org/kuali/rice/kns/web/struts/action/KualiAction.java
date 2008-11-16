@@ -42,6 +42,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -329,6 +330,35 @@ public abstract class KualiAction extends DispatchAction {
     }
 
     /**
+     * Retrieves the value of a parameter to be passed into the lookup or inquiry frameworks.  The default implementation of this method will attempt to look
+     * in the request to determine wheter the appropriate value exists as a request parameter.  If not, it will attempt to look through the form object to find
+     * the property.
+     * 
+     * @param parameterName the name of the parameter
+     * @param parameterValuePropertyName the property (relative to the form object) where the value to be passed into the lookup/inquiry may be found
+     * @param form
+     * @param request
+     * @return
+     */
+    protected String retrieveLookupParameterValue(String parameterName, String parameterValuePropertyName, ActionForm form, HttpServletRequest request) {
+    	if (StringUtils.contains(parameterValuePropertyName, "'")) {
+    		return StringUtils.replace(parameterValuePropertyName, "'", "");
+    	}
+    	else if (StringUtils.isNotBlank(request.getParameter(parameterValuePropertyName))) {
+    		return request.getParameter(parameterValuePropertyName);
+    	}
+    	else {
+    		if (form instanceof KualiForm) {
+    			return ((KualiForm) form).retrieveFormValueForLookupInquiryParameters(parameterName, parameterValuePropertyName);
+    		}
+    		if (LOG.isDebugEnabled()) {
+    			LOG.debug("Unable to retrieve lookup/inquiry parameter value for parameter name " + parameterName + " parameter value property " + parameterValuePropertyName);
+    		}
+    		return null;
+    	}
+    }
+    
+    /**
      * Takes care of storing the action form in the User session and forwarding to the lookup action.
      *
      * @param mapping
@@ -369,14 +399,11 @@ public abstract class KualiAction extends DispatchAction {
             for (int i = 0; i < lookupParams.length; i++) {
                 String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
 
-                // hard-coded passed value
-                if (StringUtils.contains(keyValue[0], "'")) {
-                    parameters.put(keyValue[1], StringUtils.replace(keyValue[0], "'", ""));
+                String lookupParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
+                if (StringUtils.isNotBlank(lookupParameterValue)) {
+                	parameters.put(keyValue[1], lookupParameterValue);
                 }
-                // passed value should come from property
-                else if (StringUtils.isNotBlank(request.getParameter(keyValue[0]))) {
-                    parameters.put(keyValue[1], request.getParameter(keyValue[0]));
-                }
+
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "keyValue[0]: " + keyValue[0] );
                     LOG.debug( "keyValue[1]: " + keyValue[1] );
@@ -526,16 +553,14 @@ public abstract class KualiAction extends DispatchAction {
             for (int i = 0; i < inquiryParams.length; i++) {
                 String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
 
-                // hard-coded passed value
-                if (StringUtils.contains(keyValue[0], "'")) {
-                    parameters.put(keyValue[1], StringUtils.replace(keyValue[0], "'", ""));
+                String inquiryParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
+                if (inquiryParameterValue == null) {
+                	parameters.put(keyValue[1], "directInquiryKeyNotSpecified");
                 }
-                // passed value should come from property
-                else if (StringUtils.isNotBlank(request.getParameter(keyValue[0]))) {
-                    parameters.put(keyValue[1], request.getParameter(keyValue[0]));
-                } else {
-                    parameters.put(keyValue[1], "directInquiryKeyNotSpecified");
+                else {
+                	parameters.put(keyValue[1], inquiryParameterValue);
                 }
+
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "keyValue[0]: " + keyValue[0] );
                     LOG.debug( "keyValue[1]: " + keyValue[1] );

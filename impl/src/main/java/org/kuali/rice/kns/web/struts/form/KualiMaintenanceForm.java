@@ -48,6 +48,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.format.FormatException;
+import org.kuali.rice.kns.web.format.Formatter;
 
 
 /**
@@ -486,4 +487,42 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         return null;
     }
 
+	/**
+	 * This overridden method handles the case where maint doc properties do not reflect the true nature of the 
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#retrieveFormValueForLookupInquiryParameters(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public String retrieveFormValueForLookupInquiryParameters(String parameterName, String parameterValueLocation) {
+		MaintenanceDocument maintDoc = (MaintenanceDocument) getDocument();
+		if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
+            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+            if (maintDoc.getOldMaintainableObject() != null && maintDoc.getOldMaintainableObject().getBusinessObject() != null) {
+            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getOldMaintainableObject().getBusinessObject(), propertyName);
+            	if (parameterValue == null) {
+            		return null;
+            	}
+            	if (parameterValue instanceof String) {
+            		return (String) parameterValue;
+            	}
+            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+        		return (String) formatter.format(parameterValue);	
+            }
+        }
+        if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
+            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+            if (maintDoc.getNewMaintainableObject() != null && maintDoc.getNewMaintainableObject().getBusinessObject() != null) {
+            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getNewMaintainableObject().getBusinessObject(), propertyName);
+            	if (parameterValue == null) {
+            		return null;
+            	}
+            	if (parameterValue instanceof String) {
+            		return (String) parameterValue;
+            	}
+            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+        		return (String) formatter.format(parameterValue);	
+            }
+        }
+		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
+	}
 }

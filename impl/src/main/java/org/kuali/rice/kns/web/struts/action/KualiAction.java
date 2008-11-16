@@ -344,7 +344,7 @@ public abstract class KualiAction extends DispatchAction {
     	if (StringUtils.contains(parameterValuePropertyName, "'")) {
     		return StringUtils.replace(parameterValuePropertyName, "'", "");
     	}
-    	else if (StringUtils.isNotBlank(request.getParameter(parameterValuePropertyName))) {
+    	else if (request.getParameterMap().containsKey(parameterValuePropertyName)) {
     		return request.getParameter(parameterValuePropertyName);
     	}
     	else {

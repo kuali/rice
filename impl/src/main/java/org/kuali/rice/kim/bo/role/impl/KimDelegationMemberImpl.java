@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,9 +27,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.kuali.rice.kim.bo.impl.InactivatableFromToImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -37,17 +38,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase implements Inactivateable {
+public abstract class KimDelegationMemberImpl extends InactivatableFromToImpl implements InactivateableFromTo {
 
 	@Id
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	@Column(name="DLGN_ID")
-	protected String delegationId;
-	
-	@Column(name="ACTV_IND")
-	protected boolean active;
-
+	protected String delegationId;	
+	@Column(name="ACTV_FRM_IND")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_IND")
+	protected Timestamp activeToDate;
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
@@ -65,6 +66,19 @@ public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectB
 		return lhm;
 	}
 
+	public boolean isActive() {
+		long now = System.currentTimeMillis();
+		return now > activeFromDate.getTime() && now < activeToDate.getTime();
+	}
+
+	public void setActiveFromDate(Timestamp from) {
+		this.activeFromDate = from;
+	}
+
+	public void setActiveToDate(Timestamp to) {
+		this.activeToDate = to;
+	}
+	
 	public String getDelegationMemberId() {
 		return this.delegationMemberId;
 	}
@@ -102,14 +116,6 @@ public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectB
 			attribs.put( attr.getKimAttribute().getAttributeName(), attr.getAttributeValue() );
 		}
 		return attribs;
-	}
-
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 	
 }

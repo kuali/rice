@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -26,7 +25,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase implements Inactivateable {
+public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase {
 
 	protected String roleResponsibilityActionId;
 	protected String responsibilityId;
@@ -35,7 +34,6 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
-	protected boolean active;
 	
 	public String getRoleResponsibilityActionId() {
 		return this.roleResponsibilityActionId;
@@ -66,12 +64,6 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setPriorityNumber(Integer priorityNumber) {
 		this.priorityNumber = priorityNumber;
-	}
-	public boolean isActive() {
-		return this.active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 	
 	/**

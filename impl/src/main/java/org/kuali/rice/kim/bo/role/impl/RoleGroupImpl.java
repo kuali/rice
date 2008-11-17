@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.RoleGroup;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
-public class EntityExternalIdentifierImpl extends InactivatableEntityDataBase implements EntityExternalIdentifier {
+public class EntityExternalIdentifierImpl extends EntityDataBase implements EntityExternalIdentifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,6 +92,7 @@ public class EntityExternalIdentifierImpl extends InactivatableEntityDataBase im
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();

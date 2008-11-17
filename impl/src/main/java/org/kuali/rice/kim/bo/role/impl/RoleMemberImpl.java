@@ -23,9 +23,10 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.bo.impl.InactivatableFromToImpl;
 import org.kuali.rice.kim.bo.role.RoleMember;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -34,7 +35,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class RoleMemberImpl extends PersistableBusinessObjectBase implements RoleMember {
+public abstract class RoleMemberImpl extends InactivatableFromToImpl implements RoleMember, InactivateableFromTo {
 
 	@Id
 	@Column(name="ROLE_MBR_ID")

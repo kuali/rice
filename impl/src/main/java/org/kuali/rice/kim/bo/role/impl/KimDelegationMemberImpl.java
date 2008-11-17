@@ -37,7 +37,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase implements Inactivateable{
+public abstract class KimDelegationMemberImpl extends PersistableBusinessObjectBase implements Inactivateable {
 
 	@Id
 	@Column(name="DLGN_MBR_ID")

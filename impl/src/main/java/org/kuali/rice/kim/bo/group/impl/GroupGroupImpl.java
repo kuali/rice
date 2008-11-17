@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.kim.bo.group.impl;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.group.GroupGroup;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -29,11 +32,31 @@ import org.kuali.rice.kim.bo.group.GroupGroup;
  */
 @Entity
 @Table(name="KRIM_GRP_GRP_T")
-public class GroupGroupImpl extends GroupMemberBase implements GroupGroup {
+public class GroupGroupImpl extends GroupMemberBase implements GroupGroup, InactivateableFromTo {
 
 	@Column(name="MBR_GRP_ID")
 	protected String memberGroupId;
+	@Column(name="ACTV_FRM_IND")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_IND")
+	protected Timestamp activeToDate;
+	
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		long now = System.currentTimeMillis();
+		return now > activeFromDate.getTime() && now < activeToDate.getTime();
+	}
 
+	public void setActiveFromDate(Timestamp from) {
+		this.activeFromDate = from;
+	}
+
+	public void setActiveToDate(Timestamp to) {
+		this.activeToDate = to;
+	}
+	
 	public String getMemberGroupId() {
 		return this.memberGroupId;
 	}

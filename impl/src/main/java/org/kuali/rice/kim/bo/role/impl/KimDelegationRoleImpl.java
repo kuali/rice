@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -22,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimDelegationRole;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -32,11 +34,31 @@ import org.kuali.rice.kim.bo.role.KimDelegationRole;
 @Entity
 @Table(name="KRIM_DLGN_ROLE_T")
 public class KimDelegationRoleImpl extends KimDelegationMemberImpl implements
-		KimDelegationRole {
+		KimDelegationRole, InactivateableFromTo {
 
 	@Column(name="ROLE_ID")
 	protected String roleId;
+	@Column(name="ACTV_FRM_IND")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_IND")
+	protected Timestamp activeToDate;
+	
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		long now = System.currentTimeMillis();
+		return now > activeFromDate.getTime() && now < activeToDate.getTime();
+	}
 
+	public void setActiveFromDate(Timestamp from) {
+		this.activeFromDate = from;
+	}
+
+	public void setActiveToDate(Timestamp to) {
+		this.activeToDate = to;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */

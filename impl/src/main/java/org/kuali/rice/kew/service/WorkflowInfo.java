@@ -571,7 +571,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs determining whether the user is the last approver at the specified node
      * @see WorkflowUtility#isLastApproverAtNode(Long, UserIdDTO, String)
      */
-    protected boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
+    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
         try {
             return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, userId, nodeName);
         } catch (Exception e) {
@@ -588,7 +588,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs
      * @see WorkflowUtility#routeNodeHasApproverActionRequest(String, String, String)
      */
-    protected boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws WorkflowException {
+    public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws WorkflowException {
         try {
             return getWorkflowUtility().routeNodeHasApproverActionRequest(docType, docContent, nodeName);
         } catch (Exception e) {

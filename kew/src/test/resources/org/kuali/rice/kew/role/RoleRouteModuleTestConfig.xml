@@ -27,8 +27,8 @@
 	</ruleAttributes>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
  		<documentType>
-			<name>RouteRouteModuleTest1</name>
-			<label>RouteRouteModuleTest1</label>
+			<name>RoleRouteModuleTest1</name>
+			<label>RoleRouteModuleTest1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -46,14 +46,15 @@
 				</start>
 				<role name="Role1">
 					<activationType>P</activationType>
+					<namespace>TEST</namespace>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
 					<responsibilityName>VoluntaryReview</responsibilityName>
 				</role>
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>RouteRouteModuleTest2</name>
-			<label>RouteRouteModuleTest2</label>
+			<name>RoleRouteModuleTest2</name>
+			<label>RoleRouteModuleTest2</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
@@ -71,8 +72,9 @@
 				</start>
 				<role name="Role1">
 					<activationType>P</activationType>
+					<namespace>TEST</namespace>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
-					<responsibilityName>VoluntaryReview</responsibilityName>
+					<responsibilityName>VoluntaryReview2</responsibilityName>
 				</role>
 			</routeNodes>
 		</documentType>

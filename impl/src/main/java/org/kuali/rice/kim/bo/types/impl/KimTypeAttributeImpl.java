@@ -68,6 +68,10 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 	public String getKimTypeId() {
 		return kimTypeId;
 	}
+	
+	public void setKimTypeAttributeId(String kimTypeAttributeId) {
+		this.kimTypeAttributeId = kimTypeAttributeId;
+	}
 
 	public void setKimAttributeId(String kimAttributeId) {
 		this.kimAttributeId = kimAttributeId;

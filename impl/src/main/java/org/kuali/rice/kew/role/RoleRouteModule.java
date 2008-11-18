@@ -148,60 +148,6 @@ public class RoleRouteModule implements RouteModule {
     	}
     	return responsibilitySets;
     }
-    
-//    protected List<ResponsibilityActionInfo> thisIsWhereWeCallTheResponsibilityService(String responsibilityName, String documentTypeName, String nodeName, AttributeSet qualification) {
-//    	//KIMServiceLocator.getResponsibilityService().getResponsibilityActions("", responsibilityName, qualification, responsibilityDetails)
-//    	// for now, let's stub in something dumb
-//    	//KIMServiceLocator.getResponsibilityService().getResponsibilityInfoByName(responsibilityName, qualification, responsibilityDetails);
-//        List<ResponsibilityActionInfo> responsibilityInfos = new ArrayList<ResponsibilityActionInfo>();
-//        String chart = qualification.get("chart");
-//        String org = qualification.get("org");
-//        if (chart.equals("BL")) {
-//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-//        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
-//        	info.setPrincipalId(principal.getPrincipalId());
-//        	info.setPriorityNumber(1);
-//        	info.setResponsibilityName("123");
-//        	info.setResponsibilityName(responsibilityName);
-//        	info.setRoleId("1234");
-//        	responsibilityInfos.add(info);
-//        	// add a second one
-//        	info = new ResponsibilityActionInfo();
-//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-//        	principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
-//        	info.setPrincipalId(principal.getPrincipalId());
-//        	info.setPriorityNumber(1);
-//        	info.setResponsibilityName("1235");
-//        	info.setResponsibilityName(responsibilityName);
-//        	info.setRoleId("1234");
-//        	responsibilityInfos.add(info);
-//        } else if (chart.equals("IN")) {
-//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-//        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
-//        	info.setPrincipalId(principal.getPrincipalId());
-//        	info.setPriorityNumber(1);
-//        	info.setResponsibilityName("321");
-//        	info.setResponsibilityName(responsibilityName);
-//        	info.setRoleId("4321");
-//        	responsibilityInfos.add(info);
-//        
-//        	// not quite ready for groups yet
-//        	/*
-//        	ResponsibilityActionInfo info = new ResponsibilityActionInfo();
-//        	info.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-//        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
-//        	info.setGroupId(group.getGroupId());
-//        	info.setPriorityNumber(1);
-//        	info.setResponsibilityId("321456");
-//        	info.setResponsibilityName(responsibilityName);
-//        	info.setRoleId("4321");
-//        	responsibilityInfos.add(info);
-//        	*/
-//        } 
-//        return responsibilityInfos;
-//    }
 	
 	/**
 	 * Return null so that the responsibility ID will remain the same.

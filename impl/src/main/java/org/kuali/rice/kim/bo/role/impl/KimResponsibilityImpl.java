@@ -139,7 +139,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return this.detailObjects;
 	}
 
-	public void setDetails(List<ResponsibilityAttributeDataImpl> detailObjects) {
+	public void setDetailObjectss(List<ResponsibilityAttributeDataImpl> detailObjects) {
 		this.detailObjects = detailObjects;
 	}
 	

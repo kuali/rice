@@ -300,7 +300,11 @@
     </property>  
   </bean>
 
-  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"/>
+  <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="platformAwareDao"/>
+
+  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"
+  	p:responsibilityDao-ref="kimResponsibilityDao"
+  />
     
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

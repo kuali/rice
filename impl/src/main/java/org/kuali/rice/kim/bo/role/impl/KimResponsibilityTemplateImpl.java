@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="KRIM_PERM_TMPL_T")
+@Table(name="KRIM_RSP_TMPL_T")
 public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase implements KimResponsibilityTemplate {
 
 	private static final long serialVersionUID = 1L;

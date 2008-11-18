@@ -87,7 +87,6 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibilityId );
-		c.addEqualTo( "active", true );
 		Criteria idCriteria = new Criteria();
 		idCriteria.addEqualTo( "roleMemberId", roleMemberId );
 		// also handle when roleMemberId is "*" in table

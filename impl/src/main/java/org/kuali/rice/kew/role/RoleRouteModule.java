@@ -47,6 +47,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class RoleRouteModule implements RouteModule {
 	
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
+	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	protected static final String RESPONSIBILITY_NAME_ELEMENT = "responsibilityName";
 	protected static final String NAMESPACE_ELEMENT = "namespace";
 	
@@ -83,6 +84,7 @@ public class RoleRouteModule implements RouteModule {
 
 	protected QualifierResolver loadQualifierResolver(RouteContext context) {
 		String qualifierResolverName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_ELEMENT);
+		String qualifierResolverClassName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_CLASS_ELEMENT);
 		QualifierResolver resolver = null;
 		if (!StringUtils.isBlank(qualifierResolverName)) {
 			RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(qualifierResolverName);
@@ -94,6 +96,9 @@ public class RoleRouteModule implements RouteModule {
 			if (resolver instanceof XmlConfiguredAttribute) {
 				((XmlConfiguredAttribute)resolver).setRuleAttribute(ruleAttribute);
 			}
+		}
+		if (resolver == null && !StringUtils.isBlank(qualifierResolverClassName)) {
+			resolver = (QualifierResolver)GlobalResourceLoader.getObject(new ObjectDefinition(qualifierResolverClassName));
 		}
 		if (resolver == null) {
 			// TODO alternatively, in future could provide a default implementation?

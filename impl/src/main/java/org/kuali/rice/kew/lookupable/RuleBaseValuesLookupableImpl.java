@@ -104,7 +104,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String RULE_TEMPLATE_LOOKUPABLE = "RuleTemplateLookupableImplService";
 	private static final String WORKGROUP_LOOKUPABLE = "WorkGroupLookupableImplService";
 	private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
-	private static final String ROLE_LOOKUPABLE = "RoleLookupableImplService";
+//	private static final String ROLE_LOOKUPABLE = "RoleLookupableImplService";
 
 	private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
 	private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplate.ruleTemplateId";
@@ -155,8 +155,8 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	        rows.add(new Row(fields));
 
 		fields = new ArrayList();
-		fields.add(new Field(ROLE_FIELD_LABEL, ROLE_FIELD_HELP, Field.TEXT, true, ROLE_PROPERTY_NAME, "", null, ROLE_LOOKUPABLE));
-		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, ROLE_LOOKUPABLE));
+		fields.add(new Field(ROLE_FIELD_LABEL, ROLE_FIELD_HELP, Field.TEXT, false, ROLE_PROPERTY_NAME, "", null, null));//ROLE_LOOKUPABLE));
+	//	fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, ROLE_LOOKUPABLE));
 		rows.add(new Row(fields));
 
 		fields = new ArrayList();

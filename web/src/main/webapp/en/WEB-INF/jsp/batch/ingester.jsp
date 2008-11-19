@@ -22,6 +22,8 @@
 <div class="headerarea-small" id="headerarea-small">
 <h1>Ingester</h1>
 </div>
+<div class="error">
+ 
 <input class="tinybutton" name="methodToCall.search" src="images/pixel_clear.gif" type="image" border="0" height="0" width="0">
 <%
     List list = (List) request.getAttribute("messages");
@@ -40,8 +42,10 @@
 <%
     }
 %>
+
+</div>
 <html-el:form method="post" action="/Ingester" enctype="multipart/form-data">
- <table width="100%" cellpadding="0" cellspacing="0">
+ <table width="80%" cellpadding="0" cellspacing="0">
     <tr>
       <td class="column-left"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
       <td><div align="center"><br>
@@ -55,11 +59,12 @@
   			<html-el:file styleClass="dataCell" name="IngesterForm" property="file[2]"/>
   		  </div></td>
        </tr>
-       <tr>
-          <td class="column-left"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
-           <td><div align="center"><br><html-el:image src="images/buttonsmall_uploadxml.gif" value="Upload XML data" styleClass="nobord" styleId="imageField"></html-el:image>
+       <tr>            
+          <td class="column-left"><img src="images/transparent.gif" alt="" width="20" height="20"></td>
+           <td><div align="center"><br>
+           	<html-el:image src="images/buttonsmall_uploadxml.gif" value="Upload XML data"  border="0" styleClass="nobord" styleId="imageField"></html-el:image>
           </div></td>
-      <td class="column-right"><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
+      <td class="column-right"><img src="images/transparent.gif" alt="" width="20" height="20"></td>
     </tr>
   </table>
 </html-el:form>

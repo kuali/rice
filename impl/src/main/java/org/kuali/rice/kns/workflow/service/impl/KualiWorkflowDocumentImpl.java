@@ -349,27 +349,6 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getDocRouteLevelName()
-     * @deprecated
-     */
-    // it would probably be easier to just put this info on bean from the server
-    @SuppressWarnings("deprecation")
-    public String getDocRouteLevelName() throws WorkflowException {
-        return workflowDocument.getDocRouteLevelName();
-    }
-
-    /**
-     * 
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRouteTypeName()
-     * @deprecated
-     */
-    // it would probably be easier to just put this info on bean from the server
-    @SuppressWarnings("deprecation")
-    public String getRouteTypeName() throws WorkflowException {
-        return workflowDocument.getRouteMethodName();
-    }
-
-    /**
      * @param annotation
      * @throws InvalidActionTakenException
      * @throws ResourceUnavailableException

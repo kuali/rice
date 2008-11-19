@@ -27,15 +27,12 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -50,13 +47,10 @@ public interface WorkflowUtility {
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException;
     public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException;
-    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException;
     public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException;
-    public RouteTemplateEntryDTO[] getDocRoute(String docName) throws WorkflowException;
     public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException;
     public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException;
     public Long getNewResponsibilityId() throws WorkflowException;
-    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException;
     public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException;
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException;
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException;

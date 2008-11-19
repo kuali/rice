@@ -44,9 +44,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -91,20 +91,20 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
-        Workgroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
+        KimGroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getGroupNameId().getNameId());
+            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getGroupName());
         }
-        Workgroup blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
+        KimGroup blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
-        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getGroupNameId().getNameId());
+        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getGroupName());
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
         }
-        Workgroup reportingWorkgroup = documentType.getReportingWorkgroup();
+        KimGroup reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getGroupNameId().getNameId());
+            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getGroupName());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
             renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroupName());

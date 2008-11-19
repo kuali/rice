@@ -69,8 +69,9 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -114,13 +115,13 @@ public class DocumentType implements WorkflowPersistable {
     @Column(name="POST_PRCSR")
 	private String postProcessorName;
     @Column(name="GRP_ID")
-	private Long workgroupId;
+	private String workgroupId;
     @Column(name="BLNKT_APPR_GRP_ID")
-	private Long blanketApproveWorkgroupId;
+	private String blanketApproveWorkgroupId;
     @Column(name="BLNKT_APPR_PLCY")
 	private String blanketApprovePolicy;
 	@Column(name="RPT_GRP_ID")
-	private Long reportingWorkgroupId;
+	private String reportingWorkgroupId;
     @Column(name="SVC_NMSPC")
 	private String serviceNamespace;
     @Version
@@ -139,7 +140,7 @@ public class DocumentType implements WorkflowPersistable {
      * Used at parse-time only; not stored in db.
      */
     @Transient
-    private Workgroup defaultExceptionWorkgroup;
+    private KimGroup defaultExceptionWorkgroup;
 
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
@@ -557,43 +558,39 @@ public class DocumentType implements WorkflowPersistable {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
 
-    public Workgroup getSuperUserWorkgroup() {
-	Workgroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
+    public KimGroup getSuperUserWorkgroup() {
+	KimGroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
 	if (superUserWorkgroup == null && getParentDocType() != null) {
 	    return getParentDocType().getSuperUserWorkgroup();
 	}
 	return superUserWorkgroup;
     }
 
-    public Workgroup getSuperUserWorkgroupNoInheritence() {
+    public KimGroup getSuperUserWorkgroupNoInheritence() {
 	if (workgroupId == null) {
 	    return null;
 	}
-	return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.workgroupId));
+	return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(Workgroup suWorkgroup) {
+    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
 	if (suWorkgroup == null) {
 	    this.workgroupId = null;
 	} else {
-	    this.workgroupId = suWorkgroup.getWorkflowGroupId().getGroupId();
+	    this.workgroupId = suWorkgroup.getGroupId();
 	}
     }
-
-//    public void setSuperUserWorkgroup(Workgroup suWorkgroup) {
-//    	this.workgroupId = suWorkgroup.getWorkflowGroupId().getGroupId();
-//    }
 
     public DocumentType getPreviousVersion() {
         return getDocumentTypeService().findById(previousVersionId);
     }
 
-    public Workgroup getBlanketApproveWorkgroup() {
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.blanketApproveWorkgroupId));
+    public KimGroup getBlanketApproveWorkgroup() {
+        return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
-    public void setBlanketApproveWorkgroup(Workgroup blanketApproveWorkgroup) {
-    	this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getWorkflowGroupId().getGroupId();
+    public void setBlanketApproveWorkgroup(KimGroup blanketApproveWorkgroup) {
+    	this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
     }
 
 	public String getBlanketApprovePolicy() {
@@ -604,14 +601,14 @@ public class DocumentType implements WorkflowPersistable {
 		this.blanketApprovePolicy = blanketApprovePolicy;
 	}
 
-    public Workgroup getBlanketApproveWorkgroupWithInheritance() {
+    public KimGroup getBlanketApproveWorkgroupWithInheritance() {
     	if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
     		return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
     	}
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.blanketApproveWorkgroupId));
+        return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
-    public boolean isUserBlanketApprover(WorkflowUser user) {
+    public boolean isBlanketApprover(String principalId) {
     	if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
     		// no one can blanket approve this doc type
     		return false;
@@ -619,35 +616,41 @@ public class DocumentType implements WorkflowPersistable {
     		// anyone can blanket approve this doc type
     		return true;
     	}
-    	Workgroup blanketApproveGroup = getBlanketApproveWorkgroup();
-    	if (blanketApproveGroup != null) {
-    		// found blanket approve group on this doc type
-    		return blanketApproveGroup.hasMember(user);
-    	} else if (this.blanketApproveWorkgroupId != null) {
-    		// found no valid workgroup but we have a workgroup id somehow
-            throw new WorkflowRuntimeException("Could not locate valid workgroup for given blanket approve workgroup id  '" + this.blanketApproveWorkgroupId + "'");
+    	if (blanketApproveWorkgroupId != null) {
+    		return getIdentityManagementService().isMemberOfGroup(principalId, blanketApproveWorkgroupId);
     	}
     	DocumentType parentDoc = getParentDocType();
     	if (parentDoc != null) {
     		// found parent doc so try to get blanket approver info from it
-    		return parentDoc.isUserBlanketApprover(user);
+    		return parentDoc.isBlanketApprover(principalId);
     	}
     	return false;
     }
-
-    public Workgroup getReportingWorkgroup() {
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.reportingWorkgroupId));
+    
+    /**
+     * Returns true if either a blanket approve group or blanket approve policy is defined
+     * on this Document Type.
+     */
+    public boolean hasBlanketApproveDefined() {
+    	if (StringUtils.isBlank(getBlanketApprovePolicy()) && this.blanketApproveWorkgroupId == null) {
+    		return getParentDocType() != null && getParentDocType().hasBlanketApproveDefined(); 
+    	}
+    	return true;
     }
 
-    public void setReportingWorkgroup(Workgroup reportingWorkgroup) {
-    	this.reportingWorkgroupId = reportingWorkgroup.getWorkflowGroupId().getGroupId();
+    public KimGroup getReportingWorkgroup() {
+        return getIdentityManagementService().getGroup(this.reportingWorkgroupId);
+    }
+
+    public void setReportingWorkgroup(KimGroup reportingWorkgroup) {
+    	this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
     }
     
-    public Workgroup getDefaultExceptionWorkgroup() {
+    public KimGroup getDefaultExceptionWorkgroup() {
         return defaultExceptionWorkgroup;
     }
 
-    public void setDefaultExceptionWorkgroup(Workgroup defaultExceptionWorkgroup) {
+    public void setDefaultExceptionWorkgroup(KimGroup defaultExceptionWorkgroup) {
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
@@ -960,11 +963,11 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public boolean isSuperUser(WorkflowUser user) {
-	Workgroup workgroup = getSuperUserWorkgroup();
-	if (workgroup == null) {
-	    return false;
-	}
-    	return workgroup.hasMember(user);
+	KimGroup workgroup = getSuperUserWorkgroup();
+		if (workgroup == null) {
+			return false;
+		}
+    	return getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), workgroup.getGroupId());
     }
 
     public boolean hasPreviousVersion() {
@@ -1048,4 +1051,9 @@ public class DocumentType implements WorkflowPersistable {
     public void setCustomEmailStylesheet(String customEmailStylesheet) {
         this.customEmailStylesheet = customEmailStylesheet;
     }
+    
+    private IdentityManagementService getIdentityManagementService() {
+    	return KIMServiceLocator.getIdentityManagementService();
+    }
+    
 }

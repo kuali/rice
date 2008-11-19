@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -30,6 +32,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -255,9 +258,10 @@ public class WorkflowRoutingForm extends ActionForm {
     	try {
 	        if(getWorkflowDocument() != null){
 		    	Long docId = workflowDocument.getRouteHeaderId();
-		    	Workgroup suWorkgroup = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId).getDocumentType().getSuperUserWorkgroup();
+		    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
+		    	DocumentType documentType = document.getDocumentType();
 		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(workflowDocument.getUserId());
-		    	boolean isSuperUser = (suWorkgroup == null ? false : suWorkgroup.hasMember(docUser));
+		    	boolean isSuperUser = documentType.isSuperUser(docUser);
 		    	if (isSuperUser){
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 		    	}else if(workflowDocument.isFYIRequested()){

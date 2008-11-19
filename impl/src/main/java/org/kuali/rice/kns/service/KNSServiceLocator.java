@@ -35,7 +35,6 @@ import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
-import org.kuali.rice.kns.workflow.service.WorkflowGroupService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -158,12 +157,6 @@ public class KNSServiceLocator<T extends Object> {
 
     public static DateTimeService getDateTimeService() {
 	return (DateTimeService) getService(DATETIME_SERVICE);
-    }
-
-    public static final String WORKFLOW_GROUP_SERVICE = "workflowGroupService";
-
-    public static WorkflowGroupService getWorkflowGroupService() {
-	return (WorkflowGroupService) getService(WORKFLOW_GROUP_SERVICE);
     }
 
     public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";

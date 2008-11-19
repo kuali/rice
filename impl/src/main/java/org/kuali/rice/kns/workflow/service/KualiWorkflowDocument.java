@@ -208,12 +208,6 @@ public interface KualiWorkflowDocument {
 
     public abstract Integer getDocRouteLevel();
 
-    // it would probably be easier to just put this info on bean from the server
-    public abstract String getDocRouteLevelName() throws WorkflowException;
-
-    // it would probably be easier to just put this info on bean from the server
-    public abstract String getRouteTypeName() throws WorkflowException;
-
     /**
      * @param annotation
      * @throws InvalidActionTakenException

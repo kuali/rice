@@ -49,7 +49,7 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "Document Number";
 	public static final String KIM_ATTRIB_PROPERTY_NAME = "Property Name";
 	public static final String KIM_ATTRIB_COMPONENT_NAME = "Component";
-	
+		
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 	

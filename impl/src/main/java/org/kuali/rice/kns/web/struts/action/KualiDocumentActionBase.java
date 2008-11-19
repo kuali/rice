@@ -40,7 +40,9 @@ import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -48,11 +50,9 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
@@ -927,8 +927,8 @@ public class KualiDocumentActionBase extends KualiAction {
             // can kuali workgroup service work here it is backed by workflow groups
             if (parameterName.equals("newAdHocRouteWorkgroup.id") && !"".equals(request.getParameter(parameterName))) {
                 if (Long.parseLong(request.getParameter(parameterName)) > 0) {
-                    WorkgroupDTO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdDTO(new Long(request.getParameter(parameterName))));
-                    kualiForm.getNewAdHocRouteWorkgroup().setId(workgroupVo.getWorkgroupName());
+                	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(request.getParameter(parameterName));
+                    kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupName());
                 }
                 else {
                     throw new RuntimeException("Invalid workgroup id passed as parameter.");
@@ -936,9 +936,9 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             if (parameterName.startsWith("adHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
                 if (Long.getLong(request.getParameter(parameterName)) != null) {
-                    WorkgroupDTO workgroupVo = KNSServiceLocator.getWorkflowInfoService().getWorkgroup(new WorkflowGroupIdDTO(new Long(request.getParameter(parameterName))));
+                	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(request.getParameter(parameterName));
                     int lineNumber = Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
-                    kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(workgroupVo.getWorkgroupName());
+                    kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupName());
                 }
                 else {
                     throw new RuntimeException("Invalid workgroup id passed as parameter.");

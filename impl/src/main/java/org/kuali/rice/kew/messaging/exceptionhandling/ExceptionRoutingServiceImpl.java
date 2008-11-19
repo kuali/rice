@@ -25,6 +25,7 @@ import org.kuali.rice.core.util.ExceptionUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
@@ -91,7 +92,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
                 message = message.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
             }
             ActionRequestFactory arFactory = new ActionRequestFactory(document, nodeInstance);
-            ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), nodeInstance.getRouteNode().getExceptionWorkgroup(), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
+            ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
             DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
             String oldStatus = rh.getDocRouteStatus();
             rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);

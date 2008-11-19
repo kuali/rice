@@ -34,7 +34,6 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.UserDTO;
@@ -43,11 +42,9 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 
@@ -157,21 +154,6 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     /**
-     * Returns the WorkgroupVO given a workgroup id
-     * @param workgroupId id of the workgroup to obtain
-     * @return the WorkgroupVO given a workgroup id
-     * @throws WorkflowException if an error occurs obtaining the workgroup
-     * @see WorkflowUtility#getWorkgroup(WorkgroupIdDTO)
-     */
-    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getWorkgroup(workgroupId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
-
-    /**
      * Returns the UserVO given a user id
      * @param userId id of the user to obtain
      * @return the UserVO given a user id
@@ -230,21 +212,6 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
 
-    /**
-     * Returns an array of workgroups the specified user is in.
-     * @param userId the id of the user whose workgroups we are to return
-     * @return an array of workgroups the specified user is in
-     * @throws WorkflowException if an error occurs obtaining the user's workgroups
-     * @see WorkflowUtility#getUserWorkgroups(UserIdDTO)
-     */
-    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getUserWorkgroups(userId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
-    
     public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getUserActionItemCount(userId);
@@ -625,39 +592,6 @@ public class WorkflowInfo implements java.io.Serializable {
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(criteriaVO);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
-
-    // DEPRECATED: as of Workflow 2.0
-
-    /**
-     * @deprecated use getWorkgroup(WorkgroupIdVO) instead
-     */
-    public WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException {
-        if (Utilities.isEmpty(workgroupName)) {
-            throw new InvalidWorkgroupException("Workgroup name cannot be empty");
-        }
-        return getWorkgroup(new WorkgroupNameIdDTO(workgroupName));//getWorkflowUtility().getWorkgroup(new WorkgroupNameIdVO(workgroupName));
-    }
-
-    /**
-     * @deprecated use getWorkgroup(WorkgroupIdVO) instead
-     */
-    public WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException {
-        if (workgroupId == null) {
-            throw new InvalidWorkgroupException("Workgroup name cannot be empty");
-        }
-        return getWorkgroup(new WorkflowGroupIdDTO(workgroupId));
-    }
-
-    /**
-     * @deprecated use getDocType using the name
-     */
-    public RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocRoute(documentTypeName);
         } catch (Exception e) {
             throw handleException(e);
         }

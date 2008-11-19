@@ -20,6 +20,7 @@ import org.kuali.rice.kew.batch.XmlIngesterService;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
+import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.edl.extract.ExtractService;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
@@ -90,6 +91,8 @@ public final class KEWServiceLocator {
 	public static final String DOCUMENT_TYPE_GROUP_SERVICE = "enDocumentTypeGroupService";
 
 	public static final String DOCUMENT_TYPE_SERVICE = "enDocumentTypeService";
+	
+	public static final String DOCUMENT_TYPE_PERMISSION_SERVICE = "enDocumentTypePermissionService";
 
 	public static final String DOCUMENT_SECURITY_SERVICE = "enDocumentSecurityService";
 
@@ -254,6 +257,10 @@ public final class KEWServiceLocator {
 		return (DocumentTypeService) getBean(DOCUMENT_TYPE_SERVICE);
 	}
 
+	public static DocumentTypePermissionService getDocumentTypePermissionService() {
+		return (DocumentTypePermissionService) getBean(DOCUMENT_TYPE_PERMISSION_SERVICE);
+	}
+	
     public static DocumentSecurityService getDocumentSecurityService() {
     	return (DocumentSecurityService) getBean(DOCUMENT_SECURITY_SERVICE);
     }

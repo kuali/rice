@@ -39,9 +39,9 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class DocumentTypeTest extends KEWTestCase {
@@ -141,7 +141,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());
         assertEquals("Wrong label", "TestDocumentType", parsedDocument.getLabel());
         assertEquals("Wrong postprocessor", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", parsedDocument.getPostProcessorName());
-        assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getDisplayName());
+        assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getGroupName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         ExportDataSet dataSet = new ExportDataSet();
@@ -150,7 +150,7 @@ public class DocumentTypeTest extends KEWTestCase {
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
-        assertEquals("Wrong blanketApprover workgroup", "TestWorkgroup", parsedDocument.getBlanketApproveWorkgroup().getDisplayName());
+        assertEquals("Wrong blanketApprover workgroup", "TestWorkgroup", parsedDocument.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("Wrong blanketApprove policy", null, parsedDocument.getBlanketApprovePolicy());
         assertEquals("Wrong PRE_APPROVE policy value", Boolean.FALSE, parsedDocument.getPreApprovePolicy().getPolicyValue());
         assertEquals("Wrong DEFAULT_APPROVE policy value", Boolean.FALSE, parsedDocument.getDefaultApprovePolicy().getPolicyValue());
@@ -168,34 +168,34 @@ public class DocumentTypeTest extends KEWTestCase {
         RouteNode adHocNode = process.getInitialRouteNode();
         assertEquals("Wrong node name should be 'AdHoc'", "AdHoc",adHocNode.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.START.isAssignableFrom(Class.forName(adHocNode.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", adHocNode.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", adHocNode.getExceptionWorkgroup().getGroupName());
 
         RouteNode split = (RouteNode)adHocNode.getNextNodes().get(0);
         assertEquals("Wrong node name", "Split", split.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.SPLIT.isAssignableFrom(Class.forName(split.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", split.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", split.getExceptionWorkgroup().getGroupName());
 
         RouteNode ruleTemplate1 = (RouteNode)split.getNextNodes().get(0);
         assertEquals("Wrong node name", "RuleTemplate1", ruleTemplate1.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate1.getNodeType())));
         assertEquals("Wrong branch name", "B1", ruleTemplate1.getBranch().getName());
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate1.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate1.getExceptionWorkgroup().getGroupName());
 
         RouteNode ruleTemplate2 = (RouteNode)split.getNextNodes().get(1);
         assertEquals("Wrong node name", "RuleTemplate2", ruleTemplate2.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate2.getNodeType())));
         assertEquals("Wrong branch name", "B2", ruleTemplate2.getBranch().getName());
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate2.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate2.getExceptionWorkgroup().getGroupName());
 
         RouteNode join = (RouteNode)ruleTemplate2.getNextNodes().get(0);
         assertEquals("Wrong node name", "Join", join.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.JOIN.isAssignableFrom(Class.forName(join.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", join.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", join.getExceptionWorkgroup().getGroupName());
 
         RouteNode ruleTemplate3 = (RouteNode)join.getNextNodes().get(0);
         assertEquals("Wrong node name", "RuleTemplate3", ruleTemplate3.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate3.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getDisplayName());
+        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getGroupName());
     }
 
     /**
@@ -243,7 +243,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	DocumentType childEdit = new DocumentType();
     	childEdit.setName(child.getName());
     	childEdit.setActiveInd(Boolean.TRUE);
-    	Workgroup workflowAdmin = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("WorkflowAdmin"));
+    	KimGroup workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(null, "WorkflowAdmin");
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");

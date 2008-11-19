@@ -19,7 +19,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -30,14 +29,8 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.exception.InvalidWorkgroupException;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -77,52 +70,10 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    /**
-     * @deprecated
-     */
-    public WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException {
-        if (StringUtils.isBlank(workgroupName)) {
-            throw new InvalidWorkgroupException("Workgroup name cannot be empty");
-        }
-        return getWorkgroup(new WorkgroupNameIdDTO(workgroupName));// getWorkflowUtility().getWorkgroup(new
-        // WorkgroupNameIdVO(workgroupName));
-    }
-
-    /**
-     * @deprecated
-     */
-    public WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException {
-        if (workgroupId == null) {
-            throw new InvalidWorkgroupException("Workgroup name cannot be empty");
-        }
-        return getWorkgroup(new WorkflowGroupIdDTO(workgroupId));
-    }
-
-    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getWorkgroup(workgroupId);
-        }
-        catch (Exception e) {
-            throw new WorkflowException(e);
-        }
-    }
-
     @Cached
     public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getWorkflowUser(userId);
-        }
-        catch (Exception e) {
-            throw new WorkflowException(e);
-        }
-    }
-
-    /**
-     * @deprecated use getDocType using the name
-     */
-    public RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getRoute(documentTypeName);
         }
         catch (Exception e) {
             throw new WorkflowException(e);
@@ -151,15 +102,6 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public Long getNewResponsibilityId() throws WorkflowException {
         try {
             return getWorkflowUtility().getNewResponsibilityId();
-        }
-        catch (Exception e) {
-            throw new WorkflowException(e);
-        }
-    }
-
-    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getUserWorkgroups(userId);
         }
         catch (Exception e) {
             throw new WorkflowException(e);

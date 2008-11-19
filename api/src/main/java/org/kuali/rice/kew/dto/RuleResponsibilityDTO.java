@@ -33,7 +33,7 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
  *  ruleResponsibilityType
  */
     private UserDTO user;
-    private WorkgroupDTO workgroup;
+    private String workgroupId;
     private String roleName;
     
     private RuleDelegationDTO[] delegationRules;
@@ -106,12 +106,12 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
         this.user = user;
     }
 
-    public WorkgroupDTO getWorkgroup() {
-        return workgroup;
+    public String getWorkgroupId() {
+        return workgroupId;
     }
 
-    public void setWorkgroup(WorkgroupDTO workgroup) {
-        this.workgroup = workgroup;
+    public void setWorkgroupId(String workgroupId) {
+        this.workgroupId = workgroupId;
     }
 
 }

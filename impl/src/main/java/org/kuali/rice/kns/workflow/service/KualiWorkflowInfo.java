@@ -26,10 +26,8 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -44,32 +42,13 @@ public interface KualiWorkflowInfo {
 
     public abstract RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException;
 
-    /**
-     * @deprecated
-     */
-    public abstract WorkgroupDTO getWorkgroup(String workgroupName) throws WorkflowException;
-
-    /**
-     * @deprecated
-     */
-    public abstract WorkgroupDTO getWorkgroup(Long workgroupId) throws WorkflowException;
-
-    public abstract WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException;
-
     public abstract UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException;
-
-    /**
-     * @deprecated use getDocType using the name
-     */
-    public abstract RouteTemplateEntryDTO[] getRoute(String documentTypeName) throws WorkflowException;
 
     public abstract DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException;
 
     public abstract DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException;
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
-
-    public abstract WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException;
 
     public abstract ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException;
 

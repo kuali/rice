@@ -186,7 +186,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	
     	DocumentType documentType1 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName1");
     	assertNotNull("Should have a reporting workgroup.", documentType1.getReportingWorkgroup());
-    	assertEquals("Should be WorkflowAdmin reporting workgroup", "WorkflowAdmin", documentType1.getReportingWorkgroup().getGroupNameId().getNameId());
+    	assertEquals("Should be WorkflowAdmin reporting workgroup", "WorkflowAdmin", documentType1.getReportingWorkgroup().getGroupName());
     		
     	DocumentType documentType2 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName2");
     	assertNull("Should not have a reporting workgroup.", documentType2.getReportingWorkgroup());

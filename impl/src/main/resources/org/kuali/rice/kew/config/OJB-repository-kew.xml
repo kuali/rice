@@ -344,10 +344,10 @@
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_HDLR_URL" name="docHandlerUrl" jdbc-type="VARCHAR"/>
     <field-descriptor column="POST_PRCSR" name="postProcessorName" jdbc-type="VARCHAR"/>
-    <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="BIGINT"/>
-    <field-descriptor column="BLNKT_APPR_GRP_ID" name="blanketApproveWorkgroupId" jdbc-type="BIGINT"/>
+    <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="VARCHAR"/>
+    <field-descriptor column="BLNKT_APPR_GRP_ID" name="blanketApproveWorkgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="BLNKT_APPR_PLCY" name="blanketApprovePolicy" jdbc-type="VARCHAR"/>
-    <field-descriptor column="RPT_GRP_ID" name="reportingWorkgroupId" jdbc-type="BIGINT"/>
+    <field-descriptor column="RPT_GRP_ID" name="reportingWorkgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RTE_VER_NBR" name="routingVersion" jdbc-type="VARCHAR"/>
     <field-descriptor column="NOTIFY_ADDR" name="notificationFromAddress" jdbc-type="VARCHAR"/>
     <field-descriptor column="SEC_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>
@@ -624,7 +624,7 @@
     <field-descriptor column="RTE_MTHD_NM" name="routeMethodName" jdbc-type="VARCHAR" />
     <field-descriptor column="FNL_APRVR_IND" name="finalApprovalInd" jdbc-type="BIT" />
     <field-descriptor column="MNDTRY_RTE_IND" name="mandatoryRouteInd" jdbc-type="BIT" />
-    <field-descriptor column="GRP_ID" name="exceptionWorkgroupId" jdbc-type="BIGINT" />
+    <field-descriptor column="GRP_ID" name="exceptionWorkgroupId" jdbc-type="VARCHAR" />
     <field-descriptor column="RTE_MTHD_CD" name="routeMethodCode" jdbc-type="VARCHAR" />
     <field-descriptor column="ACTVN_TYP" name="activationType" jdbc-type="VARCHAR" />
     <field-descriptor column="BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>

@@ -27,7 +27,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.lookupable.Field;
 import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowFunctionResolver;
@@ -39,7 +38,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.workflow.attribute.WorkflowLookupableImpl;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.w3c.dom.Document;
 
 
@@ -49,21 +47,6 @@ public class WorkflowUtils {
     public static final String XSTREAM_SAFE_SUFFIX = "')";
     public static final String XSTREAM_MATCH_ANYWHERE_PREFIX = "//";
     public static final String XSTREAM_MATCH_RELATIVE_PREFIX = "./";
-
-    /**
-     * get the route level name of the given workflow document
-     * 
-     * @param workflowDocument the given workflow document
-     * @return the route level name
-     */
-    public static String getRoutingLevelName(KualiWorkflowDocument workflowDocument) {
-        try {
-            return workflowDocument.getDocRouteLevelName();
-        }
-        catch (WorkflowException we) {
-            throw new RuntimeException("Fail to determine the document routing level:" + we);
-        }
-    }
 
     /**
      * 

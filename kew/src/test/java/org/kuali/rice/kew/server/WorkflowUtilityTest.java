@@ -36,16 +36,16 @@ import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
-import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
 import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
-import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -60,6 +60,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class WorkflowUtilityTest extends KEWTestCase {
@@ -843,7 +845,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        assertEquals("Rule workgroup name is incorrect",RuleTestGeneralSetup.RULE_TEST_WORKGROUP,responsibilityVO.getWorkgroup().getWorkgroupName());
+        KimGroup ruleTestGroup = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getWorkgroupId());
+        assertEquals("Rule workgroup name is incorrect",RuleTestGeneralSetup.RULE_TEST_WORKGROUP, ruleTestGroup.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
 
@@ -862,7 +865,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        assertEquals("Rule workgroup name is incorrect",RuleTestGeneralSetup.RULE_TEST_WORKGROUP,responsibilityVO.getWorkgroup().getWorkgroupName());
+        assertEquals("Rule workgroup name is incorrect",RuleTestGeneralSetup.RULE_TEST_WORKGROUP, ruleTestGroup.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
     }
@@ -925,7 +928,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         RuleResponsibilityDTO responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,responsibilityVO.getWorkgroup().getWorkgroupName());
+        KimGroup ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getWorkgroupId());
+        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,ruleTestGroup2.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(4),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
         ruleExtensionVOs = ruleVO.getRuleExtensions();
@@ -980,7 +984,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP,responsibilityVO.getWorkgroup().getWorkgroupName());
+        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP,ruleTestGroup2.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
     }

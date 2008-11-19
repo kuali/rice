@@ -25,7 +25,6 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.springframework.transaction.annotation.Transactional;
 
 //@Transactional
 public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationServiceImpl implements

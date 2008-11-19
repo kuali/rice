@@ -49,16 +49,13 @@ import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.RouteTemplateEntryDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RuleDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -82,8 +79,6 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
-
 
 @SuppressWarnings("deprecation")
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
@@ -165,22 +160,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return DTOConverter.convertRouteNodeInstance(nodeInstance);
     }
 
-    public WorkgroupDTO getWorkgroup(WorkgroupIdDTO workgroupId) throws WorkflowException {
-        if (workgroupId == null) {
-            LOG.error("null workgroupId passed in.");
-            throw new RuntimeException("null workgroupId passed in.");
-        }
-        LOG.debug("Fetching WorkgroupVO [id="+workgroupId+"]");
-        Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupId);
-        WorkgroupDTO workgroupVO = DTOConverter.convertWorkgroup(workgroup);
-        if (workgroupVO == null) {
-        	LOG.error("Returning null WorkgroupVO [id=" + workgroupId + "]");
-        } else {
-        	LOG.debug("Returning WorkgroupVO [id=" + workgroupId + ", memberCount="+workgroupVO.getMembers().length+"]");
-        }
-        return workgroupVO;
-    }
-
     public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
         if (userId == null) {
             LOG.error("null userId passed in.");
@@ -193,15 +172,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         	LOG.error("Returning null UserVO [id=" + userId + "]");
         }
         return userVO;
-    }
-
-    public RouteTemplateEntryDTO[] getDocRoute(String docName) throws WorkflowException {
-        if (docName == null) {
-            LOG.error("null docName passed in.");
-            throw new RuntimeException("null docName passed in.");
-        }
-        LOG.debug("Fetching RouteTemplateEntryVOs [docName="+docName+"]");
-        return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(docName).getRouteTemplates();
     }
 
     public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException {
@@ -237,19 +207,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching user for userId '"+userId+"'");
         return KEWServiceLocator.getUserService().getWorkflowUser(userId);
-    }
-
-    public WorkgroupDTO[] getUserWorkgroups(UserIdDTO userId) throws WorkflowException {
-        WorkflowUser user = getWorkflowUserInternal(userId);
-        List workgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
-
-        WorkgroupDTO[] workgroupVOs = new WorkgroupDTO[workgroups.size()];
-        int i = 0;
-        for (Iterator iter = workgroups.iterator(); iter.hasNext(); i++) {
-            Workgroup workgroup = (Workgroup) iter.next();
-            workgroupVOs[i] = DTOConverter.convertWorkgroup(workgroup);
-        }
-        return workgroupVOs;
     }
 
     public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {

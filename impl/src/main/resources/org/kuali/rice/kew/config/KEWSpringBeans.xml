@@ -82,6 +82,7 @@
 				<idref local="enActionListService" />
 				<idref local="enDocumentSearchService" />
 				<idref local="enDocumentTypeService" />
+				<idref local="enDocumentTypePermissionService" />
 				<idref local="enPreferencesService" />
 				<idref local="enActionTakenService" />
 				<idref local="enApplicationConstantsService" />
@@ -314,7 +315,9 @@
 	<bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-
+	
+	<bean id="enDocumentTypePermissionService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
+	
     <!--  DocumentSecurityService -->
     <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
 

@@ -100,7 +100,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         if (!Utilities.isEmpty(superError)) {
             return superError;
         }
-        if ( (getRouteHeader().getDocumentType() != null) && (! getRouteHeader().getDocumentType().isUserBlanketApprover(getUser())) ) {
+        if ( (getRouteHeader().getDocumentType() != null) && (! KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(getRouteHeader().getDocumentType(), getUser().getWorkflowId()))) {
             return "User is not authorized to BlanketApprove document";
         }
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {

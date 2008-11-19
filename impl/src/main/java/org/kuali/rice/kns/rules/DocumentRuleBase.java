@@ -13,10 +13,9 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -432,12 +431,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	if (StringUtils.isNotBlank(workgroup.getId())) {
 	    // validate that they are a workgroup from the workgroup service by looking them up
 	    try {
-		WorkgroupDTO workgroupVo = getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdDTO(workgroup.getId()));
-		if (workgroupVo == null || !workgroupVo.isActiveInd()) {
+	    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroup.getId());
+		if (group == null || !group.isActive()) {
 		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
 		}
-	    } catch (WorkflowException e) {
+	    } catch (Exception e) {
 		LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
 
 		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,

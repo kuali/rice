@@ -45,14 +45,12 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.Process;
@@ -105,6 +103,7 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -128,7 +127,8 @@ public class DTOConverter {
         if (user != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-                routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(routeHeader.getDocumentType(), user.getWorkflowId());
+                routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
             String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
@@ -175,13 +175,14 @@ public class DTOConverter {
         if (user != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-                routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(routeHeader.getDocumentType(), user.getWorkflowId());
+                routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
             String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 // below will control what buttons are drawn on the client we only want the
-                // heaviest action button to show on the client making this code a little combersome
+                // heaviest action button to show on the client making this code a little cumbersome
                 if (actionRequest.isRecipientRoutedRequest(user) && actionRequest.isActive()) {
                     int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
                     if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
@@ -331,10 +332,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getDelegatorWorkflowId())) {
             actionItemVO.setDelegatorUser(convertUser(actionItem.getDelegatorUser()));
         }
-        actionItemVO.setDelegatorWorkgroupId(actionItem.getDelegatorWorkgroupId());
-        if (actionItem.getDelegatorWorkgroupId() != null) {
-            actionItemVO.setDelegatorWorkgroup(convertWorkgroup(actionItem.getDelegatorWorkgroup()));
-        }
+        actionItemVO.setDelegatorWorkgroupId("" + actionItem.getDelegatorWorkgroupId());
         actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
         actionItemVO.setDocLabel(actionItem.getDocLabel());
         actionItemVO.setDocName(actionItem.getDocName());
@@ -346,10 +344,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getWorkflowId())) {
             actionItemVO.setUser(convertUser(actionItem.getUser()));
         }
-        actionItemVO.setWorkgroupId(actionItem.getWorkgroupId());
-        if (actionItem.getWorkgroupId() != null) {
-            actionItemVO.setWorkgroup(convertWorkgroup(actionItem.getWorkgroup()));
-        }
+        actionItemVO.setWorkgroupId("" + actionItem.getWorkgroupId());
         return actionItemVO;
     }
 
@@ -519,27 +514,6 @@ public class DTOConverter {
         return documentContentVO;
     }
 
-    public static WorkgroupDTO convertWorkgroup(Workgroup workgroup) {
-        if (workgroup == null) {
-            return null;
-        }
-        WorkgroupDTO workgroupVO = new WorkgroupDTO();
-        workgroupVO.setActiveInd(workgroup.getActiveInd().booleanValue());
-        workgroupVO.setDescription(workgroup.getDescription());
-        workgroupVO.setWorkgroupId(workgroup.getWorkflowGroupId().getGroupId());
-        workgroupVO.setWorkgroupName(workgroup.getGroupNameId().getNameId());
-        workgroupVO.setWorkgroupType(workgroup.getWorkgroupType());
-        if (workgroup.getUsers() != null) {
-            workgroupVO.setMembers(new UserDTO[workgroup.getUsers().size()]);
-            int index = 0;
-            for (Iterator iterator = workgroup.getUsers().iterator(); iterator.hasNext(); index++) {
-                WorkflowUser user = (WorkflowUser) iterator.next();
-                workgroupVO.getMembers()[index] = convertUser(user);
-            }
-        }
-        return workgroupVO;
-    }
-
     public static UserDTO convertUser(WorkflowUser user) {
         if (user == null) {
             return null;
@@ -609,37 +583,13 @@ public class DTOConverter {
             docTypeVO.setDocTypeActiveInherited(false);
         }
         docTypeVO.setDocTypePreApprovalPolicy(docType.getPreApprovePolicy().getPolicyValue().booleanValue());
-        Workgroup blanketWorkgroup = docType.getBlanketApproveWorkgroup();
+        KimGroup blanketWorkgroup = docType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null) {
-            docTypeVO.setBlanketApproveWorkgroupId(blanketWorkgroup.getWorkflowGroupId().getGroupId());
+            docTypeVO.setBlanketApproveWorkgroupId(blanketWorkgroup.getGroupId());
         }
         docTypeVO.setBlanketApprovePolicy(docType.getBlanketApprovePolicy());
-        if (CompatUtils.isRouteLevelCompatible(docType)) {
-            List nodes = CompatUtils.getRouteLevelCompatibleNodeList(docType);
-            RouteTemplateEntryDTO[] templates = new RouteTemplateEntryDTO[nodes.size()];
-            int index = 0;
-            for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
-                RouteNode node = (RouteNode) iterator.next();
-                templates[index++] = convertRouteTemplateEntry(node);
-            }
-            docTypeVO.setRouteTemplates(templates);
-        }
         docTypeVO.setRoutePath(convertRoutePath(docType));
         return docTypeVO;
-    }
-
-    public static RouteTemplateEntryDTO convertRouteTemplateEntry(RouteNode node) {
-        RouteTemplateEntryDTO entryVO = new RouteTemplateEntryDTO();
-        entryVO.setFinalApprover(node.getFinalApprovalInd().booleanValue());
-        entryVO.setMandatoryRoute(node.getMandatoryRouteInd().booleanValue());
-        entryVO.setRouteLevel(CompatUtils.getLevelForNode(node.getDocumentType(), node.getRouteNodeName()));
-        entryVO.setRouteLevelName(node.getRouteNodeName());
-        entryVO.setRouteMethodName(node.getRouteMethodName());
-        entryVO.setDocTypeId(node.getDocumentTypeId());
-        entryVO.setExceptionWorkgroupId(node.getExceptionWorkgroupId());
-        entryVO.setJrf_ver_nbr(node.getLockVerNbr());
-        entryVO.setMandatoryRoute(node.getMandatoryRouteInd().toString());
-        return entryVO;
     }
 
     public static RoutePathDTO convertRoutePath(DocumentType documentType) {
@@ -690,7 +640,6 @@ public class DTOConverter {
         actionRequestVO.setStatus(actionRequest.getStatus());
         if (actionRequest.isWorkgroupRequest()) {
             actionRequestVO.setWorkgroupId(actionRequest.getWorkgroupId());
-            actionRequestVO.setWorkgroupDTO(convertWorkgroup(actionRequest.getWorkgroup()));
         }
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
@@ -1193,11 +1142,7 @@ public class DTOConverter {
         nodeVO.setActivationType(node.getActivationType());
         nodeVO.setBranchName(node.getBranch() != null ? node.getBranch().getName() : null);
         nodeVO.setDocumentTypeId(node.getDocumentTypeId());
-        try {
-            nodeVO.setExceptionWorkgroup(convertWorkgroup(node.getExceptionWorkgroup()));
-        } catch (KEWUserNotFoundException e) {
-            throw new WorkflowRuntimeException("Could not locate users in exception workgroup for node " + node.getRouteNodeId() + ".", e);
-        }
+        nodeVO.setExceptionWorkgroupId(node.getExceptionWorkgroupId());
         nodeVO.setFinalApprovalInd(node.getFinalApprovalInd().booleanValue());
         nodeVO.setMandatoryRouteInd(node.getMandatoryRouteInd().booleanValue());
         nodeVO.setNodeType(node.getNodeType());
@@ -1431,7 +1376,7 @@ public class DTOConverter {
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getWorkflowUser()));
-        ruleResponsibilityVO.setWorkgroup(convertWorkgroup(ruleResponsibility.getWorkgroup()));
+        ruleResponsibilityVO.setWorkgroupId("" + ruleResponsibility.getWorkgroup().getGroupNameId().getNameId());
         for (Iterator iter = ruleResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
             RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
             ruleResponsibilityVO.addDelegationRule(convertRuleDelegation(ruleDelegation));

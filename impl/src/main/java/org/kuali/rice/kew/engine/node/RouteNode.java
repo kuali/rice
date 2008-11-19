@@ -36,15 +36,13 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -74,7 +72,7 @@ public class RouteNode implements Serializable {
     @Column(name="MNDTRY_RTE_IND")
 	private Boolean mandatoryRouteInd;
     @Column(name="GRP_ID")
-	private Long exceptionWorkgroupId;
+	private String exceptionWorkgroupId;
     @Column(name="RTE_MTHD_CD")
 	private String routeMethodCode;
     @Column(name="ACTVN_TYP")
@@ -174,15 +172,15 @@ public class RouteNode implements Serializable {
         this.activationType = at.getCode();
     }
 
-    public Workgroup getExceptionWorkgroup() throws KEWUserNotFoundException {
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.exceptionWorkgroupId));
+    public KimGroup getExceptionWorkgroup() {
+        return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
     }
 
-    public Long getExceptionWorkgroupId() {
+    public String getExceptionWorkgroupId() {
         return exceptionWorkgroupId;
     }
 
-    public void setExceptionWorkgroupId(Long workgroupId) {
+    public void setExceptionWorkgroupId(String workgroupId) {
         this.exceptionWorkgroupId = workgroupId;
     }
 
@@ -243,9 +241,10 @@ public class RouteNode implements Serializable {
     }
 
     public String getExceptionWorkgroupName() {
+    	KimGroup exceptionGroup = getExceptionWorkgroup();
         if (exceptionWorkgroupName == null || exceptionWorkgroupName.equals("")) {
-            if (exceptionWorkgroupId != null) {
-                return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(exceptionWorkgroupId)).getGroupNameId().getNameId();
+            if (exceptionGroup != null) {
+                return exceptionGroup.getGroupName();
             }
         }
         return exceptionWorkgroupName;

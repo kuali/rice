@@ -41,8 +41,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.NodeType;
-import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
@@ -59,8 +59,10 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -86,7 +88,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
     public List docTypeRouteNodes;
     private Map nodesMap;
     private XPath xpath;
-    private Workgroup defaultExceptionWorkgroup;
+    private KimGroup defaultExceptionWorkgroup;
     private static final String NEXT_NODE_EXP = "./@nextNode";
     private static final String PARENT_NEXT_NODE_EXP = "../@nextNode";
     private static final String PROCESS_NAME_ATTR = "processName";
@@ -237,7 +239,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         if (! Utilities.isEmpty(exceptionWgName)) {
             // allow core config parameter replacement in documenttype workgroups
             exceptionWgName = Utilities.substituteConfigParameters(exceptionWgName);
-        	Workgroup exceptionWg = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(exceptionWgName), true);
+        	KimGroup exceptionWg = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, exceptionWgName);
         	if(exceptionWg == null) {
         		throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
         	}
@@ -288,7 +290,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 }
                 // allow core config parameter replacement in documenttype workgroups
                 wg = Utilities.substituteConfigParameters(wg);
-                Workgroup suWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(wg), true);
+                KimGroup suWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, wg);
                 if (suWorkgroup == null) {
                     throw new InvalidWorkgroupException("Workgroup could not be found: " + wg);
                 }
@@ -316,7 +318,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else if (!StringUtils.isBlank(blanketWorkGroupName)){
             // allow core config parameter replacement in documenttype workgroups
             blanketWorkGroupName = Utilities.substituteConfigParameters(blanketWorkGroupName);
-        	Workgroup blanketAppWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(blanketWorkGroupName), true);
+            KimGroup blanketAppWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, blanketWorkGroupName);
         	if (blanketAppWorkgroup == null) {
         		throw new InvalidWorkgroupException("The blanket approve workgroup " + blanketWorkGroupName + " does not exist");
         	}
@@ -336,7 +338,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 }
                 // allow core config parameter replacement in documenttype workgroups
                 wg = Utilities.substituteConfigParameters(wg);
-                Workgroup reportingWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(wg), true);
+                KimGroup reportingWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, wg);
                 if (reportingWorkgroup == null) {
                     throw new InvalidWorkgroupException("Reporting workgroup could not be found: " + wg);
                 }
@@ -675,7 +677,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             routeNode.setActivationType(DEFAULT_ACTIVATION_TYPE);
         }
 
-        Workgroup exceptionWorkgroup = defaultExceptionWorkgroup;
+        KimGroup exceptionWorkgroup = defaultExceptionWorkgroup;
         String exceptionWorkgroupName = (String) xpath.evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	// for backward compatibility we also need to be able to support exceptionWorkgroup
@@ -683,11 +685,11 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	if (routeNode.getDocumentType().getDefaultExceptionWorkgroup() != null) {
-        		exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getGroupNameId().getNameId();
+        		exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getGroupName();
         	}
         }
         if (!Utilities.isEmpty(exceptionWorkgroupName)) {
-            exceptionWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(exceptionWorkgroupName), true);
+        	exceptionWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
                 throw new InvalidWorkgroupException("Could not locate exception workgroup by name " + exceptionWorkgroupName);
             }
@@ -695,8 +697,8 @@ public class DocumentTypeXmlParser implements XmlConstants {
         if (exceptionWorkgroup == null) {
             throw new InvalidXmlException("No exception workgroup specified at node " + routeNode.getRouteNodeName() + ".  Either specify an exceptionWorkgroupName for each node or specify the defaultExceptionWorkgroupName.\n" + XmlHelper.jotNode(node));
         }
-        routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupNameId().getNameId());
-        routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getWorkflowGroupId().getGroupId());
+        routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupName());
+        routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getGroupId());
         if (((Boolean) xpath.evaluate("./mandatoryRoute", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setMandatoryRouteInd(Boolean.valueOf((String)xpath.evaluate("./mandatoryRoute", node, XPathConstants.STRING)));
         } else {
@@ -848,6 +850,10 @@ public class DocumentTypeXmlParser implements XmlConstants {
     private class RoutePathContext {
         public BranchPrototype branch;
         public LinkedList splitNodeStack = new LinkedList();
+    }
+    
+    protected IdentityManagementService getIdentityManagementService() {
+    	return KIMServiceLocator.getIdentityManagementService();
     }
 
 }

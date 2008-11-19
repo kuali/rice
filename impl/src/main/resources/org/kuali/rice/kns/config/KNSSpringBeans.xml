@@ -253,8 +253,6 @@
         </bean>
 	  </property>
 	</bean>
-	
-	<bean id="workflowGroupService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
 
 	<bean id="workflowInfoService" class="org.kuali.rice.kns.workflow.service.impl.KualiWorkflowInfoImpl" />
 

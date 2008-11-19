@@ -221,18 +221,12 @@ public class ActionRequestFactory {
     			}
     			resolveRecipient(actionRequest, roleRecipient.getTarget());
     		}
+    	} else if (recipient instanceof KimGroupRecipient) {
+    		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+    		actionRequest.setWorkgroupId(new Long(kimGroupRecipient.getGroup().getGroupId()));
     	}
     }
-
-//    public ActionRequestValue createControlRequest(ActionRequestValue parentRequest, Recipient recipient, String delegationType, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description) {
-//    	ActionRequestValue actionRequest = createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious);
-//    	if (parentRequest != null) {
-//    		actionRequest.setActionRequested(parentRequest.getActionRequested());
-//            actionRequest.setPriority(parentRequest.getPriority());
-//            actionRequest.setDelegationType(delegationType);
-//    	}
-//    	return actionRequest;
-//    }
 
     /**
      * Creates a root Role Request

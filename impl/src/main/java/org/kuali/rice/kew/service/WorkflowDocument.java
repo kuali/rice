@@ -1325,54 +1325,6 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
-     * TODO this method still needs to be updated to work properly for Workflow 2.1
-     * it would probably be easier to just put this info on bean from the server
-     *
-     * @deprecated use getNodeNames() instead
-     */
-    public String getDocRouteLevelName() throws WorkflowException {
-        try {
-            if (getDocumentType() == null) {
-                throw new DocumentTypeNotFoundException("Document Type Name is null");
-            }
-            RouteTemplateEntryDTO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
-            for (int i = 0; i < routeLevels.length; i++) {
-                if (routeLevels[i].getRouteLevel().equals(getDocRouteLevel())) {
-                    return routeLevels[i].getRouteLevelName();
-                }
-            }
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-        throw new WorkflowException("Did not find a route level");
-    }
-
-    /**
-     * TODO this method still needs to be updated to work properly for Workflow 2.1
-     * it would probably be easier to just put this info on bean from the server
-     *
-     * @deprecated use getRouteMethodNames instead
-     */
-    public String getRouteMethodName() throws WorkflowException {
-        if (getDocumentType() == null) {
-            throw new WorkflowException("Document Type Name is null");
-        }
-
-        try {
-            RouteTemplateEntryDTO[] routeLevels = getWorkflowUtility().getDocRoute(getDocumentType());
-            for (int i = 0; i < routeLevels.length; i++) {
-                if (routeLevels[i].getRouteLevel().equals(getDocRouteLevel())) {
-                    return routeLevels[i].getRouteMethodName();
-                }
-            }
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-
-        throw new WorkflowException("Did not find a route level");
-    }
-
-    /**
      * @deprecated use returnToPreviousNode(String annotation, String nodeName) instead
      */
     public void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException {

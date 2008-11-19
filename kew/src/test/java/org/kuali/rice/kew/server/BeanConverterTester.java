@@ -260,21 +260,6 @@ public class BeanConverterTester extends KEWTestCase {
         } catch (Throwable e) {
             fail("Action Item VO object should be able to get valid user object");
         }
-        try {
-            actionItemVO.getWorkgroup();
-        } catch (Throwable e) {
-            fail("Action Item VO object should be able to get valid workgroup object");
-        }
-        try {
-            actionItemVO.getDelegatorUser();
-        } catch (Throwable e) {
-            fail("Action Item VO object should be able to get valid delegator user object");
-        }
-        try {
-            actionItemVO.getDelegatorWorkgroup();
-        } catch (Throwable e) {
-            fail("Action Item VO object should be able to get valid delegator workgroup object");
-        }
     }
 
 }

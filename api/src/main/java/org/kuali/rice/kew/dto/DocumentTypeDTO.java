@@ -44,10 +44,8 @@ public class DocumentTypeDTO implements Serializable {
     private String docTypeJndiFactoryClass;
     private String docTypeJndiUrl;
     private String docTypeCurrentInd;
-    private Long blanketApproveWorkgroupId;
+    private String blanketApproveWorkgroupId;
     private String blanketApprovePolicy;
-    public RouteTemplateEntryDTO[] routeTemplates;
-    private boolean routeTemplateInherited;
     private RoutePathDTO routePath;
     
     public DocumentTypeDTO() {
@@ -110,14 +108,6 @@ public class DocumentTypeDTO implements Serializable {
 
     public String getPostProcessorName() {
         return postProcessorName;
-    }
-
-    public RouteTemplateEntryDTO[] getRouteTemplates() {
-        return routeTemplates;
-    }
-
-    public void setRouteTemplates(RouteTemplateEntryDTO[] routeTemplates) {
-        this.routeTemplates = routeTemplates;
     }
 
     /**
@@ -234,15 +224,7 @@ public class DocumentTypeDTO implements Serializable {
     public void setDocTypeJndiUrl(String docTypeJndiUrl) {
         this.docTypeJndiUrl = docTypeJndiUrl;
     }
-
-    public boolean isRouteTemplateInherited() {
-        return routeTemplateInherited;
-    }
-
-    public void setRouteTemplateInherited(boolean routeTemplateInherited) {
-        this.routeTemplateInherited = routeTemplateInherited;
-    }
-
+    
     public String getDocTypeCurrentInd() {
         return docTypeCurrentInd;
     }
@@ -270,11 +252,11 @@ public class DocumentTypeDTO implements Serializable {
 		this.blanketApprovePolicy = blanketApprovePolicy;
 	}
 
-	public Long getBlanketApproveWorkgroupId() {
+	public String getBlanketApproveWorkgroupId() {
         return blanketApproveWorkgroupId;
     }
 
-    public void setBlanketApproveWorkgroupId(Long blanketApproveWorkgroupId) {
+    public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
         this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
     }
     public String getDocTypeParentName() {

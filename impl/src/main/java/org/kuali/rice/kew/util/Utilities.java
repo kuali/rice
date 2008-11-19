@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,7 +72,7 @@ public class Utilities {
     	}
     	return constant.getApplicationConstantValue();
     }
-    
+
     public static boolean getBooleanConstant(String name, boolean defaultValue) {
     	String value = getApplicationConstant(name);
     	if (value == null) {
@@ -84,15 +84,15 @@ public class Utilities {
     public static boolean isEmpty(String value) {
         return value == null || value.trim().equals("");
     }
-    
+
     public static boolean isEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
     }
-    
+
     public static boolean isEmpty(Object[] array) {
         return array == null || array.length == 0;
     }
-        
+
     public static boolean equals (Object a, Object b) {
         return ((a == null && b == null) || (a != null && a.equals(b)));
     }
@@ -105,17 +105,6 @@ public class Utilities {
         return sw.toString();
     }
 
-    public static boolean isAdmin(WorkflowUser user) {
-        String adminUserString = getApplicationConstant("Config.Application.AdminUserList");
-        String[] users = adminUserString.split(" ");
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].equalsIgnoreCase(user.getAuthenticationUserId().getAuthenticationId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     public static Calendar convertTimestamp(Timestamp timestamp) {
         if (timestamp == null) {
             return null;
@@ -124,14 +113,14 @@ public class Utilities {
         calendar.setTime(timestamp);
         return calendar;
     }
-    
+
     public static Timestamp convertCalendar(Calendar calendar) {
         if (calendar == null) {
             return null;
         }
         return new Timestamp(calendar.getTime().getTime());
     }
-    
+
     public static Set asSet(Object[] objects) {
         Set set = new HashSet();
         if (objects != null) {
@@ -142,7 +131,7 @@ public class Utilities {
         }
         return set;
     }
-    
+
     public static Set asSet(Object object) {
         Set set = new HashSet();
         if (object != null) {
@@ -150,7 +139,7 @@ public class Utilities {
         }
         return set;
     }
-    
+
     public static List asList(Object object) {
         List<Object> list = new ArrayList<Object>(1);
         if (object != null) {
@@ -158,9 +147,9 @@ public class Utilities {
         }
         return list;
     }
-    
+
     /**
-     * 
+     *
      *	Consider moving out of this class if this bugs
      */
     public class PrioritySorter implements Comparator {
@@ -184,40 +173,40 @@ public class Utilities {
     }
 
     /**
-     * 
+     *
      *	Consider moving out of this class if this bugs
      */
     public class RouteLogActionRequestSorter implements Comparator {
         public int compare(Object arg0, Object arg1) {
             ActionRequestValue ar1 = (ActionRequestValue) arg0;
             ActionRequestValue ar2 = (ActionRequestValue) arg1;
-            
+
             if (! ar1.getChildrenRequests().isEmpty()) {
                 Collections.sort(ar1.getChildrenRequests(), new RouteLogActionRequestSorter());
             }
             if (! ar2.getChildrenRequests().isEmpty()) {
                 Collections.sort(ar2.getChildrenRequests(), new RouteLogActionRequestSorter());
             }
-            
+
             int routeLevelCompareVal = ar1.getRouteLevel().compareTo(ar2.getRouteLevel());
             if (routeLevelCompareVal != 0) {
                 return routeLevelCompareVal;
             }
-            
+
             if (ar1.isActive() && ar2.isPending()) {
                 return -1;
             } else if (ar2.isActive() && ar1.isPending()) {
                 return 1;
             }
-            
+
             return new Utilities().new PrioritySorter().compare(arg0, arg1);
         }
     }
-    
+
     public static boolean validateDate(String date, boolean dateOptional) {
         if ((date == null) || date.trim().equals("")) {
-            if (dateOptional) {  
-                return true; 
+            if (dateOptional) {
+                return true;
             } else {
                 return false;
             }
@@ -231,7 +220,7 @@ public class Utilities {
             int yearInt = calendar.get(Calendar.YEAR);
             if (yearInt <= 0 || yearInt > 2999) {
               return false;
-            }            
+            }
             return true;
         } catch (Exception ex) {
             return false;
@@ -242,7 +231,7 @@ public class Utilities {
         try {
             Date parsedDate = RiceConstants.getDefaultDateFormat().parse(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
-            fromCalendar.setTime(parsedDate);       
+            fromCalendar.setTime(parsedDate);
             fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
@@ -261,7 +250,7 @@ public class Utilities {
         } catch (Exception ex) {
             return false;
         }
-    }    
+    }
 
     /**
      * Performs a "brute force" comparison of collections by testing whether the collections contain each other.

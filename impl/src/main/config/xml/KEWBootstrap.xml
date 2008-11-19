@@ -4,20 +4,12 @@
 
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
         <ApplicationConstant>
-            <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
-            <ConstantValue>2620</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleService.IsCaching</ConstantName>
             <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>admin</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
@@ -36,36 +28,12 @@
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RouteTypeSearch.Instructions</ConstantName>
-            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
-            <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
             <ConstantValue>3</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RouteQueue.timeIncrement</ConstantName>
             <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.waitTime</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerPool.numWorkers</ConstantName>
-            <ConstantValue>10</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerDriver.isRunning</ConstantName>
-            <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>ActionList.sendEmailNotification</ConstantName>
@@ -82,10 +50,6 @@
         <ApplicationConstant>
             <ConstantName>Workgroup.Search.Instruction</ConstantName>
             <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
-            <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
@@ -112,10 +76,6 @@
             <ConstantValue>en-dev</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
-            <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>User.Search.Instruction</ConstantName>
             <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
         </ApplicationConstant>
@@ -136,10 +96,6 @@
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
-            <ConstantValue>false</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>Rule.IsRouteLogPopup</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
@@ -150,7 +106,7 @@
         <ApplicationConstant>
             <ConstantName>Config.Application.DelegateLimit</ConstantName>
             <ConstantValue>20</ConstantValue>
-        </ApplicationConstant>        
+        </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Config.Mailer.FromAddress</ConstantName>
             <ConstantValue>kew@localhost</ConstantValue>
@@ -171,14 +127,6 @@
         <ApplicationConstant>
             <ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
             <ConstantValue>WorkflowAdmin</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastDailyReminderDate</ConstantName>
-            <ConstantValue>1112663586040</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastWeeklyReminderDate</ConstantName>
-            <ConstantValue>1112663586068</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>User.CreateNew.Instruction</ConstantName>

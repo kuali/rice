@@ -7,20 +7,12 @@
         <!-- ApplicationConstants elements from ..\/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ApplicationConstant>
-            <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
-            <ConstantValue>2620</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleService.IsCaching</ConstantName>
             <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>admin</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
@@ -39,36 +31,12 @@
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RouteTypeSearch.Instructions</ConstantName>
-            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
-            <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
             <ConstantValue>3</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RouteQueue.timeIncrement</ConstantName>
             <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.waitTime</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerPool.numWorkers</ConstantName>
-            <ConstantValue>10</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerDriver.isRunning</ConstantName>
-            <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>ActionList.sendEmailNotification</ConstantName>
@@ -85,10 +53,6 @@
         <ApplicationConstant>
             <ConstantName>Workgroup.Search.Instruction</ConstantName>
             <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
-            <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
@@ -115,10 +79,6 @@
             <ConstantValue>en-dev</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
-            <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>User.Search.Instruction</ConstantName>
             <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
         </ApplicationConstant>
@@ -139,10 +99,6 @@
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
-            <ConstantValue>false</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>Rule.IsRouteLogPopup</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
@@ -153,7 +109,7 @@
         <ApplicationConstant>
             <ConstantName>Config.Application.DelegateLimit</ConstantName>
             <ConstantValue>20</ConstantValue>
-        </ApplicationConstant>        
+        </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Config.Mailer.FromAddress</ConstantName>
             <ConstantValue>kew@localhost</ConstantValue>
@@ -174,14 +130,6 @@
         <ApplicationConstant>
             <ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
             <ConstantValue>WorkflowAdmin</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastDailyReminderDate</ConstantName>
-            <ConstantValue>1112663586040</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastWeeklyReminderDate</ConstantName>
-            <ConstantValue>1112663586068</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>User.CreateNew.Instruction</ConstantName>
@@ -225,18 +173,12 @@
             <ConstantName>EDL.DebugTransform</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
-    
 
-    
+
+
 
 
         <!-- ApplicationConstants elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
-
-
-        <ApplicationConstant>
-            <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
-            <ConstantValue>2620</ConstantValue>
-        </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
             <ConstantValue>true</ConstantValue>
@@ -244,10 +186,6 @@
         <ApplicationConstant>
             <ConstantName>RuleService.IsCaching</ConstantName>
             <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>rkirkend jhopf temay ewestfal natjohns xqi bmcgough bghutchi quickstart</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
@@ -266,36 +204,12 @@
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RouteTypeSearch.Instructions</ConstantName>
-            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
-            <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
             <ConstantValue>3</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RouteQueue.timeIncrement</ConstantName>
             <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.waitTime</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerPool.numWorkers</ConstantName>
-            <ConstantValue>10</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerDriver.isRunning</ConstantName>
-            <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>ActionList.sendEmailNotification</ConstantName>
@@ -312,10 +226,6 @@
         <ApplicationConstant>
             <ConstantName>Workgroup.Search.Instruction</ConstantName>
             <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
-            <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
@@ -342,10 +252,6 @@
             <ConstantValue>en-dev</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
-            <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>User.Search.Instruction</ConstantName>
             <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
         </ApplicationConstant>
@@ -359,10 +265,6 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Workgroup.IsRouteLogPopup</ConstantName>
-            <ConstantValue>false</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
@@ -424,7 +326,7 @@
             <ConstantName>EDL.DebugTransform</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
-    
+
 
     </ApplicationConstants>
 
@@ -512,7 +414,7 @@
             <givenName>Test</givenName>
             <lastName>User 6</lastName>
         </user>
-        
+
         <!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
         <user>
             <workflowId>quickstart</workflowId>
@@ -644,7 +546,7 @@
             <givenName>Doug</givenName>
             <lastName>Neidermeyer</lastName>
         </user>
-    
+
 
 
         <!-- users elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
@@ -663,7 +565,7 @@
             <givenName>admin</givenName>
             <lastName>admin</lastName>
         </user>
-    
+
 
 
         <!-- users elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
@@ -758,7 +660,7 @@
             <givenName>Developer</givenName>
             <lastName>Two</lastName>
         </user>
-	
+
 
 
         <!-- users elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
@@ -784,9 +686,9 @@
             <givenName>Notification</givenName>
             <lastName>System Admin</lastName>
         </user>
-    
 
-    
+
+
 
 
         <!-- users elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -894,7 +796,7 @@
             <givenName>employee</givenName>
             <lastName>employee</lastName>
         </user>
-    
+
 
     </users>
 
@@ -946,7 +848,7 @@
                 <workflowId>quickstart</workflowId>
             </members>
         </workgroup>
-        
+
         <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
             <description>WorkflowAdmin</description>
@@ -987,7 +889,7 @@
                 <workflowId>user2</workflowId>
             </members>
         </workgroup>
-    
+
 
 
         <!-- workgroups elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
@@ -1005,7 +907,7 @@
                 <workflowId>admin</workflowId>
             </members>
         </workgroup>
-    
+
 
 
         <!-- workgroups elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
@@ -1041,7 +943,7 @@
                 <workflowId>dev2</workflowId>
             </members>
         </workgroup>
-	
+
 
 
         <!-- workgroups elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
@@ -1065,9 +967,9 @@
                 <workflowId>NotSys</workflowId>
             </members>
         </workgroup>
-    
 
-    
+
+
 
     </workgroups>
 
@@ -1075,7 +977,7 @@
 
         <!-- workgroupTypes elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
-    
+
 
     </workgroupTypes>
 
@@ -1107,7 +1009,7 @@
 			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
-    
+
 
 
         <!-- ruleAttributes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
@@ -1231,7 +1133,7 @@
            </searchingConfig>
        </ruleAttribute>
 
-       <!-- attributes for notification request -->       
+       <!-- attributes for notification request -->
        <ruleAttribute>
             <name>NotificationCustomActionListAttribute</name>
             <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
@@ -1252,9 +1154,9 @@
             <serviceNamespace>KEN</serviceNamespace>
             -->
         </ruleAttribute>
-    
 
-    
+
+
 
 
         <!-- ruleAttributes elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -1309,7 +1211,7 @@
                 </fieldDef>
             </searchingConfig>
         </ruleAttribute>
-    
+
 
     </ruleAttributes>
 
@@ -1357,7 +1259,7 @@
                     </attribute>
                 </attributes>
         </ruleTemplate>
-    
+
 
 
         <!-- ruleTemplates elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
@@ -1375,9 +1277,9 @@
             <name>NotificationRouting</name>
             <description>The standard rule template for sending notification messages.</description>
         </ruleTemplate>
-    
 
-    
+
+
 
 
         <!-- ruleTemplates elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -1418,7 +1320,7 @@
                 </attribute>
             </attributes>
         </ruleTemplate>
-    
+
 
     </ruleTemplates>
 
@@ -1591,7 +1493,7 @@
 
             </routeNodes>
         </documentType>
-    
+
 
 
         <!-- documentTypes elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
@@ -1624,7 +1526,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMPrincipalKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1687,7 +1589,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMRoleKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1719,7 +1621,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMAttributeTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1782,7 +1684,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMEntityTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1816,7 +1718,7 @@
         </requests>
       </routeNodes>
     </documentType>
-    
+
     <documentType>
       <name>KIMGroupTypeMaintenanceDocument</name>
       <description>Create or Update a Group Type</description>
@@ -1845,11 +1747,11 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMGroupTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
-  
+
 
 
         <!-- documentTypes elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
@@ -1890,7 +1792,7 @@
               <attribute>
                 <name>NotificationSendersSearchableAttribute</name>
               </attribute>
-          </attributes> 
+          </attributes>
           <routingVersion>1</routingVersion>
           <routePaths>
             <routePath>
@@ -1905,7 +1807,7 @@
             </start>
           </routeNodes>
         </documentType>
-        
+
         <!-- Send notification request doc type -->
         <documentType>
             <name>SendNotificationRequest</name>
@@ -1960,7 +1862,7 @@
                     <ruleTemplate>NotificationRouting</ruleTemplate>
                 </requests>
             </routeNodes>
-        </documentType> 
+        </documentType>
 
 
         <!-- documentTypes elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -2200,7 +2102,7 @@
                 </responsibility>
             </responsibilities>
         </rule>
-    
+
 
 
         <!-- rules elements from ..\/kim/src/main/config/xml/KIMBootstrap.xml -->
@@ -2216,8 +2118,8 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
-    
+
+
     <rule>
        <name>KIMEntityKualiIdentityManagersGroupApproval</name>
        <documentType>KIMEntityMaintenanceDocument</documentType>
@@ -2229,7 +2131,7 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
+
     <rule>
        <name>KIMPrincipalKualiIdentityManagersGroupApproval</name>
        <documentType>KIMPrincipalMaintenanceDocument</documentType>
@@ -2241,7 +2143,7 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
+
 
     <rule>
        <name>KIMEntityTypeKualiIdentityManagersGroupApproval</name>
@@ -2329,9 +2231,9 @@
             </responsibility>
           </responsibilities>
         </rule>
-    
 
-    
+
+
 
 
         <!-- rules elements from ..\/kns/src/main/config/xml/RiceSampleAppData.xml -->
@@ -2402,7 +2304,7 @@
                 </responsibility>
             </responsibilities>
         </rule>
-    
+
 
     </rules>
 
@@ -2410,7 +2312,7 @@
 
         <!-- helpEntries elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
-    
+
 
     </helpEntries>
 
@@ -2418,7 +2320,7 @@
 
         <!-- styles elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
-    
+
 
     </styles>
 
@@ -2426,7 +2328,7 @@
 
         <!-- edoclite elements from ..\/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
-    
+
 
     </edoclite>
 </data>

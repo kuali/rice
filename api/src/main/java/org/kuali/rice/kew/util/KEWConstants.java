@@ -20,7 +20,7 @@ public class KEWConstants {
      * Node state key under which rule nme can be specified on a per-nodeinstance basis
      */
     public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
-    
+
     public static final String KEW_MESSAGING_ENTITY = "KEW";
 
     public static final String MESSAGING_MEMORY = "memory";
@@ -44,16 +44,11 @@ public class KEWConstants {
     public static final String CHECK_ROUTE_LOG_AUTH_FUTURE = "Feature.CheckRouteLogAuthentication.CheckFuture";
     public static final String IS_LAST_APPROVER_ACTIVATE_FIRST = "Feature.IsLastApprover.ActivateFirst";
     public static final String EMAIL_REMINDER_FROM_ADDRESS_KEY = "Config.Mailer.FromAddress";
-    public static final String EMAIL_REMINDER_LAST_WEEKLY_KEY = "Config.Mailer.LastWeeklyReminderDate";
-    public static final String EMAIL_REMINDER_LAST_DAILY_KEY = "Config.Mailer.LastDailyReminderDate";
     public static final String APP_CONST_EDL_USE_XSLTC = "EDL.UseXSLTC";
     public static final String APP_CONST_EDL_DEBUG_TRANSFORM = "EDL.DebugTransform";
-    
+
     public static final String APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS = "Config.Maximum.Nodes.Before.Runaway";
 
-    public static final String BAM_CONST = "BAM";
-
-    public static final String MINUTES_TO_CACHE_USERS_KEY = "Config.Application.MinutesToCacheUsers";
     public static final String SHOW_BACK_DOOR_LOGIN_KEY = "Backdoor.ShowbackDoorLogin";
     public static final String HELP_DESK_ACTION_LIST_KEY = "HelpDeskActionList.helpDeskActionListName";
     public static final String WORKFLOW_ADMIN_WORKGROUP_NAME_KEY = "Workflow.AdminWorkgroup";
@@ -64,24 +59,17 @@ public class KEWConstants {
     public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY = "RouteQueue.maxRetryAttempts";
     public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = "RouteQueue.maxRetryAttemptsOverride";
     public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = "RouteQueue.timeIncrement";
-    public static final String ROUTE_QUEUE_ROUTE_BY_IP_KEY = "RouteQueue.isRoutingByIPNumber";
-    public static final String ROUTE_MANAGER_DRIVER_IS_RUNNING_KEY = "RouteManagerDriver.isRunning";
-    public static final String ROUTE_MANAGER_POOL_NUM_WORKERS_KEY = "RouteManagerPool.numWorkers";
-    public static final String ROUTE_MANAGER_QUEUE_INITIAL_DELAY_KEY = "RouteManagerQueue.initialDelay";
-    public static final String ROUTE_MANAGER_QUEUE_WAIT_TIME_KEY = "RouteManagerQueue.waitTime";
     public static final String RULE_CACHE_REQUEUE_WAIT_TIME_KEY = "RouteQueue.requeueWaitTime";
     public static final String RULE_LOCKING_ON = "Config.Application.RuleLockingOn";
     public static final String APP_CONST_SHOW_ATTACHMENTS = "showAttachments";
     public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME = "Config.Workgroup.NotifyExcludedUsers";
-
-    public static final String SECURITY_HTTP_INVOKER_SIGN_MESSAGES = "Security.HttpInvoker.SignMessages";
 
     public static final String ACTION_LIST_PAGE_SIZE_THROTTLE = "ActionList.pageSizeThrottle";
 
     public static final long DEFAULT_CACHE_REQUEUE_WAIT_TIME = 5000;
 
     public static final int DEFAULT_THREAD_POOL_SIZE = 5;
-    
+
     public static final String STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM = "documentSearch.generator.class.name";
     public static final String STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM = "documentSearch.resultProcessor.class.name";
 
@@ -115,14 +103,12 @@ public class KEWConstants {
     public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION_KEY = "RuleTemplate.CreateNew.Instruction";
     public static final String RULE_CREATE_NEW_INSTRUCTION_KEY = "Rule.CreateNew.Instruction";
     public static final String WORKGROUP_SEARCH_INSTRUCTION_KEY = "Workgroup.Search.Instruction";
-    public static final String RULE_ATTRIBUTE_CREATE_NEW_INSTRUCTION_KEY = "RuleAttribute.CreateNew.Instruction";
     public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION_KEY = "RuleTemplate.Search.Instruction";
     public static final String RULE_SEARCH_INSTRUCTION_KEY = "Rule.Search.Instruction";
     public static final String GLOBAL_REVIEWER_REPLACE_INSTRUCTION_KEY = "GlobalReviewer.Replace.Instruction";
     public static final String DOCUMENT_TYPE_SEARCH_INSTRUCTION_KEY = "DocumentType.Search.Instruction";
     public static final String APPLICATION_CONTEXT_KEY = "ApplicationContext";
     public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "QuickLinks.restrictDocumentTypes";
-    public static final String RULE_ATTRIBUTE_SEARCH_INSTRUCTION_KEY = "RuleAttribute.Search.Instruction";
     public static final String SUB_ACCOUNT_SEARCH_INSTRUCTION_KEY = "SubAccount.Search.Instruction";
     public static final String USER_SEARCH_INSTRUCTION_KEY = "User.Search.Instruction";
     public static final String WORKGROUP_CREATE_NEW_INSTRUCTION_KEY = "Workgroup.CreateNew.Instruction";
@@ -144,7 +130,7 @@ public class KEWConstants {
     public static final String DOC_HANDLER_REDIRECT_PAGE = "DocHandler.do";
     public static final String DOCUMENT_ROUTING_REPORT_PAGE = "RoutingReport.do";
     public static final String FEEDBACK_URL = "feedback.do";
-    
+
     // Routing Report constants
     public static final String DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME = "documentTypeParam";
     public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorNetworkId";
@@ -437,12 +423,12 @@ public class KEWConstants {
     public static final String EXCEPTION_ROUTE_MODULE_NAME = "org.kuali.rice.kew.routemodule.ExceptionRouteModule";
     public static final String EXCEPTION_ROUTE_LEVEL_NAME = "Exception Routing";
     public static final int INVALID_ROUTE_LEVEL = -2;
-    
+
     /** Routing should process the associated ActionRequests in sequence */
     public static final String ROUTE_LEVEL_SEQUENCE = "S";
     public static final String ROUTE_LEVEL_SEQUENTIAL_NAME = "Sequential";
     public static final String ROUTE_LEVEL_SEQUENCE_LABEL = "SEQUENCE";
-    
+
     /** Routing should process the associated ActionRequests in parallel */
     public static final String ROUTE_LEVEL_PARALLEL = "P";
     public static final String ROUTE_LEVEL_PARALLEL_NAME = "Parallel";
@@ -678,7 +664,7 @@ public class KEWConstants {
     public static final String XML_PARSE_ERROR = "general.error.parsexml";
 
 
-    
+
     public static final String RULE_ATTRIBUTE_TYPE = "RuleAttribute";
     public static final String SEARCHABLE_ATTRIBUTE_TYPE = "SearchableAttribute";
     public static final String RULE_XML_ATTRIBUTE_TYPE = "RuleXmlAttribute";
@@ -710,7 +696,7 @@ public class KEWConstants {
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor XML Attribute";
     public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL = "Document Search Security Filter Attribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL = "Qualifier Resolver";
-    
+
     public static final String[] RULE_ATTRIBUTE_TYPES = {
     	RULE_ATTRIBUTE_TYPE,
         SEARCHABLE_ATTRIBUTE_TYPE,
@@ -728,7 +714,7 @@ public class KEWConstants {
         DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE,
         QUALIFIER_RESOLVER_ATTRIBUTE_TYPE
     };
-    
+
     public static final Map<String, String> RULE_ATTRIBUTE_TYPE_MAP;
     static {
     	RULE_ATTRIBUTE_TYPE_MAP = new HashMap<String, String>();
@@ -748,7 +734,7 @@ public class KEWConstants {
         RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE, DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(QUALIFIER_RESOLVER_ATTRIBUTE_TYPE, QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL);
     };
-    
+
     public static final String DAILY = "daily";
     public static final String WEEKLY = "weekly";
     public static final Long EMAIL_QUEUE_ENTRY_ROUTE_HEADER_ID = new Long(-1);
@@ -824,8 +810,8 @@ public class KEWConstants {
 
     public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "EDENSERVICE-DOCS.RemoveReplaceUser";
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
-    
-    
+
+
     // receive future action request contants
     public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_receive_future_requests";
     public static final String DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_deactivated_future_requests";
@@ -841,7 +827,7 @@ public class KEWConstants {
     public static final String LOOKUP_COLUMN_TYPE_LONG = "long";
     public static final String LOOKUP_COLUMN_TYPE_FLOAT = "float";
     public static final String LOOKUP_COLUMN_TYPE_DATETIME = "datetime";
-    
+
     // document search route status qualifiers
     public static final String DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT = "equal";
     public static final String DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE = "before";
@@ -853,13 +839,13 @@ public class KEWConstants {
         DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE, "Before");
         DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER, "After");
     }
-    
+
     // service name constants
-    
+
 	public static final String WORKFLOW_UTILITY_SERVICE = "enWorkflowUtilityService";
 
 	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "enWorkflowDocumentActionsService";
-	
+
 	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = RiceConstants.SIMPLE_DATE_FORMAT_FOR_DATE;
     public static final String SIMPLE_DATE_FORMAT_FOR_TIME = RiceConstants.SIMPLE_DATE_FORMAT_FOR_TIME;
     public static final String DEFAULT_DATE_FORMAT_PATTERN = RiceConstants.DEFAULT_DATE_FORMAT_PATTERN;

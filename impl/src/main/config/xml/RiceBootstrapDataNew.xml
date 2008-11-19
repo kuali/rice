@@ -2,20 +2,12 @@
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
         <ApplicationConstant>
-            <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
-            <ConstantValue>2620</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleService.IsCaching</ConstantName>
             <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>admin</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
@@ -34,36 +26,12 @@
             <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RouteTypeSearch.Instructions</ConstantName>
-            <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
-            <ConstantValue>true</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
             <ConstantValue>3</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RouteQueue.timeIncrement</ConstantName>
             <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerQueue.waitTime</ConstantName>
-            <ConstantValue>1000</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerPool.numWorkers</ConstantName>
-            <ConstantValue>10</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RouteManagerDriver.isRunning</ConstantName>
-            <ConstantValue>true</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>ActionList.sendEmailNotification</ConstantName>
@@ -80,10 +48,6 @@
         <ApplicationConstant>
             <ConstantName>Workgroup.Search.Instruction</ConstantName>
             <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
-            <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
@@ -110,10 +74,6 @@
             <ConstantValue>en-dev</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
-            <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>User.Search.Instruction</ConstantName>
             <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
         </ApplicationConstant>
@@ -134,10 +94,6 @@
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
-            <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
-            <ConstantValue>false</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
             <ConstantName>Rule.IsRouteLogPopup</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
@@ -148,7 +104,7 @@
         <ApplicationConstant>
             <ConstantName>Config.Application.DelegateLimit</ConstantName>
             <ConstantValue>20</ConstantValue>
-        </ApplicationConstant>        
+        </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Config.Mailer.FromAddress</ConstantName>
             <ConstantValue>kew@localhost</ConstantValue>
@@ -169,14 +125,6 @@
         <ApplicationConstant>
             <ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
             <ConstantValue>WorkflowAdmin</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastDailyReminderDate</ConstantName>
-            <ConstantValue>1112663586040</ConstantValue>
-        </ApplicationConstant>
-        <ApplicationConstant>
-            <ConstantName>Config.Mailer.LastWeeklyReminderDate</ConstantName>
-            <ConstantValue>1112663586068</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>User.CreateNew.Instruction</ConstantName>
@@ -220,14 +168,14 @@
             <ConstantName>EDL.DebugTransform</ConstantName>
             <ConstantValue>false</ConstantValue>
         </ApplicationConstant>
-    
+
 
     </ApplicationConstants>
-<!-- 
+<!--
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 -->
         <!-- Core admin user -->
-   <!--      
+   <!--
         <user>
             <workflowId>admin</workflowId>
             <emplId>admin</emplId>
@@ -238,7 +186,7 @@
             <givenName>admin</givenName>
             <lastName>admin</lastName>
         </user>
-    
+
         <user>
             <workflowId>idm1</workflowId>
             <emplId>idm1</emplId>
@@ -331,7 +279,7 @@
         </user>
 	-->
         <!-- The NotSys user is needed for the message sending forms that come with the system -->
-   <!--      
+   <!--
         <user>
             <workflowId>NotSys</workflowId>
             <emplId>NotSys</emplId>
@@ -352,14 +300,14 @@
             <givenName>Notification</givenName>
             <lastName>System Admin</lastName>
         </user>
-    
+
 
     </users>
 -->
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 
         <!-- Core admin workgroup -->
-<!--         
+<!--
         <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
             <description>WorkflowAdmin</description>
@@ -369,7 +317,7 @@
                 <workflowId>admin</workflowId>
             </members>
         </workgroup>
- -->   
+ -->
 
 
         <workgroup allowOverwrite="true">
@@ -403,7 +351,7 @@
                 <workflowId>dev2</workflowId>
             </members>
         </workgroup>
-	
+
        <workgroup allowOverwrite="true">
             <workgroupName>NotificationAdmin</workgroupName>
             <description>Notification system admin group for automation.</description>
@@ -413,7 +361,7 @@
                 <workflowId>NotSysAdm</workflowId>
             </members>
         </workgroup>
-     <!--    
+     <!--
         <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
             <description>WorkflowAdmin</description>
@@ -454,7 +402,7 @@
 			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
-    
+
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
         <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
@@ -574,7 +522,7 @@
            </searchingConfig>
        </ruleAttribute>
 
-       <!-- attributes for notification request -->       
+       <!-- attributes for notification request -->
        <ruleAttribute>
             <name>NotificationCustomActionListAttribute</name>
             <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
@@ -595,7 +543,7 @@
             <serviceNamespace>KEN</serviceNamespace>
             -->
         </ruleAttribute>
-    
+
 
     </ruleAttributes>
 
@@ -638,7 +586,7 @@
                     </attribute>
                 </attributes>
         </ruleTemplate>
-    
+
         <ruleTemplate allowOverwrite="true">
             <name>ReviewersRouting</name>
             <description>Routes to channel reviewers</description>
@@ -652,7 +600,7 @@
             <name>NotificationRouting</name>
             <description>The standard rule template for sending notification messages.</description>
         </ruleTemplate>
-    
+
 
     </ruleTemplates>
 
@@ -820,7 +768,7 @@
 
             </routeNodes>
         </documentType>
-    
+
    <documentType>
       <name>KIMPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
@@ -849,7 +797,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMPrincipalKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -912,7 +860,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMRoleKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -944,7 +892,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMAttributeTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1007,7 +955,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMEntityTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1041,7 +989,7 @@
         </requests>
       </routeNodes>
     </documentType>
-    
+
     <documentType>
       <name>KIMGroupTypeMaintenanceDocument</name>
       <description>Create or Update a Group Type</description>
@@ -1070,7 +1018,7 @@
             <ruleSelector>Named</ruleSelector>
             <ruleName>KIMGroupTypeKualiIdentityManagersGroupApproval</ruleName>
         </requests>
-        
+
       </routeNodes>
     </documentType>
 
@@ -1110,7 +1058,7 @@
               <attribute>
                 <name>NotificationSendersSearchableAttribute</name>
               </attribute>
-          </attributes> 
+          </attributes>
           <routingVersion>1</routingVersion>
           <routePaths>
             <routePath>
@@ -1125,7 +1073,7 @@
             </start>
           </routeNodes>
         </documentType>
-        
+
         <!-- Send notification request doc type -->
         <documentType>
             <name>SendNotificationRequest</name>
@@ -1181,7 +1129,7 @@
                 </requests>
             </routeNodes>
         </documentType>
-    
+
    <documentType>
       <name>KualiOrganizationMaintenanceDocument</name>
       <description>Create or Update a Organization</description>
@@ -1257,7 +1205,7 @@
       </routeNodes>
     </documentType>
 
-  
+
 
     </documentTypes>
 
@@ -1294,7 +1242,7 @@
                 </responsibility>
             </responsibilities>
         </rule>
-    
+
 	<rule>
        <name>KIMNamespaceKualiIdentityManagersGroupApproval</name>
        <documentType>KIMNamespaceMaintenanceDocument</documentType>
@@ -1306,8 +1254,8 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
-    
+
+
     <rule>
        <name>KIMEntityKualiIdentityManagersGroupApproval</name>
        <documentType>KIMEntityMaintenanceDocument</documentType>
@@ -1319,7 +1267,7 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
+
     <rule>
        <name>KIMPrincipalKualiIdentityManagersGroupApproval</name>
        <documentType>KIMPrincipalMaintenanceDocument</documentType>
@@ -1331,7 +1279,7 @@
 	       </responsibility>
        </responsibilities>
     </rule>
-    
+
 
     <rule>
        <name>KIMEntityTypeKualiIdentityManagersGroupApproval</name>
@@ -1413,7 +1361,7 @@
             </responsibility>
           </responsibilities>
         </rule>
-    
+
 
     </rules>
 

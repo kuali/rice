@@ -3,13 +3,6 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<!-- Unit test ApplicationConstants: reset the admin user list to include some test users -->
 
-    <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
-        <ApplicationConstant>
-            <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>rkirkend jhopf temay ewestfal natjohns xqi bmcgough bghutchi admin</ConstantValue>
-        </ApplicationConstant>
-    </ApplicationConstants>
-
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 	    <!-- real users -->
 		<!--<user>
@@ -33,7 +26,7 @@
 			<emailAddress>ewestfal@indiana.edu</emailAddress>
 			<displayName>Eric Westfall</displayName>
 			<givenName>Eric</givenName>
-			<lastName>Westfall</lastName>			
+			<lastName>Westfall</lastName>
 		</user>
 		<user>
 			<workflowId>2</workflowId>
@@ -54,7 +47,7 @@
 			<displayName>Jeremy Hopf</displayName>
 			<givenName>Jeremy</givenName>
 			<lastName>Hopf</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>4</workflowId>
@@ -65,7 +58,7 @@
 			<displayName>Brian McGough</displayName>
 			<givenName>Brian</givenName>
 			<lastName>McGough</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>5</workflowId>
@@ -76,7 +69,7 @@
 			<displayName>Teresa May</displayName>
 			<givenName>Teresa</givenName>
 			<lastName>May</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>6</workflowId>
@@ -87,7 +80,7 @@
 			<displayName>Xiaofeng Qi</displayName>
 			<givenName>Xiaofeng</givenName>
 			<lastName>Qi</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>7</workflowId>
@@ -98,7 +91,7 @@
 			<displayName>Nate Johnson</displayName>
 			<givenName>Nate</givenName>
 			<lastName>Johnson</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>8</workflowId>
@@ -109,7 +102,7 @@
 			<displayName>Phil McKown</displayName>
 			<givenName>Phil</givenName>
 			<lastName>McKown</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>9</workflowId>
@@ -120,7 +113,7 @@
 			<displayName>Jim Thomas</displayName>
 			<givenName>Jim</givenName>
 			<lastName>Thomas</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>10</workflowId>
@@ -131,7 +124,7 @@
 			<displayName>Tara Bazler</displayName>
 			<givenName>Tara</givenName>
 			<lastName>Bazler</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>11</workflowId>
@@ -142,7 +135,7 @@
 			<displayName>Jim True</displayName>
 			<givenName>Jim</givenName>
 			<lastName>True</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>12</workflowId>
@@ -153,7 +146,7 @@
 			<displayName>Li Shen</displayName>
 			<givenName>Li</givenName>
 			<lastName>Shen</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>13</workflowId>
@@ -164,7 +157,7 @@
 			<displayName>Aaron Hamid</displayName>
 			<givenName>Aaron</givenName>
 			<lastName>Hamid</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>14</workflowId>
@@ -175,7 +168,7 @@
 			<displayName>Pan Zhang</displayName>
 			<givenName>Pan</givenName>
 			<lastName>Zhang</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>15</workflowId>
@@ -186,7 +179,7 @@
 			<displayName>David Elyea</displayName>
 			<givenName>David</givenName>
 			<lastName>Elyea</lastName>
-       
+
 		</user>
 
         <!-- test users, range starting at id 1000 -->
@@ -199,7 +192,7 @@
 			<displayName>User One</displayName>
 			<givenName>User</givenName>
 			<lastName>One</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>1002</workflowId>
@@ -210,7 +203,7 @@
 			<displayName>User Two</displayName>
 			<givenName>User</givenName>
 			<lastName>Two</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>1003</workflowId>
@@ -221,7 +214,7 @@
 			<displayName>User Three</displayName>
 			<givenName>User</givenName>
 			<lastName>Three</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>1004</workflowId>
@@ -232,7 +225,7 @@
 			<displayName>Dewey Decimal</displayName>
 			<givenName>Dewey</givenName>
 			<lastName>Decimal</lastName>
-       
+
 		</user>
 		<user>
 			<workflowId>1005</workflowId>
@@ -243,7 +236,7 @@
 			<displayName>Quick Start</displayName>
 			<givenName>Quick</givenName>
 			<lastName>Start</lastName>
-       
+
 		</user>
         <user>
             <workflowId>1006</workflowId>
@@ -254,7 +247,7 @@
             <displayName>Administrator</displayName>
             <givenName>administrator</givenName>
             <lastName>administrator</lastName>
-       
+
         </user>
         <user>
 			<workflowId>admin</workflowId>
@@ -265,7 +258,7 @@
 			<displayName>Admin</displayName>
 			<givenName>Ad</givenName>
 			<lastName>Min</lastName>
-			 
+
 		</user>
 	</users>
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
@@ -350,7 +343,7 @@
 			<description>Test Rule Attribute 3</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
-		
+
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>

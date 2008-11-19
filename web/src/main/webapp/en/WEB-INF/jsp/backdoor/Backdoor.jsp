@@ -53,7 +53,10 @@
 	<tr>
 		<td><a href="Lookup.do?lookupableImplServiceName=RuleBaseValuesLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Rules</a></td>
 	</tr>
-	<tr>
+	<!-- <tr>
+			<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.Role&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Role <b>NEW</b></a></td>		
+		</tr>
+	<tr-->
 		<td><a href="Lookup.do?lookupableImplServiceName=UserLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">User Lookup</a></td>
 	</tr>
 	<tr>

@@ -68,7 +68,7 @@ public abstract class KimDelegationMemberImpl extends InactivatableFromToImpl im
 
 	public boolean isActive() {
 		long now = System.currentTimeMillis();
-		return now > activeFromDate.getTime() && now < activeToDate.getTime();
+		return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
 	}
 
 	public void setActiveFromDate(Timestamp from) {

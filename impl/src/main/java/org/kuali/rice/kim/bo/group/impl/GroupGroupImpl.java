@@ -46,7 +46,7 @@ public class GroupGroupImpl extends GroupMemberBase implements GroupGroup, Inact
 	 */
 	public boolean isActive() {
 		long now = System.currentTimeMillis();
-		return now > activeFromDate.getTime() && now < activeToDate.getTime();
+		return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
 	}
 
 	public void setActiveFromDate(Timestamp from) {

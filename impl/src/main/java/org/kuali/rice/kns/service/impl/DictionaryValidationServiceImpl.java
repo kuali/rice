@@ -422,7 +422,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param propertyDescriptor
      * @param errorPrefix
      */
-    private void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
+    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
         // validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
             Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());

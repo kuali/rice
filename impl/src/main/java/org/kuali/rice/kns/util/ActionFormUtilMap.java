@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -127,6 +128,11 @@ public class ActionFormUtilMap extends HashMap {
         return optionsList;
     }
 
+    // Method added to keep backward compatibility for non-kimTypeName cases
+    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel) {
+    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeKeyInLabel, null);
+    }
+    
     /*
      *
     */
@@ -142,9 +148,10 @@ public class ActionFormUtilMap extends HashMap {
      * @param keyAttribute name of BO attribute for key
      * @param labelAttribute name of BO attribute for label
      * @param includeKeyInLabel whether to include the key in the label or not
+     * @param kimTypeName the KIM Type to use in case of KimAttributeValuesFinder 
      * @return list of KeyValue pairs
      */
-    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel) {
+    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel, String kimTypeName) {
         List optionsList = new ArrayList();
 
         if (StringUtils.isBlank((String) key)) {
@@ -170,8 +177,14 @@ public class ActionFormUtilMap extends HashMap {
                 ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName((String)keyAttribute);
                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName((String)labelAttribute);
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(Boolean.parseBoolean((String)includeKeyInLabel));
+            } else if (finder instanceof KimAttributeValuesFinder) {
+            	if (kimTypeName == null) {
+            		throw new RuntimeException("kimTypeName must be specified for KimAttributeValuesFinder");
+            	}
+                ((KimAttributeValuesFinder) finder).setKimTypeName(kimTypeName);
+                ((KimAttributeValuesFinder) finder).setKimAttributeName((String)keyAttribute);
             }
-
+            
             optionsList = finder.getKeyValues();
         }
         catch (ClassNotFoundException e) {

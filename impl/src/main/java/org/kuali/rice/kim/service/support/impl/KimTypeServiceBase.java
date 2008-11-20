@@ -15,14 +15,36 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.mask.Mask;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatterSubString;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -31,6 +53,8 @@ import org.kuali.rice.kim.service.support.KimTypeService;
  *
  */
 public class KimTypeServiceBase implements KimTypeService {
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
 	protected List<String> acceptedAttributeNames = new ArrayList<String>();;
 	
@@ -125,21 +149,166 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
-	public AttributeSet validateAttributes( AttributeSet attributes) {
+	public AttributeSet validateAttributes(AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
-		// call the individual field validators
 		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
-			// TODO implement dd format and existence validation - ask warren if you don't know the method
-//			List<String> attributeErrors = validateAttribute( attribute.getKey(), attribute.getValue() );
-//			if ( attributeErrors != null ) {
-//				for ( String err : attributeErrors ) {
-//					validationErrors.put(attribute.getKey(), err);
-//				}
-//			}
+			Map<String,String> criteria = new HashMap<String,String>();
+            criteria.put("attributeName", attribute.getKey());
+            KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+            
+			List<String> attributeErrors = null;
+			try {
+				PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(attributeImpl, attributeImpl.getAttributeName());
+				if (attributeImpl.getComponentName() == null) {
+					attributeErrors = validateNonDataDictionaryAttribute(null, attributeImpl, propertyDescriptor, true);
+				} else {
+					attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), attributeImpl, propertyDescriptor, true);
+				}
+			} catch (IllegalAccessException e) {
+				LOG.error(e.getMessage(), e);
+			} catch (InvocationTargetException e) {
+				LOG.error(e.getMessage(), e);
+			} catch (NoSuchMethodException e) {
+				LOG.error(e.getMessage(), e);
+			}
+			
+			if ( attributeErrors != null ) {
+				for ( String err : attributeErrors ) {
+					validationErrors.put(attribute.getKey(), err);
+				}
+			}
 		}
 		return validationErrors;
 	}
+	
+	protected List<String> validateDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
+		KNSServiceLocator.getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
+	
+		List<String> errors = new ArrayList<String>();
+		Object results = GlobalVariables.getErrorMap().get(propertyDescriptor.getName());
+        if (results instanceof String) {
+        	errors.add((String)results);
+        } else {
+        	String [] temp = (String []) results;
+        	for (String string : temp) {
+				errors.add(string);
+			}
+        }
+		
+        GlobalVariables.getErrorMap().clear();
+        
+		return errors;
+	}
 
+	protected List<String> validateNonDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
+		return new ArrayList<String>();
+	}
+	
+	protected List<KeyLabelPair> getDataDictionaryAttributeValues(String attributeName) {
+		Map<String,String> criteria = new HashMap<String,String>();
+        criteria.put("attributeName", attributeName);
+        KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+		AttributeDefinition definition = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeName);
+		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
+		Class<KeyValuesFinder> keyValuesFinderName = (Class<KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
+		try {
+			KeyValuesFinder finder = keyValuesFinderName.newInstance();
+			pairs = finder.getKeyValues();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return pairs;
+	}
+	
+	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
+		return new ArrayList<KeyLabelPair>();
+	}
+	
+	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
+		Map<String,String> criteria = new HashMap<String,String>();
+        criteria.put("attributeName", attributeName);
+        KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeName);
+	}
+	
+	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
+		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition(); 
+		definition.setDataDictionaryAttributeDefinition(KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(typeAttribute.getKimAttribute().getComponentName()).getAttributeDefinition(typeAttribute.getKimAttribute().getAttributeName()));
+		if (definition.getDataDictionaryAttributeDefinition().getFormatterClass() != null) {
+			definition.setFormatterClass(Formatter.findFormatter(definition.getDataDictionaryAttributeDefinition().getFormatterClass()));
+		}
+		ControlDefinition control = copy(definition.getDataDictionaryAttributeDefinition().getControl());
+		if (control.getValuesFinderClass() != null) {
+			control.setValuesFinderClass(KimAttributeValuesFinder.class);
+		}
+		definition.setControl(control);
+		Mask mask = copy(definition.getDataDictionaryAttributeDefinition().getDisplayMask());
+		if (mask != null) {
+			MaskFormatterSubString formatter = new MaskFormatterSubString();
+			formatter.setMaskLength(definition.getDataDictionaryAttributeDefinition().getMaxLength());
+			mask.setMaskFormatter(formatter);
+		}
+		definition.setDisplayMask(mask);
+		definition.setSortCode(typeAttribute.getSortCode());
+		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
+		
+		Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
+		Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
+		try {
+			Field field = FieldUtils.getPropertyField(Class.forName(typeAttribute.getKimAttribute().getComponentName()), typeAttribute.getKimAttribute().getAttributeName(), false);
+			String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
+			for (String string : lookupInputPropertyConversions) {
+				String [] keyVal = string.split(":");
+				lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+			}
+			definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
+			String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
+			for (String string : lookupReturnPropertyConversions) {
+				String [] keyVal = string.split(":");
+				lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+			}
+			definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return definition;
+	}
+	
+	private <T> T copy(final T original) {
+		T copy = null;
+		try {
+			copy = (T) original.getClass().newInstance();
+			Class copyClass = copy.getClass();
+	    	do {
+	    		for (java.lang.reflect.Field copyField : copyClass.getDeclaredFields()) {
+    				copyField.setAccessible(true);
+    				int mods = copyField.getModifiers();
+    				if (!Modifier.isFinal(mods) && !Modifier.isStatic(mods)) {
+    					copyField.set(copy, copyField.get(original));
+    				}
+	    		}
+	    		copyClass = copyClass.getSuperclass();
+	    	} while (copyClass != null && !(copyClass.equals(Object.class)));		
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return copy;
+	}
+	
+	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
+		KimNonDataDictionaryAttributeDefinition definition = new KimNonDataDictionaryAttributeDefinition();
+		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
+		definition.setLabel(typeAttribute.getKimAttribute().getAttributeLabel());
+		definition.setSortCode(typeAttribute.getSortCode());
+		return definition;
+	}
+	
+	public AttributeDefinitionMap getAttributeDefinitions() {
+		AttributeDefinitionMap definitions = new AttributeDefinitionMap();
+		
+		return definitions;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#getAcceptedAttributeNames()
 	 */
@@ -185,4 +354,5 @@ public class KimTypeServiceBase implements KimTypeService {
 	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
 		kimAttributesTranslators.add( attributesTranslator );
 	}
+	
 }

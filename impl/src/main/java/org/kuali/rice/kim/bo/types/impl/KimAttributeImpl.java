@@ -44,6 +44,10 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 	protected String attributeLabel;
 	@Column(name="ACTV_IND")
 	protected boolean active;
+	@Column(name="CMPNT_NM")
+	protected String componentName;
+	@Column(name="APPL_URL")
+	protected String applicationUrl;
 	
 	public String getKimAttributeId() {
 		return kimAttributeId;
@@ -57,30 +61,12 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 		this.attributeName = attributeName;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
-	 */
 	public boolean isActive() {
 		return active;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
-	 */
 	public void setActive(boolean active) {
 		this.active = active;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "attributeId", kimAttributeId );
-		m.put( "attributeName", attributeName );
-		return m;
 	}
 
 	public String getAttributeLabel() {
@@ -103,4 +89,32 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 		this.namespaceCode = namespaceCode;
 	}
 
+	public String getComponentName() {
+		return this.componentName;
+	}
+
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+
+	public String getApplicationUrl() {
+		return this.applicationUrl;
+	}
+
+	public void setApplicationUrl(String applicationUrl) {
+		this.applicationUrl = applicationUrl;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = new LinkedHashMap();
+		m.put( "attributeId", kimAttributeId );
+		m.put( "attributeName", attributeName );
+		return m;
+	}
+	
 }

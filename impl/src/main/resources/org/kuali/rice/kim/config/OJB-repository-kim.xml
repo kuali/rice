@@ -146,6 +146,8 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <field-descriptor name="componentName" column="CMPNT_NM" jdbc-type="VARCHAR" />  
+    <field-descriptor name="applicationUrl" column="APPL_URL" jdbc-type="VARCHAR" />        
   </class-descriptor>
          
   <class-descriptor class="org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl" table="KRIM_TYP_ATTR_T">

@@ -41,8 +41,8 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	 */
 	public boolean isActive() {
 		// TODO: FIXME - once we start using from/to dates uncomment the logic. Until then return true for always active.
-		//long now = System.currentTimeMillis();
-		//return now > activeFromDate.getTime() && now < activeToDate.getTime();
+		//long now = System.currentTimeMillis(); 
+		//return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
 		return true;
 	}
 

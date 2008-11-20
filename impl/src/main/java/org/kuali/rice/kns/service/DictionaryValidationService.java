@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service;
 
+import java.beans.PropertyDescriptor;
+
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
@@ -357,4 +359,6 @@ public interface DictionaryValidationService {
      * @return true if rule passes
      */
     public boolean validateApcRules(BusinessObject bo);
+    
+    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired);
 }

@@ -16,10 +16,11 @@
 package org.kuali.rice.kim.service.support;
 
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  *  This is the base service interface for handling type-specific behavior.  Types can be attached
@@ -84,4 +85,8 @@ public interface KimTypeService {
      */
     boolean supportsAttributes( List<String> attributeNames );
 
+    List<KeyLabelPair> getAttributeValidValues(String attributeName);
+    
+    AttributeDefinitionMap getAttributeDefinitions();
+    
 }

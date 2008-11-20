@@ -269,11 +269,15 @@
   <!--  EDL Extract Service -->
   <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
     <property name="extractDAO">
-      <bean class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOOjbImpl">
-          <property name="jcdAlias" value="enWorkflowDataSource" />
-      </bean>
+      <!-- ref bean="enExtractDAO"/ --> 
+      <ref bean="enExtractOjbDAO"/>
     </property>
   </bean>
+
+    <bean id="enExtractOjbDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOOjbImpl">
+          <property name="jcdAlias" value="enWorkflowDataSource" />
+    </bean>
+    <bean id="enExtractDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDaoJpaImpl"/>
 
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
@@ -396,6 +400,14 @@
 	  </property>
     </bean>
 
+    <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+      <property name="lookupableHelperService">
+        <ref local="docTypeLookupHelperService" />
+      </property>
+    </bean>
+    
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
 
 	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
@@ -914,6 +926,7 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -959,6 +972,7 @@
         <idref local="enHelpDAO"/>
         <idref local="enBranchDAOJpa"/>
         <idref local="enRuleAttributeDAOJpa"/>
+        <idref local="enExtractDAO"/>
       </list>
     </property>
   </bean>

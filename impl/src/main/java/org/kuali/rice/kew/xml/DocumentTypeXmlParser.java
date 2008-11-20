@@ -249,9 +249,9 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         try {
             if (((Boolean) xpath.evaluate("./active", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
-                documentType.setActiveInd(Boolean.valueOf((String) xpath.evaluate("./active", documentTypeNode, XPathConstants.STRING)));
+                documentType.setActive(Boolean.valueOf((String) xpath.evaluate("./active", documentTypeNode, XPathConstants.STRING)));
             } else {
-                documentType.setActiveInd(Boolean.TRUE);
+                documentType.setActive(Boolean.TRUE);
             }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type active flag", xpee);

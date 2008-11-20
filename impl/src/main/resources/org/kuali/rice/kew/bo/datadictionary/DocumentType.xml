@@ -1,0 +1,297 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:dd="http://rice.kuali.org/dd"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="DocumentType" parent="DocumentType-parentBean" />
+
+  <bean id="DocumentType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
+    <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
+    <property name="inquiryDefinition" >
+      <ref bean="DocumentType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="DocumentType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="documentTypeId" />
+    <property name="objectLabel" value="Document Type" />
+    <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="parentDocType" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="parentDocType.name"
+                    p:targetName="name" />
+            </list>
+          </property>
+        </bean>
+       </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="DocumentType-docTypeParentName"/>
+      	<ref bean="DocumentType-docTypeParentId"/>
+        <ref bean="DocumentType-documentTypeId" />
+        <ref bean="DocumentType-name" />
+        <ref bean="DocumentType-description" />
+        <ref bean="DocumentType-label" />
+        <ref bean="DocumentType-serviceNamespace" />
+        <ref bean="DocumentType-descendHierarchy" />
+        <ref bean="DocumentType-active" />
+      </list>
+    </property>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+  <bean id="DocumentType-documentTypeId" parent="DocumentType-documentTypeId-parentBean" />
+
+  <bean id="DocumentType-documentTypeId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="documentTypeId" />
+    <property name="label" value="Id" />
+  </bean>
+  
+  
+  
+ <bean id="DocumentType-docTypeParentId" parent="DocumentType-docTypeParentId-parentBean" />
+
+  <bean id="DocumentType-docTypeParentId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Parent Id" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="docTypeParentId" />
+    <property name="label" value="Parent Id" />
+  </bean>
+  
+  <bean id="DocumentType-docTypeParentName" parent="DocumentType-docTypeParentName-parentBean" />
+
+  <bean id="DocumentType-docTypeParentName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Parent Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="parentDocType.name" />
+    <property name="label" value="Parent Name" />
+  </bean>
+  
+  <bean id="DocumentType-name" parent="DocumentType-name-parentBean" />
+
+  <bean id="DocumentType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Name" />
+  </bean>
+
+  <bean id="DocumentType-label" parent="DocumentType-label-parentBean" />
+
+  <bean id="DocumentType-label-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Label" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="label" />
+    <property name="label" value="Label" />
+  </bean>
+
+  <bean id="DocumentType-active" parent="DocumentType-active-parentBean"/>
+  
+  <bean id="DocumentType-active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="active" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Active Indicator" />
+    <property name="shortLabel" value="active" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="RadioControlDefinition" 
+        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ActiveInactiveValuesFinder"
+        p:includeKeyInLabel="true"
+        />
+    </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  </bean>
+  
+    <bean id="DocumentType-descendHierarchy" parent="DocumentType-descendHierarchy-parentBean"/>
+  
+  <bean id="DocumentType-descendHierarchy-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="descendHierarchy" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Descend Hierarchy" />
+    <property name="shortLabel" value="descendHierarchy" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="RadioControlDefinition"
+        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+        p:includeKeyInLabel="true"/>
+    </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  </bean>
+  
+  <bean id="DocumentType-description" parent="DocumentType-description-parentBean" />
+
+  <bean id="DocumentType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
+  
+  <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean" />
+
+  <bean id="DocumentType-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Service Namespace" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="serviceNamespace" />
+    <property name="label" value="Service Namespace" />
+  </bean>
+  
+  <!-- Business Object Inquiry Definition -->
+
+  <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
+
+  <bean id="DocumentType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections">
+      <list>
+     	<bean parent="InquirySectionDefinition">
+          <property name="title" value="Document Type" />
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="docTypeParentId" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="documentTypeId" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="label" />
+              <bean parent="FieldDefinition"
+              		p:attributeName="active" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="serviceNamespace" />            
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Business Object Lookup Definition -->
+
+  <bean id="DocumentType-lookupDefinition" parent="DocumentType-lookupDefinition-parentBean" />
+
+  <bean id="DocumentType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="lookupableID" value="docTypeLookupable" />
+    <property name="instructions" value="Lookup a Document Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+        	p:attributeName="parentDocType.name"
+              p:forceLookup="true"
+              p:forceInquiry="true"/>
+        <bean parent="FieldDefinition"
+        	p:attributeName="descendHierarchy"
+              p:forceLookup="true"
+              p:defaultValue="No" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name"
+              p:forceLookup="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="label"
+              p:forceLookup="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="documentTypeId"
+              p:forceLookup="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="active"
+              p:forceLookup="true" 
+              p:defaultValue="B" />
+        <bean parent="FieldDefinition"
+              p:attributeName="serviceNamespace"
+              p:forceLookup="true" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="docTypeParentId" />
+        <bean parent="FieldDefinition"
+              p:attributeName="documentTypeId" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="parentDocType.name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="label" />
+        <bean parent="FieldDefinition"
+              p:attributeName="active" />
+        <bean parent="FieldDefinition"
+              p:attributeName="serviceNamespace" />
+      </list>
+    </property>
+    <property name="title" value="Document Type Lookup" />
+  </bean>
+</beans>

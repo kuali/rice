@@ -21,17 +21,21 @@ import java.util.List;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
- * This class returns list containg A = Active or I = Inactive
+ * This class returns list containg A = Active, I = Inactive and B = Show All
+ * 
+ * The labels (values) in the List returned correspond to what is displayed next
+ * to the radio buttons for the Active Indicator form field
  */
 public class ActiveInactiveValuesFinder extends KeyValuesBase {
 
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List keyValues = new ArrayList();
+    public List<KeyLabelPair> getKeyValues() {
+        List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
         keyValues.add(new KeyLabelPair("A", "Active"));
         keyValues.add(new KeyLabelPair("I", "Inactive"));
+        keyValues.add(new KeyLabelPair("B", "Show All"));
         return keyValues;
     }
 

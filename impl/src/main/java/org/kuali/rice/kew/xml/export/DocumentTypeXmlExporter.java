@@ -118,7 +118,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         if (!StringUtils.isBlank(documentType.getNotificationFromAddress())) {
         	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getNotificationFromAddress());
         }
-        renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActiveInd(), true);
+        renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActive(), true);
         exportPolicies(docTypeElement, documentType.getPolicies());
       exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
       exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());

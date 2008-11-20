@@ -30,8 +30,8 @@ public class IndicatorYNOnlyValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List activeLabels = new ArrayList();
+    public List<KeyLabelPair> getKeyValues() {
+        List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
         activeLabels.add(new KeyLabelPair("Yes", "Yes"));
         activeLabels.add(new KeyLabelPair("No", "No"));
         return activeLabels;

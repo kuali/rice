@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -39,7 +40,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
@@ -72,6 +72,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -83,8 +84,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_DOC_TYP_T")
-public class DocumentType implements WorkflowPersistable {
-
+public class DocumentType extends PersistableBusinessObjectBase
+{
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
@@ -99,7 +100,7 @@ public class DocumentType implements WorkflowPersistable {
     @Column(name="DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
     @Column(name="ACTV_IND")
-	private Boolean activeInd;
+	private Boolean active;
     @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
@@ -115,6 +116,7 @@ public class DocumentType implements WorkflowPersistable {
     @Column(name="POST_PRCSR")
 	private String postProcessorName;
     @Column(name="GRP_ID")
+	//private Long superUserWorkgroupId;
 	private String workgroupId;
     @Column(name="BLNKT_APPR_GRP_ID")
 	private String blanketApproveWorkgroupId;
@@ -135,6 +137,8 @@ public class DocumentType implements WorkflowPersistable {
     private String returnUrl;
     @Transient
     private String actionsUrl;
+    @Transient
+    private boolean descendHierarchy;
 
     /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
      * Used at parse-time only; not stored in db.
@@ -313,10 +317,10 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public String getDocTypeActiveIndicatorDisplayValue() {
-        if (getActiveInd() == null) {
+        if (getActive() == null) {
             return KEWConstants.INACTIVE_LABEL_LOWER;
         }
-        return CodeTranslator.getActiveIndicatorLabel(getActiveInd());
+        return CodeTranslator.getActiveIndicatorLabel(getActive());
     }
 
     public Collection getChildrenDocTypes() {
@@ -401,12 +405,12 @@ public class DocumentType implements WorkflowPersistable {
         this.actionsUrl = actions;
     }
 
-    public Boolean getActiveInd() {
-        return activeInd;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setActiveInd(java.lang.Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setActive(java.lang.Boolean activeInd) {
+        this.active = activeInd;
     }
 
     public java.lang.Boolean getCurrentInd() {
@@ -573,14 +577,18 @@ public class DocumentType implements WorkflowPersistable {
 	return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
-	if (suWorkgroup == null) {
-	    this.workgroupId = null;
-	} else {
-	    this.workgroupId = suWorkgroup.getGroupId();
-	}
+    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) 
+    {
+		if (suWorkgroup == null) 
+		{
+		    this.workgroupId = null;
+		} 
+		else 
+		{
+		    this.workgroupId = suWorkgroup.getGroupId();
+		}
     }
-
+    
     public DocumentType getPreviousVersion() {
         return getDocumentTypeService().findById(previousVersionId);
     }
@@ -819,7 +827,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
 	public boolean isDocTypeActive() {
-        if (!activeInd.booleanValue()) {
+        if (!active.booleanValue()) {
             return false;
         }
         if (getParentDocType() != null) {
@@ -831,7 +839,7 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     private boolean getParentActiveInd(DocumentType parentDocType) {
-        if (parentDocType.getActiveInd() == null || parentDocType.getActiveInd().booleanValue()) {
+        if (parentDocType.getActive() == null || parentDocType.getActive().booleanValue()) {
             if (parentDocType.getParentDocType() != null) {
                 return getParentActiveInd(parentDocType.getParentDocType());
             }
@@ -982,7 +990,7 @@ public class DocumentType implements WorkflowPersistable {
                           + ", docTypeParentId=" + docTypeParentId
                           + ", name=" + name
                           + ", version=" + version
-                          + ", activeInd=" + activeInd
+                          + ", activeInd=" + active
                           + ", currentInd=" + currentInd
                           + ", description=" + description
                           + ", routeHeaderId=" + routeHeaderId
@@ -1008,6 +1016,9 @@ public class DocumentType implements WorkflowPersistable {
     /**
      * Returns the service namespace for this DocumentType which can be specified on the document type itself,
      * inherited from the parent, or defaults to the configured service namespace of the application.
+     * 
+     * chb:12Nov2008: seems like the accessor should return the field and the auxiliary method "getActualFoo" should
+     * be the one to do more elaborate checking
      */
 	public String getServiceNamespace() {
 		if (this.serviceNamespace != null) {
@@ -1051,9 +1062,53 @@ public class DocumentType implements WorkflowPersistable {
     public void setCustomEmailStylesheet(String customEmailStylesheet) {
         this.customEmailStylesheet = customEmailStylesheet;
     }
+
+	/**
+	 * @return the blanketApproveWorkgroupId
+	 */
+	public String getBlanketApproveWorkgroupId() {
+		return this.blanketApproveWorkgroupId;
+	}
+
+
+	/**
+	 * @param blanketApproveWorkgroupId the blanketApproveWorkgroupId to set
+	 */
+	public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
+		this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
+	}
+
+
+	/**
+	 * @return the descendHierarchy
+	 */
+	public boolean isDescendHierarchy() {
+		return this.descendHierarchy;
+	}
+
+
+	/**
+	 * @param descendHierarchy the descendHierarchy to set
+	 */
+	public void setDescendHierarchy(boolean descendHierarchy) {
+		this.descendHierarchy = descendHierarchy;
+	}
+
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+     */
+    @Override
+    protected LinkedHashMap toStringMapper()
+    {
+        // TODO chb - Implement Me!
+        return null;
+    }
+
     
     private IdentityManagementService getIdentityManagementService() {
     	return KIMServiceLocator.getIdentityManagementService();
     }
-    
 }

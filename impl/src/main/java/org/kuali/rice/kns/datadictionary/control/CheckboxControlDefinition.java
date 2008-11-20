@@ -23,7 +23,9 @@ package org.kuali.rice.kns.datadictionary.control;
  */
 public class CheckboxControlDefinition extends ControlDefinitionBase {
 
-    public CheckboxControlDefinition() {
+    public CheckboxControlDefinition()
+    {
+        super();
     }
 
     /**

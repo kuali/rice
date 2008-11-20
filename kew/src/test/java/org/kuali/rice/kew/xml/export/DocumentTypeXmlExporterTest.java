@@ -69,7 +69,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         } else {
             assertEquals("Should have same parent.", oldDocType.getParentDocType().getName(), newDocType.getParentDocType().getName());
         }
-        assertEquals(oldDocType.getActiveInd(), newDocType.getActiveInd());
+        assertEquals(oldDocType.getActive(), newDocType.getActive());
         assertEquals(oldDocType.getDescription(), newDocType.getDescription());
         assertEquals(oldDocType.getDocHandlerUrl(), newDocType.getDocHandlerUrl());
         assertEquals(oldDocType.getLabel(), newDocType.getLabel());

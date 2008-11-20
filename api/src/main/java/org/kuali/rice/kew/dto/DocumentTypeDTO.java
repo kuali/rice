@@ -123,7 +123,7 @@ public class DocumentTypeDTO implements Serializable {
     }
 
     /**
-     * @deprecated userSetDocTypeLabel instead
+     * @deprecated use setDocTypeLabel instead
      * @param docTypeName
      */
     public void setDocTypeName(String docTypeName) {

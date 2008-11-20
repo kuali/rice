@@ -242,7 +242,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	//from the db
     	DocumentType childEdit = new DocumentType();
     	childEdit.setName(child.getName());
-    	childEdit.setActiveInd(Boolean.TRUE);
+    	childEdit.setActive(Boolean.TRUE);
     	KimGroup workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(null, "WorkflowAdmin");
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
@@ -412,7 +412,7 @@ public class DocumentTypeTest extends KEWTestCase {
         // the third ingested document should now be set to Current and Inactive... all others should not be set to Current
         assertEquals("First ingested document is set to Current after second ingest", Boolean.FALSE, firstIngestDoc.getCurrentInd());
         assertEquals("Second ingested document is set to Current after second ingest", Boolean.FALSE, secondIngestDoc.getCurrentInd());
-        assertEquals("Third ingested document is not set to Inactive after second ingest", Boolean.FALSE, thirdIngestDoc.getActiveInd());
+        assertEquals("Third ingested document is not set to Inactive after second ingest", Boolean.FALSE, thirdIngestDoc.getActive());
         assertEquals("Third ingested document is not set to Current after second ingest", Boolean.TRUE, thirdIngestDoc.getCurrentInd());
 
         // third ingestion
@@ -433,7 +433,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("First ingested document is set to Current after third ingest", Boolean.FALSE, firstIngestDoc.getCurrentInd());
         assertEquals("Second ingested document is set to Current after third ingest", Boolean.FALSE, secondIngestDoc.getCurrentInd());
         assertEquals("Third ingested document is set to Current after third ingest", Boolean.FALSE, thirdIngestDoc.getCurrentInd());
-        assertEquals("Fourth ingested document is not set to Active after third ingest", Boolean.TRUE, fourthIngestDoc.getActiveInd());
+        assertEquals("Fourth ingested document is not set to Active after third ingest", Boolean.TRUE, fourthIngestDoc.getActive());
         assertEquals("Fourth ingested document is not set to Current after third ingest", Boolean.TRUE, fourthIngestDoc.getCurrentInd());
     }
 

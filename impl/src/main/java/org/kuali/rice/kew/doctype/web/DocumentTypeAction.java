@@ -47,7 +47,7 @@ public class DocumentTypeAction extends WorkflowAction {
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DocumentTypeForm documentTypeForm = (DocumentTypeForm) form;
 		// setRouteLevelToException(documentTypeForm.getRouteLevel());
-		documentTypeForm.getDocumentType().setActiveInd(new Boolean(true));
+		documentTypeForm.getDocumentType().setActive(new Boolean(true));
 		documentTypeForm.setDocTypeVisible(true);
 		documentTypeForm.setPolicyVisible(true);
 		documentTypeForm.setRouteLevelVisible(true);

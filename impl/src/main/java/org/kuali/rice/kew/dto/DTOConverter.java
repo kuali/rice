@@ -513,7 +513,28 @@ public class DTOConverter {
         }
         return documentContentVO;
     }
-
+    
+    public static WorkgroupDTO convertWorkgroup(Workgroup workgroup) {
+        if (workgroup == null) {
+            return null;
+        }
+        WorkgroupDTO workgroupVO = new WorkgroupDTO();
+        workgroupVO.setActiveInd(workgroup.getActiveInd().booleanValue());
+        workgroupVO.setDescription(workgroup.getDescription());
+        workgroupVO.setWorkgroupId(workgroup.getWorkflowGroupId().getGroupId());
+        workgroupVO.setWorkgroupName(workgroup.getGroupNameId().getNameId());
+        workgroupVO.setWorkgroupType(workgroup.getWorkgroupType());
+        if (workgroup.getUsers() != null) {
+            workgroupVO.setMembers(new UserDTO[workgroup.getUsers().size()]);
+            int index = 0;
+            for (Iterator iterator = workgroup.getUsers().iterator(); iterator.hasNext(); index++) {
+                WorkflowUser user = (WorkflowUser) iterator.next();
+                workgroupVO.getMembers()[index] = convertUser(user);
+            }
+        }
+        return workgroupVO;
+    }
+    
     public static UserDTO convertUser(WorkflowUser user) {
         if (user == null) {
             return null;
@@ -576,7 +597,7 @@ public class DTOConverter {
         }
         docTypeVO.setPostProcessorName(docType.getPostProcessorName());
         docTypeVO.setDocTypeJndiFactoryClass(null);
-        docTypeVO.setDocTypeActiveInd(docType.getActiveInd().booleanValue());
+        docTypeVO.setDocTypeActiveInd(docType.getActive().booleanValue());
         if (docType.getParentDocType() != null) {
             docTypeVO.setDocTypeActiveInherited(true);
         } else {

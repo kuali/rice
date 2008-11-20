@@ -79,7 +79,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         }
         docTypeVO.setPostProcessorName(docType.getPostProcessorName());
         docTypeVO.setDocTypeJndiFactoryClass(null);
-        docTypeVO.setDocTypeActiveInd(docType.getActiveInd().booleanValue());
+        docTypeVO.setDocTypeActiveInd(docType.getActive().booleanValue());
         
         if (docType.getParentDocType() != null) {
             docTypeVO.setDocTypeActiveInherited(true);

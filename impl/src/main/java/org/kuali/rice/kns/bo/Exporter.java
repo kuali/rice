@@ -33,7 +33,7 @@ public interface Exporter {
 	 * Exports the List of BusinessObjects to the specified ExportFormat.  The resulting output of the export operation
 	 * should be written to the given OutputStream.
 	 * 
-	 * @param businessObjectClass the type of tye BusinessObjects being exported
+	 * @param businessObjectClass the type of BusinessObjects being exported
 	 * @param data a List of BusinessObjects to export
 	 * @param exportFormat the export format in which to export the BusinessObjects
 	 * @param outputStream the OutputStream to write the exported data to

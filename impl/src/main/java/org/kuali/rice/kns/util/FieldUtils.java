@@ -265,7 +265,7 @@ public class FieldUtils {
             }
 
             if (Field.CHECKBOX.equals(fieldType) && translateCheckboxes) {
-                fieldType = Field.RADIO;
+                fieldType = Field.CHECKBOX; 
                 field.setFieldValidValues((new IndicatorValuesFinder()).getKeyValues());
             }
             
@@ -1018,12 +1018,13 @@ public class FieldUtils {
     
     public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
-        for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
-            String attributeName = (String) iter.next();
+        for( String attributeName : lookupFieldAttributeList )
+        {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
             BusinessObject newBusinessObjectInstance;
-            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
+            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) 
+            {
             	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
             	newBusinessObjectInstance = (BusinessObject) moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
             }

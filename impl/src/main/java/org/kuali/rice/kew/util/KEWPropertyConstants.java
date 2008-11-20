@@ -38,7 +38,17 @@ public class KEWPropertyConstants extends JSTLConstants {
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR = "initiator";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED = "dateCreated";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG = "routeLog";
-
+    // Constants used by DocumentTypeLookupableHelperServiceImpl
+    public static final String DOCUMENT_TYPE_ID = "documentTypeId";
+    public static final String NAME = "name";
+    public static final String DOC_TYP_LABEL = "label";
+    public static final String DOC_TYPE_PARENT_ID = "documentTypeId";
+    public static final String PARENT_DOC_TYPE_NAME = "parentDocType.name";
+    public static final String ACTIVE = "active";
+    public static final String BACK_LOCATION = "backLocation";
+    public static final String ACTUAL_MESSAGE_ENTITY = "actualMessageEntity";
+    public static final String DOC_FORM_KEY = "docFormKey";
+    
     public static final Set<String> DOC_SEARCH_RESULT_PROPERTY_NAME_SET = new HashSet<String>();
     static {
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);

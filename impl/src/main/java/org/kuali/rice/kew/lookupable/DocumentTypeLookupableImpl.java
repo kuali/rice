@@ -56,14 +56,14 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
     private static final String PARENT_DOC_TYP_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.parentDocumentType";
     private static final String CLIMB_HIERARCHY_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.climbHierarchy";
     private static final String DOC_TYP_NAME_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.documentTypeName";
-    private static final String DOC_TYP_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.documentTypeLabel";
+    private static final String DOC_TYP_LABEL_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.documentTypeLabel";
     private static final String ACTIVE_IND_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.activeIndicator";
     private static final String DOCUMENT_TYPE_ID_FIELD_LABEL_KEY = "documentTypeLookupable.field.label.documentTypeId";
 
     private static final String DOC_TYP_ID_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.documentTypeId";
     private static final String DOC_TYP_NAME_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.documentTypeName";
     private static final String DOC_TYP_PARENT_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.documentTypeParent";
-    private static final String DOC_TYP_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.documentTypeLabel";
+    private static final String DOC_TYP_LABEL_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.documentTypeLabel";
     private static final String ACTIVE_IND_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.activeIndicator";
     private static final String ACTION_COLUMN_LABEL_KEY = "documentTypeLookupable.column.label.action";
 
@@ -88,14 +88,14 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
     private static String PARENT_DOC_TYP_FIELD_LABEL = "Parent Document Type";
     private static String CLIMB_HIERARCHY_FIELD_LABEL = "Traverse Down Hierarchy";
     private static String DOC_TYP_NAME_FIELD_LABEL = "Document Type Name";
-    private static String DOC_TYP_FIELD_LABEL = "Document Type Label";
+    private static String DOC_TYP_LABEL_FIELD_LABEL = "Document Type Label";
     private static String ACTIVE_IND_FIELD_LABEL = "Active Indicator";
     private static String DOCUMENT_TYPE_ID_FIELD_LABEL = "Document Type Id";
 
     private static String DOC_TYP_ID_COLUMN_LABEL = "Document Type Id";
     private static String DOC_TYP_NAME_COLUMN_LABEL = "Document Type Name";
     private static String DOC_TYP_PARENT_COLUMN_LABEL = "Document Type Parent";
-    private static String DOC_TYP_COLUMN_LABEL = "Document Type Label";
+    private static String DOC_TYP_LABEL_COLUMN_LABEL = "Document Type Label";
     private static String ACTIVE_IND_COLUMN_LABEL = "Active";
     private static String ACTION_COLUMN_LABEL = "Action";
 
@@ -141,7 +141,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         rows.add(new Row(fields));
 
         fields = new ArrayList();
-        fields.add(new Field(DOC_TYP_FIELD_LABEL, DOC_TYP_FIELD_HELP, Field.TEXT, false, DOC_TYP_PROPERTY_NAME, "", null, null));
+        fields.add(new Field(DOC_TYP_LABEL_FIELD_LABEL, DOC_TYP_FIELD_HELP, Field.TEXT, false, DOC_TYP_PROPERTY_NAME, "", null, null));
         rows.add(new Row(fields));
 
         fields = new ArrayList();
@@ -181,8 +181,8 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
                 if (properties.getProperty(DOC_TYP_NAME_FIELD_LABEL_KEY) != null) {
                     DOC_TYP_NAME_FIELD_LABEL = properties.getProperty(DOC_TYP_NAME_FIELD_LABEL_KEY);
                 }
-                if (properties.getProperty(DOC_TYP_FIELD_LABEL_KEY) != null) {
-                    DOC_TYP_FIELD_LABEL = properties.getProperty(DOC_TYP_FIELD_LABEL_KEY);
+                if (properties.getProperty(DOC_TYP_LABEL_FIELD_LABEL_KEY) != null) {
+                    DOC_TYP_LABEL_FIELD_LABEL = properties.getProperty(DOC_TYP_LABEL_FIELD_LABEL_KEY);
                 }
                 if (properties.getProperty(ACTIVE_IND_FIELD_LABEL_KEY) != null) {
                     ACTIVE_IND_FIELD_LABEL = properties.getProperty(ACTIVE_IND_FIELD_LABEL_KEY);
@@ -200,8 +200,8 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
                 if (properties.getProperty(DOC_TYP_PARENT_COLUMN_LABEL_KEY) != null) {
                     DOC_TYP_PARENT_COLUMN_LABEL = properties.getProperty(DOC_TYP_PARENT_COLUMN_LABEL_KEY);
                 }
-                if (properties.getProperty(DOC_TYP_COLUMN_LABEL_KEY) != null) {
-                    DOC_TYP_COLUMN_LABEL = properties.getProperty(DOC_TYP_COLUMN_LABEL_KEY);
+                if (properties.getProperty(DOC_TYP_LABEL_COLUMN_LABEL_KEY) != null) {
+                    DOC_TYP_LABEL_COLUMN_LABEL = properties.getProperty(DOC_TYP_LABEL_COLUMN_LABEL_KEY);
                 }
                 if (properties.getProperty(ACTIVE_IND_COLUMN_LABEL_KEY) != null) {
                     ACTIVE_IND_COLUMN_LABEL = properties.getProperty(ACTIVE_IND_COLUMN_LABEL_KEY);
@@ -233,7 +233,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         columns.add(column);
         columns.add(new Column(DOC_TYP_NAME_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "name"));
         columns.add(new Column(DOC_TYP_PARENT_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "lookupParentName"));
-        columns.add(new Column(DOC_TYP_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "label"));
+        columns.add(new Column(DOC_TYP_LABEL_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "label"));
         columns.add(new Column(ACTIVE_IND_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "docTypeActiveIndicatorDisplayValue"));
         columns.add(new Column(ACTION_COLUMN_LABEL, Column.COLUMN_NOT_SORTABLE_VALUE, "actionsUrl"));
         return columns;
@@ -265,9 +265,9 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         if (activeIndicator == null) {
             activeIndicator = "ALL";
         } else if (activeIndicator.equals("Y")) {
-            documentType.setActiveInd(new Boolean(true));
+            documentType.setActive(new Boolean(true));
         } else if (activeIndicator.equals("N")) {
-            documentType.setActiveInd(new Boolean(false));
+            documentType.setActive(new Boolean(false));
         }
         if (docTypeLabel != null && !"".equals(docTypeLabel.trim())) {
             docTypeLabel = docTypeLabel.replace('*', '%');

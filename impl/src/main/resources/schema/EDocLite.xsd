@@ -53,7 +53,7 @@
         <element name="association" type="ed:AssociationType" minOccurs="0">
         	<annotation>
         		<documentation>
-        		 Defines the association between an edl, style, and docuementType.
+        		 Defines the association between an edl, style, and documentType.
         		</documentation>
         	</annotation>
         </element>

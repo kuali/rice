@@ -41,6 +41,9 @@
 			<td><a href="Lookup.do?lookupableImplServiceName=WorkgroupTypeLookup" target="<c:out value="${BackdoorForm.targetName}" />">Workgroup Type</a></td>
 		</tr>
 		<tr>
+			<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteStyle&docFormKey=88888888&returnLocation=Administration.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">XML Stylesheets</a></td>
+		</tr>
+		<tr>
 			<td><a href="Stats.do" target="<c:out value="${BackdoorForm.targetName}" />">Workflow Statistics Report</a></td>
 		</tr>
 		<tr>

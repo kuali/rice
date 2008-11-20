@@ -125,27 +125,27 @@ public abstract class ActionTakenEvent {
 	 */
 	protected abstract String validateActionRules() throws KEWUserNotFoundException;
 
-	/**
-	 * Method to indicate that this action may require initiator execution only
-	 *
-	 * @return false if action can be performed by users outside the initiator
-	 */
-	protected boolean requireInitiatorCheck() {
-		LOG.debug("requireInitiatorCheck() Default method = returning true");
-		return true;
-	}
+//	/**
+//	 * Method to indicate that this action may require initiator execution only
+//	 *
+//	 * @return false if action can be performed by users outside the initiator
+//	 */
+//	protected boolean requireInitiatorCheck() {
+//		LOG.debug("requireInitiatorCheck() Default method = returning true");
+//		return true;
+//	}
 
 	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");
 		return true;
 	}
 
-	protected String validateActionTakenRules() {
-		if (requireInitiatorCheck() && (!user.getWorkflowUserId().getWorkflowId().equals(routeHeader.getInitiatorWorkflowId()) && (routeHeader.isStateSaved() || routeHeader.isStateInitiated()))) {
-			return "Only the initiator can take action on an initiated or saved document of this type";
-		}
-		return "";
-	}
+//	protected String validateActionTakenRules() {
+//		if (requireInitiatorCheck() && (!user.getWorkflowUserId().getWorkflowId().equals(routeHeader.getInitiatorWorkflowId()) && (routeHeader.isStateSaved() || routeHeader.isStateInitiated()))) {
+//			return "Only the initiator can take action on an initiated or saved document of this type";
+//		}
+//		return "";
+//	}
 
 	public void performAction() throws InvalidActionTakenException, KEWUserNotFoundException {
 	    recordAction();

@@ -185,7 +185,7 @@ public class SuperUserAction extends WorkflowAction {
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getRouteHeaderId());
         superUserForm.setRouteHeader(routeHeader);
         WorkflowUser user = getUserSession(request).getWorkflowUser();
-        boolean isAuthorized = routeHeader.getDocumentType().isSuperUser(user);
+        boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(user.getWorkflowId(), routeHeader.getDocumentType());
         superUserForm.setAuthorized(isAuthorized);
         if (!isAuthorized) {
             saveDocumentActionMessage("general.routing.superuser.notAuthorized", request, superUserForm.getRouteHeaderIdString(), null);

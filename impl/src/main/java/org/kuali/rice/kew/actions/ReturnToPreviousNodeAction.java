@@ -146,10 +146,6 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             String docStatus = getRouteHeader().getDocRouteStatus();
             return "Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;

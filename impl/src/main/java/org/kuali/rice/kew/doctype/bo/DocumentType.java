@@ -65,7 +65,6 @@ import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -186,35 +185,35 @@ public class DocumentType extends PersistableBusinessObjectBase
 
 
     public DocumentTypePolicy getDefaultApprovePolicy() {
-        return getPolicyByName(KEWConstants.DEFAULT_APPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.DEFAULT_APPROVE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getUseWorkflowSuperUserDocHandlerUrl() {
-        return getPolicyByName(KEWConstants.USE_KEW_SUPERUSER_DOCHANDLER, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.USE_KEW_SUPERUSER_DOCHANDLER.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustRoutePolicy() {
-        return getPolicyByName(KEWConstants.INITIATOR_MUST_ROUTE_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_ROUTE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustSavePolicy() {
-        return getPolicyByName(KEWConstants.INITIATOR_MUST_SAVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_SAVE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustCancelPolicy() {
-        return getPolicyByName(KEWConstants.INITIATOR_MUST_CANCEL_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustBlanketApprovePolicy() {
-        return getPolicyByName(KEWConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_BLANKET_APPROVE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getPreApprovePolicy() {
-        return getPolicyByName(KEWConstants.PREAPPROVE_POLICY, Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.PRE_APPROVE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getLookIntoFuturePolicy() {
-        return getPolicyByName(KEWConstants.LOOK_INTO_FUTURE_POLICY, Boolean.FALSE);
+        return getPolicyByName(DocumentTypePolicyEnum.LOOK_FUTURE.getName(), Boolean.FALSE);
     }
 
     public DocumentTypePolicy getSuperUserApproveNotificationPolicy() {
@@ -222,11 +221,11 @@ public class DocumentType extends PersistableBusinessObjectBase
     }
 
     public DocumentTypePolicy getSupportsQuickInitiatePolicy() {
-    	return getPolicyByName(KEWConstants.SUPPORTS_QUICK_INITIATE_POLICY, Boolean.TRUE);
+    	return getPolicyByName(DocumentTypePolicyEnum.SUPPORTS_QUICK_INITIATE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getNotifyOnSavePolicy() {
-    	return getPolicyByName(KEWConstants.NOTIFY_ON_SAVE_POLICY, Boolean.FALSE);
+    	return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
     }
 
     public String getUseWorkflowSuperUserDocHandlerUrlValue() {
@@ -262,6 +261,17 @@ public class DocumentType extends PersistableBusinessObjectBase
             return getPreApprovePolicy().getPolicyDisplayValue();
         }
         return null;
+    }
+    
+    public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
+    	Iterator policyIter = getPolicies().iterator();
+        while (policyIter.hasNext()) {
+            DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
+            if (policyToCheck.getName().equals(policy.getPolicyName())) {
+            	return true;
+            }
+        }
+        return getParentDocType() != null && getParentDocType().isPolicyDefined(policyToCheck);
     }
 
     public void addSearchableAttribute(DocumentTypeAttribute searchableAttribute) {
@@ -551,13 +561,6 @@ public class DocumentType extends PersistableBusinessObjectBase
         this.lockVerNbr = lockVerNbr;
     }
 
-    /**
-     * @deprecated
-     */
-    public DocumentTypeDTO getDocumentTypeVO() {
-        return DTOConverter.convertDocumentType(this);
-    }
-
     private DocumentTypeService getDocumentTypeService() {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
@@ -589,6 +592,16 @@ public class DocumentType extends PersistableBusinessObjectBase
 		}
     }
     
+    /**
+     * Returns true if this DocumentType has a super user group defined.
+     */
+    public boolean hasSuperUserGroup() {
+    	if (this.workgroupId == null) {
+    		return getParentDocType() != null && getParentDocType().hasSuperUserGroup(); 
+    	}
+    	return true;
+    }
+
     public DocumentType getPreviousVersion() {
         return getDocumentTypeService().findById(previousVersionId);
     }
@@ -970,12 +983,12 @@ public class DocumentType extends PersistableBusinessObjectBase
     	return parent.getName();
     }
 
-    public boolean isSuperUser(WorkflowUser user) {
-	KimGroup workgroup = getSuperUserWorkgroup();
+    public boolean isSuperUser(String principalId) {
+    	KimGroup workgroup = getSuperUserWorkgroup();
 		if (workgroup == null) {
 			return false;
 		}
-    	return getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), workgroup.getGroupId());
+    	return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getGroupId());
     }
 
     public boolean hasPreviousVersion() {

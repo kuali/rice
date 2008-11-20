@@ -49,11 +49,6 @@ public class CancelAction extends ActionTakenEvent {
         super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, user, annotation);
     }
 
-    @Override
-    protected boolean requireInitiatorCheck() {
-    	return routeHeader.getDocumentType().getInitiatorMustCancelPolicy().getPolicyValue().booleanValue();
-    }
-
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
@@ -63,9 +58,8 @@ public class CancelAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+            return "User is not authorized to Cancel document";
         }
         // FYI delyea:  This is new validation check... was not being checked previously
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {

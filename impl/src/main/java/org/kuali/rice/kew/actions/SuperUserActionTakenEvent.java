@@ -29,8 +29,10 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -61,7 +63,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
         DocumentType docType = getRouteHeader().getDocumentType();
-        if (!docType.isSuperUser(getUser())) {
+        if (!KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(getUser().getWorkflowId(), docType)) {
             return "User not authorized for super user action";
         }
         return "";

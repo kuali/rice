@@ -82,11 +82,6 @@ public class BlanketApproveAction extends ActionTakenEvent {
         return nodeNames;
     }
 
-    @Override
-    protected boolean requireInitiatorCheck() {
-    	return routeHeader.getDocumentType().getInitiatorMustBlanketApprovePolicy().getPolicyValue().booleanValue();
-    }
-
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
@@ -96,11 +91,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
-        if ( (getRouteHeader().getDocumentType() != null) && (! KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(getRouteHeader().getDocumentType(), getUser().getWorkflowId()))) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
             return "User is not authorized to BlanketApprove document";
         }
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {

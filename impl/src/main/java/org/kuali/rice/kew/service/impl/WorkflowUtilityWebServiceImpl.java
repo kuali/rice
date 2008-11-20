@@ -748,7 +748,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	LOG.debug("Determining super user status [userId=" + userId + ", documentTypeId=" + documentTypeId + "]");
     	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-    	boolean isSuperUser = documentType.isSuperUser(user);
+    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(user.getWorkflowId(), documentType);
     	LOG.debug("Super user status is " + isSuperUser + ".");
     	return isSuperUser;
     }

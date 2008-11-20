@@ -261,17 +261,26 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
                 name = ((RouteNode)routeLevelNodes.get(routeLevelInt)).getRouteNodeName();
             }
         } else {
-            Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
-            name = "";
-            if (nodeInstances.isEmpty()) {
-                nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getRouteHeaderId());
-            }
-            for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
-                RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-                name += nodeInstance.getRouteNode().getRouteNodeName() + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
-            }
+        	name = "";
+        	for (Iterator<String> iterator = getCurrentNodeNames().iterator(); iterator.hasNext();) {
+        		String nodeName = iterator.next();
+        		name += nodeName + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
+        	}
         }
         return name;
+    }
+    
+    public List<String> getCurrentNodeNames() {
+    	List<String> currentNodeNames = new ArrayList<String>();
+    	Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
+        if (nodeInstances.isEmpty()) {
+            nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getRouteHeaderId());
+        }
+        for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
+            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+            currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
+        }
+        return currentNodeNames;
     }
 
     public String getRouteStatusLabel() {

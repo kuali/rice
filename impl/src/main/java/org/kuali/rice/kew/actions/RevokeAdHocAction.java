@@ -57,10 +57,6 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      */
     @Override
     protected String validateActionRules() throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Revoke adhoc request is not valid on this document";
         }

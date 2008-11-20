@@ -117,6 +117,16 @@ public interface PermissionService {
     List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     
     /**
+     * Returns true if the given permission is assigned to any principals/groups.
+     */
+    boolean isPermissionAssigned( String namespaceCode, String permissionName, AttributeSet permissionDetails );
+    
+    /**
+     * Returns true if the given permission template is assigned to any principals/groups.
+     */
+    boolean isPermissionAssignedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
+    
+    /**
      * Returns permissions (with their details) that are granted to the principal given
      * the passed qualification.  If no qualification is passed (null or empty)
      * then this method does not check any qualifications on the roles.

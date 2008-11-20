@@ -127,7 +127,7 @@ public class DTOConverter {
         if (user != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(routeHeader.getDocumentType(), user.getWorkflowId());
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getWorkflowId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
             String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
@@ -175,7 +175,7 @@ public class DTOConverter {
         if (user != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().isBlanketApprover(routeHeader.getDocumentType(), user.getWorkflowId());
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getWorkflowId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
             String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
@@ -512,27 +512,6 @@ public class DTOConverter {
             handleException("Error parsing document content.", e);
         }
         return documentContentVO;
-    }
-    
-    public static WorkgroupDTO convertWorkgroup(Workgroup workgroup) {
-        if (workgroup == null) {
-            return null;
-        }
-        WorkgroupDTO workgroupVO = new WorkgroupDTO();
-        workgroupVO.setActiveInd(workgroup.getActiveInd().booleanValue());
-        workgroupVO.setDescription(workgroup.getDescription());
-        workgroupVO.setWorkgroupId(workgroup.getWorkflowGroupId().getGroupId());
-        workgroupVO.setWorkgroupName(workgroup.getGroupNameId().getNameId());
-        workgroupVO.setWorkgroupType(workgroup.getWorkgroupType());
-        if (workgroup.getUsers() != null) {
-            workgroupVO.setMembers(new UserDTO[workgroup.getUsers().size()]);
-            int index = 0;
-            for (Iterator iterator = workgroup.getUsers().iterator(); iterator.hasNext(); index++) {
-                WorkflowUser user = (WorkflowUser) iterator.next();
-                workgroupVO.getMembers()[index] = convertUser(user);
-            }
-        }
-        return workgroupVO;
     }
     
     public static UserDTO convertUser(WorkflowUser user) {
@@ -1397,7 +1376,9 @@ public class DTOConverter {
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getWorkflowUser()));
-        ruleResponsibilityVO.setWorkgroupId("" + ruleResponsibility.getWorkgroup().getGroupNameId().getNameId());
+        if (ruleResponsibility.getWorkgroup() != null) {
+        	ruleResponsibilityVO.setWorkgroupId("" + ruleResponsibility.getWorkgroup().getGroupNameId().getNameId());
+        }
         for (Iterator iter = ruleResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
             RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
             ruleResponsibilityVO.addDelegationRule(convertRuleDelegation(ruleDelegation));

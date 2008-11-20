@@ -261,7 +261,7 @@ public class WorkflowRoutingForm extends ActionForm {
 		    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
 		    	DocumentType documentType = document.getDocumentType();
 		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(workflowDocument.getUserId());
-		    	boolean isSuperUser = documentType.isSuperUser(docUser);
+		    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(docUser.getWorkflowId(), documentType);
 		    	if (isSuperUser){
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 		    	}else if(workflowDocument.isFYIRequested()){

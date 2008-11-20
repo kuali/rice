@@ -66,7 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails, qualification );
+    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -81,7 +81,7 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -163,15 +163,23 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
-    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails, qualification );
+    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );
     	}
     	return results;
     }
+    
+    public boolean isPermissionAssigned( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
+    	return !getRoleIdsForPermission(namespaceCode, permissionName, permissionDetails).isEmpty();
+    }
+    
+    public boolean isPermissionAssignedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
+    	return !getRoleIdsForPermissionTemplate(namespaceCode, permissionTemplateName, permissionDetails).isEmpty();
+    }
 
-    protected List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    protected List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
@@ -179,7 +187,7 @@ public class PermissionServiceImpl implements PermissionService {
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
     }
 
-    protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed

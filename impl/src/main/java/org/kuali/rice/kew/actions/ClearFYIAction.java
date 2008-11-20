@@ -66,11 +66,6 @@ public class ClearFYIAction extends ActionTakenEvent {
     public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
         super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, user, annotation);
     }
-
-    @Override
-    protected boolean requireInitiatorCheck() {
-        return false;
-    }
     
     /**
      * Method to check if the Action is currently valid on the given document
@@ -81,10 +76,6 @@ public class ClearFYIAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to have FYI processed";
         }

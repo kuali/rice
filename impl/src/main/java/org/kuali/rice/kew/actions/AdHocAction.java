@@ -30,6 +30,8 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -63,8 +65,12 @@ public class AdHocAction extends ActionTakenEvent {
 		this.recipient = recipient;
 		this.annotation = annotation;
 	}
-
+	
 	public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+		String errorMessage = validateActionRules();
+        if (!Utilities.isEmpty(errorMessage)) {
+            throw new InvalidActionTakenException(errorMessage);
+        }
 		List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
         String error = adhocRouteAction(targetNodes, false);
         if (!Utilities.isEmpty(error)) {
@@ -82,6 +88,22 @@ public class AdHocAction extends ActionTakenEvent {
     }
     
     private String validateActionRules(List targetNodes) throws KEWUserNotFoundException {
+    	// recipient will be null when this is invoked from ActionRegistry.getValidActions
+    	if (recipient != null) {
+    		if (recipient instanceof WorkflowUser) {
+    			WorkflowUser user = (WorkflowUser)recipient;
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(user.getWorkflowId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    				return "The user '" + user.getAuthenticationUserId().getId() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
+    			}
+    		} else if (recipient instanceof Workgroup) {
+    			Workgroup group = (Workgroup)recipient;
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getWorkflowGroupId().getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    				return "The group '" + group.getGroupNameId().getNameId() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
+    			}
+    		} else {
+    			return "Invalid Recipient type encountered: " + recipient.getClass();
+    		}
+    	}
         return adhocRouteAction(targetNodes, true);
     }
     

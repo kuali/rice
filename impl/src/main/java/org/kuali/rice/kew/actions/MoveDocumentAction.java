@@ -74,10 +74,6 @@ public class MoveDocumentAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be moved";
         }

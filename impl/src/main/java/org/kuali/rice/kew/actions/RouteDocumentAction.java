@@ -58,22 +58,13 @@ public class RouteDocumentAction extends ActionTakenEvent {
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.actions.ActionTakenEvent#requireInitiatorCheck()
-     */
-    @Override
-    protected boolean requireInitiatorCheck() {
-        return routeHeader.getDocumentType().getInitiatorMustRoutePolicy().getPolicyValue().booleanValue();
-    }
-
-    /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    		return "User is not authorized to Route document";
+    	}
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be routed";
         }

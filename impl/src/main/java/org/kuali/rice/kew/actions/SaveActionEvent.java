@@ -53,30 +53,21 @@ public class SaveActionEvent extends ActionTakenEvent {
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.actions.ActionTakenEvent#requireInitiatorCheck()
-     */
-    @Override
-    protected boolean requireInitiatorCheck() {
-	return routeHeader.getDocumentType().getInitiatorMustSavePolicy().getPolicyValue().booleanValue();
-    }
-
-    /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-	return validateActionRulesCustom(true);
+    	return validateActionRulesCustom(true);
     }
 
     private String validateActionRulesCustom(boolean checkIfActionIsValid) {
-	String superError = super.validateActionTakenRules();
-	if (!Utilities.isEmpty(superError)) {
-	    return superError;
-	}
-	if (checkIfActionIsValid && (!getRouteHeader().isValidActionToTake(getActionPerformedCode()))) {
-	    return "Document is not in a state to be saved";
-	}
-	return "";
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    		return "User is not authorized to Cancel document";
+    	}
+    	if (checkIfActionIsValid && (!getRouteHeader().isValidActionToTake(getActionPerformedCode()))) {
+    		return "Document is not in a state to be saved";
+    	}
+    	return "";
     }
 
     public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {

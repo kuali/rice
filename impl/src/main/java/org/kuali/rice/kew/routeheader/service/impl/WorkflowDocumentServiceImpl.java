@@ -190,6 +190,12 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 														// client is off
 			throw new InvalidActionTakenException("Document already has a Document id");
 		}
+		
+		boolean canInitiate = KEWServiceLocator.getDocumentTypePermissionService().canInitiate(user.getWorkflowId(), routeHeader.getDocumentType());
+		
+		if (!canInitiate) {
+			throw new InvalidActionTakenException("User '" + user.getAuthenticationUserId().getId() + "' is not authorized to initiate documents of type '" + routeHeader.getDocumentType().getName());
+		}
 
         if (!routeHeader.getDocumentType().isDocTypeActive()) {
             // don't allow creation if document type is inactive

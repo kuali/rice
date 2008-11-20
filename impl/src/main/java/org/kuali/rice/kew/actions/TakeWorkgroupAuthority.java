@@ -65,25 +65,12 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
         this.workgroup = workgroup;
     }
-    
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.actions.ActionTakenEvent#requireInitiatorCheck()
-     */
-    @Override
-    protected boolean requireInitiatorCheck() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        String superError = super.validateActionTakenRules();
-        if (!Utilities.isEmpty(superError)) {
-            return superError;
-        }
         if  ( (workgroup != null) && (!workgroup.hasMember(getUser())) ) {
             return (getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
         }

@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * A container that holds all of the {@link WorkflowAttributeDefinition} for a document for both document searches
@@ -27,32 +29,32 @@ import java.util.Map;
  *
  */
 public class WorkflowAttributes extends DataDictionaryDefinitionBase {
-    private Map<String, WorkflowAttributeDefinition> searchingAttributeDefinitions;
-    private Map<String, List<WorkflowAttributeDefinition>> routingTypeDefinitions;
+    private List<SearchingTypeDefinition> searchingTypeDefinitions;
+    private Map<String, RoutingTypeDefinition> routingTypeDefinitions;
     
     public WorkflowAttributes() {
-    	searchingAttributeDefinitions = new HashMap<String, WorkflowAttributeDefinition>();
-    	routingTypeDefinitions = new HashMap<String, List<WorkflowAttributeDefinition>>();
+    	searchingTypeDefinitions = new ArrayList<SearchingTypeDefinition>();;
+    	routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
     }
     
-	public Map<String, WorkflowAttributeDefinition> getSearchingAttributeDefinitions() {
-		return this.searchingAttributeDefinitions;
+	public List<SearchingTypeDefinition> getSearchingAttributeDefinitions() {
+		return this.searchingTypeDefinitions;
 	}
 
 
 	public void setSearchingAttributeDefinitions(
-			Map<String, WorkflowAttributeDefinition> searchingAttributeDefinitions) {
-		this.searchingAttributeDefinitions = searchingAttributeDefinitions;
+			List<SearchingTypeDefinition> searchingTypeDefinitions) {
+		this.searchingTypeDefinitions = searchingTypeDefinitions;
 	}
 
 
-	public Map<String, List<WorkflowAttributeDefinition>> getRoutingTypeDefinitions() {
+	public Map<String, RoutingTypeDefinition> getRoutingTypeDefinitions() {
 		return this.routingTypeDefinitions;
 	}
 
 
 	public void setRoutingTypeDefinitions(
-			Map<String, List<WorkflowAttributeDefinition>> routingTypeDefinitions) {
+			Map<String, RoutingTypeDefinition> routingTypeDefinitions) {
 		this.routingTypeDefinitions = routingTypeDefinitions;
 	}
 
@@ -63,15 +65,11 @@ public class WorkflowAttributes extends DataDictionaryDefinitionBase {
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
-		for (WorkflowAttributeDefinition definition : searchingAttributeDefinitions.values()) { 
+		for (SearchingTypeDefinition definition : searchingTypeDefinitions) { 
 			definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 		}
-		for (List<WorkflowAttributeDefinition> definitionsList : routingTypeDefinitions.values()) {
-			if (definitionsList != null) {
-				for (WorkflowAttributeDefinition definition : definitionsList) {
-					definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
-				}
-			}
+		for (RoutingTypeDefinition definitions : routingTypeDefinitions.values()) {
+			definitions.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 		}
 	}
 }

@@ -273,11 +273,14 @@
       <ref bean="enExtractOjbDAO"/>
     </property>
   </bean>
-
+  
     <bean id="enExtractOjbDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
+    
+    <!-- 
     <bean id="enExtractDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDaoJpaImpl"/>
+    -->
 
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
@@ -972,7 +975,7 @@
         <idref local="enHelpDAO"/>
         <idref local="enBranchDAOJpa"/>
         <idref local="enRuleAttributeDAOJpa"/>
-        <idref local="enExtractDAO"/>
+        <!-- <idref local="enExtractDAO"/> -->
       </list>
     </property>
   </bean>

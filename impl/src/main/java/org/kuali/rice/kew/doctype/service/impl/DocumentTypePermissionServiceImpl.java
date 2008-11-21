@@ -158,16 +158,28 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return true;
 	}
 
-	public boolean canSave(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
+	public boolean canSave(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
+		validateRouteNodeNames(routeNodeNames);
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
 		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_SAVE)) {
-			AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
-			if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
-				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, new AttributeSet());
+			List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+			boolean foundAtLeastOnePermission = false;
+			// loop over permission details, only one of them needs to be authorized
+			for (AttributeSet permissionDetails : permissionDetailList) {
+				if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
+					foundAtLeastOnePermission = true;
+					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, new AttributeSet())) {
+						return true;
+					}
+				}
+			}
+			// if we found defined KIM permissions, but not of them have authorized this user, return false
+			if (foundAtLeastOnePermission) {
+				return false;
 			}
 		}
 		

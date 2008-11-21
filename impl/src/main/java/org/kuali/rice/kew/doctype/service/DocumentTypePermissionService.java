@@ -67,15 +67,11 @@ public interface DocumentTypePermissionService {
 	 * For example, if the save permission is defined for node 1 but not for node 2, then a document which
 	 * is at both node 1 and node 2 should satisfy the permission check.
 	 */
-	public boolean canSave(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId);
+	public boolean canSave(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
 
 	/**
 	 * Determines if the given principal can blanket approve documents of the given DocumentType.  The permission check
-	 * also considers the document's current route nodes, document status, and initiator of the document.
-	 * 
-	 * <p>It is intended the only one of the given route nodes will need to satisfy the permission check.
-	 * For example, if the blanket approve permission is defined for node 1 but not for node 2, then a document which
-	 * is at both node 1 and node 2 should satisfy the permission check.
+	 * also considers the document status and the initiator of the document.
 	 */
 	public boolean canBlanketApprove(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId);
 

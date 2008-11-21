@@ -175,6 +175,10 @@ public class RouteNode implements Serializable {
     public KimGroup getExceptionWorkgroup() {
         return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
     }
+    
+    public boolean isExceptionGroupDefined() {
+    	return getExceptionWorkgroupId() != null;
+    }
 
     public String getExceptionWorkgroupId() {
         return exceptionWorkgroupId;

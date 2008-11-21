@@ -595,9 +595,9 @@ public class DocumentType extends PersistableBusinessObjectBase
     /**
      * Returns true if this DocumentType has a super user group defined.
      */
-    public boolean hasSuperUserGroup() {
+    public boolean isSuperUserGroupDefined() {
     	if (this.workgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().hasSuperUserGroup(); 
+    		return getParentDocType() != null && getParentDocType().isSuperUserGroupDefined(); 
     	}
     	return true;
     }
@@ -652,9 +652,9 @@ public class DocumentType extends PersistableBusinessObjectBase
      * Returns true if either a blanket approve group or blanket approve policy is defined
      * on this Document Type.
      */
-    public boolean hasBlanketApproveDefined() {
+    public boolean isBlanketApproveGroupDefined() {
     	if (StringUtils.isBlank(getBlanketApprovePolicy()) && this.blanketApproveWorkgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().hasBlanketApproveDefined(); 
+    		return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined(); 
     	}
     	return true;
     }

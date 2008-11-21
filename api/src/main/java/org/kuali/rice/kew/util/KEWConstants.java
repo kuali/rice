@@ -752,6 +752,7 @@ public class KEWConstants {
 
     public static final String PRIMARY_PROCESS_NAME = "PRIMARY";
     public static final String PRIMARY_BRANCH_NAME = "PRIMARY";
+    public static final String DEFAULT_EXCEPTION_PROCESS_NAME = "exception";
 
     // Document type versions
     public static final String ROUTING_VERSION_ROUTE_LEVEL = "1";
@@ -878,4 +879,24 @@ public class KEWConstants {
 
 	public static final String DOCHANDLER_METHOD = "dochandlerMethod";
 
+	public static final String PERMISSION_NAMESPACE = "KR-WKFLW";
+
+	// Permission Details
+	
+	public static final String DOCUMENT_TYPE_NAME_DETAIL = "name";
+	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
+	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
+	public static final String DOCUMENT_STATUS_DETAIL = "docRouteStatus";
+	
+	// Permissions
+	
+	public static final String BLANKET_APPROVE_PERMISSION = "Blanket Approve Document";
+	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
+	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
+	public static final String CANCEL_PERMISSION = "Cancel Document";
+	public static final String INITIATE_PERMISSION = "Initiate Document";
+	public static final String ROUTE_PERMISSION = "Route Document";
+	public static final String SAVE_PERMISSION = "Save Document";
+
+	
 }

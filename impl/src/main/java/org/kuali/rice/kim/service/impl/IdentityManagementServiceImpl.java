@@ -197,9 +197,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionCache.get( key );
 		if ( hasPermissionRef != null ) {
 			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
-			Boolean permission = hasPermissionMap.get(attrs);
-			if (permission != null) {
-				return permission;
+			if ( hasPermissionMap != null ) {
+				Boolean permission = hasPermissionMap.get(attrs);
+				if (permission != null) {
+					return permission;
+				}
 			}
 		}
 		return null;
@@ -209,9 +211,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionByTemplateCache.get( key );
 		if ( hasPermissionRef != null ) {
 			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
-			Boolean permission = hasPermissionMap.get(attrs);
-			if (permission != null) {
-				return permission;
+			if ( hasPermissionMap != null ) {
+				Boolean permission = hasPermissionMap.get(attrs);
+				if (permission != null) {
+					return permission;
+				}
 			}
 		}
 		return null;

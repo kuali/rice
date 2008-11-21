@@ -46,9 +46,7 @@
 				</start>
 				<role name="Role1">
 					<activationType>P</activationType>
-					<namespace>TEST</namespace>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
-					<responsibilityName>VoluntaryReview</responsibilityName>
 				</role>
 			</routeNodes>
 		</documentType>
@@ -72,9 +70,8 @@
 				</start>
 				<role name="Role1">
 					<activationType>P</activationType>
-					<namespace>TEST</namespace>
-					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
-					<responsibilityName>VoluntaryReview2</responsibilityName>
+					<qualifierResolverClass>org.kuali.rice.kew.role.TestQualifierResolver</qualifierResolverClass>
+					<responsibilityTemplateName>AllApproveReview</responsibilityTemplateName>
 				</role>
 			</routeNodes>
 		</documentType>

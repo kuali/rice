@@ -51,7 +51,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, new AttributeSet());
+		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, new AttributeSet());
 	}
 	
 	public boolean canReceiveAdHocRequest(String principalId, DocumentType documentType, String actionRequestType) {
@@ -60,8 +60,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateActionRequestType(actionRequestType);
 		
 		AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-		if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet());
+		if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet());
 		}
 		return true;
 	}
@@ -72,10 +72,10 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateActionRequestType(actionRequestType);
 		
 		AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-		if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+		if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
 			List<String> principalIds = getIdentityManagementService().getGroupMemberPrincipalIds(groupId);
 			for (String principalId : principalIds) {
-				if (!getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet())) {
+				if (!getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet())) {
 					return false;
 				}
 			}
@@ -92,7 +92,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new AttributeSet());
+		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new AttributeSet());
 	}
 	
 	public boolean canCancel(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
@@ -107,9 +107,9 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			boolean foundAtLeastOnePermission = false;
 			// loop over permission details, only one of them needs to be authorized
 			for (AttributeSet permissionDetails : permissionDetailList) {
-				if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
+				if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
 					foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, new AttributeSet())) {
+					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, new AttributeSet())) {
 						return true;
 					}
 				}
@@ -130,11 +130,9 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		
-		// if the permission is defined in KIM, we will check authorization, otherwise anyone can initiate this document type
-		// TODO should we change this behavior so that it always just checks kim?
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		if (getIdentityManagementService().hasPermission(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
+		if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
 		}
 		return true;
 	}
@@ -147,8 +145,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_ROUTE)) {
 			AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
-			if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
-				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, new AttributeSet());
+			if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
+				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, new AttributeSet());
 			}
 		}
 			
@@ -170,9 +168,9 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			boolean foundAtLeastOnePermission = false;
 			// loop over permission details, only one of them needs to be authorized
 			for (AttributeSet permissionDetails : permissionDetailList) {
-				if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
+				if (getPermissionService().isPermissionAssignedForTemplateName(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
 					foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.PERMISSION_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, new AttributeSet())) {
+					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, new AttributeSet())) {
 						return true;
 					}
 				}

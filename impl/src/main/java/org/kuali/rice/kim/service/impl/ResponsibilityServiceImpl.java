@@ -98,7 +98,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 	protected List<KimResponsibilityImpl> getResponsibilityImplsByTemplateName( String namespaceCode, String responsibilityTemplateName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 4 );
     	pk.put( "template.namespaceCode", namespaceCode );
-    	pk.put( "template.responsibilityName", responsibilityTemplateName );
+    	pk.put( "template.name", responsibilityTemplateName );
 		pk.put( "template.active", "Y");
 		pk.put( "active", "Y");
     	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );

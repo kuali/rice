@@ -48,12 +48,9 @@ public class RoleRouteModule implements RouteModule {
 	
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
-	protected static final String RESPONSIBILITY_NAME_ELEMENT = "responsibilityName";
+	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	protected static final String NAMESPACE_ELEMENT = "namespace";
-	
-	protected static final String DOCUMENT_TYPE_DETAIL = "documentType";
-	protected static final String NODE_NAME_DETAIL = "nodeName";
-	
+		
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {
 		
@@ -61,11 +58,11 @@ public class RoleRouteModule implements RouteModule {
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 		QualifierResolver qualifierResolver = loadQualifierResolver(context);
 		List<AttributeSet> qualifiers = qualifierResolver.resolve(context);
-		String responsibilityName = loadResponsibilityName(context);
+		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
 		String namespaceCode = loadNamespace(context);
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
 		for (AttributeSet qualifier : qualifiers) {
-			List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActions(namespaceCode, responsibilityName, qualifier, responsibilityDetails);
+			List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
 			List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
 			for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 				String approvePolicy = responsibilitySet.getApprovePolicy();
@@ -111,23 +108,23 @@ public class RoleRouteModule implements RouteModule {
 		String documentTypeName = context.getDocument().getDocumentType().getName();
 		String nodeName = context.getNodeInstance().getName();
 		AttributeSet responsibilityDetails = new AttributeSet();
-		responsibilityDetails.put(DOCUMENT_TYPE_DETAIL, documentTypeName);
-		responsibilityDetails.put(NODE_NAME_DETAIL, nodeName);
+		responsibilityDetails.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentTypeName);
+		responsibilityDetails.put(KEWConstants.ROUTE_NODE_NAME_DETAIL, nodeName);
 		return responsibilityDetails;
 	}
 	
-	protected String loadResponsibilityName(RouteContext context) {
-		String responsibilityName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_NAME_ELEMENT);
-		if (StringUtils.isBlank(responsibilityName)) {
-			throw new RiceRuntimeException("Failed to determine the responsibility name.  Please ensure that <responsibilityName> is configured in your Document Type XML.");
+	protected String loadResponsibilityTemplateName(RouteContext context) {
+		String responsibilityTemplateName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_TEMPLATE_NAME_ELEMENT);
+		if (StringUtils.isBlank(responsibilityTemplateName)) {
+			return KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME;
 		}
-		return responsibilityName;
+		return responsibilityTemplateName;
 	}
 	
 	protected String loadNamespace(RouteContext context) {
 		String namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
 		if (StringUtils.isBlank(namespace)) {
-			namespace = "";
+			namespace = KEWConstants.DEFAULT_KIM_NAMESPACE;
 		}
 		return namespace;
 	}

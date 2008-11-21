@@ -879,7 +879,9 @@ public class KEWConstants {
 
 	public static final String DOCHANDLER_METHOD = "dochandlerMethod";
 
-	public static final String PERMISSION_NAMESPACE = "KR-WKFLW";
+	public static final String DEFAULT_KIM_NAMESPACE = "KR-WKFLW";
+	
+	public static final String DEFAULT_RESPONSIBILITY_TEMPLATE_NAME = "Review";
 
 	// Permission Details
 	

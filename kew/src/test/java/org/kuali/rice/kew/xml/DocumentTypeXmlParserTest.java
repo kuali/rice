@@ -21,6 +21,7 @@ package org.kuali.rice.kew.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
@@ -82,7 +82,9 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithNoDocHandler() throws Exception {
-        testDoc("NoDocHandler", InvalidXmlException.class);
+        testDoc("NoDocHandler", null);
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc1");
+        assertTrue("Doc type doc handler should be empty.", StringUtils.isBlank(documentType.getDocHandlerUrl()));
     }
 
     @Test public void testLoadDocWithBadExceptionWG() throws Exception {
@@ -262,6 +264,16 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
         assertEquals("Invalid Index Number", index+1, attribute.getOrderIndex());
         assertEquals("Invalid attribute name for order value " + index+1, "TestRuleAttribute", attribute.getRuleAttribute().getName());
+    }
+    
+    @Test public void testLoadDocWithNoLabel() throws Exception {
+    	List documentTypes = testDoc("DocTypeWithNoLabel", null);
+    	assertEquals("Should have parsed 1 document type", 1, documentTypes.size());
+    	
+    	DocumentType documentType = (DocumentType)documentTypes.get(0);
+    	assertEquals("Document type has incorrect name", "DocumentTypeXmlParserTestDoc_DocTypeWithNoLabel", documentType.getName());
+    	assertEquals("Document type has incorrect label", "Undefined", documentType.getLabel());
+    	
     }
 
 }

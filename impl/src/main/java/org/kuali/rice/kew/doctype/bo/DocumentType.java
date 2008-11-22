@@ -797,7 +797,11 @@ public class DocumentType extends PersistableBusinessObjectBase
     public PostProcessor getPostProcessor()	{
         String pname = getPostProcessorName();
         if (StringUtils.isBlank(pname)) {
-            return new DefaultPostProcessor();
+        	if (getParentDocType() != null) {
+        		return getParentDocType().getPostProcessor();
+        	} else {
+        		return new DefaultPostProcessor();
+        	}
         }
 
     	ObjectDefinition objDef = getObjectDefinition(pname);

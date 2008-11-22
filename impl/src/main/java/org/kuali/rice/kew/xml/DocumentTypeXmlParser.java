@@ -189,10 +189,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
 
-        if (Utilities.isEmpty(docHandler)) {
-            throw new InvalidXmlException("docHandler element must be specified");
-        }
-
         documentType.setDocHandlerUrl(docHandler);
 
 

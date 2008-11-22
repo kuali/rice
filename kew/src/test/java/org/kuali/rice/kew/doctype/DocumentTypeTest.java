@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import mocks.MockPostProcessor;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
@@ -29,10 +31,12 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.edl.EDocLitePostProcessor;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -491,6 +495,23 @@ public class DocumentTypeTest extends KEWTestCase {
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
     	verifyDocumentTypeLinking();
 
+    }
+    
+    @Test
+    public void testPostProcessor() throws Exception {
+    	loadXmlFile("DoctypePostProcessorConfig.xml");
+    	
+    	DocumentType ppTestParent1 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestParent1");
+    	DocumentType ppTestParent2 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestParent2");
+    	DocumentType ppTestChild1 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild1");
+    	DocumentType ppTestChild2 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild2");
+    	DocumentType ppTestChild3 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild3");
+    	
+    	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestParent1.getPostProcessor().getClass());
+    	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestParent2.getPostProcessor().getClass());
+    	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestChild1.getPostProcessor().getClass());
+    	assertEquals("Incorrect PostProcessor", EDocLitePostProcessor.class, ppTestChild2.getPostProcessor().getClass());
+    	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestChild3.getPostProcessor().getClass());
     }
 
     protected void verifyDocumentTypeLinking() throws Exception {

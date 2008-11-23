@@ -40,8 +40,8 @@ public class EmailServiceTest extends KCBTestCase {
 
     @Test
     @UnitTestData(sqlStatements = {
-        @UnitTestSql("insert into KCB_MESSAGES (ID, DELIVERY_TYPE, CREATED_DATETIME, TITLE, CHANNEl, PRODUCER, CONTENT, CONTENT_TYPE, URL, USER_RECIPIENT_ID, DB_LOCK_VER_NBR) values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'url', 'user1', 0)"),
-        @UnitTestSql("insert into KCB_MSG_DELIVS (ID, MESSAGE_ID, DELIVERER_TYPE_NAME, DELIVERER_SYSTEM_ID, DELIVERY_STATUS, LOCKED_DATE, DB_LOCK_VER_NBR) values (1, 1, 'email', 'fake system id', 'fakestatus', NULL, 0)")
+        @UnitTestSql("insert into KREN_MSG_T (MSG_ID, DELIV_TYP, CRTE_DTTM, TTL, CHNl, PRODCR, CNTNT, CNTNT_TYP, URL, RECIP_ID, VER_NBR) values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'url', 'user1', 0)"),
+        @UnitTestSql("insert into KREN_MSG_DELIV_T (MSG_DELIV_ID, MSG_ID, TYP_NM, SYS_ID, STAT_CD, LOCKD_DTTM, VER_NBR) values (1, 1, 'email', 'fake system id', 'fakestatus', NULL, 0)")
     })
     public void testSendNotificationEmail() throws Exception {
         MessageDeliveryService mds = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();

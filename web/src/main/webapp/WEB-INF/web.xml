@@ -30,11 +30,6 @@
 		<filter-class>org.kuali.rice.kew.web.UserLoginFilter</filter-class>
 	</filter>
 
-    <filter>
-        <filter-name>UserAccessFilter</filter-name>
-        <filter-class>org.kuali.rice.kew.web.UserAccessFilter</filter-class>
-    </filter>
-
 	<filter-mapping>
         <filter-name>HideWebInfFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -49,17 +44,9 @@
 		<filter-name>UserLoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
 	</filter-mapping>
-    <filter-mapping>
-        <filter-name>UserAccessFilter</filter-name>
-        <servlet-name>action</servlet-name>
-    </filter-mapping>
 
     <filter-mapping>
         <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>notification</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>UserAccessFilter</filter-name>
         <servlet-name>notification</servlet-name>
     </filter-mapping>
     
@@ -72,17 +59,9 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>kcb</servlet-name>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>UserAccessFilter</filter-name>
-        <servlet-name>kcb</servlet-name>
-    </filter-mapping>
 
     <filter-mapping>
         <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>edoclite</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>UserAccessFilter</filter-name>
         <servlet-name>edoclite</servlet-name>
     </filter-mapping>
 

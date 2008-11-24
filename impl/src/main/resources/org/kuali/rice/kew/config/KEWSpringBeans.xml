@@ -604,8 +604,6 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="enWebAuthorizationService" class="org.kuali.rice.kew.web.service.impl.DefaultWebAuthorizationService"/>
-
   <bean id="enUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
   <bean id="enWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
  
@@ -911,6 +909,11 @@
           <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
     </property>
+  </bean>
+  
+  <bean id="kewModule" class="org.kuali.rice.ksb.service.impl.KEWModuleService">
+  	<property name="moduleConfiguration" ref="kewModuleConfiguration"/>
+    <property name="kualiModuleService" ref="kualiModuleService" />
   </bean>
   
   <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">

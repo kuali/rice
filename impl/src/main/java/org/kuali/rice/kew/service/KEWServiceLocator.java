@@ -50,7 +50,6 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.service.WebAuthorizationService;
 import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
@@ -141,8 +140,6 @@ public final class KEWServiceLocator {
 	public static final String ROUTE_MANAGER_DRIVER = "enRouteManagerDriver";
 
 	public static final String OPTIMISTIC_LOCK_FAILURE_SERVICE = "enOptimisticLockFailureService";
-
-	public static final String WEB_AUTHORIZATION_SERVICE = "enWebAuthorizationService";
 
 	public static final String NOTE_SERVICE = "enNoteService";
 
@@ -381,10 +378,6 @@ public final class KEWServiceLocator {
 
     public static StyleService getStyleService() {
         return (StyleService) getBean(STYLE_SERVICE);
-    }
-
-    public static WebAuthorizationService getWebAuthorizationService() {
-        return (WebAuthorizationService) getBean(WEB_AUTHORIZATION_SERVICE);
     }
 
 	public static WorkflowDocumentExceptionRoutingService getExceptionRoutingService() {

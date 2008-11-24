@@ -51,13 +51,6 @@
 		</filter-class>
 	</filter>
 
-	<filter>
-		<filter-name>UserAccessFilter</filter-name>
-		<filter-class>
-			org.kuali.rice.kew.web.UserAccessFilter
-		</filter-class>
-	</filter>
-
 	<filter-mapping>
 		<filter-name>ResponseOverrideFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
@@ -75,11 +68,6 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>UserAccessFilter</filter-name>
-		<servlet-name>action</servlet-name>
-	</filter-mapping>
-
-	<filter-mapping>
 		<filter-name>BootstrapFilter</filter-name>
 		<servlet-name>edoclite</servlet-name>
 	</filter-mapping>
@@ -87,11 +75,6 @@
 	<filter-mapping>
 		<!-- maps the UserLoginFilter to the EDocLite servlet -->
 		<filter-name>UserLoginFilter</filter-name>
-		<servlet-name>edoclite</servlet-name>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>UserAccessFilter</filter-name>
 		<servlet-name>edoclite</servlet-name>
 	</filter-mapping>
 

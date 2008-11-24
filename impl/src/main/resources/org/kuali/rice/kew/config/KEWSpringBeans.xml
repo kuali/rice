@@ -911,7 +911,7 @@
     </property>
   </bean>
   
-  <bean id="kewModule" class="org.kuali.rice.ksb.service.impl.KEWModuleService">
+  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
   	<property name="moduleConfiguration" ref="kewModuleConfiguration"/>
     <property name="kualiModuleService" ref="kualiModuleService" />
   </bean>

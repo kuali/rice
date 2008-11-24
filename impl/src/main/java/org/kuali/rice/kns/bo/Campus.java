@@ -15,25 +15,25 @@
  */
 package org.kuali.rice.kns.bo;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 /**
  * 
  */
 @Entity
 @Table(name="KRNS_CAMPUS_T")
-public class Campus extends PersistableBusinessObjectBase {
+public class Campus extends PersistableBusinessObjectBase implements Inactivateable {
 
     private static final long serialVersionUID = 787567094298971223L;
     @Id
@@ -45,6 +45,9 @@ public class Campus extends PersistableBusinessObjectBase {
 	private String campusShortName;
     @Column(name="CAMPUS_TYP_CD")
 	private String campusTypeCode;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
+    protected boolean active;
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="CAMPUS_TYP_CD", insertable=false, updatable=false)
@@ -154,6 +157,20 @@ public class Campus extends PersistableBusinessObjectBase {
         this.campusType = campusType;
     }
 
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */

@@ -269,12 +269,12 @@
                      <c:param name="methodToCall" value="report"/></c:url>" target="_blank">
             <c:out value="${result.delegatorUser.transposedName}"/></a>
         </c:when>
-        <c:when test="${result.delegatorWorkgroup != null}">
+        <c:when test="${result.delegatorGroup != null}">
            <a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                      <c:param name="workgroupId" value="${result.delegatorWorkgroup.workflowGroupId.groupId}"/>
+                      <c:param name="groupId" value="${result.delegatorGroup.groupId}"/>
                       <c:param name="methodToCall" value="report"/>
                       <c:param name="showEdit" value="no"/>
-                    </c:url>" target="_blank"><c:out value="${result.delegatorWorkgroup.groupNameId.nameId}"/></a>
+                    </c:url>" target="_blank"><c:out value="${result.delegatorGroup.groupName}"/></a>
        </c:when>
         <c:otherwise>
         	&nbsp;
@@ -294,14 +294,14 @@
   </c:if>
 
   <c:if test="${preferences.showWorkgroupRequest == Constants.PREFERENCES_YES_VAL}">
-  	<display-el:column sortable="true" title="${workgroupRequestLabel}" sortProperty="workgroup.groupNameId.nameId" class="display-column">
+  	<display-el:column sortable="true" title="${workgroupRequestLabel}" sortProperty="group.groupName" class="display-column">
   		<c:choose>
-  			<c:when test="${result.workgroupId != null && result.workgroupId != 0}">
+  			<c:when test="${result.groupId != null && result.groupId != 0}">
   			  <a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                      <c:param name="workgroupId" value="${result.workgroup.workflowGroupId.groupId}"/>
+                      <c:param name="groupId" value="${result.group.groupId}"/>
                       <c:param name="methodToCall" value="report"/>
                       <c:param name="showEdit" value="no"/>
-                    </c:url>" target="_blank"><c:out value="${result.workgroup.groupNameId.nameId}"/>
+                    </c:url>" target="_blank"><c:out value="${result.group.groupName}"/>
               </a>
   			</c:when>
   			<c:otherwise>

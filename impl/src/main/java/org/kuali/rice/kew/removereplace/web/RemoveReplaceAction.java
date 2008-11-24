@@ -36,7 +36,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
 import org.kuali.rice.kew.removereplace.RuleTarget;
 import org.kuali.rice.kew.removereplace.WorkgroupTarget;
-import org.kuali.rice.kew.routing.web.DocHandlerForm;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -47,13 +46,11 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.web.WorkgroupForm;
 
 
 /**
@@ -116,7 +113,10 @@ public class RemoveReplaceAction extends WorkflowAction {
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(REPLACEMENT_USER_ID_NOT_FOUND_MSG, form.getReplacementUserId()));
 	    }
 	}
-	form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
+	
+	// TODO with KIM, no longer possible to get all group types
+	
+	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
         form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
 	return messages;
     }

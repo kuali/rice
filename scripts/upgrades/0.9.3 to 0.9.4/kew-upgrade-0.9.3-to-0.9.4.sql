@@ -81,5 +81,5 @@ DROP TABLE KRTMP_RTE_NODE_T
 INSERT INTO KRNS_NMSPC_T ("NMSPC_CD","VER_NBR","NM","ACTV_IND") VALUES ('KR-WRKFLW', 0,'Workflow',1)
 /
 
-INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","TXT","CONS_CD","PARM_DESC_TXT","PARM_TYP_CD","GRP_NM") VALUES ('KR-WRKFLW','All','KIM_PRIORITY_ON_DOC_TYP_PERMS_IND','N','A','Flag for enabling/disabling document type permissions checks to use KIM Permissions as priority over Document Type policies.','CONFG','WorkflowAdmin')
+INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","TXT","CONS_CD","PARM_DESC_TXT","PARM_TYP_CD","GRP_NM") VALUES ('KR-WRKFLW','All','KIM_PRIORITY_ON_DOC_TYP_PERMS_IND','N','A','Flag for enabling/disabling document type permission checks to use KIM Permissions as priority over Document Type policies.','CONFG','WorkflowAdmin')
 /

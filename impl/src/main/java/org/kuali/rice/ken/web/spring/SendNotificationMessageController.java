@@ -227,8 +227,8 @@ public class SendNotificationMessageController extends MultiActionController {
 	}
 	
 	
-	model.put("allUsers", notificationRecipientService.getAllUsers());
-	model.put("allGroups", notificationRecipientService.getAllGroups());
+//	model.put("allUsers", notificationRecipientService.getAllUsers());
+//	model.put("allGroups", notificationRecipientService.getAllGroups());
 	return model;
     }
 

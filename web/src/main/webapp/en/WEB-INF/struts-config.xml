@@ -4,7 +4,6 @@
     <!-- ========== form bean definitions ================================== -->
     <form-beans>
       <form-bean name="ActionListForm" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
-      <form-bean name="WorkgroupForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupForm" />
       <form-bean name="DocumentSearchForm" type="org.kuali.rice.kew.docsearch.web.DocumentSearchForm" />
       <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
       <form-bean name="LookupForm" type="org.kuali.rice.kew.lookupable.LookupForm" />
@@ -17,7 +16,6 @@
       <form-bean name="ApplicationConstantsForm" type="org.kuali.rice.kew.applicationconstants.web.ApplicationConstantsForm" />
       <form-bean name="RuleAttributeReportForm" type="org.kuali.rice.kew.rule.web.RuleAttributeReportForm" />
       <form-bean name="RuleTemplateForm" type="org.kuali.rice.kew.rule.web.RuleTemplateForm" />
-      <form-bean name="WorkgroupTypeForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupTypeForm" />
       <form-bean name="Rule2Form" type="org.kuali.rice.kew.rule.web.Rule2Form" />
       <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.rule.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
@@ -31,7 +29,6 @@
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
       <form-bean name="WorkflowUserForm" type="org.kuali.rice.kew.user.web.WorkflowUserForm" />
-	  <form-bean name="WorkgroupForm" type="org.kuali.rice.kew.workgroup.web.WorkgroupForm" />
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
     </form-beans>
 
@@ -182,17 +179,6 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp"/>
        </action>
 
-      <action path="/Workgroup" name="WorkgroupForm" scope="request" validate="true"
-         input="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"
-         type="org.kuali.rice.kew.workgroup.web.WorkgroupAction" parameter="methodToCall">
-         <forward name="basic" path="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"/>
-         <forward name="summary" path="/WEB-INF/jsp/workgroup/WorkgroupSummary.jsp"/>
-         <forward name="docHandler" path="/WEB-INF/jsp/workgroup/WorkgroupDocHandler.jsp" />
-         <forward name="report" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
-         <forward name="requiredStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
-         <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
-       </action>
-
        <action path="/DocumentType" name="DocumentTypeForm" scope="request" validate="false"
           input="/WEB-INF/jsp/doctype/DocumentTypeReport.jsp"
           type="org.kuali.rice.kew.doctype.web.DocumentTypeAction" parameter="methodToCall">
@@ -220,14 +206,6 @@
           <forward path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp" name="report" />
           <forward name="requiredStateError" path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"/>
-       </action>
-
-       <action path="/WorkgroupType" type="org.kuali.rice.kew.workgroup.web.WorkgroupTypeAction"
-          input="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"
-          name="WorkgroupTypeForm" scope="request" parameter="methodToCall">
-          <forward path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp" name="report" />
-          <forward name="requiredStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
-          <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
        </action>
 
        <action path="/Rule" type="org.kuali.rice.kew.rule.web.Rule2Action"
@@ -333,17 +311,6 @@
          <forward name="report" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
          <forward name="requiredStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
          <forward name="finalStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-       </action>
-
-	   <action path="/Workgroup" name="WorkgroupForm" scope="request" validate="true"
-         input="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"
-         type="org.kuali.rice.kew.workgroup.web.WorkgroupAction" parameter="methodToCall">
-         <forward name="basic" path="/WEB-INF/jsp/workgroup/WorkgroupEntry.jsp"/>
-         <forward name="summary" path="/WEB-INF/jsp/workgroup/WorkgroupSummary.jsp"/>
-         <forward name="docHandler" path="/WEB-INF/jsp/workgroup/WorkgroupDocHandler.jsp" />
-         <forward name="report" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
-         <forward name="requiredStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
-         <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
        </action>
 
        <action path="/RemoveReplace" name="RemoveReplaceForm" scope="request" validate="true"

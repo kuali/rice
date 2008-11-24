@@ -392,7 +392,6 @@
 	<bean id="RuleTemplateLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
 	<bean id="EDocLiteLookupableService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupable" scope="prototype" />
 	<bean id="UserLookupableImplService" class="org.kuali.rice.kew.user.UserLookupableImpl" scope="prototype" />
-	<bean id="WorkGroupLookupableImplService" class="org.kuali.rice.kew.workgroup.WorkGroupLookupableImpl" scope="prototype" />
     <bean id="WorkgroupTypeLookup" class="org.kuali.rice.kew.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
     <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>

@@ -36,7 +36,6 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -71,20 +70,25 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
         rows = new ArrayList();
 
         List fields = new ArrayList();
-        fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.DROPDOWN, false, WORKGROUP_TYPE_PROPERTY, "", getWorkgroupTypeOptions(), null));
+        
+        // TODO there is no way to find all the workgroup types using KIM (there is no group type concept built in, instead using the generic KimType
+        // so we can't present a drop-down here anymore
+        
+        //fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.DROPDOWN, false, WORKGROUP_TYPE_PROPERTY, "", getWorkgroupTypeOptions(), null));
+        fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.TEXT, false, WORKGROUP_TYPE_PROPERTY, "", null, null));
         rows.add(new Row(fields));
     }
 
-    private List getWorkgroupTypeOptions() {
-	List options = new ArrayList();
-	options.add(new KeyLabelPair("", ""));
-	options.add(new KeyLabelPair(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE, "Default"));
-	List<WorkgroupType> workgroupTypes = KEWServiceLocator.getWorkgroupTypeService().findAll();
-	for (WorkgroupType workgroupType : workgroupTypes) {
-		options.add(new KeyLabelPair(workgroupType.getName(), workgroupType.getLabel()));
-	}
-	return options;
-}
+//    private List getWorkgroupTypeOptions() {
+//	List options = new ArrayList();
+//	options.add(new KeyLabelPair("", ""));
+//	options.add(new KeyLabelPair(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE, "Default"));
+//	List<WorkgroupType> workgroupTypes = KEWServiceLocator.getWorkgroupTypeService().findAll();
+//	for (WorkgroupType workgroupType : workgroupTypes) {
+//		options.add(new KeyLabelPair(workgroupType.getName(), workgroupType.getLabel()));
+//	}
+//	return options;
+//}
 
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
 	setWorkgroupType(getWorkgroupTypeFromRuleExtensions(ruleExtensions));
@@ -160,11 +164,12 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
         }
 
         if (!StringUtils.isBlank(workgroupTypeValue) && !workgroupTypeValue.equals(KEWConstants.LEGACY_DEFAULT_WORKGROUP_TYPE)) {
-            WorkgroupType workgroupType = KEWServiceLocator.getWorkgroupTypeService().findByName(workgroupTypeValue);
-            if (workgroupType == null) {
-        	String message = "Specified workgroup type of " + workgroupTypeValue + " in invalid.";
-        	errors.add(new WorkflowServiceErrorImpl(message, "general.message", message));
-            }
+        	// TODO modify this to fetch workgroupType as a KimType?
+//            WorkgroupType workgroupType = KEWServiceLocator.getWorkgroupTypeService().findByName(workgroupTypeValue);
+//            if (workgroupType == null) {
+//        	String message = "Specified workgroup type of " + workgroupTypeValue + " in invalid.";
+//        	errors.add(new WorkflowServiceErrorImpl(message, "general.message", message));
+//            }
         }
         setWorkgroupType(workgroupTypeValue);
         return errors;

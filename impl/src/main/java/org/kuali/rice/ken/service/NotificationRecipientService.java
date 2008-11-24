@@ -52,17 +52,17 @@ public interface NotificationRecipientService {
      */
     public String[] getGroupMembers(String groupRecipientId);
     
-    /**
-     * This method retrieves all users in the system.
-     * @return Collection
-     */
-    public Collection getAllUsers();
-    
-    /**
-     * This method retrieves all of the groups in the system.
-     * @return Collection
-     */
-    public Collection getAllGroups();
+//    /**
+//     * This method retrieves all users in the system.
+//     * @return Collection
+//     */
+//    public Collection getAllUsers();
+//    
+//    /**
+//     * This method retrieves all of the groups in the system.
+//     * @return Collection
+//     */
+//    public Collection getAllGroups();
 
     /**
      * This method retrieves the display name for a user.

@@ -47,15 +47,15 @@ public class NotificationRecipientServiceKewImplTest extends NotificationTestCas
 	assertTrue(services.getNotificationRecipientService().getGroupMembers(TestConstants.VALID_GROUP_NAME_1).length == TestConstants.GROUP_1_MEMBERS);
     }
 
-    @Test
-    public void testGetAllUsers() {
-	assertTrue(services.getNotificationRecipientService().getAllUsers().size()>0);
-    }
-
-    @Test
-    public void testGetAllWorkgroups() {
-	assertTrue(services.getNotificationRecipientService().getAllGroups().size()>0);
-    }
+//    @Test
+//    public void testGetAllUsers() {
+//	assertTrue(services.getNotificationRecipientService().getAllUsers().size()>0);
+//    }
+//
+//    @Test
+//    public void testGetAllWorkgroups() {
+//	assertTrue(services.getNotificationRecipientService().getAllGroups().size()>0);
+//    }
 
     @Test
     public void testGetUserDisplayName() {

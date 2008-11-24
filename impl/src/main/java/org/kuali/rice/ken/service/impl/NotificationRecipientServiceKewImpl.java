@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,13 +23,9 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.web.WebWorkflowUser;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kew.workgroup.web.WebWorkgroup;
 
 
 /**
@@ -109,42 +102,42 @@ public class NotificationRecipientServiceKewImpl implements NotificationRecipien
 	}
     }
 
-    /**
-     * Uses the UserService from KEW to get at all users.
-     * @see org.kuali.rice.ken.service.NotificationRecipientService#getAllGroups()
-     */
-    public Collection getAllUsers() {
-	UserService userService = KEWServiceLocator.getUserService();
-	WebWorkflowUser userTemplate = new WebWorkflowUser(userService.getBlankUser());
-	List<WorkflowUser> list = userService.search(userTemplate, true);
-	Collections.sort(list, new Comparator(){
-	    public int compare(Object obj1, Object obj2) {
-               return ((WorkflowUser)obj1).getDisplayName().compareTo(((WorkflowUser)obj2).getDisplayName());                    
-            }
-	}
-	);
-	return list;
-	//return userService.search(userTemplate, true);
-    }
-
-    /**
-     * Uses the WorkgroupService from KEW to get at all groups.
-     * @see org.kuali.rice.ken.service.NotificationRecipientService#getAllUsers()
-     */
-    public Collection getAllGroups() {
-	WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
-	WebWorkgroup workgroupTemplate = new WebWorkgroup(workgroupService.getBlankWorkgroup());
-	List<Workgroup> list = workgroupService.search(workgroupTemplate, null, true);
-	Collections.sort(list, new Comparator(){
-	    public int compare(Object obj1, Object obj2) {
-               return ((Workgroup)obj1).getDisplayName().compareTo(((Workgroup)obj2).getDisplayName());                    
-            }
-	}
-	);
-	return list;
-	
-	//return workgroupService.search(workgroupTemplate, true);
-    }
+//    /**
+//     * Uses the UserService from KEW to get at all users.
+//     * @see org.kuali.rice.ken.service.NotificationRecipientService#getAllGroups()
+//     */
+//    public Collection getAllUsers() {
+//	UserService userService = KEWServiceLocator.getUserService();
+//	WebWorkflowUser userTemplate = new WebWorkflowUser(userService.getBlankUser());
+//	List<WorkflowUser> list = userService.search(userTemplate, true);
+//	Collections.sort(list, new Comparator(){
+//	    public int compare(Object obj1, Object obj2) {
+//               return ((WorkflowUser)obj1).getDisplayName().compareTo(((WorkflowUser)obj2).getDisplayName());                    
+//            }
+//	}
+//	);
+//	return list;
+//	//return userService.search(userTemplate, true);
+//    }
+//
+//    /**
+//     * Uses the WorkgroupService from KEW to get at all groups.
+//     * @see org.kuali.rice.ken.service.NotificationRecipientService#getAllUsers()
+//     */
+//    public Collection getAllGroups() {
+//	WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
+//	WebWorkgroup workgroupTemplate = new WebWorkgroup(workgroupService.getBlankWorkgroup());
+//	List<Workgroup> list = workgroupService.search(workgroupTemplate, null, true);
+//	Collections.sort(list, new Comparator(){
+//	    public int compare(Object obj1, Object obj2) {
+//               return ((Workgroup)obj1).getDisplayName().compareTo(((Workgroup)obj2).getDisplayName());                    
+//            }
+//	}
+//	);
+//	return list;
+//	
+//	//return workgroupService.search(workgroupTemplate, true);
+//    }
 
     /**
      * Uses the UserService from KEW to get at the user's full display name.

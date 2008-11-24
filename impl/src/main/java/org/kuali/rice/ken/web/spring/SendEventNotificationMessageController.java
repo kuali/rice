@@ -232,8 +232,8 @@ public class SendEventNotificationMessageController extends MultiActionControlle
         model.put("startDateTime", request.getParameter("startDateTime"));
         model.put("stopDateTime", request.getParameter("stopDateTime"));
         
-	model.put("allUsers", notificationRecipientService.getAllUsers());
-	model.put("allGroups", notificationRecipientService.getAllGroups());
+//	model.put("allUsers", notificationRecipientService.getAllUsers());
+//	model.put("allGroups", notificationRecipientService.getAllGroups());
 	return model;
     }
 

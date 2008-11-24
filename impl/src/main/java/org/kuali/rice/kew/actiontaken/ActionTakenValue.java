@@ -89,7 +89,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Column(name="DLGTR_PRNCPL_ID")
 	private String delegatorWorkflowId;
     @Column(name="DLGTR_GRP_ID")
-	private Long delegatorWorkgroupId;
+	private Long delegatorGroupId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
     @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private DocumentRouteHeaderValue routeHeader;
@@ -109,22 +109,22 @@ public class ActionTakenValue implements WorkflowPersistable {
     }
 
     public Workgroup getDelegatorWorkgroup() {
-        return getWorkgroupService().getWorkgroup(new WorkflowGroupId(delegatorWorkgroupId));
+        return getWorkgroupService().getWorkgroup(new WorkflowGroupId(delegatorGroupId));
     }
 
     public void setDelegator(Recipient recipient) {
         if (recipient instanceof WorkflowUser) {
             setDelegatorWorkflowId(((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId());
         } else if (recipient instanceof Workgroup) {
-            setDelegatorWorkgroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
+            setDelegatorGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
         } else {
             setDelegatorWorkflowId(null);
-            setDelegatorWorkgroupId(null);
+            setDelegatorGroupId(null);
         }
     }
 
     public boolean isForDelegator() {
-        return getDelegatorWorkflowId() != null || getDelegatorWorkgroupId() != null;
+        return getDelegatorWorkflowId() != null || getDelegatorGroupId() != null;
     }
 
     public String getDelegatorDisplayName() throws KEWUserNotFoundException {
@@ -220,11 +220,11 @@ public class ActionTakenValue implements WorkflowPersistable {
         this.delegatorWorkflowId = delegatorWorkflowId;
     }
 
-    public Long getDelegatorWorkgroupId() {
-        return delegatorWorkgroupId;
+    public Long getDelegatorGroupId() {
+        return delegatorGroupId;
     }
-    public void setDelegatorWorkgroupId(Long delegatorWorkgroupId) {
-        this.delegatorWorkgroupId = delegatorWorkgroupId;
+    public void setDelegatorGroupId(Long delegatorGroupId) {
+        this.delegatorGroupId = delegatorGroupId;
     }
     public Integer getDocVersion() {
         return docVersion;

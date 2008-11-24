@@ -177,14 +177,14 @@
     <field-descriptor name="actionRequestId" column="ACTN_RQST_ID" jdbc-type="BIGINT" />
     <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT"  />
     <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="BIGINT" />
-    <field-descriptor name="workgroupId" column="GRP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="roleName" column="ROLE_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="docTitle" column="DOC_HDR_TTL" jdbc-type="VARCHAR" />
     <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
     <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
     <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorWorkflowId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorWorkgroupId" column="DLGN_GRP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
@@ -203,7 +203,7 @@
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="workflowId" column="PRNCPL_ID" jdbc-type="VARCHAR"/>
     <field-descriptor name="delegatorWorkflowId" column="DLGTR_PRNCPL_ID"  jdbc-type="VARCHAR"/>
-    <field-descriptor name="delegatorWorkgroupId" column="DLGTR_GRP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="delegatorGroupId" column="DLGTR_GRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="currentIndicator" column="CUR_IND" jdbc-type="BIT" />
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="false"
       auto-delete="false" name="actionRequests">

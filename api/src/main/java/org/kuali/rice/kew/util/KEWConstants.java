@@ -900,5 +900,7 @@ public class KEWConstants {
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";
 
+	// system parameters
 	
+	public static final String KIM_PRIORITY_ON_DOC_TYP_PERMS_IND = "KIM_PRIORITY_ON_DOC_TYP_PERMS_IND";
 }

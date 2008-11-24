@@ -117,14 +117,14 @@ public interface PermissionService {
     List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     
     /**
-     * Returns true if the given permission is assigned to any principals/groups.
+     * Returns true if the given permission is defined on any Roles.
      */
-    boolean isPermissionAssigned( String namespaceCode, String permissionName, AttributeSet permissionDetails );
+    boolean isPermissionDefined( String namespaceCode, String permissionName, AttributeSet permissionDetails );
     
     /**
-     * Returns true if the given permission template is assigned to any principals/groups.
+     * Returns true if the given permission template is defined on any Roles.
      */
-    boolean isPermissionAssignedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
+    boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
     
     /**
      * Returns permissions (with their details) that are granted to the principal given

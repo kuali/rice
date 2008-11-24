@@ -23,6 +23,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -41,13 +44,31 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	}
 
 	@Test
-	public void testIsBlanketApprover() throws Exception {
+	public void canBlanketApprove() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
 		KimPrincipal ewestfalPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KEWConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
 		
 		// TODO set up actual KIM permissions in DB and verify this permission works
+	}
+	
+	@Test
+	public void testCanInitiate() throws Exception {
+		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
+		KimPrincipal ewestfalPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+		assertNotNull(testDocType);
+		assertTrue("ewestfal should be allowed to initiate", service.canInitiate(ewestfalPrincipal.getPrincipalId(), testDocType));
+	}
+	
+	private void turnOnKimPermissionPriority() throws Exception {
+		Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		if (kimPriorityParam == null) {
+			kimPriorityParam = new Parameter();
+			//kimPriorityParam.set
+			// TODO
+		}
+		
 	}
 	
 }

@@ -171,12 +171,18 @@ public class PermissionServiceImpl implements PermissionService {
     	return results;
     }
     
-    public boolean isPermissionAssigned( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
-    	return !getRoleIdsForPermission(namespaceCode, permissionName, permissionDetails).isEmpty();
+    public boolean isPermissionDefined( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
+    	// now, filter the full list by the detail passed
+    	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
     }
     
-    public boolean isPermissionAssignedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
-    	return !getRoleIdsForPermissionTemplate(namespaceCode, permissionTemplateName, permissionDetails).isEmpty();
+    public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
+    	// get all the permission objects whose name match that requested
+    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionTemplateName );
+    	// now, filter the full list by the detail passed
+    	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
     }
 
     protected List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {

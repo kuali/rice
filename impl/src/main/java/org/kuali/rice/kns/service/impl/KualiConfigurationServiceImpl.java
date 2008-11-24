@@ -100,7 +100,7 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
 	}
     }
 
-    private Parameter getParameterWithoutExceptions(String namespaceCode, String detailTypeCode, String parameterName) {
+    public Parameter getParameterWithoutExceptions(String namespaceCode, String detailTypeCode, String parameterName) {
 	HashMap<String, String> crit = new HashMap<String, String>(3);
 	crit.put("parameterNamespaceCode", namespaceCode);
 	crit.put("parameterDetailTypeCode", detailTypeCode);

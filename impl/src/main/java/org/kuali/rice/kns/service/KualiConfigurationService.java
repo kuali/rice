@@ -61,6 +61,12 @@ public interface KualiConfigurationService {
     public Parameter getParameter(String namespaceCode, String detailTypeCode, String parameterName);
 
     /**
+     * This method retrieves a parameter based on the primary key.  Unlike {@link #getParameter(String, String, String)},
+     * this method does not throw an exception if the parameter cannot be found.  It instead returns null.
+     */
+    public Parameter getParameterWithoutExceptions(String namespaceCode, String detailTypeCode, String parameterName);
+    
+    /**
      * This method retrieves a set of parameters based on arbitraty criteria
      */
     public List<Parameter> getParameters(Map<String, String> criteria);

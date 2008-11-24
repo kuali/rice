@@ -16,20 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.service.AuthorizationService;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -38,19 +25,4 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBStrutsRequestProcessor extends RequestProcessor {
-
-    @Override
-    protected ActionForward processActionPerform(HttpServletRequest request, HttpServletResponse response, Action action, ActionForm form, ActionMapping mapping) throws IOException, ServletException {
-	if (!isAdministrator(request)) {
-	    return mapping.findForward("NotAuthorized");
-	}
-	return super.processActionPerform(request, response, action, form, mapping);
-    }
-
-    private boolean isAdministrator(HttpServletRequest request) {
-	AuthorizationService authService = (AuthorizationService)ConfigContext.getCurrentContextConfig().getObject(KSBConstants.KSB_AUTH_SERVICE);
-	// if no auth service is defined then everyone's an admin
-	return authService == null || authService.isAdministrator(request);
-    }
-
 }

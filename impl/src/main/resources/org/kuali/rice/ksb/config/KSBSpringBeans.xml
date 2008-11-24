@@ -221,6 +221,23 @@
     <property name="priority" value="3" />
     <property name="retryAttempts" value="0" />
   </bean>
+  
+  <bean id="ksbModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+		<property name="namespaceCode" value="KR-BUS" />
+		<property name="initializeDataDictionary" value="false"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+		<property name="persistenceService" ref="persistenceServiceOjb" />
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice.ksb.</value>
+            </list>
+        </property>
+	</bean>
+  
+  <bean id="ksbModule" class="org.kuali.rice.ksb.service.impl.KSBModuleService">
+  	<property name="moduleConfiguration" ref="ksbModuleConfiguration"/>
+    <property name="kualiModuleService" ref="kualiModuleService" />
+  </bean>
 
   <!-- START JPA CONFIGURATION -->
 

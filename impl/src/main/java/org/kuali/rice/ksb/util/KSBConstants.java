@@ -33,7 +33,6 @@ public class KSBConstants extends JSTLConstants {
     public static final String MESSAGING_SYNCHRONOUS = "synchronous";
     public static final String INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY = "message.injected.scheduler";
     public static final String FIXED_POOL_SIZE = "ksb.fixedPoolSize";
-    public static final String KSB_AUTH_SERVICE = "ksb.authService";
 
     // message queue constants
     public static final String ROUTE_QUEUE_QUEUED = "Q";

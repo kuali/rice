@@ -39,6 +39,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -128,8 +130,13 @@ public class UserSession implements Serializable {
     	return value;
     }
 
+    @Deprecated
     public WorkflowUser getHelpDeskActionListUser() {
         return helpDeskActionListUser;
+    }
+    
+    public Person getHelpDeskActionListPerson() {
+    	return convertToPerson(getHelpDeskActionListUser());
     }
     
     public void setHelpDeskActionListUser(WorkflowUser helpDeskActionListUser) {
@@ -160,6 +167,7 @@ public class UserSession implements Serializable {
         }
     }
     
+    @Deprecated
     public WorkflowUser getWorkflowUser() {
         if (backdoorId != null) {
             return backdoorWorkflowUser;
@@ -168,8 +176,24 @@ public class UserSession implements Serializable {
         }
     }
     
+    public Person getPerson() {
+    	return convertToPerson(getWorkflowUser());
+    }
+    
+    private Person convertToPerson(WorkflowUser user) {
+    	if (user == null) {
+    		return null;
+    	}
+    	return KIMServiceLocator.getPersonService().getPerson(user.getAuthenticationUserId().getId());
+    }
+    
+    @Deprecated
     public WorkflowUser getLoggedInWorkflowUser() {
         return workflowUser;
+    }
+    
+    public Person getLoggedInPerson() {
+    	return convertToPerson(getLoggedInWorkflowUser());
     }
     
     public boolean setBackdoorId(String id) throws KEWUserNotFoundException {

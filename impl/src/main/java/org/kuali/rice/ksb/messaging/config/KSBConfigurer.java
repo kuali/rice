@@ -42,7 +42,6 @@ import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.service.AuthorizationService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
@@ -95,7 +94,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private Scheduler exceptionMessagingScheduler;
 
-	private AuthorizationService authorizationService;
 	private PlatformTransactionManager platformTransactionManager;
 
 	private boolean isStarted = false;
@@ -108,7 +106,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 		configureKeystore(currentConfig);
 		configureScheduler(currentConfig);
 		configurePlatformTransactionManager(currentConfig);
-		configureAuthorization(currentConfig);
 		if (getServiceServletUrl() != null) {
 			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
 		}
@@ -219,14 +216,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 			config.getObjects().put(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
 		}
 	}
-
-	protected void configureAuthorization(Config config) {
-	    if (this.getAuthorizationService() != null) {
-		LOG.info("Configuring injected AuthorizationService: " + getAuthorizationService().getClass().getName());
-		config.getObjects().put(KSBConstants.KSB_AUTH_SERVICE, this.getAuthorizationService());
-	}
-	}
-
 
 	protected void configureKeystore(Config config) {
 		if (!StringUtils.isEmpty(this.keystoreAlias)) {
@@ -429,17 +418,9 @@ public class KSBConfigurer extends ModuleConfigurer {
 		return platformTransactionManager;
 	}
 
-	public AuthorizationService getAuthorizationService() {
-	    return this.authorizationService;
-	}
-
 	public void setPlatformTransactionManager(PlatformTransactionManager springTransactionManager) {
 		this.platformTransactionManager = springTransactionManager;
 	}
-
-	public void setAuthorizationService(AuthorizationService authorizationService) {
-	    this.authorizationService = authorizationService;
-    }
 
     public List<AlternateEndpointLocation> getAlternateEndpointLocations() {
 	return this.alternateEndpointLocations;

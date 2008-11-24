@@ -13,6 +13,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiModuleService;
 
 /**
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
@@ -26,6 +32,10 @@ public abstract class KSBAction extends DispatchAction {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
+			if (!checkAuthorization()) {
+				return mapping.findForward("NotAuthorized");
+			}
+			
 			ActionMessages messages = null;
 			messages = establishRequiredState(request, form);
 			if (messages != null && !messages.isEmpty()) {
@@ -67,6 +77,8 @@ public abstract class KSBAction extends DispatchAction {
 				}
 			}
 
+			
+			
 			messages = establishFinalState(request, form);
 			if (messages != null && !messages.isEmpty()) {
 				saveMessages(request, messages);
@@ -78,6 +90,16 @@ public abstract class KSBAction extends DispatchAction {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	protected boolean checkAuthorization() throws AuthorizationException {
+		AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
+		Person person = UserSession.getAuthenticatedUser().getPerson();
+        boolean authorized = getKualiModuleService().isAuthorized( person, defaultAuthorizationType );
+        if (!authorized) {
+        	LOG.error("User not authorized to use this action: " + this.getClass().getName() );
+        }
+        return authorized;
+    }
 
 	public abstract ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
@@ -94,5 +116,9 @@ public abstract class KSBAction extends DispatchAction {
 	public ActionForward noOp(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return mapping.findForward("basic");
 	}
+	
+	protected static KualiModuleService getKualiModuleService() {
+        return KNSServiceLocator.getKualiModuleService();
+    }
 
 }

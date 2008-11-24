@@ -46,6 +46,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -77,7 +79,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
     @Column(name="GRP_ID")
-	private Long workgroupId;
+	private Long groupId;
     @Column(name="DOC_HDR_TTL")
 	private String docTitle;
     @Column(name="DOC_TYP_LBL")
@@ -98,7 +100,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="DLGN_PRNCPL_ID")
 	private String delegatorWorkflowId;
     @Column(name="DLGN_GRP_ID")
-	private Long delegatorWorkgroupId;
+	private Long delegatorGroupId;
     @Transient
     private String dateAssignedString;
     @Transient
@@ -115,21 +117,29 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	private transient DocumentRouteHeaderValue routeHeader;
     @Transient
     private Timestamp lastApprovedDate; 
-
+/*
     private Workgroup getWorkgroup(Long workgroupId) {
-    	if (workgroupId == null) {
+    	if (groupId == null) {
     		return null;
     	}
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
+    */
+    private KimGroup getGroup(String groupId) {
+    	if( groupId ==null )	return null;
+    	return KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+    }
     
-    public Workgroup getWorkgroup() {
-        return getWorkgroup(workgroupId);
+    public KimGroup getGroup(){
+    	return getGroup(groupId+"");
+    }
+   /* public Workgroup getWorkgroup() {
+        return getWorkgroup(groupId);
     }
     
     public Workgroup getDelegatorWorkgroup() {
-        return getWorkgroup(delegatorWorkgroupId);
-    }
+        return getWorkgroup(delegatorGroupId);
+    }*/
 
     private WorkflowUser getUser(String workflowId) throws KEWUserNotFoundException {
     	if (StringUtils.isBlank(workflowId)) {
@@ -151,14 +161,14 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         if (getRoleName() != null) {
             recipientTypeCode = KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD;
         }
-        if (getWorkgroupId() != null) {
+        if (getGroupId() != null) {
             recipientTypeCode = KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
         }
         return recipientTypeCode;
     }
 
     public boolean isWorkgroupItem() {
-        return getWorkgroupId() != null;
+        return getGroupId() != null;
     }
 
     public Object copy(boolean preserveKeys) {
@@ -272,12 +282,12 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.docHandlerURL = docHandlerURL;
     }
 
-    public Long getWorkgroupId() {
-        return workgroupId;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setWorkgroupId(Long workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public String getDocLabel() {
@@ -312,12 +322,12 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.delegatorWorkflowId = delegatorWorkflowId;
     }
     
-    public Long getDelegatorWorkgroupId() {
-        return delegatorWorkgroupId;
+    public Long getDelegatorGroupId() {
+        return delegatorGroupId;
     }
     
-    public void setDelegatorWorkgroupId(Long delegatorWorkgroupId) {
-        this.delegatorWorkgroupId = delegatorWorkgroupId;
+    public void setDelegatorGroupId(Long delegatorGroupId) {
+        this.delegatorGroupId = delegatorGroupId;
     }
     
     public String getDateAssignedString() {
@@ -372,7 +382,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
                                         .append("actionRequestCd", actionRequestCd)
                                         .append("actionRequestId", actionRequestId)
                                         .append("routeHeaderId", routeHeaderId)
-                                        .append("workgroupId", workgroupId)
+                                        .append("groupId", groupId)
                                         .append("docTitle", docTitle)
                                         .append("docLabel", docLabel)
                                         .append("docHandlerURL", docHandlerURL)
@@ -382,7 +392,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
                                         .append("rowStyleClass", rowStyleClass)
                                         .append("roleName", roleName)
                                         .append("delegatorWorkflowId", delegatorWorkflowId)
-                                        .append("delegatorWorkgroupId", delegatorWorkgroupId)
+                                        .append("delegatorWorkgroupId", delegatorGroupId)
                                         .append("dateAssignedString", dateAssignedString)
                                         .append("actionToTake", actionToTake)
                                         .append("delegationType", delegationType)

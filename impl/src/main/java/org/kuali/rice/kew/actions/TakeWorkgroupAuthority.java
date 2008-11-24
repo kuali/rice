@@ -104,7 +104,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
             //delete all requests for this workgroup on this document not to this user
-            if (actionItem.isWorkgroupItem() && actionItem.getWorkgroupId().equals(workgroup.getWorkflowGroupId().getGroupId()) &&
+            if (actionItem.isWorkgroupItem() && actionItem.getGroupId().equals(workgroup.getWorkflowGroupId().getGroupId()) &&
                     ! actionItem.getWorkflowId().equals(getUser().getWorkflowId())) {
                 actionListService.deleteActionItem(actionItem);
             }

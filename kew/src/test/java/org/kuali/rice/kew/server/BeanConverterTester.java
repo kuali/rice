@@ -41,6 +41,7 @@ import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class BeanConverterTester extends KEWTestCase {
@@ -49,23 +50,6 @@ public class BeanConverterTester extends KEWTestCase {
     private static final String ATTRIBUTE_CONTENT = KEWConstants.ATTRIBUTE_CONTENT_ELEMENT;
     private static final String SEARCHABLE_CONTENT = KEWConstants.SEARCHABLE_CONTENT_ELEMENT;
     private static final String APPLICATION_CONTENT = KEWConstants.APPLICATION_CONTENT_ELEMENT;
-
-    @Test public void testConvertWorkflowGroupId() {
-        BaseWorkgroup prototype = new BaseWorkgroup();
-        prototype.setGroupNameId(new GroupNameId("TestWorkgroup"));
-        //prototype.setDisplayName("TestWorkgroup");
-        //prototype.setWorkgroupType("W");
-        //assertNull(prototype.getDisplayName());
-        //assertNull(prototype.getWorkgroupType());
-        List list = KEWServiceLocator.getWorkgroupService().search(prototype, new HashMap<String, String>(), true);
-        assertNotNull(list);
-        assertTrue(list.size() > 0);
-        Workgroup group = (Workgroup) list.get(0);
-        assertNotNull(group);
-        WorkflowGroupIdDTO vo = new WorkflowGroupIdDTO(group.getWorkflowGroupId().getGroupId());
-        GroupId id = DTOConverter.convertWorkgroupIdVO(vo);
-        assertNotNull(id);
-    }
 
     /**
      * Tests the conversion of a String into a DocumentContentVO object which should split the
@@ -215,8 +199,8 @@ public class BeanConverterTester extends KEWTestCase {
         Long routeHeaderId = Long.valueOf(23);
         Timestamp dateAssigned = new Timestamp(new Date().getTime());
         String docHandlerUrl = "http://this.is.not.us";
-        String docTypeLabel = "Label Me Sexy";
-        String docTitle = "Title me Nicely";
+        String docTypeLabel = "Label Me";
+        String docTitle = "Title me";
         Long responsibilityId = Long.valueOf(35);
         String delegationType = KEWConstants.DELEGATION_PRIMARY;
 
@@ -232,11 +216,11 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setDocHandlerURL(docHandlerUrl);
         actionItem.setDocLabel(docTypeLabel);
         actionItem.setDocTitle(docTitle);
-        actionItem.setWorkgroupId(testWorkgroupId);
+        actionItem.setGroupId(testWorkgroupId);
         actionItem.setResponsibilityId(responsibilityId);
         actionItem.setDelegationType(delegationType);
         actionItem.setDelegatorWorkflowId(workflowId);
-        actionItem.setDelegatorWorkgroupId(testWorkgroupId);
+        actionItem.setDelegatorGroupId(testWorkgroupId);
         
         // convert to action item vo object and verify
         ActionItemDTO actionItemVO = DTOConverter.convertActionItem(actionItem);
@@ -250,7 +234,7 @@ public class BeanConverterTester extends KEWTestCase {
         assertEquals("Action Item VO object has incorrect value", docHandlerUrl, actionItemVO.getDocHandlerURL());
         assertEquals("Action Item VO object has incorrect value", docTypeLabel, actionItemVO.getDocLabel());
         assertEquals("Action Item VO object has incorrect value", docTitle, actionItemVO.getDocTitle());
-        assertEquals("Action Item VO object has incorrect value", testWorkgroupId, actionItemVO.getWorkgroupId());
+        assertEquals("Action Item VO object has incorrect value", "" + testWorkgroupId, actionItemVO.getWorkgroupId());
         assertEquals("Action Item VO object has incorrect value", responsibilityId, actionItemVO.getResponsibilityId());
         assertEquals("Action Item VO object has incorrect value", delegationType, actionItemVO.getDelegationType());
         assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getDelegatorWorkflowId());

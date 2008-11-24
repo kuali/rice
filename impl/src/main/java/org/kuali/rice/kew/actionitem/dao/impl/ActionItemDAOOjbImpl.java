@@ -115,7 +115,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         Criteria notNullWorkflowCriteria = new Criteria();
         notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria();
-        notNullWorkgroupCriteria.addNotNull("delegatorWorkgroupId");
+        notNullWorkgroupCriteria.addNotNull("delegatorGroupId");
         Criteria orCriteria = new Criteria();
         orCriteria.addOrCriteria(notNullWorkflowCriteria);
         orCriteria.addOrCriteria(notNullWorkgroupCriteria);
@@ -125,7 +125,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
 
-        query.setAttributes(new String[]{"delegatorWorkflowId", "delegatorWorkgroupId"});
+        query.setAttributes(new String[]{"delegatorWorkflowId", "delegatorGroupId"});
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
         Iterator iterator = this.getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
         while (iterator.hasNext()) {
@@ -149,7 +149,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria();
-            delegatorWorkgroupCriteria.addIn("delegatorWorkgroupId", workgroupIds);
+            delegatorWorkgroupCriteria.addIn("delegatorGroupId", workgroupIds);
             orCriteria.addOrCriteria(delegatorWorkgroupCriteria);
             orCriteria.addOrCriteria(delegatorWorkflowIdCriteria);
         }

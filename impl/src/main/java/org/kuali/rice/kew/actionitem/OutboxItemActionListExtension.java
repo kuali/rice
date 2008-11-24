@@ -62,7 +62,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	this.setDateAssigned(actionItem.getDateAssigned());
 	this.setDelegationType(actionItem.getDelegationType());
 	this.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
-	this.setDelegatorWorkgroupId(actionItem.getDelegatorWorkgroupId());
+	this.setDelegatorGroupId(actionItem.getDelegatorGroupId());
 	this.setDocHandlerURL(actionItem.getDocHandlerURL());
 	this.setDocLabel(actionItem.getDocLabel());
 	this.setDocName(actionItem.getDocName());
@@ -72,7 +72,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	this.setRouteHeader(actionItem.getRouteHeader());
 	this.setRouteHeaderId(actionItem.getRouteHeaderId());
 	this.setWorkflowId(actionItem.getWorkflowId());
-	this.setWorkgroupId(actionItem.getWorkgroupId());
+	this.setGroupId(actionItem.getGroupId());
     }
     
 }

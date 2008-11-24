@@ -332,7 +332,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getDelegatorWorkflowId())) {
             actionItemVO.setDelegatorUser(convertUser(actionItem.getDelegatorUser()));
         }
-        actionItemVO.setDelegatorWorkgroupId("" + actionItem.getDelegatorWorkgroupId());
+        actionItemVO.setDelegatorWorkgroupId("" + actionItem.getDelegatorGroupId());
         actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
         actionItemVO.setDocLabel(actionItem.getDocLabel());
         actionItemVO.setDocName(actionItem.getDocName());
@@ -344,7 +344,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getWorkflowId())) {
             actionItemVO.setUser(convertUser(actionItem.getUser()));
         }
-        actionItemVO.setWorkgroupId("" + actionItem.getWorkgroupId());
+        actionItemVO.setWorkgroupId("" + actionItem.getGroupId());
         return actionItemVO;
     }
 

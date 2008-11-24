@@ -40,8 +40,8 @@ public class ActionListFilter implements Serializable {
     private boolean excludeRouteStatus;
     private String actionRequestCd = KEWConstants.ALL_CODE;
     private boolean excludeActionRequestCd;
-    private Long workgroupId;
-    private String workgroupIdString = KEWConstants.NO_FILTERING;
+    private String groupId;
+    private String groupIdString = KEWConstants.NO_FILTERING;
     private String workgroupName = "";
     private boolean excludeWorkgroupId;
     private String documentType = "";
@@ -137,11 +137,11 @@ public class ActionListFilter implements Serializable {
     public void setLastAssignedDateTo(Date lastAssignedDate) {
         this.lastAssignedDateTo = lastAssignedDate;
     }
-    public Long getWorkgroupId() {
-        return workgroupId;
+    public String getGroupId() {
+        return groupId;
     }
-    public void setWorkgroupId(Long workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
     public Date getCreateDateTo() {
         return createDateTo;
@@ -186,12 +186,12 @@ public class ActionListFilter implements Serializable {
         this.filterLegend = filterLegend;
     }
 
-    public String getWorkgroupIdString() {
-        return workgroupIdString;
+    public String getGroupIdString() {
+        return groupIdString;
     }
 
-    public void setWorkgroupIdString(String workgroupIdString) {
-        this.workgroupIdString = workgroupIdString;
+    public void setGroupIdString(String groupIdString) {
+        this.groupIdString = groupIdString;
     }
 
     public boolean isExcludeDelegatorId() {

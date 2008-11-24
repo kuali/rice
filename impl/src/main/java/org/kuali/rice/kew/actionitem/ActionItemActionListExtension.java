@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.actionitem;
 
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -29,8 +28,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -49,18 +48,18 @@ public class ActionItemActionListExtension extends ActionItem {
     @Transient
     private WorkflowUser delegatorUser = null;
     @Transient
-    private Workgroup delegatorWorkgroup = null;
+    private KimGroup delegatorWorkgroup = null;
     @Transient
     private String delegatorName = "";
     @Transient
-    private Workgroup workgroup = null;   
+    private KimGroup group = null;   
     @Transient
     private DisplayParameters displayParameters;
     @Transient
     private boolean isInitialized = false;
     
-    public Workgroup getWorkgroup() {
-        return workgroup; 
+    public KimGroup getGroup() {
+        return group; 
     }
     
     public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
@@ -71,10 +70,10 @@ public class ActionItemActionListExtension extends ActionItem {
         return delegator;
     }
     
-    public Workgroup getDelegatorWorkgroup() {
-        Workgroup delegator = null;
-        if (getDelegatorWorkgroupId() != null) {
-            delegator = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(getDelegatorWorkgroupId()));
+    public KimGroup getDelegatorGroup() {
+        KimGroup delegator = null;
+        if (getDelegatorGroupId() != null) {
+            delegator = KIMServiceLocator.getIdentityManagementService().getGroup("" + getDelegatorGroupId());
         }
         return delegator;
     }
@@ -87,8 +86,8 @@ public class ActionItemActionListExtension extends ActionItem {
     	if (isInitialized) {
     		return;
     	}
-        if (getWorkgroupId() != null) {
-            workgroup = super.getWorkgroup();
+        if (getGroupId() != null) {
+            group = super.getGroup();
         }
         if (getDelegatorWorkflowId() != null) {
             delegatorUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
@@ -96,10 +95,10 @@ public class ActionItemActionListExtension extends ActionItem {
                 delegatorName = delegatorUser.getTransposedName();
             }
         }
-        if (getDelegatorWorkgroupId() != null) {
-            delegatorWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(getDelegatorWorkgroupId()));
+        if (getDelegatorGroupId() != null) {
+            delegatorWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroup(""+getDelegatorGroupId());
             if (delegatorWorkgroup != null) {
-                delegatorName = delegatorWorkgroup.getGroupNameId().getNameId();
+                delegatorName = delegatorWorkgroup.getGroupName();
             }
         }
         if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {

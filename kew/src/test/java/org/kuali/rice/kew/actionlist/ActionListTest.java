@@ -214,7 +214,7 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getWorkgroupId());
+    	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getGroupId());
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
     	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
@@ -222,7 +222,7 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an acknowledge request.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionItem.getActionRequestCd());
-    	assertNull("Should not be to a workgroup.", actionItem.getWorkgroupId());
+    	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
     	for (Iterator iterator = NonSIT.getUsers().iterator(); iterator.hasNext(); ) {
@@ -231,7 +231,7 @@ public class ActionListTest extends KEWTestCase {
 			assertEquals("Workgroup Member " + user.getDisplayName() + " should have 1 action item.", 1, actionItems.size());
 			actionItem = (ActionItem)actionItems.iterator().next();
 			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getWorkgroupId());
+			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getGroupId());
 		}
 
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
@@ -473,7 +473,7 @@ public class ActionListTest extends KEWTestCase {
         actionItem.setDocLabel("unit testing");
         actionItem.setDocTitle(routeHeader.getDocTitle());
         actionItem.setDocName("docname");
-        actionItem.setWorkgroupId(workgroupId);
+        actionItem.setGroupId(workgroupId);
 //        actionItem.setResponsibilityId(new Long(-1));
         return actionItem;
     }

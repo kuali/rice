@@ -217,14 +217,14 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
         actionItem.setDocLabel(docType.getLabel());
         actionItem.setDocTitle(routeHeader.getDocTitle());
-        actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
+        actionItem.setGroupId(actionRequest.getWorkgroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
         
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
             actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
-            actionItem.setDelegatorWorkgroupId(delegatorActionRequest.getWorkgroupId());
+            actionItem.setDelegatorGroupId(delegatorActionRequest.getWorkgroupId());
         }
 
         return actionItem;
@@ -244,7 +244,7 @@ public class ActionListServiceImpl implements ActionListService {
                 ActionItem item = (ActionItem) itemIt.next();
                 if (item.isWorkgroupItem()) {
                     for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
-                        if (item.getWorkgroupId().equals(workgroupToCheck.getWorkflowGroupId().getGroupId())) {
+                        if (item.getGroupId().equals(workgroupToCheck.getWorkflowGroupId().getGroupId())) {
                             deleteActionItem(item);
                         }
                     }

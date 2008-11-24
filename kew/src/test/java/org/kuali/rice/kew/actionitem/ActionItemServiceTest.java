@@ -206,7 +206,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-				assertEquals("Action Item should be for the AIWGNested2 workgroup", actionItem.getWorkgroupId(), workgroupNested2.getWorkflowGroupId().getGroupId());
+				assertEquals("Action Item should be for the AIWGNested2 workgroup", actionItem.getGroupId(), workgroupNested2.getWorkflowGroupId().getGroupId());
 				foundEwestfal = true;
 			}
 		}
@@ -449,7 +449,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem)iter.next();
             //don't worry about which workgroup - they can get activated in any order
-            assertNotNull("this should be a workgroup request", actionItem.getWorkgroup());
+            assertNotNull("this should be a workgroup request", actionItem.getGroup());
         }
     }
 

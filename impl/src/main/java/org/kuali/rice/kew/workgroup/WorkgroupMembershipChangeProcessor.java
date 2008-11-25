@@ -23,6 +23,9 @@ import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -52,22 +55,19 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 			throw new KEWUserNotFoundException("Could not locate the user for the given authentication id '" + parameters[1] + "'");
 		}
 		Long versionNumber = new Long(parameters[3]);
-		GroupNameId workgroupName = new GroupNameId(parameters[2]);
-		Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupName);
-		if (workgroup != null && !workgroup.getLockVerNbr().equals(versionNumber)) {
-			// if the lock version numbers don't match, then refresh the workgroup from the cache
-			KEWServiceLocator.getWorkgroupService().removeNameFromCache(workgroupName);
-			workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(workgroupName);
-		}
-		if (workgroup == null) {
-			throw new WorkflowException("Could not locate the workgroup with the given name '" + workgroupName + "'");
+		String groupName = new String(parameters[2]);
+		GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfoByName("KFS", groupName);
+		if (group!=null)
+			KIMServiceLocator.getGroupService().removePrincipalFromGroup(user.getWorkflowId(),group.getGroupId());
+		if (group == null) {
+			throw new WorkflowException("Could not locate the group with the given name '" + groupName + "'");
 		}
 		if (ADDED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserAddedToWorkgroup(user, workgroup);
+			KEWServiceLocator.getActionListService().updateActionListForUserAddedToGroup(user, group);
 		} else if (REMOVED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromWorkgroup(user, workgroup);
+			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromGroup(user, group);
 		} else {
-			throw new WorkflowException("Did not understand requested workgroup membership change operation '" + operation + "'");
+			throw new WorkflowException("Did not understand requested group membership change operation '" + operation + "'");
 		}
 	}
 

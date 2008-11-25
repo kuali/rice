@@ -275,7 +275,7 @@ public class TestUtilities {
 			if (actionRequest.isUserRequest() && actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals(networkId)) {
 				foundRequest = true;
 				break;
-			} else if (actionRequest.isWorkgroupRequest() && actionRequest.getWorkgroup().hasMember(user)) {
+			} else if (actionRequest.isGroupRequest() && actionRequest.getWorkgroup().hasMember(user)) {
 				foundRequest = true;
 				break;
 			}

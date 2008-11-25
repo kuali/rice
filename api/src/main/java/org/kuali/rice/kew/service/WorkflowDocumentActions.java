@@ -25,6 +25,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
  * A remotable service which provides an API for actions on documents.
@@ -70,8 +71,8 @@ public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO blanketApprovalToNodes(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation, String[] nodeNames) throws WorkflowException;
     public RouteHeaderDTO returnDocumentToPreviousNode(UserIdDTO userId, RouteHeaderDTO routeHeader, ReturnPointDTO returnPoint, String annotation) throws WorkflowException;
-    public RouteHeaderDTO takeWorkgroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, WorkgroupIdDTO workgroupId, String annotation) throws WorkflowException;
-    public RouteHeaderDTO releaseWorkgroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, WorkgroupIdDTO workgroupId, String annotation) throws WorkflowException;
+    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, GroupInfo groupInfo, String annotation) throws WorkflowException;
+    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, GroupInfo groupInfo, String annotation) throws WorkflowException;
     public RouteHeaderDTO moveDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, MovePointDTO movePoint, String annotation) throws WorkflowException;
 
     // Introduced in 2.2.2 //

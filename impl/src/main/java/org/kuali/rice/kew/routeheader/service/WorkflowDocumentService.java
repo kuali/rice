@@ -30,7 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -85,12 +85,12 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue takeWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue releaseWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
 
     /**
      * @since 2.1

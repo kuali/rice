@@ -28,6 +28,8 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -38,8 +40,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
  */
 public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
 
-    private Workgroup workgroup;
-    
+    private KimGroup group;
     /**
      * @param routeHeader
      * @param user
@@ -54,9 +55,9 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param workgroup
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, Workgroup workgroup) {
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, KimGroup group) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
-        this.workgroup = workgroup;
+        this.group = group;
     }
     
     /* (non-Javadoc)
@@ -64,7 +65,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        if (workgroup == null) {
+        if (group == null) {
             return "User cannot Release Workgroup Authority without a given workgroup";
         } else {
             return performReleaseWorkgroupAuthority(true);
@@ -81,8 +82,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     }
     
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws KEWUserNotFoundException {
-        if (! workgroup.hasMember(getUser())) {
-            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
+        if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUser().getWorkflowId(), group.getGroupId())){
+            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + group.getGroupName());
         }
         
         List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
@@ -90,7 +91,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             //we left the group active from take authority action.  pending havent been normally activated yet
-            if (actionRequest.isWorkgroupRequest() && actionRequest.isActive() && actionRequest.getWorkgroupId().equals(workgroup.getWorkflowGroupId().getGroupId())) {
+            if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(group.getGroupId())) {
                 if (actionRequest.getActionItems().size() == 1) {
                     ActionItem actionItem = (ActionItem) actionRequest.getActionItems().get(0);
                     if (! actionItem.getWorkflowId().equals(getUser().getWorkflowId())) {

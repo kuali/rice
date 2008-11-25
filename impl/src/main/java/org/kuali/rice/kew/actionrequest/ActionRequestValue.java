@@ -58,6 +58,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -90,7 +92,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Column(name="RSP_ID")
 	private java.lang.Long responsibilityId;
     @Column(name="GRP_ID")
-	private java.lang.Long workgroupId;
+	private java.lang.Long groupId;
     @Column(name="RECIP_TYP_CD")
 	private java.lang.String recipientTypeCd;
     @Column(name="PRIO_NBR")
@@ -161,14 +163,22 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public Workgroup getWorkgroup() throws KEWUserNotFoundException {
-        if (getWorkgroupId() == null) {
+        if (getGroupId() == null) {
             LOG.error("Attempting to get a workgroup with a blank workgroup id");
             return null;
         }
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-        return workgroupSrv.getWorkgroup(new WorkflowGroupId(getWorkgroupId()));
+        return workgroupSrv.getWorkgroup(new WorkflowGroupId(getGroupId()));
     }
 
+    public KimGroup getGroup() throws KEWUserNotFoundException {
+        if (getGroupId() == null) {
+            LOG.error("Attempting to get a group with a blank group id");
+            return null;
+        }
+        return KIMServiceLocator.getIdentityManagementService().getGroup(getGroupId()+"");
+    }
+    
     public String getRouteLevelName() {
         // this is for backward compatibility of requests which have not been converted
         if (CompatUtils.isRouteLevelRequest(this)) {
@@ -202,8 +212,8 @@ public class ActionRequestValue implements WorkflowPersistable {
     public Recipient getRecipient() throws KEWUserNotFoundException {
         if (getWorkflowId() != null) {
             return getWorkflowUser();
-        } else if (getWorkgroupId() != null){
-            return getWorkgroup();
+        } else if (getGroupId() != null){
+            return new RoleRecipient(getGroup().getGroupName());
         } else {
         	return new RoleRecipient(this.getRoleName());
         }
@@ -471,12 +481,12 @@ public class ActionRequestValue implements WorkflowPersistable {
         this.status = status;
     }
 
-    public java.lang.Long getWorkgroupId() {
-        return workgroupId;
+    public java.lang.Long getGroupId() {
+        return groupId;
     }
 
-    public void setWorkgroupId(java.lang.Long workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setGroupId(java.lang.Long groupId) {
+        this.groupId = groupId;
     }
 
     public Object copy(boolean preserveKeys) {
@@ -524,22 +534,26 @@ public class ActionRequestValue implements WorkflowPersistable {
         if (isReviewerUser()) {
             if (recipient instanceof WorkflowUser) {
                 isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
-            } else {
-                isRecipientInGraph = ((Workgroup) recipient).hasMember(getWorkflowUser());
+            } else if (recipient instanceof KimGroupRecipient){
+                isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getDisplayName(),getGroupId().toString());
             }
 
-        } else if (isWorkgroupRequest()) {
+        } else if (isGroupRequest()) {
             if (recipient instanceof WorkflowUser) {
-                Workgroup workgroup = getWorkgroup();
-                if (workgroup == null) {
-                    LOG.error("Was unable to retrieve workgroup " + getWorkgroupId());
+                KimGroup group = getGroup();
+                if (group == null){
+                	LOG.error("Was unable to retrieve workgroup " + getGroupId());
+                	isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
                 }
-                isRecipientInGraph = workgroup.hasMember((WorkflowUser) recipient);
-            } else {
-                isRecipientInGraph = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getWorkgroupId());
             }
-        }
-
+            isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
+             //	workgroup.hasMember((WorkflowUser) recipient);
+            } else {
+                isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(getGroupId());
+                //((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getGroupId());
+            	}
+    
+    
         for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
             ActionRequestValue childRequest = (ActionRequestValue) iter.next();
             isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(recipient);
@@ -548,8 +562,8 @@ public class ActionRequestValue implements WorkflowPersistable {
         return isRecipientInGraph;
     }
 
-    public boolean isWorkgroupRequest() {
-        return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+    public boolean isGroupRequest(){
+    	return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
@@ -836,7 +850,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("routeHeaderId", routeHeaderId)
             .append("status", status)
             .append("responsibilityId", responsibilityId)
-            .append("workgroupId", workgroupId)
+            .append("groupId", groupId)
             .append("recipientTypeCd", recipientTypeCd)
             .append("priority", priority)
             .append("routeLevel", routeLevel)

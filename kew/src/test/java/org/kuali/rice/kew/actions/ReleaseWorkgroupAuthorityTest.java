@@ -30,7 +30,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -45,15 +45,16 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
         
-        Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("TestWorkgroup"));
-        
+        GroupInfo grpInfo=new GroupInfo();
+        grpInfo.setGroupName("TestWorkgroup");
         //have member rkirkend take authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-        doc.takeWorkgroupAuthority("", new WorkflowGroupIdDTO(workgroup.getWorkflowGroupId().getGroupId()));
+        doc.takeGroupAuthority("", grpInfo);
 
         //have rkirkend release authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-        doc.releaseWorkgroupAuthority("", new WorkflowGroupIdDTO(workgroup.getWorkflowGroupId().getGroupId()));
+        
+        doc.releaseGroupAuthority("", grpInfo);
         
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();

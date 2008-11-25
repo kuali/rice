@@ -33,6 +33,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -45,7 +46,7 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 public class TakeWorkgroupAuthority extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TakeWorkgroupAuthority.class);
     
-    private Workgroup workgroup;
+    private KimGroup group;
     
     /**
      * @param routeHeader
@@ -61,9 +62,9 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param workgroup
      */
-    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, Workgroup workgroup) {
+    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, KimGroup group) {
         super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
-        this.workgroup = workgroup;
+        this.group = group;
     }
 
     /* (non-Javadoc)
@@ -71,8 +72,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        if  ( (workgroup != null) && (!workgroup.hasMember(getUser())) ) {
-            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
+        if  ( (group != null) && (!group.isActive())) {
+            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + group.getGroupName());
         }
         return "";
     }
@@ -91,7 +92,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         List workgroupRequests = new ArrayList();
         for (Iterator iter = documentRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (actionRequest.isWorkgroupRequest() && actionRequest.getWorkgroup().getWorkflowGroupId().getGroupId().equals(workgroup.getWorkflowGroupId().getGroupId())) {
+            if (actionRequest.isGroupRequest() && actionRequest.getGroup().getGroupId().equals(group.getGroupId())) {
                 workgroupRequests.add(actionRequest);
             }
         }
@@ -104,7 +105,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
             //delete all requests for this workgroup on this document not to this user
-            if (actionItem.isWorkgroupItem() && actionItem.getGroupId().equals(workgroup.getWorkflowGroupId().getGroupId()) &&
+            if (actionItem.isWorkgroupItem() && actionItem.getGroupId().equals(group.getGroupId()) &&
                     ! actionItem.getWorkflowId().equals(getUser().getWorkflowId())) {
                 actionListService.deleteActionItem(actionItem);
             }

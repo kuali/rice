@@ -34,6 +34,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -72,7 +73,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        if  ( (group != null) && (!group.isActive())) {
+        if  ( (group != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUser().getWorkflowId(), group.getGroupId()))) {
             return (getUser().getAuthenticationUserId() + " not a member of workgroup " + group.getGroupName());
         }
         return "";

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-
+import org.kuali.rice.kim.service.*;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  * 
@@ -185,5 +185,8 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
-
+    
+    private GroupService getGroupService(){
+    	return (GroupService) KIMServiceLocator.getGroupService();
+    }
 }

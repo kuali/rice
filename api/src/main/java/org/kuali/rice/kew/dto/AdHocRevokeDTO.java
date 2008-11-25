@@ -57,6 +57,10 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 		this.nodeName = nodeName;
 	}
 
+	public AdHocRevokeDTO( GroupInfo grpinfo)
+	{
+		this.groupinfo =grpinfo;
+	}
 	public Long getActionRequestId() {
 		return actionRequestId;
 	}

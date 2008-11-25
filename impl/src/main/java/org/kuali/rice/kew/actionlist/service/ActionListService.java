@@ -27,6 +27,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -74,7 +75,7 @@ public interface ActionListService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException;
+    public void updateActionListForUserAddedToGroup(WorkflowUser user, KimGroup group) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete
@@ -82,7 +83,7 @@ public interface ActionListService {
      * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
      * at the time of the method invocation before removing the action items.
      */
-    public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException;
+    public void updateActionListForUserRemovedFromGroup(WorkflowUser user,KimGroup group) throws KEWUserNotFoundException;
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException;
 

@@ -34,11 +34,19 @@
 
 <c:choose>
   <c:when test="${level == 0}">
+  	<c:set var="fontStyle" value="color:white"/>
     <c:set var="headerClass" value="headercell4"/>
+    <c:set var="datacell" value="headercell4"/>
+  </c:when>
+  <c:when test="${level == 1}">
+    <c:set var="fontStyle" value="color:white"/>
+    <c:set var="headerClass" value="headercell3-b-l"/>
+    <c:set var="datacell" value="headercell4"/>
   </c:when>
   <c:otherwise>
-
-    <c:set var="headerClass" value="headercell3-b-l"/>
+	<c:set var="fontStyle" value=""/>
+    <c:set var="headerClass" value="thnormal"/>
+    <c:set var="datacell" value="datacell"/>
   </c:otherwise>
 </c:choose>
  		                                 <tr>
@@ -58,7 +66,7 @@
 			                           <td align="left" class="<c:out value="${headerClass}"/>">
 		                              	<c:choose>
 		                              		<c:when test="${actionRequest.userRequest}">
-	                          					<a style="color:white" href="
+	                          					<a style="${fontStyle}" href="
 													<c:url value="${UrlResolver.userReportUrl}">
 														<c:param name="workflowId" value="${actionRequest.workflowId}" />
 														<c:param name="methodToCall" value="report" />
@@ -70,7 +78,7 @@
 												</c:if>
 		                              		</c:when>
 			                              	<c:when test="${actionRequest.workgroupRequest}">
-			                              		<a style="color:white" href="
+			                              		<a style="${fontStyle}" href="
 													<c:url value="${UrlResolver.workgroupReportUrl}">
 														<c:param name="workgroupId" value="${actionRequest.workgroupId}" />
 														<c:param name="methodToCall" value="report" />
@@ -90,7 +98,7 @@
   																<c:set var="primDelegateDisplayName" value="${primDelegateRequest.workflowUser.displayNameSafe}"/>
 															</c:if>
 										              	 	<c:if test="${primDelegateRequest.userRequest}">
-												              	 <a style="color:white" href="
+												              	 <a style="${fontStyle}" href="
 																		<c:url value="${UrlResolver.userReportUrl}">
 																			<c:param name="workflowId" value="${primDelegateRequest.workflowId}" />
 																			<c:param name="methodToCall" value="report" />
@@ -100,7 +108,7 @@
 																	</a>
 															</c:if>
 							                              	<c:if test="${primDelegateRequest.workgroupRequest}">
-							                              		<a style="color:white" href="
+							                              		<a style="${fontStyle}" href="
 																	<c:url value="${UrlResolver.workgroupReportUrl}">
 																		<c:param name="workgroupId" value="${primDelegateRequest.workgroupId}" />
 																		<c:param name="methodToCall" value="report" />
@@ -115,7 +123,7 @@
 									                      	</c:forEach>
 										              	 </c:when>
 										              	 <c:when test="${roleRequest.workgroupRequest}">
-										              	   <a style="color:white" href="
+										              	   <a style="${fontStyle}" href="
 															 <c:url value="${UrlResolver.workgroupReportUrl}">
 																<c:param name="workgroupId" value="${roleRequest.workgroupId}" />
 																		<c:param name="methodToCall" value="report" />
@@ -132,7 +140,7 @@
 															<c:if test="${kewUserSession.workflowUser.workflowId != roleRequest.workflowUser.workflowId}">
   																<c:set var="roleDisplayName" value="${roleRequest.workflowUser.displayNameSafe}"/>
 															</c:if>
-											              	 <a style="color:white" href="
+											              	 <a style="${fontStyle}" href="
 																	<c:url value="${UrlResolver.userReportUrl}">
 																		<c:param name="workflowId" value="${roleRequest.workflowId}" />
 																		<c:param name="methodToCall" value="report" />
@@ -170,8 +178,9 @@
 		                              	</c:if>
 									  </td>
 
-		                            </tr>
+		                            </td>
 		                            <tr id="G<c:out value="${index}" />" style="display: none;">
+
     		                          <td  align=right class="thnormal">
 										<img src="images/pixel_clear.gif" width="<c:out value="60"/>" height="20">
                                       </td>

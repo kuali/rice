@@ -3,6 +3,7 @@
 <struts-config>
     <!-- ========== form bean definitions ================================== -->
     <form-beans>
+    <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
       <form-bean name="ActionListForm" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
       <form-bean name="DocumentSearchForm" type="org.kuali.rice.kew.docsearch.web.DocumentSearchForm" />
       <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
@@ -30,6 +31,8 @@
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
       <form-bean name="WorkflowUserForm" type="org.kuali.rice.kew.user.web.WorkflowUserForm" />
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
+
+
     </form-beans>
 
     <!-- =================== exception handler definitions ================= -->
@@ -156,7 +159,7 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
       </action>
 
-      <action path="/RouteLog" name="RouteLogForm" scope="request" parameter="methodToCall"
+      <action path="/RouteLog" name="RouteLogForm" attribute="KualiForm" scope="request" parameter="methodToCall"
         input="/WEB-INF/jsp/routelog/RouteLog.jsp"
         type="org.kuali.rice.kew.routelog.web.RouteLogAction">
         <forward name="viewRouteLog" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />

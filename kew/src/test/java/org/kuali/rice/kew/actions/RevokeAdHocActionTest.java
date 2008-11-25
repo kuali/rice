@@ -31,6 +31,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 public class RevokeAdHocActionTest extends KEWTestCase {
@@ -110,7 +111,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	
     	// try revoking by a user and workgroup without adhoc requests, it should effectively be a no-op
     	doc.revokeAdHocRequests(new AdHocRevokeDTO(new NetworkIdDTO("ewestfal")), "This should be a no-op");
-    	doc.revokeAdHocRequests(new AdHocRevokeDTO(new WorkgroupNameIdDTO("TestWorkgroup")), "This should be a no-op");
+    	doc.revokeAdHocRequests(new AdHocRevokeDTO(new GroupInfo()), "This should be a no-op");
     	doc = getDocument("rkirkend");
     	TestUtilities.assertNumberOfPendingRequests(docId, 3);
     	TestUtilities.assertUserHasPendingRequest(docId, "dewey");
@@ -122,7 +123,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	TestUtilities.assertNumberOfPendingRequests(docId, 1);
     	doc = getDocument("dewey");
     	assertFalse("dewey should no longer have an approve request.", doc.isApprovalRequested());
-    	doc.revokeAdHocRequests(new AdHocRevokeDTO(new WorkgroupNameIdDTO("WorkflowAdmin")), "revokeWorkgroup");
+    	doc.revokeAdHocRequests(new AdHocRevokeDTO(new GroupInfo()), "revokeWorkgroup");
     	
     	// the doc should now transition to the next node
     	doc = getDocument("user1");

@@ -29,6 +29,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -102,7 +103,7 @@ public interface ActionRequestService {
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
     
-    public List findActivatedByWorkgroup(Workgroup workgroup);
+    public List findActivatedByGroup(KimGroup group);
     
     public void updateActionRequestsForResponsibilityChange(Set responsibilityIds);
     

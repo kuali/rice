@@ -52,6 +52,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -258,7 +259,8 @@ public abstract class WorkflowAction extends DispatchAction {
 			if (recipient.getType().equals("person")) {
 				revoke.setUserId(new NetworkIdDTO(recipient.getId()));
 			} else if (recipient.getType().equals("workgroup")) {
-				revoke.setWorkgroupId(new WorkgroupNameIdDTO(recipient.getId()));
+				revoke.setGroupinfo(new GroupInfo());
+				revoke.getGroupinfo().setGroupId(recipient.getId());
 			}
 			revocations.add(revoke);
 		}

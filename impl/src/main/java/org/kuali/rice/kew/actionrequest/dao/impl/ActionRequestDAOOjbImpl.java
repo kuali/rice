@@ -249,7 +249,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     	return count > 0;
     }
 
-    public List<Long> getRequestWorkgroupIds(Long documentId) {
+    public List<String> getRequestGroupIds(Long documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("routeHeaderId", documentId);
     	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
@@ -258,14 +258,14 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);
     	query.setAttributes(new String[] { "groupId" });
 
-    	List<Long> workgroupIds = new ArrayList<Long>(10);
+    	List<String> groupIds = new ArrayList();
     	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
     	while (iter.hasNext()) {
 			Object[] row = (Object[]) iter.next();
-			BigDecimal id = (BigDecimal)row[0];
-			workgroupIds.add((Long)id.longValue());
+			String id = (String)row[0];
+			groupIds.add(id);
 		}
-    	return workgroupIds;
+    	return groupIds;
     }
 
 	/**
@@ -287,5 +287,4 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     	return groupIds;
 	
 	}
-
 }

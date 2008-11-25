@@ -29,8 +29,8 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-
+import org.kuali.rice.kim.bo.group.impl.GroupMemberBase;
+import org.kuali.rice.kim.service.*;
 
 /**
  * Alternate model object for action list fetches that do not automatically use
@@ -47,8 +47,7 @@ public class ActionItemActionListExtension extends ActionItem {
     
     @Transient
     private WorkflowUser delegatorUser = null;
-    @Transient
-    private KimGroup delegatorWorkgroup = null;
+   // @Transient    private Workgroup delegatorWorkgroup = null;
     @Transient
     private String delegatorName = "";
     @Transient
@@ -57,27 +56,35 @@ public class ActionItemActionListExtension extends ActionItem {
     private DisplayParameters displayParameters;
     @Transient
     private boolean isInitialized = false;
-    
-    public KimGroup getGroup() {
-        return group; 
-    }
-    
+    @Transient
+    private KimGroup delegatorGroup = null;
+    @Transient
+    private KimGroup kimgroup = null;   
+     
     public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
         WorkflowUser delegator = null;
         if (getDelegatorWorkflowId() != null) {
-            delegator = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
-        }
+       //     delegator = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
+            delegator = KIMServiceLocator.getUserService().getBlankUser();
+          }
         return delegator;
     }
-    
+   /* 
+<<<<<<< .mine
+    public Workgroup getDelegatorWorkgroup() {
+        Workgroup delegator = null;
+        if (getDelegatorGroupId() != null) {
+            delegator = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(getDelegatorGroupId()));            
+=======
     public KimGroup getDelegatorGroup() {
         KimGroup delegator = null;
         if (getDelegatorGroupId() != null) {
             delegator = KIMServiceLocator.getIdentityManagementService().getGroup("" + getDelegatorGroupId());
+>>>>>>> .r5338
         }
         return delegator;
     }
-    
+   */
     public String getDelegatorName() throws KEWUserNotFoundException {
         return delegatorName;
     }
@@ -87,7 +94,7 @@ public class ActionItemActionListExtension extends ActionItem {
     		return;
     	}
         if (getGroupId() != null) {
-            group = super.getGroup();
+            kimgroup = super.getGroup();
         }
         if (getDelegatorWorkflowId() != null) {
             delegatorUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
@@ -95,11 +102,11 @@ public class ActionItemActionListExtension extends ActionItem {
                 delegatorName = delegatorUser.getTransposedName();
             }
         }
+
         if (getDelegatorGroupId() != null) {
-            delegatorWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroup(""+getDelegatorGroupId());
-            if (delegatorWorkgroup != null) {
-                delegatorName = delegatorWorkgroup.getGroupName();
-            }
+        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId()+"");
+        	if (delegatorGroup !=null)
+        		delegatorName = delegatorGroup.getGroupName();        	
         }
         if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
         	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getRouteHeaderId()));
@@ -119,5 +126,52 @@ public class ActionItemActionListExtension extends ActionItem {
 		this.displayParameters = displayParameters;
 	}
 
+	/**
+	 * @return the group
+	 */
+	public KimGroup getGroup() {
+		return this.kimgroup;
+	}
+
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(KimGroup group) {
+		this.kimgroup = group;
+	}
+
+	/**
+	 * @return the delegatorGroup
+	 */
+	public KimGroup getDelegatorGroup() {
+		return this.delegatorGroup;
+	}
+
+	/**
+	 * @param delegatorGroup the delegatorGroup to set
+	 */
+	public void setDelegatorGroup(KimGroup delegatorGroup) {
+		this.delegatorGroup = delegatorGroup;
+	}
+
+	/**
+	 * @return the kimgroup
+	 */
+	public KimGroup getKimgroup() {
+		KimGroup delegator = null;
+        if (getDelegatorGroupId() != null) {
+            delegator = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId()+"");          
+        }
+        return delegator;        
+	}
+
+	/**
+	 * @param kimgroup the kimgroup to set
+	 */
+	public void setKimgroup(KimGroup kimgroup) {
+		this.kimgroup = kimgroup;
+	}
+	
+	
 }
 

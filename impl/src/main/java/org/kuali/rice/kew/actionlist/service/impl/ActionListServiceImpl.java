@@ -53,6 +53,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -217,14 +219,14 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
         actionItem.setDocLabel(docType.getLabel());
         actionItem.setDocTitle(routeHeader.getDocTitle());
-        actionItem.setGroupId(actionRequest.getWorkgroupId());
+        actionItem.setGroupId(actionRequest.getGroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
         
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
             actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
-            actionItem.setDelegatorGroupId(delegatorActionRequest.getWorkgroupId());
+            actionItem.setDelegatorGroupId(delegatorActionRequest.getGroupId());
         }
 
         return actionItem;
@@ -314,6 +316,10 @@ public class ActionListServiceImpl implements ActionListService {
 
     public WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
+    }
+    
+    public GroupService getGroupService(){
+    	return KIMServiceLocator.getGroupService();
     }
     
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {

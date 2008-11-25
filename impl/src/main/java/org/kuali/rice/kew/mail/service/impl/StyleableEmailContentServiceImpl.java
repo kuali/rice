@@ -172,7 +172,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             workgroupElement.appendChild(idElement);
             // add the display value element
             Element displayValElement = doc.createElement("displayValue");
-            displayValElement.appendChild(doc.createTextNode(actionItem.getGroup().getGroupName()));
+            displayValElement.appendChild(doc.createTextNode(actionItem.getGroup().getGroupId()));
             workgroupElement.appendChild(displayValElement);
         }
         baseElement.appendChild(workgroupElement);

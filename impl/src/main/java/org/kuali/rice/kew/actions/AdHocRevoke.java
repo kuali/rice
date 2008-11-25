@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -45,7 +45,7 @@ public class AdHocRevoke implements java.io.Serializable {
 	private Long actionRequestId;
 	private String nodeName;
 	private WorkflowUser user;
-	private Workgroup workgroup;
+	private KimGroup group;
 	
 	public AdHocRevoke() {}
 	
@@ -67,13 +67,7 @@ public class AdHocRevoke implements java.io.Serializable {
 	public void setUser(WorkflowUser user) {
 		this.user = user;
 	}
-	public Workgroup getWorkgroup() {
-		return workgroup;
-	}
-	public void setWorkgroup(Workgroup workgroup) {
-		this.workgroup = workgroup;
-	}
-	
+		
 	/**
 	 * Determines if the given action request is an ad hoc request which matches this set of criteria.
 	 */
@@ -91,11 +85,26 @@ public class AdHocRevoke implements java.io.Serializable {
 		if (user != null && (!actionRequest.isUserRequest() || !actionRequest.getWorkflowId().equals(user.getWorkflowId()))) {
 			return false;
 		}
-		Workgroup workgroup = getWorkgroup();
-		if (workgroup != null && (!actionRequest.isWorkgroupRequest() || !actionRequest.getWorkgroupId().equals(workgroup.getWorkflowGroupId().getGroupId()))) {
+		KimGroup group = getGroup();
+		
+		if (group != null && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(group.getGroupId()))) {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @return the group
+	 */
+	public KimGroup getGroup() {
+		return this.group;
+	}
+
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(KimGroup group) {
+		this.group = group;
 	}
 	
 }

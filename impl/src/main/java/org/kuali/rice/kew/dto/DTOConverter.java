@@ -104,6 +104,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -638,8 +639,8 @@ public class DTOConverter {
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestVO.setStatus(actionRequest.getStatus());
-        if (actionRequest.isWorkgroupRequest()) {
-            actionRequestVO.setWorkgroupId(actionRequest.getWorkgroupId());
+        if (actionRequest.isGroupRequest()) {
+            actionRequestVO.setWorkgroupId(actionRequest.getGroupId());
         }
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
@@ -894,7 +895,7 @@ public class DTOConverter {
             if (workgroup == null) {
                 throw new RuntimeException("Workgroup Id " + workgroupId + " is invalid.  Action Request cannot be activated.");
             }
-            actionRequest.setWorkgroupId(workgroupId);
+            actionRequest.setGroupId(workgroupId);
             userSet = true;
         } else if (actionRequestVO.getWorkgroupDTO() != null) {
             Long workgroupId = actionRequestVO.getWorkgroupDTO().getWorkgroupId();
@@ -903,7 +904,7 @@ public class DTOConverter {
             if (workgroup == null) {
                 throw new RuntimeException("Workgroup Id " + workgroupId + " is invalid.  Action Request cannot be activated.");
             }
-            actionRequest.setWorkgroupId(workgroupId);
+            actionRequest.setGroupId(workgroupId);
             userSet = true;
         }
         // TODO role requests will not have a user or workgroup, so this code needs to handle that case
@@ -1190,8 +1191,8 @@ public class DTOConverter {
         if (revokeVO.getUserId() != null) {
             revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
         }
-        if (revokeVO.getWorkgroupId() != null) {
-            revoke.setWorkgroup(KEWServiceLocator.getWorkgroupService().getWorkgroup(revokeVO.getWorkgroupId()));
+        if (revokeVO.getGroupinfo()!= null) {
+            revoke.setGroup(KIMServiceLocator.getIdentityManagementService().getGroup(revokeVO.getGroupinfo().getGroupId()));          	
         }
         return revoke;
     }

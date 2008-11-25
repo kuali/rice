@@ -563,7 +563,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
             if (request.isUserRequest() && request.getWorkflowId().equals(user.getWorkflowUserId().getWorkflowId())) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
-            } else if (request.isWorkgroupRequest() && request.getWorkgroup().hasMember(user)) {
+            } else if (request.isGroupRequest() && request.getWorkgroup().hasMember(user)) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
         }

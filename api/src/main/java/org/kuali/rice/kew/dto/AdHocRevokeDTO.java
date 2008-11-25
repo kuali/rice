@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.dto;
 
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+
 /**
  * Represents a revocation of an AdHoc request.<br><br>
  * 
@@ -39,7 +41,7 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 	private Long actionRequestId;
 	private String nodeName;
 	private UserIdDTO userId;
-	private WorkgroupIdDTO workgroupId;
+	private GroupInfo groupinfo;
 	
 	public AdHocRevokeDTO() {}
 	
@@ -49,10 +51,6 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 	
 	public AdHocRevokeDTO(UserIdDTO userId) {
 		this.userId = userId;
-	}
-	
-	public AdHocRevokeDTO(WorkgroupIdDTO workgroupId) {
-		this.workgroupId = workgroupId;
 	}
 	
 	public AdHocRevokeDTO(String nodeName) {
@@ -83,12 +81,18 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 		this.userId = user;
 	}
 
-	public WorkgroupIdDTO getWorkgroupId() {
-		return workgroupId;
+	/**
+	 * @return the groupinfo
+	 */
+	public GroupInfo getGroupinfo() {
+		return this.groupinfo;
 	}
 
-	public void setWorkgroupId(WorkgroupIdDTO workgroup) {
-		this.workgroupId = workgroup;
+	/**
+	 * @param groupinfo the groupinfo to set
+	 */
+	public void setGroupinfo(GroupInfo groupinfo) {
+		this.groupinfo = groupinfo;
 	}
 
 }

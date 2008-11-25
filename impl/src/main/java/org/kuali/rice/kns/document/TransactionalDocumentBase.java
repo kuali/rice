@@ -43,6 +43,14 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
     }
 
     /**
+     * @see org.kuali.core.document.TransactionalDocument#getAllowsErrorCorrection()
+     * Checks if error correction is set to true in data dictionary
+     */
+    public boolean getAllowsErrorCorrection() {
+        return KNSServiceLocator.getTransactionalDocumentDictionaryService().getAllowsErrorCorrection(this).booleanValue();
+    }
+
+    /**
      * 
      * This method to check whether the document class implements SessionDocument
      * 

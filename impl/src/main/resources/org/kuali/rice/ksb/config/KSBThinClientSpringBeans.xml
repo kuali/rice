@@ -10,5 +10,6 @@
 	</bean>
 
 	<bean id="digitalSignatureService" class="org.kuali.rice.ksb.security.service.impl.DigitalSignatureServiceImpl" lazy-init="true" />
+	<bean id="ksbJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
 </beans>

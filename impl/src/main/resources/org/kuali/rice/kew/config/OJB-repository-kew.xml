@@ -221,7 +221,7 @@
 
     <field-descriptor column="STAT_CD" name="status" jdbc-type="CHAR"/>
     <field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="BIGINT"/>
-    <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="BIGINT"/>
+    <field-descriptor column="GRP_ID" name="groupId" jdbc-type="BIGINT"/>
     <field-descriptor column="ROLE_NM" name="roleName" jdbc-type="VARCHAR" />
     <field-descriptor column="QUAL_ROLE_NM" name="qualifiedRoleName" jdbc-type="VARCHAR" />
     <field-descriptor column="QUAL_ROLE_NM_LBL_TXT" name="qualifiedRoleNameLabel" jdbc-type="VARCHAR" />

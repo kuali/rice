@@ -26,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -42,6 +43,7 @@ public class DocumentType extends PersistableBusinessObjectBase {
 	private String documentTypeCode;
     @Column(name="NM")
 	private String documentName;
+	@Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private boolean documentTypeActiveIndicator;
     @OneToMany(cascade={CascadeType.PERSIST})

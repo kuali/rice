@@ -17,8 +17,6 @@ package org.kuali.rice.core.jpa.criteria;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,6 +36,8 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 @SuppressWarnings("unchecked")
 public class Criteria {
 
+	private Integer searchLimit;
+	
 	private String entityName;
 
 	private String alias;
@@ -241,5 +241,13 @@ public class Criteria {
 		public OrCriteria(Criteria or) {
 			super(or.entityName, or.alias);
 		}		
+	}
+
+	public Integer getSearchLimit() {
+		return this.searchLimit;
+	}
+
+	public void setSearchLimit(Integer searchLimit) {
+		this.searchLimit = searchLimit;
 	}
 }

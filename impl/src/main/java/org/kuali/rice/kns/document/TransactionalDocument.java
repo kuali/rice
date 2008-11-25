@@ -20,4 +20,12 @@ package org.kuali.rice.kns.document;
  * This is the TransactionalDocument interface. All transaction processing entities that are regarded as "eDocs" in the system.
  */
 public interface TransactionalDocument extends Document {
+
+    /**
+     * This method returns whether or not this document is allowed to be corrected.
+     * 
+     * @return True if it can be corrected, false otherwise.
+     */
+    public boolean getAllowsErrorCorrection();
+
 }

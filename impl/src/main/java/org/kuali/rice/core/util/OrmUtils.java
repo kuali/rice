@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.Platform;
@@ -47,7 +48,11 @@ public class OrmUtils {
     			Sequence sequence = entity.getClass().getAnnotation(Sequence.class);   
     			Field field = entity.getClass().getDeclaredField(sequence.property());
     			field.setAccessible(true);
-    			field.set(entity, value);
+    			if (java.lang.String.class.equals(field.getType())) {    				
+        			field.set(entity, value.toString());
+    			} else {
+    				field.set(entity, value);
+    			}
     		} 
     	} catch (Exception e) {
     		LOG.error(e.getMessage(), e);
@@ -110,7 +115,7 @@ public class OrmUtils {
     				LOG.error(e.getMessage(), e);
     			}
     		}
-    		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class)));
+    		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class) || clazz.isAnnotationPresent(MappedSuperclass.class)));
     	}
     	return cache.get(clazz.getName()).booleanValue();
     }

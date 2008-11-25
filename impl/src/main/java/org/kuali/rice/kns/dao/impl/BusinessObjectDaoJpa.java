@@ -169,6 +169,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void save(PersistableBusinessObject bo) throws DataAccessException {
+		/* KC determined this is not needed for JPA
 		// if collections exist on the BO, create a copy and use to process the
 		// collections to ensure
 		// that removed elements are deleted from the database
@@ -183,7 +184,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 				}
 			}
 		}
-	
+		*/
 		reattachAndSave(bo);
 	}
 	

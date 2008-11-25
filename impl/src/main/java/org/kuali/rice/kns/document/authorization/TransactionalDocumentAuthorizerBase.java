@@ -36,16 +36,18 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     @Override
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
         LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
-        DocumentActionFlags flags = super.getDocumentActionFlags(document, user);
+        TransactionalDocumentActionFlags flags = new TransactionalDocumentActionFlags(super.getDocumentActionFlags(document, user));
 
         TransactionalDocument transactionalDocument = (TransactionalDocument) document;
         KualiWorkflowDocument workflowDocument = transactionalDocument.getDocumentHeader().getWorkflowDocument();
 
         if (!canCopy(workflowDocument.getDocumentType(), user)) {
             flags.setCanCopy(false);
+            flags.setCanErrorCorrect(false);
         }
         else {
             flags.setCanCopy(transactionalDocument.getAllowsCopy() && !workflowDocument.stateIsInitiated());
+            flags.setCanErrorCorrect(transactionalDocument.getAllowsErrorCorrection() && (workflowDocument.stateIsApproved() || workflowDocument.stateIsProcessed() || workflowDocument.stateIsFinal()));
         }
         return flags;
     }

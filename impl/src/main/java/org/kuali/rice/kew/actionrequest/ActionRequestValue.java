@@ -539,16 +539,16 @@ public class ActionRequestValue implements WorkflowPersistable {
             }
 
         } else if (isGroupRequest()) {
-            if (recipient instanceof WorkflowUser) {
-                KimGroup group = getGroup();
+        	if (recipient instanceof WorkflowUser) {
+        		KimGroup group = getGroup();
                 if (group == null){
                 	LOG.error("Was unable to retrieve workgroup " + getGroupId());
                 	isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
                 }
-            }
-            isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
+        	}
+        	isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
              //	workgroup.hasMember((WorkflowUser) recipient);
-            } else {
+        } else {
                 isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(getGroupId());
                 //((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getGroupId());
             	}

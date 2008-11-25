@@ -7,12 +7,6 @@
   
   <persistence-unit name="kns-unit" transaction-type="JTA">
     <mapping-file>META-INF/kns-orm.xml</mapping-file>
-    <class>edu.sampleu.travel.bo.FiscalOfficer</class>    
-    <class>edu.sampleu.travel.bo.TravelAccount</class>    
-    <class>edu.sampleu.travel.bo.TravelAccountExtension</class>    
-    <class>edu.sampleu.travel.bo.TravelAccountRules</class>    
-    <class>edu.sampleu.travel.bo.TravelAccountType</class>    
-    <class>edu.sampleu.travel.document.TravelDocument2</class>        
     <class>org.kuali.rice.kim.bo.Person</class>
     <class>org.kuali.rice.kns.workflow.bo.WorkflowUser</class>
     <class>org.kuali.rice.kns.bo.user.KualiModuleUserProperty</class>
@@ -37,7 +31,12 @@
     <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
     <class>org.kuali.rice.kns.bo.Campus</class>
     <class>org.kuali.rice.kns.bo.CampusType</class>
+    <class>org.kuali.core.bo.DocumentHeader</class>
+    <class>org.kuali.core.bo.DocumentType</class>
+    <class>org.kuali.core.bo.DocumentTypeAttribute</class>
+    <!-- 
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    -->
   </persistence-unit>
 
 </persistence>

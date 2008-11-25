@@ -42,12 +42,18 @@ public class QueryByCriteria {
 
     public Query toQuery() {
         Query query = entityManager.createQuery(criteria.toQuery(type));
+        if (criteria.getSearchLimit() != null) {
+            query.setMaxResults(criteria.getSearchLimit());        	
+        }
         criteria.prepareParameters(query);
         return query;
     }
     
     public Query toCountQuery() {
         Query query = entityManager.createQuery(criteria.toCountQuery());
+        if (criteria.getSearchLimit() != null) {
+            query.setMaxResults(criteria.getSearchLimit());        	
+        }
         criteria.prepareParameters(query);
         return query;
     }

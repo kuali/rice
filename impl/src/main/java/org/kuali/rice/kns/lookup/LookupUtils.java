@@ -188,6 +188,19 @@ public class LookupUtils {
             platform.applyLimit(limit, criteria);
         }
     }
+
+    /**
+     * This method applies the search results limit to the search criteria for this BO (JPA)
+     *
+     * @param businessObjectClass BO class to search on / get limit for
+     * @param criteria search criteria
+     */
+    public static void applySearchResultsLimit(Class businessObjectClass, org.kuali.rice.core.jpa.criteria.Criteria criteria) {
+        Integer limit = getSearchResultsLimit(businessObjectClass);
+        if (limit != null) {
+        	criteria.setSearchLimit(limit);
+		}
+    }
     
     /**
      * This method parses and returns the lookup result set limit, checking first for the limit

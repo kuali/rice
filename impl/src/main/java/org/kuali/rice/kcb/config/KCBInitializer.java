@@ -73,11 +73,13 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         beanFactory = null;
 
         Scheduler scheduler = getScheduler()==null?KSBServiceLocator.getScheduler():getScheduler();
-        if (scheduler.getJobDetail(messageProcessingJobDetail.getName(), messageProcessingJobDetail.getGroup()) == null) {
-            scheduler.addJob(messageProcessingJobDetail, true);
-        }
+        scheduler.addJob(messageProcessingJobDetail, true);
 
-        scheduler.scheduleJob(messageProcessingTrigger);
+        if (scheduler.getTrigger(messageProcessingTrigger.getName(), messageProcessingTrigger.getGroup()) != null) {
+            scheduler.rescheduleJob(messageProcessingTrigger.getName(), messageProcessingTrigger.getGroup(), messageProcessingTrigger);
+        } else {
+            scheduler.scheduleJob(messageProcessingTrigger);
+        }
     }
 
     public void destroy() throws Exception {

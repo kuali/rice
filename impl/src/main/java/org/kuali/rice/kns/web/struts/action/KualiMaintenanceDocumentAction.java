@@ -210,7 +210,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             }
             
             // Temp solution for loading extension objects - need to find a better way
-            if (OrmUtils.isJpaEnabled() && OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
+            if (OrmUtils.isJpaEnabled() && OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
 	            if (oldBusinessObject.getExtension() != null) {
 	            	PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
 	            	EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());

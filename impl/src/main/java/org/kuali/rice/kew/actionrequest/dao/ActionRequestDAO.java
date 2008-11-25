@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -54,7 +55,7 @@ public interface ActionRequestDAO {
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
 
-    public List findActivatedByWorkgroup(Workgroup workgroup);
+    public List findActivatedByGroup(KimGroup group);
 
     public List findPendingByResponsibilityIds(Collection responsibilityIds);
 
@@ -69,7 +70,7 @@ public interface ActionRequestDAO {
     //public List findFutureAdHocRequestsByDocIdAtRouteNode(Long documentId, String nodeName);
 
     public boolean doesDocumentHaveUserRequest(String workflowId, Long documentId);
-
-    public List<Long> getRequestWorkgroupIds(Long documentId);
+  
+    public List<String> getRequestGroupIds(Long documentId);
 
 }

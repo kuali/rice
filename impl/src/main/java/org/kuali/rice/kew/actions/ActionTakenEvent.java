@@ -39,6 +39,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -243,8 +244,8 @@ public abstract class ActionTakenEvent {
 		val.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
 		if (delegator instanceof WorkflowUser) {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
-		} else if (delegator instanceof Workgroup) {
-			val.setDelegatorGroupId(((Workgroup) delegator).getWorkflowGroupId().getGroupId());
+		} else if (delegator instanceof KimGroup) {
+			val.setDelegatorGroupId(new Long (((KimGroup) delegator).getGroupId()));
 		}
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);

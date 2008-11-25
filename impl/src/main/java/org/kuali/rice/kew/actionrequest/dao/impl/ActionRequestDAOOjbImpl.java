@@ -32,6 +32,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
@@ -192,17 +193,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public List findActivatedByWorkgroup(Workgroup workgroup) {
-        Criteria statusCriteria = new Criteria();
-        statusCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
-        Criteria crit = new Criteria();
-        crit.addEqualTo("workgroupId", workgroup.getWorkflowGroupId().getGroupId());
-        crit.addEqualTo("currentIndicator", new Boolean(true));
-        crit.addAndCriteria(statusCriteria);
-
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
-    }
-
+    
     private Criteria getPendingCriteria() {
         Criteria pendingCriteria = new Criteria();
         Criteria activatedCriteria = new Criteria();
@@ -265,7 +256,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     	crit.addEqualTo("currentIndicator", Boolean.TRUE);
 
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);
-    	query.setAttributes(new String[] { "workgroupId" });
+    	query.setAttributes(new String[] { "groupId" });
 
     	List<Long> workgroupIds = new ArrayList<Long>(10);
     	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
@@ -276,5 +267,25 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		}
     	return workgroupIds;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO#findActivatedByGroup(org.kuali.rice.kim.bo.group.KimGroup)
+	 */
+	public List findActivatedByGroup(KimGroup group) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("groupId", group.getGroupId());
+		ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);
+		List<String> groupIds = new ArrayList();
+    	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+    	while (iter.hasNext()) {
+			Object[] row = (Object[]) iter.next();
+			String id = (String)row[0];
+			groupIds.add(id);
+		}
+    	return groupIds;
+	
+	}
 
 }

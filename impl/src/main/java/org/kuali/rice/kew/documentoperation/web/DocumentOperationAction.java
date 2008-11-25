@@ -645,9 +645,9 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 				if ("workgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionRequest.setWorkgroupId(new Long(request.getParameter("workgroupId")));
+						actionRequest.setGroupId(new Long(request.getParameter("workgroupId")));
 					} else {
-						actionRequest.setWorkgroupId(null);
+						actionRequest.setGroupId(null);
 					}
 				}
 				if ("roleName".equals(lookupField)) {

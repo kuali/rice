@@ -53,11 +53,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-
+import org.kuali.rice.kim.bo.group.dto.*;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -81,13 +82,11 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-    	// TODO: delyea here
-        return getActionListDAO().getActionList(workflowUser, filter);
+         return getActionListDAO().getActionList(workflowUser, filter);
     }
 
     public Collection getActionListForSingleDocument(Long routeHeaderId) {
-    	// TODO: delyea here
-        return getActionListDAO().getActionListForSingleDocument(routeHeaderId);
+         return getActionListDAO().getActionListForSingleDocument(routeHeaderId);
     }
 
     public void setActionListDAO(ActionListDAO actionListDAO) {
@@ -183,14 +182,15 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws KEWUserNotFoundException {
+    public void updateActionListForUserAddedToGroup(WorkflowUser user, KimGroup group) throws KEWUserNotFoundException {
         // first verify that the user is still a member of the workgroup
-        if (workgroup.hasMember(user)) {
-            List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-            List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
-            allWorkgroupsToCheck.add(0, workgroup);
-            for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
-                actionRequests.addAll(getActionRequestService().findActivatedByWorkgroup(workgroupToCheck));
+    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId()))
+    	{
+    		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+            List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(user.getWorkflowId());
+            allGroupsToCheck.add(0,(GroupInfo)group);
+            for (KimGroup kimGroupToCheck : allGroupsToCheck) {
+                actionRequests.addAll(getActionRequestService().findActivatedByGroup(kimGroupToCheck));
             }
             for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) requestIt.next();
@@ -235,24 +235,26 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
-    public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup)
+    public void updateActionListForUserRemovedFromGroup(WorkflowUser user, KimGroup group)
     throws KEWUserNotFoundException {
         // first verify that the user is no longer a member of the workgroup
-        if (!workgroup.hasMember(user)) {
-            List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
-            allWorkgroupsToCheck.add(0, workgroup);
-            Collection actionItems = findByWorkflowUser(user);
-            for (Iterator itemIt = actionItems.iterator(); itemIt.hasNext();) {
-                ActionItem item = (ActionItem) itemIt.next();
-                if (item.isWorkgroupItem()) {
-                    for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
-                        if (item.getGroupId().equals(workgroupToCheck.getWorkflowGroupId().getGroupId())) {
-                            deleteActionItem(item);
-                        }
-                    }
-                }
-            }
-        }
+    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId()))
+    	{
+    		    List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(user.getWorkflowId());
+    		    allGroupsToCheck.add(0, (GroupInfo)group);
+    		    Collection actionItems = findByWorkflowUser(user);
+    		    for (Iterator itemIt = actionItems.iterator(); itemIt.hasNext();) {
+    		    	ActionItem item = (ActionItem) itemIt.next();
+    		    	if (item.isWorkgroupItem()) {
+    		    		for (KimGroup groupToCheck : allGroupsToCheck) {
+    		    			if (item.getGroupId().equals(groupToCheck.getGroupId())) {
+    		    				deleteActionItem(item);
+    		    			}
+    		    		}
+    		    	}
+    		    }
+    	}
+    	
     }
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException {

@@ -46,7 +46,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
-
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
  * Represents a document in Workflow from the perspective of the client.  This class is one of two
@@ -1121,10 +1121,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException user taking action is not in workgroup
      * @see WorkflowDocumentActions#takeWorkgroupAuthority(UserIdDTO, RouteHeaderDTO, WorkgroupIdDTO, String)
      */
-    public void takeWorkgroupAuthority(String annotation, WorkgroupIdDTO workgroupId) throws WorkflowException {
+    public void takeGroupAuthority(String annotation, GroupInfo groupInfo) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().takeWorkgroupAuthority(userId, getRouteHeader(), workgroupId, annotation);
+            routeHeader = getWorkflowDocumentActions().takeGroupAuthority(userId, getRouteHeader(), groupInfo, annotation);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -1139,10 +1139,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param workgroupId the workgroup on which to take authority
      * @throws WorkflowException user taking action is not in workgroup or did not take workgroup authority
      */
-    public void releaseWorkgroupAuthority(String annotation, WorkgroupIdDTO workgroupId) throws WorkflowException {
+    public void releaseGroupAuthority(String annotation, GroupInfo groupInfo) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().releaseWorkgroupAuthority(userId, getRouteHeader(), workgroupId, annotation);
+            routeHeader = getWorkflowDocumentActions().takeGroupAuthority(userId, getRouteHeader(), groupInfo, annotation);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);

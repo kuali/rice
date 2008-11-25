@@ -70,7 +70,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
-
+import org.kuali.rice.kim.bo.group.*;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -109,16 +109,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue releaseWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException,
 			KEWUserNotFoundException {
-		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, workgroup);
+		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, group);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue takeWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException,
 			KEWUserNotFoundException {
-		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, workgroup);
+		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, group);
 		action.performAction();
 		return finish(routeHeader);
 	}

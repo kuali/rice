@@ -252,7 +252,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List<String> getRequestGroupIds(Long documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("routeHeaderId", documentId);
-    	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+    	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
     	crit.addEqualTo("currentIndicator", Boolean.TRUE);
 
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);

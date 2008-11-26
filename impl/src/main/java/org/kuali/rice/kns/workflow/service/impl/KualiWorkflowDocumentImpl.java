@@ -41,6 +41,8 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kim.bo.group.dto.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
@@ -258,8 +260,8 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.appSpecificRouteDocumentToUser(actionRequested, routeTypeName, priority, annotation, recipient, responsibilityDesc, ignorePreviousActions);
     }
 
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.appSpecificRouteDocumentToWorkgroup(actionRequested, routeTypeName, priority, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
+    public void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, int priority, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+        workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, routeTypeName, priority, annotation, groupInfo, responsibilityDesc, ignorePreviousActions);
     }
 
     public void setTitle(String title) throws WorkflowException {
@@ -287,9 +289,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
                     if (actionRequests[actionRequestIndex].isUserRequest() && currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getUserDTO().getWorkflowId())) {
                         isAdHocRequested = true;
                     }
-                    else if (actionRequests[actionRequestIndex].isWorkgroupRequest()) {
-                        for (int workgroupMemberIndex = 0; workgroupMemberIndex < actionRequests[actionRequestIndex].getWorkgroupDTO().getMembers().length; workgroupMemberIndex++) {
-                            if (currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getWorkgroupDTO().getMembers()[workgroupMemberIndex].getWorkflowId())) {
+                    else if (actionRequests[actionRequestIndex].isGroupRequest()) {
+                    		int totalMembers = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(actionRequests[actionRequestIndex].getGroupVO().getGroupId()).size();
+                        for (int groupMemberIndex = 0; groupMemberIndex < totalMembers; groupMemberIndex++) {
+                        	if (currentUser.getWorkflowId().equals(KIMServiceLocator.getUserService().getWorkflowUser(actionRequests[actionRequestIndex].getUserIdVO())))
+                        	{
                                 isAdHocRequested = true;
                             }
                         }

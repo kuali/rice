@@ -29,7 +29,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.bo.group.dto.*;
 
 public interface KualiWorkflowDocument {
 
@@ -131,7 +131,7 @@ public interface KualiWorkflowDocument {
 
     public abstract void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
-    public abstract void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    public abstract void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, int priority, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
     public abstract void setTitle(String title) throws WorkflowException;
 

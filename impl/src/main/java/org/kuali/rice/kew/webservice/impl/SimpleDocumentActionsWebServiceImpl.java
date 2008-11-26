@@ -45,6 +45,7 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -561,10 +562,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
        	try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-
-			WorkgroupIdDTO recipientId = new WorkgroupNameIdDTO(recipientGroupId);
-			// TODO: what should we put in the responsibility description?
-			workflowDocument.appSpecificRouteDocumentToWorkgroup(actionRequested, annotation, recipientId, responsibilityDesc, true);
+			GroupInfo grpInfo =new GroupInfo();
+			grpInfo.setGroupId(recipientGroupId);
+			workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, annotation, grpInfo, responsibilityDesc, true);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());

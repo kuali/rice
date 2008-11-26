@@ -33,6 +33,7 @@ import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
@@ -156,10 +157,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                     boolean reqFound = false;
                     for ( ActionRequestDTO req : requests ) {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
-                        if ( req.getWorkgroupDTO() != null ) {
-                        UserDTO[] users = req.getWorkgroupDTO().getMembers();
-                        for ( UserDTO usr : users ) {
-                            if ( usr.getUuId().equals( user.getPrincipalId() ) ) {
+                        if ( req.getGroupVO()!= null ) {
+                        	
+                        List<String> users = KIMServiceLocator.getIdentityManagementService().getMemberGroupIds(req.getGroupVO().getGroupId());
+                        for ( String usr : users ) {
+                            if ( usr.equals( user.getPrincipalId() ) ) {
                             flags.setCanCancel( true );
                                     flags.setCanApprove( true );
                                     flags.setCanDisapprove( true );
@@ -171,7 +173,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                             break;
                         }
                         } else {
-                        LOG.error( "Unable to retrieve user list for exception workgroup.  ActionRequestVO.getWorkgroupVO() returned null" );
+                        LOG.error( "Unable to retrieve user list for exceptiongroup.  ActionRequestVO.getGroupVO() returned null" );
                         LOG.error( "request: " + req );
                         }
                     }

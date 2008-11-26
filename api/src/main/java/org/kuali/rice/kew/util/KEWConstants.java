@@ -443,7 +443,7 @@ public class KEWConstants {
     public static final boolean ACTION_REQUEST_IGNORE_PREV_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
     /** Action Request is for a workgroup. */
-    public static final String ACTION_REQUEST_WORKGROUP_RECIPIENT_CD = "W";
+    public static final String ACTION_REQUEST_GROUP_RECIPIENT_CD = "W";
     /** Action Request is for a user only */
     public static final String ACTION_REQUEST_USER_RECIPIENT_CD = "U";
     /** Action Request is for a role */
@@ -528,7 +528,7 @@ public class KEWConstants {
     public static final String ROUTE_QUEUE_QUEUED_LABEL = "QUEUED";
 
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID = "F";
-    public static final String RULE_RESPONSIBILITY_WORKGROUP_ID = "G";
+    public static final String RULE_RESPONSIBILITY_GROUP_ID = "G";
     public static final String RULE_RESPONSIBILITY_ROLE_ID = "R";
 
     public static final String DEFAULT_RULE_DOCUMENT_NAME = "EDENSERVICE-DOCS.RuleDocument";
@@ -603,7 +603,7 @@ public class KEWConstants {
     public static final Map ACTION_REQUEST_RECIPIENT_TYPE;
     static {
         ACTION_REQUEST_RECIPIENT_TYPE = new HashMap();
-        ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD, KEWConstants.WORKGROUP);
+        ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD, KEWConstants.WORKGROUP);
         ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, KEWConstants.PERSON);
         ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD, KEWConstants.ROLE);
     }

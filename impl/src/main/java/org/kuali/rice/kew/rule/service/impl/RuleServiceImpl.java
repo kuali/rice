@@ -738,7 +738,7 @@ public class RuleServiceImpl implements RuleService {
         } else {
             for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
                 RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-                if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+                if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
@@ -790,7 +790,7 @@ public class RuleServiceImpl implements RuleService {
 
         for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-            if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+            if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                 if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
@@ -1235,7 +1235,7 @@ public class RuleServiceImpl implements RuleService {
                         modified = true;
                         continue;
                     }
-                } else if (responsibility.isUsingWorkgroup()) {
+                } else if (responsibility.isUsingGroup()) {
                     if (workgroupToRemove != null && responsibility.getRuleResponsibilityName().equals(workgroupToRemove.getWorkflowGroupId().getGroupId().toString())) {
                         modified = true;
                         continue;
@@ -1327,19 +1327,19 @@ public class RuleServiceImpl implements RuleService {
                             responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
                             modified = true;
                         } else if (newWorkgroup != null) {
-                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
                             responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
                             modified = true;
                         }
                     }
-                } else if (responsibility.isUsingWorkgroup()) {
+                } else if (responsibility.isUsingGroup()) {
                     if (workgroupToReplace != null && responsibility.getRuleResponsibilityName().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
                         if (newUser != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                             responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
                             modified = true;
                         } else if (newWorkgroup != null) {
-                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+                            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
                             responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
                             modified = true;
                         }

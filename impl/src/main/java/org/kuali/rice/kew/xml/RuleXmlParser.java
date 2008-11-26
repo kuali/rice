@@ -357,7 +357,7 @@ public class RuleXmlParser implements XmlConstants {
             priority = ruleDelegation.getRuleResponsibility().getPriority().toString();
         }
         String user = element.getChildText(USER, RULE_NAMESPACE);
-        String workgroup = element.getChildText(WORKGROUP, RULE_NAMESPACE);
+        String workgroup = element.getChildText(GROUP, RULE_NAMESPACE);
         String role = element.getChildText(ROLE, RULE_NAMESPACE);
         String approvePolicy = element.getChildText(APPROVE_POLICY, RULE_NAMESPACE);
         Element delegations = element.getChild(DELEGATIONS, RULE_NAMESPACE);
@@ -404,7 +404,7 @@ public class RuleXmlParser implements XmlConstants {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);
             }
             responsibility.setRuleResponsibilityName(workgroupObject.getWorkflowGroupId().getGroupId().toString());
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
+            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if (role != null) {
             responsibility.setRuleResponsibilityName(role);
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);

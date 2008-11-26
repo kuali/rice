@@ -265,7 +265,7 @@ public class FieldUtils {
             }
 
             if (Field.CHECKBOX.equals(fieldType) && translateCheckboxes) {
-                fieldType = Field.CHECKBOX; 
+                fieldType = Field.RADIO; 
                 field.setFieldValidValues((new IndicatorValuesFinder()).getKeyValues());
             }
             

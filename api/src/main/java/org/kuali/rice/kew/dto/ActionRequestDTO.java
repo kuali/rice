@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -46,8 +47,8 @@ public class ActionRequestDTO implements Serializable {
     private Integer priority;
     private String annotation;
     private Long actionTakenId;
-    private Long workgroupId;
-    private WorkgroupDTO workgroupVO;
+    private Long groupId;    
+    private GroupInfo groupVO;
     private UserDTO userVO;
     private String recipientTypeCd;
     private String approvePolicy;
@@ -129,15 +130,7 @@ public class ActionRequestDTO implements Serializable {
     public String getStatus() {
         return status;
     }
-
-    public Long getWorkgroupId() {
-        return workgroupId;
-    }
-
-    public void setWorkgroupId(Long workgroupId) {
-        this.workgroupId = workgroupId;
-    }
-
+ 
     public void setStatus(String status) {
         this.status = status;
     }
@@ -218,14 +211,6 @@ public class ActionRequestDTO implements Serializable {
         this.userVO = userVO;
     }
 
-    public WorkgroupDTO getWorkgroupDTO() {
-        return workgroupVO;
-    }
-
-    public void setWorkgroupDTO(WorkgroupDTO workgroupVO) {
-        this.workgroupVO = workgroupVO;
-    }
-
     public boolean isNotificationRequest() {
         return isAcknowledgeRequest() || isFyiRequest();
     }
@@ -287,8 +272,8 @@ public class ActionRequestDTO implements Serializable {
         return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
-    public boolean isWorkgroupRequest() {
-        return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+    public boolean isGroupRequest() {
+        return KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
@@ -409,4 +394,18 @@ public class ActionRequestDTO implements Serializable {
     public boolean isRouteModuleRequest() {
     	return getResponsibilityId().longValue() > 0;
     }
+
+	/**
+	 * @return the groupVO
+	 */
+	public GroupInfo getGroupVO() {
+		return this.groupVO;
+	}
+
+	/**
+	 * @param groupVO the groupVO to set
+	 */
+	public void setGroupVO(GroupInfo groupVO) {
+		this.groupVO = groupVO;
+	}
 }

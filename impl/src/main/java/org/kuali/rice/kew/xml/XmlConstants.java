@@ -119,8 +119,8 @@ public interface XmlConstants {
     public static final String RULE_EXTENSION_VALUE = "ruleExtensionValue";
 
     // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
-    public static final String WORKGROUPS = "workgroups";
-    public static final String WORKGROUP = "workgroup";
+    public static final String GROUPS = "groups";
+    public static final String GROUP = "group";
     public static final String EXTENSIONS = "extensions";
     public static final String EXTENSION = "extension";
     public static final String DATA = "data";

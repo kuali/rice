@@ -48,7 +48,7 @@ public class WorkgroupXmlExporter implements XmlExporter, XmlConstants, Workgrou
 
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getWorkgroups().isEmpty()) {
-            Element rootElement = renderer.renderElement(null, WORKGROUPS);
+            Element rootElement = renderer.renderElement(null, GROUPS);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, WORKGROUP_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getWorkgroups().iterator(); iterator.hasNext();) {
                 Workgroup workgroup = (Workgroup)iterator.next();
@@ -60,7 +60,7 @@ public class WorkgroupXmlExporter implements XmlExporter, XmlConstants, Workgrou
     }
 
     private void exportWorkgroup(Element parent, Workgroup workgroup) {
-        Element workgroupElement = renderer.renderElement(parent, WORKGROUP);
+        Element workgroupElement = renderer.renderElement(parent, GROUP);
         renderer.renderTextElement(workgroupElement, WORKGROUP_NAME, workgroup.getGroupNameId().getNameId());
         renderer.renderTextElement(workgroupElement, DESCRIPTION, workgroup.getDescription());
         if (!StringUtils.isBlank(workgroup.getWorkgroupType())) {

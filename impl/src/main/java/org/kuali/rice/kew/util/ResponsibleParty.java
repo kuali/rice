@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.group.dto.*;
 
 
 /**
@@ -35,13 +35,13 @@ public class ResponsibleParty implements Serializable {
 	private static final long serialVersionUID = 6788236688949489851L;
 
 	private UserId userId;
-    private GroupId groupId;
+    private GroupInfo groupId;
     private String roleName;
 
     public ResponsibleParty() {
     }
 
-    public ResponsibleParty(GroupId groupId) {
+    public ResponsibleParty(GroupInfo groupId) {
         this.groupId = groupId;
     }
 
@@ -59,7 +59,7 @@ public class ResponsibleParty implements Serializable {
             sb.append("user=");
             sb.append(userId.toString());
         } else if (groupId != null) {
-            sb.append("workgroupID=");
+            sb.append("groupID=");
             sb.append(groupId.toString());
         } else if (roleName != null) {
             sb.append("roleName=");
@@ -69,7 +69,7 @@ public class ResponsibleParty implements Serializable {
         return sb.toString();
     }
 
-    public GroupId getGroupId() {
+    public GroupInfo getGroupId() {
         return groupId;
     }
 
@@ -81,7 +81,7 @@ public class ResponsibleParty implements Serializable {
         return roleName;
     }
 
-    public void setGroupId(GroupId groupId) {
+    public void setGroupId(GroupInfo groupId) {
         this.groupId = groupId;
     }
 
@@ -97,7 +97,7 @@ public class ResponsibleParty implements Serializable {
         return getUserId() != null;
     }
 
-    public boolean isWorkgroup() {
+    public boolean isGroup() {
         return getGroupId() != null;
     }
 

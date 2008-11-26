@@ -79,9 +79,9 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
 
 
         try{
-            for (Iterator workgroupsIt = root.getChildren(WORKGROUPS, WORKGROUP_NAMESPACE).iterator(); workgroupsIt.hasNext();) {
+            for (Iterator workgroupsIt = root.getChildren(GROUPS, WORKGROUP_NAMESPACE).iterator(); workgroupsIt.hasNext();) {
                     Element workgroupsElement = (Element) workgroupsIt.next();
-	        for (Iterator workgroupIter = workgroupsElement.getChildren(WORKGROUP, WORKGROUP_NAMESPACE).iterator(); workgroupIter.hasNext();) {
+	        for (Iterator workgroupIter = workgroupsElement.getChildren(GROUP, WORKGROUP_NAMESPACE).iterator(); workgroupIter.hasNext();) {
 	            Element workgroupElement = (Element) workgroupIter.next();
 
 	            String workgroupName = workgroupElement.getChildTextTrim(WORKGROUP_NAME, WORKGROUP_NAMESPACE);
@@ -203,7 +203,7 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
 	                    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 	                } else if (nestedWorkgroup != null) {
 	                    member.setWorkflowId(nestedWorkgroup.getWorkflowGroupId().getGroupId().toString());
-	                    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+	                    member.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 	                } else  {
 	                    throw new Exception("A workflow user or nested workgroup cannot be found for "+memberElement.getName()+"="+memberElement.getText()+" on Workgroup " + workgroup.getWorkgroupName());
 	                }

@@ -193,7 +193,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 		    if (userToRemove != null && member.getWorkflowId().equals(userToRemove.getWorkflowId())) {
 			continue;
 		    }
-		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
 		    if (workgroupToRemove != null && member.getWorkflowId().equals(workgroupToRemove.getWorkflowGroupId().getGroupId().toString())) {
 			continue;
 		    }
@@ -252,17 +252,17 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 			    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 			    member.setWorkflowId(newUser.getWorkflowId());
 			} else if (newWorkgroup != null) {
-			    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
 			}
 		    }
-		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		} else if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
 		    if (workgroupToReplace != null && member.getWorkflowId().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
 			if (newUser != null) {
 			    member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 			    member.setWorkflowId(newUser.getWorkflowId());
 			} else if (newWorkgroup != null) {
-			    member.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
 			}
 		    }
@@ -348,7 +348,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
                 	throw new WorkflowException("A cycle was detected in workgroup membership.  Workgroup '" + nestedWorkgroup.getGroupNameId().getNameId() + "' has '" + workgroup.getGroupNameId() +"' as a member");
                 }
                 workgroupMember.setWorkflowId(nestedWorkgroup.getWorkflowGroupId().getGroupId().toString());
-                workgroupMember.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+                workgroupMember.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
         	} else {
         		LOG.error("Invalid recipient type found for workgroup member when materializing members for routing: " + member.getClass().getName());
         		continue;

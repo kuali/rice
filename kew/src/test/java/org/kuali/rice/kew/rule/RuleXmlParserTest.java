@@ -287,7 +287,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         if (resp.isUsingWorkflowUser()) {
             assertEquals("user3", resp.getWorkflowUser().getAuthenticationUserId().getId());
         } else {
-            assertEquals("WorkflowAdmin", resp.getWorkgroup().getGroupNameId().getNameId());
+            assertEquals("WorkflowAdmin", resp.getGroup().getGroupName());
         }
         
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
@@ -301,7 +301,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         if (resp.isUsingWorkflowUser()) {
             assertEquals("user1", resp.getWorkflowUser().getAuthenticationUserId().getId());    
         } else {
-            assertEquals("TestWorkgroup", resp.getWorkgroup().getGroupNameId().getNameId());
+            assertEquals("TestWorkgroup", resp.getGroup().getGroupName());
         }
     }
     

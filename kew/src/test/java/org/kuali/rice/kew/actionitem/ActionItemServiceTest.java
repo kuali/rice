@@ -42,6 +42,10 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberBase;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class ActionItemServiceTest extends KEWTestCase {
@@ -70,6 +74,8 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.routeDocument("");
 
         WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
+        GroupService groupService = KIMServiceLocator.getGroupService();
+        GroupInfo oldGroup = groupService.getGroupInfo("WorkflowAdmin");
         BaseWorkgroup oldWorkgroup = (BaseWorkgroup)workgroupService.getWorkgroup(new GroupNameId("WorkflowAdmin"));
         WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
         WorkflowUser user2 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user2"));
@@ -173,11 +179,14 @@ public class ActionItemServiceTest extends KEWTestCase {
      *
      * @throws Exception
      */
-    @Test public void testUpdateActionItemsForNestedWorkgroupChange() throws Exception {
+    @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new WorkgroupNameIdDTO("AIWGNested2"), "", true);
+        GroupInfo grpInfo =new GroupInfo();
+        grpInfo.setGroupName("AIWGNested2");
+        
+        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
         document.routeDocument("");
 
         // remove a user from the AGWG1 workgroup
@@ -272,7 +281,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         for (Iterator iterator = workgroup3.getWorkgroupMembers().iterator(); iterator.hasNext();) {
 			member = (BaseWorkgroupMember) iterator.next();
 			// remove ewestfal
-			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD) &&
+			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD) &&
 					member.getWorkflowId().equals(aiwgNested1Workgroup.getWorkflowGroupId().getGroupId().toString())) {
 				iterator.remove();
 			}
@@ -428,9 +437,9 @@ public class ActionItemServiceTest extends KEWTestCase {
         boolean routedTestWorkgroup = false;
         for (int i = 0; i < ars.length; i++) {
             ActionRequestDTO request = ars[i];
-            if (request.isWorkgroupRequest() && request.getWorkgroupDTO().getWorkgroupName().equals("TestWorkgroup")) {
+            if (request.isGroupRequest() && request.getGroupVO().getGroupName().equals("TestWorkgroup")) {
                 routedTestWorkgroup = true;
-            } else if (request.isWorkgroupRequest() && request.getWorkgroupDTO().getWorkgroupName().equals("WorkflowAdmin")) {
+            } else if (request.isGroupRequest() && request.getGroupVO().getGroupName().equals("WorkflowAdmin")) {
                 routedWorkflowAdmin = true;
             }
         }

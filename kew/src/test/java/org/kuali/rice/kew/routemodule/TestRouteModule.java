@@ -36,6 +36,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -96,8 +97,10 @@ public class TestRouteModule implements RouteModule {
         ResponsibleParty responsibleParty = new ResponsibleParty();
         if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
             responsibleParty.setUserId(new AuthenticationUserId(recipient.getId()));
-        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
-            responsibleParty.setGroupId(new GroupNameId(recipient.getId()));
+        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
+        	GroupInfo grpInfo =new GroupInfo();
+        	grpInfo.setGroupName(recipient.getId());
+            responsibleParty.setGroupId(grpInfo);
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
             responsibleParty.setRoleName(recipient.getId());
         } else {

@@ -97,7 +97,9 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	docId = doc.getRouteHeaderId();
     	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
     	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey2", new NetworkIdDTO("dewey"), "respDesc1", false);
-    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);    	
+    	GroupInfo grpInfo = new GroupInfo();
+		grpInfo.setGroupName("WorkflowAdmin");
+    	doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin",grpInfo , "respDesc2", true);    	
     
     	TestUtilities.assertNumberOfPendingRequests(docId, 3);
     	TestUtilities.assertUserHasPendingRequest(docId, "dewey");
@@ -143,7 +145,9 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", new NetworkIdDTO("dewey"), "respDesc1", false);
-    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	GroupInfo grpInfo = new GroupInfo();
+		grpInfo.setGroupName("WorkflowAdmin");
+    	doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "Annotation WorkflowAdmin", grpInfo, "respDesc2", true);
     	TestUtilities.assertNumberOfPendingRequests(docId, 2);
     	
     	// now revoke the node
@@ -191,7 +195,9 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	
     	doc = getDocument("dewey");
     	assertFalse("User andlee should not have an approve request yet.  Document not yet routed.", doc.isApprovalRequested());
-    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	GroupInfo grpInfo = new GroupInfo();
+		grpInfo.setGroupName("WorkflowAdmin");
+    	doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2",grpInfo , "respDesc2", true);
     	doc = getDocument("quickstart");
     	assertFalse("User should not have approve request yet.  Document not yet routed.", doc.isApprovalRequested());
     	

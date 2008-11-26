@@ -162,7 +162,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
             recipientTypeCode = KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD;
         }
         if (getGroupId() != null) {
-            recipientTypeCode = KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD;
+            recipientTypeCode = KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD;
         }
         return recipientTypeCode;
     }

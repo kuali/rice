@@ -37,14 +37,14 @@ import javax.persistence.Table;
     @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")), 
     @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")), 
     @AttributeOverride(name="responsibilityId", column=@Column(name="RSP_ID")), 
-    @AttributeOverride(name="workgroupId", column=@Column(name="GRP_ID")), 
+    @AttributeOverride(name="groupId", column=@Column(name="GRP_ID")), 
     @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")), 
     @AttributeOverride(name="docTitle", column=@Column(name="DOC_HDR_TTL")), 
     @AttributeOverride(name="docLabel", column=@Column(name="DOC_TYP_LBL")), 
     @AttributeOverride(name="docHandlerURL", column=@Column(name="DOC_HDLR_URL")), 
     @AttributeOverride(name="docName", column=@Column(name="DOC_TYP_NM")), 
     @AttributeOverride(name="delegatorWorkflowId", column=@Column(name="DLGN_PRNCPL_ID")), 
-    @AttributeOverride(name="delegatorWorkgroupId", column=@Column(name="DLGN_GRP_ID")), 
+    @AttributeOverride(name="delegatorGroupId", column=@Column(name="DLGN_GRP_ID")), 
     @AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")), 
     @AttributeOverride(name="lockVerNbr", column=@Column(name="VER_NBR"))
 })

@@ -130,7 +130,7 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 		BaseWorkgroupMember member2 = new BaseWorkgroupMember();
 		Workgroup testWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("TestWorkgroup"));
 		member2.setWorkflowId(testWorkgroup.getWorkflowGroupId().getGroupId().toString());
-		member2.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+		member2.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 		member2.setWorkgroup(workgroup1);
 		workgroup1.getWorkgroupMembers().add(member2);
 
@@ -312,7 +312,7 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 //		// add TestWorkgroup as a member
 //		BaseWorkgroupMember member2 = new BaseWorkgroupMember();
 //		member2.setWorkflowId(workgroup1.getWorkflowGroupId().getGroupId().toString());
-//		member2.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+//		member2.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 //		member2.setWorkgroup(workgroup2);
 //		workgroup2.getWorkgroupMembers().add(member2);
 //
@@ -321,7 +321,7 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 //		// now add TestedNestedWorkgroups2 as a member of TestNestedWorkgroups1
 //		member1 = new BaseWorkgroupMember();
 //		member1.setWorkflowId(workgroup2.getWorkflowGroupId().getGroupId().toString());
-//		member1.setMemberType(KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+//		member1.setMemberType(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 //		member1.setWorkgroup(workgroup1);
 //		workgroup1.getWorkgroupMembers().add(member1);
 //

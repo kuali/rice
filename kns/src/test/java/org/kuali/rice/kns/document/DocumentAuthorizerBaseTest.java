@@ -26,7 +26,9 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.keyvalue.DefaultMapEntry;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
@@ -705,6 +707,19 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         public boolean userIsInitiator(Person user) {
             return initiator.getPrincipalId().equalsIgnoreCase(user.getPrincipalId());
         }
+
+		/**
+		 * This overridden method ...
+		 * 
+		 * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToGroup(java.lang.String, java.lang.String, int, java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo, java.lang.String, boolean)
+		 */
+		public void appSpecificRouteDocumentToGroup(String actionRequested,
+				String routeTypeName, int priority, String annotation,
+				GroupInfo groupInfo, String responsibilityDesc,
+				boolean ignorePreviousActions) throws WorkflowException {
+			// TODO sp20369 - THIS METHOD NEEDS JAVADOCS
+			
+		}
 
     }
 

@@ -224,7 +224,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", Boolean.TRUE);
 		crit.addEqualTo("workgroupMembers.workflowId", workgroupId.toString());
-		crit.addEqualTo("workgroupMembers.memberType", KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+		crit.addEqualTo("workgroupMembers.memberType", KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
 		ReportQueryByCriteria query = QueryFactory.newReportQuery(BaseWorkgroup.class, crit);
     	query.setAttributes(new String[] { "workgroupId" });
     	List<Long> workgroupIds = new ArrayList<Long>(10);

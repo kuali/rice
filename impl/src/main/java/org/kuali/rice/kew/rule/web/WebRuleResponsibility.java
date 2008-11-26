@@ -125,7 +125,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				WorkflowUser user = getUserService().getWorkflowUser(new WorkflowUserId(getRuleResponsibilityName()));
 				setReviewer(user.getAuthenticationUserId().getAuthenticationId());
 				setReviewerId(user.getWorkflowId());
-			} else if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+			} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
@@ -282,7 +282,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			workgroupLookupStyle = DISPLAY_NONE;
 			roleAreaStyle = DISPLAY_NONE;
 		}
-		if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+		if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_INLINE;
 			personLookupStyle = DISPLAY_NONE;
 			workgroupLookupStyle = DISPLAY_INLINE;
@@ -317,7 +317,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (invalidUser) {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.user.invalid"));
 			}
-		} else if (KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(getRuleResponsibilityType())) {
+		} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {

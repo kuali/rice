@@ -157,7 +157,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/util/FieldUtils.java
              }
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinitionI.java	(working copy)
 @@ -1,26 +1,23 @@
 -/*
@@ -2698,7 +2698,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/Field.java
 \ No newline at end of file
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizations.java	(working copy)
 @@ -1,175 +1,212 @@
 -/*
@@ -3301,7 +3301,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/SectionBridge.java
 +
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java	(working copy)
 @@ -45,6 +45,7 @@
      protected String displayEditMode;
@@ -3329,7 +3329,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/FieldDefinition.java
      }
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/exporter/AttributesMapBuilder.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/exporter/AttributesMapBuilder.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/exporter/AttributesMapBuilder.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/exporter/AttributesMapBuilder.java	(working copy)
 @@ -92,6 +92,10 @@
              attributeMap.set("displayWorkgroup", attribute.getDisplayWorkgroup());
@@ -3344,9 +3344,9 @@ Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/exporter/AttributesM
          attributeMap.set("fullClassName", fullClassName);
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java	(working copy)
-@@ -1,576 +1,645 @@
+@@ -1,578 +1,646 @@
 -/*
 - * Copyright 2007 The Kuali Foundation.
 - * 
@@ -3382,6 +3382,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuth
 -import org.kuali.rice.kew.exception.WorkflowException;
 -import org.kuali.rice.kew.util.KEWConstants;
 -import org.kuali.rice.kim.bo.Person;
+-import org.kuali.rice.kim.service.KIMServiceLocator;
 -import org.kuali.rice.kns.authorization.AuthorizationConstants;
 -import org.kuali.rice.kns.document.Document;
 -import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
@@ -3505,10 +3506,231 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuth
 -                    boolean reqFound = false;
 -                    for ( ActionRequestDTO req : requests ) {
 -                        if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
--                        if ( req.getWorkgroupDTO() != null ) {
--                        UserDTO[] users = req.getWorkgroupDTO().getMembers();
--                        for ( UserDTO usr : users ) {
--                            if ( usr.getUuId().equals( user.getPrincipalId() ) ) {
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.HashSet;
++import java.util.Iterator;
++import java.util.List;
++import java.util.Map;
++import java.util.Set;
++
++import org.apache.commons.lang.StringUtils;
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++import org.kuali.rice.core.util.RiceConstants;
++import org.kuali.rice.kew.dto.ActionRequestDTO;
++import org.kuali.rice.kew.dto.UserDTO;
++import org.kuali.rice.kew.dto.ValidActionsDTO;
++import org.kuali.rice.kew.exception.WorkflowException;
++import org.kuali.rice.kew.util.KEWConstants;
++import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kim.bo.types.dto.AttributeSet;
++import org.kuali.rice.kim.service.IdentityManagementService;
++import org.kuali.rice.kim.service.KIMServiceLocator;
++import org.kuali.rice.kim.util.KimConstants;
++import org.kuali.rice.kns.authorization.AuthorizationConstants;
++import org.kuali.rice.kns.document.Document;
++import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
++import org.kuali.rice.kns.exception.PessimisticLockingException;
++import org.kuali.rice.kns.service.AuthorizationService;
++import org.kuali.rice.kns.service.KNSServiceLocator;
++import org.kuali.rice.kns.service.KualiConfigurationService;
++import org.kuali.rice.kns.util.KNSConstants;
++import org.kuali.rice.kns.util.ObjectUtils;
++import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
++import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
++
++
++/**
++ * DocumentAuthorizer containing common, reusable document-level authorization code.
++ */
++public class DocumentAuthorizerBase implements DocumentAuthorizer {
++    private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
++    
++    public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
++    public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
++    public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
++
++    private static AuthorizationService authorizationService;
++    private static KualiWorkflowInfo kualiWorkflowInfo;
++    private static KualiConfigurationService kualiConfigurationService;
++    private static IdentityManagementService identityManagementService;
++    
++    /**
++     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
++     *      org.kuali.rice.kns.bo.user.KualiUser)
++     */
++    public Map getEditMode(Document d, Person u) {
++        Map editModeMap = new HashMap();
++        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
++
++        KualiWorkflowDocument workflowDocument = d.getDocumentHeader().getWorkflowDocument();
++        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
++            if (hasInitiateAuthorization(d, u)) {
++                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
++            }
++        }
++        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
++            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
++        }
++
++        editModeMap.put(editMode, EDIT_MODE_DEFAULT_TRUE_VALUE);
++
++        return editModeMap;
++    }
++    
++    /**
++     * 
++     * This method is used to get overall document edit permission
++     * 
++     * @param document
++     * @param user
++     * @return
++     */
++    public boolean isViewOnly(Document document, Person user){
++    	boolean isViewOnly = true;
++    	//TODO: Should use ParameterService getNameSpace to get name space
++        String nameSpaceCode = "KR-NS";
++    	
++    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
++    	String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();
++    	String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++    	
++    	AttributeSet permissionDetails = new AttributeSet();
++    	permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentType);
++    	AttributeSet qualifications = null;
++    	
++    	
++    	if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
++    		permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, KimConstants.KIM_AD_HOC);
++    		qualifications = new AttributeSet();
++        	qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, document.getDocumentNumber());
++         }else{
++        	 permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++         }
++
++ 	   //TODO: InitiatorRoleTypeService is only used for testing. 
++ 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_DOCUMENT, permissionDetails, qualifications)){
++ 		   isViewOnly = false;
++	   }
++ 	   
++    	return isViewOnly;
++    }
++
++    
++    /**
++     * Individual document families will need to reimplement this according to their own needs; this version should be good enough
++     * to be usable during initial development.
++     *
++     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
++     *      org.kuali.rice.kns.bo.user.KualiUser)
++     */
++    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
++        LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
++
++        DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
++
++        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++        boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
++        
++        //TODO:
++    	String nameSpaceCode = "KR-WKFLW";
++    	AttributeSet permissionDetails = new AttributeSet();
++    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, workflowDocument.getDocumentType());
++    	
++
++        flags.setCanClose(true); // can always close a document
++
++        // if a document is canceled, everything other than close should be set to false
++        // if a document is NOT canceled, then we want to process the rest
++        if (!workflowDocument.stateIsCanceled()) {
++            flags.setCanReload(!workflowDocument.stateIsInitiated());
++            
++            //flags.setCanBlanketApprove(workflowDocument.isBlanketApproveCapable());
++            flags.setCanBlanketApprove(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, permissionDetails, null));
++           
++	            
++            // The only exception to the supervisor user canSupervise is when the supervisor
++            // user is also the initiator, and does NOT have an approval request. In other words if they
++            // are the document initiator, and its still in Initiated or Saved phase, they cant have access
++            // to the supervisor buttons. If they're the initiator, but for some reason they are also
++            // approving the document, then they can have the supervisor button & functions.
++            
++            boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
++            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
++
++            // default normal documents to be unable to copy
++            flags.setCanCopy(false);
++            // default route report to false and set individually based on workflow doc status below
++            //flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
++            //TODO:PerformRouteReport permission is not in perm table
++            flags.setCanPerformRouteReport( getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PERFORM_ROUTE_REPORT, permissionDetails, null));
++
++            if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
++                //ValidActionsDTO validActions = workflowDocument.getRouteHeader().getValidActions();
++                boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
++                flags.setCanCancel(hasPreRouteEditAuthorization &&
++                		           getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_CANCEL_DOCUMENT, permissionDetails, null));
++
++                flags.setCanSave(hasPreRouteEditAuthorization && 
++                				 getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_SAVE_DOCUMENT, permissionDetails, null));
++
++                flags.setCanRoute(hasPreRouteEditAuthorization && 
++                				  getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_ROUTE_DOCUMENT, permissionDetails, null));
++
++                
++                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
++                flags.setCanFYI(workflowDocument.isFYIRequested());
++                
++                flags.setCanAdHocRoute(flags.getCanSave() || flags.getCanRoute());
++            }
++            else if (workflowDocument.stateIsEnroute()) {
++            	flags.setCanApprove(workflowDocument.isApprovalRequested());
++
++                flags.setCanDisapprove(workflowDocument.isApprovalRequested());
++
++                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
++                flags.setCanFYI(workflowDocument.isFYIRequested());
++                
++                flags.setCanAdHocRoute(workflowDocument.isApprovalRequested() || workflowDocument.isAcknowledgeRequested());
++
++            }
++            else if (workflowDocument.stateIsApproved() || workflowDocument.stateIsFinal() || workflowDocument.stateIsDisapproved()) {
++                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
++                flags.setCanFYI(workflowDocument.isFYIRequested());
++
++                flags.setCanAdHocRoute(false);
++            }
++            else if (workflowDocument.stateIsException()) {
++            try {
++                    ActionRequestDTO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
++                    boolean reqFound = false;
++                    for ( ActionRequestDTO req : requests ) {
++                        if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
+                         if ( req.getGroupVO()!= null ) {
+                         	
+                         List<String> users = KIMServiceLocator.getIdentityManagementService().getMemberGroupIds(req.getGroupVO().getGroupId());
+                         for ( String usr : users ) {
+                             if ( usr.equals( user.getPrincipalId() ) ) {
 -                            flags.setCanCancel( true );
 -                                    flags.setCanApprove( true );
 -                                    flags.setCanDisapprove( true );
@@ -3520,7 +3742,18 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuth
 -                            break;
 -                        }
 -                        } else {
--                        LOG.error( "Unable to retrieve user list for exception workgroup.  ActionRequestVO.getWorkgroupVO() returned null" );
++                            flags.setCanCancel( true );
++                                    flags.setCanApprove( true );
++                                    flags.setCanDisapprove( true );
++                                    reqFound = true; // used to break out of outer loop
++                                    break;
++                            }
++                        }
++                        if ( reqFound ) {
++                            break;
++                        }
++                        } else {
+                         LOG.error( "Unable to retrieve user list for exceptiongroup.  ActionRequestVO.getGroupVO() returned null" );
 -                        LOG.error( "request: " + req );
 -                        }
 -                    }
@@ -3923,242 +4156,6 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuth
 -    }
 -    
 -}
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.ArrayList;
-+import java.util.HashMap;
-+import java.util.HashSet;
-+import java.util.Iterator;
-+import java.util.List;
-+import java.util.Map;
-+import java.util.Set;
-+
-+import org.apache.commons.lang.StringUtils;
-+import org.apache.commons.logging.Log;
-+import org.apache.commons.logging.LogFactory;
-+import org.kuali.rice.core.util.RiceConstants;
-+import org.kuali.rice.kew.dto.ActionRequestDTO;
-+import org.kuali.rice.kew.dto.UserDTO;
-+import org.kuali.rice.kew.dto.ValidActionsDTO;
-+import org.kuali.rice.kew.exception.WorkflowException;
-+import org.kuali.rice.kew.util.KEWConstants;
-+import org.kuali.rice.kim.bo.Person;
-+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-+import org.kuali.rice.kim.service.IdentityManagementService;
-+import org.kuali.rice.kim.service.KIMServiceLocator;
-+import org.kuali.rice.kim.util.KimConstants;
-+import org.kuali.rice.kns.authorization.AuthorizationConstants;
-+import org.kuali.rice.kns.document.Document;
-+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
-+import org.kuali.rice.kns.exception.PessimisticLockingException;
-+import org.kuali.rice.kns.service.AuthorizationService;
-+import org.kuali.rice.kns.service.KNSServiceLocator;
-+import org.kuali.rice.kns.service.KualiConfigurationService;
-+import org.kuali.rice.kns.util.KNSConstants;
-+import org.kuali.rice.kns.util.ObjectUtils;
-+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
-+import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
-+
-+
-+/**
-+ * DocumentAuthorizer containing common, reusable document-level authorization code.
-+ */
-+public class DocumentAuthorizerBase implements DocumentAuthorizer {
-+    private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
-+    
-+    public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
-+    public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
-+    public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
-+
-+    private static AuthorizationService authorizationService;
-+    private static KualiWorkflowInfo kualiWorkflowInfo;
-+    private static KualiConfigurationService kualiConfigurationService;
-+    private static IdentityManagementService identityManagementService;
-+    
-+    /**
-+     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
-+     *      org.kuali.rice.kns.bo.user.KualiUser)
-+     */
-+    public Map getEditMode(Document d, Person u) {
-+        Map editModeMap = new HashMap();
-+        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
-+
-+        KualiWorkflowDocument workflowDocument = d.getDocumentHeader().getWorkflowDocument();
-+        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-+            if (hasInitiateAuthorization(d, u)) {
-+                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-+            }
-+        }
-+        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
-+            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-+        }
-+
-+        editModeMap.put(editMode, EDIT_MODE_DEFAULT_TRUE_VALUE);
-+
-+        return editModeMap;
-+    }
-+    
-+    /**
-+     * 
-+     * This method is used to get overall document edit permission
-+     * 
-+     * @param document
-+     * @param user
-+     * @return
-+     */
-+    public boolean isViewOnly(Document document, Person user){
-+    	boolean isViewOnly = true;
-+    	//TODO: Should use ParameterService getNameSpace to get name space
-+        String nameSpaceCode = "KR-NS";
-+    	
-+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-+    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
-+    	String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();
-+    	String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
-+    	
-+    	AttributeSet permissionDetails = new AttributeSet();
-+    	permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
-+    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentType);
-+    	AttributeSet qualifications = null;
-+    	
-+    	
-+    	if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-+    		permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, KimConstants.KIM_AD_HOC);
-+    		qualifications = new AttributeSet();
-+        	qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, document.getDocumentNumber());
-+         }else{
-+        	 permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
-+         }
-+
-+ 	   //TODO: InitiatorRoleTypeService is only used for testing. 
-+ 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_DOCUMENT, permissionDetails, qualifications)){
-+ 		   isViewOnly = false;
-+	   }
-+ 	   
-+    	return isViewOnly;
-+    }
-+
-+    
-+    /**
-+     * Individual document families will need to reimplement this according to their own needs; this version should be good enough
-+     * to be usable during initial development.
-+     *
-+     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
-+     *      org.kuali.rice.kns.bo.user.KualiUser)
-+     */
-+    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
-+        LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
-+
-+        DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
-+
-+        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-+        boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
-+        
-+        //TODO:
-+    	String nameSpaceCode = "KR-WKFLW";
-+    	AttributeSet permissionDetails = new AttributeSet();
-+    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, workflowDocument.getDocumentType());
-+    	
-+
-+        flags.setCanClose(true); // can always close a document
-+
-+        // if a document is canceled, everything other than close should be set to false
-+        // if a document is NOT canceled, then we want to process the rest
-+        if (!workflowDocument.stateIsCanceled()) {
-+            flags.setCanReload(!workflowDocument.stateIsInitiated());
-+            
-+            //flags.setCanBlanketApprove(workflowDocument.isBlanketApproveCapable());
-+            flags.setCanBlanketApprove(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, permissionDetails, null));
-+           
-+	            
-+            // The only exception to the supervisor user canSupervise is when the supervisor
-+            // user is also the initiator, and does NOT have an approval request. In other words if they
-+            // are the document initiator, and its still in Initiated or Saved phase, they cant have access
-+            // to the supervisor buttons. If they're the initiator, but for some reason they are also
-+            // approving the document, then they can have the supervisor button & functions.
-+            
-+            boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
-+            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
-+
-+            // default normal documents to be unable to copy
-+            flags.setCanCopy(false);
-+            // default route report to false and set individually based on workflow doc status below
-+            //flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
-+            //TODO:PerformRouteReport permission is not in perm table
-+            flags.setCanPerformRouteReport( getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PERFORM_ROUTE_REPORT, permissionDetails, null));
-+
-+            if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-+                //ValidActionsDTO validActions = workflowDocument.getRouteHeader().getValidActions();
-+                boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
-+                flags.setCanCancel(hasPreRouteEditAuthorization &&
-+                		           getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_CANCEL_DOCUMENT, permissionDetails, null));
-+
-+                flags.setCanSave(hasPreRouteEditAuthorization && 
-+                				 getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_SAVE_DOCUMENT, permissionDetails, null));
-+
-+                flags.setCanRoute(hasPreRouteEditAuthorization && 
-+                				  getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_ROUTE_DOCUMENT, permissionDetails, null));
-+
-+                
-+                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
-+                flags.setCanFYI(workflowDocument.isFYIRequested());
-+                
-+                flags.setCanAdHocRoute(flags.getCanSave() || flags.getCanRoute());
-+            }
-+            else if (workflowDocument.stateIsEnroute()) {
-+            	flags.setCanApprove(workflowDocument.isApprovalRequested());
-+
-+                flags.setCanDisapprove(workflowDocument.isApprovalRequested());
-+
-+                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
-+                flags.setCanFYI(workflowDocument.isFYIRequested());
-+                
-+                flags.setCanAdHocRoute(workflowDocument.isApprovalRequested() || workflowDocument.isAcknowledgeRequested());
-+
-+            }
-+            else if (workflowDocument.stateIsApproved() || workflowDocument.stateIsFinal() || workflowDocument.stateIsDisapproved()) {
-+                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
-+                flags.setCanFYI(workflowDocument.isFYIRequested());
-+
-+                flags.setCanAdHocRoute(false);
-+            }
-+            else if (workflowDocument.stateIsException()) {
-+            try {
-+                    ActionRequestDTO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
-+                    boolean reqFound = false;
-+                    for ( ActionRequestDTO req : requests ) {
-+                        if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
-+                        if ( req.getWorkgroupDTO() != null ) {
-+                        UserDTO[] users = req.getWorkgroupDTO().getMembers();
-+                        for ( UserDTO usr : users ) {
-+                            if ( usr.getUuId().equals( user.getPrincipalId() ) ) {
-+                            flags.setCanCancel( true );
-+                                    flags.setCanApprove( true );
-+                                    flags.setCanDisapprove( true );
-+                                    reqFound = true; // used to break out of outer loop
-+                                    break;
-+                            }
-+                        }
-+                        if ( reqFound ) {
-+                            break;
-+                        }
-+                        } else {
-+                        LOG.error( "Unable to retrieve user list for exception workgroup.  ActionRequestVO.getWorkgroupVO() returned null" );
 +                        LOG.error( "request: " + req );
 +                        }
 +                    }
@@ -4756,7 +4753,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/maintenance/KualiMaintainableImpl.j
 +}
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(working copy)
 @@ -1,174 +1,343 @@
 -/*
@@ -5363,7 +5360,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/ui/FieldBridge.java
                          if (defaultValueFinderClass != null) {
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/MaintainableFieldDefinition.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/MaintainableFieldDefinition.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/MaintainableFieldDefinition.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/MaintainableFieldDefinition.java	(working copy)
 @@ -58,6 +58,7 @@
  
@@ -5585,7 +5582,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/service/impl/DataDictionaryServiceI
      }
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizerBase.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizerBase.java	(revision 5087)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizerBase.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizerBase.java	(working copy)
 @@ -15,11 +15,17 @@
   */
@@ -5605,7 +5602,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/Transactiona
  import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  
  /**
-@@ -49,4 +55,42 @@
+@@ -51,4 +57,42 @@
          }
          return flags;
      }
@@ -6751,7 +6748,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiMaintenanceFor
 +}
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.java	(working copy)
 @@ -147,4 +147,17 @@
  		}
@@ -6773,7 +6770,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeSecurity.ja
  }
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(working copy)
 @@ -1,40 +1,44 @@
 -/*
@@ -7472,7 +7469,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/service/DataDictionaryService.java
       * short help text for attribute
 Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeDefinition.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeDefinition.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeDefinition.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeDefinition.java	(working copy)
 @@ -518,4 +518,8 @@
  	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
@@ -7486,7 +7483,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/datadictionary/AttributeDefinition.
 \ No newline at end of file
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java	(revision 5288)
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java	(revision 5427)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java	(working copy)
 @@ -1,88 +1,97 @@
 -/*

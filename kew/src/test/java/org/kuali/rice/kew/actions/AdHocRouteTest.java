@@ -31,7 +31,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 public class AdHocRouteTest extends KEWTestCase {
 
@@ -50,7 +51,9 @@ public class AdHocRouteTest extends KEWTestCase {
 
     	doc = getDocument("dewey");
     	assertFalse("User andlee should not have an approve request yet.  Document not yet routed.", doc.isApprovalRequested());
-    	doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", new WorkgroupNameIdDTO("WorkflowAdmin"), "respDesc2", true);
+    	GroupInfo grpInfo = new GroupInfo();
+		grpInfo.setGroupId("WorkflowAdmin");
+    	doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", grpInfo, "respDesc2", true);
 
     	doc = getDocument("quickstart");
     	assertFalse("User should not have approve request yet.  Document not yet routed.", doc.isApprovalRequested());
@@ -370,7 +373,9 @@ public class AdHocRouteTest extends KEWTestCase {
 		// do an appspecific route to jitrue and NonSIT (w/ ignore previous =
 		// false), should end up at the current node
     	doc.appSpecificRouteDocumentToUser("A", "", new NetworkIdDTO("jitrue"), "", false);
-    	doc.appSpecificRouteDocumentToWorkgroup("A", "", new WorkgroupNameIdDTO("NonSIT"), "", false);
+    	GroupInfo grpInfo = new GroupInfo();
+		grpInfo.setGroupName("NonSIT");
+    	doc.appSpecificRouteDocumentToGroup("A", "", grpInfo, "", false);
     	doc.routeDocument("");
 
 		// user1 should not have a request, his action should have counted for
@@ -394,7 +399,9 @@ public class AdHocRouteTest extends KEWTestCase {
 
     	doc.appSpecificRouteDocumentToUser("F", "", new NetworkIdDTO("rkirkend"), "", true);
     	doc.appSpecificRouteDocumentToUser("K", "", new NetworkIdDTO("user2"), "", true);
-    	doc.appSpecificRouteDocumentToWorkgroup("K", "", new WorkgroupNameIdDTO("NonSIT"), "", true);
+    	
+		grpInfo.setGroupName("NonSIT");
+    	doc.appSpecificRouteDocumentToGroup("K", "", grpInfo, "", true);
 
     	// rkirkend should have an FYI ad hoc request
     	doc = getDocument("rkirkend");

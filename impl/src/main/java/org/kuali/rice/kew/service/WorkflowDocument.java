@@ -625,10 +625,10 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
-     * @deprecated use {@link #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)}
+     * @deprecated use {@link #appSpecificRouteDocumentToGroup(String, String, String, WorkgroupIdDTO, String, boolean)}
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	appSpecificRouteDocumentToWorkgroup(actionRequested, nodeName, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
+    public void appSpecificRouteDocumentToGroup(String actionRequested, String nodeName, int priority, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	appSpecificRouteDocumentToGroup(actionRequested, nodeName, annotation, groupInfo, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
@@ -663,8 +663,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
      * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	appSpecificRouteDocumentToWorkgroup(actionRequested, null, annotation, workgroupId, responsibilityDesc, ignorePreviousActions);
+    public void appSpecificRouteDocumentToGroup(String actionRequested, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	appSpecificRouteDocumentToGroup(actionRequested, null, annotation, groupInfo, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
@@ -673,10 +673,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
      * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String nodeName, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void appSpecificRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(workgroupId), responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(groupInfo), responsibilityDesc, ignorePreviousActions);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);

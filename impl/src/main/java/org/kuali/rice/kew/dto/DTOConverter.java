@@ -38,6 +38,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
@@ -104,6 +105,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -584,9 +586,9 @@ public class DTOConverter {
             docTypeVO.setDocTypeActiveInherited(false);
         }
         docTypeVO.setDocTypePreApprovalPolicy(docType.getPreApprovePolicy().getPolicyValue().booleanValue());
-        KimGroup blanketWorkgroup = docType.getBlanketApproveWorkgroup();
-        if (blanketWorkgroup != null) {
-            docTypeVO.setBlanketApproveWorkgroupId(blanketWorkgroup.getGroupId());
+        KimGroup blanketGroup = docType.getBlanketApproveWorkgroup();
+        if (blanketGroup != null) {
+            docTypeVO.setBlanketApproveGroupId(blanketGroup.getGroupId());
         }
         docTypeVO.setBlanketApprovePolicy(docType.getBlanketApprovePolicy());
         docTypeVO.setRoutePath(convertRoutePath(docType));
@@ -639,8 +641,10 @@ public class DTOConverter {
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestVO.setStatus(actionRequest.getStatus());
+        GroupInfo groupInfo = new GroupInfo();
+        groupInfo.setGroupName(actionRequest.getGroup().getGroupName());
         if (actionRequest.isGroupRequest()) {
-            actionRequestVO.setWorkgroupId(actionRequest.getGroupId());
+            actionRequestVO.setGroupVO(groupInfo);
         }
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
@@ -677,16 +681,16 @@ public class DTOConverter {
         return actionTakenVO;
     }
 
-    public static WorkgroupIdDTO convertGroupId(GroupId groupId) {
-        WorkgroupIdDTO workgroupId = null;
-        if (groupId instanceof GroupNameId) {
-            GroupNameId groupName = (GroupNameId) groupId;
-            workgroupId = new WorkgroupNameIdDTO(groupName.getNameId());
-        } else if (groupId instanceof WorkflowGroupId) {
-            WorkflowGroupId workflowGroupId = (WorkflowGroupId) groupId;
-            workgroupId = new WorkflowGroupIdDTO(workflowGroupId.getGroupId());
+    public static GroupInfo convertGroupId(String groupId) {
+    	GroupInfo groupInfo = null;
+        if (KIMServiceLocator.getIdentityManagementService().getEntity(groupId)!=null) {
+            groupInfo = new GroupInfo();
+            groupInfo.setGroupId(groupId);
+        } else if (KIMServiceLocator.getIdentityManagementService().getGroup(groupId)!=null) {
+        	 groupInfo = new GroupInfo();
+             groupInfo.setGroupId(groupId);
         }
-        return workgroupId;
+        return groupInfo;
     }
 
     public static GroupId convertWorkgroupIdVO(WorkgroupIdDTO workgroupId) {
@@ -755,7 +759,7 @@ public class DTOConverter {
             return null;
         }
         ResponsiblePartyDTO responsiblePartyVO = new ResponsiblePartyDTO();
-        responsiblePartyVO.setWorkgroupId(DTOConverter.convertGroupId(responsibleParty.getGroupId()));
+        responsiblePartyVO.setGroupInfo(responsibleParty.getGroupId());
         responsiblePartyVO.setUserId(DTOConverter.convertUserId(responsibleParty.getUserId()));
         responsiblePartyVO.setRoleName(responsibleParty.getRoleName());
         return responsiblePartyVO;
@@ -766,7 +770,7 @@ public class DTOConverter {
             return null;
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
-        responsibleParty.setGroupId(DTOConverter.convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId()));
+        responsibleParty.setGroupId(DTOConverter.convertGroupId(responsiblePartyVO.getGroupInfo().getGroupId()));
         responsibleParty.setUserId(DTOConverter.convertUserIdVO(responsiblePartyVO.getUserId()));
         responsibleParty.setRoleName(responsiblePartyVO.getRoleName());
         return responsibleParty;
@@ -786,9 +790,9 @@ public class DTOConverter {
         if (responsiblePartyVO.getRoleName() != null) {
             return new RoleRecipient(responsiblePartyVO.getRoleName());
         }
-        GroupId groupId = convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId());
-        if (groupId != null) {
-            return KEWServiceLocator.getWorkgroupService().getWorkgroup(groupId);
+        GroupInfo groupInfo = responsiblePartyVO.getGroupInfo();
+        if (groupInfo != null) {
+            return (KimGroupRecipient) KIMServiceLocator.getIdentityManagementService().getGroup(groupInfo.getGroupId()) ;
         }
         UserId userId = convertUserIdVO(responsiblePartyVO.getUserId());
         if (userId != null) {
@@ -888,26 +892,17 @@ public class DTOConverter {
             actionRequest.setWorkflowId(user.getWorkflowId());
             userSet = true;
         }
-        if (actionRequestVO.getWorkgroupId() != null) {
-            Long workgroupId = actionRequestVO.getWorkgroupId();
+        if (actionRequestVO.getGroupVO() != null) {
+            String groupId = actionRequestVO.getGroupVO().getGroupId();
             // validate that the workgroup is good.
-            Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
-            if (workgroup == null) {
-                throw new RuntimeException("Workgroup Id " + workgroupId + " is invalid.  Action Request cannot be activated.");
+           
+            GroupInfo grpInfo =KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+            if (grpInfo == null) {
+                throw new RuntimeException("Group Id " + groupId + " is invalid.  Action Request cannot be activated.");
             }
-            actionRequest.setGroupId(workgroupId);
+            actionRequest.setGroupId(new Long(groupId));
             userSet = true;
-        } else if (actionRequestVO.getWorkgroupDTO() != null) {
-            Long workgroupId = actionRequestVO.getWorkgroupDTO().getWorkgroupId();
-            // validate that the workgroup is good.
-            Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
-            if (workgroup == null) {
-                throw new RuntimeException("Workgroup Id " + workgroupId + " is invalid.  Action Request cannot be activated.");
-            }
-            actionRequest.setGroupId(workgroupId);
-            userSet = true;
-        }
-        // TODO role requests will not have a user or workgroup, so this code needs to handle that case
+        }// TODO role requests will not have a user or workgroup, so this code needs to handle that case
         if (!userSet) {
             throw new RuntimeException("Post processor didn't set a user or workgroup on the request");
         }
@@ -1143,7 +1138,7 @@ public class DTOConverter {
         nodeVO.setActivationType(node.getActivationType());
         nodeVO.setBranchName(node.getBranch() != null ? node.getBranch().getName() : null);
         nodeVO.setDocumentTypeId(node.getDocumentTypeId());
-        nodeVO.setExceptionWorkgroupId(node.getExceptionWorkgroupId());
+        nodeVO.setExceptionGroupId(node.getExceptionWorkgroupId());
         nodeVO.setFinalApprovalInd(node.getFinalApprovalInd().booleanValue());
         nodeVO.setMandatoryRouteInd(node.getMandatoryRouteInd().booleanValue());
         nodeVO.setNodeType(node.getNodeType());
@@ -1377,8 +1372,8 @@ public class DTOConverter {
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getWorkflowUser()));
-        if (ruleResponsibility.getWorkgroup() != null) {
-        	ruleResponsibilityVO.setWorkgroupId("" + ruleResponsibility.getWorkgroup().getGroupNameId().getNameId());
+        if (ruleResponsibility.getGroup() != null) {
+        	ruleResponsibilityVO.setGroupId("" + ruleResponsibility.getGroup().getGroupName());
         }
         for (Iterator iter = ruleResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
             RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
@@ -1434,7 +1429,7 @@ public class DTOConverter {
         criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
         criteria.setRouteHeaderId(criteriaVO.getRouteHeaderId());
         criteria.setViewer(criteriaVO.getViewer());
-        criteria.setWorkgroupViewerName(criteriaVO.getWorkgroupViewerName());
+        criteria.setWorkgroupViewerName(criteriaVO.getGroupViewerName());
         criteria.setToDateApproved(criteriaVO.getToDateApproved());
         criteria.setToDateCreated(criteriaVO.getToDateCreated());
         criteria.setToDateFinalized(criteriaVO.getToDateFinalized());

@@ -52,6 +52,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -224,7 +225,9 @@ public class FlexRM {
 	} else if (resp.isUsingWorkflowUser()) {
 	    return new ResponsibleParty(new WorkflowUserId(resp.getRuleResponsibilityName()));
 	} else {
-	    return new ResponsibleParty(new WorkflowGroupId(new Long(resp.getRuleResponsibilityName())));
+		GroupInfo grpInfo =new GroupInfo();
+		grpInfo.setGroupId(resp.getRuleResponsibilityName());
+	    return new ResponsibleParty( grpInfo);
 	}
     }
 

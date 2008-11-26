@@ -563,7 +563,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isGroupRequest(){
-    	return KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+    	return KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {

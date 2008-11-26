@@ -70,8 +70,8 @@ public class ExceptionRoutingTest extends KEWTestCase {
             ActionRequestDTO actionRequest = actionRequests[i];
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
-            assertTrue("Request should be a workgroup request", actionRequest.isWorkgroupRequest());
-            assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupDTO().getWorkgroupName());
+            assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
+            assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingWorkgroup", actionRequest.getGroupVO().getGroupName());
             assertNotNull("annotation cannot be null", actionRequest.getAnnotation());
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
@@ -140,12 +140,12 @@ public class ExceptionRoutingTest extends KEWTestCase {
             ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
-                assertTrue("Request should be a workgroup request", actionRequest.isWorkgroupRequest());
+                assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
                 assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());
                 //assertEquals("Node instance id should be id of routeNode1", routeNode1.getRouteNodeInstanceId(), actionRequest.getNodeInstanceId());
                 // routeMethod name should be null as well
                 assertNull("Exception request routeMethodName wrong", actionRequest.getRouteMethodName());
-                assertEquals("Request should be to 'ExceptionRoutingWorkgroup'", "ExceptionRoutingWorkgroup", actionRequest.getWorkgroupDTO().getWorkgroupName());
+                assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", actionRequest.getGroupVO().getGroupName());
                 hasCompleteRequest = true;
             }
         }

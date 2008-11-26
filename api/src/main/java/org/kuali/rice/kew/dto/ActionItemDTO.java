@@ -44,9 +44,9 @@ public class ActionItemDTO implements Serializable {
     private Integer actionItemIndex;
     
     /**
-     * Workflow group id of the target group (if any... workgroup object will be null if workgroupId is empty)
+     * Kim group id of the target group (if any... group object will be null if groupId is empty)
      */
-    private String workgroupId;
+    private String groupId;
 
     /**
      * Workflow user id of the target user (if any... user object will be null if workflowId is empty)
@@ -55,9 +55,9 @@ public class ActionItemDTO implements Serializable {
     private UserDTO user;
 
     /**
-     * Workflow group id of the target delegator group (if any... delegatorWorkgroup object will be null if delegatorWorkgroupId is empty)
+     * Workflow group id of the target delegator group (if any... delegatorgroup object will be null if delegatorgroupId is empty)
      */
-    private String delegatorWorkgroupId;
+    private String delegatorGroupId;
 
     /**
      * Workflow user id of the target delegator user (if any... delegatorUser object will be null if delegatorWorkflowId is empty)
@@ -155,11 +155,11 @@ public class ActionItemDTO implements Serializable {
     public void setActionItemIndex(Integer actionItemIndex) {
         this.actionItemIndex = actionItemIndex;
     }
-    public String getWorkgroupId() {
-        return this.workgroupId;
+    public String getGroupId() {
+        return this.groupId;
     }
-    public void setWorkgroupId(String workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
     public String getWorkflowId() {
         return this.workflowId;
@@ -173,11 +173,11 @@ public class ActionItemDTO implements Serializable {
     public void setUser(UserDTO user) {
         this.user = user;
     }
-    public String getDelegatorWorkgroupId() {
-        return this.delegatorWorkgroupId;
+    public String getDelegatorGroupId() {
+        return this.delegatorGroupId;
     }
-    public void setDelegatorWorkgroupId(String delegatorWorkgroupId) {
-        this.delegatorWorkgroupId = delegatorWorkgroupId;
+    public void setDelegatorGroupId(String delegatorGroupId) {
+        this.delegatorGroupId = delegatorGroupId;
     }
     public String getDelegatorWorkflowId() {
         return this.delegatorWorkflowId;

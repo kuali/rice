@@ -34,6 +34,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Timer;
@@ -343,7 +344,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                     }
                     else {
                         // TODO is this recripientId truly a workgroup name??
-                        workflowDocument.appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), currentNode, 0, annotation, new WorkgroupNameIdDTO(recipient.getId()), "", true);
+                    	GroupInfo groupInfo = new GroupInfo();
+                    	groupInfo.setGroupId(recipient.getId());
+                    	workflowDocument.appSpecificRouteDocumentToGroup(recipient.getActionRequested(), currentNode, 0, annotation,groupInfo , "", true);
                     }
                 }
             }

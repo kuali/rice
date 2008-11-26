@@ -46,6 +46,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -95,9 +97,11 @@ public class RuleResponsibility implements WorkflowPersistable {
         return null;
     }
 
-    public Workgroup getWorkgroup() throws KEWUserNotFoundException {
-        if (isUsingWorkgroup()) {
-            return ((WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV)).getWorkgroup(new WorkflowGroupId(new Long(ruleResponsibilityName)));
+    public GroupInfo getGroup() throws KEWUserNotFoundException {
+        if (isUsingGroup()) {
+        	GroupInfo grpInfo =KIMServiceLocator.getGroupService().createGroup(new GroupInfo());
+        	grpInfo.setGroupName(ruleResponsibilityName);
+            return  grpInfo;            
         }
         return null;
     }
@@ -136,8 +140,8 @@ public class RuleResponsibility implements WorkflowPersistable {
     	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
     }
 
-    public boolean isUsingWorkgroup() {
-    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID));
+    public boolean isUsingGroup() {
+    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID));
     }
 
     public Long getRuleBaseValuesId() {

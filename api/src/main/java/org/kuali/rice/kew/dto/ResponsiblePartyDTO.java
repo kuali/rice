@@ -18,6 +18,8 @@ package org.kuali.rice.kew.dto;
 
 import java.io.Serializable;
 
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+
 
 /**
  * Transport for representing a user, workgroup, or role associated with and request
@@ -29,13 +31,14 @@ public class ResponsiblePartyDTO implements Serializable {
     static final long serialVersionUID = 5716093378476396724L;
 
     private UserIdDTO userId;
-	private WorkgroupIdDTO workgroupId;
 	private String roleName;
-
+	private GroupInfo groupInfo;
+	
     public ResponsiblePartyDTO() {}
     
-    public ResponsiblePartyDTO(WorkgroupIdDTO workgroupId) {
-        this.workgroupId = workgroupId;
+    public ResponsiblePartyDTO(GroupInfo grpInfo)
+    {
+    	this.groupInfo =grpInfo;
     }
     
     public ResponsiblePartyDTO(UserIdDTO userId) {
@@ -50,8 +53,8 @@ public class ResponsiblePartyDTO implements Serializable {
         return userId != null;
     }
     
-    public boolean isWorkgroup() {
-        return workgroupId != null;
+    public boolean isGroup() {
+        return groupInfo != null;
     }
     
     public boolean isRole() {
@@ -64,23 +67,15 @@ public class ResponsiblePartyDTO implements Serializable {
             sb.append("user=");
             sb.append(userId == null ? "null" : userId.toString());
         } else {
-            sb.append("workgroupID=");
-            sb.append(workgroupId == null ? "null" : workgroupId.toString());
+            sb.append("groupInfo=");
+            sb.append(groupInfo == null ? "null" : groupInfo.toString());
         }
 
         sb.append("]");
 
         return sb.toString();
     }
-    
-	public WorkgroupIdDTO getWorkgroupId() {
-		return workgroupId;
-	}
-	
-	public void setWorkgroupId(WorkgroupIdDTO workgroupId) {
-	    this.workgroupId = workgroupId;
-	}
-	
+    	
 	public UserIdDTO getUserId() {
 		return userId;
 	}
@@ -96,4 +91,18 @@ public class ResponsiblePartyDTO implements Serializable {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+
+	/**
+	 * @return the groupInfo
+	 */
+	public GroupInfo getGroupInfo() {
+		return this.groupInfo;
+	}
+
+	/**
+	 * @param groupInfo the groupInfo to set
+	 */
+	public void setGroupInfo(GroupInfo groupInfo) {
+		this.groupInfo = groupInfo;
+	}
 }

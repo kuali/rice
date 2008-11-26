@@ -95,8 +95,8 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 				if (actionRequested.getUserDTO() != null) {
 					if (!recipient.equals(actionRequested.getUserDTO().getNetworkId()))
 						continue;
-				} else if (actionRequested.getWorkgroupDTO() != null) {
-					if (!recipient.equals(actionRequested.getWorkgroupDTO().getWorkgroupName()))
+				} else if (actionRequested.getGroupVO()!= null) {
+					if (!recipient.equals(actionRequested.getGroupVO().getGroupName()))
 						continue;
 				} else {
 					throw new RuntimeException("Action request not sent to user or workgroup");
@@ -677,7 +677,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_GROUP, "K");
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
 		assertTrue("Should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -801,7 +801,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -1076,7 +1076,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		ActionRequestDTO actionRequest = actionRequests[0];
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getWorkgroupDTO().getWorkgroupName());
+		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];

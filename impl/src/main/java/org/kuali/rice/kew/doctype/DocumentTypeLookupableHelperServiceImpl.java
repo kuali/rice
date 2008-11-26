@@ -93,13 +93,14 @@ public class DocumentTypeLookupableHelperServiceImpl extends
         //String backLocation = (String) fieldValues.get(KEWPropertyConstants.BACK_LOCATION);
         //String docFormKey = (String) fieldValues.get(KEWPropertyConstants.DOC_FORM_KEY);
 
-        if (activeIndicator == null || activeIndicator.equals("B")) {
-            activeIndicator = "ALL";
-        } else if (activeIndicator.equals("Y") || activeIndicator.equals("A")) {
+        if ("Y".equals(activeIndicator)) {
             documentType.setActive(new Boolean(true));
-        } else if (activeIndicator.equals("N") || activeIndicator.equals("I")) {
+        } else if ("N".equals(activeIndicator)) {
             documentType.setActive(new Boolean(false));
+        } else {
+        	documentType.setActive(null);
         }
+        
         if (docTypeLabel != null && !"".equals(docTypeLabel.trim())) {
             docTypeLabel = docTypeLabel.replace('*', '%');
             documentType.setLabel("%"+docTypeLabel.trim()+"%");

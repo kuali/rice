@@ -143,10 +143,7 @@
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="RadioControlDefinition" 
-        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ActiveInactiveValuesFinder"
-        p:includeKeyInLabel="true"
-        />
+      <bean parent="CheckboxControlDefinition" />
     </property>
     <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
   </bean>
@@ -250,8 +247,7 @@
       <list>
         <bean parent="FieldDefinition"
         	p:attributeName="parentDocType.name"
-              p:forceLookup="true"
-              p:forceInquiry="true"/>
+              p:forceLookup="true"/>
         <bean parent="FieldDefinition"
         	p:attributeName="descendHierarchy"
               p:forceLookup="true"
@@ -267,11 +263,9 @@
               p:forceLookup="true" />
         <bean parent="FieldDefinition"
               p:attributeName="active"
-              p:forceLookup="true" 
-              p:defaultValue="B" />
+              p:defaultValue="Y" />
         <bean parent="FieldDefinition"
-              p:attributeName="serviceNamespace"
-              p:forceLookup="true" />
+              p:attributeName="serviceNamespace"/>
       </list>
     </property>
     <property name="resultFields" >

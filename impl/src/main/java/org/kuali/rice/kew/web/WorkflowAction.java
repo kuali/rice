@@ -176,7 +176,9 @@ public abstract class WorkflowAction extends DispatchAction {
 			if (KEWConstants.PERSON.equals(recipient.getType())) {
 				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdDTO(recipient.getId()), "", true);
 			} else {
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToWorkgroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new WorkgroupNameIdDTO(recipient.getId()), "", true);
+				GroupInfo grpInfo = new GroupInfo();
+				grpInfo.setGroupId(recipient.getId());
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), grpInfo, "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();

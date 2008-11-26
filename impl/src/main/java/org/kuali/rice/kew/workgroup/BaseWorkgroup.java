@@ -298,7 +298,7 @@ public class BaseWorkgroup implements Workgroup, Routable {
 				} catch (IllegalArgumentException e) {
 					LOG.error("Problem retrieving user from user service, workflowId=" + member.getWorkflowId(), e);
 				}
-			} else if (KEWConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(member.getMemberType())) {
+			} else if (KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD.equals(member.getMemberType())) {
 				Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(Long.parseLong(member.getWorkflowId())));
 				if (workgroup == null) {
 					LOG.error("Problem retrieving workgroup from workgroup service, workgroup id=" + member.getWorkgroupId());

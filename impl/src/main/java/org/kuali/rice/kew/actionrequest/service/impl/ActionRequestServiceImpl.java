@@ -251,8 +251,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     WorkflowUser user = getUserService().getWorkflowUser(responsibleParty.getUserId());
                     actionRequest.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
                 } else if (responsibleParty.getGroupId() != null) {
-                    Workgroup workgroup = getWorkgroupService().getWorkgroup(responsibleParty.getGroupId());
-                    actionRequest.setGroupId(workgroup.getWorkflowGroupId().getGroupId());
+                	actionRequest.setGroupId(new Long(responsibleParty.getGroupId().getGroupId()));
                 } else if (responsibleParty.getRoleName() != null) {
                     actionRequest.setRoleName(responsibleParty.getRoleName());
                 }

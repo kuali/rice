@@ -24,6 +24,7 @@ import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -50,11 +51,13 @@ public class AcknowledgeActionTest extends KEWTestCase {
         }
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
         
-        WorkgroupIdDTO workgroup = new WorkgroupNameIdDTO("NonSIT");
         UserIdDTO workgroupUser = new NetworkIdDTO("dewey");
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
-        doc.appSpecificRouteDocumentToWorkgroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", workgroup, "respDesc1", false);
+        GroupInfo grpInfo =new GroupInfo();
+        grpInfo.setGroupName("NonSIT");
+        
+        doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", grpInfo, "respDesc1", false);
         doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + workgroupUser, doc.isAcknowledgeRequested());
         try {

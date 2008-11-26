@@ -19,7 +19,7 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 
 /**
- * A common superclass for user and workgroup ids.
+ * A common superclass for user and group ids.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

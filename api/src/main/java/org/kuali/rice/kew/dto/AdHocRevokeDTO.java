@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
  * <ol>
  *   <li><b>actionRequestId</b> - the ID of the action request to revoke</li>
  *   <li><b>userId</b> - the ID of the user whose request(s) should be revoked</li>
- * 	 <li><b>workgroupId</b> - the ID of the workgroup whose requests(s) should be revoked</li>
+ * 	 <li><b>groupId</b> - the ID of the group whose requests(s) should be revoked</li>
  *   <li><b>nodeName</b> - the name of the node to revoke requests at</li>
  * </ol>
  * 

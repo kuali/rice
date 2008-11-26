@@ -44,7 +44,7 @@ public class DocumentTypeDTO implements Serializable {
     private String docTypeJndiFactoryClass;
     private String docTypeJndiUrl;
     private String docTypeCurrentInd;
-    private String blanketApproveWorkgroupId;
+    private String blanketApproveGroupId;
     private String blanketApprovePolicy;
     private RoutePathDTO routePath;
     
@@ -252,12 +252,12 @@ public class DocumentTypeDTO implements Serializable {
 		this.blanketApprovePolicy = blanketApprovePolicy;
 	}
 
-	public String getBlanketApproveWorkgroupId() {
-        return blanketApproveWorkgroupId;
+	public String getBlanketApproveGroupId() {
+        return blanketApproveGroupId;
     }
 
-    public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
-        this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
+    public void setBlanketApproveGroupId(String blanketApproveGroupId) {
+        this.blanketApproveGroupId = blanketApproveGroupId;
     }
     public String getDocTypeParentName() {
         return docTypeParentName;

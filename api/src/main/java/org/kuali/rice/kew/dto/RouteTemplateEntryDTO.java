@@ -31,7 +31,7 @@ public class RouteTemplateEntryDTO implements java.io.Serializable, Cloneable {
   private Long docTypeId;
   private String routeMethodName;
   private Integer routeLevel;
-  private Long exceptionWorkgroupId; // the workgroup that gets the document if this route method throws an exception
+  private Long exceptionGroupId; // the Group that gets the document if this route method throws an exception
   private String routeLevelName;
   private boolean finalApprover;
   private boolean mandatoryRoute;
@@ -39,10 +39,10 @@ public class RouteTemplateEntryDTO implements java.io.Serializable, Cloneable {
 
   public RouteTemplateEntryDTO() {}
 
-  public RouteTemplateEntryDTO(int docTypeId, String routeMethodName, int workgroupId, int routeLevel,
+  public RouteTemplateEntryDTO(int docTypeId, String routeMethodName, int groupId, int routeLevel,
     String routeLevelName, boolean finalApprover, boolean manadatoryRoute) {
     this.docTypeId = new Long(docTypeId);
-    this.exceptionWorkgroupId = new Long(workgroupId);
+    this.exceptionGroupId = new Long(groupId);
     this.finalApprover = finalApprover;
     this.routeLevel = new Integer(routeLevel);
     this.routeLevelName = routeLevelName;
@@ -54,8 +54,8 @@ public class RouteTemplateEntryDTO implements java.io.Serializable, Cloneable {
     return docTypeId;
   }
 
-  public Long getExceptionWorkgroupId() {
-    return exceptionWorkgroupId;
+  public Long getExceptionGroupId() {
+    return exceptionGroupId;
   }
 
   public Integer getJrf_ver_nbr() {
@@ -90,8 +90,8 @@ public class RouteTemplateEntryDTO implements java.io.Serializable, Cloneable {
     this.jrf_ver_nbr = jrf_ver_nbr;
   }
 
-  public void setExceptionWorkgroupId(Long exceptionWorkgroupId) {
-    this.exceptionWorkgroupId = exceptionWorkgroupId;
+  public void setExceptionGroupId(Long exceptionGroupId) {
+    this.exceptionGroupId = exceptionGroupId;
   }
 
   public void setDocTypeId(Long docTypeId) {

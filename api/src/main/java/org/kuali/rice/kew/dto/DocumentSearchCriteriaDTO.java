@@ -36,7 +36,7 @@ public class DocumentSearchCriteriaDTO implements Serializable {
     private String appDocId; // application provided ID - defaults to routeHeaderId
     private String initiator; // network Id of the person who initiated the document
     private String viewer; // network Id of the person who is currently viewing the document
-    private String workgroupViewerName; // workgroup Id that has had an action request to the document
+    private String groupViewerName; // group Id that has had an action request to the document
     private String approver; // network Id of the person who is approving the document
     private String docRouteNodeName; // current level of routing, i.e. which route method is the document currently in
     private String docRouteNodeLogic = KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT; // exactly, before or after
@@ -123,12 +123,12 @@ public class DocumentSearchCriteriaDTO implements Serializable {
         this.viewer = viewer;
     }
 
-    public String getWorkgroupViewerName() {
-        return this.workgroupViewerName;
+    public String getGroupViewerName() {
+        return this.groupViewerName;
     }
 
-    public void setWorkgroupViewerName(String workgroupViewerName) {
-        this.workgroupViewerName = workgroupViewerName;
+    public void setGroupViewerName(String groupViewerName) {
+        this.groupViewerName = groupViewerName;
     }
 
     public String getApprover() {

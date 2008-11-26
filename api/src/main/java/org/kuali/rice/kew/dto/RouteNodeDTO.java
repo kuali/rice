@@ -31,7 +31,7 @@ public class RouteNodeDTO implements java.io.Serializable, Cloneable {
     private boolean finalApprovalInd;
     private boolean mandatoryRouteInd;
     private String activationType;
-    private String exceptionWorkgroupId;
+    private String exceptionGroupId;
     private String nodeType;
     private String branchName;
     private Long[] previousNodeIds = new Long[0];
@@ -57,11 +57,11 @@ public class RouteNodeDTO implements java.io.Serializable, Cloneable {
     public void setDocumentTypeId(Long documentTypeId) {
         this.documentTypeId = documentTypeId;
     }
-    public String getExceptionWorkgroupId() {
-        return exceptionWorkgroupId;
+    public String getExceptionGroupId() {
+        return exceptionGroupId;
     }
-    public void setExceptionWorkgroupId(String exceptionWorkgroupId) {
-        this.exceptionWorkgroupId = exceptionWorkgroupId;
+    public void setExceptionGroupId(String exceptionGroupId) {
+        this.exceptionGroupId = exceptionGroupId;
     }
     public boolean isFinalApprovalInd() {
         return finalApprovalInd;

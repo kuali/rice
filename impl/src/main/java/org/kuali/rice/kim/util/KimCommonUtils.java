@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.util;
 
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -31,5 +35,19 @@ public class KimCommonUtils {
 		}
 		return false;
 	}
-	
+
+
+	public static boolean checkPermissionDetailMatch(DocumentType currentDocType,
+			AttributeSet storedAttributeSet) {
+		if (currentDocType != null) {
+			if (storedAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equalsIgnoreCase(currentDocType.getName())) {
+				return true;
+			} else if (currentDocType.getDocTypeParentId() != null 
+					&& !currentDocType.getDocumentTypeId().equals(currentDocType.getDocTypeParentId())) {
+				return checkPermissionDetailMatch(currentDocType.getParentDocType(), storedAttributeSet);
+			}
+		}
+		return false;
+	}
+
 }

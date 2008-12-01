@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
@@ -37,7 +37,7 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
         serviceInfo.setServiceDefinition(new JavaServiceDefinition());
         serviceInfo.getServiceDefinition().setRetryAttempts(serviceMaxRetries);
         AsynchronousCall methodCall = new AsynchronousCall(new Class[0], new Object[0], serviceInfo, "", null, null);
-        message.setPayload(new PersistedMassagePayload(methodCall, message));
+        message.setPayload(new PersistedMessagePayload(methodCall, message));
         message.setMethodCall(methodCall);
         return message;
     }

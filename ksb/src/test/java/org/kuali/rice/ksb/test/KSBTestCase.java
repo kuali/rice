@@ -81,11 +81,11 @@ public abstract class KSBTestCase extends RiceTestCase {
     @Override
     protected List<String> getTablesToClear() {
         List<String> tables = new ArrayList<String>();
-        tables.add("EN_MSG_QUE_T");
-        tables.add("EN_MSG_PAYLOAD_T");
-        tables.add("EN_BAM_T");
-        tables.add("EN_BAM_PARAM_T");
-        tables.add("EN_SERVICE_DEF_DUEX_T");
+        tables.add("KRSB_MSG_QUE_T");
+        tables.add("KRSB_MSG_PYLD_T");
+        tables.add("KRSB_BAM_T");
+        tables.add("KRSB_BAM_PARM_T");
+        tables.add("KRSB_SVC_DEF_T");
         return tables;
     }
 

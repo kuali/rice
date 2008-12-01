@@ -65,7 +65,7 @@ public class PersistedMessage implements Serializable {
     @Transient
     private AsynchronousCall methodCall;
     @Transient
-    private PersistedMassagePayload payload;
+    private PersistedMessagePayload payload;
     @Column(name="APP_VAL_ONE")
 	private String value1;
     @Column(name="APP_VAL_TWO")
@@ -179,7 +179,7 @@ public class PersistedMessage implements Serializable {
 		this.expirationDate = expirationDate;
 	}
 
-    public PersistedMassagePayload getPayload() {
+    public PersistedMessagePayload getPayload() {
 	if (this.payload == null) {
 	    if (this.getRouteQueueId() == null) {
 		return null;
@@ -188,7 +188,7 @@ public class PersistedMessage implements Serializable {
         return this.payload;
     }
 
-    public void setPayload(PersistedMassagePayload payload) {
+    public void setPayload(PersistedMessagePayload payload) {
         this.payload = payload;
     }
 

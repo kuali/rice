@@ -37,7 +37,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_MSG_PYLD_T")
-public class PersistedMassagePayload implements Serializable {
+public class PersistedMessagePayload implements Serializable {
     
     private static final long serialVersionUID = 508778527504899029L;
     
@@ -53,9 +53,9 @@ public class PersistedMassagePayload implements Serializable {
     @Transient
     private PersistedMessage message;
     
-    public PersistedMassagePayload() {}
+    public PersistedMessagePayload() {}
     
-    public PersistedMassagePayload (AsynchronousCall methodCall, PersistedMessage message) {
+    public PersistedMessagePayload (AsynchronousCall methodCall, PersistedMessage message) {
 	this.setPayload(KSBServiceLocator.getMessageHelper().serializeObject(methodCall));
 	this.methodCall = methodCall;
 	this.message = message;

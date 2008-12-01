@@ -25,7 +25,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -46,7 +46,7 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 
 		crit = new Criteria();
 		crit.addEqualTo("routeQueueId", routeQueue.getPayload().getRouteQueueId());
-		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(PersistedMassagePayload.class, crit));
+		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(PersistedMessagePayload.class, crit));
 	}
 
 	public void save(PersistedMessage routeQueue) {
@@ -115,11 +115,11 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		new QueryByCriteria(PersistedMessage.class, criteria));
 	}
 
-    public PersistedMassagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
+    public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo("routeQueueId", routeQueueId);
-	return (PersistedMassagePayload) getPersistenceBrokerTemplate().getObjectByQuery(
-		new QueryByCriteria(PersistedMassagePayload.class, criteria));
+	return (PersistedMessagePayload) getPersistenceBrokerTemplate().getObjectByQuery(
+		new QueryByCriteria(PersistedMessagePayload.class, criteria));
 	}
 
 	@SuppressWarnings("unchecked")

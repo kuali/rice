@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSender;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -49,7 +49,7 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 		copy.setRetryCount(message.getRetryCount());
 		AsynchronousCall methodCall = message.getPayload().getMethodCall();
 		methodCall.setIgnoreStoreAndForward(true);
-		copy.setPayload(new PersistedMassagePayload(methodCall, copy));
+		copy.setPayload(new PersistedMessagePayload(methodCall, copy));
 		copy.setServiceName(message.getServiceName());
 		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 		KSBServiceLocator.getRouteQueueService().save(message);

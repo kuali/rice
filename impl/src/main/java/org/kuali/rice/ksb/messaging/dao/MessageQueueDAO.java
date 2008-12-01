@@ -20,7 +20,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 
 
@@ -52,5 +52,5 @@ public interface MessageQueueDAO {
          */
     public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows);
 
-    public PersistedMassagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
+    public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
 }

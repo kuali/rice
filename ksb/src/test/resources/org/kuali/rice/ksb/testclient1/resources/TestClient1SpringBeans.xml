@@ -80,6 +80,12 @@
 				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
+		<property name="knsConfigurer">
+	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+		</property>
+		<property name="kimConfigurer">
+	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+		</property>
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 				<property name="serviceServletUrl" value="http://localhost:${ksb.client1.port}/TestClient1/remoting" />

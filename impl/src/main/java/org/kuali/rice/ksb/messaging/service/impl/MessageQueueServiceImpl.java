@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
@@ -69,7 +69,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	return getMessageQueueDAO().findByRouteQueueId(routeQueueId);
     }
     
-    public PersistedMassagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
+    public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
 	return messageQueueDAO.findByPersistedMessageByRouteQueueId(routeQueueId);
     }
 
@@ -99,7 +99,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 
     public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
 	PersistedMessage message = new PersistedMessage();
-	message.setPayload(new PersistedMassagePayload(methodCall, message));
+	message.setPayload(new PersistedMessagePayload(methodCall, message));
 	message.setIpNumber(RiceUtilities.getIpNumber());
 	message.setServiceName(serviceInfo.getQname().toString());
 	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));

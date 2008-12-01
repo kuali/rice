@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMassagePayload;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
@@ -63,7 +63,7 @@ public interface MessageQueueService {
      */
     public List<PersistedMessage> getNextDocuments(Integer maxDocuments);
 
-    public PersistedMassagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
+    public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
     
     /**
      * Finds the persisted messages that match the values passed into the 

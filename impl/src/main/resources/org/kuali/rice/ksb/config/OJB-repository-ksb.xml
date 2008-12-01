@@ -34,7 +34,7 @@
 		<field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.rice.ksb.messaging.PersistedMassagePayload" table="KRSB_MSG_PYLD_T">
+	<class-descriptor class="org.kuali.rice.ksb.messaging.PersistedMessagePayload" table="KRSB_MSG_PYLD_T">
 		<field-descriptor name="routeQueueId" column="MSG_QUE_ID" jdbc-type="BIGINT" primarykey="true" />
 		<field-descriptor name="payload" column="MSG_PYLD" jdbc-type="CLOB" />
 	</class-descriptor>

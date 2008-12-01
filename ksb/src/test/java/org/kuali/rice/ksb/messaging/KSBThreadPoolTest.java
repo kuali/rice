@@ -16,8 +16,6 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
@@ -35,7 +33,11 @@ public class KSBThreadPoolTest extends KSBTestCase {
     @Test public void testKSBThreadPoolBasicFunctionality() throws Exception {
 	KSBThreadPool threadPool = KSBServiceLocator.getThreadPool();
 	threadPool.setCorePoolSize(1);
-	threadPool.execute(new MessageServiceInvoker(new PersistedMessage()));
+	threadPool.execute(new TestRunnable());
+    }
+    
+    private class TestRunnable implements Runnable {
+    	public void run() {}
     }
     
     

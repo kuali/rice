@@ -77,12 +77,12 @@
 													&nbsp;<c:out value="${delegation}" />
 												</c:if>
 		                              		</c:when>
-			                              	<c:when test="${actionRequest.workgroupRequest}">
+			                              	<c:when test="${actionRequest.groupRequest}">
 			                              		<a style="${fontStyle}" href="
 													<c:url value="${UrlResolver.workgroupReportUrl}">
-														<c:param name="workgroupId" value="${actionRequest.workgroupId}" />
+														<c:param name="groupId" value="${actionRequest.groupId}" />
 														<c:param name="methodToCall" value="report" />
-													</c:url>"><c:out value="${actionRequest.workgroup.groupNameId.nameId}" />
+													</c:url>"><c:out value="${actionRequest.groupId}" />
 												</a>
 												<c:if test="${delegation != null}">
 													&nbsp;<c:out value="${delegation}" />
@@ -107,13 +107,13 @@
 																		<c:out value="${primDelegateDisplayName}" />
 																	</a>
 															</c:if>
-							                              	<c:if test="${primDelegateRequest.workgroupRequest}">
+							                              	<c:if test="${primDelegateRequest.groupRequest}">
 							                              		<a style="${fontStyle}" href="
 																	<c:url value="${UrlResolver.workgroupReportUrl}">
-																		<c:param name="workgroupId" value="${primDelegateRequest.workgroupId}" />
+																		<c:param name="groupId" value="${primDelegateRequest.groupId}" />
 																		<c:param name="methodToCall" value="report" />
 																	</c:url>">
-																	<c:out value="${primDelegateRequest.workgroup.groupNameId.nameId}" />
+																	<c:out value="${primDelegateRequest.groupId}" />
 																</a>
    						                              		</c:if>
 																	  <c:if test="${!empty primDelegateRequest.qualifiedRoleNameLabel}">
@@ -122,13 +122,13 @@
 										                      	 <c:if test="${!pDelegateArStatus.last}"><br></c:if>
 									                      	</c:forEach>
 										              	 </c:when>
-										              	 <c:when test="${roleRequest.workgroupRequest}">
+										              	 <c:when test="${roleRequest.groupRequest}">
 										              	   <a style="${fontStyle}" href="
 															 <c:url value="${UrlResolver.workgroupReportUrl}">
-																<c:param name="workgroupId" value="${roleRequest.workgroupId}" />
+																<c:param name="groupId" value="${roleRequest.groupId}" />
 																		<c:param name="methodToCall" value="report" />
 																	</c:url>">
-																	<c:out value="${roleRequest.workgroup.groupNameId.nameId}" />
+																	<c:out value="${roleRequest.groupId}" />
 																</a>
 																<c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
 																  &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)

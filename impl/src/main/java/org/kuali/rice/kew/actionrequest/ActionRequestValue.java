@@ -525,41 +525,43 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {
-        //before altering this method it is used in checkRouteLogAuthentication
-        //don't break that method
-        if (recipient == null) {
-            return false;
-        }
-        boolean isRecipientInGraph = false;
-        if (isReviewerUser()) {
-            if (recipient instanceof WorkflowUser) {
-                isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
-            } else if (recipient instanceof KimGroupRecipient){
-                isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getDisplayName(),getGroupId().toString());
-            }
+    	//before altering this method it is used in checkRouteLogAuthentication
+    	//don't break that method
+    	if (recipient == null) {
+    		return false;
+    	}
+    	
+    	boolean isRecipientInGraph = false;
+    	if (isReviewerUser()) {
+    		if (recipient instanceof WorkflowUser) {
+    			isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
+    		} else if (recipient instanceof Workgroup) {
+    			isRecipientInGraph = ((Workgroup) recipient).hasMember(getWorkflowUser());
+    		} else if (recipient instanceof KimGroupRecipient){
+    			isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getDisplayName(),getGroupId().toString());
+    		}
 
-        } else if (isGroupRequest()) {
-        	if (recipient instanceof WorkflowUser) {
-        		KimGroup group = getGroup();
-                if (group == null){
-                	LOG.error("Was unable to retrieve workgroup " + getGroupId());
-                	isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
-                }
-        	}
-        	isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
-             //	workgroup.hasMember((WorkflowUser) recipient);
-        } else {
-                isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(getGroupId());
-                //((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getGroupId());
-            	}
-    
-    
-        for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
-            ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-            isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(recipient);
-        }
+    	} else if (isGroupRequest()) {
+    		if (recipient instanceof WorkflowUser) {
+    			KimGroup group = getGroup();
+    			if (group == null){
+    				LOG.error("Was unable to retrieve workgroup " + getGroupId());
+    			}
+    			isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
+    		} else if (recipient instanceof Workgroup) {
+    			isRecipientInGraph = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getGroupId());
+    		} else if (recipient instanceof KimGroupRecipient) {
+    			isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
+    		}
+    	}
 
-        return isRecipientInGraph;
+
+    	for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
+    		ActionRequestValue childRequest = (ActionRequestValue) iter.next();
+    		isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(recipient);
+    	}
+
+    	return isRecipientInGraph;
     }
 
     public boolean isGroupRequest(){

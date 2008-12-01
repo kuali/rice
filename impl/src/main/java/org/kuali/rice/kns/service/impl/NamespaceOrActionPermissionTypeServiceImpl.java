@@ -18,29 +18,33 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class NamespaceCodePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
+public class NamespaceOrActionPermissionTypeServiceImpl extends NamespaceCodePermissionTypeServiceImpl {
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kns.service.impl.NamespaceCodePermissionTypeServiceImpl#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
 	@Override
 	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails,	KimPermission permission) {
-		if (!super.doesPermissionDetailMatch(requestedDetails, permission)) {
-			return false;
+		// Checking the namespace first
+		try {
+			if (super.doesPermissionDetailMatch(requestedDetails, permission)) {
+				return true;
+			}
+		} catch (Exception e) {
+			// Ignoring the possible empty namespace code exception in the case that action class was passed in.
 		}
 		
-		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))) {
-        	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " should not be blank or null.");
+		// Namespace not a match. Checking action class.
+		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE))) {
+        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE + " should not be blank or null.");
 		}
 		
-		return KimCommonUtils.matchInputWithWildcard(requestedDetails.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), permission.getNamespaceCode());
+		return requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE));
 	}
-	
+
 }

@@ -39,6 +39,8 @@ public class KimConstants {
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
 	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
+	public static final String KIM_ATTRIB_ACTION_CLASS_CODE ="Action Class";
+	public static final String KIM_ATTRIB_BEAN_NAME_CODE ="Bean Name";	
 	public static final String KIM_ATTRIB_CHART_CODE ="Chart Code";
 	public static final String KIM_ATTRIB_ORGANIZATION_CODE = "Organization Code";
 	public static final String KIM_ATTRIB_CAMPUS_CODE = "Campus Code";

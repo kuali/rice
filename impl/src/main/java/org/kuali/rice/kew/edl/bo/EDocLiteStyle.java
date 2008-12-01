@@ -43,7 +43,7 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
      */
     @Id
 	@Column(name="STYLE_ID")
-	private Long eDocLiteStyleId;
+	private Long edocLiteStyleId;
     /**
      * edoclt_style_nm
      */
@@ -68,11 +68,11 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
-    public Long getEDocLiteStyleId() {
-        return eDocLiteStyleId;
+    public Long getEdocLiteStyleId() {
+        return edocLiteStyleId;
     }
-    public void setEDocLiteStyleId(Long docLiteStyleId) {
-        eDocLiteStyleId = docLiteStyleId;
+    public void setEdocLiteStyleId(Long docLiteStyleId) {
+        edocLiteStyleId = docLiteStyleId;
     }
     public String getName() {
         return name;
@@ -100,7 +100,7 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
     }
 
     public String toString() {
-        return "[EDocLiteStyle: eDocLiteStyleId=" + eDocLiteStyleId
+        return "[EDocLiteStyle: edocLiteStyleId=" + edocLiteStyleId
                            + ", name=" + name
                            + ", xml=" + (xmlContent == null ? xmlContent : xmlContent.length() + "chars")
                            + ", activeInd=" + activeInd
@@ -115,7 +115,7 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-		propMap.put("eDocLiteStyleId",getEDocLiteStyleId());
+		propMap.put("edocLiteStyleId",getEdocLiteStyleId());
 		propMap.put("name",getName());
 		propMap.put("xmlContent",(xmlContent == null ? xmlContent : xmlContent.length() + "chars"));
 		propMap.put("activeInd",getActiveInd());

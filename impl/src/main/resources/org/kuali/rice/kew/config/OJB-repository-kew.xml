@@ -799,7 +799,7 @@
 
 
   <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteStyle" table="KREW_STYLE_T">
-    <field-descriptor column="STYLE_ID" name="eDocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
+    <field-descriptor column="STYLE_ID" name="edocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>

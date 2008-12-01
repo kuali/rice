@@ -16,10 +16,10 @@
     <property name="lookupDefinition" >
       <ref bean="EDocLiteStyle-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="eDocLiteStyleId" />
+    <property name="titleAttribute" value="edocLiteStyleId" />
     <property name="attributes" >
       <list>
-        <ref bean="EDocLiteStyle-eDocLiteStyleId" />
+        <ref bean="EDocLiteStyle-edocLiteStyleId" />
         <ref bean="EDocLiteStyle-name" />
         <ref bean="EDocLiteStyle-xmlContent" />
         <ref bean="EDocLiteStyle-activeInd" />
@@ -30,9 +30,9 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="EDocLiteStyle-eDocLiteStyleId" parent="EDocLiteStyle-eDocLiteStyleId-parentBean" />
+  <bean id="EDocLiteStyle-edocLiteStyleId" parent="EDocLiteStyle-edocLiteStyleId-parentBean" />
 
-  <bean id="EDocLiteStyle-eDocLiteStyleId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="EDocLiteStyle-edocLiteStyleId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
@@ -42,7 +42,7 @@
       <bean parent="TextControlDefinition"
             p:size="30" />
     </property>
-    <property name="name" value="eDocLiteStyleId" />
+    <property name="name" value="edocLiteStyleId" />
     <property name="label" value="Id" />
   </bean>
 
@@ -109,7 +109,7 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition"
-                    p:attributeName="eDocLiteStyleId" />
+                    p:attributeName="edocLiteStyleId" />
               <bean parent="FieldDefinition"
                     p:attributeName="name" />
               <bean parent="FieldDefinition"
@@ -134,7 +134,7 @@
     <property name="lookupFields" >
       <list>         
         <bean parent="FieldDefinition"
-              p:attributeName="eDocLiteStyleId"
+              p:attributeName="edocLiteStyleId"
               p:forceLookup="true" />       
         <bean parent="FieldDefinition"
               p:attributeName="name"
@@ -146,7 +146,7 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="eDocLiteStyleId" />
+              p:attributeName="edocLiteStyleId" />
         <bean parent="FieldDefinition"
               p:attributeName="name" />
         <bean parent="FieldDefinition"

@@ -31,10 +31,6 @@ public class NamespaceCodePermissionTypeServiceImpl extends KimPermissionTypeSer
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		if (!super.performMatch(inputAttributeSet, storedAttributeSet)) {
-			return false;
-		}
-		
 		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))) {
         	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " should not be blank or null.");
 		}

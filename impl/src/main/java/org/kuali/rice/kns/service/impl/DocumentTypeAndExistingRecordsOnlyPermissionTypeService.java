@@ -33,18 +33,14 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentTypeAndExistingRecordsOnlyPermissionTypeService extends
-		DocumentTypePermissionTypeServiceImpl {
+public class DocumentTypeAndExistingRecordsOnlyPermissionTypeService extends DocumentTypePermissionTypeServiceImpl {
 
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, KimPermission)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
 	@Override
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails,
-			KimPermission permission) {
-		if (!super.doesPermissionDetailMatch(requestedDetails, permission)) {
+	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+		if (!super.performPermissionMatch(requestedDetails, permission)) {
 			return false;
 		}
 		String documentTypeName = requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);

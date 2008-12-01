@@ -22,11 +22,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -134,13 +136,18 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		if (useKimPermission(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
+		if (useKimPermission(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
 		}
 		return true;
 	}
 
-	public boolean canRoute(String principalId,	DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
+	public boolean canRoute(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue) {
+		return canRoute(principalId, documentRouteHeaderValue.getRouteHeaderId().toString(), documentRouteHeaderValue.getDocumentType(),
+				documentRouteHeaderValue.getDocRouteStatus(), documentRouteHeaderValue.getInitiatorWorkflowId());
+	}
+	
+	public boolean canRoute(String principalId,	String routeHeaderId, DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateDocumentStatus(documentStatus);
@@ -148,8 +155,10 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_ROUTE)) {
 			AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
+			AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
+			
 			if (useKimPermission(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
-				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, new AttributeSet());
+				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, roleQualifiers);
 			}
 		}
 			
@@ -159,7 +168,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return true;
 	}
 
-	public boolean canSave(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
+	public boolean canSave(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateRouteNodeNames(routeNodeNames);
@@ -168,12 +177,14 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_SAVE)) {
 			List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+			AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
+			
 			boolean foundAtLeastOnePermission = false;
 			// loop over permission details, only one of them needs to be authorized
 			for (AttributeSet permissionDetails : permissionDetailList) {
 				if (useKimPermission(KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
 					foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, new AttributeSet())) {
+					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.DEFAULT_KIM_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, roleQualifiers)) {
 						return true;
 					}
 				}
@@ -210,6 +221,16 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			details.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
 		}
 		return details;
+	}
+	
+	protected AttributeSet buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(DocumentType documentType, String documentStatus, String routeHeaderId) {
+		AttributeSet qualifiers = new AttributeSet();
+		qualifiers.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, routeHeaderId);
+		if (!StringUtils.isBlank(documentStatus)) {
+			qualifiers.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
+		}
+		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
+		return qualifiers;
 	}
 	
 	protected List<AttributeSet> buildDocumentTypePermissionDetails(DocumentType documentType, List<String> routeNodeNames, String documentStatus) {

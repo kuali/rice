@@ -62,7 +62,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getUser().getWorkflowId(), getRouteHeader())) {
     		return "User is not authorized to Route document";
     	}
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {

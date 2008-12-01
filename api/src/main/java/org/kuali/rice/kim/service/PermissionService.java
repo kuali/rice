@@ -85,7 +85,7 @@ public interface PermissionService {
 	 * is never qualified.
      */
     boolean hasPermissionByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
-
+    
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
@@ -115,6 +115,20 @@ public interface PermissionService {
      * 
      */
     List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+
+    /**
+     * Get the list of principals/groups who have a given permission that match the given 
+     * permission template and permission details.  This also returns delegates
+     * for the given principals/groups who also have this permission given the context in the
+     * qualification parameter.
+     * 
+     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
+     * exists on the principal's membership in that role, that is checked first through
+     * the role's type service.  Once it is determined that the principal has the role
+     * in the given context (qualification), the permissions are examined.
+     * 
+     */
+    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
     
     /**
      * Returns true if the given permission is defined on any Roles.

@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -38,10 +40,10 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doPermissionDetailsMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
 	 *      java.util.List)
 	 */
-	public boolean doPermissionDetailsMatch(AttributeSet requestedDetails,
-			List<AttributeSet> permissionDetailsList) {
-		for (AttributeSet permissionDetails : permissionDetailsList) {
-			if (doesPermissionDetailMatch(requestedDetails, permissionDetails)) {
+	public <E extends KimPermission> boolean doPermissionDetailsMatch(AttributeSet requestedDetails,
+			List<E> permissionsList) {
+		for (KimPermission permission : permissionsList) {
+			if (doesPermissionDetailMatch(requestedDetails, permission)) {
 				return true;
 			}
 		}
@@ -52,27 +54,26 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
-	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 *      KimPermission)
 	 */
 	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails,
-			AttributeSet permissionDetails) {
-		if (!requestedDetails.containsKey(KNSConstants.DOCUMENT_TYPE_NAME)
-				|| !permissionDetails
-						.containsKey(KNSConstants.DOCUMENT_TYPE_NAME)){
-			throw new RuntimeException("documemt type name is blank or null");
-		}else if(requestedDetails.get(KNSConstants.DOCUMENT_TYPE_NAME).equals("*")){
+			KimPermission permission) {
+		if (!requestedDetails.containsKey(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL)
+				|| !permission.getDetails().containsKey(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL)){
+			throw new RuntimeException("document type name is blank or null");
+		}else if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
 			return true;
 		}
 		DocumentType currentDocType = KEWServiceLocator
 		.getDocumentTypeService().findByName(
-				requestedDetails.get(KNSConstants.DOCUMENT_TYPE_NAME));
-		return checkPermissionDetailMatch(currentDocType, permissionDetails);
+				requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
+		return checkPermissionDetailMatch(currentDocType, permission);
 	}
 
 	protected boolean checkPermissionDetailMatch(DocumentType currentDocType,
-			AttributeSet permissionDetails) {
+			KimPermission permissionDetails) {
 		if (currentDocType != null) {
-			if (permissionDetails.get(KNSConstants.DOCUMENT_TYPE_NAME)
+			if (permissionDetails.getDetails().get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL)
 					.equalsIgnoreCase(currentDocType.getName())) {
 				return true;
 			} else if (currentDocType.getDocTypeParentId() != null

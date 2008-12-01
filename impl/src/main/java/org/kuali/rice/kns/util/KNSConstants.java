@@ -34,6 +34,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
 
     public static final String KNS_NAMESPACE = "KR-NS";
+    public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
 
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";

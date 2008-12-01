@@ -74,7 +74,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * This method matches input attribute set entries and standard attribute set entries using liternal string match.
 	 * 
 	 */
-	public boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;
@@ -91,7 +91,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * This method matches input attribute set entries and standard attribute set entries using wild card match.
 	 * "*" is the only wildcard supported currently.
 	 */
-	public boolean performMatchUsingWildcard(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+	protected boolean performMatchUsingWildcard(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;

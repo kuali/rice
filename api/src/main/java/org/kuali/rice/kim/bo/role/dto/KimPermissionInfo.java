@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -56,5 +57,11 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 	}
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
+	}
+	/**
+	 * @see org.kuali.rice.kim.bo.role.KimPermission#getTemplate()
+	 */
+	public KimPermissionTemplate getTemplate() {
+		throw new UnsupportedOperationException("Cannot get template from KimPermissionInfo.");
 	}
 }

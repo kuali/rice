@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -40,11 +41,11 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, AttributeSet permissionDetails );
+    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, KimPermission permission );
 
-    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, AttributeSet)} except that it takes a list of details to check.
+    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, KimPermission)} except that it takes a list of details to check.
      */
-    boolean doPermissionDetailsMatch( AttributeSet requestedDetails, List<AttributeSet> permissionDetailsList );
+    <E extends KimPermission> boolean doPermissionDetailsMatch( AttributeSet requestedDetails, List<E> permissionsList );
 
     /**
      * This method would return all permission details that the given details imply. (down)

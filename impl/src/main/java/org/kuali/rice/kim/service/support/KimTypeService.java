@@ -48,13 +48,6 @@ public interface KimTypeService {
 	 * attributes attached to an object.
 	 */
 	AttributeSet validateAttributes( AttributeSet attributes );
-		
-	/**
-	 * This method matches two attribute sets. Will be overriden by child classes according to their functional needs.
-	 */
-    boolean performMatch(final AttributeSet inputAttributeSet, final AttributeSet standardAttributeSet);
-    
-    boolean performMatches(final AttributeSet inputAttributeSet, final List<AttributeSet> standardAttributeSet);
     
     /**
      * 

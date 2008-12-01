@@ -18,6 +18,7 @@ package org.kuali.rice.kew.doctype.service;
 import java.util.List;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 /**
  * Implements permission checks related to Document Type.  In general,
@@ -54,10 +55,10 @@ public interface DocumentTypePermissionService {
 	public boolean canInitiate(String principalId, DocumentType documentType);
 	
 	/**
-	 * Determines if the given principal can route documents of the given DocumentType.  The permission check
+	 * Determines if the given principal can route documents of the given DocumentRouteHeaderValue.  The permission check
 	 * also considers the document status and initiator of the document.
 	 */
-	public boolean canRoute(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId);
+	public boolean canRoute(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue);
 	
 	/**
 	 * Determines if the given principal can save documents of the given DocumentType.  The permission check
@@ -67,7 +68,7 @@ public interface DocumentTypePermissionService {
 	 * For example, if the save permission is defined for node 1 but not for node 2, then a document which
 	 * is at both node 1 and node 2 should satisfy the permission check.
 	 */
-	public boolean canSave(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
+	public boolean canSave(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
 
 	/**
 	 * Determines if the given principal can blanket approve documents of the given DocumentType.  The permission check

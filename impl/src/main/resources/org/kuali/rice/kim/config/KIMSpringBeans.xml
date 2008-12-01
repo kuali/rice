@@ -334,6 +334,19 @@
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kns.authorization.ActivePrincipalRoleTypeServiceImpl" />
 
+  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeService">
+    <property name="roleNamesapce" value="KR-NS" />
+	<property name="roleName" value="Document Editor" />
+	<property name="permissionTemplateNamespace" value="KR-NS" />
+	<property name="permissionTemplateName" value="Edit Document" />
+  </bean>
+
+  <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeService" />
+
+  <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeService" />
+
+  <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
+    
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

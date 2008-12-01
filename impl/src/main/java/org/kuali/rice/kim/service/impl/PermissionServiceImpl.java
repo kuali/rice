@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -33,6 +34,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -44,7 +46,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class PermissionServiceImpl implements PermissionService {
 
-//	private static final Logger LOG = Logger.getLogger( AuthorizationServiceBaseImpl.class );
+	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
@@ -137,18 +139,24 @@ public class PermissionServiceImpl implements PermissionService {
     		// if no details passed, assume that all match
     		applicablePermissions = permissions;
     	} else {
-    		// otherwise, attempt to match the 
+    		// otherwise, attempt to match the premission details
     		applicablePermissions = new ArrayList<KimPermissionImpl>();
+    		
+    		KimPermissionTypeService defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( KimConstants.DEFAULT_PERMISSION_TYPE_SERVICE );
+
     		for ( KimPermissionImpl perm : permissions ) {
     			String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
-    			if ( serviceName == null ) { // no service - assume a match
-    				applicablePermissions.add( perm );
+    			if ( serviceName == null ) { // no service - use default service
+    				if ( defaultPermissionTypeService.doesPermissionDetailMatch( permissionDetails, perm ) ) {
+    					applicablePermissions.add( perm );
+    				}
     			} else {
     				KimPermissionTypeService permissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( serviceName );
-    				if ( permissionTypeService == null ) { // can't find the service - assume a match
-    					applicablePermissions.add( perm );
+    				if ( permissionTypeService == null ) { // can't find the service - throw error
+    					LOG.error("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
+    					throw new RuntimeException("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
     				} else { // got a service - check with it
-    					if ( permissionTypeService.doesPermissionDetailMatch( permissionDetails, perm.getDetails() ) ) {
+    					if ( permissionTypeService.doesPermissionDetailMatch( permissionDetails, perm ) ) {
     						applicablePermissions.add( perm );
     					}
     				}
@@ -169,6 +177,20 @@ public class PermissionServiceImpl implements PermissionService {
     		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );
     	}
     	return results;
+    }
+    
+    public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
+    	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
+    	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
+    	for ( RoleMembershipInfo rm : roleMembers ) {
+    		results.add( new PermissionAssigneeInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getDelegates() ) );
+    	}
+    	return results;
+    }
+    
+    public boolean isPermissionAssigned( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
+    	return !getRoleIdsForPermission(namespaceCode, permissionName, permissionDetails).isEmpty();
     }
     
     public boolean isPermissionDefined( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
@@ -242,7 +264,7 @@ public class PermissionServiceImpl implements PermissionService {
     	return results;
     }
 
-    /**
+	/**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(java.lang.String)
      */
     public List<KimPermissionInfo> getPermissionsByName(String namespaceCode, String permissionName) {

@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 
@@ -31,19 +33,31 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doPermissionDetailsMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
-	public boolean doPermissionDetailsMatch(AttributeSet requestedDetails, List<AttributeSet> permissionDetailsList) {
-		return performMatches(translateInputAttributeSet(requestedDetails), permissionDetailsList);
+	public <E extends KimPermission> boolean doPermissionDetailsMatch(AttributeSet requestedDetails, List<E> permissionsList) {
+		return performPermissionMatches(translateInputAttributeSet(requestedDetails), permissionsList);
 	}
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, KimPermission)
 	 */
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		return performMatch(translateInputAttributeSet(requestedDetails), permissionDetails);
+	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails, KimPermission permission) {
+		return performPermissionMatch(translateInputAttributeSet(requestedDetails), permission);
 	}
-		
+
+	protected <E extends KimPermission> boolean performPermissionMatches(AttributeSet requestedDetails, List<E> permissionsList) {
+		List<AttributeSet> permissionDetailList = new ArrayList<AttributeSet>();
+		for (KimPermission permission : permissionsList) {
+			permissionDetailList.add(permission.getDetails());
+		}
+		return performMatches(requestedDetails, permissionDetailList);
+	}
+
+	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+		return performMatch(requestedDetails, permission.getDetails());
+	}
+	
 	/**
 	 * This overridden method ...
 	 * 

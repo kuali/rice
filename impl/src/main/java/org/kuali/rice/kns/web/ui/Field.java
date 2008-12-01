@@ -65,41 +65,24 @@ public class Field implements java.io.Serializable {
   
 	public static final String LINK = "link";
     
-    
-    /**
-     * Helper method to determine if this is an INPUT type field
-     * 
-     * @param fieldType
-     */
-    public static boolean isInputField(String fieldType) {
-        if (StringUtils.isBlank(fieldType)) {
-            return false;
-        }
-        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
-
     private boolean clear;
     private boolean dateField;
+    private boolean fieldRequired;
+    private boolean highlightField;
+    private boolean isReadOnly;
+
     private String fieldConversions;
     private String fieldHelpUrl;
     private String fieldLabel;
-    private boolean fieldRequired;
     private String fieldType;
+    private String lookupParameters;
+    private String propertyName;
+    private String propertyValue;
+   
     private List fieldValidValues;
     private List fieldInactiveValidValues;
     private Formatter formatter;
-    private boolean highlightField;
-    private boolean isReadOnly;
-    private String lookupParameters;
     private int maxLength;
-    private String propertyName;
-    private String propertyValue;
     private HtmlData inquiryURL;
     private String propertyPrefix;
     private String quickFinderClassNameImpl;
@@ -143,7 +126,26 @@ public class Field implements java.io.Serializable {
 	private String imageSrc;
     private String target;
     private String hrefText;
-    
+     
+    /**
+     * Helper method to determine if this is an INPUT type field
+     * 
+     * @param fieldType
+     */
+    public static boolean isInputField(String fieldType) {
+        if (StringUtils.isBlank(fieldType)) {
+            return false;
+        }
+        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+   
 
 	/**
 	 * @return the imageSrc

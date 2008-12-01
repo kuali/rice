@@ -34,6 +34,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected boolean required = false;
     protected boolean forceInquiry = false;
     protected boolean noInquiry = false;
+    protected boolean noDirectInquiry = false;
     protected boolean forceLookup = false;
     protected boolean noLookup = false;
     protected boolean useShortLabel = false;
@@ -125,12 +126,28 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
     /**
+     * @return Returns a boolean value indicating whether or not to provide
+     *          a direct inquiry for the lookup field
+     */
+    public boolean isNoDirectInquiry()
+    {
+        return noDirectInquiry;
+    }
+    
+    /**
      * noInquiry = true means that the displayed field will never be made inquirable.
      */
     public void setNoInquiry(boolean noInquiry) {
         this.noInquiry = noInquiry;
     }
 
+	/**
+     * @param noInquiry If true, the displayed field will not have a direct
+	 *     inquiry facility 
+     */
+    public void setNoDirectInquiry(boolean noDirectInquiry) {
+        this.noDirectInquiry = noDirectInquiry;
+    }
     /**
      * @return Returns the noLookup.
      */

@@ -194,7 +194,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		return getBusinessObjectRelationship(bo, bo.getClass(), attributeName,
 				"", true);
 	}
-
+	//TODO: four different exit points?!
 	public BusinessObjectRelationship getBusinessObjectRelationship(
 			RelationshipDefinition ddReference, BusinessObject bo,
 			Class boClass, String attributeName, String attributePrefix,

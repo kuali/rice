@@ -129,13 +129,22 @@ public interface BusinessObjectDictionaryService {
      */
     public Boolean forceLookupFieldLookup(Class businessObjectClass, String attributeName);
 
-
+    /**
+     * returns boolean indicating whether lookup search field marked to force an inquiry
+     */
+    public Boolean forceInquiryFieldLookup(Class businessObjectClass, String attributeName);
+    
     /**
      * returns boolean indicating whether lookup search field marked to not do a lookup
      */
     public Boolean noLookupFieldLookup(Class businessObjectClass, String attributeName);
 
 
+    /**
+     * returns boolean indicating whether lookup search field marked to not do a direct inquiry
+     */
+    public Boolean noDirectInquiryFieldLookup(Class businessObjectClass, String attributeName);
+
     /**
      * returns boolean indicating whether inquiry result field marked to force an inquiry
      */

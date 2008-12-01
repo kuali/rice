@@ -247,23 +247,18 @@
       <list>
         <bean parent="FieldDefinition"
         	p:attributeName="parentDocType.name"
-              p:forceLookup="true"/>
+            p:noDirectInquiry="true"/>
         <bean parent="FieldDefinition"
         	p:attributeName="descendHierarchy"
-              p:forceLookup="true"
-              p:defaultValue="No" />
+              p:defaultValue="No"/> 
         <bean parent="FieldDefinition"
-              p:attributeName="name"
-              p:forceLookup="true" />
+              p:attributeName="name"/>
         <bean parent="FieldDefinition"
-              p:attributeName="label"
-              p:forceLookup="true" />
+              p:attributeName="label"/>
         <bean parent="FieldDefinition"
-              p:attributeName="documentTypeId"
-              p:forceLookup="true" />
+              p:attributeName="documentTypeId"/>
         <bean parent="FieldDefinition"
-              p:attributeName="active"
-              p:defaultValue="Y" />
+              p:attributeName="active"/>
         <bean parent="FieldDefinition"
               p:attributeName="serviceNamespace"/>
       </list>

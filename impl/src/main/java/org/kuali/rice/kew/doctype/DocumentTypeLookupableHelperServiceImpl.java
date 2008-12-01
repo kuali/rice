@@ -82,16 +82,13 @@ public class DocumentTypeLookupableHelperServiceImpl extends
 	protected DocumentType loadDocumentTypeForSearch(Map<String, String> fieldValues)
 	{
 		DocumentType documentType = new DocumentType();
-        //TODO: move constants to KEWPropertyConstants
+        
 		String activeIndicator = (String) fieldValues.get(KEWPropertyConstants.ACTIVE);
         String docTypeLabel = (String) fieldValues.get(KEWPropertyConstants.DOC_TYP_LABEL);
-        String parentDocTypeName = (String) fieldValues.get(KEWPropertyConstants.PARENT_DOC_TYPE_NAME);
         String documentTypeId = (String) fieldValues.get(KEWPropertyConstants.DOCUMENT_TYPE_ID);
         String docTypeName = (String) fieldValues.get(KEWPropertyConstants.NAME);
-        String messageEntity = (String) fieldValues.get(KEWPropertyConstants.ACTUAL_MESSAGE_ENTITY);
-        //Boolean climbHierarchy = Boolean.valueOf((String)fieldValues.get(KEWPropertyConstants.CLIMB_HIERARCHY_PROPERTY_NAME));
-        //String backLocation = (String) fieldValues.get(KEWPropertyConstants.BACK_LOCATION);
-        //String docFormKey = (String) fieldValues.get(KEWPropertyConstants.DOC_FORM_KEY);
+        String serviceNamespace = (String) fieldValues.get(KEWPropertyConstants.SERVICE_NAMESPACE);
+        
 
         if ("Y".equals(activeIndicator)) {
             documentType.setActive(new Boolean(true));
@@ -117,9 +114,9 @@ public class DocumentTypeLookupableHelperServiceImpl extends
                 documentType.setDocumentTypeId(new Long(-1));
             }
         }
-        if (!StringUtils.isBlank(messageEntity))
+        if (!StringUtils.isBlank(serviceNamespace))
         {	
-        	documentType.setServiceNamespace(messageEntity);
+        	documentType.setServiceNamespace(serviceNamespace);
         }
         
         return documentType;

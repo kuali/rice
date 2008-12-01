@@ -642,7 +642,16 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
         return forceLookup;
     }
 
-    /**
+
+    public Boolean forceInquiryFieldLookup(Class businessObjectClass, String attributeName) {
+        Boolean forceInquiry = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+            forceInquiry = Boolean.valueOf(getLookupFieldDefinition(businessObjectClass, attributeName).isForceInquiry());
+        }
+
+        return forceInquiry;
+    }
+    /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class, java.lang.String)
      */
     public Boolean noLookupFieldLookup(Class businessObjectClass, String attributeName) {
@@ -652,6 +661,18 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
         }
 
         return noLookup;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class, java.lang.String)
+     */
+    public Boolean noDirectInquiryFieldLookup(Class businessObjectClass, String attributeName) {
+        Boolean noDirectInquiry = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+            noDirectInquiry = Boolean.valueOf(getLookupFieldDefinition(businessObjectClass, attributeName).isNoDirectInquiry());
+        }
+
+        return noDirectInquiry;
     }
 
     /**

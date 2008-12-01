@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -100,7 +101,9 @@ public class FieldUtils {
 
     /**
      * Builds up a Field object based on the propertyName and business object class.
-     *
+     * 
+     * See KULRICE-2480 for info on translateCheckboxes flag
+     * 
      * @param propertyName
      * @return Field
      */
@@ -1017,6 +1020,7 @@ public class FieldUtils {
     }
     
     public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
+
         List<Field> fields = new ArrayList<Field>();
         for( String attributeName : lookupFieldAttributeList )
         {
@@ -1031,11 +1035,11 @@ public class FieldUtils {
             else {
             	newBusinessObjectInstance = (BusinessObject) businessObjectClass.newInstance();
             }
-            // TODO: This makes no sense, why do we pass it in and then return the same thing
-            // back to us?
+            //quickFinder is synonymous with a field-based Lookup
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
-            LookupUtils.setFieldDirectInquiry(field);
-
+            
+            field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
+           
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);
             fields.add(field);

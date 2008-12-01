@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ojb.broker.util.logging.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -52,7 +53,15 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.exception.ModuleAuthorizationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 
 /**
@@ -65,8 +74,14 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowAction.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try {
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception 
+	{
+        if (!checkAuthorization()) 
+        {
+            return mapping.findForward("NotAuthorized");
+        }
+        
+	    try {
 			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 			request.setAttribute("UrlResolver", UrlResolver.getInstance());
 			ActionMessages messages = null;
@@ -275,5 +290,29 @@ public abstract class WorkflowAction extends DispatchAction {
 		routingForm.setRemovedAppSpecificRecipient(null);
 		return mapping.getInputForward();
 	}
+    
+	/*
+     * TODO: this will be eliminated evaentually in favor of using KualiAction
+     *
+     */
+    protected boolean checkAuthorization() //throws AuthorizationException
+    {
+        if( log.isWarnEnabled())
+        {
+            LOG.warn("checkAuthorization was handled by WorkflowAction rather than KualiAction");
+        }
 
+        AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
+        Person person = UserSession.getAuthenticatedUser().getPerson();
+        boolean isAuthorized = getKualiModuleService().isAuthorized( person, defaultAuthorizationType ); 
+        if( !isAuthorized )
+        {
+            LOG.error("User not authorized to use this action: " + this.getClass().getName() );
+        }
+        return isAuthorized;
+    }
+    
+    protected static KualiModuleService getKualiModuleService() {
+        return KNSServiceLocator.getKualiModuleService();
+    }
 }

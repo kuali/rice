@@ -25,7 +25,7 @@ import org.kuali.rice.kim.util.KimConstants;
 public class NamespaceOrActionPermissionTypeServiceImpl extends NamespaceCodePermissionTypeServiceImpl {
 
 	/**
-	 * @see org.kuali.rice.kns.service.impl.NamespaceCodePermissionTypeServiceImpl#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kns.service.impl.NamespaceCodePermissionTypeServiceImpl#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {

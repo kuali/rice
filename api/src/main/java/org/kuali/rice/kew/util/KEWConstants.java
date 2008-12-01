@@ -56,9 +56,7 @@ public class KEWConstants {
     public static final String WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY = "Workflow.DocSearchAdminWorkgroup";
     public static final String DOC_SEARCH_RESULT_CAP_KEY = "DocumentSearch.ResultCap";
     public static final String DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY = "DocumentSearch.FetchMoreIterationLimit";
-    public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY = "RouteQueue.maxRetryAttempts";
-    public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = "RouteQueue.maxRetryAttemptsOverride";
-    public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = "RouteQueue.timeIncrement";
+
     public static final String RULE_CACHE_REQUEUE_WAIT_TIME_KEY = "RouteQueue.requeueWaitTime";
     public static final String RULE_LOCKING_ON = "Config.Application.RuleLockingOn";
     public static final String APP_CONST_SHOW_ATTACHMENTS = "showAttachments";

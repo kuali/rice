@@ -414,9 +414,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
                 authorized = true;
             }
 
-            //using app constant to turn the future look off if need be
-            //TODO remove this app constant it has out lived it's usefulness
-            lookFuture = lookFuture && new Boolean(Utilities.getApplicationConstant(KEWConstants.CHECK_ROUTE_LOG_AUTH_FUTURE)).booleanValue();
             if (!lookFuture) {
                 return authorized;
             }

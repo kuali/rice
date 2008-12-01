@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -29,10 +28,10 @@ public class NamespaceOrActionPermissionTypeServiceImpl extends NamespaceCodePer
 	 * @see org.kuali.rice.kns.service.impl.NamespaceCodePermissionTypeServiceImpl#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
 	@Override
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails,	KimPermission permission) {
+	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		// Checking the namespace first
 		try {
-			if (super.doesPermissionDetailMatch(requestedDetails, permission)) {
+			if (super.performMatch(inputAttributeSet, storedAttributeSet)) {
 				return true;
 			}
 		} catch (Exception e) {
@@ -40,11 +39,11 @@ public class NamespaceOrActionPermissionTypeServiceImpl extends NamespaceCodePer
 		}
 		
 		// Namespace not a match. Checking action class.
-		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE))) {
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE))) {
         	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE + " should not be blank or null.");
 		}
 		
-		return requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE));
+		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE));
 	}
 
 }

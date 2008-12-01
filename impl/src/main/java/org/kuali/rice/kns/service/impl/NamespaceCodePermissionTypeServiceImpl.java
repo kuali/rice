@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -28,19 +27,19 @@ import org.kuali.rice.kim.util.KimConstants;
 public class NamespaceCodePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails,	KimPermission permission) {
-		if (!super.doesPermissionDetailMatch(requestedDetails, permission)) {
+	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+		if (!super.performMatch(inputAttributeSet, storedAttributeSet)) {
 			return false;
 		}
 		
-		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))) {
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))) {
         	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " should not be blank or null.");
 		}
 		
-		return KimCommonUtils.matchInputWithWildcard(requestedDetails.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), permission.getNamespaceCode());
+		return KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), storedAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE));
 	}
 	
 }

@@ -46,6 +46,8 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_REQUIRED ="required";	
 	public static final String KIM_ATTRIB_BEAN_NAME ="beanName";	
 	public static final String KIM_ATTRIB_CHART_CODE ="Chart Code";
+	public static final String KIM_ATTRIB_TYPE_CODE ="typeCd";
+	public static final String KIM_ATTRIB_CREATED_SELF_ONLY ="createdBySelfOnly";	
 	public static final String KIM_ATTRIB_ORGANIZATION_CODE = "Organization Code";
 	public static final String KIM_ATTRIB_CAMPUS_CODE = "Campus Code";
 	public static final String KIM_ATTRIB_NAMESPACE_CODE = "Namespace Code";

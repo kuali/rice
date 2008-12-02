@@ -40,6 +40,7 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
 	public static final String KIM_ATTRIB_ACTION_CLASS ="actionClass";	
+	public static final String KIM_ATTRIB_COMPONENT_CLASS ="componentClass";		
 	public static final String KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ="actionDetailsAtRoleMemberLevel";	
 	public static final String KIM_ATTRIB_REQUIRED ="required";	
 	public static final String KIM_ATTRIB_BEAN_NAME ="beanName";	

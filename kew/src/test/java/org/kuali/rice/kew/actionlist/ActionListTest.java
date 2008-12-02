@@ -130,7 +130,8 @@ public class ActionListTest extends KEWTestCase {
                             //do first 5 for time sake
                             while (rs.next() && ++loopCnt < 6) {
                                 String workflowId = rs.getString(1);
-                                PreparedStatement ps1 = conn.prepareStatement("select count (*) from krew_actn_itm_t where PRNCPL_ID = '" + workflowId + "'");
+                                PreparedStatement ps1 = conn.prepareStatement("select count(*) from krew_actn_itm_t where PRNCPL_ID = ?");
+                                ps1.setString(1, workflowId);
                                 ResultSet rsWorkflowIdCnt = ps1.executeQuery();
                                 if (rsWorkflowIdCnt.next()) {
                                     emplIdCnt = rsWorkflowIdCnt.getInt(1);

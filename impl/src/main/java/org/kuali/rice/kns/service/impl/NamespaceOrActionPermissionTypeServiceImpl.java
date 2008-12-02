@@ -39,11 +39,11 @@ public class NamespaceOrActionPermissionTypeServiceImpl extends NamespaceCodePer
 		}
 		
 		// Namespace not a match. Checking action class.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE + " should not be blank or null.");
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS))) {
+        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_ACTION_CLASS + " should not be blank or null.");
 		}
 		
-		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS_CODE));
+		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS));
 	}
 
 }

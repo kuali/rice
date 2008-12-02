@@ -39,11 +39,11 @@ public class BatchFeedOrJobPermissionTypeServiceImpl extends NamespaceCodePermis
 		}
 		
 		// Namespace not a match. Checking bean name.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME_CODE))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_BEAN_NAME_CODE + " should not be blank or null.");
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME))) {
+        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_BEAN_NAME + " should not be blank or null.");
 		}
 		
-		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME_CODE).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME_CODE));
+		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME));
 	}
 	
 }

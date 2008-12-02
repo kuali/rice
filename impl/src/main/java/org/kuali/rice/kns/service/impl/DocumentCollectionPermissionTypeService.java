@@ -39,7 +39,7 @@ public class DocumentCollectionPermissionTypeService extends DocumentTypePermiss
 		}	
 		
 		// TODO: Is this how you determine an "Add" template?
-		boolean addTemplate = permission.getTemplate().getName().startsWith("Add");		
+		boolean addTemplate = "Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
 		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY))) {
 			throw new RuntimeException(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY + " should not be blank or null.");
 		}

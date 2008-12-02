@@ -1,12 +1,12 @@
 <%--
  Copyright 2005-2007 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,6 +34,7 @@
 <%@ attribute name="useCurrentTabIndexAsKey" required="false" %>
 <%@ attribute name="hidden" required="false" %>
 <%@ attribute name="useRiceAuditMode" required="false" %>
+<%@ attribute name="midTabClassReplacement" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
@@ -82,6 +83,8 @@
 	<c:set var="tabTitleSpan" value="${tabTitleSpan + 1}" />
 </c:if>
 
+
+
 <c:set var="leftTabImage" value="${ConfigProperties.kr.externalizable.images.url}tab-topleft1.gif" />
 <c:set var="rightTabImage" value="${ConfigProperties.kr.externalizable.images.url}tab-topright1.gif" />
 <c:set var="rightTabClass" value="tabtable2-right" />
@@ -93,6 +96,8 @@
   <c:set var="midTabClass" value="tabtable1-mid" />
 </c:if>
 
+
+
         <table width="100%" class="tab" cellpadding="0" cellspacing="0" summary="" border="1" <c:if test="${hidden}">style="display:none;"</c:if>>
           <tr>
               <c:choose>
@@ -103,7 +108,7 @@
 			  	<td class="tabtable1-left">
 			  </c:otherwise>
 			  </c:choose>
- 
+
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
               <a name="${tabKey}" ></a> <h2><c:out value="${tabTitle}" /></h2>
@@ -114,22 +119,31 @@
             <c:if test="${not empty tabDescription}">
               <td class="tabtable1-mid1"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" align="absmiddle" height="29" width="1" />${tabDescription}</td>
       		</c:if>
-      		
+
             <c:if test="${not empty rightSideHtmlProperty and not empty rightSideHtmlAttribute}">
               <td class="tabtable1-mid1"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" align="absmiddle" height="29" width="1" /><kul:htmlControlAttribute property="${rightSideHtmlProperty}" attributeEntry="${rightSideHtmlAttribute}" /></td>
       		</c:if>
-      		
+
       		<c:if test="${not empty extraButtonSource}">
       		  <td class="tabtable1-mid1">${extraButtonSource}</td>
       		</c:if>
 
             <td class="${midTabClass}">
+
+            <c:choose>
+    		<c:when test="${empty midTabClassReplacement}">
                <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}">
                  <html:image property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-hide.gif" title="close ${tabTitle}" alt="close ${tabTitle}" styleClass="tinybutton"  styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, '${tabKey}'); " />
                </c:if>
                <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}">
                  <html:image  property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-show.gif" title="open ${tabTitle}" alt="open ${tabTitle}" styleClass="tinybutton" styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, '${tabKey}'); " />
                </c:if>
+               </c:when>
+                <c:otherwise>
+                	${midTabClassReplacement}
+                </c:otherwise>
+                </c:choose>
+
             </td>
             <td class="${rightTabClass}"><img src="${rightTabImage}" alt="" width="12" height="29" align="middle" /></td>
           </tr>
@@ -143,14 +157,14 @@
 <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}" >
 <div style="display: none;" id="tab-${tabKey}-div">
 </c:if>
-  
- 
-      
+
+
+
         <!-- display errors for this tab -->
         <c:if test="${! (empty tabErrorKey)}">
           <div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="${tabErrorKey}"/></div></div>
         </c:if>
-        
+
         <!-- comment for reference by KRA devs during KNS extraction -->
         <c:if test="${! (empty tabAuditKey) && (useRiceAuditMode == 'true')}">
         	<div class="tab-container-error"><div class="left-errmsg-tab">
@@ -159,12 +173,12 @@
 				</c:forEach>
         	</div></div>
       	</c:if>
-      	
-      
-        <!-- Before the jsp:doBody of the kul:tab tag -->            
-        <jsp:doBody/>            
+
+
+        <!-- Before the jsp:doBody of the kul:tab tag -->
+        <jsp:doBody/>
         <!-- After the jsp:doBody of the kul:tab tag -->
- 
-      
-  
-</div>         
+
+
+
+</div>

@@ -29,9 +29,11 @@
 					</kul:htmlAttributeHeaderCell>
 				<td width="25%" class="datacell"><a
 					href="
-               						<c:url value="DocumentType.do">
-										<c:param name="docTypeId" value="${routeHeader.documentTypeId}" />
-										<c:param name="methodToCall" value="report"/>
+
+               						<c:url value="../kr/inquiry.do">
+										<c:param name="documentTypeId" value="${routeHeader.documentTypeId}" />
+										<c:param name="businessObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
+										<c:param name="methodToCall" value="start"/>
 									</c:url>"><c:out
 					value="${routeHeader.documentType.label}" /> </a>&nbsp; &nbsp;</td>
 				<kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
@@ -95,6 +97,7 @@
 	<bean:define id="actionsTakenLabel">
  		<bean-el:message key="routeLog.RouteLog.actionsTaken.label.actionsTaken"/>
 	</bean:define>
+
 
 	<c:if test="${! empty routeHeader.actionsTaken}">
 	<kul:tab
@@ -230,9 +233,27 @@
 		</c:if>
 
 		 <c:if test="${KualiForm.lookFuture}">
+
+		 <bean:define id="extraButton">
+<a href="
+								<c:url value="RouteLog.do">
+									<c:param name="showFuture" value="${!KualiForm.showFuture}" />
+									<c:param name="showNotes" value="${KualiForm.showNotes}" />
+									<c:param name="routeHeaderId" value="${KualiForm.routeHeaderId}" />
+								</c:url>">
+									<c:if test="${KualiForm.showFuture}">
+										<img src="images/tinybutton-hide1.gif">
+									</c:if>
+									<c:if test="${!KualiForm.showFuture}">
+										<img src="images/tinybutton-show.gif">
+									</c:if>
+								</a>
+		                              </bean:define>
+
 		<kul:tab
 		tabTitle="Future Action Requests"
-		defaultOpen="true">
+		defaultOpen="true"
+		midTabClassReplacement="${extraButton}">
 		<div class="tab-container" align=center>
 			<table width="100%" border=0 cellspacing=0 cellpadding=0>
 

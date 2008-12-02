@@ -20,6 +20,7 @@ import java.util.List;
 import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -80,6 +81,6 @@ public interface KimTypeService {
 
     List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
-    AttributeDefinitionMap getAttributeDefinitions();
+    AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType);
     
 }

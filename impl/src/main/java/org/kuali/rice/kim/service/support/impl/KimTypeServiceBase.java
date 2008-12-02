@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
@@ -219,7 +220,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return pairs;
 	}
-	
+	 
 	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
 		return new ArrayList<KeyLabelPair>();
 	}
@@ -303,9 +304,17 @@ public class KimTypeServiceBase implements KimTypeService {
 		return definition;
 	}
 	
-	public AttributeDefinitionMap getAttributeDefinitions() {
+	public AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType) {
 		AttributeDefinitionMap definitions = new AttributeDefinitionMap();
-		
+		for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
+			AttributeDefinition definition;
+			if (typeAttribute.getKimAttribute().getComponentName() == null) {
+				definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+			} else {
+				definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+			}
+			definitions.put(typeAttribute.getSortCode(), definition);
+		}		
 		return definitions;
 	}
 	

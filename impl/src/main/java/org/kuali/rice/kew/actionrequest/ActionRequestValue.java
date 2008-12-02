@@ -538,20 +538,21 @@ public class ActionRequestValue implements WorkflowPersistable {
     		} else if (recipient instanceof Workgroup) {
     			isRecipientInGraph = ((Workgroup) recipient).hasMember(getWorkflowUser());
     		} else if (recipient instanceof KimGroupRecipient){
-    			isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getDisplayName(),getGroupId().toString());
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
     		}
 
     	} else if (isGroupRequest()) {
+    		KimGroup group = getGroup();
+			if (group == null){
+				LOG.error("Was unable to retrieve workgroup " + getGroupId());
+			}
     		if (recipient instanceof WorkflowUser) {
-    			KimGroup group = getGroup();
-    			if (group == null){
-    				LOG.error("Was unable to retrieve workgroup " + getGroupId());
-    			}
-    			isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
+    			WorkflowUser user = (WorkflowUser)recipient;
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId());
     		} else if (recipient instanceof Workgroup) {
-    			isRecipientInGraph = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(getGroupId());
+    			isRecipientInGraph = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(group.getGroupId());
     		} else if (recipient instanceof KimGroupRecipient) {
-    			isRecipientInGraph = KIMServiceLocator.getGroupService().isGroupMemberOfGroup(((KimGroupRecipient) recipient).getGroup().getGroupId(),getGroupId().toString());
+    			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(group.getGroupId());
     		}
     	}
 

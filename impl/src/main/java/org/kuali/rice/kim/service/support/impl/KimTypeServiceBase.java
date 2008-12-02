@@ -311,7 +311,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			if (typeAttribute.getKimAttribute().getComponentName() == null) {
 				definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
 			} else {
-				definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+				definition = getDataDictionaryAttributeDefinition(typeAttribute);
 			}
 			definitions.put(typeAttribute.getSortCode(), definition);
 		}		

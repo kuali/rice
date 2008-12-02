@@ -43,10 +43,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -97,11 +94,9 @@ public class RuleResponsibility implements WorkflowPersistable {
         return null;
     }
 
-    public GroupInfo getGroup() throws KEWUserNotFoundException {
+    public KimGroup getGroup() throws KEWUserNotFoundException {
         if (isUsingGroup()) {
-        	GroupInfo grpInfo =KIMServiceLocator.getGroupService().createGroup(new GroupInfo());
-        	grpInfo.setGroupName(ruleResponsibilityName);
-            return  grpInfo;            
+        	return KIMServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
         }
         return null;
     }

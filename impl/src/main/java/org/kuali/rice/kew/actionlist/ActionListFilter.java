@@ -43,7 +43,7 @@ public class ActionListFilter implements Serializable {
     private Long groupId;
     private String groupIdString = KEWConstants.NO_FILTERING;
     private String groupName = "";
-    private boolean excludeWorkgroupId;
+    private boolean excludeGroupId;
     private String documentType = "";
     private boolean excludeDocumentType;
     private Date createDateFrom;
@@ -125,11 +125,11 @@ public class ActionListFilter implements Serializable {
     public void setExcludeRouteStatus(boolean excludeRouteStatus) {
         this.excludeRouteStatus = excludeRouteStatus;
     }
-    public boolean isExcludeWorkgroupId() {
-        return excludeWorkgroupId;
+    public boolean isExcludeGroupId() {
+        return excludeGroupId;
     }
-    public void setExcludeWorkgroupId(boolean excludeWorkgroupId) {
-        this.excludeWorkgroupId = excludeWorkgroupId;
+    public void setExcludeGroupId(boolean excludeGroupId) {
+        this.excludeGroupId = excludeGroupId;
     }
     public Date getLastAssignedDateTo() {
         return lastAssignedDateTo;

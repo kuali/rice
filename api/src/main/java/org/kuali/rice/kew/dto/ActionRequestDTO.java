@@ -47,8 +47,7 @@ public class ActionRequestDTO implements Serializable {
     private Integer priority;
     private String annotation;
     private Long actionTakenId;
-    private Long groupId;    
-    private GroupInfo groupVO;
+    private String groupId;    
     private UserDTO userVO;
     private String recipientTypeCd;
     private String approvePolicy;
@@ -368,8 +367,16 @@ public class ActionRequestDTO implements Serializable {
     public void setNodeInstanceId(Long nodeInstanceId) {
         this.nodeInstanceId = nodeInstanceId;
     }
+    
+    public String getGroupId() {
+		return this.groupId;
+	}
 
-    public boolean isDelegateRequest() {
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public boolean isDelegateRequest() {
         if (getParentActionRequest() != null) {
             if (getParentActionRequest().isRoleRequest()) {
                 return getParentActionRequest().isDelegateRequest();
@@ -395,17 +402,4 @@ public class ActionRequestDTO implements Serializable {
     	return getResponsibilityId().longValue() > 0;
     }
 
-	/**
-	 * @return the groupVO
-	 */
-	public GroupInfo getGroupVO() {
-		return this.groupVO;
-	}
-
-	/**
-	 * @param groupVO the groupVO to set
-	 */
-	public void setGroupVO(GroupInfo groupVO) {
-		this.groupVO = groupVO;
-	}
 }

@@ -641,10 +641,8 @@ public class DTOConverter {
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestVO.setStatus(actionRequest.getStatus());
-        GroupInfo groupInfo = new GroupInfo();
-        groupInfo.setGroupName(actionRequest.getGroup().getGroupName());
         if (actionRequest.isGroupRequest()) {
-            actionRequestVO.setGroupVO(groupInfo);
+        	actionRequestVO.setGroupId("" + actionRequest.getGroupId());
         }
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
@@ -892,15 +890,9 @@ public class DTOConverter {
             actionRequest.setWorkflowId(user.getWorkflowId());
             userSet = true;
         }
-        if (actionRequestVO.getGroupVO() != null) {
-            String groupId = actionRequestVO.getGroupVO().getGroupId();
-            // validate that the workgroup is good.
-           
-            GroupInfo grpInfo =KIMServiceLocator.getGroupService().getGroupInfo(groupId);
-            if (grpInfo == null) {
-                throw new RuntimeException("Group Id " + groupId + " is invalid.  Action Request cannot be activated.");
-            }
-            actionRequest.setGroupId(new Long(groupId));
+
+        if (actionRequestVO.getGroupId() != null) {
+            actionRequest.setGroupId(new Long(actionRequestVO.getGroupId()));
             userSet = true;
         }// TODO role requests will not have a user or workgroup, so this code needs to handle that case
         if (!userSet) {

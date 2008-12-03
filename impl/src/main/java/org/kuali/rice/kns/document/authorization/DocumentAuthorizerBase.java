@@ -157,11 +157,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                     boolean reqFound = false;
                     for ( ActionRequestDTO req : requests ) {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
-                        if ( req.getGroupVO()!= null ) {
+                        if ( req.getGroupId()!= null ) {
                         	
-                        List<String> users = KIMServiceLocator.getIdentityManagementService().getMemberGroupIds(req.getGroupVO().getGroupId());
-                        for ( String usr : users ) {
-                            if ( usr.equals( user.getPrincipalId() ) ) {
+                        List<String> principalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(req.getGroupId());
+                        for ( String principalId : principalIds ) {
+                            if ( principalId.equals( user.getPrincipalId() ) ) {
                             flags.setCanCancel( true );
                                     flags.setCanApprove( true );
                                     flags.setCanDisapprove( true );

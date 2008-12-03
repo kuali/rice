@@ -33,6 +33,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -68,10 +70,11 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertEquals("Should be a single exception request", 1, actionRequests.length);
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
-            assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingWorkgroup", actionRequest.getGroupVO().getGroupName());
+            assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingWorkgroup", group.getGroupName());
             assertNotNull("annotation cannot be null", actionRequest.getAnnotation());
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
@@ -139,13 +142,14 @@ public class ExceptionRoutingTest extends KEWTestCase {
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
+            	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
                 assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());
                 //assertEquals("Node instance id should be id of routeNode1", routeNode1.getRouteNodeInstanceId(), actionRequest.getNodeInstanceId());
                 // routeMethod name should be null as well
                 assertNull("Exception request routeMethodName wrong", actionRequest.getRouteMethodName());
-                assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", actionRequest.getGroupVO().getGroupName());
+                assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getGroupName());
                 hasCompleteRequest = true;
             }
         }

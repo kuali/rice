@@ -23,29 +23,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.BaseWorkgroupMember;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberBase;
-import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 public class ActionItemServiceTest extends KEWTestCase {
@@ -67,262 +60,16 @@ public class ActionItemServiceTest extends KEWTestCase {
      *
      * @throws Exception
      */
+    @Ignore
     @Test public void testUpdateActionItemsForWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
-        document.setTitle("");
-        document.routeDocument("");
-
-        WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
-        GroupService groupService = KIMServiceLocator.getGroupService();
-        GroupInfo oldGroup = groupService.getGroupInfo("WorkflowAdmin");
-        BaseWorkgroup oldWorkgroup = (BaseWorkgroup)workgroupService.getWorkgroup(new GroupNameId("WorkflowAdmin"));
-        WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        WorkflowUser user2 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user2"));
-
-        BaseWorkgroup newWorkgroup = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
-        newWorkgroup.setGroupNameId(oldWorkgroup.getGroupNameId());
-        newWorkgroup.setActiveInd(Boolean.TRUE);
-        newWorkgroup.setCurrentInd(Boolean.TRUE);
-        newWorkgroup.setVersionNumber(new Integer(oldWorkgroup.getVersionNumber().intValue()+1));
-        newWorkgroup.setLockVerNbr(new Integer(oldWorkgroup.getLockVerNbr().intValue()));
-        newWorkgroup.setWorkflowGroupId(oldWorkgroup.getWorkflowGroupId());
-        newWorkgroup.setWorkgroupId(oldWorkgroup.getWorkflowGroupId().getGroupId());
-        newWorkgroup.setGroupNameId(new GroupNameId(oldWorkgroup.getGroupNameId().getNameId()));
-        newWorkgroup.setMembers(new ArrayList<Recipient>(oldWorkgroup.getMembers()));
-
-        List<WorkflowUser> usersToRemove = new ArrayList<WorkflowUser>();
-        //remove 'rkirkend' and 'shenl' from the workgroup
-        for (Recipient recipient : oldWorkgroup.getMembers()) {
-        	if (recipient instanceof WorkflowUser) {
-        		WorkflowUser user = (WorkflowUser)recipient;
-        		if (user.getAuthenticationUserId().getAuthenticationId().equals("rkirkend") || user.getAuthenticationUserId().getAuthenticationId().equals("shenl")) {
-        			usersToRemove.add(user);
-        		}
-        	}
-        }
-
-        newWorkgroup.getMembers().removeAll(usersToRemove);
-
-        List<WorkflowUser> newMembers = new ArrayList<WorkflowUser>();
-        newMembers.add(user1);
-        newMembers.add(user2);
-        newWorkgroup.getMembers().addAll(newMembers);
-
-        // copy the WorkflowUser members into WorkgroupMember members for persistence through OJB
-        newWorkgroup.getWorkgroupMembers().clear();
-        for (Recipient recipient : newWorkgroup.getMembers()) {
-        	if (recipient instanceof WorkflowUser) {
-        		WorkflowUser user = (WorkflowUser) recipient;
-        		BaseWorkgroupMember member = new BaseWorkgroupMember();
-        		member.setWorkflowId(user.getWorkflowId());
-        		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
-        		member.setWorkgroup(newWorkgroup);
-        		member.setWorkgroupVersionNumber(newWorkgroup.getVersionNumber());
-        		member.setWorkgroupId(newWorkgroup.getWorkgroupId());
-        		newWorkgroup.getWorkgroupMembers().add(member);
-        	}
-		}
-        workgroupService.save(newWorkgroup);
-        // make the old workgroup non-current
-        oldWorkgroup.setCurrentInd(Boolean.FALSE);
-        workgroupService.save(oldWorkgroup);
-
-        // verify that the new workgroup is sane...
-        Workgroup loadedNewWorkgroup = workgroupService.getWorkgroup(new WorkflowGroupId(newWorkgroup.getWorkgroupId()));
-        boolean foundUser1 = false;
-        boolean foundUser2 = false;
-        assertEquals("Workgroup should have 6 members.", 6, loadedNewWorkgroup.getUsers().size());
-        for (Iterator iterator = loadedNewWorkgroup.getUsers().iterator(); iterator.hasNext();) {
-			WorkflowUser user = (WorkflowUser) iterator.next();
-			if (user.getAuthenticationUserId().equals(user1.getAuthenticationUserId())) {
-				foundUser1 = true;
-			} else if (user.getAuthenticationUserId().equals(user2.getAuthenticationUserId())) {
-				foundUser2 = true;
-			}
-		}
-        assertTrue("Did not find user 1 on workgroup.", foundUser1);
-        assertTrue("Did not find user 2 on workgroup.", foundUser2);
-
-        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup, newWorkgroup);
-
-        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        boolean foundrkirkend = false;
-        boolean foundlshen = false;
-        boolean founduser1 = false;
-        boolean founduser2 = false;
-
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
-            String authId = actionItem.getUser().getAuthenticationUserId().getAuthenticationId();
-            if (authId.equals("rkirkend")) {
-                foundrkirkend = true;
-            } else if (authId.equals("user1")) {
-                founduser1 = true;
-            } else if (authId.equals("lshen")) {
-                foundlshen = true;
-            } else if (authId.equals("user2")) {
-                founduser2 = true;
-            }
-        }
-
-        assertTrue("rkirkend should still have an AI because he is in 2 workgroups that are routed to.", foundrkirkend);
-        assertTrue("user1 should have an AI because they were added to 'WorkflowAdmin'", founduser1);
-        assertTrue("user2 should have an AI because they were added to 'WorkflowAdmin'", founduser2);
-        assertFalse("lshen should not have an AI because they were removed from 'WorkflowAdmin'", foundlshen);
-
-    }
-
-    /**
-     * When workgroup membership changes all action items to that workgroup need to reflect
-     * the new membership even in the case of nested workgroups.
-     *
-     * @throws Exception
-     */
-    @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
-
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
-        document.setTitle("");
-        GroupInfo grpInfo =new GroupInfo();
-        grpInfo.setGroupName("AIWGNested2");
-        
-        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
-        document.routeDocument("");
-
-        // remove a user from the AGWG1 workgroup
-        WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-        BaseWorkgroup workgroup1 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWG1"));
-        assertNotNull(workgroup1);
-        BaseWorkgroup oldWorkgroup1 = copy(workgroup1);
-
-        assertEquals("Workgroup should have 2 members.", 2, workgroup1.getWorkgroupMembers().size());
-        for (Iterator iterator = workgroup1.getWorkgroupMembers().iterator(); iterator.hasNext();) {
-			BaseWorkgroupMember member = (BaseWorkgroupMember) iterator.next();
-			// remove ewestfal
-			if (member.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-				iterator.remove();
-			}
-		}
-        workgroup1.getMembers().clear();
-        workgroup1.materializeMembers();
-        assertEquals("Workgroup should have 1 members.", 1, workgroup1.getWorkgroupMembers().size());
-        KEWServiceLocator.getWorkgroupService().save(workgroup1);
-
-        Workgroup workgroupNested2 = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested2"));
-        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals("Should be 6 action items.", 6, actionItems.size());
-        boolean foundEwestfal = false;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-				assertEquals("Action Item should be for the AIWGNested2 workgroup", actionItem.getGroupId(), workgroupNested2.getWorkflowGroupId().getGroupId());
-				foundEwestfal = true;
-			}
-		}
-        assertTrue("Should have found an action item to ewestfal.", foundEwestfal);
-
-        // now, let's update the action items for our workgroup change
-        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup1, workgroup1);
-
-        // there should no longer be a request to ewestfal
-        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals("Should be 5 action items.", 5, actionItems.size());
-        foundEwestfal = false;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-				foundEwestfal = true;
-			}
-		}
-        assertFalse("Should not have found an action item to ewestfal.", foundEwestfal);
-
-        // add user user1 to AIWGNested1
-        WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        BaseWorkgroup workgroup2 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested1"));
-        assertNotNull(workgroup2);
-        BaseWorkgroup oldWorkgroup2 = copy(workgroup2);
-        assertEquals("Workgroup should have 2 members.", 2, workgroup2.getWorkgroupMembers().size());
-        assertEquals("Workgroup should have 2 members.", 2, workgroup2.getMembers().size());
-        assertEquals("Workgroup should have 2 users.", 2, workgroup2.getUsers().size());
-        // add user1
-        BaseWorkgroupMember member = new BaseWorkgroupMember();
-		member.setWorkflowId(user1.getWorkflowId());
-		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
-		member.setWorkgroup(workgroup2);
-		member.setWorkgroupVersionNumber(workgroup2.getVersionNumber());
-		member.setWorkgroupId(workgroup2.getWorkgroupId());
-		workgroup2.getWorkgroupMembers().add(member);
-		workgroup2.getMembers().clear();
-		workgroup2.materializeMembers();
-		KEWServiceLocator.getWorkgroupService().save(workgroup2);
-
-		// update action items
-        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup2, workgroup2);
-        // there should now be an action item to user1
-        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals("Should be 6 action items.", 6, actionItems.size());
-        boolean foundUser1 = false;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getWorkflowId().equals(user1.getWorkflowId())) {
-				foundUser1 = true;
-			}
-		}
-        assertTrue("Should have found an action item to user1.", foundUser1);
-
-        // remove a user from the AIWGNested1 workgroup from AIWGNested2
-        Workgroup aiwgNested1Workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested1"));
-        BaseWorkgroup workgroup3 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested2"));
-        assertNotNull(workgroup3);
-        BaseWorkgroup oldWorkgroup3 = copy(workgroup3);
-
-        assertEquals("Workgroup should have 3 members.", 3, workgroup3.getWorkgroupMembers().size());
-        assertEquals("Workgroup should have 6 users.", 6, workgroup3.getUsers().size());
-        for (Iterator iterator = workgroup3.getWorkgroupMembers().iterator(); iterator.hasNext();) {
-			member = (BaseWorkgroupMember) iterator.next();
-			// remove ewestfal
-			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD) &&
-					member.getWorkflowId().equals(aiwgNested1Workgroup.getWorkflowGroupId().getGroupId().toString())) {
-				iterator.remove();
-			}
-		}
-        workgroup3.getMembers().clear();
-        workgroup3.materializeMembers();
-        assertEquals("Workgroup should have 2 members.", 2, workgroup3.getWorkgroupMembers().size());
-        assertEquals("Workgroup should have 3 users.", 3, workgroup3.getUsers().size());
-        KEWServiceLocator.getWorkgroupService().save(workgroup3);
-
-        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals("Should be 6 action items.", 6, actionItems.size());
-
-        // now, let's update the action items for our workgroup change
-        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup3, workgroup3);
-
-        // there should only be 3 action items now
-        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals("Should be 3 action items.", 3, actionItems.size());
-        WorkflowUser pmckown = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("pmckown"));
-        WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
-        WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
-        boolean foundPmckown = false;
-        boolean foundJhopf = false;
-        boolean foundBmcgough = false;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getWorkflowId().equals(pmckown.getWorkflowId())) {
-				foundPmckown = true;
-			} if (actionItem.getWorkflowId().equals(jhopf.getWorkflowId())) {
-				foundJhopf = true;
-			} if (actionItem.getWorkflowId().equals(bmcgough.getWorkflowId())) {
-				foundBmcgough = true;
-			}
-		}
-        assertTrue("Should have found an action item to pmckown.", foundPmckown);
-        assertTrue("Should have found an action item to jhopf.", foundJhopf);
-        assertTrue("Should have found an action item to bmcgough.", foundBmcgough);
-
-
+//        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+//        document.setTitle("");
+//        document.routeDocument("");
+//
 //        WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
+//        GroupService groupService = KIMServiceLocator.getGroupService();
+//        GroupInfo oldGroup = groupService.getGroupInfo("WorkflowAdmin");
 //        BaseWorkgroup oldWorkgroup = (BaseWorkgroup)workgroupService.getWorkgroup(new GroupNameId("WorkflowAdmin"));
 //        WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
 //        WorkflowUser user2 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user2"));
@@ -421,6 +168,157 @@ public class ActionItemServiceTest extends KEWTestCase {
     }
 
     /**
+     * When workgroup membership changes all action items to that workgroup need to reflect
+     * the new membership even in the case of nested workgroups.
+     *
+     * @throws Exception
+     */
+    @Ignore
+    @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
+
+//        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+//        document.setTitle("");
+//        GroupInfo grpInfo =new GroupInfo();
+//        grpInfo.setGroupName("AIWGNested2");
+//        
+//        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
+//        document.routeDocument("");
+//
+//        // remove a user from the AGWG1 workgroup
+//        WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
+//        BaseWorkgroup workgroup1 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWG1"));
+//        assertNotNull(workgroup1);
+//        BaseWorkgroup oldWorkgroup1 = copy(workgroup1);
+//
+//        assertEquals("Workgroup should have 2 members.", 2, workgroup1.getWorkgroupMembers().size());
+//        for (Iterator iterator = workgroup1.getWorkgroupMembers().iterator(); iterator.hasNext();) {
+//			BaseWorkgroupMember member = (BaseWorkgroupMember) iterator.next();
+//			// remove ewestfal
+//			if (member.getWorkflowId().equals(ewestfal.getWorkflowId())) {
+//				iterator.remove();
+//			}
+//		}
+//        workgroup1.getMembers().clear();
+//        workgroup1.materializeMembers();
+//        assertEquals("Workgroup should have 1 members.", 1, workgroup1.getWorkgroupMembers().size());
+//        KEWServiceLocator.getWorkgroupService().save(workgroup1);
+//
+//        Workgroup workgroupNested2 = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested2"));
+//        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+//        assertEquals("Should be 6 action items.", 6, actionItems.size());
+//        boolean foundEwestfal = false;
+//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
+//			ActionItem actionItem = (ActionItem) iterator.next();
+//			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
+//				assertEquals("Action Item should be for the AIWGNested2 workgroup", actionItem.getGroupId(), workgroupNested2.getWorkflowGroupId().getGroupId());
+//				foundEwestfal = true;
+//			}
+//		}
+//        assertTrue("Should have found an action item to ewestfal.", foundEwestfal);
+//
+//        // now, let's update the action items for our workgroup change
+//        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup1, workgroup1);
+//
+//        // there should no longer be a request to ewestfal
+//        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+//        assertEquals("Should be 5 action items.", 5, actionItems.size());
+//        foundEwestfal = false;
+//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
+//			ActionItem actionItem = (ActionItem) iterator.next();
+//			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
+//				foundEwestfal = true;
+//			}
+//		}
+//        assertFalse("Should not have found an action item to ewestfal.", foundEwestfal);
+//
+//        // add user user1 to AIWGNested1
+//        WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
+//        BaseWorkgroup workgroup2 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested1"));
+//        assertNotNull(workgroup2);
+//        BaseWorkgroup oldWorkgroup2 = copy(workgroup2);
+//        assertEquals("Workgroup should have 2 members.", 2, workgroup2.getWorkgroupMembers().size());
+//        assertEquals("Workgroup should have 2 members.", 2, workgroup2.getMembers().size());
+//        assertEquals("Workgroup should have 2 users.", 2, workgroup2.getUsers().size());
+//        // add user1
+//        BaseWorkgroupMember member = new BaseWorkgroupMember();
+//		member.setWorkflowId(user1.getWorkflowId());
+//		member.setMemberType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+//		member.setWorkgroup(workgroup2);
+//		member.setWorkgroupVersionNumber(workgroup2.getVersionNumber());
+//		member.setWorkgroupId(workgroup2.getWorkgroupId());
+//		workgroup2.getWorkgroupMembers().add(member);
+//		workgroup2.getMembers().clear();
+//		workgroup2.materializeMembers();
+//		KEWServiceLocator.getWorkgroupService().save(workgroup2);
+//
+//		// update action items
+//        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup2, workgroup2);
+//        // there should now be an action item to user1
+//        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+//        assertEquals("Should be 6 action items.", 6, actionItems.size());
+//        boolean foundUser1 = false;
+//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
+//			ActionItem actionItem = (ActionItem) iterator.next();
+//			if (actionItem.getWorkflowId().equals(user1.getWorkflowId())) {
+//				foundUser1 = true;
+//			}
+//		}
+//        assertTrue("Should have found an action item to user1.", foundUser1);
+//
+//        // remove a user from the AIWGNested1 workgroup from AIWGNested2
+//        Workgroup aiwgNested1Workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested1"));
+//        BaseWorkgroup workgroup3 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested2"));
+//        assertNotNull(workgroup3);
+//        BaseWorkgroup oldWorkgroup3 = copy(workgroup3);
+//
+//        assertEquals("Workgroup should have 3 members.", 3, workgroup3.getWorkgroupMembers().size());
+//        assertEquals("Workgroup should have 6 users.", 6, workgroup3.getUsers().size());
+//        for (Iterator iterator = workgroup3.getWorkgroupMembers().iterator(); iterator.hasNext();) {
+//			member = (BaseWorkgroupMember) iterator.next();
+//			// remove ewestfal
+//			if (member.getMemberType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD) &&
+//					member.getWorkflowId().equals(aiwgNested1Workgroup.getWorkflowGroupId().getGroupId().toString())) {
+//				iterator.remove();
+//			}
+//		}
+//        workgroup3.getMembers().clear();
+//        workgroup3.materializeMembers();
+//        assertEquals("Workgroup should have 2 members.", 2, workgroup3.getWorkgroupMembers().size());
+//        assertEquals("Workgroup should have 3 users.", 3, workgroup3.getUsers().size());
+//        KEWServiceLocator.getWorkgroupService().save(workgroup3);
+//
+//        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+//        assertEquals("Should be 6 action items.", 6, actionItems.size());
+//
+//        // now, let's update the action items for our workgroup change
+//        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup3, workgroup3);
+//
+//        // there should only be 3 action items now
+//        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+//        assertEquals("Should be 3 action items.", 3, actionItems.size());
+//        WorkflowUser pmckown = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("pmckown"));
+//        WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
+//        WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
+//        boolean foundPmckown = false;
+//        boolean foundJhopf = false;
+//        boolean foundBmcgough = false;
+//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
+//			ActionItem actionItem = (ActionItem) iterator.next();
+//			if (actionItem.getWorkflowId().equals(pmckown.getWorkflowId())) {
+//				foundPmckown = true;
+//			} if (actionItem.getWorkflowId().equals(jhopf.getWorkflowId())) {
+//				foundJhopf = true;
+//			} if (actionItem.getWorkflowId().equals(bmcgough.getWorkflowId())) {
+//				foundBmcgough = true;
+//			}
+//		}
+//        assertTrue("Should have found an action item to pmckown.", foundPmckown);
+//        assertTrue("Should have found an action item to jhopf.", foundJhopf);
+//        assertTrue("Should have found an action item to bmcgough.", foundBmcgough);
+
+    }
+
+    /**
      * addresses the following bug http://fms.dfa.cornell.edu:8080/browse/KULWF-428
      *
      * @throws Exception
@@ -432,14 +330,17 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 
+        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
+        
         ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;
         boolean routedTestWorkgroup = false;
         for (int i = 0; i < ars.length; i++) {
             ActionRequestDTO request = ars[i];
-            if (request.isGroupRequest() && request.getGroupVO().getGroupName().equals("TestWorkgroup")) {
+            if (request.isGroupRequest() && testGroup.getGroupId().equals(request.getGroupId())) {
                 routedTestWorkgroup = true;
-            } else if (request.isGroupRequest() && request.getGroupVO().getGroupName().equals("WorkflowAdmin")) {
+            } else if (request.isGroupRequest() && adminGroup.getGroupId().equals(request.getGroupId())) {
                 routedWorkflowAdmin = true;
             }
         }

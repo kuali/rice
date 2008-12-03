@@ -44,6 +44,8 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -95,8 +97,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 				if (actionRequested.getUserDTO() != null) {
 					if (!recipient.equals(actionRequested.getUserDTO().getNetworkId()))
 						continue;
-				} else if (actionRequested.getGroupVO()!= null) {
-					if (!recipient.equals(actionRequested.getGroupVO().getGroupName()))
+				} else if (actionRequested.getGroupId()!= null) {
+					KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequested.getGroupId());
+					if (!recipient.equals(group.getGroupName()))
 						continue;
 				} else {
 					throw new RuntimeException("Action request not sent to user or workgroup");
@@ -675,9 +678,10 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		assertEquals(2, actionRequests.length);
 		ActionRequestDTO actionRequest = actionHasBeenRequested(actionRequests, TEST_ADHOC_GROUP, "K");
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
 		assertEquals("K", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc acknowledge for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
+		assertEquals(TEST_ADHOC_GROUP, group.getGroupName());
 		assertTrue("Should be an Acknowledge request", actionRequest.isAcknowledgeRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -799,9 +803,10 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		assertEquals(1, actionRequests.length);
 		ActionRequestDTO actionRequest = actionRequests[0];
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
 		assertEquals("A", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc approve for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
+		assertEquals(TEST_ADHOC_GROUP, group.getGroupName());
 		assertTrue("Should be an Approval request", actionRequest.isApprovalRequest());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
@@ -1074,9 +1079,10 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 		assertEquals(2, actionRequests.length);
 		ActionRequestDTO actionRequest = actionRequests[0];
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
 		assertEquals("F", actionRequest.getActionRequested());
 		assertEquals("requesting adhoc fyi for " + TEST_ADHOC_GROUP, actionRequest.getAnnotation());
-		assertEquals(TEST_ADHOC_GROUP, actionRequest.getGroupVO().getGroupName());
+		assertEquals(TEST_ADHOC_GROUP, group.getGroupName());
 		assertTrue("Should be an AdHoc request", actionRequest.isAdHocRequest());
 		assertFalse("Should NOT be Done", actionRequest.isDone());
 		actionRequest = actionRequests[1];

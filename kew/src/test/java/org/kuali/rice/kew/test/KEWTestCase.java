@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Before;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.web.jetty.JettyServer;
@@ -28,6 +27,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -222,7 +222,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		// at this point this is constants. loading these through xml import is
 		// problematic because of cache notification
 		// issues in certain low level constants.
-		new SQLDataLoader("DefaultTestData.sql", KEWTestCase.class).runSql();
+		new SQLDataLoader("classpath:org/kuali/rice/kew/test/DefaultTestData.sql", ";").runSql();
 		
 		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class, "DefaultTestData.xml");
 	}

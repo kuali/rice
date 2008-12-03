@@ -22,7 +22,6 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -33,8 +32,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.useroptions.UserOptions;
-import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -201,7 +198,6 @@ public class OutboxTest extends KEWTestCase {
 
     @Test
     public void testOnlyPersonWhoTookActionReceivesOutboxItem_Workgroup() throws Exception {
-        loadXmlFile("OutboxTestConfig.xml");
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
         final WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
         final WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));

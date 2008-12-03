@@ -423,14 +423,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             if (ar.isUserRequest() && user.getWorkflowUserId().getWorkflowId().equals(ar.getWorkflowId())) {
                 matchedArs.add(ar);
             } else if (ar.isGroupRequest()) {
-            	List arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(ar.getWorkflowId());
-                for (Iterator i = arGroups.iterator();i.hasNext(); ){
-                	String groupId = (String) i.next();
-                	List memberGroups = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(user.getWorkflowId());
-                	for (Iterator grp = memberGroups.iterator();grp.hasNext();)
-                		if(groupId.equals(grp.next()))
-                			matchedArs.add(ar);
-                	}
+            	List<String> arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+            	if (arGroups.contains("" + ar.getGroupId())) {
+            		matchedArs.add(ar);
+            	}
             }
         }
         return matchedArs;

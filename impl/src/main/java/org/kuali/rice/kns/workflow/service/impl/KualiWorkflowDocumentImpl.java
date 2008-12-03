@@ -290,13 +290,9 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {
-                    		int totalMembers = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(actionRequests[actionRequestIndex].getGroupVO().getGroupId()).size();
-                        for (int groupMemberIndex = 0; groupMemberIndex < totalMembers; groupMemberIndex++) {
-                        	if (currentUser.getWorkflowId().equals(KIMServiceLocator.getUserService().getWorkflowUser(actionRequests[actionRequestIndex].getUserIdVO())))
-                        	{
-                                isAdHocRequested = true;
-                            }
-                        }
+                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(currentUser.getWorkflowId(), actionRequests[actionRequestIndex].getGroupId())) {
+                    		isAdHocRequested = true;
+                    	}
                     }
                 }
             }

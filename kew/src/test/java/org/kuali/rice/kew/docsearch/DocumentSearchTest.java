@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.resource.spi.work.WorkListener;
+
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -45,6 +47,8 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.test.TestHarnessServiceLocator;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 
 public class DocumentSearchTest extends KEWTestCase {
@@ -87,6 +91,70 @@ public class DocumentSearchTest extends KEWTestCase {
         savedSearchResults = docSearchService.getSavedSearchResults(user, "DocSearch.NamedSearch.for in accounts");
         assertNotNull(savedSearchResults);
         assertNotNull(savedSearchResults.getSearchResult());
+    }
+
+    /**
+     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
+     * Tests that we can safely search on docs whose initiator no longer exists in the identity management system
+     * This test searches by doc type name criteria.
+     * @throws Exception
+     */
+    @Test public void testDocSearch_MissingInitiator() throws Exception {
+        String documentTypeName = "SearchDocType";
+        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        String userNetworkId = "arh14";
+        // route a document to enroute and route one to final
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("testDocSearch_MissingInitiator");
+        workflowDocument.routeDocument("routing this document.");
+        
+        // verify the document is enroute for jhopf
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        assertTrue(workflowDocument.stateIsEnroute());
+        assertTrue(workflowDocument.isApprovalRequested());
+
+        // now nuke the initiator...
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update EN_DOC_HDR_T set DOC_INITR_PRSN_EN_ID = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+
+        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        assertNotNull(result);
+        assertNotNull(result.getSearchResults());
+        assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
+    }
+    
+    /**
+     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
+     * Tests that we can safely search on docs by initiator workflow id when the initiator no longer exists in the identity management system
+     * This test searches by initiator criteria.
+     * @throws Exception
+     */
+    @Test public void testDocSearch_SearchOnMissingInitiator() throws Exception {
+        String documentTypeName = "SearchDocType";
+        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        String userNetworkId = "arh14";
+        // route a document to enroute and route one to final
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("testDocSearch_MissingInitiator");
+        workflowDocument.routeDocument("routing this document.");
+        
+        // verify the document is enroute for jhopf
+        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        assertTrue(workflowDocument.stateIsEnroute());
+        assertTrue(workflowDocument.isApprovalRequested());
+
+        // now nuke the initiator...
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update EN_DOC_HDR_T set DOC_INITR_PRSN_EN_ID = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+
+        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
+        criteria.setInitiator("bogus user");
+        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        assertNotNull(result);
+        assertNotNull(result.getSearchResults());
+        assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
     }
 
     @Test public void testDocSearch_RouteNodeName() throws Exception {

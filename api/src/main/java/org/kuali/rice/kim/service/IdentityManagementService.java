@@ -123,4 +123,16 @@ public interface IdentityManagementService {
 
     List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
     List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
+
+    // ----------------------
+    // Cache Flush Methods
+    // ----------------------
+    
+    void flushAllCaches();
+    void flushEntityPrincipalCaches();
+	void flushGroupCaches();
+	void flushPermissionCaches();
+	void flushResponsibilityCaches();
+
+    
 }

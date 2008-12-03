@@ -415,6 +415,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public List findAllValidRequests(WorkflowUser user, Collection actionRequests, String requestCode)
     throws KEWUserNotFoundException {
         List matchedArs = new ArrayList();
+        List<String> arGroups = null;
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue ar = (ActionRequestValue) iter.next();
             if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode) > 0) {
@@ -423,12 +424,17 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             if (ar.isUserRequest() && user.getWorkflowUserId().getWorkflowId().equals(ar.getWorkflowId())) {
                 matchedArs.add(ar);
             } else if (ar.isGroupRequest()) {
-            	List<String> arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
-            	if (arGroups.contains("" + ar.getGroupId())) {
-            		matchedArs.add(ar);
+            	if (arGroups == null) {
+            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+            	}
+            	for (String groupId : arGroups) {
+            		if (groupId.equals(ar.getGroupId().toString())) {
+            			matchedArs.add(ar);
+            		}
             	}
             }
         }
+        System.out.println("Found " + matchedArs.size() + " matching action requests for user " + user.getDisplayName());
         return matchedArs;
     }
 

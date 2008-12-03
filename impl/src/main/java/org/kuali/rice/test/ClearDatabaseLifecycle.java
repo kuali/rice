@@ -158,7 +158,13 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                             if (isUsingMySQL(metaData)) {
                             	statement.addBatch("SET FOREIGN_KEY_CHECKS = 1");
                             }
-                            statement.executeBatch();
+                            int[] results = statement.executeBatch();
+                            for (int index = 0; index < results.length; index++) {
+                            	if (results[index] == Statement.EXECUTE_FAILED) {
+                    				Assert.fail("Execution of database clear statement failed.");
+                            	}
+                            	
+                            }
                             resultSet.close();
                             LOG.info("Tables successfully cleared for schema " + schemaName);
                             return null;

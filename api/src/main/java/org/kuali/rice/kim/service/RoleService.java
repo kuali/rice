@@ -75,7 +75,7 @@ public interface RoleService {
     boolean isRoleActive( String roleId );
 
     List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification );
-
+    List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
     // --------------------
     // Role Membership Checks
     // --------------------

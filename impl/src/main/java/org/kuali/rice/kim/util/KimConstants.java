@@ -57,7 +57,8 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "documentNumber";
 	public static final String KIM_ATTRIB_PROPERTY_NAME = "propertyName";
 	public static final String KIM_ATTRIB_COMPONENT_NAME = "Component";
-	public static final String KIM_ATTRIB_EXISTING_RECORDS_ONLY = "existingRecordsOnly";
+	public static final String KIM_ATTRIB_EXISTING_RECORDS_ONLY = "existingRecordsOnly";	
+	public static final String KIM_ATTRIB_PARAMETER_NAME = "parameterName";
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
 	public static final String KIM_ATTRIB_DESCEND_HIERARCHY = "descendHierarchy";
 	

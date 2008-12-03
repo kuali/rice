@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/>
+
+    <bean id="riceServiceInjectedObject" class="org.kuali.rice.core.util.RiceServiceInjectedObject">
+        <property name="wireMeInSpring" value="A Spring-wired value"/>
+    </bean>
+    
+    <bean id="riceServiceInjectedDescendent" class="org.kuali.rice.core.util.RiceServiceInjectedDescendent" depends-on="rice">
+        <property name="wireMeInSpring" value="A Spring-wired value in the descendent"/>
+    </bean>
+
+    <!-- Exercising overriding a Rice service without having to pull the definition of each and every
+         injected bean -->    
+    <bean id="documentService" class="org.kuali.rice.core.util.ClientDocumentServiceImpl"/>
+
+</beans>

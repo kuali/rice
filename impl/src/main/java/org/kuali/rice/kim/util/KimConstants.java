@@ -32,12 +32,26 @@ public class KimConstants {
 	public static final String DOC_STATUS = "Route Status Code";
     public static final String KEY_EDIT_MODE = "keyEditMode";
 	public static final String PERMISSION_UNMARK = "Unmark";
-	public static final String PERMISSION_UNMASK_PROPERTY = "Completely Unmask Property";
-	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partially Unmask Property";
-	public static final String PERMISSION_VIEW_PROPERTY = "View Property";
-	public static final String PERMISSION_EDIT_PROPERTY = "Edit Property";
+	public static final String PERMISSION_UNMASK_PROPERTY = "Full Unmask Field";
+	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partial Unmask Field";
+	public static final String PERMISSION_VIEW_PROPERTY = "View Inquiry or Maintenance Document Field(s)";
+	public static final String PERMISSION_EDIT_PROPERTY = "Modify Maintenance Document Field(s)";
+	public static final String PERMISSION_EDIT_DOCUMENT = "Edit Document";
+	public static final String PERMISSION_COPY_DOCUMENT = "Copy Document";
+	public static final String PERMISSION_OPEN_DOCUMENT = "Open Document";
+	public static final String PERMISSION_TAKE_REQUESTED_ACTION = "Take Requested Action";
+	public static final String PERMISSION_INITIATE_DOCUMENT = "Initiate Document";
+	public static final String PERMISSION_BLANKET_APPROVE_DOCUMENT ="Blanket Approve Document";
+	public static final String PERMISSION_CANCEL_DOCUMENT ="Cancel Document";
+	public static final String PERMISSION_SAVE_DOCUMENT ="Save Document";
+	public static final String PERMISSION_ROUTE_DOCUMENT ="Route Document";
+	public static final String PERMISSION_PERFORM_ROUTE_REPORT = "Perform Route Report";
+	public static final String PERMISSION_APPROVE_DOCUMENT = "Approve Document";
+	public static final String PERMISSION_ADD_NOTE = "Add Note";
+	public static final String PERMISSION_ERROR_CORRECT_DOCUMENT = "Error Correct Document";
+	public static final String PERMISSION_USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
-	public static final String KIM_ATTRIB_EDIT_MODE = "Edit Mode";
+	public static final String KIM_ATTRIB_EDIT_MODE = "editMode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
 	public static final String KIM_ATTRIB_ACTION_CLASS ="actionClass";	
 	public static final String KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE ="actionRequestCd";		
@@ -51,22 +65,26 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_TYPE_CODE ="typeCd";
 	public static final String KIM_ATTRIB_CREATED_SELF_ONLY ="createdBySelfOnly";	
 	public static final String KIM_ATTRIB_NAMESPACE_CODE = "Namespace Code";
-	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "Document Type Name";
-	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "Route Status Code";
-	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "routeNodeName";
+	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "name";
+	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "docRouteStatus";
+	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "docRouteName";
 	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "documentNumber";
 	public static final String KIM_ATTRIB_PROPERTY_NAME = "propertyName";
-	public static final String KIM_ATTRIB_COMPONENT_NAME = "Component";
-	public static final String KIM_ATTRIB_EXISTING_RECORDS_ONLY = "existingRecordsOnly";	
+	public static final String KIM_ATTRIB_COMPONENT_NAME = "parameterDetailTypeCode";
+	public static final String KIM_ATTRIB_EXISTING_RECORDS_ONLY = "existingRecordsOnly";
 	public static final String KIM_ATTRIB_PARAMETER_NAME = "parameterName";
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
 	public static final String KIM_ATTRIB_DESCEND_HIERARCHY = "descendHierarchy";
+	public static final String KIM_ATTRIB_ACTION_REQUEST_CODE = "actionRequestCd";
 	
+	public static final String KIM_ATTRIB_ACTION = "action";
 	public static final String KIM_ROLE_NAME_USER = "User";
 	public static final String KIM_ROLE_NAME_BILLER = "Biller";
 	public static final String KIM_ROLE_NAME_PROCESSOR = "Processor";	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 
+	public static final String KIM_AD_HOC  ="AdHoc";
+	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 	

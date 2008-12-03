@@ -44,8 +44,6 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -117,29 +115,15 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	private transient DocumentRouteHeaderValue routeHeader;
     @Transient
     private Timestamp lastApprovedDate; 
-/*
-    private Workgroup getWorkgroup(Long workgroupId) {
-    	if (groupId == null) {
-    		return null;
-    	}
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
-    }
-    */
+
     private KimGroup getGroup(String groupId) {
     	if( groupId ==null )	return null;
-    	return KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+    	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
     
     public KimGroup getGroup(){
-    	return getGroup(groupId+"");
+    	return getGroup(groupId.toString());
     }
-   /* public Workgroup getWorkgroup() {
-        return getWorkgroup(groupId);
-    }
-    
-    public Workgroup getDelegatorWorkgroup() {
-        return getWorkgroup(delegatorGroupId);
-    }*/
 
     private WorkflowUser getUser(String workflowId) throws KEWUserNotFoundException {
     	if (StringUtils.isBlank(workflowId)) {

@@ -18,9 +18,7 @@ package org.kuali.rice.kew.actionrequest.dao;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 

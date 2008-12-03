@@ -23,6 +23,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kns.bo.KualiCodeBase;
 

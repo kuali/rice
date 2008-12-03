@@ -74,7 +74,7 @@ public class GroupServiceImpl implements GroupService {
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("namespaceCode", namespaceCode);
 		criteria.put("groupName", groupName);
-		criteria.put("active", "Y");
+		//criteria.put("active", "Y");
 		Collection<KimGroupImpl> groups = getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
 		if ( groups.size() > 0 ) {
 			return groups.iterator().next();
@@ -160,7 +160,7 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 3 );
 		criteria.put("memberPrincipals.memberPrincipalId", principalId);
-		criteria.put("active", "Y");
+		//criteria.put("active", "Y");
 		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
 			criteria.put("namespaceCode", namespaceCode);
 		}

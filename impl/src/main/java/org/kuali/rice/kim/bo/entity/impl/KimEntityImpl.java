@@ -58,7 +58,7 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
-	@OneToMany(targetEntity = EntityNameImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityNameImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<EntityNameImpl> names = new TypedArrayList(EntityNameImpl.class);
 		

@@ -22,8 +22,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -31,10 +36,12 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -47,13 +54,22 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 @Entity
 @Table(name="KRSB_SVC_DEF_T")
 @Sequence(name="KRSB_SVC_DEF_S", property="messageEntryId")
+@NamedQueries({
+	@NamedQuery(name="ServiceInfo.FetchAll", query="select s from ServiceInfo s"),
+	@NamedQuery(name="ServiceInfo.FetchAllActive",query="select s from ServiceInfo s where s.alive = true"),
+	@NamedQuery(name="ServiceInfo.FindLocallyPublishedServices",query="select s from ServiceInfo s where s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
+	@NamedQuery(name="ServiceInfo.DeleteLocallyPublishedServices",query="delete from ServiceInfo s WHERE s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
+	@NamedQuery(name="ServiceInfo.DeleteByEntry",query="delete from ServiceInfo s where s.messageEntryId = :messageEntryId")			
+})
 public class ServiceInfo implements Serializable {
-	
+ 
 	private static final long serialVersionUID = -4244884858494208070L;
     @Transient
 	private ServiceDefinition serviceDefinition;
 	@Id
-	@Column(name="SVC_DEF_ID")
+	@Column(name="SVC_DEF_ID")  
+	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="SvcDefSeq")
+	@SequenceGenerator(name="SvcDefSeq",sequenceName="KRSB_SVC_DEF_S", allocationSize=1)
 	private Long messageEntryId;
     @Transient
 	private QName qname;
@@ -67,7 +83,6 @@ public class ServiceInfo implements Serializable {
 	private String serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;
-	@Type(type="yes_no")
     @Column(name="SVC_ALIVE")
 	private Boolean alive = true; 
 	@Column(name="SVC_NMSPC")
@@ -214,4 +229,6 @@ public class ServiceInfo implements Serializable {
 	public String toString() {
 	    return ReflectionToStringBuilder.toString(this);
 	}
+	
+
 }

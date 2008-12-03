@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -48,6 +49,7 @@ public class KimPrincipalImpl extends PersistableBusinessObjectBase implements K
 	private String password;
 	
 	@Column(name="actv_ind")
+	@Type(type="yes_no")
 	private boolean active;
 
 	@Override

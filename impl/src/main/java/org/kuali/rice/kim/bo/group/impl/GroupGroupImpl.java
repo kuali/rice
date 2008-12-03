@@ -36,9 +36,9 @@ public class GroupGroupImpl extends GroupMemberBase implements GroupGroup, Inact
 
 	@Column(name="MBR_GRP_ID")
 	protected String memberGroupId;
-	@Column(name="ACTV_FRM_IND")
+	@Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_IND")
+	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;
 	
 	/**

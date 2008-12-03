@@ -31,6 +31,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -57,8 +58,11 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	protected String groupName;
 	@Column(name="GRP_DESC",length=4000)
 	protected String groupDescription;
+	
 	@Column(name="ACTV_IND")
+	@Type(type="yes_no")
 	protected boolean active;
+	
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 	@Column(name="NMSPC_CD")
@@ -73,7 +77,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	protected List<GroupPrincipalImpl> memberPrincipals;
 
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
+	@JoinColumn(name="TARGET_PRIMARY_KEY", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 	
 	/**

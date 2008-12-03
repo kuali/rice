@@ -36,9 +36,9 @@ public class GroupPrincipalImpl extends GroupMemberBase implements GroupPrincipa
 
 	@Column(name="PRNCPL_ID")
 	protected String memberPrincipalId;
-	@Column(name="ACTV_FRM_IND")
+	@Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_IND")
+	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;
 	
 	/**

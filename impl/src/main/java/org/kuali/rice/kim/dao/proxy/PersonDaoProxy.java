@@ -105,4 +105,12 @@ public class PersonDaoProxy<T extends PersonImpl> extends PlatformAwareDaoBaseOj
 	public Class<? extends Person> getPersonImplementationClass() {
 		return actualDao.getPersonImplementationClass();
 	}
+
+	public void savePersonToCache(Person p) {
+		this.actualDao.savePersonToCache( p );
+	}
+
+	public T getPersonFromCache(String principalId) {
+		return this.actualDao.getPersonFromCache( principalId );
+	}
 }

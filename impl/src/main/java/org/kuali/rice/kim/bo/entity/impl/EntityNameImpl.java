@@ -146,7 +146,7 @@ public class EntityNameImpl extends DefaultableEntityDataBase implements EntityN
 	 * @see org.kuali.rice.kim.bo.entity.EntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
-		return getLastName() + ", " + getFirstName() + " " + getMiddleName();
+		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
 	}
 	
 	/**

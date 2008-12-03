@@ -84,12 +84,15 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		// get the entity
 		if ( principal != null ) {
 			entity = identityManagementService.getEntity( principal.getEntityId() );
+		} else { // attempt to load from the cache and create the Person object
+			person = personDao.getPersonFromCache( principalId );
 		}
 		// convert the principal and entity to a Person
-		if ( entity != null ) {
+		// skip if the person was created from the DB cache
+		if ( person == null && entity != null ) {
 			person = (PersonImpl)personDao.convertEntityToPerson( entity, principal );
+			addPersonImplToCache( person );
 		}
-		addPersonImplToCache( person );
 		return person;
 	}
 
@@ -122,6 +125,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			personByPrincipalNameCache.put( person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 			personByPrincipalIdCache.put( person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 			personByEmployeeIdCache.put( person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
+			// store the person to the database cache
+			personDao.savePersonToCache( person );
 		}
 	}
 	
@@ -188,7 +193,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		List<PersonImpl> people = personDao.findPeople(criteria, unbounded); 
 		// QUESTION: Do we want to do this?
 		for ( PersonImpl p : people ) {
-			addPersonImplToCache( p );
+			// check whether the item is in the cache first - otherwise would add
+			// to cache on every lookup
+			if ( getPersonImplFromPrincipalIdCache( p.getPrincipalId() ) == null ) {
+				addPersonImplToCache( p );
+			}
 		}
 		return people;
 	}

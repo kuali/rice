@@ -52,4 +52,6 @@ public interface PersonDao<T extends Person> {
 	
 	T convertEntityToPerson( KimEntity entity, KimPrincipal principal );
 	
+	void savePersonToCache( Person p );
+	T getPersonFromCache( String principalId );
 }

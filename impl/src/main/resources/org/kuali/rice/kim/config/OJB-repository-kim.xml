@@ -832,4 +832,25 @@
     </reference-descriptor>
   </class-descriptor>     
 
+  <!-- ******************************************************************* -->
+  <!-- Other Support Tables -->
+  <!-- ******************************************************************* -->    
+
+  <class-descriptor class="org.kuali.rice.kim.bo.impl.PersonCacheImpl" table="KRIM_PRSN_CACHE_T">
+  	<field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" />
+  	<field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR" />
+  	<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" />
+  	<field-descriptor name="entityTypeCode" column="ENTITY_TYP_CD" jdbc-type="VARCHAR" />
+  	<field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR" />
+  	<field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR" />
+  	<field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR" />
+  	<field-descriptor name="name" column="PRSN_NM" jdbc-type="VARCHAR" />
+  	<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" />
+  	<field-descriptor name="primaryDepartmentCode" column="PRMRY_DEPT_CD" jdbc-type="VARCHAR" />
+  	<field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR" />
+  	<field-descriptor name="lastUpdateTimestamp" column="LAST_UPDT_TS" jdbc-type="TIMESTAMP" />
+  	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+    <!-- DO NOT ADD THE LOCKING COLUMN - NOT NEEDED FOR THIS TABLE -->
+  </class-descriptor>
+
 </descriptor-repository>

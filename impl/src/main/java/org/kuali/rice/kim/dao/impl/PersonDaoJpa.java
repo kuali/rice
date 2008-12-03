@@ -35,7 +35,7 @@ public class PersonDaoJpa<T extends PersonImpl> implements PersonDao<T> {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.v2.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
+	 * @see org.kuali.rice.kim.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
 	 */
 	public T convertEntityToPerson(KimEntity entity, KimPrincipal principal) {
 		throw new UnsupportedOperationException( "method not implemented" );
@@ -72,7 +72,7 @@ public class PersonDaoJpa<T extends PersonImpl> implements PersonDao<T> {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCode()
+	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCodes()
 	 */
 	public List<String> getPersonEntityTypeCodes() {
 		throw new UnsupportedOperationException( "method not implemented" );
@@ -85,5 +85,21 @@ public class PersonDaoJpa<T extends PersonImpl> implements PersonDao<T> {
 	 */
 	public Class<? extends Person> getPersonImplementationClass() {
 		throw new UnsupportedOperationException( "method not implemented" );
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.PersonDao#savePersonToCache(org.kuali.rice.kim.bo.Person)
+	 */
+	public void savePersonToCache(Person p) {
+		throw new UnsupportedOperationException();
+		// 
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonFromCache(java.lang.String)
+	 */
+	public T getPersonFromCache(String principalId) {
+		throw new UnsupportedOperationException();
+		// return null;
 	}
 }

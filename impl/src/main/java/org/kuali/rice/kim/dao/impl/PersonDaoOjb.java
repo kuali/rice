@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,10 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
@@ -42,26 +45,66 @@ import org.kuali.rice.kns.service.LookupService;
 public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb implements PersonDao<T> {
 
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
-
 	protected static final String ENTITY_AFFILIATION_PROPERTY_PREFIX = "affiliations.";
-
 	protected static final String ENTITY_EMAIL_PROPERTY_PREFIX = "entityTypes.emailAddresses.";
-
 	protected static final String ENTITY_PHONE_PROPERTY_PREFIX = "entityTypes.phoneNumbers.";
-
 	protected static final String ENTITY_ADDRESS_PROPERTY_PREFIX = "entityTypes.addresses.";
-
 	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "names.";
-
 	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
 
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
+	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
 
     protected Class<? extends T> personImplementationClass;
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
 	// String that can be passed to the lookup framework to create an type = X OR type = Y criteria
-	String personEntityTypeLookupCriteria = null;
+	private String personEntityTypeLookupCriteria = null;
     
+	protected Map<String,String> baseLookupCriteria = new HashMap<String,String>();
+	protected Map<String,String> criteriaConversion = new HashMap<String,String>();
+	protected ArrayList<String> personCachePropertyNames = new ArrayList<String>();
+	{
+		// init the criteria which will need to be applied to every lookup against
+		// the entity data tables
+		baseLookupCriteria.put( "active", "Y" );
+		baseLookupCriteria.put( "entityTypes.active", "Y" );
+		
+		// create the field mappings between the Person object and the KimEntity object
+		criteriaConversion.put( "entityId", "entityId" );
+		criteriaConversion.put( "active", "principals.active" );
+		criteriaConversion.put( "principalId", "principals.principalId" );
+		criteriaConversion.put( "principalName", "principals.principalName" );
+		criteriaConversion.put( "firstName", "names.firstName" );
+		criteriaConversion.put( "lastName", "names.lastName" );
+		criteriaConversion.put( "middleName", "names.middleName" );
+		criteriaConversion.put( "emailAddress", "entityTypes.emailAddresses.emailAddress" );
+		criteriaConversion.put( "phoneNumber", "entityTypes.phoneNumbers.phoneNumber" );
+		criteriaConversion.put( "line1", "entityTypes.addresses.line1" );
+		criteriaConversion.put( "line2", "entityTypes.addresses.line2" );
+		criteriaConversion.put( "line3", "entityTypes.addresses.line3" );
+		criteriaConversion.put( "cityName", "entityTypes.addresses.cityName" );
+		criteriaConversion.put( "stateCode", "entityTypes.addresses.stateCode" );
+		criteriaConversion.put( "postalCode", "entityTypes.addresses.postalCode" );
+		criteriaConversion.put( "countryCode", "entityTypes.addresses.countryCode" );
+		criteriaConversion.put( "campusCode", "affiliations.campusCode" );
+		criteriaConversion.put( "affiliationTypeCode", "affiliations.affiliationTypeCode" );
+		criteriaConversion.put( "externalIdentifierTypeCode", "externalIdentifiers.externalIdentifierTypeCode" );
+		criteriaConversion.put( "externalId", "externalIdentifiers.externalId" );		
+		criteriaConversion.put( "employeeTypeCode", "employmentInformation.employeeTypeCode" );
+		criteriaConversion.put( "employeeStatusCode", "employmentInformation.employeeStatusCode" );
+		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
+		criteriaConversion.put( "baseSalaryAmount", "employmentInformation.baseSalaryAmount" );
+		criteriaConversion.put( "primaryDepartmentCode", "employmentInformation.primaryDepartmentCode" );
+		
+		personCachePropertyNames.add( "principalId" );
+		personCachePropertyNames.add( "principalName" );
+		personCachePropertyNames.add( "entityId" );
+		personCachePropertyNames.add( "firstName" );
+		personCachePropertyNames.add( "lastName" );
+		personCachePropertyNames.add( "middleName" );
+		personCachePropertyNames.add( "campusCode" );
+		personCachePropertyNames.add( "employeeId" );
+		personCachePropertyNames.add( "primaryDepartmentCode" );
+	}
 
 	public T convertEntityToPerson( KimEntity entity, KimPrincipal principal ) {
 		try {
@@ -116,6 +159,10 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 			}
 		}
 		
+		// QUESTION: Should this be done?  Or, is the cache only for lookups by principal ID?
+			// if not looking for only active employees, check the cache table
+			// however, must exclude matches from the main query
+		
 //		LookupDao dao = (LookupDao)KIMServiceLocator.getService( "lookupDao" );
 //		dao.findCollectionBySearchHelper( example, formProps, true, false, dao )
 //		people.addAll(results);
@@ -126,41 +173,6 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 	}
 	
 	
-	protected Map<String,String> baseLookupCriteria = new HashMap<String,String>();
-	protected Map<String,String> criteriaConversion = new HashMap<String,String>();
-	{
-		// init the criteria which will need to be applied to every lookup against
-		// the entity data tables
-		baseLookupCriteria.put( "active", "Y" );
-		baseLookupCriteria.put( "entityTypes.active", "Y" );
-		
-		// create the field mappings between the Person object and the KimEntity object
-		criteriaConversion.put( "entityId", "entityId" );
-		criteriaConversion.put( "active", "principals.active" );
-		criteriaConversion.put( "principalId", "principals.principalId" );
-		criteriaConversion.put( "principalName", "principals.principalName" );
-		criteriaConversion.put( "firstName", "names.firstName" );
-		criteriaConversion.put( "lastName", "names.lastName" );
-		criteriaConversion.put( "middleName", "names.middleName" );
-		criteriaConversion.put( "emailAddress", "entityTypes.emailAddresses.emailAddress" );
-		criteriaConversion.put( "phoneNumber", "entityTypes.phoneNumbers.phoneNumber" );
-		criteriaConversion.put( "line1", "entityTypes.addresses.line1" );
-		criteriaConversion.put( "line2", "entityTypes.addresses.line2" );
-		criteriaConversion.put( "line3", "entityTypes.addresses.line3" );
-		criteriaConversion.put( "cityName", "entityTypes.addresses.cityName" );
-		criteriaConversion.put( "stateCode", "entityTypes.addresses.stateCode" );
-		criteriaConversion.put( "postalCode", "entityTypes.addresses.postalCode" );
-		criteriaConversion.put( "countryCode", "entityTypes.addresses.countryCode" );
-		criteriaConversion.put( "campusCode", "affiliations.campusCode" );
-		criteriaConversion.put( "affiliationTypeCode", "affiliations.affiliationTypeCode" );
-		criteriaConversion.put( "externalIdentifierTypeCode", "externalIdentifiers.externalIdentifierTypeCode" );
-		criteriaConversion.put( "externalId", "externalIdentifiers.externalId" );		
-		criteriaConversion.put( "employeeTypeCode", "employmentInformation.employeeTypeCode" );
-		criteriaConversion.put( "employeeStatusCode", "employmentInformation.employeeStatusCode" );
-		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
-		criteriaConversion.put( "baseSalaryAmount", "employmentInformation.baseSalaryAmount" );
-		criteriaConversion.put( "primaryDepartmentCode", "employmentInformation.primaryDepartmentCode" );
-	}
 	
 	public Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria ) {
 		if ( LOG.isDebugEnabled() ) {
@@ -327,4 +339,30 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		}
 	}
 	
+	public void savePersonToCache( Person p ) {
+		// create the cache version of the person
+		PersonCacheImpl pc = new PersonCacheImpl( p );
+		
+		// save it
+		getPersistenceBrokerTemplate().store( pc );
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonFromCache(java.lang.String)
+	 */
+	public T getPersonFromCache(String principalId) {
+		try {
+			PersonCacheImpl pci = (PersonCacheImpl)getPersistenceBrokerTemplate().getObjectById( PersonCacheImpl.class, principalId );
+			Constructor<? extends T> copyConstructor = getPersonImplementationClass().getConstructor( PersonCacheImpl.class );
+			T person = copyConstructor.newInstance( pci );			
+			return person;
+		} catch ( Exception ex ) {
+			// allow runtime exceptions to pass through
+			if ( ex instanceof RuntimeException ) {
+				throw (RuntimeException)ex;
+			} else {
+				throw new RuntimeException( "Problem building person object from DB cache", ex );
+			}
+		}
+	}
 }

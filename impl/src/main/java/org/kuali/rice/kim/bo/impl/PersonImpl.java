@@ -75,7 +75,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String phoneNumber = "";
 	// affiliation data
 	protected List<? extends EntityAffiliation> affiliations;
-	protected EntityAffiliation defaultAffiliation;
 	
 	protected String campusCode = "";
 	// external identifier data
@@ -86,7 +85,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String primaryDepartmentCode = "";
 	protected String employeeId = "";
 	
-	protected KualiDecimal baseSalaryAmount;
+	protected KualiDecimal baseSalaryAmount = KualiDecimal.ZERO;
 	protected boolean active = true;
 	
 	public PersonImpl() {}
@@ -101,6 +100,22 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	public PersonImpl( String principalId, String personEntityTypeCode ) {
 		this( getIdentityManagementService().getPrincipal(principalId), personEntityTypeCode );
+	}
+	
+	public PersonImpl( PersonCacheImpl p ) {
+		entityId = p.getEntityId();
+		principalId = p.getPrincipalId();
+		principalName = p.getPrincipalName();
+		entityTypeCode = p.getEntityTypeCode();
+		firstName = p.getFirstName();
+		middleName = p.getMiddleName();
+		lastName = p.getLastName();
+		name = p.getName();
+		campusCode = p.getCampusCode();
+		primaryDepartmentCode = p.getPrimaryDepartmentCode();
+		employeeId = p.getEmployeeId();
+		affiliations = new ArrayList<EntityAffiliation>( 0 );
+		externalIdentifiers = new HashMap<String,String>( 0 );
 	}
 
 	/**

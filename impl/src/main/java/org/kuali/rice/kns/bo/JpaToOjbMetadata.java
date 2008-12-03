@@ -32,7 +32,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
 
 
 
@@ -46,7 +46,7 @@ public class JpaToOjbMetadata {
 
 	public static void main( String[] args ) {
 		
-		Class<? extends PersistableBusinessObjectBase> clazz = KimGroupImpl.class;
+		Class<? extends PersistableBusinessObjectBase> clazz = PersonCacheImpl.class;
 
 		
 		StringBuffer sb = new StringBuffer( 1000 );
@@ -68,6 +68,10 @@ public class JpaToOjbMetadata {
 			return "VARCHAR";
 		} else if (dataType.equals(Long.class) || dataType.equals(Integer.class)) {
 			return "BIGINT";
+		} else if (dataType.equals(java.util.Date.class) || dataType.equals(java.sql.Date.class)) {
+			return "DATE";
+		} else if (dataType.equals(java.sql.Timestamp.class)) {
+			return "TIMESTAMP";
 		}
 		return "VARCHAR";
 	}

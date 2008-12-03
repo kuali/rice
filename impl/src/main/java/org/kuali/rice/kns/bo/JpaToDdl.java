@@ -27,12 +27,10 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
+import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
 
 
 
@@ -46,7 +44,7 @@ public class JpaToDdl {
 
 	public static void main( String[] args ) {
 		
-		Class<? extends PersistableBusinessObjectBase> clazz = KimDelegationRoleImpl.class;
+		Class<? extends PersistableBusinessObjectBase> clazz = PersonCacheImpl.class;
 
 		
 		StringBuffer sb = new StringBuffer( 1000 );
@@ -55,7 +53,7 @@ public class JpaToDdl {
 		
 		sb.append( "CREATE TABLE " ).append( tableAnnotation.name().toLowerCase() ).append( " (\r\n" );
 
-		getClassFields( clazz, sb, pk, null );
+		getClassFields( tableAnnotation.name().toLowerCase(), clazz, sb, pk, null );
 		pk.append( " )\r\n" );
 		sb.append( pk );
 		sb.append( ")\r\n" );
@@ -74,11 +72,13 @@ public class JpaToDdl {
 			return "NUMBER(?,?)";
 		} else if (dataType.equals(java.util.Date.class) || dataType.equals(java.sql.Date.class)) {
 			return "DATE";
+		} else if (dataType.equals(java.sql.Timestamp.class)) {
+			return "TIMESTAMP";
 		}
 		return "VARCHAR(40)";
 	}
 	
-	private static void getClassFields( Class<? extends Object> clazz, StringBuffer sb, StringBuffer pk, Map<String,AttributeOverride> overrides ) {
+	private static void getClassFields( String tableName, Class<? extends Object> clazz, StringBuffer sb, StringBuffer pk, Map<String,AttributeOverride> overrides ) {
 		// first get annotation overrides
 		if ( overrides == null ) {
 			overrides = new HashMap<String,AttributeOverride>();
@@ -120,7 +120,7 @@ public class JpaToDdl {
 					}
 					if ( id != null ) {
 						if ( pk.length() == 0 ) {
-							pk.append( "\tCONSTRAINT table_name_tp1 PRIMARY KEY ( " );
+							pk.append( "\tCONSTRAINT " + tableName + "p1 PRIMARY KEY ( " );
 						} else {
 							pk.append( ", " );
 						}
@@ -135,7 +135,7 @@ public class JpaToDdl {
 			}
 		}
 		if ( !clazz.equals( PersistableBusinessObject.class ) && clazz.getSuperclass() != null ) {
-			getClassFields( clazz.getSuperclass(), sb, pk, overrides );
+			getClassFields( tableName, clazz.getSuperclass(), sb, pk, overrides );
 		}
 	}
 

@@ -148,10 +148,11 @@ public class RoleServiceImpl implements RoleService {
     	return results;    	
 	}
 
-	public List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification ) {
+	public AttributeSet getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification ) {
 		List<String> roleIds = new ArrayList<String>(1);
 		roleIds.add(getRoleIdByName(namespaceCode, roleName));
-		return getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
+		List<AttributeSet> results = getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
+		return results.size() == 1 ? results.get(0) : null;
 	}
 
 	

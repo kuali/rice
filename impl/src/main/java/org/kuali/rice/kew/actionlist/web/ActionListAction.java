@@ -176,7 +176,7 @@ public class ActionListAction extends WorkflowAction {
                 actionList = null;
             }
 
-            if (isOutboxMode(form, request)) {
+            if (isOutboxMode(form, request, preferences)) {
         	actionList = new ArrayList(actionListSrv.getOutbox(workflowUser, uSession.getActionListFilter()));
         	form.setOutBoxEmpty(actionList.isEmpty());
             } else {
@@ -271,13 +271,13 @@ public class ActionListAction extends WorkflowAction {
      * @param request
      * @return boolean indication whether the outbox should be fetched
      */
-    private boolean isOutboxMode(ActionListForm alForm, HttpServletRequest request) {
+    private boolean isOutboxMode(ActionListForm alForm, HttpServletRequest request, Preferences preferences) {
 	
 	boolean outBoxView = false;
 	
 	WorkflowUser user = UserSession.getAuthenticatedUser().getWorkflowUser();
 
-	if (! KEWServiceLocator.getPreferencesService().getPreferences(user).isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
+	if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
 	    request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
 	    alForm.setViewOutbox("false");
 	    alForm.setShowOutbox(false);

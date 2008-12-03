@@ -56,11 +56,8 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -429,7 +426,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             	List arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(ar.getWorkflowId());
                 for (Iterator i = arGroups.iterator();i.hasNext(); ){
                 	String groupId = (String) i.next();
-                	List memberGroups = getGroupService().getDirectMemberGroupIds(user.getWorkflowId());
+                	List memberGroups = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(user.getWorkflowId());
                 	for (Iterator grp = memberGroups.iterator();grp.hasNext();)
                 		if(groupId.equals(grp.next()))
                 			matchedArs.add(ar);
@@ -579,11 +576,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         return requests;
     }
-
-    private GroupService getGroupService() {
-        return (GroupService) KIMServiceLocator.getGroupService();
-    }
-    
+   
     public List findActivatedByGroup(KimGroup group) {
         return getActionRequestDAO().findActivatedByGroup(group);
     }
@@ -838,7 +831,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         // to work
         List<String> groupNames = getActionRequestDAO().getRequestGroupIds(documentId);
         for (String groupId : groupNames) {
-            KimGroup group =KIMServiceLocator.getGroupService().getGroupInfo(groupId) ;
+            KimGroup group =KIMServiceLocator.getIdentityManagementService().getGroup(groupId) ;
             //	KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
             if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), groupId)) {
                 return true;

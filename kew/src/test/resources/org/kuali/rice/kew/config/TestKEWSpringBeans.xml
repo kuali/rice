@@ -99,4 +99,5 @@
 	<bean id="testBaseResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase"/>
 	<bean id="testBaseRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
 
+    <import resource="classpath:/org/kuali/rice/kew/config/*-UnitTest.xml"/>
 </beans>

@@ -24,13 +24,14 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.util.RiceService;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.DocumentType;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -76,19 +77,41 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
-    private DocumentTypeService documentTypeService;
-    private DateTimeService dateTimeService;
-    private KualiRuleService kualiRuleService;
-    private DictionaryValidationService dictionaryValidationService;
-    private MaintenanceDocumentService maintenanceDocumentService;
-    private NoteService noteService;
-    protected WorkflowDocumentService workflowDocumentService;
-    protected BusinessObjectService businessObjectService;
-    protected DocumentAuthorizationService documentAuthorizationService;
-    protected DocumentDao documentDao;
-    private DataDictionaryService dataDictionaryService;
-    private DocumentHeaderService documentHeaderService;
     
+    @RiceService(name="documentTypeService")
+    private DocumentTypeService documentTypeService;
+    
+    @RiceService(name="dateTimeService")
+    private DateTimeService dateTimeService;
+    
+    @RiceService(name="kualiRuleService")
+    private KualiRuleService kualiRuleService;
+    
+    private DictionaryValidationService dictionaryValidationService;
+    
+    @RiceService(name="maintenanceDocumentService")
+    private MaintenanceDocumentService maintenanceDocumentService;
+    
+    @RiceService(name="noteService")
+    private NoteService noteService;
+    
+    @RiceService(name="workflowDocumentService")
+    protected WorkflowDocumentService workflowDocumentService;
+    
+    @RiceService(name="businessObjectService") // not sure what happened to the KNS resource loader; i'd use that by name if it were available
+    protected BusinessObjectService businessObjectService;
+    
+    @RiceService(name="documentAuthorizationService")
+    protected DocumentAuthorizationService documentAuthorizationService;
+    
+    @RiceService(name="documentDao")
+    protected DocumentDao documentDao;
+    
+    @RiceService(name="dataDictionaryService")
+    private DataDictionaryService dataDictionaryService;
+    
+    @RiceService(name="documentHeaderService")
+    private DocumentHeaderService documentHeaderService;
 
     /**
      * @see org.kuali.rice.kns.service.DocumentService#saveDocument(org.kuali.rice.kns.document.Document)

@@ -65,6 +65,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+// if Eclipse is complaining about this import you can fix it (the complaint)
+// by turning off the deprecated/restricted API error in compiler error/warnings settings
+// see: http://lkamal.blogspot.com/2008/09/eclipse-access-restriction-on-library.html
 import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
 
 /**

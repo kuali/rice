@@ -128,6 +128,33 @@ public class RoleServiceImpl implements RoleService {
 		return getBusinessObjectService().countMatching(KimRoleImpl.class, criteria) > 0;
 	}
 
+	public List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification ) {
+		List<AttributeSet> results = new ArrayList<AttributeSet>();
+		
+    	Map<String,KimRoleImpl> roles = roleDao.getRoleImplMap(roleIds);
+    	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
+    	
+    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForRoleIds( roleIds );
+    	for ( RolePrincipalImpl rp : rps ) {
+    		if (!rp.getPrincipalId().equals(principalId)) {
+    			continue;
+    		}
+    		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
+			if ( qualification == null || qualification.isEmpty() || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
+				results.add(rp.getQualifier());
+			}
+    	} 
+    	
+    	return results;    	
+	}
+
+	public List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification ) {
+		List<String> roleIds = new ArrayList<String>(1);
+		roleIds.add(getRoleIdByName(namespaceCode, roleName));
+		return getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
+	}
+
+	
     // --------------------
     // Role Membership Methods
     // --------------------

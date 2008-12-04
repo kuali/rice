@@ -291,13 +291,15 @@ public class PermissionServiceImpl implements PermissionService {
     
     public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(impls);
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
+    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
     	return KIMServiceLocator.getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
     }
 
     public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(impls);
+    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
+    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
     	return KIMServiceLocator.getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 

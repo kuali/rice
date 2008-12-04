@@ -69,7 +69,7 @@ public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {
     private void assertRuleAttributeExport(RuleAttribute oldRuleAttribute, RuleAttribute newRuleAttribute) {
         // ids should be the same because we don't version rule attributes, but thier version number should be different
         assertEquals("Ids should be the same.", oldRuleAttribute.getRuleAttributeId(), newRuleAttribute.getRuleAttributeId());
-        assertFalse("Version numbers should be different.", oldRuleAttribute.getLockVerNbr().equals(newRuleAttribute.getLockVerNbr()));
+        assertFalse("Version numbers should be different.", oldRuleAttribute.getVersionNumber().equals(newRuleAttribute.getVersionNumber()));
         assertEquals(oldRuleAttribute.getDescription(), newRuleAttribute.getDescription());
         assertEquals(oldRuleAttribute.getName(), newRuleAttribute.getName());
         assertEquals(oldRuleAttribute.getLabel(), newRuleAttribute.getLabel());

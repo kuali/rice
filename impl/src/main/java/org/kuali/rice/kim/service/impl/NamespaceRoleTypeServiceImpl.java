@@ -27,7 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class NamespaceCodeRoleTypeServiceImpl extends KimRoleTypeServiceBase {
+public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#performRoleQualifierQualificationMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)

@@ -466,7 +466,7 @@ public class ActionListTest extends KEWTestCase {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId(new Long(1));
-        actionItem.setWorkflowId(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(authenticationId)).getWorkflowUserId().getWorkflowId());
+        actionItem.setPrincipalId(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(authenticationId)).getWorkflowUserId().getWorkflowId());
         actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
         actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));

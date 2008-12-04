@@ -685,10 +685,10 @@ public class DocumentOperationAction extends WorkflowAction {
 				ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
 					try {
-						actionItem.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
+						actionItem.setPrincipalId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
 					} catch (KEWUserNotFoundException e) {
 						LOG.info("action item user not found");
-						actionItem.setWorkflowId(null);
+						actionItem.setPrincipalId(null);
 					}
 				}
 

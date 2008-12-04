@@ -210,7 +210,7 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setActionRequestId(actionRequestId);
         actionItem.setDocName(docName);
         actionItem.setRoleName(roleName);
-        actionItem.setWorkflowId(workflowId);
+        actionItem.setPrincipalId(workflowId);
         actionItem.setRouteHeaderId(routeHeaderId);
         actionItem.setDateAssigned(dateAssigned);
         actionItem.setDocHandlerURL(docHandlerUrl);

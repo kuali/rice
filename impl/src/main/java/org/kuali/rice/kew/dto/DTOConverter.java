@@ -343,8 +343,8 @@ public class DTOConverter {
         actionItemVO.setResponsibilityId(actionItem.getResponsibilityId());
         actionItemVO.setRoleName(actionItem.getRoleName());
         actionItemVO.setRouteHeaderId(actionItem.getRouteHeaderId());
-        actionItemVO.setWorkflowId(actionItem.getWorkflowId());
-        if (StringUtils.isNotEmpty(actionItem.getWorkflowId())) {
+        actionItemVO.setWorkflowId(actionItem.getPrincipalId());
+        if (StringUtils.isNotEmpty(actionItem.getPrincipalId())) {
             actionItemVO.setUser(convertUser(actionItem.getUser()));
         }
         actionItemVO.setGroupId("" + actionItem.getGroupId());

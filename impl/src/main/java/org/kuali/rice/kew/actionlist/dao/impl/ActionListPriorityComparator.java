@@ -56,7 +56,7 @@ public class ActionListPriorityComparator implements Comparator {
 	 */
 	protected boolean requiresComparison(ActionItem actionItem1, ActionItem actionItem2) {
 		return actionItem1.getRouteHeaderId().equals(actionItem2.getRouteHeaderId()) &&
-			actionItem1.getWorkflowId().equals(actionItem2.getWorkflowId());
+			actionItem1.getPrincipalId().equals(actionItem2.getPrincipalId());
 	}
 
 }

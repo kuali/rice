@@ -195,7 +195,7 @@ public class ActionListServiceImpl implements ActionListService {
             for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) requestIt.next();
                 ActionItem item = createActionItemForActionRequest(request);
-                item.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+                item.setPrincipalId(user.getWorkflowUserId().getWorkflowId());
                 saveActionItem(item);
             }
         }
@@ -212,7 +212,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setActionRequestId(actionRequest.getActionRequestId());
         actionItem.setDocName(docType.getName());
         actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-        actionItem.setWorkflowId(actionRequest.getWorkflowId());
+        actionItem.setPrincipalId(actionRequest.getWorkflowId());
         actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
         actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
@@ -353,7 +353,7 @@ public class ActionListServiceImpl implements ActionListService {
 
     public void validateActionItem(ActionItem actionItem) {
         List errors = new ArrayList();
-        String workflowId = actionItem.getWorkflowId();
+        String workflowId = actionItem.getPrincipalId();
         if (workflowId == null || workflowId.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
                     .getActionItemId().toString()));
@@ -477,7 +477,7 @@ public class ActionListServiceImpl implements ActionListService {
                         actionItem.getActionRequestId());
                 ActionTakenValue actionTaken = actionRequest.getActionTaken();
                 // if an action was taken...
-                if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
+                if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getPrincipalId())) {
                     this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
                 }
             }

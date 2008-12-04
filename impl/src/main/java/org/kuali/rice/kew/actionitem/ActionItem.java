@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,9 +53,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * NOTE: This object contains denormalized fields that have been copied from related ActionRequestValue and DocumentRouteHeaderValue
  * objects for performance reasons.  These should be preserved and their related objects should not be added to the OJB
  * mapping as we do not want them loaded for each ActionItem object.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * 
+ *
  */
 @Entity
 @Table(name="KREW_ACTN_ITM_T")
@@ -67,7 +67,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	@Column(name="ACTN_ITM_ID")
 	private Long actionItemId;
     @Column(name="PRNCPL_ID")
-	private String workflowId;
+	private String principalId;
 	@Column(name="ASND_DT")
 	private Timestamp dateAssigned;
     @Column(name="RQST_CD")
@@ -109,18 +109,18 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     private Integer actionItemIndex;
     @Transient
     private Map customActions = new HashMap();
-    
+
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_HDR_ID")
 	private transient DocumentRouteHeaderValue routeHeader;
     @Transient
-    private Timestamp lastApprovedDate; 
+    private Timestamp lastApprovedDate;
 
     private KimGroup getGroup(String groupId) {
     	if( groupId ==null )	return null;
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
-    
+
     public KimGroup getGroup(){
     	return getGroup(groupId.toString());
     }
@@ -131,11 +131,11 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     	}
         return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
     }
-    
+
     public WorkflowUser getUser() throws KEWUserNotFoundException {
-        return getUser(workflowId);
+        return getUser(principalId);
     }
-    
+
     public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
         return getUser(delegatorWorkflowId);
     }
@@ -218,12 +218,12 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.dateAssigned = dateAssigned;
     }
 
-    public String getWorkflowId() {
-        return workflowId;
+    public String getPrincipalId() {
+        return principalId;
     }
 
-    public void setWorkflowId(String workflowId) {
-        this.workflowId = workflowId;
+    public void setPrincipalId(String principalId) {
+        this.principalId = principalId;
     }
 
     public Integer getLockVerNbr() {
@@ -297,23 +297,23 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    
+
     public String getDelegatorWorkflowId() {
         return delegatorWorkflowId;
     }
-    
+
     public void setDelegatorWorkflowId(String delegatorWorkflowId) {
         this.delegatorWorkflowId = delegatorWorkflowId;
     }
-    
+
     public Long getDelegatorGroupId() {
         return delegatorGroupId;
     }
-    
+
     public void setDelegatorGroupId(Long delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
-    
+
     public String getDateAssignedString() {
         if(dateAssignedString == null || dateAssignedString.trim().equals("")){
             return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
@@ -324,7 +324,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     public void setDateAssignedString(String dateAssignedString) {
         this.dateAssignedString = dateAssignedString;
     }
-    
+
     public String getActionToTake() {
         return actionToTake;
     }
@@ -356,12 +356,12 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     public void setDelegationType(String delegationType) {
         this.delegationType = delegationType;
     }
-    
+
     public String toString() {
         return new ToStringBuilder(this).append("actionItemId", actionItemId)
-                                        .append("workflowId", workflowId)
+                                        .append("workflowId", principalId)
                                         .append("actionItemId", actionItemId)
-                                        .append("workflowId", workflowId)
+                                        .append("workflowId", principalId)
                                         .append("dateAssigned", dateAssigned)
                                         .append("actionRequestCd", actionRequestCd)
                                         .append("actionRequestId", actionRequestId)

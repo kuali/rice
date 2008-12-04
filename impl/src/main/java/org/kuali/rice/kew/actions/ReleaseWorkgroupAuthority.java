@@ -94,7 +94,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(group.getGroupId())) {
                 if (actionRequest.getActionItems().size() == 1) {
                     ActionItem actionItem = (ActionItem) actionRequest.getActionItems().get(0);
-                    if (! actionItem.getWorkflowId().equals(getUser().getWorkflowId())) {
+                    if (! actionItem.getPrincipalId().equals(getUser().getWorkflowId())) {
                         return "User attempting to release workgroup authority did not take it.";
                     } else if (!forValidationOnly) {
                         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation

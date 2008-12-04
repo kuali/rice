@@ -71,7 +71,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	this.setRoleName(actionItem.getRoleName());
 	this.setRouteHeader(actionItem.getRouteHeader());
 	this.setRouteHeaderId(actionItem.getRouteHeaderId());
-	this.setWorkflowId(actionItem.getWorkflowId());
+	this.setPrincipalId(actionItem.getPrincipalId());
 	this.setGroupId(actionItem.getGroupId());
     }
     

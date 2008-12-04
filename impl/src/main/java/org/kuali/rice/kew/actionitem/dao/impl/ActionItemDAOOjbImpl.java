@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
@@ -43,7 +43,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 import org.kuali.rice.kim.service.*;
 /**
  * OJB implementation of {@link ActionItemDAO}.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionItemDAO {
@@ -67,7 +67,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId, String workflowUserId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("workflowId", workflowUserId);
+        crit.addEqualTo("principalId", workflowUserId);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
@@ -79,7 +79,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+        crit.addEqualTo("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
         QueryByCriteria query = new QueryByCriteria(ActionItem.class, crit);
         query.addOrderByAscending("routeHeader.routeHeaderId");
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -87,7 +87,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("workflowId", workflowId);
+        crit.addEqualTo("principalId", workflowId);
         crit.addEqualTo("routeHeaderId", routeHeaderId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
@@ -120,7 +120,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         orCriteria.addOrCriteria(notNullWorkflowCriteria);
         orCriteria.addOrCriteria(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+        criteria.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
         criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
@@ -161,7 +161,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria, true);
 
-        query.setAttributes(new String[]{"workflowId"});
+        query.setAttributes(new String[]{"principalId"});
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
         Iterator iterator = this.getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
         while (iterator.hasNext()) {
@@ -185,7 +185,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
-    
+
     private GroupService getGroupService(){
     	return (GroupService) KIMServiceLocator.getGroupService();
     }

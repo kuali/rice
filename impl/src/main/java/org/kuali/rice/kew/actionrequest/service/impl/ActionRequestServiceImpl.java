@@ -226,7 +226,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         for (WorkflowUser user: users) {
             ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
-            actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+            actionItem.setPrincipalId(user.getWorkflowUserId().getWorkflowId());
             actionItem.setRoleName(actionRequest.getQualifiedRoleName());
             actionItems.add(actionItem);
         }

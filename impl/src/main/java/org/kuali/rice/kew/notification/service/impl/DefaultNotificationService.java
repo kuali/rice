@@ -62,8 +62,8 @@ public class DefaultNotificationService implements NotificationService {
 		Set sentNotifications = new HashSet();
 		for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (!sentNotifications.contains(actionItem.getWorkflowId()) && shouldNotify(actionItem)) {
-				sentNotifications.add(actionItem.getWorkflowId());
+			if (!sentNotifications.contains(actionItem.getPrincipalId()) && shouldNotify(actionItem)) {
+				sentNotifications.add(actionItem.getPrincipalId());
 				sendNotification(actionItem);
 			}
 		}
@@ -80,7 +80,7 @@ public class DefaultNotificationService implements NotificationService {
 
 	protected boolean shouldNotify(ActionItem actionItem) {
 		try {
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getWorkflowId()));
+			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getPrincipalId()));
 			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
 			boolean sendEmail = false;
 			if (KEWConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
@@ -98,7 +98,7 @@ public class DefaultNotificationService implements NotificationService {
 			}
 			return sendEmail;
 		} catch (KEWUserNotFoundException e) {
-			throw new WorkflowRuntimeException("Error loading user with workflow id " + actionItem.getWorkflowId() + " for notification.", e);
+			throw new WorkflowRuntimeException("Error loading user with workflow id " + actionItem.getPrincipalId() + " for notification.", e);
 		}
 	}
 

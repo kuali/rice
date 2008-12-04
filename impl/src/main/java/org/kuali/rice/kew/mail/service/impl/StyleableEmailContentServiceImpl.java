@@ -143,7 +143,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             try {
                 delegatorDisplayValue = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getDelegatorWorkflowId())).getTransposedName();
             } catch (KEWUserNotFoundException e) {
-                LOG.error("Cannot find user for id " + actionItem.getWorkflowId(),e);
+                LOG.error("Cannot find user for id " + actionItem.getPrincipalId(),e);
                 delegatorDisplayValue = "USER NOT FOUND";
             };
         } else if (actionItem.getDelegatorWorkflowId() != null) {

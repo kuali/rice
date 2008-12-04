@@ -289,8 +289,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
 		for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (!actionItem.getWorkflowId().equals(user.getWorkflowId())) {
-				LOG.warn("Encountered an ActionItem with an incorrect workflow ID.  Was " + actionItem.getWorkflowId() +
+			if (!actionItem.getPrincipalId().equals(user.getWorkflowId())) {
+				LOG.warn("Encountered an ActionItem with an incorrect workflow ID.  Was " + actionItem.getPrincipalId() +
 						" but expected " + user.getWorkflowId());
 				continue;
 			}

@@ -71,7 +71,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
 //        return createActionListForUser(collection);
     }
-    
+
     public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
         LOG.debug("getting action list for route header id " + routeHeaderId);
         Criteria crit = new Criteria();
@@ -80,13 +80,13 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
         return createActionListForRouteHeader(collection);
     }
-    
+
     private Criteria setUpActionListCriteria(WorkflowUser user, ActionListFilter filter) {
         LOG.debug("setting up Action List criteria");
         Criteria crit = new Criteria();
         boolean filterOn = false;
         String filteredByItems = "";
-        
+
         if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KEWConstants.ALL_CODE)) {
             if (filter.isExcludeActionRequestCd()) {
                 crit.addNotEqualTo("actionRequestCd", filter.getActionRequestCd());
@@ -196,10 +196,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (filteredByItems.length() > 0) {
             filterOn = true;
         }
-        
+
         boolean addedDelegationCriteria = false;
         if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
-            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
             addedDelegationCriteria = true;
         } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_PRIMARY.equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
@@ -222,7 +222,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 filterOn = true;
             } else if (!filter.getPrimaryDelegateId().trim().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT)) {
                 // user wishes to see primary delegation for a single user
-                crit.addEqualTo("workflowId", filter.getPrimaryDelegateId());
+                crit.addEqualTo("principalId", filter.getPrimaryDelegateId());
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
@@ -241,7 +241,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getDelegatorId())) {
             // using a secondary delegation
-            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
             if (StringUtils.isBlank(filter.getDelegatorId())) {
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
                 // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
@@ -289,7 +289,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
-//            } else if ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_DEFAULT.equals(filter.getDelegationType())) || 
+//            } else if ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_DEFAULT.equals(filter.getDelegationType())) ||
 //                    StringUtils.isNotBlank(filter.getDelegatorId()) ) {
 //            // not using a primary delegation so we can assume the action item will be assigned to the given user
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
@@ -327,10 +327,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                addedDelegationCriteria = true;
 //            }
         }
-        
+
         // if we haven't added delegation criteria then use the default criteria below
         if (!addedDelegationCriteria) {
-            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
             filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(true);
             Criteria critNotEqual = new Criteria();
@@ -341,7 +341,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             crit.addAndCriteria(critNotEqual);
         }
 
-                
+
 //        if (filter.getPrimaryDelegateId().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT) && filter.getDelegatorId().equals(KEWConstants.DELEGATION_DEFAULT)) {
 //            // no secondary or primary delegation displayed
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
@@ -440,11 +440,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            }
 //        }
 
-        
+
 //        if (primary delegation) {
 //            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
 //            crit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
-//            
+//
 //        } else {
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
 //            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
@@ -485,7 +485,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                filteredByItems += "Delegator Id";
 //                filterOn = true;
 //            }
-//            
+//
 //        }
 //
 //
@@ -512,7 +512,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("returning from Action List criteria");
         return crit;
     }
-    
+
     private void addToFilterDescription(String filterDescription, String labelToAdd) {
         filterDescription += filterDescription.length() > 0 ? ", " : "";
         filterDescription += labelToAdd;
@@ -584,20 +584,20 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
         for (ActionItem potentialActionItem: actionItems) {
-            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getWorkflowId());
+            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getPrincipalId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
-                actionItemMap.put(potentialActionItem.getWorkflowId(), potentialActionItem);
+                actionItemMap.put(potentialActionItem.getPrincipalId(), potentialActionItem);
             }
         }
         return actionItemMap.values();
     }
-    
+
     private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, WorkflowUser workflowUser, ActionListFilter filter) {
         LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = null;
         if (filter == null) {
             crit = new Criteria();
-            crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
         } else {
             crit = setUpActionListCriteria(workflowUser, filter);
         }
@@ -623,7 +623,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     /**
      * Deletes all outbox items specified by the list of ids
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
      */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
@@ -634,7 +634,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     /**
      * Saves an outbox item
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
@@ -643,7 +643,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     /**
      * Gets the outbox item associated with the document id
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
      */
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
@@ -651,19 +651,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         crit.addEqualTo("routeHeaderId", documentId);
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
-    
+
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.Long)
      */
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", documentId);
-        crit.addEqualTo("workflowId", userId);
+        crit.addEqualTo("principalId", userId);
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
-    
+
     private Date beginningOfDay(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -672,14 +672,14 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         cal.set(Calendar.SECOND, 0);
         return cal.getTime();
     }
-    
+
     private Date endOfDay(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 59);
-        return cal.getTime();        
+        return cal.getTime();
     }
-    
+
 }

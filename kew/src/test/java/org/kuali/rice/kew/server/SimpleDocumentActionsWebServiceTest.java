@@ -28,6 +28,7 @@ import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -54,6 +55,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * Tests SimpleDocumentActionsWebService
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore
 public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 	private static final String WSDL_URL1 = "http://localhost:9952/en-test/remoting/simpleDocumentActionsService?wsdl";

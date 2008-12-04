@@ -121,6 +121,7 @@
 		<property name="beanNames">
 			<list>
 				<idref local="kimPersonService" />
+				<!-- these too?
 				<idref local="kimWorkgroupService" />
 				<idref local="kimUserService" />
 				<idref local="kimAuthenticationService" />
@@ -130,6 +131,7 @@
 				<idref local="kimGroupService" />
 				<idref local="kimPermissionService" />
 				<idref local="kimResponsibilityService" />
+				-->
 			</list>
 		</property>
 	</bean>

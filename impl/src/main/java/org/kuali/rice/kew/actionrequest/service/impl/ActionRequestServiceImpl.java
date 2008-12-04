@@ -434,7 +434,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             	}
             }
         }
-        System.out.println("Found " + matchedArs.size() + " matching action requests for user " + user.getDisplayName());
         return matchedArs;
     }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.authorization;
+package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +35,7 @@ import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslat
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ActivePrincipalRoleTypeServiceImpl extends KimRoleTypeServiceBase implements
+public class PrincipalDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase implements
 		KimRoleTypeService {
 	
 	protected IdentityManagementService identityManagementService;
@@ -44,7 +44,7 @@ public class ActivePrincipalRoleTypeServiceImpl extends KimRoleTypeServiceBase i
 	/**
 	 * 
 	 */
-	public ActivePrincipalRoleTypeServiceImpl() {
+	public PrincipalDerivedRoleTypeServiceImpl() {
 		addAcceptedAttributeName( "principalId" );
 		addAcceptedAttributeName( "principalName" );
 		addAttributeTranslator( new PrincipalNameToPrincipalIdTranslator() );

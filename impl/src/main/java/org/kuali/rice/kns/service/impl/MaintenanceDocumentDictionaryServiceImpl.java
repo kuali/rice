@@ -541,7 +541,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
             throw new IllegalArgumentException("invalid fieldName parameter.");
         }
         // if required check we have a value for this field
-        if (maintainableFieldDefinition.isRequired() && !maintainableFieldDefinition.isReadOnly() ) {
+        if (maintainableFieldDefinition.isRequired() && !maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
             try {
                 Object obj = ObjectUtils.getNestedValue(businessObject, fieldName);
 

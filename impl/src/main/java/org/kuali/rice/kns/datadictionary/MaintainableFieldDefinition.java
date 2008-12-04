@@ -57,7 +57,7 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 public class MaintainableFieldDefinition extends MaintainableItemDefinition implements FieldDefinitionI{
 
     protected boolean required = false;
-    protected boolean readOnly = false;
+    protected boolean unconditionallyReadOnly = false;
     protected boolean readOnlyAfterAdd = false;
     private boolean noLookup = false;
     private boolean lookupReadOnly = false;
@@ -118,22 +118,22 @@ required is true if the field must contain a non-null value
         return defaultValueFinderClass;
     }
 
+    
     /**
-     * @return Returns the readOnly.
-     */
-    public boolean isReadOnly() {
-        return readOnly;
-    }
+	 * @return the unconditionallyReadOnly
+	 */
+	public boolean isUnconditionallyReadOnly() {
+		return this.unconditionallyReadOnly;
+	}
 
-    /**
-     * readOnly is true if it cannot be updated
-     */
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
+	/**
+	 * @param unconditionallyReadOnly the unconditionallyReadOnly to set
+	 */
+	public void setUnconditionallyReadOnly(boolean unconditionallyReadOnly) {
+		this.unconditionallyReadOnly = unconditionallyReadOnly;
+	}
 
-
-    /**
+	/**
      * Gets the displayEditMode attribute.
      * 
      * @return Returns the displayEditMode.

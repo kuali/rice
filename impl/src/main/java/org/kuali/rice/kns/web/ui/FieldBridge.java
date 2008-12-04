@@ -64,7 +64,7 @@ public class FieldBridge {
 
             MaintainableFieldDefinition maintainableFieldDefinition = ((MaintainableFieldDefinition) definition);
             field.setFieldRequired(maintainableFieldDefinition.isRequired());
-            field.setReadOnly(maintainableFieldDefinition.isReadOnly());
+            field.setReadOnly(maintainableFieldDefinition.isUnconditionallyReadOnly());
             if (maintainableFieldDefinition.isLookupReadOnly()) {
             	field.setFieldType(Field.LOOKUP_READONLY);
             }
@@ -324,7 +324,7 @@ public class FieldBridge {
             // if this flag is set, and the current field is required, and readonly, and blank, use the
             // defaultValueFinder if one exists
             if (autoFillBlankRequiredValues) {
-                if ( maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isReadOnly() ) {
+                if ( maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
                     if ( StringUtils.isBlank( field.getPropertyValue() ) ) {
                         Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
                         if (defaultValueFinderClass != null) {

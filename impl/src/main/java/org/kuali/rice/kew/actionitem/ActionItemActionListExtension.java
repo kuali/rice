@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.actionitem;
 
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -40,6 +41,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_ACTN_ITM_T")
+@MappedSuperclass
 public class ActionItemActionListExtension extends ActionItem {
     
     private static final long serialVersionUID = -8801104028828059623L;

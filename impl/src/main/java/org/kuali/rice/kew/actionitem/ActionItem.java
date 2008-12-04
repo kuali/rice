@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -57,7 +58,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Entity
+//@Entity
+@MappedSuperclass
 @Table(name="KREW_ACTN_ITM_T")
 public class ActionItem implements WorkflowPersistable, RowStyleable {
 

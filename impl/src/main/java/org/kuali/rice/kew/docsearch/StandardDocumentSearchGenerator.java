@@ -60,6 +60,8 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 public class StandardDocumentSearchGenerator implements DocumentSearchGenerator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchGenerator.class);
 
+    private static final String ROUTE_NODE_TABLE = "KREW_RTE_NODE_T";
+    private static final String ROUTE_NODE_INST_TABLE = "KREW_RTE_NODE_INSTN_T";
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
 
@@ -968,7 +970,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         // render the node choices on the form.
     	String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
-        	StringBuffer routeNodeCriteria = new StringBuffer("and EN_RTE_NODE_T.NM ");
+        	StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
         	if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
         		routeNodeCriteria.append("= '" + docRouteLevel + "' ");
         	} else {
@@ -1002,7 +1004,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     			}
         		routeNodeCriteria.append(") ");
         	}
-            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = EN_RTE_NODE_INSTN_T.DOC_HDR_ID and EN_RTE_NODE_INSTN_T.RTE_NODE_ID = EN_RTE_NODE_T.RTE_NODE_ID and EN_RTE_NODE_INSTN_T.ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
+            returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = " + ROUTE_NODE_INST_TABLE + ".DOC_HDR_ID and " + ROUTE_NODE_INST_TABLE + ".RTE_NODE_ID = " + ROUTE_NODE_TABLE + ".RTE_NODE_ID and " + ROUTE_NODE_INST_TABLE + ".ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
         }
         return returnSql;
     }

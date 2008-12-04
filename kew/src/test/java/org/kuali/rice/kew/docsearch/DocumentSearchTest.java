@@ -52,6 +52,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 
 public class DocumentSearchTest extends KEWTestCase {
+    private static final String KREW_DOC_HDR_T = "KREW_DOC_HDR_T";
+    private static final String INITIATOR_COL = "INITR_PRNCPL_ID";
 
     DocumentSearchService docSearchService;
     UserService userService;
@@ -114,7 +116,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
 
         // now nuke the initiator...
-        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update EN_DOC_HDR_T set DOC_INITR_PRSN_EN_ID = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -146,7 +148,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
 
         // now nuke the initiator...
-        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update EN_DOC_HDR_T set DOC_INITR_PRSN_EN_ID = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();

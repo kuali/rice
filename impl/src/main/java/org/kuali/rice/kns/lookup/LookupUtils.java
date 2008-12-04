@@ -337,8 +337,6 @@ public class LookupUtils {
 
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
-     * 
-     * chb: 24Nov2008:TODO: refactor and eliminate side effects
      */
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
             String attributeName, Field field, List displayedFieldNames) {
@@ -368,27 +366,33 @@ public class LookupUtils {
             }
         }
 
-        if (relationship == null && !ObjectUtils.isNestedAttribute(attributeName)) 
-        {   
-            relationship = relationshipForBusinessObjectAndAttribute(businessObject, attributeName);
-            if(relationship != null)
-            {
-                field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
-				field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
-	            field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
+        if (relationship == null) {
+            Class c = ObjectUtils.getPropertyType(businessObject, attributeName, persistenceStructureService);
+
+            if(c!=null) {
+                if (attributeName.contains(".")) {
+                    attributeName = StringUtils.substringBeforeLast( attributeName, "." );
+                }
+
+                RelationshipDefinition ddReference = businessObjectMetaDataService.getBusinessObjectRelationshipDefinition(businessObject, attributeName);
+                relationship = businessObjectMetaDataService.getBusinessObjectRelationship(ddReference, businessObject, businessObject.getClass(), attributeName, "", false);
+                if(relationship!=null) {
+                    field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
+                    field.setFieldConversions(generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
+                    field.setLookupParameters(generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
+                }
             }
+
+            return field;
         }
-        else if (ObjectUtils.isNestedAttribute(attributeName)) 
-        {
+        if (ObjectUtils.isNestedAttribute(attributeName)) {
             //first determine the prefix and the attribute we are referring to
             String nestedAttributePrefix = StringUtils.substringBeforeLast(attributeName, ".");
 
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
-        } 
-        else 
-        {
+        } else {
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
@@ -397,24 +401,6 @@ public class LookupUtils {
         return field;
     }
 
-    private static BusinessObjectRelationship relationshipForBusinessObjectAndAttribute( BusinessObject businessObject, String attributeName)
-    {
-        Class c = ObjectUtils.getPropertyType(businessObject, attributeName, persistenceStructureService);
-
-        BusinessObjectRelationship relationship = null;
-        if(c!=null) 
-        {
-            if (attributeName.contains(".")) 
-            {
-                attributeName = StringUtils.substringBeforeLast( attributeName, "." );
-            }
-
-            RelationshipDefinition ddReference = businessObjectMetaDataService.getBusinessObjectRelationshipDefinition(businessObject, attributeName);
-            relationship = businessObjectMetaDataService.getBusinessObjectRelationship(ddReference, businessObject, businessObject.getClass(), attributeName, "", false);
-    
-        }
-        return relationship;
-    }
     
     /**
      * Sets whether a field should have direct inquiries enabled.  The direct inquiry is the functionality on a page such that if the primary key for
@@ -481,40 +467,7 @@ public class LookupUtils {
             return field;
         }
         
-        if (StringUtils.isNotBlank(field.getFieldConversions())) 
-        {
-            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
-            
-            if (directInquiriesEnabled) 
-            {
-                if (StringUtils.isNotBlank(field.getFieldConversions())) 
-                {
-                    String fieldConversions = field.getFieldConversions();
-                    String newInquiryParameters = KNSConstants.EMPTY_STRING;
-                    String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
-
-                    for (int l = 0; l < conversions.length; l++) 
-                    {
-                        String conversion = conversions[l];
-                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
-                        String conversionFrom = conversionPair[0];
-                        String conversionTo = conversionPair[1];
-                        newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
-
-                        if (l < conversions.length - 1) 
-                        {
-                            newInquiryParameters += KNSConstants.FIELD_CONVERSIONS_SEPERATOR;
-                        }
-                    }
-
-                    field.setInquiryParameters(newInquiryParameters);
-                }
-            }
-            field.setFieldDirectInquiryEnabled(directInquiriesEnabled);
-        }
-        else {
-            field.setFieldDirectInquiryEnabled(false);
-        }
+        setFieldDirectInquiry(field);
         
         return field;
     }

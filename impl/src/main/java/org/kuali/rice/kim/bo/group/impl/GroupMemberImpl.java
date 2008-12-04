@@ -18,12 +18,11 @@ package org.kuali.rice.kim.bo.group.impl;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.group.GroupMember;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -31,8 +30,9 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@MappedSuperclass
-public abstract class GroupMemberBase extends PersistableBusinessObjectBase implements GroupMember {
+@Entity
+@Table(name="KRIM_GRP_MBR_T")
+public class GroupMemberImpl extends KimAbstractMemberImpl {
 
 	@Id
 	@Column(name="GRP_MBR_ID")
@@ -41,39 +41,34 @@ public abstract class GroupMemberBase extends PersistableBusinessObjectBase impl
 	@Column(name="GRP_ID")
 	protected String groupId;
 	
-	@Transient
-	protected boolean active = true;
-	
+
 	public String getGroupMemberId() {
 		return this.groupMemberId;
 	}
+
 	public void setGroupMemberId(String groupMemberId) {
 		this.groupMemberId = groupMemberId;
 	}
+
 	public String getGroupId() {
 		return this.groupId;
 	}
+
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
+		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>();
 		m.put( "groupMemberId", groupMemberId );
 		m.put( "groupId", groupId );
+		m.put( "memberId", getMemberId() );
+		m.put( "memberTypeCode", getMemberTypeCode() );
 		return m;
-	}
-	public boolean isActive() {
-		return this.active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 }

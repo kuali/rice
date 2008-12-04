@@ -26,16 +26,16 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class DelegateInfo {
 	protected String delegationId;
 	protected String delegationTypeCode;
-	protected String principalId;
-	protected String groupId;
+	protected String memberId;
+	protected String memberTypeCode;
 	protected AttributeSet qualifier;
 		
-	public DelegateInfo(String delegationId, String delegationTypeCode, String principalId,
-			String groupId, AttributeSet qualifier) {
+	public DelegateInfo(String delegationId, String delegationTypeCode, String memberId,
+			String memberTypeCode, AttributeSet qualifier) {
 		this.delegationId = delegationId;
 		this.delegationTypeCode = delegationTypeCode;
-		this.principalId = principalId;
-		this.groupId = groupId;
+		this.memberId = memberId;
+		this.memberTypeCode = memberTypeCode;
 		this.qualifier = qualifier;
 	}
 	
@@ -45,18 +45,22 @@ public class DelegateInfo {
 	public void setDelegationTypeCode(String delegationTypeCode) {
 		this.delegationTypeCode = delegationTypeCode;
 	}
-	public String getPrincipalId() {
-		return this.principalId;
+	public String getMemberId() {
+		return this.memberId;
 	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
-	public String getGroupId() {
-		return this.groupId;
+
+	public String getMemberTypeCode() {
+		return this.memberTypeCode;
 	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+
+	public void setMemberTypeCode(String memberTypeCode) {
+		this.memberTypeCode = memberTypeCode;
 	}
+
 	public AttributeSet getQualifier() {
 		return this.qualifier;
 	}

@@ -19,14 +19,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.impl.InactivatableFromToImpl;
-import org.kuali.rice.kim.bo.role.RoleMember;
+import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -34,8 +32,9 @@ import org.kuali.rice.kns.bo.InactivateableFromTo;
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
-@MappedSuperclass
-public abstract class RoleMemberImpl extends InactivatableFromToImpl implements RoleMember, InactivateableFromTo {
+@Entity
+@Table(name="KRIM_ROLE_MBR_T")
+public class RoleMemberImpl extends KimAbstractMemberImpl {
 
 	@Id
 	@Column(name="ROLE_MBR_ID")
@@ -43,9 +42,6 @@ public abstract class RoleMemberImpl extends InactivatableFromToImpl implements 
 	
 	@Column(name="ROLE_ID")
 	protected String roleId;
-	
-	@Transient
-	protected boolean active = true;
 	
 	protected List<RoleMemberAttributeDataImpl> attributes;
 	
@@ -71,6 +67,8 @@ public abstract class RoleMemberImpl extends InactivatableFromToImpl implements 
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "roleMemberId", roleMemberId );
 		m.put( "roleId", roleId );
+		m.put( "memberId", getMemberId() );
+		m.put( "memberTypeCode", getMemberTypeCode() );
 		return m;
 	}
 
@@ -92,11 +90,5 @@ public abstract class RoleMemberImpl extends InactivatableFromToImpl implements 
 	
 	public boolean hasQualifier() {
 		return !getAttributes().isEmpty();
-	}
-	public boolean isActive() {
-		return this.active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 }

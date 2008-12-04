@@ -26,12 +26,13 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -53,9 +54,9 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	private KimAttributeImpl nodeNameAttribute;
 	private KimTypeImpl kimRespType;
 	private KimRoleImpl role;
-	private RolePrincipalImpl user1RolePrincipal;
-	private RolePrincipalImpl user2RolePrincipal;
-	private RolePrincipalImpl adminRolePrincipal;
+	private RoleMemberImpl user1RolePrincipal;
+	private RoleMemberImpl user2RolePrincipal;
+	private RoleMemberImpl adminRolePrincipal;
 	
 	protected void loadTestData() throws Exception {
         loadXmlFile("RoleRouteModuleTestConfig.xml");
@@ -131,32 +132,35 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setKimTypeId(kimType.getKimTypeId());
       
         String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        adminRolePrincipal = new RolePrincipalImpl();
+        adminRolePrincipal = new RoleMemberImpl();
         adminRolePrincipal.setRoleMemberId(roleMemberId1);
         KimPrincipal adminPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
-        adminRolePrincipal.setPrincipalId(adminPrincipal.getPrincipalId());
+        adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
+        adminRolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
         
         String roleMemberId2 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        user2RolePrincipal = new RolePrincipalImpl();
+        user2RolePrincipal = new RoleMemberImpl();
         user2RolePrincipal.setRoleMemberId(roleMemberId2);
         KimPrincipal user2Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
-        user2RolePrincipal.setPrincipalId(user2Principal.getPrincipalId());
+        user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
+        user2RolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
 
         String roleMemberId3 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        user1RolePrincipal = new RolePrincipalImpl();
+        user1RolePrincipal = new RoleMemberImpl();
         user1RolePrincipal.setRoleMemberId(roleMemberId3);
         KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
-        user1RolePrincipal.setPrincipalId(user1Principal.getPrincipalId());
+        user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
+        user1RolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
 
-        List<RolePrincipalImpl> memberPrincipals = new ArrayList<RolePrincipalImpl>();
+        List<RoleMemberImpl> memberPrincipals = new ArrayList<RoleMemberImpl>();
         memberPrincipals.add(adminRolePrincipal);
         memberPrincipals.add(user2RolePrincipal);
         memberPrincipals.add(user1RolePrincipal);
         
-        role.setMemberPrincipals(memberPrincipals);
+        role.setMembers(memberPrincipals);
         
         /**
          * Let's create qualifiers for chart and org for our role members

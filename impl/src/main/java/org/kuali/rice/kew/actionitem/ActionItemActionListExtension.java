@@ -29,8 +29,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberBase;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Alternate model object for action list fetches that do not automatically use

@@ -21,15 +21,15 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.impl.InactivatableFromToImpl;
+import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -37,18 +37,15 @@ import org.kuali.rice.kns.bo.InactivateableFromTo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@MappedSuperclass
-public abstract class KimDelegationMemberImpl extends InactivatableFromToImpl implements InactivateableFromTo {
+@Entity
+@Table(name="KRIM_DLGN_MBR_T")
+public class KimDelegationMemberImpl extends KimAbstractMemberImpl {
 
 	@Id
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	@Column(name="DLGN_ID")
 	protected String delegationId;	
-	@Column(name="ACTV_FRM_IND")
-	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_IND")
-	protected Timestamp activeToDate;
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
@@ -63,6 +60,8 @@ public abstract class KimDelegationMemberImpl extends InactivatableFromToImpl im
 		LinkedHashMap lhm = new LinkedHashMap();
 		lhm.put( "delegationMemberId", delegationMemberId );
 		lhm.put( "delegationId", delegationId );
+		lhm.put( "memberId", getMemberId() );
+		lhm.put( "memberTypeCode", getMemberTypeCode() );
 		return lhm;
 	}
 

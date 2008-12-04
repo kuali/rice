@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimDelegation;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -61,18 +63,10 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 	
-	@OneToMany(targetEntity=KimDelegationGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=KimDelegationMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationGroupImpl> memberGroups;
+	protected List<KimDelegationMemberImpl> members;
 
-	@OneToMany(targetEntity=KimDelegationPrincipalImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationPrincipalImpl> memberPrincipals;
-
-	@OneToMany(targetEntity=KimDelegationRoleImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationRoleImpl> memberRoles;
-	
 	@OneToMany(targetEntity=KimDelegationAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationAttributeDataImpl> attributes;
@@ -156,36 +150,43 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.delegationId = delegationId;
 	}
 
-	public List<KimDelegationGroupImpl> getMemberGroups() {
-		return this.memberGroups;
+	public List<String> getMemberGroupIds() {
+		return getMembersOfType( KimRole.GROUP_MEMBER_TYPE );
 	}
 
-	public void setMemberGroups(List<KimDelegationGroupImpl> memberGroups) {
-		this.memberGroups = memberGroups;
+	public List<String> getMemberPrincipalIds() {
+		return getMembersOfType( KimRole.PRINCIPAL_MEMBER_TYPE );
 	}
 
-	public List<KimDelegationPrincipalImpl> getMemberPrincipals() {
-		return this.memberPrincipals;
+	public List<String> getMemberRoleIds() {
+		return getMembersOfType( KimRole.ROLE_MEMBER_TYPE );
 	}
 
-	public void setMemberPrincipals(List<KimDelegationPrincipalImpl> memberPrincipals) {
-		this.memberPrincipals = memberPrincipals;
+	protected List<String> getMembersOfType( String memberTypeCode ) {
+		List<String> roleMembers = new ArrayList<String>();
+		for ( KimDelegationMemberImpl member : getMembers() ) {
+			if ( member.getMemberTypeCode().equals ( memberTypeCode )
+					&& member.isActive() ) {
+				roleMembers.add( member.getMemberId() );
+			}
+		}
+		return roleMembers;
 	}
-
-	public List<KimDelegationRoleImpl> getMemberRoles() {
-		return this.memberRoles;
-	}
-
-	public void setMemberRoles(List<KimDelegationRoleImpl> memberRoles) {
-		this.memberRoles = memberRoles;
-	}
-
+	
 	public List<KimDelegationAttributeDataImpl> getAttributes() {
 		return this.attributes;
 	}
 
 	public void setAttributes(List<KimDelegationAttributeDataImpl> attributes) {
 		this.attributes = attributes;
+	}
+
+	public List<KimDelegationMemberImpl> getMembers() {
+		return this.members;
+	}
+
+	public void setMembers(List<KimDelegationMemberImpl> members) {
+		this.members = members;
 	}
 	
 	

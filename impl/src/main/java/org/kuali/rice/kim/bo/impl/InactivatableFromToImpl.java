@@ -31,19 +31,18 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name="ACTV_FRM_IND")
+	@Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_IND")
+	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;
 	
 	/**
-	 * @return the active
+	 * Returns active if the current time is between the from and to dates.  Null dates are 
+	 * considered to indicate an open range.
 	 */
 	public boolean isActive() {
-		// TODO: FIXME - once we start using from/to dates uncomment the logic. Until then return true for always active.
-		//long now = System.currentTimeMillis(); 
-		//return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
-		return true;
+		long now = System.currentTimeMillis();		
+		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 	public void setActiveFromDate(Timestamp from) {
@@ -52,6 +51,14 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 
 	public void setActiveToDate(Timestamp to) {
 		this.activeToDate = to;
+	}
+
+	public Timestamp getActiveFromDate() {
+		return this.activeFromDate;
+	}
+
+	public Timestamp getActiveToDate() {
+		return this.activeToDate;
 	}
 
 }

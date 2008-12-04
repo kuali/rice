@@ -41,8 +41,7 @@ import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.xml.WorkgroupXmlHandler;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -233,20 +232,21 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		group.setKimTypeId(workgroup.getWorkgroupType());
 		group.setActive(true);
 
-		group.setMemberPrincipals(new ArrayList<GroupPrincipalImpl>());
-		group.setMemberGroups(new ArrayList<GroupGroupImpl>());
+		group.setMembers(new ArrayList<GroupMemberImpl>());
 		for (Iterator iterator = workgroup.getMembers().iterator(); iterator.hasNext();) {
 			Recipient recipient = (Recipient) iterator.next();
 			if (recipient instanceof WorkflowUser) {
 				WorkflowUser user = (WorkflowUser)recipient;
-				GroupPrincipalImpl principal = new GroupPrincipalImpl();
-				principal.setMemberPrincipalId(user.getWorkflowId());
-				group.getMemberPrincipals().add(principal);
+				GroupMemberImpl member = new GroupMemberImpl();
+				member.setMemberTypeCode( KimGroupImpl.PRINCIPAL_MEMBER_TYPE );
+				member.setMemberId(user.getWorkflowId());
+				group.getMembers().add(member);
 			} else if (recipient instanceof Workgroup) {
 				Workgroup groupMember = (Workgroup)recipient;
-				GroupGroupImpl groupGroup = new GroupGroupImpl();
-				groupGroup.setMemberGroupId("" + groupMember.getWorkflowGroupId().getGroupId());
-				group.getMemberGroups().add(groupGroup);
+				GroupMemberImpl member = new GroupMemberImpl();
+				member.setMemberTypeCode( KimGroupImpl.PRINCIPAL_MEMBER_TYPE );
+				member.setMemberId("" + groupMember.getWorkflowGroupId().getGroupId());
+				group.getMembers().add(member);
 			}
 		}
 		KNSServiceLocator.getBusinessObjectService().save(group);

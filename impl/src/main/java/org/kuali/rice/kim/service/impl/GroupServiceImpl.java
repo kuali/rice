@@ -9,12 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.group.GroupGroup;
-import org.kuali.rice.kim.bo.group.GroupPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupGroupImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
@@ -159,7 +156,8 @@ public class GroupServiceImpl implements GroupService {
 			return new ArrayList<KimGroupImpl>(0);
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 3 );
-		criteria.put("memberPrincipals.memberPrincipalId", principalId);
+		criteria.put("members.memberId", principalId);
+		criteria.put("members.memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
 		//criteria.put("active", "Y");
 		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
 			criteria.put("namespaceCode", namespaceCode);
@@ -186,13 +184,10 @@ public class GroupServiceImpl implements GroupService {
 		if ( group == null ) {
 			return;
 		}
-		List<GroupGroupImpl> memberGroups = group.getMemberGroups();
+		List<String> memberGroupIds = group.getMemberGroupIds();
 
-		for (GroupGroupImpl groupGroup : memberGroups) {
-			if ( !groupGroup.isActive() ) {
-				continue;
-			}
-			KimGroupImpl memberGroup = getGroupImpl(groupGroup.getMemberGroupId());
+		for (String groupId : memberGroupIds) {
+			KimGroupImpl memberGroup = getGroupImpl(groupId);
 			// if we've already seen that role, don't recurse into it
 			if ( !groups.contains( memberGroup ) ) {
 				groups.add(memberGroup);
@@ -232,14 +227,8 @@ public class GroupServiceImpl implements GroupService {
 		if ( group == null ) {
 			return new ArrayList<String>(0);
 		}
-		List<GroupPrincipalImpl> groupPrincipals = group.getMemberPrincipals();
 
-		List<String> ids = new ArrayList<String>();
-		for (GroupPrincipalImpl groupPrincipal : groupPrincipals) {
-			ids.add(groupPrincipal.getMemberPrincipalId());
-		}
-		
-		return ids;
+		return group.getMemberPrincipalIds();
 	}
 
 	/**
@@ -256,12 +245,10 @@ public class GroupServiceImpl implements GroupService {
 			return new ArrayList<String>(0);
 		}
 
-		for (GroupPrincipal groupPrincipal : group.getMemberPrincipals()) {
-			ids.add(groupPrincipal.getMemberPrincipalId());
-		}
+		ids.addAll( group.getMemberPrincipalIds() );
 		
-		for (GroupGroup groupGroup : group.getMemberGroups()) {
-			ids.addAll(getMemberPrincipalIds(groupGroup.getMemberGroupId()));
+		for (String memberGroupId : group.getMemberGroupIds()) {
+			ids.addAll(getMemberPrincipalIds(memberGroupId));
 		}
 				
 		return new ArrayList<String>(ids);
@@ -282,15 +269,15 @@ public class GroupServiceImpl implements GroupService {
 			return false;
 		}
 		// check the immediate group
-		for (GroupPrincipal groupPrincipal : group.getMemberPrincipals() ) {
-			if (groupPrincipal.getMemberPrincipalId().equals(principalId)) {
+		for (String groupPrincipalId : group.getMemberPrincipalIds() ) {
+			if (groupPrincipalId.equals(principalId)) {
 				return true;
 			}
 		}
 		
 		// check each contained group, returning as soon as a match is found
-		for ( GroupGroup memberGroup : group.getMemberGroups() ) {
-			if ( isMemberOfGroup( principalId, memberGroup.getMemberGroupId() ) ) {
+		for ( String memberGroupId : group.getMemberGroupIds() ) {
+			if ( isMemberOfGroup( principalId, memberGroupId ) ) {
 				return true;
 			}
 		}
@@ -320,11 +307,11 @@ public class GroupServiceImpl implements GroupService {
 	        return false;
 	    }
 	    
-	    for( GroupGroup memberGroup : group.getMemberGroups()) {
-	        if(memberGroup.getMemberGroupId().equals(groupMemberId)) {
+	    for( String memberGroupId : group.getMemberGroupIds()) {
+	        if(memberGroupId.equals(groupMemberId)) {
 	            return true;
 	        }
-	        else if(isGroupMemberOfGroup(groupMemberId, memberGroup.getMemberGroupId())) {
+	        else if(isGroupMemberOfGroup(groupMemberId, memberGroupId)) {
 	            return true;
 	        }
 	    }
@@ -338,7 +325,8 @@ public class GroupServiceImpl implements GroupService {
 			return new ArrayList<KimGroupImpl>(0);
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("memberGroups.memberGroupId", groupId);
+		criteria.put("members.memberId", groupId);
+		criteria.put("members.memberTypeCode", KimGroupImpl.GROUP_MEMBER_TYPE);
 		criteria.put("active", "Y");
 		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
 	}
@@ -409,16 +397,8 @@ public class GroupServiceImpl implements GroupService {
 		if ( groupId == null ) {
 			return new ArrayList<String>(0);
 		}
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("groupId", groupId);
-		List<GroupGroup> groups = (List<GroupGroup>)getBusinessObjectService().findMatching(GroupGroupImpl.class, criteria);
-		ArrayList<String> groupIds = new ArrayList<String>( groups.size() );
-		for ( GroupGroup group : groups ) {
-			if ( isGroupActive( group.getMemberGroupId() ) ) {
-				groupIds.add( group.getMemberGroupId() );
-			}
-		}
-		return groupIds;
+		KimGroupImpl group = getGroupImpl( groupId );
+		return group.getMemberGroupIds();
 	}
 	
 	/**
@@ -456,7 +436,8 @@ public class GroupServiceImpl implements GroupService {
 			return false;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("memberPrincipals.memberPrincipalId", principalId);
+		criteria.put("members.memberId", principalId);
+		criteria.put("members.memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
 		criteria.put("groupId", groupId);
 		criteria.put("active", "Y");
 		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) != 0;
@@ -531,11 +512,12 @@ public class GroupServiceImpl implements GroupService {
      * @see org.kuali.rice.kim.service.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)
      */
     public boolean addPrincipalToGroup(String principalId, String groupId) {
-        GroupPrincipalImpl groupPrincipal = new GroupPrincipalImpl();
-        groupPrincipal.setGroupId(groupId);
-        groupPrincipal.setMemberPrincipalId(principalId);
+        GroupMemberImpl groupMember = new GroupMemberImpl();
+        groupMember.setGroupId(groupId);
+        groupMember.setMemberTypeCode( KimGroupImpl.PRINCIPAL_MEMBER_TYPE );
+        groupMember.setMemberId(principalId);
         
-        this.getBusinessObjectService().save(groupPrincipal);
+        this.getBusinessObjectService().save(groupMember);
         
         return true;
     }
@@ -547,11 +529,12 @@ public class GroupServiceImpl implements GroupService {
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", groupId);
-        criteria.put("memberPrincipalId", principalId);
-        Collection<GroupPrincipalImpl> groupPrincipalList = getBusinessObjectService().findMatching(GroupPrincipalImpl.class, criteria);
+        criteria.put("memberId", principalId);
+        criteria.put("memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+        Collection<GroupMemberImpl> groupMemberList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
         
-        if(groupPrincipalList.size() == 1) {
-            getBusinessObjectService().delete(groupPrincipalList.iterator().next());
+        if(groupMemberList.size() == 1) {
+            getBusinessObjectService().delete(groupMemberList.iterator().next());
             
             return true;
         }
@@ -570,12 +553,13 @@ public class GroupServiceImpl implements GroupService {
         if(isGroupMemberOfGroup(parentId, childId)) {
             throw new IllegalArgumentException("Circular group reference.");
         }
+
+        GroupMemberImpl groupMember = new GroupMemberImpl();
+        groupMember.setGroupId(parentId);
+        groupMember.setMemberTypeCode( KimGroupImpl.GROUP_MEMBER_TYPE );
+        groupMember.setMemberId(childId);
         
-        GroupGroupImpl groupGroup = new GroupGroupImpl();
-        groupGroup.setGroupId(parentId);
-        groupGroup.setMemberGroupId(childId);
-        
-        getBusinessObjectService().save(groupGroup);
+        getBusinessObjectService().save(groupMember);
         
         return true;
     }
@@ -587,8 +571,9 @@ public class GroupServiceImpl implements GroupService {
     public boolean removeGroupFromGroup(String childId, String parentId) {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", parentId);
-        criteria.put("memberGroupId", childId);
-        Collection<GroupGroupImpl> groupGroupList = getBusinessObjectService().findMatching(GroupGroupImpl.class, criteria);
+        criteria.put("memberId", childId);
+        criteria.put("memberTypeCode", KimGroupImpl.GROUP_MEMBER_TYPE);
+        Collection<GroupMemberImpl> groupGroupList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
         
         if(groupGroupList.size() == 1) {
             getBusinessObjectService().delete(groupGroupList.iterator().next());

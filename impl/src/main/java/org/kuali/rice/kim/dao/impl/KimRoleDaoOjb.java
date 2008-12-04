@@ -24,14 +24,11 @@ import java.util.Map;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationGroupImpl;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationPrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
@@ -49,15 +46,16 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<RolePrincipalImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId) {
+	public List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId) {
 		
 		Criteria c = new Criteria();
 		
-		c.addEqualTo("principalId", principalId);
+		c.addEqualTo("memberId", principalId);
 		c.addIn("roleId", roleIds);
-		Query query = QueryFactory.newQuery(RolePrincipalImpl.class, c);
-		Collection<RolePrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<RolePrincipalImpl>( coll );
+		c.addEqualTo( "memberTypeCode", KimRole.PRINCIPAL_MEMBER_TYPE );
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleMemberImpl>( coll );
 	}
 	
 	/**
@@ -65,13 +63,14 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<RoleGroupImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {
+	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {
 		Criteria c = new Criteria();
 		c.addIn("roleId", roleIds);
-		c.addIn("groupId", groupIds);
-		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
-		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<RoleGroupImpl>( coll );
+		c.addIn("memberId", groupIds);
+		c.addEqualTo( "memberTypeCode", KimRole.GROUP_MEMBER_TYPE );
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleMemberImpl>( coll );
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -109,15 +108,16 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<KimDelegationPrincipalImpl> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
+	public List<KimDelegationMemberImpl> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
 			Collection<String> delegationIds, String principalId) {
 		Criteria c = new Criteria();
 		
-		c.addEqualTo("principalId", principalId);
+		c.addEqualTo("memberId", principalId);
+		c.addEqualTo( "memberTypeCode", KimRole.PRINCIPAL_MEMBER_TYPE );
 		c.addIn("delegationId", delegationIds);
-		Query query = QueryFactory.newQuery(KimDelegationPrincipalImpl.class, c);
-		Collection<KimDelegationPrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<KimDelegationPrincipalImpl>( coll );
+		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
+		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<KimDelegationMemberImpl>( coll );
 	}
 	
 	/**
@@ -127,115 +127,47 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<KimDelegationGroupImpl> getDelegationGroupsForGroupIdsAndDelegationIds(
+	public List<KimDelegationMemberImpl> getDelegationGroupsForGroupIdsAndDelegationIds(
 			Collection<String> delegationIds, List<String> groupIds) {
 		Criteria c = new Criteria();
 		c.addIn("delegationId", delegationIds);
-		c.addIn("groupId", groupIds);
-		Query query = QueryFactory.newQuery(KimDelegationGroupImpl.class, c);
-		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<KimDelegationGroupImpl>( coll );
+		c.addIn("memberId", groupIds);
+		c.addEqualTo( "memberTypeCode", KimRole.GROUP_MEMBER_TYPE );
+		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
+		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<KimDelegationMemberImpl>( coll );
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds ) {	
+	public List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds ) {	
 		Criteria c = new Criteria();
 		
 		c.addIn("roleId", roleIds);
-		Query query = QueryFactory.newQuery(RolePrincipalImpl.class, c);
-		Collection<RolePrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<RolePrincipalImpl>( coll );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
-	 *      java.util.Collection)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds ) {
-		Criteria c = new Criteria();
-		c.addIn("roleId", roleIds);
-		Query query = QueryFactory.newQuery(RoleGroupImpl.class, c);
-		Collection<RoleGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<RoleGroupImpl>( coll );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleRolesForGroupIdsAndRoleIds(java.util.Collection,
-	 *      java.util.Collection)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<RoleRoleImpl> getRoleRolesForRoleIds( Collection<String> roleIds ) {
-		Criteria c = new Criteria();
-		c.addIn("roleId", roleIds);
-		Query query = QueryFactory.newQuery(RoleRoleImpl.class, c);
-		Collection<RoleRoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		return new ArrayList<RoleRoleImpl>( coll );
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleMemberImpl>( coll );
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationPrincipalsForDelegationIds(java.util.List)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationMembersForDelegationIds(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String,List<KimDelegationPrincipalImpl>> getDelegationPrincipalsForDelegationIds(
+	public Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds(
 			List<String> delegationIds) {
 		Criteria c = new Criteria();
 		
 		c.addIn("delegationId", delegationIds);
-		Query query = QueryFactory.newQuery(KimDelegationPrincipalImpl.class, c);
-		Collection<KimDelegationPrincipalImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		HashMap<String,List<KimDelegationPrincipalImpl>> result = new HashMap<String,List<KimDelegationPrincipalImpl>>();
-		for ( KimDelegationPrincipalImpl dp : coll ) {
+		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
+		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		HashMap<String,List<KimDelegationMemberImpl>> result = new HashMap<String,List<KimDelegationMemberImpl>>();
+		for ( KimDelegationMemberImpl dp : coll ) {
 			if ( !result.containsKey( dp.getDelegationId() ) ) {
-				result.put( dp.getDelegationId(), new ArrayList<KimDelegationPrincipalImpl>() );
+				result.put( dp.getDelegationId(), new ArrayList<KimDelegationMemberImpl>() );
 			}
 			result.get( dp.getDelegationId() ).add( dp );
-		}
-		return result;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationGroupsForDelegationIds(java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	public Map<String,List<KimDelegationGroupImpl>> getDelegationGroupsForDelegationIds(
-			List<String> delegationIds) {
-		Criteria c = new Criteria();
-		
-		c.addIn("delegationId", delegationIds);
-		Query query = QueryFactory.newQuery(KimDelegationGroupImpl.class, c);
-		Collection<KimDelegationGroupImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		HashMap<String,List<KimDelegationGroupImpl>> result = new HashMap<String,List<KimDelegationGroupImpl>>();
-		for ( KimDelegationGroupImpl dg : coll ) {
-			if ( !result.containsKey( dg.getDelegationId() ) ) {
-				result.put( dg.getDelegationId(), new ArrayList<KimDelegationGroupImpl>() );
-			}
-			result.get( dg.getDelegationId() ).add( dg );
-		}
-		return result;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getDelegationRolesForDelegationIds(java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	public Map<String,List<KimDelegationRoleImpl>> getDelegationRolesForDelegationIds(
-			List<String> delegationIds) {
-		Criteria c = new Criteria();
-		
-		c.addIn("delegationId", delegationIds);
-		Query query = QueryFactory.newQuery(KimDelegationRoleImpl.class, c);
-		Collection<KimDelegationRoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		HashMap<String,List<KimDelegationRoleImpl>> result = new HashMap<String,List<KimDelegationRoleImpl>>();
-		for ( KimDelegationRoleImpl dr : coll ) {
-			if ( !result.containsKey( dr.getDelegationId() ) ) {
-				result.put( dr.getDelegationId(), new ArrayList<KimDelegationRoleImpl>() );
-			}
-			result.get( dr.getDelegationId() ).add( dr );
 		}
 		return result;
 	}

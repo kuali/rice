@@ -35,6 +35,10 @@ import org.kuali.rice.kns.bo.Inactivateable;
  */
 public interface KimRole extends Inactivateable {
 
+	public static final String GROUP_MEMBER_TYPE = "G";
+	public static final String PRINCIPAL_MEMBER_TYPE = "P";
+	public static final String ROLE_MEMBER_TYPE = "R";
+	
 	/** Unique identifier for this role. */
 	String getRoleId();
 	

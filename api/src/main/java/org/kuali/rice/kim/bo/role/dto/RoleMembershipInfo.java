@@ -27,39 +27,25 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *
  */
 public class RoleMembershipInfo {
-	protected String principalId;
-	protected String groupId;
 	protected String roleId;
-	protected String memberRoleId;
 	protected String roleMemberId;
+	protected String embeddedRoleId; // ID of the role from which the group or principal was derived
+	protected String memberId;
+	protected String memberTypeCode;
 	protected AttributeSet qualifier;
 	protected List<String> delegationIds = new ArrayList<String>();
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
-	public RoleMembershipInfo(String principalId, String groupId, String memberRoleId, String roleId, String roleMemberId,
+	public RoleMembershipInfo(String roleId, String roleMemberId, String memberId, String memberTypeCode,
 			AttributeSet qualifier) {
 		super();
-		this.principalId = principalId;
-		this.groupId = groupId;
 		this.roleId = roleId;
-		this.memberRoleId = memberRoleId;
+		this.memberId = memberId;
+		this.memberTypeCode = memberTypeCode;
 		this.roleMemberId = roleMemberId;
 		this.qualifier = qualifier;
 	}
 	
-	
-	public String getPrincipalId() {
-		return this.principalId;
-	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
-	}
-	public String getGroupId() {
-		return this.groupId;
-	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
 	public String getRoleId() {
 		return this.roleId;
 	}
@@ -89,17 +75,6 @@ public class RoleMembershipInfo {
 		this.delegationIds = delegationIds;
 	}
 
-
-	public String getMemberRoleId() {
-		return this.memberRoleId;
-	}
-
-
-	public void setMemberRoleId(String memberRoleId) {
-		this.memberRoleId = memberRoleId;
-	}
-
-
 	public String getRoleMemberId() {
 		return this.roleMemberId;
 	}
@@ -107,6 +82,34 @@ public class RoleMembershipInfo {
 
 	public void setRoleMemberId(String roleMemberId) {
 		this.roleMemberId = roleMemberId;
+	}
+
+
+	public String getMemberId() {
+		return this.memberId;
+	}
+
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+
+	public String getMemberTypeCode() {
+		return this.memberTypeCode;
+	}
+
+
+	public void setMemberTypeCode(String memberTypeCode) {
+		this.memberTypeCode = memberTypeCode;
+	}
+
+	public String getEmbeddedRoleId() {
+		return this.embeddedRoleId;
+	}
+
+	public void setEmbeddedRoleId(String embeddedRoleId) {
+		this.embeddedRoleId = embeddedRoleId;
 	}
 	
 	

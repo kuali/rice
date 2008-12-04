@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
-
-import java.util.LinkedHashMap;
+package org.kuali.rice.kim.bo.impl;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.kuali.rice.kim.bo.role.KimDelegationPrincipal;
+import javax.persistence.MappedSuperclass;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -29,30 +24,30 @@ import org.kuali.rice.kim.bo.role.KimDelegationPrincipal;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Entity
-@Table(name="KRIM_DLGN_PRNCPL_T")
-public class KimDelegationPrincipalImpl extends KimDelegationMemberImpl implements KimDelegationPrincipal {
+@MappedSuperclass
+public abstract class KimAbstractMemberImpl extends InactivatableFromToImpl {
 
-	@Column(name="PRNCPL_ID")
-	protected String principalId;
+	@Column(name="MBR_ID")
+	protected String memberId;
 	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "principalId", principalId );
-		return lhm;
+	@Column(name="MBR_TYP_CD")
+	protected String memberTypeCode;
+
+	public String getMemberId() {
+		return this.memberId;
 	}
 
-	public String getPrincipalId() {
-		return this.principalId;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+	public String getMemberTypeCode() {
+		return this.memberTypeCode;
 	}
 
+	public void setMemberTypeCode(String memberTypeCode) {
+		this.memberTypeCode = memberTypeCode;
+	}
+	
+	
 }

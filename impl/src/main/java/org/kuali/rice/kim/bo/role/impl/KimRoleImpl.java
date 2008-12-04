@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -45,7 +46,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 @Entity
 @Table(name="KRIM_ROLE_T")
 public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRole {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -66,18 +67,10 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleRelationshipImpl> assignedRoles;
 
-	@OneToMany(targetEntity=RoleGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleGroupImpl> memberGroups;
+	protected List<RoleMemberImpl> members;
 
-	@OneToMany(targetEntity=RolePrincipalImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RolePrincipalImpl> memberPrincipals;
-
-	@OneToMany(targetEntity=RoleRoleImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleRoleImpl> memberRoles;
-	
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@Transient
 	protected KimTypeImpl kimRoleType; 
@@ -137,23 +130,29 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		this.assignedRoles = assignedRoles;
 	}
 
-	public List<RoleGroupImpl> getMemberGroups() {
-		return this.memberGroups;
+	public List<String> getMemberGroupIds() {
+		return getMembersOfType( GROUP_MEMBER_TYPE );
 	}
 
-	public void setMemberGroups(List<RoleGroupImpl> memberGroups) {
-		this.memberGroups = memberGroups;
+	public List<String> getMemberPrincipalIds() {
+		return getMembersOfType( PRINCIPAL_MEMBER_TYPE );
 	}
 
-
-	public List<RolePrincipalImpl> getMemberPrincipals() {
-		return this.memberPrincipals;
+	public List<String> getMemberRoleIds() {
+		return getMembersOfType( ROLE_MEMBER_TYPE );
 	}
-
-	public void setMemberPrincipals(List<RolePrincipalImpl> memberPrincipals) {
-		this.memberPrincipals = memberPrincipals;
+	
+	protected List<String> getMembersOfType( String memberTypeCode ) {
+		List<String> roleMembers = new ArrayList<String>();
+		for ( RoleMemberImpl member : getMembers() ) {
+			if ( member.getMemberTypeCode().equals ( memberTypeCode )
+					&& member.isActive() ) {
+				roleMembers.add( member.getMemberId() );
+			}
+		}
+		return roleMembers;
 	}
-
+	
 	public String getKimTypeId() {
 		return this.kimTypeId;
 	}
@@ -209,12 +208,12 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		return dto;
 	}
 
-	public List<RoleRoleImpl> getMemberRoles() {
-		return this.memberRoles;
+	public List<RoleMemberImpl> getMembers() {
+		return this.members;
 	}
 
-	public void setMemberRoles(List<RoleRoleImpl> memberRoles) {
-		this.memberRoles = memberRoles;
+	public void setMembers(List<RoleMemberImpl> members) {
+		this.members = members;
 	}
 	
 }

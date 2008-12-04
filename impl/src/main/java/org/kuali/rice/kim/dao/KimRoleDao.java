@@ -19,14 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.impl.KimDelegationGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationPrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -36,26 +32,19 @@ import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
  */
 public interface KimRoleDao {
 
-	List<RolePrincipalImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId );
+	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId );
 	
-	List<RoleGroupImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
+	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
 	
 	Map<String,KimRoleImpl> getRoleImplMap( Collection<String> roleIds );
 	
 	Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
 	
-	List<KimDelegationPrincipalImpl> getDelegationPrincipalsForPrincipalIdAndDelegationIds( Collection<String> delegationIds, String principalId );
+	List<KimDelegationMemberImpl> getDelegationPrincipalsForPrincipalIdAndDelegationIds( Collection<String> delegationIds, String principalId );
 
-	List<KimDelegationGroupImpl> getDelegationGroupsForGroupIdsAndDelegationIds( Collection<String> delegationIds, List<String> groupIds );
+	List<KimDelegationMemberImpl> getDelegationGroupsForGroupIdsAndDelegationIds( Collection<String> delegationIds, List<String> groupIds );
 	
-	List<RolePrincipalImpl> getRolePrincipalsForRoleIds( Collection<String> roleIds );
-	List<RoleGroupImpl> getRoleGroupsForRoleIds( Collection<String> roleIds );
-	public List<RoleRoleImpl> getRoleRolesForRoleIds( Collection<String> roleIds );
+	List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds );
 	
-	Map<String,List<KimDelegationPrincipalImpl>> getDelegationPrincipalsForDelegationIds( List<String> delegationIds );
-	
-	Map<String,List<KimDelegationGroupImpl>> getDelegationGroupsForDelegationIds( List<String> delegationIds );
-	
-	public Map<String,List<KimDelegationRoleImpl>> getDelegationRolesForDelegationIds( List<String> delegationIds);
-
+	Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds( List<String> delegationIds );
 }

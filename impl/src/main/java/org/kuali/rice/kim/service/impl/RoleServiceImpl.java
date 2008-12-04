@@ -24,18 +24,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationPrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleGroupImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.GroupService;
@@ -134,14 +131,14 @@ public class RoleServiceImpl implements RoleService {
     	Map<String,KimRoleImpl> roles = roleDao.getRoleImplMap(roleIds);
     	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
     	
-    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForRoleIds( roleIds );
-    	for ( RolePrincipalImpl rp : rps ) {
-    		if (!rp.getPrincipalId().equals(principalId)) {
+    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds( roleIds );
+    	for ( RoleMemberImpl rm : rms ) {
+    		if (!rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) || !rm.getMemberId().equals(principalId)) {
     			continue;
     		}
-    		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
-			if ( qualification == null || qualification.isEmpty() || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
-				results.add(rp.getQualifier());
+    		KimRoleTypeService roleTypeService = roleTypeServices.get( rm.getRoleId() );
+			if ( qualification == null || qualification.isEmpty() || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rm.getQualifier() ) ) {
+				results.add(rm.getQualifier());
 			}
     	} 
     	
@@ -185,50 +182,33 @@ public class RoleServiceImpl implements RoleService {
     	// again, for efficiency, obtain and store all role-type services by roleId
     	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
     	
-    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForRoleIds( allRoleIds );
+    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds( allRoleIds );    	
     	// check each membership to see if the qualifier matches
-    	for ( RolePrincipalImpl rp : rps ) {
+    	for ( RoleMemberImpl rm : rms ) {
 			// check the qualifications
-    		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
+    		KimRoleTypeService roleTypeService = roleTypeServices.get( rm.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
-			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rp.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( rp.getPrincipalId(), null, null, rp.getRoleId(), rp.getRoleMemberId(), rp.getQualifier() );
-				results.add( mi );
-				matchingRoleIds.add( rp.getRoleId() );
-			}
-    	}   	
-    	
-    	List<RoleGroupImpl> rgs = roleDao.getRoleGroupsForRoleIds( allRoleIds );
-    	// check each membership to see if the qualifier matches
-    	for ( RoleGroupImpl rg : rgs ) {
-			// check the qualifications
-    		KimRoleTypeService roleTypeService = roleTypeServices.get( rg.getRoleId() );
-    		// if the role type service is null, assume that all qualifiers match
-			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rg.getQualifier() ) ) {
-				RoleMembershipInfo mi = new RoleMembershipInfo( null, rg.getGroupId(), null, rg.getRoleId(), rg.getRoleMemberId(), rg.getQualifier() );
-				results.add( mi );
-				matchingRoleIds.add( rg.getRoleId() );
-			}
-    	}
-    	List<RoleRoleImpl> rrs = roleDao.getRoleRolesForRoleIds( allRoleIds );
-    	// check each membership to see if the qualifier matches
-    	for ( RoleRoleImpl rr : rrs ) {
-			// check the qualifications
-    		KimRoleTypeService roleTypeService = roleTypeServices.get( rr.getRoleId() );
-    		// if the role type service is null, assume that all qualifiers match
-			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
-				ArrayList<String> roleIdList = new ArrayList<String>( 1 );
-				roleIdList.add( rr.getMemberRoleId() );
-				// get the list of members from the nested role - ignore delegations on those sub-roles
-				Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false );
-				if ( !nestedRoleMembers.isEmpty() ) {
-					results.addAll( nestedRoleMembers );
-					matchingRoleIds.add( rr.getRoleId() );
-					// add the roles  whose members matched to the list for delegation checks later
-					for ( RoleMembershipInfo rmi : nestedRoleMembers ) {
-						rmi.setMemberRoleId( rr.getMemberRoleId() );
-						//matchingRoleIds.add( rr.getMemberRoleId() );
+			if ( qualification == null || roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, rm.getQualifier() ) ) {
+				// special handling to resolve role types into their principals and/or groups
+				if ( rm.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE ) ) {
+					ArrayList<String> roleIdList = new ArrayList<String>( 1 );
+					roleIdList.add( rm.getMemberId() );
+					// get the list of members from the nested role - ignore delegations on those sub-roles
+					Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false );
+					if ( !nestedRoleMembers.isEmpty() ) {
+						// add the roles  whose members matched to the list for delegation checks later
+						for ( RoleMembershipInfo rmi : nestedRoleMembers ) {
+							rmi.setEmbeddedRoleId( rm.getMemberId() );
+							//matchingRoleIds.add( rm.getMemberRoleId() );
+						}
+						results.addAll( nestedRoleMembers );
+						matchingRoleIds.add( rm.getRoleId() );
 					}
+				} else {
+					// everything else gets added directly
+					RoleMembershipInfo mi = new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier() );
+					results.add( mi );
+					matchingRoleIds.add( rm.getRoleId() );					
 				}
 			}
     	}
@@ -244,7 +224,7 @@ public class RoleServiceImpl implements RoleService {
     			if ( !rolePrincipalIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String rolePrincipalId : rolePrincipalIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( rolePrincipalId, null, null, roleId, "*", null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( roleId, "*", rolePrincipalId, KimRole.PRINCIPAL_MEMBER_TYPE, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}
@@ -253,14 +233,14 @@ public class RoleServiceImpl implements RoleService {
     			if ( !roleGroupIds.isEmpty() ) {
     				matchingRoleIds.add(roleId);
     				for ( String roleGroupId : roleGroupIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( null, roleGroupId, null, roleId, "*", null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
+    					RoleMembershipInfo mi = new RoleMembershipInfo( roleId, "*", roleGroupId, KimRole.GROUP_MEMBER_TYPE, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
     					results.add( mi );
     				}
     			}
     		}
     	}    	
     	
-    	if ( followDelegations ) {
+    	if ( followDelegations && !matchingRoleIds.isEmpty() ) {
 	    	// we have a list of RoleMembershipInfo objects
 	    	// need to get delegations for distinct list of roles in that list
 	    	Map<String,KimDelegationImpl> delegations = roleDao.getDelegationImplMapFromRoleIds( matchingRoleIds );
@@ -320,9 +300,7 @@ public class RoleServiceImpl implements RoleService {
     	}
     	
     	// pull the needed objects from the role DAO
-    	Map<String,List<KimDelegationPrincipalImpl>> delegationPrincipals = roleDao.getDelegationPrincipalsForDelegationIds(applicableDelegationIds);
-    	Map<String,List<KimDelegationGroupImpl>> delegationGroups = roleDao.getDelegationGroupsForDelegationIds(applicableDelegationIds);
-    	Map<String,List<KimDelegationRoleImpl>> delegationRoles = roleDao.getDelegationRolesForDelegationIds(applicableDelegationIds);
+    	Map<String,List<KimDelegationMemberImpl>> delegationMembers = roleDao.getDelegationMembersForDelegationIds(applicableDelegationIds);
     	
 		// get the services for use later
 		Map<String,KimDelegationTypeService> delegationTypeServices = getDelegationTypeServicesByDelegationId(applicableDelegationIds, delegations);
@@ -332,69 +310,50 @@ public class RoleServiceImpl implements RoleService {
 				KimDelegationTypeService delegationTypeService = delegationTypeServices.get( delegationId );
 				KimDelegationImpl delegation = delegations.get( delegationId );
 				// get the principals for this delegation
-				for ( KimDelegationPrincipalImpl dp : delegationPrincipals.get( delegationId ) ) {
+				// get the groups for this delegation
+				for ( KimDelegationMemberImpl dp : delegationMembers.get( delegationId ) ) {
         			if ( delegationTypeService == null 
         					|| delegationTypeService.doesRoleQualifierMatchQualification(qualification, dp.getQualifier())) {
-        				// add the delegation information
-        				mi.getDelegates().add( 
-        						new DelegateInfo( 
-        								delegationId, 
-        								delegation.getDelegationTypeCode(),
-        								dp.getPrincipalId(),
-        								null,
-        								dp.getQualifier() ) );
-        			}
+        				if ( dp.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) 
+        						|| dp.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE ) ) {
+	        				// add the delegation information
+	        				mi.getDelegates().add( 
+	        						new DelegateInfo( 
+	        								delegationId, 
+	        								delegation.getDelegationTypeCode(),
+	        								dp.getMemberId(),
+	        								dp.getMemberTypeCode(),
+	        								dp.getQualifier() ) );
+	        			} else { // role members
+	            			// loop over delegation roles and extract the role IDs where the qualifications match
+	        				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
+	        				roleIdTempList.add( dp.getMemberId() );
+	        				
+	        				// get the members of this role
+	            			Collection<RoleMembershipInfo> delegateMembers = getRoleMembers(roleIdTempList, qualification, false);
+	            			// loop over the role members and create the needed DelegationInfo objects
+	            			for ( RoleMembershipInfo rmi : delegateMembers ) {
+	            				if ( rmi.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
+	                				mi.getDelegates().add( 
+	                						new DelegateInfo( 
+	                								delegationId, 
+	                								delegation.getDelegationTypeCode(),
+	                								rmi.getMemberId(),
+	                								null,
+	                								dp.getQualifier() ) );
+	            				} else if ( rmi.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE ) ) {
+	                				mi.getDelegates().add( 
+	                						new DelegateInfo( 
+	                								delegationId, 
+	                								delegation.getDelegationTypeCode(),
+	                								null,
+	                								rmi.getMemberId(),
+	                								dp.getQualifier() ) );
+	            				}
+	            			} // delegate member loop
+	        			} // if: group/principal or role
+        			}  // if: delegation qualifiers match
 				}
-				// get the groups for this delegation
-				for ( KimDelegationGroupImpl dg : delegationGroups.get( delegationId ) ) {
-        			if ( delegationTypeService == null 
-        					|| delegationTypeService.doesRoleQualifierMatchQualification(qualification, dg.getQualifier())) {
-        				// add the delegation information
-        				mi.getDelegates().add( 
-        						new DelegateInfo( 
-        								delegationId, 
-        								delegation.getDelegationTypeCode(),
-        								null,
-        								dg.getGroupId(),
-        								dg.getQualifier() ) );
-        			}
-				}    				
-
-    			// handle role delegations
-    			
-    			// loop over delegation roles and extract the role IDs where the qualifications match
-				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
-				for ( KimDelegationRoleImpl dr : delegationRoles.get( delegationId ) ) {
-        			if ( delegationTypeService == null 
-        					|| delegationTypeService.doesRoleQualifierMatchQualification(qualification, dr.getQualifier())) {
-        				
-        				roleIdTempList.clear();
-        				roleIdTempList.add( dr.getRoleId() );
-        				
-        				// get the members of this role
-            			Collection<RoleMembershipInfo> delegateMembers = getRoleMembers(roleIdTempList, qualification, false);
-            			// loop over the role members and create the needed DelegationInfo objects
-            			for ( RoleMembershipInfo rmi : delegateMembers ) {
-            				if ( rmi.getPrincipalId() != null ) {
-                				mi.getDelegates().add( 
-                						new DelegateInfo( 
-                								delegationId, 
-                								delegation.getDelegationTypeCode(),
-                								rmi.getPrincipalId(),
-                								null,
-                								dr.getQualifier() ) );
-            				} else {
-                				mi.getDelegates().add( 
-                						new DelegateInfo( 
-                								delegationId, 
-                								delegation.getDelegationTypeCode(),
-                								null,
-                								rmi.getGroupId(),
-                								dr.getQualifier() ) );
-            				}
-            			} // delegate member loop
-        			} // if: delegation qualifiers match
-				} // for: delegation roles    				    				
 			} // delegation IDs for a role membership
 		} // role memberships
     }
@@ -424,7 +383,7 @@ public class RoleServiceImpl implements RoleService {
     	// again, for efficiency, obtain and store all role-type services by roleId
     	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
     	// get all roles to which the principal is assigned
-    	List<RolePrincipalImpl> rps = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
+    	List<RoleMemberImpl> rps = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
 
     	// if the qualification is null and the role list is not, then any role in the list will match
     	// so since the role ID list is not blank, we can return true at this point
@@ -432,7 +391,7 @@ public class RoleServiceImpl implements RoleService {
     		return true;
     	}    	
     	// check each membership to see if the principal matches
-    	for ( RolePrincipalImpl rp : rps ) {
+    	for ( RoleMemberImpl rp : rps ) {
 			// check the qualifications
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rp.getRoleId() );
     		// if the role type service is null, assume that all qualifiers match
@@ -445,9 +404,9 @@ public class RoleServiceImpl implements RoleService {
     	List<String> principalGroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
     	// find the role/group associations
     	if ( !principalGroupIds.isEmpty() ) {
-	    	List<RoleGroupImpl> rgs = roleDao.getRoleGroupsForGroupIdsAndRoleIds( allRoleIds, principalGroupIds);
+	    	List<RoleMemberImpl> rgs = roleDao.getRoleGroupsForGroupIdsAndRoleIds( allRoleIds, principalGroupIds);
 	    	
-	    	for ( RoleGroupImpl rg : rgs ) {
+	    	for ( RoleMemberImpl rg : rgs ) {
 	    		// check the qualifications
 	    		KimRoleTypeService roleTypeService = roleTypeServices.get( rg.getRoleId() );
 	    		// if the role type service is null, assume that all qualifiers match
@@ -530,8 +489,8 @@ public class RoleServiceImpl implements RoleService {
     		// get the services for use later
     		Map<String,KimDelegationTypeService> delegationTypeServices = getDelegationTypeServicesByDelegationId(applicableDelegationIds, delegations);
     		// check principals assigned to this role
-    		List<KimDelegationPrincipalImpl> dps = roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(applicableDelegationIds, principalId);
-    		for ( KimDelegationPrincipalImpl dp : dps ) {
+    		List<KimDelegationMemberImpl> dps = roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(applicableDelegationIds, principalId);
+    		for ( KimDelegationMemberImpl dp : dps ) {
     			KimDelegationTypeService delegationTypeService = delegationTypeServices.get(dp.getDelegationId());
     			// QUESTION: does the qualifier map need to be merged with the main delegation qualification?
     			if ( delegationTypeService == null || delegationTypeService.doesRoleQualifierMatchQualification(qualification, dp.getQualifier())) {
@@ -543,9 +502,9 @@ public class RoleServiceImpl implements RoleService {
     		
     		// check groups assigned to this role - use the list of groups from earlier
         	if ( !principalGroupIds.isEmpty() ) {
-    	    	List<KimDelegationGroupImpl> dgs = roleDao.getDelegationGroupsForGroupIdsAndDelegationIds( applicableDelegationIds, principalGroupIds);
+    	    	List<KimDelegationMemberImpl> dgs = roleDao.getDelegationGroupsForGroupIdsAndDelegationIds( applicableDelegationIds, principalGroupIds);
     	    	
-    	    	for ( KimDelegationGroupImpl dg : dgs ) {
+    	    	for ( KimDelegationMemberImpl dg : dgs ) {
     	    		// check the qualifications
     	    		KimDelegationTypeService delegationTypeService = delegationTypeServices.get( dg.getDelegationId() );
     	    		// if the delegation type service is null, assume that all qualifiers match
@@ -556,11 +515,7 @@ public class RoleServiceImpl implements RoleService {
         	}    		
         	for ( String delegationId : applicableDelegationIds ) {
         		KimDelegationImpl d = delegations.get( delegationId );
-        		List<KimDelegationRoleImpl> drs = d.getMemberRoles();
-        		List<String> roleIdTemp = new ArrayList<String>( 1 );
-        		for ( KimDelegationRoleImpl dr : drs ) {
-        			roleIdTemp.add( dr.getRoleId() );
-        		}
+        		List<String> roleIdTemp = d.getMemberRoleIds();
         		// recurse to the main role check - but don't allow further delegations to be followed
     			if ( principalHasRole( principalId, roleIdTemp, qualification, false ) ) {
     				return true;
@@ -687,11 +642,12 @@ public class RoleServiceImpl implements RoleService {
 	 * Gets the roles directly assigned to the given role.
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<RoleGroupImpl> getRolesForDirectGroup(String groupId) {
+	protected List<RoleMemberImpl> getRolesForDirectGroup(String groupId) {
 		AttributeSet criteria = new AttributeSet();
 		criteria.put("memberId", groupId);
+		criteria.put("memberTypeCode", KimRole.GROUP_MEMBER_TYPE );
 
-		List<RoleGroupImpl> roles = (List<RoleGroupImpl>) getBusinessObjectService().findMatching(RoleGroupImpl.class, criteria);
+		List<RoleMemberImpl> roles = (List<RoleMemberImpl>) getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
 				
 		return roles;
 	}	

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -171,8 +172,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     protected List<ResponsibilityActionInfo> getActionsForResponsibilityRoles( KimResponsibilityImpl responsibility, List<String> roleIds, AttributeSet qualification ) {
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
-    	for ( RoleMembershipInfo rm : roleMembers ) {
-    		ResponsibilityActionInfo rai = new ResponsibilityActionInfo( rm.getPrincipalId(), rm.getGroupId(), rm.getMemberRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    	for ( RoleMembershipInfo rm : roleMembers ) {    		
+    		ResponsibilityActionInfo rai;
+    		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
+    			rai = new ResponsibilityActionInfo( rm.getMemberId(), null, rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		} else {
+    			rai = new ResponsibilityActionInfo( null, rm.getMemberId(), rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+    		}
     		// get associated resp resolution objects
     		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getRoleMemberId() );
     		// add the data to the ResponsibilityActionInfo objects

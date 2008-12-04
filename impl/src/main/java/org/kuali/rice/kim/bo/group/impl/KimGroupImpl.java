@@ -33,7 +33,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kim.bo.group.GroupMember;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -48,6 +47,9 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_GRP_T")
 public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGroup {
+
+	public static final String GROUP_MEMBER_TYPE = "G";
+	public static final String PRINCIPAL_MEMBER_TYPE = "P";
 
 	private static final long serialVersionUID = 1L;
 	
@@ -68,13 +70,9 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=GroupGroupImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=GroupMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupGroupImpl> memberGroups;
-
-	@OneToMany(targetEntity=GroupPrincipalImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupPrincipalImpl> memberPrincipals;
+	protected List<GroupMemberImpl> members;
 
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="TARGET_PRIMARY_KEY", insertable=false, updatable=false)
@@ -128,6 +126,10 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		this.groupDescription = groupDescription;
 	}
 
+	public List<GroupMemberImpl> getMembers() {
+		return this.members;
+	}
+
 	public boolean isActive() {
 		return this.active;
 	}
@@ -136,27 +138,26 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		this.active = active;
 	}
 
-	public List<GroupMember> getMembers() {
-		ArrayList<GroupMember> m = new ArrayList<GroupMember>();
-		m.addAll( getMemberGroups() );
-		m.addAll( getMemberPrincipals() );
-		return m;
+	public List<String> getMemberGroupIds() {
+		List<String> groupMembers = new ArrayList<String>();
+		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
+			if ( groupMemberImpl.getMemberTypeCode().equals ( GROUP_MEMBER_TYPE )
+					&& groupMemberImpl.isActive() ) {
+				groupMembers.add( groupMemberImpl.getMemberId() );
+			}
+		}
+		return groupMembers;
 	}
 
-	public List<GroupGroupImpl> getMemberGroups() {
-		return this.memberGroups;
-	}
-
-	public void setMemberGroups(List<GroupGroupImpl> memberGroups) {
-		this.memberGroups = memberGroups;
-	}
-
-	public List<GroupPrincipalImpl> getMemberPrincipals() {
-		return this.memberPrincipals;
-	}
-
-	public void setMemberPrincipals(List<GroupPrincipalImpl> memberPrincipals) {
-		this.memberPrincipals = memberPrincipals;
+	public List<String> getMemberPrincipalIds() {
+		List<String> groupMembers = new ArrayList<String>();
+		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
+			if ( groupMemberImpl.getMemberTypeCode().equals ( PRINCIPAL_MEMBER_TYPE )
+					&& groupMemberImpl.isActive() ) {
+				groupMembers.add( groupMemberImpl.getMemberId() );
+			}
+		}
+		return groupMembers;
 	}
 
 	public String getKimTypeId() {
@@ -208,18 +209,15 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	@SuppressWarnings("unchecked")
 	@Deprecated
 	public void setGroupUsers(List groupMembers) {
-		if (memberGroups == null) {
-			memberGroups = new ArrayList<GroupGroupImpl>();
-		}
-		if (memberPrincipals == null) {
-			memberPrincipals = new ArrayList<GroupPrincipalImpl>();
-		}
 		for (Iterator member = groupMembers.iterator(); member.hasNext();) {
 			UserDTO dto = (UserDTO) member.next();
-			GroupPrincipalImpl p = new GroupPrincipalImpl();
-			p.setMemberPrincipalId(dto.getWorkflowId());
-			p.setMemberPrincipalId(dto.getNetworkId());
-			memberPrincipals.add(p);
+			GroupMemberImpl p = new GroupMemberImpl();
+			p.setMemberId(dto.getWorkflowId());
+			members.add(p);
 		}	
+	}
+
+	public void setMembers(List<GroupMemberImpl> members) {
+		this.members = members;
 	}	
 }

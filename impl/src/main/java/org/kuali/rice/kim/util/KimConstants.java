@@ -59,8 +59,6 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ="actionDetailsAtRoleMemberLevel";	
 	public static final String KIM_ATTRIB_REQUIRED ="required";	
 	public static final String KIM_ATTRIB_BEAN_NAME ="beanName";	
-	public static final String KIM_ATTRIB_CHART_CODE ="chartOfAccountsCode";
-	public static final String KIM_ATTRIB_ORGANIZATION_CODE = "organizationCode";
 	public static final String KIM_ATTRIB_CAMPUS_CODE = "campusCode";
 	public static final String KIM_ATTRIB_TYPE_CODE ="typeCd";
 	public static final String KIM_ATTRIB_CREATED_SELF_ONLY ="createdBySelfOnly";	
@@ -81,6 +79,12 @@ public class KimConstants {
 	public static final String KIM_ROLE_NAME_USER = "User";
 	public static final String KIM_ROLE_NAME_BILLER = "Biller";
 	public static final String KIM_ROLE_NAME_PROCESSOR = "Processor";	
+	public static final String KIM_ROLE_NAME_ACCOUNT_SUPERVISOR = "Account Supervisor";
+	public static final String KIM_ROLE_NAME_FISCAL_OFFICER = "Fiscal Officer";
+	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_PRIMARY_DELEGATE = "Fiscal Officer Primary Delegate";
+	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_SECONDARY_DELEGATE = "Fiscal Officer Secondary Delegate";
+	public static final String KIM_ROLE_NAME_AWARD_SECONDARY_DIRECTOR = "Award Project Director";
+	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 
 	public static final String KIM_AD_HOC  ="AdHoc";

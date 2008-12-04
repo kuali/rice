@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -362,6 +363,24 @@ public class KimTypeServiceBase implements KimTypeService {
 	
 	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
 		kimAttributesTranslators.add( attributesTranslator );
+	}
+	
+	protected final String COMMA_SEPARATOR = ", ";
+	protected void validateRequiredAttributesAgainstReceived(List<String> requiredAttributes, AttributeSet receivedAttributes){
+		List<String> missingAttributes = new ArrayList<String>();
+		for(String requiredAttribute: requiredAttributes){
+			if(!receivedAttributes.containsKey(requiredAttribute))
+				missingAttributes.add(requiredAttribute);
+		}
+        if(missingAttributes.size()>0) {
+        	String errorMessage = "";
+        	for(String missingAttribute: missingAttributes){
+        		errorMessage += missingAttribute + COMMA_SEPARATOR;
+        	}
+        	errorMessage = errorMessage.substring(0, 
+        			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in the received attributes.";
+            throw new RuntimeException(errorMessage);
+        }
 	}
 	
 }

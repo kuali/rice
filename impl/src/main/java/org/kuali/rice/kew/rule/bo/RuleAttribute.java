@@ -32,7 +32,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -72,9 +71,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="XML")
 	private String xmlConfigData;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+
     @Column(name="SVC_NMSPC")
 	private String serviceNamespace;
     
@@ -117,12 +114,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
     public void setLabel(String label) {
         this.label = label;
     }
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
+
     public String getName() {
         return name;
     }

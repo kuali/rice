@@ -89,7 +89,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
                     RuleAttribute existingAttribute = KEWServiceLocator.getRuleAttributeService().findByName(ruleAttribute.getName());
                     if (existingAttribute != null) {
                         ruleAttribute.setRuleAttributeId(existingAttribute.getRuleAttributeId());
-                        ruleAttribute.setLockVerNbr(existingAttribute.getLockVerNbr());
+                        ruleAttribute.setVersionNumber(existingAttribute.getVersionNumber());
                     }
 				    KEWServiceLocator.getRuleAttributeService().save(ruleAttribute);
 				} catch (Exception e) {

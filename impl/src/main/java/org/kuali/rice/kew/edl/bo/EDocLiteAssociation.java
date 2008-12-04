@@ -64,12 +64,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
      */
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
-    /**
-     * db_lock_ver_nbr
-     */
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+
     @Transient
     private String actionsUrl;//for quickfinder
 
@@ -103,12 +98,6 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
     }
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
 
     public String toString() {
         return "[EDocLiteAssociation: edocLiteAssocId=" + edocLiteAssocId
@@ -116,7 +105,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
                                  + ", definition=" + definition
                                  + ", style=" + style
                                  + ", activeInd=" + activeInd
-                                 + ", lockVerNbr=" + lockVerNbr
+                                 + ", versionNumber=" + versionNumber
                                  + "]";
     }
 	public String getActionsUrl() {
@@ -138,7 +127,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	    propMap.put("definition", getDefinition());
 	    propMap.put("style", getStyle());
 	    propMap.put("activeInd", getActiveInd());
-	    propMap.put("lockVerNbr", getLockVerNbr());	    
+	    propMap.put("versionNumber", getVersionNumber());	    
 	    return propMap;
 		
 	}

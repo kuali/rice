@@ -33,7 +33,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
@@ -52,8 +51,6 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -125,9 +122,7 @@ public class DocumentType extends PersistableBusinessObjectBase
 	private String reportingWorkgroupId;
     @Column(name="SVC_NMSPC")
 	private String serviceNamespace;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+
 
     /* these two fields are for the web tier lookupable
      * DocumentType is doing double-duty as a web/business tier object
@@ -551,14 +546,6 @@ public class DocumentType extends PersistableBusinessObjectBase
         policy.setInheritedFlag(Boolean.FALSE);
         policy.setPolicyValue(defaultValue);
         return policy;
-    }
-
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
     }
 
     private DocumentTypeService getDocumentTypeService() {
@@ -1016,7 +1003,7 @@ public class DocumentType extends PersistableBusinessObjectBase
                           + ", workgroupId=" + workgroupId
                           + ", blanketApproveWorkgroupId=" + blanketApproveWorkgroupId
                           + ", blanketApprovePolicy=" + blanketApprovePolicy
-                          + ", lockVerNbr=" + lockVerNbr
+                          + ", versionNumber=" + versionNumber
                           + ", defaultExceptionWorkgroup=" + defaultExceptionWorkgroup
                           + ", policies=" + policies
                           + ", security=" + documentTypeSecurityXml

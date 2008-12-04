@@ -176,7 +176,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	try {
     		// at this point this save is designed to version the document type by creating an entire new record if this is going to be an update and
     		// not a create just throw and exception to be on the safe side
-    		if (documentType.getDocumentTypeId() != null && documentType.getLockVerNbr() != null) {
+    		if (documentType.getDocumentTypeId() != null && documentType.getVersionNumber() != null) {
     			throw new RuntimeException("DocumentType configured for update and not versioning which we support");
     		}
 

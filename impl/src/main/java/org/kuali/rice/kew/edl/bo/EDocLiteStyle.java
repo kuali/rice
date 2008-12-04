@@ -18,15 +18,13 @@ package org.kuali.rice.kew.edl.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.Version;
-import javax.persistence.FetchType;
 import javax.persistence.Basic;
-import javax.persistence.Lob;
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -61,12 +59,6 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
      */
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
-    /**
-     * db_lock_ver_nbr
-     */
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
 
     public Long getEdocLiteStyleId() {
         return edocLiteStyleId;
@@ -92,19 +84,13 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
     }
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
 
     public String toString() {
         return "[EDocLiteStyle: edocLiteStyleId=" + edocLiteStyleId
                            + ", name=" + name
                            + ", xml=" + (xmlContent == null ? xmlContent : xmlContent.length() + "chars")
                            + ", activeInd=" + activeInd
-                           + ", lockVerNbr=" + lockVerNbr
+                           + ", versionNumber=" + versionNumber
                            + "]";
     }
 	/**
@@ -119,7 +105,7 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
 		propMap.put("name",getName());
 		propMap.put("xmlContent",(xmlContent == null ? xmlContent : xmlContent.length() + "chars"));
 		propMap.put("activeInd",getActiveInd());
-		propMap.put("lockVerNbr",getLockVerNbr());		
+		propMap.put("versionNumber",getVersionNumber());		
 	    return propMap;
 		
 	}

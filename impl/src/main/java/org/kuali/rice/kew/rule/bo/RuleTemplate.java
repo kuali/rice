@@ -33,7 +33,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -75,9 +74,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 	private String name;
     @Column(name="RULE_TMPL_DESC")
 	private String description;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+
     @Column(name="DLGN_RULE_TMPL_ID")
 	private Long delegationTemplateId;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
@@ -227,14 +224,6 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
     }
 
     public String getName() {
@@ -415,7 +404,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
                                         .append("totalRuleTemplateAttributes", getRuleTemplateAttributes() == null ? "null" : "size: " + getRuleTemplateAttributes().size())
                                         .append("activeRuleTemplateAttributes", getActiveRuleTemplateAttributes() == null ? "null" : "size: " + getActiveRuleTemplateAttributes().size())
                                         .append("returnUrl", returnUrl)
-                                        .append("lockVerNbr", lockVerNbr)
+                                        .append("versionNumber", versionNumber)
                                         .append("ruleTemplateOptions", ruleTemplateOptions).toString();
                                  
     }
@@ -435,7 +424,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 	    propMap.put("totalRuleTemplateAttributes", getRuleTemplateAttributes() == null ? "null" : "size: " + getRuleTemplateAttributes().size());
 	    propMap.put("activeRuleTemplateAttributes", getActiveRuleTemplateAttributes() == null ? "null" : "size: " + getActiveRuleTemplateAttributes().size());
 	    propMap.put("returnUrl", getReturnUrl());
-	    propMap.put("lockVerNbr", getLockVerNbr());
+	    propMap.put("versionNumber", getVersionNumber());
 	    propMap.put("ruleTemplateOptions", getRuleTemplateOptions());
 	    	    
 	    return propMap;

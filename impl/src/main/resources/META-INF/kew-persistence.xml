@@ -26,7 +26,7 @@
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>
     <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
-    <class>org.kuali.rice.kew.rule.RuleTemplate</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplate</class>
     <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
     <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
     <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttribute</class>
@@ -56,12 +56,14 @@
     <class>org.kuali.rice.kew.workgroup.WorkgroupType</class>
     <class>org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
+    <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleExtension</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleExtensionValue</class>
     <class>org.kuali.rice.kew.role.Role</class>
     <class>org.kuali.rice.kew.role.RoleAttribute</class>
+    -->
     <class>org.kuali.rice.kew.removereplace.RemoveReplaceDocument</class>
     <class>org.kuali.rice.kew.removereplace.RuleTarget</class>
     <class>org.kuali.rice.kew.removereplace.WorkgroupTarget</class>

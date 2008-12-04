@@ -28,7 +28,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -68,9 +67,6 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 	private Integer displayOrder;
     @Column(name="DFLT_VAL")
 	private String defaultValue;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
@@ -200,14 +196,6 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 
     public void setDisplayOrder(Integer displayOrder) {
 	this.displayOrder = displayOrder;
-    }
-
-    public Integer getLockVerNbr() {
-	return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-	this.lockVerNbr = lockVerNbr;
     }
 
     public boolean isRequired() {

@@ -116,7 +116,7 @@
 		<td class="datacell">
 		    <html-el:select name="ActionListFilterForm" property="filter.groupId">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>
-            </html-el:select>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeWorkgroupId"/></td>
+            </html-el:select>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeGroupId"/></td>
 	</tr>
 	<tr>
 		<td class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/> <bean-el:message key="general.help.documentType"/></td>

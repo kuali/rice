@@ -17,6 +17,7 @@ package org.kuali.rice.core.jpa.criteria;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,11 +45,11 @@ public class Criteria {
 	
 	private int bindParamCount;
 
-	private List tokens = new ArrayList();
+	protected List tokens = new ArrayList();
 
 	private List orderByTokens = new ArrayList();
 
-	private Map<String, Object> params = new LinkedHashMap<String, Object>();
+	protected Map<String, Object> params = new LinkedHashMap<String, Object>();
 
 	public Criteria(String entityName) {
 		this(entityName, "a");
@@ -161,7 +162,7 @@ public class Criteria {
 		}
 		String queryString = queryType + " FROM " + entityName + " AS " + alias;
 		if (!tokens.isEmpty()) {
-			queryString += " WHERE 1 = 1 " + buildWhere();
+			queryString += " WHERE " + buildWhere();
 		}
 		if (!orderByTokens.isEmpty()) {
 			queryString += " ORDER BY ";
@@ -182,7 +183,7 @@ public class Criteria {
 	public String toCountQuery() {
 		String queryString = "SELECT COUNT(*) FROM " + entityName + " AS " + alias;
 		if (!tokens.isEmpty()) {
-			queryString += " WHERE 1 = 1 " + buildWhere();
+			queryString += " WHERE " + buildWhere();
 		}
 		return fix(queryString);
 	}
@@ -194,25 +195,35 @@ public class Criteria {
 	
 	private String buildWhere() {
 		String queryString = "";
+		int i = 0;
 		for (Iterator iterator = tokens.iterator(); iterator.hasNext();) {
 			Object token = (Object) iterator.next();
 			if (token instanceof Criteria) {
-				String logic = null;
-				if (token instanceof AndCriteria) {
+				String logic = "";
+				if (i>0 && token instanceof AndCriteria) {
 					logic = " AND ";
-				} else if (token instanceof OrCriteria) {
+				} else if (i>0 && token instanceof OrCriteria) {
 					logic = " OR ";
 				} 
 				queryString += logic + " (" + ((Criteria) token).buildWhere() + ") ";
 			} else {
-				queryString += " AND " + (String) token;
+				if(i>0){
+					queryString += " AND " + (String) token;
+				}else{
+					queryString += (String) token;
+				}
 			}
+			i++;
 		}
 		return queryString;
 	}
 
 	// Keep this package access so the QueryByCriteria can call it from this package.
 	void prepareParameters(Query query) {
+		prepareParameters(query, tokens, params);
+	}
+	
+	void prepareParameters(Query query, List tokens, Map<String, Object> params) {
 		for (Map.Entry<String, Object> param : params.entrySet()) {
 			Object value = param.getValue();
 			if (value instanceof BigDecimal) {
@@ -226,7 +237,7 @@ public class Criteria {
 		for (Iterator iterator = tokens.iterator(); iterator.hasNext();) {
 			Object token = (Object) iterator.next();
 			if (token instanceof Criteria) {
-				prepareParameters(query);
+				prepareParameters(query, ((Criteria)token).tokens, ((Criteria)token).params);
 			}
 		}
 	}
@@ -234,12 +245,16 @@ public class Criteria {
 	private class AndCriteria extends Criteria {
 		public AndCriteria(Criteria and) {
 			super(and.entityName, and.alias);
+			this.tokens = new ArrayList(and.tokens);
+			this.params = new HashMap(and.params);
 		}		
 	}
 
 	private class OrCriteria extends Criteria {
 		public OrCriteria(Criteria or) {
 			super(or.entityName, or.alias);
+			this.tokens = new ArrayList(or.tokens);
+			this.params = new HashMap(or.params);
 		}		
 	}
 
@@ -249,5 +264,24 @@ public class Criteria {
 
 	public void setSearchLimit(Integer searchLimit) {
 		this.searchLimit = searchLimit;
+	}
+
+
+	public void notNull(String attribute) {
+		tokens.add(alias + "." + attribute + " IS NOT NULL ");
+	}
+
+	/**
+	 * This method ...
+	 * 
+	 * @param string
+	 * @param timestamp
+	 * @param timestamp2
+	 */
+	public void notBetween(String attribute, Object value1,
+			Object value2) {
+		tokens.add(" (" + alias + "." + attribute + " NOT BETWEEN :" + attribute + "-b1 AND :" + attribute + "-b2) ");
+		params.put(attribute, value1);
+		params.put(attribute, value2);
 	}
 }

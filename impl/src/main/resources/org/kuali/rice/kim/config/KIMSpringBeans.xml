@@ -36,9 +36,9 @@
 		</property>
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kim/config/OJB-repository-kim.xml" />
 	</bean>
-	
+
 	<bean id="kimModuleConfiguration" parent="kimModuleConfiguration-parentBean"/>
-	
+
 	<bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-KIM" />
 		<property name="initializeDataDictionary" value="true"/>
@@ -64,7 +64,7 @@
 
 	<bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
-        p:personService-ref="kimPersonService" 
+        p:personService-ref="kimPersonService"
         p:kualiModuleService-ref="kualiModuleService" />
 
 	<bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
@@ -111,7 +111,7 @@
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
 
-<!-- 
+
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
@@ -120,20 +120,20 @@
 		</property>
 		<property name="beanNames">
 			<list>
-				<idref local="personService" />
-				<idref local="groupService" />
-				<idref local="namespaceService" />
-				<idref local="qualifiedRoleService" />
-				<idref local="roleService" />
-                <idref local="principalService" />
-				<idref local="entityService" />
-				<idref local="namespaceAttributeService" />
-                <idref local="groupTypeService" />
-                <idref local="kimAuthorizationService" />
+				<idref local="kimPersonService" />
+				<idref local="kimWorkgroupService" />
+				<idref local="kimUserService" />
+				<idref local="kimAuthenticationService" />
+				<idref local="kimIdentityService" />
+				<idref local="kimRoleService" />
+				<idref local="kimIdentityManagementService" />
+				<idref local="kimGroupService" />
+				<idref local="kimPermissionService" />
+				<idref local="kimResponsibilityService" />
 			</list>
 		</property>
 	</bean>
- -->
+
     <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="priority" value="3" />
@@ -146,8 +146,8 @@
       <property name="retryAttempts" value="0" />
     </bean>
 
-	
- 
+
+
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->
@@ -179,51 +179,51 @@
   -->
 
   <!-- END JPA CONFIGURATION -->
-  
+
   <bean id="kimWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimWorkgroupService"
         p:localServiceName="kimWorkgroupService" />
-    </property>  
+    </property>
   </bean>
 
   <bean id="kimUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimUserService"
         p:localServiceName="kimUserService" />
-    </property>  
+    </property>
   </bean>
- 
+
   <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl">
     <property name="validatePassword" value="false" />
   </bean>
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimAuthenticationService"
         p:localServiceName="kimAuthenticationService" />
-    </property>  
+    </property>
   </bean>
-  
+
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimIdentityService"
         p:localServiceName="kimIdentityService" />
-    </property>  
+    </property>
   </bean>
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
@@ -235,21 +235,21 @@
     p:permissionCacheMaxAge="30"
     p:responsibilityCacheMaxSize="200"
     p:responsibilityCacheMaxAge="30" />
-  
+
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao"
   	/>
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimRoleService"
         p:localServiceName="kimRoleService" />
-    </property>  
+    </property>
   </bean>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -258,13 +258,13 @@
       <bean parent="kimService"
       	p:service-ref="kimIdentityManagementService"
       	p:localServiceName="kimIdentityManagementService" />
-    </property>  
+    </property>
   </bean>
-  
+
   <bean id="kimPersonService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
   	p:identityManagementService-ref="kimIdentityManagementService"
-    p:personDao-ref="kimPersonDao" 
-    p:personCacheMaxSize="200" 
+    p:personDao-ref="kimPersonDao"
+    p:personCacheMaxSize="200"
     p:personCacheMaxAge="30" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -273,31 +273,31 @@
       <bean parent="kimService"
       	p:service-ref="kimPersonService"
       	p:localServiceName="kimPersonService" />
-    </property>  
+    </property>
   </bean>
-  
+
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimGroupService"
         p:localServiceName="kimGroupService" />
-    </property>  
+    </property>
   </bean>
-  
+
   <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
     p:permissionDao-ref="kimPermissionDao"
   />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimPermissionService"
         p:localServiceName="kimPermissionService" />
-    </property>  
+    </property>
   </bean>
 
   <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="platformAwareDao"/>
@@ -305,14 +305,14 @@
   <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"
   	p:responsibilityDao-ref="kimResponsibilityDao"
   />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimResponsibilityService"
         p:localServiceName="kimResponsibilityService" />
-    </property>  
+    </property>
   </bean>
 
   <bean id="kimPersonDao" class="org.kuali.rice.kim.dao.proxy.PersonDaoProxy">
@@ -346,14 +346,14 @@
   <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeService" />
 
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
-    
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="activePrincipalRoleTypeService"
         p:localServiceName="activePrincipalRoleTypeService" />
-    </property>  
+    </property>
   </bean>
-  
+
 </beans>

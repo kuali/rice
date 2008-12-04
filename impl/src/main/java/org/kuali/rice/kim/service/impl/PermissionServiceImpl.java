@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -26,6 +27,9 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RolePrincipalImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
@@ -34,6 +38,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -283,6 +288,19 @@ public class PermissionServiceImpl implements PermissionService {
     	//return (List<KimPermission>)getBusinessObjectService().findMatching( KimPermissionImpl.class, searchCriteria );
     	throw new UnsupportedOperationException();
     }
+    
+    public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
+    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(impls);
+    	return KIMServiceLocator.getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
+    }
+
+    public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
+    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(impls);
+    	return KIMServiceLocator.getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
+    }
+
     
     protected KimPermissionImpl getPermissionImpl(String permissionId) {
     	if ( StringUtils.isBlank( permissionId ) ) {

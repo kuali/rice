@@ -215,4 +215,8 @@ public interface PermissionService {
    
     void assignQualifiedPermissionToRole(String roleId, String permissionId, AttributeSet qualifier);    
  
+    List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+
+    List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+
 }

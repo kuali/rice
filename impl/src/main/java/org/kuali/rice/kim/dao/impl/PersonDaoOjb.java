@@ -344,7 +344,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		PersonCacheImpl pc = new PersonCacheImpl( p );
 		
 		// save it
-		getPersistenceBrokerTemplate().store( pc );
+// commented out to prevent transaction error until can be worked to run in own transaction
+// in own thread		
+//		getPersistenceBrokerTemplate().store( pc );
 	}
 	
 	/**

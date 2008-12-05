@@ -133,7 +133,6 @@ public interface RoleService {
      * 
      */
     Collection<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
-	Collection<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification, boolean followDelegations );
 
     boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
     

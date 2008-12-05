@@ -239,21 +239,16 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return roleId;
 	}
 
-	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations) {
-		String key = buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification) + "-" + followDelegations;
+	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
+		String key = buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
 		Collection<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
 		if (members != null) {
 			return members;
 		}
-		members = getRoleService().getRoleMembers(roleIds, qualification, followDelegations);
+		members = getRoleService().getRoleMembers(roleIds, qualification);
 		addRoleMembersWithDelegationToCache(key, members);
     	return members;
-	}
-
-	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
-		// NOTE: This is calling to the cached method above just as the real role service does.
-		return getRoleMembers(roleIds, qualification, true);
-	}
+    }
 
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
 		String key = principalId + "-" + buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);

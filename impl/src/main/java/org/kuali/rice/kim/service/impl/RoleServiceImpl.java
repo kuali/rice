@@ -165,7 +165,7 @@ public class RoleServiceImpl implements RoleService {
 	/**
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-    public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
+    protected Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
     	// get all implying roles (this also filters to active roles only)

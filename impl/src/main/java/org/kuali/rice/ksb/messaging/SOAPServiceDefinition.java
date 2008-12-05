@@ -16,12 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.net.URL;
-import java.net.URLEncoder;
-
-import org.apache.derby.tools.sysinfo;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 
 /**

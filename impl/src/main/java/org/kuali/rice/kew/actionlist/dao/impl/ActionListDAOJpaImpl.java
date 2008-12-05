@@ -35,6 +35,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
+import org.hibernate.Query;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -55,7 +56,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionListDAOJpaImpl extends PersistenceBrokerDaoSupport implements ActionListDAO {
+public class ActionListDAOJpaImpl implements ActionListDAO {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOJpaImpl.class);
 	
@@ -63,7 +64,7 @@ public class ActionListDAOJpaImpl extends PersistenceBrokerDaoSupport implements
 	private EntityManager entityManager;
 	
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-        return getActionItemsInActionList(ActionItemActionListExtension.class, workflowUser, filter);
+        return getActionItemsInActionList(ActionItem.class, workflowUser, filter);
         
 //        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
 //        Criteria crit = null;
@@ -81,7 +82,7 @@ public class ActionListDAOJpaImpl extends PersistenceBrokerDaoSupport implements
     
     public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
         LOG.debug("getting action list for route header id " + routeHeaderId);
-        Criteria crit = new Criteria(ActionItemActionListExtension.class.getName());
+        Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         Collection<ActionItem> collection = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
@@ -328,37 +329,12 @@ public class ActionListDAOJpaImpl extends PersistenceBrokerDaoSupport implements
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from krew_actn_itm_t ai where ai.PRNCPL_ID = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
-    	return (Integer)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-            public Object doInPersistenceBroker(PersistenceBroker broker) {
-                PreparedStatement statement = null;
-                ResultSet resultSet = null;
-                try {
-                    Connection connection = broker.serviceConnectionManager().getConnection();
-                    statement = connection.prepareStatement(ACTION_LIST_COUNT_QUERY);
-                    statement.setString(1, workflowId);
-                    resultSet = statement.executeQuery();
-                    if (!resultSet.next()) {
-                        throw new WorkflowRuntimeException("Error determining Action List Count.");
-                    }
-                    return resultSet.getInt(1);
-                } catch (SQLException e) {
-                    throw new WorkflowRuntimeException("Error determining Action List Count.", e);
-                } catch (LookupException e) {
-                    throw new WorkflowRuntimeException("Error determining Action List Count.", e);
-                } finally {
-                    if (statement != null) {
-                        try {
-                            statement.close();
-                        } catch (SQLException e) {}
-                    }
-                    if (resultSet != null) {
-                        try {
-                            resultSet.close();
-                        } catch (SQLException e) {}
-                    }
-                }
-            }
-        });
+    	
+    	javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_QUERY);
+    	q.setParameter(1, workflowId);
+    	Object result = q.getSingleResult();
+    	
+    	return 1;
     }
 
     /**

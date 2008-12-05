@@ -24,10 +24,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -58,7 +61,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-//@Entity
+@Entity
 @MappedSuperclass
 @Table(name="KREW_ACTN_ITM_T")
 public class ActionItem implements WorkflowPersistable, RowStyleable {
@@ -67,6 +70,8 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 
 	@Id
 	@Column(name="ACTN_ITM_ID")
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_ACTN_ITM_SEQ_GEN")
+    @SequenceGenerator(name="KREW_ACTN_ITM_SEQ_GEN", sequenceName="KREW_ACTN_ITM_S") 
 	private Long actionItemId;
     @Column(name="PRNCPL_ID")
 	private String principalId;

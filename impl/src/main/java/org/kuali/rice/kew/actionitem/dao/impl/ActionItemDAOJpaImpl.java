@@ -13,12 +13,9 @@
  */
 package org.kuali.rice.kew.actionitem.dao.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,12 +23,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.SetUtils;
-import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -42,15 +37,14 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionItemDAOJpaImpl extends PersistenceBrokerDaoSupport implements ActionItemDAO {
+public class ActionItemDAOJpaImpl implements ActionItemDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 	
@@ -96,6 +90,15 @@ public class ActionItemDAOJpaImpl extends PersistenceBrokerDaoSupport implements
         crit.eq("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
         crit.orderBy("routeHeaderId", true);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+
+//        javax.persistence.Query q = entityManager.createQuery("SELECT a.routeHeader FROM ActionItem a " +
+//        		                         //   " 			  a.routeHeader o " +
+//        									" WHERE a.principalId = :principalId ");// +
+//        									//" ORDER BY o.routeHeaderId ASC");
+//        q.setParameter("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
+//        
+//        
+//        return q.getResultList();
     }
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
@@ -118,10 +121,7 @@ public class ActionItemDAOJpaImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public void saveActionItem(ActionItem actionItem) {
-        if (actionItem.getDateAssigned() == null) {
-            actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
-        }
-        this.getPersistenceBrokerTemplate().store(actionItem);
+    	entityManager.merge(actionItem);
     }
 
     public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException {
@@ -168,7 +168,7 @@ public class ActionItemDAOJpaImpl extends PersistenceBrokerDaoSupport implements
         else {
             orCriteria.and(delegatorWorkflowIdCriteria);
         }
-        Criteria criteria = new Criteria(ActionItem.class.getName());
+        Criteria criteria = new Criteria(ActionItemActionListExtension.class.getName());
         criteria.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
         criteria.and(orCriteria);
         

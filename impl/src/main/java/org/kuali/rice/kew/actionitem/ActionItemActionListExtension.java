@@ -39,8 +39,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-@Entity
-@Table(name="KREW_ACTN_ITM_T")
+//@Entity
+//@Table(name="KREW_ACTN_ITM_T")
 @MappedSuperclass
 public class ActionItemActionListExtension extends ActionItem {
     

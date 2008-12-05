@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -206,13 +205,14 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected List<KeyLabelPair> getDataDictionaryAttributeValues(String attributeName) {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("attributeName", attributeName);
         KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
 		AttributeDefinition definition = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeName);
 		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
-		Class<KeyValuesFinder> keyValuesFinderName = (Class<KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
+		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
 		try {
 			KeyValuesFinder finder = keyValuesFinderName.newInstance();
 			pairs = finder.getKeyValues();
@@ -233,6 +233,7 @@ public class KimTypeServiceBase implements KimTypeService {
         return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeName);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
 		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition(); 
 		definition.setDataDictionaryAttributeDefinition(KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(typeAttribute.getKimAttribute().getComponentName()).getAttributeDefinition(typeAttribute.getKimAttribute().getAttributeName()));
@@ -276,6 +277,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return definition;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private <T> T copy(final T original) {
 		T copy = null;
 		try {

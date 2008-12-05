@@ -29,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.kuali.rice.kim.bo.role.dto.KimDelegationMemberInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -116,5 +117,14 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl {
 		}
 		return attribs;
 	}
-	
+
+	public KimDelegationMemberInfo toInfo() {
+		KimDelegationMemberInfo info = new KimDelegationMemberInfo();
+		info.setDelegationId( getDelegationId() );
+		info.setDelegationMemberId( getDelegationMemberId() );
+		info.setMemberId( getMemberId() );
+		info.setMemberTypeCode( getMemberTypeCode() );
+		info.setQualifier( getQualifier() );
+		return info;
+	}
 }

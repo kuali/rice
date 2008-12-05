@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
@@ -42,15 +43,22 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
-	public boolean doRoleQualifiersMatchQualification(AttributeSet qualification, List<AttributeSet> roleQualifierList) {
-		return performMatches(translateInputAttributeSet(qualification), roleQualifierList);
+	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
+		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+		List<RoleMembershipInfo> matchingMemberships = new ArrayList<RoleMembershipInfo>();
+		for ( RoleMembershipInfo rmi : roleMemberList ) {
+			if ( performMatch( translatedQualification, rmi.getQualifier() ) ) {
+				matchingMemberships.add( rmi );
+			}
+		}
+		return matchingMemberships;
 	}
 
 	/**
 	 * Return an empty list since this method should not be called by the role service for this service type.
 	 * Subclasses which are application role types should override this method.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getPrincipalIdsFromApplicationRole(java.lang.String, AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
 	 */
 	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName,
 			AttributeSet qualification) {

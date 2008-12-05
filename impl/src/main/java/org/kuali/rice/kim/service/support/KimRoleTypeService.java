@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -52,7 +53,7 @@ public interface KimRoleTypeService extends KimTypeService {
 
     /** Same as {@link #doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
      */
-    boolean doRoleQualifiersMatchQualification( AttributeSet qualification, List<AttributeSet> roleQualifierList );
+    List<RoleMembershipInfo> doRoleQualifiersMatchQualification( AttributeSet qualification, List<RoleMembershipInfo> roleMemberList );
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 

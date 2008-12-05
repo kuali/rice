@@ -15,12 +15,53 @@
  */
 package org.kuali.rice.kim.service.support;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.role.dto.KimDelegationMemberInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimDelegationTypeService extends KimRoleTypeService {
+public interface KimDelegationTypeService extends KimTypeService {
+
+    /** Return whether a role assignment with the given qualifier is applicable for the given qualification. 
+     * 
+     * For example, the qualifier for a role could be as follows:
+     *   chartOfAccountsCode = BL
+     *   organizationCode = ARSC
+     *   descendsHierarchy = true
+     *   
+     * The qualification could be:
+     *   chartOfAccountsCode = BL
+     *   organizationCode = PSY    (reports to BL-ARSC)
+     *   
+     * This method would return true for this set of arguments.  This would require a query of 
+     * the KFS organization hierarchy, so an implementation of this sort must be done by
+     * a service which lives within KFS and will be called remotely by KIM.
+     * 
+     * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
+     * the role service.
+     */
+    boolean doesDelegationQualifierMatchQualification( AttributeSet qualification, AttributeSet delegationQualifier );
+
+    /** Same as {@link #doesDelegationQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
+     */
+    List<KimDelegationMemberInfo> doDelegationQualifiersMatchQualification( AttributeSet qualification, List<KimDelegationMemberInfo> delegationMemberList );
+
+    /**
+     * Convert a set of attributes that need to be converted.  For example,
+     * this method could take [chart=BL,org=PSY] and return [campus=BLOOMINGTON]
+     * if this role was based on the campus and the role assigned to it was based 
+     * on organization.
+     * 
+     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
+     * the role service.
+     * 
+     */
+    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
 
 }

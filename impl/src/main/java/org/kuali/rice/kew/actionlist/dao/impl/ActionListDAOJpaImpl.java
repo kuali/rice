@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.actionlist.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,22 +29,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.accesslayer.LookupException;
-import org.hibernate.Query;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.springmodules.orm.ojb.PersistenceBrokerCallback;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
 /**
@@ -332,9 +321,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     	
     	javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_QUERY);
     	q.setParameter(1, workflowId);
-    	Object result = q.getSingleResult();
-    	
-    	return 1;
+    	Long result = (Long)q.getSingleResult();
+    	return result.intValue();
     }
 
     /**

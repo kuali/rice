@@ -16,9 +16,7 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kew.actionlist.DisplayParameters;

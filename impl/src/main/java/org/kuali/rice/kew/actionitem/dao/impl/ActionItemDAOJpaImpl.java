@@ -26,7 +26,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -168,7 +167,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         else {
             orCriteria.and(delegatorWorkflowIdCriteria);
         }
-        Criteria criteria = new Criteria(ActionItemActionListExtension.class.getName());
+        Criteria criteria = new Criteria(ActionItem.class.getName());
         criteria.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
         criteria.and(orCriteria);
         

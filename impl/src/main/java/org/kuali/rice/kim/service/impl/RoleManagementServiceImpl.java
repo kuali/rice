@@ -23,13 +23,17 @@ import java.util.Map;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.RoleService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RoleManagementServiceImpl extends RoleServiceImpl implements RoleManagementService, InitializingBean {
+public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
+	
+	protected RoleService roleService;
 	
 	// Max age defined in seconds
 	protected int roleCacheMaxSize = 200;
@@ -56,6 +60,8 @@ public class RoleManagementServiceImpl extends RoleServiceImpl implements RoleMa
 		isRoleActiveCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
 		principalHasRoleCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
 	}
+	
+	// Caching helper methods
 	
 	protected List<String> getImpliedRoleIdsCache( String roleId ) {
 		MaxAgeSoftReference<List<String>> roleIdRef = impliedRoleIdsCache.get( roleId );
@@ -179,161 +185,135 @@ public class RoleManagementServiceImpl extends RoleServiceImpl implements RoleMa
 		principalHasRoleCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAge, hasRole ) );
 	}
 		
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getImpliedRoleIds(java.lang.String)
-	 */
-	@Override
+	// Cached methods
+	
 	public List<String> getImpliedRoleIds(String roleId) {
 		List<String> ids = getImpliedRoleIdsCache(roleId);
 		if (ids != null) {
 			return ids;
 		}
-    	ids = super.getImpliedRoleIds(roleId);
+    	ids = getRoleService().getImpliedRoleIds(roleId);
     	addImpliedRoleIdsToCache(roleId, ids);
     	return ids;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getImplyingRoleIds(java.lang.String)
-	 */
-	@Override
 	public List<String> getImplyingRoleIds(String roleId) {
 		List<String> ids = getImplyingRoleIdsCache(roleId);
 		if (ids != null) {
 			return ids;
 		}
-    	ids = super.getImplyingRoleIds(roleId);
+    	ids = getRoleService().getImplyingRoleIds(roleId);
     	addImplyingRoleIdsToCache(roleId, ids);
     	return ids;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRole(java.lang.String)
-	 */
-	@Override
 	public KimRoleInfo getRole(String roleId) {
 		KimRoleInfo role = getRoleByIdCache(roleId);
 		if (role != null) {
 			return role;
 		}
-		role = super.getRole(roleId);
+		role = getRoleService().getRole(roleId);
 		addRoleByIdToCache(role);
     	return role;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleByName(java.lang.String, java.lang.String)
-	 */
-	@Override
 	public KimRoleInfo getRoleByName(String namespaceCode, String roleName) {
 		String key = namespaceCode + "-" + roleName;
 		KimRoleInfo role = getRoleByNameCache(key);
 		if (role != null) {
 			return role;
 		}
-		role = super.getRoleByName(namespaceCode, roleName);
+		role = getRoleService().getRoleByName(namespaceCode, roleName);
 		addRoleByNameToCache(key, role);
     	return role;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleIdByName(java.lang.String, java.lang.String)
-	 */
-	@Override
 	public String getRoleIdByName(String namespaceCode, String roleName) {
 		String key = namespaceCode + "-" + roleName;
 		String roleId = getRoleIdByNameCache(key);
 		if (roleId != null) {
 			return roleId;
 		}
-		roleId = super.getRoleIdByName(namespaceCode, roleName);
+		roleId = getRoleService().getRoleIdByName(namespaceCode, roleName);
 		addRoleIdByNameToCache(key, roleId);
     	return roleId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet, boolean)
-	 */
-	@Override
 	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations) {
 		String key = buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification) + "-" + followDelegations;
 		Collection<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
 		if (members != null) {
 			return members;
 		}
-		members = super.getRoleMembers(roleIds, qualification, followDelegations);
+		members = getRoleService().getRoleMembers(roleIds, qualification, followDelegations);
 		addRoleMembersWithDelegationToCache(key, members);
     	return members;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
 	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
 		// NOTE: This is calling to the cached method above just as the real role service does.
 		return getRoleMembers(roleIds, qualification, true);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleQualifiersForPrincipal(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
 		String key = principalId + "-" + buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
 		List<AttributeSet> qualifiers = getRoleQualifiersForPrincipalCache(key);
 		if (qualifiers != null) {
 			return qualifiers;
 		}
-		qualifiers = super.getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
+		qualifiers = getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
 		addRoleQualifiersForPrincipalToCache(key, qualifiers);
     	return qualifiers;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#getRoleQualifiersForPrincipal(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, AttributeSet qualification) {
 		String key = principalId + "-" + namespaceCode + "-" + roleName + "-" + buildQualificationKey(qualification);
 		List<AttributeSet> qualifiers = getRoleQualifiersForPrincipalCache(key);
 		if (qualifiers != null) {
 			return qualifiers;
 		}
-		qualifiers = super.getRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
+		qualifiers = getRoleService().getRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
 		addRoleQualifiersForPrincipalToCache(key, qualifiers);
     	return qualifiers;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#isRoleActive(java.lang.String)
-	 */
-	@Override
 	public boolean isRoleActive(String roleId) {
 		Boolean active = getIsRoleActiveCache(roleId);
 		if (active != null) {
 			return active;
 		}
-		active = super.isRoleActive(roleId);
+		active = getRoleService().isRoleActive(roleId);
 		addIsRoleActiveToCache(roleId, active);
     	return active;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.impl.RoleServiceImpl#principalHasRole(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
 	public boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification) {
 		String key = principalId + "-" + buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
 		Boolean hasRole = getPrincipalHasRoleCacheCache(key);
 		if (hasRole != null) {
 			return hasRole;
 		}
-		hasRole = super.principalHasRole(principalId, roleIds, qualification);
+		hasRole = getRoleService().principalHasRole(principalId, roleIds, qualification);
 		addPrincipalHasRoleCacheToCache(key, hasRole);
     	return hasRole;
 	}
 
+	// Methods that are not cached
+	
+	public void assignQualifiedRoleToGroup(String groupId, String roleId, AttributeSet qualifier) {
+		getRoleService().assignQualifiedRoleToGroup(groupId, roleId, qualifier);
+	}
+
+	public void assignQualifiedRoleToPrincipal(String principalId, String roleId, AttributeSet qualifier) {
+		getRoleService().assignQualifiedRoleToPrincipal(principalId, roleId, qualifier);		
+	}
+
+	public void saveRole(KimRoleInfo role) {
+		getRoleService().saveRole(role);
+	}
+
+	// Helper methods
+	
 	private String buildIdsKey(List<String> roleIds) {
 		String key = "";
 		for (String id : roleIds) {
@@ -348,6 +328,23 @@ public class RoleManagementServiceImpl extends RoleServiceImpl implements RoleMa
 			key += qualification.getKey() + ":" + qualification.getValue() + "-";
 		}
 		return key.substring(0, key.length() - 1);
+	}
+
+	// Spring and injection methods
+	
+	public RoleService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KIMServiceLocator.getRoleService();
+		}
+		return roleService;
+	}
+	
+	public void setRoleCacheMaxSize(int roleCacheMaxSize) {
+		this.roleCacheMaxSize = roleCacheMaxSize;
+	}
+
+	public void setRoleCacheMaxAge(int roleCacheMaxAge) {
+		this.roleCacheMaxAge = roleCacheMaxAge;
 	}
 
 }

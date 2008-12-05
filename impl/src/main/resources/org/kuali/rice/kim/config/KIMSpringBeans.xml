@@ -241,9 +241,12 @@
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
+  <bean id="kimManagementRoleService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
+    p:roleCacheMaxSize="200"
+    p:roleCacheMaxAge="30" />
+
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
-  	p:roleDao-ref="kimRoleDao"
-  	/>
+  	p:roleDao-ref="kimRoleDao" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

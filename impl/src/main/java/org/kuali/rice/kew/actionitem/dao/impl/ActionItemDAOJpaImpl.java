@@ -140,13 +140,13 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
         	String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorWorkflowId();
-        	Long delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
+        	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
         	
         	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {
                 delegators.put(delegatorWorkflowId, getUserService().getWorkflowUser(new WorkflowUserId(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
-                    delegators.put(delegatorGroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(delegatorGroupId)));
+                    delegators.put(delegatorGroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(delegatorGroupId))));
                 }
             }
         }

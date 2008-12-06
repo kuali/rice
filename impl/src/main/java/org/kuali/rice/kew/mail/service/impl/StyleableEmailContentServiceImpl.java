@@ -149,7 +149,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
-            delegatorDisplayValue = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionItem.getDelegatorGroupId())).getGroupNameId().getNameId();
+            delegatorDisplayValue = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(actionItem.getDelegatorGroupId()))).getGroupNameId().getNameId();
         }
         delegatorElement.setAttribute("type", delegatorType);
         // add the id element
@@ -168,7 +168,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (actionItem.isWorkgroupItem()) {
             // add the id element
             Element idElement = doc.createElement("id");
-            idElement.appendChild(doc.createTextNode(actionItem.getGroupId().toString()));
+            idElement.appendChild(doc.createTextNode(actionItem.getGroupId()));
             workgroupElement.appendChild(idElement);
             // add the display value element
             Element displayValElement = doc.createElement("displayValue");

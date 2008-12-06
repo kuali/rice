@@ -19,8 +19,9 @@ package org.kuali.rice.kew.util;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kim.bo.group.dto.*;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -35,13 +36,13 @@ public class ResponsibleParty implements Serializable {
 	private static final long serialVersionUID = 6788236688949489851L;
 
 	private UserId userId;
-    private GroupInfo groupId;
+    private GroupIdDTO groupId;
     private String roleName;
 
     public ResponsibleParty() {
     }
 
-    public ResponsibleParty(GroupInfo groupId) {
+    public ResponsibleParty(GroupIdDTO groupId) {
         this.groupId = groupId;
     }
 
@@ -69,7 +70,7 @@ public class ResponsibleParty implements Serializable {
         return sb.toString();
     }
 
-    public GroupInfo getGroupId() {
+    public GroupIdDTO getGroupId() {
         return groupId;
     }
 
@@ -81,7 +82,7 @@ public class ResponsibleParty implements Serializable {
         return roleName;
     }
 
-    public void setGroupId(GroupInfo groupId) {
+    public void setGroupId(GroupIdDTO groupId) {
         this.groupId = groupId;
     }
 

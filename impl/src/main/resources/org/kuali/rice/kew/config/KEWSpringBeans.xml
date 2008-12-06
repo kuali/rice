@@ -604,6 +604,8 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
+  <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
+
   <bean id="enUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
   <bean id="enWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
  

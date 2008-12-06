@@ -82,38 +82,38 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     @Id
 	@Column(name="ACTN_RQST_ID")
-	private java.lang.Long actionRequestId;
+	private Long actionRequestId;
     @Column(name="ACTN_RQST_CD")
-	private java.lang.String actionRequested;
+	private String actionRequested;
     @Column(name="DOC_HDR_ID")
-	private java.lang.Long routeHeaderId;
+	private Long routeHeaderId;
     @Column(name="STAT_CD")
-	private java.lang.String status;
+	private String status;
     @Column(name="RSP_ID")
-	private java.lang.Long responsibilityId;
+	private Long responsibilityId;
     @Column(name="GRP_ID")
-	private java.lang.Long groupId;
+	private String groupId;
     @Column(name="RECIP_TYP_CD")
-	private java.lang.String recipientTypeCd;
+	private String recipientTypeCd;
     @Column(name="PRIO_NBR")
-	private java.lang.Integer priority;
+	private Integer priority;
     @Column(name="RTE_LVL_NBR")
-	private java.lang.Integer routeLevel;
+	private Integer routeLevel;
     @Column(name="ACTN_TKN_ID")
-	private java.lang.Long actionTakenId;
+	private Long actionTakenId;
     @Column(name="DOC_VER_NBR")
-    private java.lang.Integer docVersion = new Integer(1);
+    private Integer docVersion = new Integer(1);
     //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CRTE_DT")
 	private java.sql.Timestamp createDate;
     @Column(name="RSP_DESC_TXT")
-	private java.lang.String responsibilityDesc;
+	private String responsibilityDesc;
     @Column(name="ACTN_RQST_ANNOTN_TXT")
-	private java.lang.String annotation;
+	private String annotation;
     @Column(name="VER_NBR")
-	private java.lang.Integer jrfVerNbr;
+	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
-	private java.lang.String workflowId;
+	private String workflowId;
     @Column(name="IGN_PREV_ACTN_IND")
 	private Boolean ignorePrevAction;
     @Column(name="PARNT_ID")
@@ -168,7 +168,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             return null;
         }
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-        return workgroupSrv.getWorkgroup(new WorkflowGroupId(getGroupId()));
+        return workgroupSrv.getWorkgroup(new WorkflowGroupId(new Long(getGroupId())));
     }
 
     public KimGroup getGroup() throws KEWUserNotFoundException {
@@ -176,7 +176,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
         }
-        return KIMServiceLocator.getIdentityManagementService().getGroup(getGroupId()+"");
+        return KIMServiceLocator.getIdentityManagementService().getGroup(getGroupId());
     }
     
     public String getRouteLevelName() {
@@ -213,7 +213,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         if (getWorkflowId() != null) {
             return getWorkflowUser();
         } else if (getGroupId() != null){
-            return new RoleRecipient(getGroup().getGroupName());
+            return new KimGroupRecipient(getGroup());
         } else {
         	return new RoleRecipient(this.getRoleName());
         }
@@ -261,7 +261,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     /**
      * @return Returns the actionRequested.
      */
-    public java.lang.String getActionRequested() {
+    public String getActionRequested() {
         return actionRequested;
     }
 
@@ -269,14 +269,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param actionRequested
      *            The actionRequested to set.
      */
-    public void setActionRequested(java.lang.String actionRequested) {
+    public void setActionRequested(String actionRequested) {
         this.actionRequested = actionRequested;
     }
 
     /**
      * @return Returns the actionRequestId.
      */
-    public java.lang.Long getActionRequestId() {
+    public Long getActionRequestId() {
         return actionRequestId;
     }
 
@@ -284,14 +284,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param actionRequestId
      *            The actionRequestId to set.
      */
-    public void setActionRequestId(java.lang.Long actionRequestId) {
+    public void setActionRequestId(Long actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
 
     /**
      * @return Returns the actionTakenId.
      */
-    public java.lang.Long getActionTakenId() {
+    public Long getActionTakenId() {
         return actionTakenId;
     }
 
@@ -299,14 +299,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param actionTakenId
      *            The actionTakenId to set.
      */
-    public void setActionTakenId(java.lang.Long actionTakenId) {
+    public void setActionTakenId(Long actionTakenId) {
         this.actionTakenId = actionTakenId;
     }
 
     /**
      * @return Returns the annotation.
      */
-    public java.lang.String getAnnotation() {
+    public String getAnnotation() {
         return annotation;
     }
 
@@ -314,7 +314,7 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param annotation
      *            The annotation to set.
      */
-    public void setAnnotation(java.lang.String annotation) {
+    public void setAnnotation(String annotation) {
         this.annotation = annotation;
     }
 
@@ -336,7 +336,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     /**
      * @return Returns the docVersion.
      */
-    public java.lang.Integer getDocVersion() {
+    public Integer getDocVersion() {
         return docVersion;
     }
 
@@ -344,15 +344,15 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param docVersion
      *            The docVersion to set.
      */
-    public void setDocVersion(java.lang.Integer docVersion) {
+    public void setDocVersion(Integer docVersion) {
         this.docVersion = docVersion;
     }
 
-    public java.lang.String getWorkflowId() {
+    public String getWorkflowId() {
         return workflowId;
     }
 
-    public void setWorkflowId(java.lang.String workflowId) {
+    public void setWorkflowId(String workflowId) {
         this.workflowId = workflowId;
     }
 
@@ -374,7 +374,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     /**
      * @return Returns the jrfVerNbr.
      */
-    public java.lang.Integer getJrfVerNbr() {
+    public Integer getJrfVerNbr() {
         return jrfVerNbr;
     }
 
@@ -382,14 +382,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param jrfVerNbr
      *            The jrfVerNbr to set.
      */
-    public void setJrfVerNbr(java.lang.Integer jrfVerNbr) {
+    public void setJrfVerNbr(Integer jrfVerNbr) {
         this.jrfVerNbr = jrfVerNbr;
     }
 
     /**
      * @return Returns the priority.
      */
-    public java.lang.Integer getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
@@ -397,14 +397,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param priority
      *            The priority to set.
      */
-    public void setPriority(java.lang.Integer priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
     /**
      * @return Returns the recipientTypeCd.
      */
-    public java.lang.String getRecipientTypeCd() {
+    public String getRecipientTypeCd() {
         return recipientTypeCd;
     }
 
@@ -412,14 +412,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param recipientTypeCd
      *            The recipientTypeCd to set.
      */
-    public void setRecipientTypeCd(java.lang.String recipientTypeCd) {
+    public void setRecipientTypeCd(String recipientTypeCd) {
         this.recipientTypeCd = recipientTypeCd;
     }
 
     /**
      * @return Returns the responsibilityDesc.
      */
-    public java.lang.String getResponsibilityDesc() {
+    public String getResponsibilityDesc() {
         return responsibilityDesc;
     }
 
@@ -427,14 +427,14 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param responsibilityDesc
      *            The responsibilityDesc to set.
      */
-    public void setResponsibilityDesc(java.lang.String responsibilityDesc) {
+    public void setResponsibilityDesc(String responsibilityDesc) {
         this.responsibilityDesc = responsibilityDesc;
     }
 
     /**
      * @return Returns the responsibilityId.
      */
-    public java.lang.Long getResponsibilityId() {
+    public Long getResponsibilityId() {
         return responsibilityId;
     }
 
@@ -442,50 +442,50 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param responsibilityId
      *            The responsibilityId to set.
      */
-    public void setResponsibilityId(java.lang.Long responsibilityId) {
+    public void setResponsibilityId(Long responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
 
     /**
      * @return Returns the routeHeaderId.
      */
-    public java.lang.Long getRouteHeaderId() {
+    public Long getRouteHeaderId() {
         return routeHeaderId;
     }
 
-    public void setRouteHeaderId(java.lang.Long routeHeaderId) {
+    public void setRouteHeaderId(Long routeHeaderId) {
         this.routeHeaderId = routeHeaderId;
     }
 
-    public java.lang.Integer getRouteLevel() {
+    public Integer getRouteLevel() {
         return routeLevel;
     }
 
-    public void setRouteLevel(java.lang.Integer routeLevel) {
+    public void setRouteLevel(Integer routeLevel) {
         this.routeLevel = routeLevel;
     }
 
-//    public java.lang.String getRouteMethodName() {
+//    public String getRouteMethodName() {
 //        return routeMethodName;
 //    }
 //
-//    public void setRouteMethodName(java.lang.String routeMethodName) {
+//    public void setRouteMethodName(String routeMethodName) {
 //        this.routeMethodName = routeMethodName;
 //    }
 
-    public java.lang.String getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(java.lang.String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public java.lang.Long getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(java.lang.Long groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -785,11 +785,11 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
 
-//    public java.lang.String getRouteMethodName() {
+//    public String getRouteMethodName() {
 //		return routeMethodName;
 //	}
 //
-//	public void setRouteMethodName(java.lang.String routeMethodName) {
+//	public void setRouteMethodName(String routeMethodName) {
 //		this.routeMethodName = routeMethodName;
 //	}
 

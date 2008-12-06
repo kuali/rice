@@ -30,6 +30,7 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
 import org.kuali.rice.kew.help.service.HelpService;
+import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.EmailService;
@@ -224,6 +225,8 @@ public final class KEWServiceLocator {
 	public static final String REMOVE_REPLACE_DOCUMENT_SERVICE = "enRemoveReplaceDocumentService";
 
 	public static final String EXTRACT_SERVICE = "enExtractService";
+	
+	public static final String IDENTITY_HELPER_SERVICE = "kewIdentityHelperService";
 
 	/**
 	 * @param serviceName
@@ -444,6 +447,10 @@ public final class KEWServiceLocator {
 	return (ExtractService) getBean(EXTRACT_SERVICE);
     }
 
+    public static IdentityHelperService getIdentityHelperService() {
+    	return (IdentityHelperService) getBean(IDENTITY_HELPER_SERVICE);
+    }
+    
     /**
      * For the following methods, we go directly to the SpringLoader because we do NOT want them to
      * be wrapped in any sort of proxy.

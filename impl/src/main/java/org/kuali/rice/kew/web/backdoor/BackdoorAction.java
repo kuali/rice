@@ -31,6 +31,7 @@ import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.bo.group.*;
 
 
@@ -121,11 +122,11 @@ public class BackdoorAction extends WorkflowAction {
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
- //       Workgroup workflowAdminGroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
-        KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroup(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY));
-        if(workflowAdminGroup!=null)
+        KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY));
+        if(workflowAdminGroup!=null) {
         	backdoorForm.setIsWorkflowAdmin(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getWorkflowUser().getWorkflowId(), workflowAdminGroup.getGroupId()));
-      	}
+        }
+    }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;

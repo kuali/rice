@@ -27,10 +27,12 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -38,6 +40,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -52,7 +55,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**
@@ -219,16 +221,19 @@ public class FlexRM {
     }
 
     public ResponsibleParty resolveResponsibilityId(Long responsibilityId) {
-	RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
-	if (resp.isUsingRole()) {
-	    return new ResponsibleParty(resp.getResolvedRoleName());
-	} else if (resp.isUsingWorkflowUser()) {
-	    return new ResponsibleParty(new WorkflowUserId(resp.getRuleResponsibilityName()));
-	} else {
-		GroupInfo grpInfo =new GroupInfo();
-		grpInfo.setGroupId(resp.getRuleResponsibilityName());
-	    return new ResponsibleParty( grpInfo);
-	}
+    	if (responsibilityId == null) {
+    		throw new IllegalArgumentException("A null responsibilityId was passed to resolve responsibility!");
+    	}
+    	RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
+    	if (resp.isUsingRole()) {
+    		return new ResponsibleParty(resp.getResolvedRoleName());
+    	} else if (resp.isUsingWorkflowUser()) {
+    		return new ResponsibleParty(new WorkflowUserId(resp.getRuleResponsibilityName()));
+    	} else if (resp.isUsingGroup()) {
+    		GroupIdDTO groupId = IdentityFactory.newGroupId(resp.getRuleResponsibilityName());
+    		return new ResponsibleParty(groupId);
+    	}
+    	throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
     }
 
     private void makeActionRequests(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)

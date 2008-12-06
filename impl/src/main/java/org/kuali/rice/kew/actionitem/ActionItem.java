@@ -84,7 +84,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
     @Column(name="GRP_ID")
-	private Long groupId;
+	private String groupId;
     @Column(name="DOC_HDR_TTL")
 	private String docTitle;
     @Column(name="DOC_TYP_LBL")
@@ -105,7 +105,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="DLGN_PRNCPL_ID")
 	private String delegatorWorkflowId;
     @Column(name="DLGN_GRP_ID")
-	private Long delegatorGroupId;
+	private String delegatorGroupId;
     @Transient
     private String dateAssignedString;
     @Transient
@@ -273,11 +273,11 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.docHandlerURL = docHandlerURL;
     }
 
-    public Long getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Long groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -313,11 +313,11 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.delegatorWorkflowId = delegatorWorkflowId;
     }
 
-    public Long getDelegatorGroupId() {
+    public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
 
-    public void setDelegatorGroupId(Long delegatorGroupId) {
+    public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
 

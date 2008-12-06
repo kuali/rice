@@ -60,7 +60,7 @@ import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 public class ActionListTest extends KEWTestCase {
 
     private static final String[] AUTHENTICATION_IDS = { "ewestfal", "rkirkend", "jhopf", "bmcgough" };
-    private static final Long[] WORKGROUP_IDS = { new Long(1), new Long(2), new Long(3), new Long(4) };
+    private static final String[] WORKGROUP_IDS = { "1", "2", "3", "4" };
 
     private DocumentRouteHeaderValue routeHeader1;
     private DocumentRouteHeaderValue routeHeader2;
@@ -215,7 +215,7 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getGroupId());
+    	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId().toString(), actionItem.getGroupId());
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
     	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
@@ -232,7 +232,7 @@ public class ActionListTest extends KEWTestCase {
 			assertEquals("Workgroup Member " + user.getDisplayName() + " should have 1 action item.", 1, actionItems.size());
 			actionItem = (ActionItem)actionItems.iterator().next();
 			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId(), actionItem.getGroupId());
+			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId().toString(), actionItem.getGroupId());
 		}
 
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
@@ -462,7 +462,7 @@ public class ActionListTest extends KEWTestCase {
         return routeHeader;
     }
 
-    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, Long workgroupId) throws KEWUserNotFoundException {
+    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, String groupId) throws KEWUserNotFoundException {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId(new Long(1));
@@ -474,7 +474,7 @@ public class ActionListTest extends KEWTestCase {
         actionItem.setDocLabel("unit testing");
         actionItem.setDocTitle(routeHeader.getDocTitle());
         actionItem.setDocName("docname");
-        actionItem.setGroupId(workgroupId);
+        actionItem.setGroupId(groupId);
 //        actionItem.setResponsibilityId(new Long(-1));
         return actionItem;
     }

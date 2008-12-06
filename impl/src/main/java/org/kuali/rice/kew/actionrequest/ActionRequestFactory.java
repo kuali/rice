@@ -189,7 +189,7 @@ public class ActionRequestFactory {
     		actionRequest.setWorkflowId(((WorkflowUser)recipient).getWorkflowId());
     	} else if (recipient instanceof Workgroup){
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
-    		actionRequest.setGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
+    		actionRequest.setGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId().toString());
     	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
@@ -224,7 +224,7 @@ public class ActionRequestFactory {
     	} else if (recipient instanceof KimGroupRecipient) {
     		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
-    		actionRequest.setGroupId(new Long(kimGroupRecipient.getGroup().getGroupId()));
+    		actionRequest.setGroupId(kimGroupRecipient.getGroup().getGroupId());
     	}
     }
 

@@ -103,7 +103,7 @@ public class ActionItemActionListExtension extends ActionItem {
         }
 
         if (getDelegatorGroupId() != null) {
-        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId()+"");
+        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
         	if (delegatorGroup !=null)
         		delegatorName = delegatorGroup.getGroupName();        	
         }
@@ -152,25 +152,6 @@ public class ActionItemActionListExtension extends ActionItem {
 	public void setDelegatorGroup(KimGroup delegatorGroup) {
 		this.delegatorGroup = delegatorGroup;
 	}
-
-	/**
-	 * @return the kimgroup
-	 */
-	public KimGroup getKimgroup() {
-		KimGroup delegator = null;
-        if (getDelegatorGroupId() != null) {
-            delegator = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId()+"");          
-        }
-        return delegator;        
-	}
-
-	/**
-	 * @param kimgroup the kimgroup to set
-	 */
-	public void setKimgroup(KimGroup kimgroup) {
-		this.kimgroup = kimgroup;
-	}
-	
 	
 }
 

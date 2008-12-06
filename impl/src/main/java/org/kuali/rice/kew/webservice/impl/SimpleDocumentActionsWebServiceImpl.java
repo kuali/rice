@@ -28,12 +28,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.UserDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -45,7 +44,7 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -562,9 +561,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
        	try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-			GroupInfo grpInfo =new GroupInfo();
-			grpInfo.setGroupId(recipientGroupId);
-			workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, annotation, grpInfo, responsibilityDesc, true);
+			workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, annotation, IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipientGroupId), responsibilityDesc, true);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());

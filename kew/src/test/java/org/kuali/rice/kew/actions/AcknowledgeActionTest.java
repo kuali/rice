@@ -17,14 +17,14 @@
 package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -54,10 +54,10 @@ public class AcknowledgeActionTest extends KEWTestCase {
         UserIdDTO workgroupUser = new NetworkIdDTO("dewey");
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
-        GroupInfo grpInfo =new GroupInfo();
-        grpInfo.setGroupName("NonSIT");
         
-        doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", grpInfo, "respDesc1", false);
+        GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT");
+        
+        doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", groupId, "respDesc1", false);
         doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + workgroupUser, doc.isAcknowledgeRequested());
         try {

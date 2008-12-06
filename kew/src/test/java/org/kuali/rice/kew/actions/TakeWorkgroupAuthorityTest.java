@@ -26,8 +26,10 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -36,6 +38,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -80,8 +83,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), DOC_TYPE);
         doc.routeDocument("");
         
-        GroupInfo grpInfo=new GroupInfo();
-        grpInfo.setGroupName("TestWorkgroup");
+        GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
         
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();
@@ -94,7 +96,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         
         //have member rkirkend take authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-        doc.takeGroupAuthority("", grpInfo);
+        doc.takeGroupAuthority("", groupId);
         
         //verify that only rkirkend has an action item now.
         actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());

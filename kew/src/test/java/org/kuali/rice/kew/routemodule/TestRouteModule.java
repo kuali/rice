@@ -25,9 +25,11 @@ import java.util.Map;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -37,6 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -98,9 +101,7 @@ public class TestRouteModule implements RouteModule {
         if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
             responsibleParty.setUserId(new AuthenticationUserId(recipient.getId()));
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
-        	GroupInfo grpInfo =new GroupInfo();
-        	grpInfo.setGroupName(recipient.getId());
-            responsibleParty.setGroupId(grpInfo);
+        	GroupIdDTO groupId = IdentityFactory.newGroupId(recipient.getId());
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
             responsibleParty.setRoleName(recipient.getId());
         } else {

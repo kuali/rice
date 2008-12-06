@@ -205,7 +205,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
-                List<WorkflowUser> users =  getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getGroupId())).getUsers();
+                List<WorkflowUser> users =  getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(actionRequest.getGroupId()))).getUsers();
                 actionItems.addAll(createActionItemsForUsers(actionRequest, users));
             } else if (actionRequest.isUserRequest()) {
                 ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
@@ -248,7 +248,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     WorkflowUser user = getUserService().getWorkflowUser(responsibleParty.getUserId());
                     actionRequest.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
                 } else if (responsibleParty.getGroupId() != null) {
-                	actionRequest.setGroupId(new Long(responsibleParty.getGroupId().getGroupId()));
+                	actionRequest.setGroupId(responsibleParty.getGroupId().getGroupId());
                 } else if (responsibleParty.getRoleName() != null) {
                     actionRequest.setRoleName(responsibleParty.getRoleName());
                 }
@@ -428,7 +428,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
             	}
             	for (String groupId : arGroups) {
-            		if (groupId.equals(ar.getGroupId().toString())) {
+            		if (groupId.equals(ar.getGroupId())) {
             			matchedArs.add(ar);
             		}
             	}
@@ -758,11 +758,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         String recipientType = actionRequest.getRecipientTypeCd();
         if (recipientType != null && !recipientType.trim().equals("")) {
             if (recipientType.equals(KEWConstants.WORKGROUP)) {
-                Long workgroupId = actionRequest.getGroupId();
+                String workgroupId = actionRequest.getGroupId();
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
                             "actionrequest.workgroup.empty", actionRequest.getActionRequestId().toString()));
-                } else if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)) == null) {
+                } else if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(workgroupId))) == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup invalid.",
                             "actionrequest.workgroup.invalid", actionRequest.getActionRequestId().toString()));
                 }

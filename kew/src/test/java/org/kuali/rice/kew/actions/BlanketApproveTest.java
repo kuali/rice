@@ -390,7 +390,7 @@ public class BlanketApproveTest extends KEWTestCase {
                 for (Iterator iterator2 = actionRequest.getChildrenRequests().iterator(); iterator2.hasNext();) {
                     ActionRequestValue childRequest = (ActionRequestValue) iterator2.next();
                     assertTrue("Child request should be an acknowledge.", actionRequest.isAcknowledgeRequest());
-                    String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getGroupId(): childRequest.getWorkflowUser().getAuthenticationUserId().getId());
+                    String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getGroupName(): childRequest.getWorkflowUser().getAuthenticationUserId().getId());
                     if ("temay".equals(childId)) {
                         foundTemayDelegate = true;
                         assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());

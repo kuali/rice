@@ -126,7 +126,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 		
 		if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
-			executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
 		}
 		return true;
 	}

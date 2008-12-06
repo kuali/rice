@@ -187,7 +187,7 @@ public class BeanConverterTester extends KEWTestCase {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
         Workgroup testWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(testWorkgroupName));
-        Long testWorkgroupId = testWorkgroup.getWorkflowGroupId().getGroupId();
+        String testWorkgroupId = testWorkgroup.getWorkflowGroupId().getGroupId().toString();
         assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", testWorkgroup.getMembers().size() > 0);
         WorkflowUser testUser = (WorkflowUser)testWorkgroup.getMembers().get(0);
         assertNotNull("User from workgroup should not be null", testUser);

@@ -18,18 +18,17 @@ package org.kuali.rice.kns.workflow.service;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.dto.*;
 
 public interface KualiWorkflowDocument {
 
@@ -129,9 +128,9 @@ public interface KualiWorkflowDocument {
 
     public abstract void refreshContent() throws WorkflowException;
 
-    public abstract void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    public abstract void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
-    public abstract void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, int priority, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    public abstract void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, GroupIdDTO groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
     public abstract void setTitle(String title) throws WorkflowException;
 

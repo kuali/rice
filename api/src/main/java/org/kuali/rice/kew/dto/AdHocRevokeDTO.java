@@ -41,7 +41,7 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 	private Long actionRequestId;
 	private String nodeName;
 	private UserIdDTO userId;
-	private GroupInfo groupinfo;
+	private GroupIdDTO groupId;
 	
 	public AdHocRevokeDTO() {}
 	
@@ -57,9 +57,9 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 		this.nodeName = nodeName;
 	}
 
-	public AdHocRevokeDTO( GroupInfo grpinfo)
+	public AdHocRevokeDTO(GroupIdDTO groupId)
 	{
-		this.groupinfo =grpinfo;
+		this.groupId = groupId;
 	}
 	public Long getActionRequestId() {
 		return actionRequestId;
@@ -88,15 +88,15 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 	/**
 	 * @return the groupinfo
 	 */
-	public GroupInfo getGroupinfo() {
-		return this.groupinfo;
+	public GroupIdDTO getGroupId() {
+		return this.groupId;
 	}
 
 	/**
 	 * @param groupinfo the groupinfo to set
 	 */
-	public void setGroupinfo(GroupInfo groupinfo) {
-		this.groupinfo = groupinfo;
+	public void setGroupId(GroupIdDTO groupId) {
+		this.groupId = groupId;
 	}
 
 }

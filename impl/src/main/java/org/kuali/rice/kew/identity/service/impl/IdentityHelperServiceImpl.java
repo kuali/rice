@@ -13,42 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.actionrequest;
+package org.kuali.rice.kew.identity.service.impl;
 
 import org.kuali.rice.kew.dto.GroupIdDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
- * Represents an ActionRequest recipient who is a KimGroup
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimGroupRecipient implements Recipient {
-
-	private static final long serialVersionUID = 1L;
-	private KimGroup group;
-	
-	public KimGroupRecipient(GroupIdDTO groupId) {
-		this(KEWServiceLocator.getIdentityHelperService().getGroup(groupId));
-	}
-	
-	public KimGroupRecipient(KimGroup group) {
-		if (group == null) {
-			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null KimGroup!");
+public class IdentityHelperServiceImpl implements IdentityHelperService {
+		
+	public KimGroup getGroup(GroupIdDTO groupId) {
+		if (groupId.getGroupId() != null) {
+			return KIMServiceLocator.getIdentityManagementService().getGroup(groupId.getGroupId());
+		} else {
+			return KIMServiceLocator.getIdentityManagementService().getGroupByName(groupId.getNamespace(), groupId.getGroupName());
 		}
-		this.group = group;
 	}
 	
-	public String getDisplayName() {
-		return getGroup().getGroupName();
-	}
-	
-	public KimGroup getGroup() {
-		return this.group;
-	}
-	
-
 }

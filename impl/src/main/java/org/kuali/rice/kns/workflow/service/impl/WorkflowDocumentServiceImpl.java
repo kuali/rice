@@ -23,18 +23,17 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Timer;
@@ -340,13 +339,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                        workflowDocument.appSpecificRouteDocumentToUser(recipient.getActionRequested(), currentNode, 0, annotation, new NetworkIdDTO(recipient.getId()), "", true);
+                        workflowDocument.appSpecificRouteDocumentToUser(recipient.getActionRequested(), currentNode, annotation, new NetworkIdDTO(recipient.getId()), "", true);
                     }
                     else {
-                        // TODO is this recripientId truly a workgroup name??
-                    	GroupInfo groupInfo = new GroupInfo();
-                    	groupInfo.setGroupId(recipient.getId());
-                    	workflowDocument.appSpecificRouteDocumentToGroup(recipient.getActionRequested(), currentNode, 0, annotation,groupInfo , "", true);
+                    	workflowDocument.appSpecificRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()) , "", true);
                     }
                 }
             }

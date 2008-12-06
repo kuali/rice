@@ -645,7 +645,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 				if ("workgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionRequest.setGroupId(new Long(request.getParameter("workgroupId")));
+						actionRequest.setGroupId(request.getParameter("workgroupId"));
 					} else {
 						actionRequest.setGroupId(null);
 					}
@@ -694,7 +694,7 @@ public class DocumentOperationAction extends WorkflowAction {
 
 				if ("workgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionItem.setGroupId(new Long(request.getParameter("workgroupId")));
+						actionItem.setGroupId(request.getParameter("workgroupId"));
 					} else {
 						actionItem.setGroupId(null);
 					}
@@ -712,7 +712,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 				if ("delegatorWorkgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionItem.setDelegatorGroupId(new Long(request.getParameter("workgroupId")));
+						actionItem.setDelegatorGroupId(request.getParameter("workgroupId"));
 					} else {
 						actionItem.setDelegatorGroupId(null);
 					}

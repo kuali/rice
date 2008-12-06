@@ -24,7 +24,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ojb.broker.util.logging.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -33,9 +32,9 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -43,6 +42,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.web.ExportServlet;
+import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -55,13 +55,10 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 
 /**
@@ -191,9 +188,8 @@ public abstract class WorkflowAction extends DispatchAction {
 			if (KEWConstants.PERSON.equals(recipient.getType())) {
 				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdDTO(recipient.getId()), "", true);
 			} else {
-				GroupInfo grpInfo = new GroupInfo();
-				grpInfo.setGroupId(recipient.getId());
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), grpInfo, "", true);
+				GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
+				routingForm.getWorkflowDocument().appSpecificRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), groupId, "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();
@@ -276,8 +272,7 @@ public abstract class WorkflowAction extends DispatchAction {
 			if (recipient.getType().equals("person")) {
 				revoke.setUserId(new NetworkIdDTO(recipient.getId()));
 			} else if (recipient.getType().equals("workgroup")) {
-				revoke.setGroupinfo(new GroupInfo());
-				revoke.getGroupinfo().setGroupId(recipient.getId());
+				revoke.setGroupId(IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()));
 			}
 			revocations.add(revoke);
 		}

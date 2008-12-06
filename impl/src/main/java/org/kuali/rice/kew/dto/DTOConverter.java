@@ -103,10 +103,7 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -335,7 +332,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getDelegatorWorkflowId())) {
             actionItemVO.setDelegatorUser(convertUser(actionItem.getDelegatorUser()));
         }
-        actionItemVO.setDelegatorGroupId("" + actionItem.getDelegatorGroupId());
+        actionItemVO.setDelegatorGroupId(actionItem.getDelegatorGroupId());
         actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
         actionItemVO.setDocLabel(actionItem.getDocLabel());
         actionItemVO.setDocName(actionItem.getDocName());
@@ -347,7 +344,7 @@ public class DTOConverter {
         if (StringUtils.isNotEmpty(actionItem.getPrincipalId())) {
             actionItemVO.setUser(convertUser(actionItem.getUser()));
         }
-        actionItemVO.setGroupId("" + actionItem.getGroupId());
+        actionItemVO.setGroupId(actionItem.getGroupId());
         return actionItemVO;
     }
 
@@ -642,7 +639,7 @@ public class DTOConverter {
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestVO.setStatus(actionRequest.getStatus());
         if (actionRequest.isGroupRequest()) {
-        	actionRequestVO.setGroupId("" + actionRequest.getGroupId());
+        	actionRequestVO.setGroupId(actionRequest.getGroupId());
         }
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
@@ -677,18 +674,6 @@ public class DTOConverter {
             actionTakenVO.setDelegatorDTO(convertUser(delegator));
         }
         return actionTakenVO;
-    }
-
-    public static GroupInfo convertGroupId(String groupId) {
-    	GroupInfo groupInfo = null;
-        if (KIMServiceLocator.getIdentityManagementService().getEntity(groupId)!=null) {
-            groupInfo = new GroupInfo();
-            groupInfo.setGroupId(groupId);
-        } else if (KIMServiceLocator.getIdentityManagementService().getGroup(groupId)!=null) {
-        	 groupInfo = new GroupInfo();
-             groupInfo.setGroupId(groupId);
-        }
-        return groupInfo;
     }
 
     public static GroupId convertWorkgroupIdVO(WorkgroupIdDTO workgroupId) {
@@ -757,7 +742,7 @@ public class DTOConverter {
             return null;
         }
         ResponsiblePartyDTO responsiblePartyVO = new ResponsiblePartyDTO();
-        responsiblePartyVO.setGroupInfo(responsibleParty.getGroupId());
+        responsiblePartyVO.setGroupId(responsibleParty.getGroupId());
         responsiblePartyVO.setUserId(DTOConverter.convertUserId(responsibleParty.getUserId()));
         responsiblePartyVO.setRoleName(responsibleParty.getRoleName());
         return responsiblePartyVO;
@@ -768,7 +753,7 @@ public class DTOConverter {
             return null;
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
-        responsibleParty.setGroupId(DTOConverter.convertGroupId(responsiblePartyVO.getGroupInfo().getGroupId()));
+        responsibleParty.setGroupId(responsiblePartyVO.getGroupId());
         responsibleParty.setUserId(DTOConverter.convertUserIdVO(responsiblePartyVO.getUserId()));
         responsibleParty.setRoleName(responsiblePartyVO.getRoleName());
         return responsibleParty;
@@ -788,9 +773,9 @@ public class DTOConverter {
         if (responsiblePartyVO.getRoleName() != null) {
             return new RoleRecipient(responsiblePartyVO.getRoleName());
         }
-        GroupInfo groupInfo = responsiblePartyVO.getGroupInfo();
-        if (groupInfo != null) {
-            return (KimGroupRecipient) KIMServiceLocator.getIdentityManagementService().getGroup(groupInfo.getGroupId()) ;
+        GroupIdDTO groupId = responsiblePartyVO.getGroupId();
+        if (groupId != null) {
+            return new KimGroupRecipient(groupId);
         }
         UserId userId = convertUserIdVO(responsiblePartyVO.getUserId());
         if (userId != null) {
@@ -890,9 +875,8 @@ public class DTOConverter {
             actionRequest.setWorkflowId(user.getWorkflowId());
             userSet = true;
         }
-
         if (actionRequestVO.getGroupId() != null) {
-            actionRequest.setGroupId(new Long(actionRequestVO.getGroupId()));
+            actionRequest.setGroupId(actionRequestVO.getGroupId());
             userSet = true;
         }// TODO role requests will not have a user or workgroup, so this code needs to handle that case
         if (!userSet) {
@@ -1178,8 +1162,8 @@ public class DTOConverter {
         if (revokeVO.getUserId() != null) {
             revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
         }
-        if (revokeVO.getGroupinfo()!= null) {
-            revoke.setGroup(KIMServiceLocator.getIdentityManagementService().getGroup(revokeVO.getGroupinfo().getGroupId()));          	
+        if (revokeVO.getGroupId()!= null) {
+            revoke.setGroup(KEWServiceLocator.getIdentityHelperService().getGroup(revokeVO.getGroupId()));          	
         }
         return revoke;
     }

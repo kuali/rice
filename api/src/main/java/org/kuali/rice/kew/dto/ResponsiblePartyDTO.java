@@ -32,13 +32,13 @@ public class ResponsiblePartyDTO implements Serializable {
 
     private UserIdDTO userId;
 	private String roleName;
-	private GroupInfo groupInfo;
+	private GroupIdDTO groupId;
 	
     public ResponsiblePartyDTO() {}
     
-    public ResponsiblePartyDTO(GroupInfo grpInfo)
+    public ResponsiblePartyDTO(GroupIdDTO groupId)
     {
-    	this.groupInfo =grpInfo;
+    	this.groupId = groupId;
     }
     
     public ResponsiblePartyDTO(UserIdDTO userId) {
@@ -54,7 +54,7 @@ public class ResponsiblePartyDTO implements Serializable {
     }
     
     public boolean isGroup() {
-        return groupInfo != null;
+        return groupId != null;
     }
     
     public boolean isRole() {
@@ -68,7 +68,7 @@ public class ResponsiblePartyDTO implements Serializable {
             sb.append(userId == null ? "null" : userId.toString());
         } else {
             sb.append("groupInfo=");
-            sb.append(groupInfo == null ? "null" : groupInfo.toString());
+            sb.append(groupId == null ? "null" : groupId.toString());
         }
 
         sb.append("]");
@@ -95,14 +95,14 @@ public class ResponsiblePartyDTO implements Serializable {
 	/**
 	 * @return the groupInfo
 	 */
-	public GroupInfo getGroupInfo() {
-		return this.groupInfo;
+	public GroupIdDTO getGroupId() {
+		return this.groupId;
 	}
 
 	/**
 	 * @param groupInfo the groupInfo to set
 	 */
-	public void setGroupInfo(GroupInfo groupInfo) {
-		this.groupInfo = groupInfo;
+	public void setGroupId(GroupIdDTO groupId) {
+		this.groupId = groupId;
 	}
 }

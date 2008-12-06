@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.rmi.RemoteException;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
 import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -36,10 +35,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentActions {
@@ -74,22 +70,22 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         }
     }
     
-    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupInfo groupInfo, String annotation) throws WorkflowException {
+    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupIdDTO groupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
-        LOG.debug("Releasing group authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupInfo=" + groupInfo.getGroupName() + ", annotation=" + annotation + "]");
+        LOG.debug("Releasing group authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupId=" + groupId + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupInfo.getGroupId());
+        KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().releaseGroupAuthority(user, routeHeader, group, annotation);
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupInfo groupInfo, String annotation) throws WorkflowException {
+    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupIdDTO groupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
-        LOG.debug("Taking workgroup authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupInfo=" + groupInfo + ", annotation=" + annotation + "]");
+        LOG.debug("Taking workgroup authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupInfo=" + groupId + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupInfo.getGroupId());
+        KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
         routeHeader = KEWServiceLocator.getWorkflowDocumentService().takeGroupAuthority(user, routeHeader, group, annotation);
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }

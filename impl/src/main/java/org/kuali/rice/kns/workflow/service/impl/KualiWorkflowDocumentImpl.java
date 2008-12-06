@@ -25,12 +25,12 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -38,11 +38,10 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
-import org.kuali.rice.kim.bo.group.dto.*;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
@@ -256,12 +255,12 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.refreshContent();
     }
 
-    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, int priority, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.appSpecificRouteDocumentToUser(actionRequested, routeTypeName, priority, annotation, recipient, responsibilityDesc, ignorePreviousActions);
+    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+        workflowDocument.appSpecificRouteDocumentToUser(actionRequested, routeTypeName, annotation, recipient, responsibilityDesc, ignorePreviousActions);
     }
 
-    public void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, int priority, String annotation, GroupInfo groupInfo, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, routeTypeName, priority, annotation, groupInfo, responsibilityDesc, ignorePreviousActions);
+    public void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, GroupIdDTO groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+        workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
     }
 
     public void setTitle(String title) throws WorkflowException {

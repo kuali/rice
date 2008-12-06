@@ -146,4 +146,12 @@ public class EntityPrivacyPreferencesImpl extends EntityDataBase implements Enti
 		return m;
 	}
 
+	public String getEntityId() {
+		return this.entityId;
+	}
+
+	public void setEntityId(String entityId) {
+		this.entityId = entityId;
+	}
+
 }

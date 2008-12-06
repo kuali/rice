@@ -1,0 +1,148 @@
+<style type="text/css">
+  select.fixed-size-200-select {
+    width:200px;
+   }
+</style>
+
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<!--<c:set var="line3_readOnly" value="${KualiForm.editingMode['line3']}" scope="request" />-->
+<c:set var="docAddressAttributes" value="${DataDictionary.PersonDocumentAddress.attributes}" />
+<kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses">      
+        <table cellpadding=0 cellspacing=0 summary="">
+          	<tr>
+          		<th><div align="left">&nbsp</div></th> 
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.addressTypeCode}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line1}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line2}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line3}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.cityName}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.stateCode}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.postalCode}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.countryCode}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.dflt}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.active}" noColon="true" /></div></th>
+              	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
+          	
+          	</tr>     
+          	
+             <tr>
+				<th class="infoline">
+					<c:out value="Add:" />
+				</th>
+
+                <td>
+                <div align="center">
+                	<kul:htmlControlAttribute property="newAddress.addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}"/>
+	            </div>
+				</td>
+                <td>
+                <div align="center">
+                	<kul:htmlControlAttribute property="newAddress.line1" attributeEntry="${docAddressAttributes.line1}"/>
+                <div align="center">
+                </td>
+                <td>   
+                <div align="center">             	
+                  <kul:htmlControlAttribute property="newAddress.line2" attributeEntry="${docAddressAttributes.line2}" />
+				</div>
+				</td>
+                
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${not KualiForm.editingMode['line3']}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.postalCode" attributeEntry="${docAddressAttributes.postalCode}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.dflt" attributeEntry="${docAddressAttributes.dflt}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.active" attributeEntry="${docAddressAttributes.active}"/>
+                </div>
+                </td>
+                
+                
+                <td>
+					<div align="center">
+						<html:image property="methodToCall.addAddress.anchor${tabKey}"
+						src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+					</div>
+                </td>
+       </tr>         
+            
+        	<c:forEach var="address" items="${KualiForm.document.addrs}" varStatus="status">
+	             <tr>
+					<th class="infoline">
+						<c:out value="${status.index+1}" />
+					</th>
+	                <td align="left" valign="middle">
+	                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode"  attributeEntry="${docAddressAttributes.addressTypeCode}"  />
+					</div>
+					</td>
+	                <td>
+	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${KualiForm.editingMode['line1']}"/>
+	                </div>
+	                </td>
+	                <td>     
+	                <div align="center">           	
+	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" />
+					</div>
+					</td>
+
+				<td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}"/>
+                </div>
+                </td>
+                <td>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}"/>
+                </div>
+                </td>
+					
+					<td>
+					<div align=center>&nbsp;
+					<kra:section permission="modifyProposal">  
+						<html:image property="methodToCall.deleteAddress.line${status.index}.anchor${currentTabIndex}"
+							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass="tinybutton"/>
+					</kra:section>  
+					</div>
+	                </td>
+	            </tr>
+        	</c:forEach>        
+
+            
+        </table>
+</kul:subtab>

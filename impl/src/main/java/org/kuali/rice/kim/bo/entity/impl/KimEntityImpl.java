@@ -298,6 +298,10 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	public void setCitizenships(List<EntityCitizenshipImpl> citizenships) {
 		this.citizenships = citizenships;
 	}
+
+	public void setPrincipals(List<KimPrincipalImpl> principals) {
+		this.principals = principals;
+	}
 	
 	
 	

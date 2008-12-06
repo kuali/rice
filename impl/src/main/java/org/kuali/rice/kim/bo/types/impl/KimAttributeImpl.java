@@ -114,6 +114,7 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "attributeId", kimAttributeId );
 		m.put( "attributeName", attributeName );
+		m.put( "componentName", componentName );
 		return m;
 	}
 	

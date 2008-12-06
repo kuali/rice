@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.types.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -51,6 +52,10 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected List<KimTypeAttributeImpl> attributeDefinitions;
+	
+	public KimTypeImpl() {
+		attributeDefinitions = new ArrayList<KimTypeAttributeImpl> ();
+	}
 	
 	public List<KimTypeAttributeImpl> getAttributeDefinitions() {
 		return attributeDefinitions;

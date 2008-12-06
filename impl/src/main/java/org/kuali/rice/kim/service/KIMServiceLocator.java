@@ -73,6 +73,10 @@ public final class KIMServiceLocator {
     	return (UserService)getService(KIM_USER_SERVICE);
     }
     
+    public static UiDocumentService getUiDocumentService() {
+    	return (UiDocumentService)getService("kimUiDocumentService");
+    }
+    
     @SuppressWarnings("unchecked")
 	public static PersonService<Person> getPersonService() {
     	return (PersonService<Person>)getService(KIM_PERSON_SERVICE);

@@ -117,4 +117,8 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 		this.sortCode = sortCode;
 	}
 
+	public void setKimAttribute(KimAttributeImpl kimAttribute) {
+		this.kimAttribute = kimAttribute;
+	}
+
 }

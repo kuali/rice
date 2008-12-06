@@ -1,0 +1,195 @@
+<!--
+/*
+ * Copyright 2006-2008 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.osedu.org/licenses/ECL-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="KimTypeImpl" parent="KimTypeImpl-parentBean" />
+	<bean id="KimTypeImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.types.impl.KimTypeImpl"
+        p:titleAttribute="kimTypeId"
+        p:objectLabel="Kim Types"
+        p:inquiryDefinition-ref="KimTypeImpl-inquiryDefinition"
+        p:lookupDefinition-ref="KimTypeImpl-lookupDefinition">		
+		<property name="attributes" >
+			<list>
+				<ref bean="KimTypeImpl-kimTypeId" />
+				<ref bean="KimTypeImpl-name" />
+				<ref bean="KimTypeImpl-kimTypeServiceName" />
+				<ref bean="KimTypeImpl-active" />
+				<ref bean="KimTypeImpl-namespaceCode" />
+				<ref bean="KimTypeImpl-versionNumber" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Attribute Definitions -->
+	
+	<bean id="KimTypeImpl-kimTypeId" parent="KimTypeImpl-kimTypeId-parentBean" />
+	<bean id="KimTypeImpl-kimTypeId-parentBean" abstract="true" parent="AttributeDefinition" >
+		<property name="name" value="kimTypeId" />
+		<property name="forceUppercase" value="false" />
+		<property name="label" value="Kim Typ Id" />
+		<property name="shortLabel" value="Kim Typ Id" />
+		<property name="maxLength" value="40" />
+		<property name="validationPattern" >
+			<bean parent="AlphaNumericValidationPattern" />
+		</property>
+		<property name="control" >
+			<bean parent="TextControlDefinition"
+				p:size="10" />
+		</property>
+		<property name="summary" value="Kim Typ Id" />
+		<property name="description" value="Kim Typ Id" />
+	</bean>
+
+	<bean id="KimTypeImpl-name" parent="KimTypeImpl-name-parentBean" />
+	<bean id="KimTypeImpl-name-parentBean" abstract="true" parent="AttributeDefinition" >
+		<property name="name" value="name" />
+		<property name="forceUppercase" value="false" />
+		<property name="label" value="Nm" />
+		<property name="shortLabel" value="Nm" />
+		<property name="maxLength" value="100" />
+		<property name="validationPattern" >
+			<bean parent="AlphaNumericValidationPattern" />
+		</property>
+		<property name="control" >
+			<bean parent="TextControlDefinition"
+				p:size="10" />
+		</property>
+		<property name="summary" value="Nm" />
+		<property name="description" value="Nm" />
+	</bean>
+
+	<bean id="KimTypeImpl-kimTypeServiceName" parent="KimTypeImpl-kimTypeServiceName-parentBean" />
+	<bean id="KimTypeImpl-kimTypeServiceName-parentBean" abstract="true" parent="AttributeDefinition" >
+		<property name="name" value="kimTypeServiceName" />
+		<property name="forceUppercase" value="false" />
+		<property name="label" value="Srvc Nm" />
+		<property name="shortLabel" value="Srvc Nm" />
+		<property name="maxLength" value="200" />
+		<property name="validationPattern" >
+			<bean parent="AlphaNumericValidationPattern" />
+		</property>
+		<property name="control" >
+			<bean parent="TextControlDefinition"
+				p:size="10" />
+		</property>
+		<property name="summary" value="Srvc Nm" />
+		<property name="description" value="Srvc Nm" />
+	</bean>
+
+	<bean id="KimTypeImpl-active" parent="KimTypeImpl-active-parentBean" />
+	<bean id="KimTypeImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean" >
+		<property name="name" value="active" />
+		<property name="label" value="Actv Ind" />
+		<property name="shortLabel" value="Actv Ind" />
+		<property name="summary" value="Actv Ind" />
+		<property name="description" value="Actv Ind" />
+	</bean>
+
+	<bean id="KimTypeImpl-namespaceCode" parent="KimTypeImpl-namespaceCode-parentBean" />
+	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="AttributeDefinition" >
+		<property name="name" value="namespaceCode" />
+		<property name="forceUppercase" value="false" />
+		<property name="label" value="Nmspc Cd" />
+		<property name="shortLabel" value="Nmspc Cd" />
+		<property name="maxLength" value="40" />
+		<property name="validationPattern" >
+			<bean parent="AlphaNumericValidationPattern" />
+		</property>
+		<property name="control" >
+			<bean parent="TextControlDefinition"
+				p:size="10" />
+		</property>
+		<property name="summary" value="Nmspc Cd" />
+		<property name="description" value="Nmspc Cd" />
+	</bean>
+
+	<bean id="KimTypeImpl-versionNumber" parent="KimTypeImpl-versionNumber-parentBean" />
+	<bean id="KimTypeImpl-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+	</bean>
+
+	<!-- Business Object Inquiry Definition -->
+	<bean id="KimTypeImpl-inquiryDefinition" parent="KimTypeImpl-inquiryDefinition-parentBean" />
+	<bean id="KimTypeImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+		<property name="title" value="Kim Typ Id" />
+		<property name="inquirySections" >
+			<list>
+				<bean parent="InquirySectionDefinition">
+					<property name="title" value="Kim Typ Id" />
+					<property name="numberOfColumns" value="1" />
+					<property name="inquiryFields" >
+						<list>
+							<bean parent="FieldDefinition"
+								p:attributeName="kimTypeId" 
+								p:forceInquiry="true" />
+							<bean parent="FieldDefinition"
+								p:attributeName="name" />
+							<bean parent="FieldDefinition"
+								p:attributeName="kimTypeServiceName" />
+							<bean parent="FieldDefinition"
+								p:attributeName="active" />
+							<bean parent="FieldDefinition"
+								p:attributeName="namespaceCode" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Business Object Lookup Definition -->
+	<bean id="KimTypeImpl-lookupDefinition" parent="KimTypeImpl-lookupDefinition-parentBean" />
+	<bean id="KimTypeImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+		<property name="title" value="Kim Type Lookup" />
+		<property name="instructions" value="Look up a Kim Type" />
+		<property name="lookupFields" >
+			<list>
+				<bean parent="FieldDefinition"
+					p:attributeName="kimTypeId" 
+					p:forceInquiry="true" />
+				<bean parent="FieldDefinition"
+					p:attributeName="name" />
+				<bean parent="FieldDefinition"
+					p:attributeName="kimTypeServiceName" />
+				<bean parent="FieldDefinition"
+					p:attributeName="active" />
+				<bean parent="FieldDefinition"
+					p:attributeName="namespaceCode" />
+			</list>
+		</property>
+		<property name="resultFields" >
+			<list>
+				<bean parent="FieldDefinition"
+					p:attributeName="kimTypeId" 
+					p:forceInquiry="true" />
+				<bean parent="FieldDefinition"
+					p:attributeName="name" />
+				<bean parent="FieldDefinition"
+					p:attributeName="kimTypeServiceName" />
+				<bean parent="FieldDefinition"
+					p:attributeName="active" />
+				<bean parent="FieldDefinition"
+					p:attributeName="namespaceCode" />
+			</list>
+		</property>
+	</bean>
+</beans>

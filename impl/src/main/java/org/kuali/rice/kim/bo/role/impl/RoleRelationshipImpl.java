@@ -42,7 +42,9 @@ public class RoleRelationshipImpl extends PersistableBusinessObjectBase {
 	
 	@Column(name="ROLE_ID")
 	protected String roleId;
-	
+	@Column(name="ACTV_IND")
+	protected boolean active;
+
 	@Column(name="CONTAINED_ROLE_ID")
 	protected String containedRoleId;
 	
@@ -78,5 +80,11 @@ public class RoleRelationshipImpl extends PersistableBusinessObjectBase {
 		m.put("roleId", roleId);
 		m.put("containedRoleId", containedRoleId);
 		return null;
+	}
+	public boolean isActive() {
+		return this.active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

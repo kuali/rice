@@ -48,7 +48,6 @@ public class IdentityManagementPersonDocumentForm extends KualiDocumentFormBase 
     private PersonDocumentGroup newGroup;
     private PersonDocumentRole newRole;
 
-    private Integer afflnDflt;
     
     public IdentityManagementPersonDocumentForm() {
         super();
@@ -142,14 +141,6 @@ public class IdentityManagementPersonDocumentForm extends KualiDocumentFormBase 
 
 	public void setNewRole(PersonDocumentRole newRole) {
 		this.newRole = newRole;
-	}
-
-	public Integer getAfflnDflt() {
-		return this.afflnDflt;
-	}
-
-	public void setAfflnDflt(Integer afflnDflt) {
-		this.afflnDflt = afflnDflt;
 	}
 
 

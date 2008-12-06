@@ -51,7 +51,7 @@ public class KEWConstants {
 
     public static final String SHOW_BACK_DOOR_LOGIN_KEY = "Backdoor.ShowbackDoorLogin";
     public static final String HELP_DESK_ACTION_LIST_KEY = "HelpDeskActionList.helpDeskActionListName";
-    public static final String WORKFLOW_ADMIN_WORKGROUP_NAME_KEY = "Workflow.AdminWorkgroup";
+    public static final String WORKFLOW_ADMIN_WORKGROUP_NAME_KEY = "WorkflowAdmin";
     public static final String WORKFLOW_ADMIN_URL_KEY = "Workflow.AdminUrls";
     public static final String WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY = "Workflow.DocSearchAdminWorkgroup";
     public static final String DOC_SEARCH_RESULT_CAP_KEY = "DocumentSearch.ResultCap";

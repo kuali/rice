@@ -809,23 +809,22 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation" table="KRIM_PND_AFLTN_MT">
     <field-descriptor name="entityAffiliationId" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_AFLTN_ID_S"  />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="affiliationTypeCode" column="AFLTN_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <collection-descriptor name="empInfos" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="false" proxy="false">
       <inverse-foreignkey field-ref="entityAffiliationId" />
+      <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo" table="KRIM_PND_EMP_INFO_MT">
     <field-descriptor name="entityEmploymentId" column="ENTITY_EMP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_EMP_ID_S"  />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityAffiliationId" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="employeeTypeCode" column="EMP_TYP_CD" jdbc-type="VARCHAR"  />
@@ -837,10 +836,6 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
     <field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="employmentRecordId" column="EMP_REC_ID" jdbc-type="VARCHAR"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <reference-descriptor name="employmentType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="employeeTypeCode" />
     </reference-descriptor>
@@ -859,13 +854,11 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentName" table="KRIM_PND_NM_MT">
     <field-descriptor name="entityNameId" column="ENTITY_NM_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ENTITY_NM_ID_S"  />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="nameTypeCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR"  />
@@ -876,18 +869,15 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
     <reference-descriptor name="entityNameType" class-ref="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="nameTypeCode" />
-    </reference-descriptor>
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
   </class-descriptor>
 
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentAddress" table="KRIM_PND_ADDR_MT">
     <field-descriptor name="entityAddressId" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ENTITY_ADDR_ID_S" />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
      <field-descriptor name="cityName" column="CITY_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="stateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR"  />
@@ -900,10 +890,6 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="addressTypeCode" />
     </reference-descriptor>
@@ -911,6 +897,7 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" table="KRIM_PND_EMAIL_MT">
     <field-descriptor name="entityEmailId" column="ENTITY_EMAIL_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ENTITY_EMAIL_ID_S"  />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="emailTypeCode" column="EMAIL_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="emailAddress" column="EMAIL_ADDR" jdbc-type="VARCHAR"  />
@@ -918,10 +905,6 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="emailTypeCode" />
     </reference-descriptor>
@@ -930,6 +913,7 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentPhone" table="KRIM_PND_PHONE_MT">
     <field-descriptor name="entityPhoneId" column="ENTITY_PHONE_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ENTITY_PHONE_ID_S"  />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="phoneTypeCode" column="PHONE_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="phoneNumber" column="PHONE_NBR" jdbc-type="VARCHAR"  />
@@ -939,10 +923,6 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="phoneTypeCode" />
     </reference-descriptor>
@@ -956,9 +936,6 @@
      <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
     <reference-descriptor name="kimRoleType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="kimTypeId" />
     </reference-descriptor>
@@ -970,12 +947,12 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl" table="KRIM_PND_ROLE_PRNCPL_MT">
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S" />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
 <!-- 
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="documentNumber" />
@@ -983,11 +960,13 @@
     -->
     <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
+      <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" table="KRIM_PND_ROLE_MBR_ATTR_DATA_MT">
     <field-descriptor name="attrDataId" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ATTR_DATA_ID_S" />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="targetPrimaryKey" column="TARGET_PRIMARY_KEY" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttrDefnId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
@@ -995,7 +974,6 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
 <!-- 
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="documentNumber" />
@@ -1005,6 +983,7 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentGroup" table="KRIM_PND_GRP_PRNCPL_MT">
     <field-descriptor name="groupMemberId" column="GRP_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_GRP_MBR_ID_S" />
+	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="groupName" column="GRP_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="groupType" column="GRP_TYPE" jdbc-type="VARCHAR" />
@@ -1012,10 +991,6 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
-     <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="documentNumber" />
-    </reference-descriptor>
   </class-descriptor>
 
 </descriptor-repository>

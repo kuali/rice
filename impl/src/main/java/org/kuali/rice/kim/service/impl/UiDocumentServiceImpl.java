@@ -269,6 +269,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				docEmpInfo.setActive(empInfo.isActive());
 				docEmpInfo.setEntityAffiliationId(empInfo
 						.getEntityAffiliationId());
+				docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
 				docEmploymentInformations.add(docEmpInfo);
 				}
 			}

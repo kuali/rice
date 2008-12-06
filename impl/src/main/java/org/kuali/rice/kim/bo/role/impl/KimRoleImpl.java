@@ -30,6 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.role.KimRole;
@@ -188,6 +189,9 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 	}
 
 	public KimTypeImpl getKimRoleType() {
+		if (StringUtils.isNotBlank(this.kimTypeId) && this.kimRoleType == null) {
+			this.refreshReferenceObject("kimRoleType");
+		}
 		return this.kimRoleType;
 	}
 

@@ -16,13 +16,11 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

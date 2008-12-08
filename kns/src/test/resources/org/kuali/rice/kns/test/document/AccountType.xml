@@ -22,6 +22,7 @@
         <ref bean="AccountType-codeAndDescription" />
       </list>
     </property>
+    <property name="objectLabel" value="Account Type"/>
   </bean>
 
 <!-- Attribute Definitions -->

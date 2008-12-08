@@ -48,6 +48,7 @@
         <ref bean="Account-amId" />
       </list>
     </property>
+    <property name="objectLabel" value="Account"/>
   </bean>
 
 <!-- Attribute Definitions -->

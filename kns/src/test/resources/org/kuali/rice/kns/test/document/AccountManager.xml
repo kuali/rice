@@ -21,6 +21,7 @@
         <ref bean="AccountManager-userName" />
       </list>
     </property>
+    <property name="objectLabel" value="Account Manager"/>
   </bean>
 
 <!-- Attribute Definitions -->

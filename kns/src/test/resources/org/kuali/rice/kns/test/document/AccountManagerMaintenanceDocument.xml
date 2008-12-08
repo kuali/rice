@@ -50,7 +50,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition"
               p:name="amId"
-              p:readOnly="true" />
+              p:unconditionallyReadOnly="true" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="userName" />

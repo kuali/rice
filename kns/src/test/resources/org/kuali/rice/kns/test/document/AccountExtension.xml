@@ -15,6 +15,7 @@
         <ref bean="AccountExtension-accountTypeCode" />
       </list>
     </property>
+    <property name="objectLabel" value="Account Extension"/>
   </bean>
 
 <!-- Attribute Definitions -->

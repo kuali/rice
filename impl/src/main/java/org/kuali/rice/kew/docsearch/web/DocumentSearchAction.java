@@ -70,7 +70,8 @@ import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
-
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.bo.group.*;
 
 /**
  * Document search struts action
@@ -452,7 +453,8 @@ public class DocumentSearchAction extends WorkflowAction {
         if (request.getParameter("workgroupId") != null) {
             Long groupId = new Long(request.getParameter("workgroupId"));
             Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(groupId));
-            documentSearchForm.getCriteria().setWorkgroupViewerName(workgroup.getDisplayName());
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(new WorkflowGroupId(groupId).getGroupId().toString());
+            documentSearchForm.getCriteria().setWorkgroupViewerName(group.getGroupName());
         }
         return mapping.findForward("success");
     }

@@ -52,6 +52,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class DocumentSearchServiceImpl implements DocumentSearchService {
@@ -374,8 +376,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (Utilities.isEmpty(workgroupName)) {
             return true;
         }
-        Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName.trim()));
-        return workgroup != null;
+//        Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName.trim()));
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupName);
+        return group != null;
     }
 
 	public List getNamedSearches(WorkflowUser user) {

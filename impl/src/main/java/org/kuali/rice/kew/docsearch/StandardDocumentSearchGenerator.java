@@ -51,6 +51,8 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -909,7 +911,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
             Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName));
-        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.GRP_ID = " + workgroup.getWorkflowGroupId().getGroupId();
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupName);            
+        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.GRP_ID = " + group.getGroupId();// workgroup.getWorkflowGroupId().getGroupId();
         }
         return sql;
     }

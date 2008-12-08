@@ -118,7 +118,6 @@ required is true if the field must contain a non-null value
         return defaultValueFinderClass;
     }
 
-    
     /**
 	 * @return the unconditionallyReadOnly
 	 */
@@ -126,10 +125,6 @@ required is true if the field must contain a non-null value
 		return this.unconditionallyReadOnly;
 	}
 
-	public boolean isReadOnly() {
-		return this.unconditionallyReadOnly;
-	}
-	
 	/**
 	 * @param unconditionallyReadOnly the unconditionallyReadOnly to set
 	 */
@@ -137,10 +132,6 @@ required is true if the field must contain a non-null value
 		this.unconditionallyReadOnly = unconditionallyReadOnly;
 	}
 	
-	public void setReadOnly(boolean unconditionallyReadOnly) {
-		this.unconditionallyReadOnly = unconditionallyReadOnly;
-	}
-
 	/**
      * Gets the displayEditMode attribute.
      * 

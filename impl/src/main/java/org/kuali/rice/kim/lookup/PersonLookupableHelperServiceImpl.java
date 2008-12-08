@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -32,12 +33,13 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
-
 	
 	@Override
 	public List<? extends BusinessObject> getSearchResults(
 			Map<String, String> fieldValues) {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
+		if (fieldValues != null && StringUtils.isNotEmpty(fieldValues.get("principalName"))) {
+			fieldValues.put("principalName", fieldValues.get("principalName").toLowerCase());
+		}
 		return super.getSearchResults(fieldValues);
 	}
 

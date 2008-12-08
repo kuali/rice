@@ -54,6 +54,11 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		dd = new DataDictionary();
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimRoleImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
         dd.parseDataDictionaryConfigurationFiles( false );
 	}

@@ -23,7 +23,7 @@
 
 	<bean id="DocRoleQualifier" parent="DocRoleQualifier-parentBean" />
 	<bean id="DocRoleQualifier-parentBean" abstract="true" parent="BusinessObjectEntry">
-		<property name="businessObjectClass" value="org.kuali.kim.bo.ui.PersonDocumentRoleQualifier" />
+		<property name="businessObjectClass" value="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" />
 		<property name="inquiryDefinition" >
 			<ref bean="DocRoleQualifier-inquiryDefinition" />
 		</property>

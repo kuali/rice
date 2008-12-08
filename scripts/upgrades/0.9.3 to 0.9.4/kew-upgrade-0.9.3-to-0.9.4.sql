@@ -14,7 +14,7 @@ alter table "EN_DOC_TYP_T" drop column "CSTM_ACTN_LIST_ATTRIB_CLS_NM"
 /
 alter table "EN_DOC_TYP_T" drop column "CSTM_ACTN_EMAIL_ATTRIB_CLS_NM"
 /
-alter table "KRICE"."EN_DOC_TYP_T" drop column "CSTM_DOC_NTE_ATTRIB_CLS_NM"
+alter table "EN_DOC_TYP_T" drop column "CSTM_DOC_NTE_ATTRIB_CLS_NM"
 /
 
 -- Convert KEW group ids from numbers to strings /
@@ -158,7 +158,7 @@ DROP TABLE KRTMP_OUT_BOX_ITM_T
 
 -- New System Parameters /
 
-INSERT INTO KRNS_NMSPC_T ("NMSPC_CD","VER_NBR","NM","ACTV_IND") VALUES ('KR-WRKFLW', 0,'Workflow',1)
+INSERT INTO KRNS_NMSPC_T ("NMSPC_CD","VER_NBR","NM","ACTV_IND") VALUES ('KR-WRKFLW', 0,'Workflow','Y')
 /
 
 INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","TXT","CONS_CD","PARM_DESC_TXT","PARM_TYP_CD","GRP_NM") VALUES ('KR-WRKFLW','All','KIM_PRIORITY_ON_DOC_TYP_PERMS_IND','N','A','Flag for enabling/disabling document type permission checks to use KIM Permissions as priority over Document Type policies.','CONFG','WorkflowAdmin')

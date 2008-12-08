@@ -49,11 +49,11 @@ insert into KRNS_NTE_TYP_T (NTE_TYP_CD, TYP_DESC_TXT, ACTV_IND) values ('BO', 'D
 ;
 insert into KRNS_NTE_TYP_T (NTE_TYP_CD, TYP_DESC_TXT, ACTV_IND) values ('DH', 'DOCUMENT HEADER', 'Y')
 ;
-insert into KRNS_PARM_TYP_T ("PARM_TYP_CD","VER_NBR","NM","ACTV_IND") values ('CONFG', 0,'Config',1)
+insert into KRNS_PARM_TYP_T ("PARM_TYP_CD","VER_NBR","NM","ACTV_IND") values ('CONFG', 0,'Config','Y')
 ;
-insert into KRNS_PARM_TYP_T ("PARM_TYP_CD","VER_NBR","NM","ACTV_IND") values ('AUTH', 0,'Authorization',1)
+insert into KRNS_PARM_TYP_T ("PARM_TYP_CD","VER_NBR","NM","ACTV_IND") values ('AUTH', 0,'Authorization','Y')
 ;
-insert into KRNS_NMSPC_T ("NMSPC_CD","VER_NBR","NM","ACTV_IND") values ('KR-NS', 0,'Kuali Rice',1)
+insert into KRNS_NMSPC_T ("NMSPC_CD","VER_NBR","NM","ACTV_IND") values ('KR-NS', 0,'Kuali Rice','Y')
 ;
 INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","TXT","CONS_CD","PARM_DESC_TXT","PARM_TYP_CD","GRP_NM") VALUES ('KR-NS','All','CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND','Y','A','Flag for enabling/disabling the demonstration encryption check.','CONFG','KUALI_FMSOPS')
 ;

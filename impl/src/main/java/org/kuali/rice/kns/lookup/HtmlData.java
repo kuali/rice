@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -197,20 +198,20 @@ public abstract class HtmlData implements Serializable {
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueList.keySet()) {
 			String fieldVal = keyValueList.get(key).toString();
-			// Mask value if it is a secure field
-			boolean viewAuthorized = KNSServiceLocator
-					.getAuthorizationService()
-					.isAuthorizedToViewAttribute(
-							GlobalVariables.getUserSession()
-									.getPerson(),
-							element.getName(), key);
-			if (!viewAuthorized) {
-				Mask displayMask = KNSServiceLocator
-						.getDataDictionaryService()
-						.getAttributeDisplayMask(
-								element.getName(), key);
-				fieldVal = displayMask.maskValue(fieldVal);
+			
+			AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(element.getName(), key);
+			if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getSimpleName(), key);
+                if(!viewAuthorized){
+                	fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
+                }
 			}
+			if(attributeSecurity != null && attributeSecurity.isMask()){
+            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getSimpleName(), key);
+            	if(!viewAuthorized){
+            		fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
+            	}
+            }
 			titleText.append(KNSServiceLocator.getDataDictionaryService()
 					.getAttributeLabel(element, key)
 					+ "=" + fieldVal.toString() + " ");

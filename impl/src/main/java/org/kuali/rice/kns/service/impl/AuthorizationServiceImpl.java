@@ -22,10 +22,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationStore;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 
@@ -40,6 +44,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private AuthorizationStore authorizationStore;
     private DataDictionaryService dataDictionaryService;
+    private static IdentityManagementService identityManagementService;
 
     private boolean disabled;
 
@@ -95,6 +100,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      *      java.lang.String)
      */
     public boolean isAuthorized(Person user, String action, String targetType) {
+    	
+    	
         return disabled || authorizationStore.isAuthorized(user, action, targetType);
     }
     
@@ -111,7 +118,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedToViewAttribute(org.kuali.rice.kns.bo.user.KualiUser,
      *      java.lang.String, java.lang.String)
      */
-    public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName) {
+   public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName) {
         boolean authorized = true;
 
         String displayWorkgroupName = this.dataDictionaryService.getAttributeDisplayWorkgroup(entryName, attributeName);
@@ -123,7 +130,49 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         return authorized;
     }
-
+    
+    /**
+     * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedToUnmaskAttribute(org.kuali.rice.kns.bo.user.KualiUser,
+     *      java.lang.String, java.lang.String)
+     */
+    public boolean isAuthorizedToUnmaskAttribute(Person user, String entryName, String attributeName) {
+        boolean authorized = false;
+        //TODO:Should use ParameterService.getDetailType to get the componentName
+        String componentName = entryName;
+        //TODO: Should use ParameterService getNameSpace to get name space
+        String nameSpaceCode = "KR-NS";
+        
+        AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
+ 	    permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, attributeName);
+ 	    
+	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+	       authorized = true;
+	   }
+        return authorized;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedToPartiallyUnmaskAttribute(org.kuali.rice.kns.bo.user.KualiUser,
+     *      java.lang.String, java.lang.String)
+     */
+    public boolean isAuthorizedToPartiallyUnmaskAttribute(Person user, String entryName, String attributeName) {
+        boolean authorized = false;
+        //TODO:Should use ParameterService.getDetailType to get the componentName
+        String componentName = entryName;
+        //TODO: Should use ParameterService getNameSpace to get name space
+        String nameSpaceCode = "KR-NS";
+        
+        AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
+ 	    permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, attributeName);
+ 	    
+	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+	       authorized = true;
+	   }
+        return authorized;
+    }
+    
     /**
      * If disable is true, isAuthorized will thenceforth always return true regardless of the contents of the authorzationStore; if
      * false, isAuthorized will return results based on the contents of the authorizationStore.
@@ -143,5 +192,17 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public DataDictionaryService getDataDictionaryService() {
         return this.dataDictionaryService;
     }
+    
+	/**
+	 * @return the identityManagementService
+	 */
+	public static IdentityManagementService getIdentityManagementService() {
+		
+		if (identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
+    
 }
 

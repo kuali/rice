@@ -30,6 +30,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kns.authorization.FieldAuthorization;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -38,11 +39,10 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.exception.KualiException;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -51,7 +51,6 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -190,6 +189,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return cachedValues;
     }
 
+
     /**
      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
      * encrypted. This field finds the those parameters in the map, whose value gives us the property name that has an encrypted
@@ -198,7 +198,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @param fieldValues - possibly with encrypted values
      * @return Map fieldValues - with no encrypted values
      */
-    private Map decryptEncryptedData(Map fieldValues, Document maintenanceDocument) {
+    private Map decryptEncryptedData(Map fieldValues, MaintenanceDocument maintenanceDocument) {
     	try {
 	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
 	                String fieldName = (String) iter.next();
@@ -228,24 +228,30 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return fieldValues;
     }
 
-    private boolean shouldFieldBeEncrypted(Document maintenanceDocument, String fieldName){
-    	DocumentAuthorizer authorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
-    	Map editMap = authorizer.getEditMode(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
-    	String displayEditMode = getDisplayEditMode(maintenanceDocument, fieldName);
-    	// Non-blank displayEditMode implies that this field should be encrypted, if the user does not have appropriate permissions
+    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName){
+    	MaintenanceDocumentAuthorizer authorizer = (MaintenanceDocumentAuthorizer)
+    		KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
+    	MaintenanceDocumentAuthorizations auths = 
+    		authorizer.getFieldAuthorizations(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
+    	// If the user does not have appropriate permissions, a non-blank displayEditMode implies that this field should be encrypted
     	// If the logged in user has the permission to view or edit this field, 
-    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted 
-    	if(StringUtils.isNotBlank(displayEditMode) && (editMap==null || !editMap.containsKey(displayEditMode)))
-    		return true;
+    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted
+    	// The corresponding value in editMap actually does not matter;
+    	// just the presence of the displayEditMode inside that map is enough.
+    	// Note: this "if" stmt is same as "${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" of rowDisplay.jsp
+    	if(auths!=null && auths.hasAuthFieldRestricted(fieldName)){
+    		FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+    		return fieldAuth.shouldBeEncrypted();
+    	}
     	return false;
     }
     
-    private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
+    /*private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
     	String docTypeName = maintenanceDocument.getDocumentHeader().getWorkflowDocument().getDocumentType();
     	MaintainableFieldDefinition fieldDefinition =
     		KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableField(docTypeName, fieldName);
     	return fieldDefinition==null?null:fieldDefinition.getDisplayEditMode();
-	}
+	}*/
     
     /**
      * Calls method to get all the core sections for the business object defined in the data dictionary. Then determines if the bo

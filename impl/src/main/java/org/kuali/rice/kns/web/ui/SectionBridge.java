@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -51,6 +52,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -350,24 +352,38 @@ public class SectionBridge {
                             }
 
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
+                            
+                            collField.setPropertyValue(propertyValue);
                             // set field value from business object
                             // check if field contains sensitive data and user is authorized to see value
-                            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getName(), name);
-                            if (!viewAuthorized) {
+                            //boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getName(), name);
+                            //if (!viewAuthorized) {
 
                                 // set mask as field value
-                                Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineBusinessObject.getClass(), name);
-                                if (propertyMask == null) {
-                                    throw new RuntimeException("No mask specified for secure field.");
-                                }
-
-                                collField.setPropertyValue(propertyMask.maskValue(propertyValue));
-                                collField.setDisplayMaskValue(propertyMask.maskValue(propertyValue));
-
+                                //Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineBusinessObject.getClass(), name);
+                                //if (propertyMask == null) {
+                                //    throw new RuntimeException("No mask specified for secure field.");
+                                //}
+                            AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
+                            if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+                            	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                            	if(!viewAuthorized){
+                            		collField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                            		collField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                            	}
                             }
-                            else {
-                                collField.setPropertyValue(propertyValue);
+                            if(attributeSecurity != null && attributeSecurity.isMask()){
+                            	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                            	if(!viewAuthorized){
+                            		collField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                            		collField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                            	}	
                             }
+                                
+                            //}
+                            //else {
+                            //    collField.setPropertyValue(propertyValue);
+                            //}
 
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {
@@ -513,25 +529,25 @@ public class SectionBridge {
                                         }
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
-                                        // set field value from business object
-                                        // check if field contains sensitive data and user is authorized to see value
-                                        boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineSubBusinessObject.getClass().getName(), name);
-                                        if (!viewAuthorized) {
-
-                                            // set mask as field value
-                                            Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineSubBusinessObject.getClass(), name);
-                                            if (propertyMask == null) {
-                                                throw new RuntimeException("No mask specified for secure field.");
-                                            }
-
-                                            subCollField.setPropertyValue(propertyMask.maskValue(propertyValue));
-                                            subCollField.setDisplayMaskValue(propertyMask.maskValue(propertyValue));
-
+                                        
+                                        subCollField.setPropertyValue(propertyValue);
+                                        
+                                        AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
+                                        if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+                                        	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                                        	if(!viewAuthorized){
+                                        		subCollField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                                        		subCollField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
+                                        	}
                                         }
-                                        else {
-                                            subCollField.setPropertyValue(propertyValue);
+                                        if(attributeSecurity != null && attributeSecurity.isMask()){
+                                        	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                                        	if(!viewAuthorized){
+                                        		subCollField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                                        		subCollField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
+                                        	}	
                                         }
-
+                                     
                                         // check if this is a summary field
                                         if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {
                                             summaryFields.put(fieldDefinition.getName(), subCollField);

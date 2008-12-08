@@ -36,6 +36,7 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -101,7 +102,7 @@ public class FieldUtils {
 
     /**
      * Builds up a Field object based on the propertyName and business object class.
-     * 
+     *
      * See KULRICE-2480 for info on translateCheckboxes flag
      * 
      * @param propertyName
@@ -463,32 +464,40 @@ public class FieldUtils {
                     element.setPropertyValue(null);
                 }
                 else if (PropertyUtils.isReadable(bo, propertyName)) {
-                    Object obj = ObjectUtils.getNestedValue(bo, element.getPropertyName());
-                    if (obj != null) {
-                        element.setPropertyValue(obj);
-                    }
-
-                    // set encrypted & masked value if user does not have permission to see real value in UI
-                    if (element.isSecure()) {
-                        try {
-                            if (obj != null && obj.toString().endsWith(EncryptionService.HASH_POST_PREFIX)) {
-                                element.setEncryptedValue(obj.toString());
-                            }
-                            else {
-                                element.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(obj) + EncryptionService.ENCRYPTION_POST_PREFIX);
-                            }
-                        }
-                        catch (GeneralSecurityException e) {
-                            throw new RuntimeException("Unable to encrypt secure field " + e.getMessage());
-                        }
-                        element.setDisplayMaskValue(element.getDisplayMask().maskValue(obj));
-                    }
+                	populateReadableField(element, bo);
                 }
             }
             populatedFields.add(element);
         }
 
         return populatedFields;
+    }
+
+    public static void populateReadableField(Field field, BusinessObject businessObject){
+        Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
+        if (obj != null) {
+        	field.setPropertyValue(obj);
+        }
+        populateSecureField(field, obj);
+    }
+
+    public static void populateSecureField(Field field, Object fieldValue){
+        // set encrypted & masked value if user does not have permission to see real value in UI
+        // element.isSecure() => a non-null AttributeSecurity object is set in the field
+        if (field.isSecure()) {
+            try {
+                if (fieldValue != null && fieldValue.toString().endsWith(EncryptionService.HASH_POST_PREFIX)) {
+                	field.setEncryptedValue(fieldValue.toString());
+                }
+                else {
+                	field.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                }
+            }
+            catch (GeneralSecurityException e) {
+                throw new RuntimeException("Unable to encrypt secure field " + e.getMessage());
+            }
+            //field.setDisplayMaskValue(field.getAttributeSecurity().getDisplayMaskValue(fieldValue));
+        }
     }
 
     /**
@@ -780,16 +789,33 @@ public class FieldUtils {
 
     public static void applyAuthorization(Field field, MaintenanceDocumentAuthorizations auths) {
 
+    	String fieldName = "";
+    	FieldAuthorization fieldAuth = null;
         // only apply this on the newMaintainable
         if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
 
             // get just the actual fieldName, with the document.newMaintainableObject, etc etc removed
-            String fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+            fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
 
             // if the field is restricted somehow
             if (auths.hasAuthFieldRestricted(fieldName)) {
-                FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
-
+                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+                
+                if(fieldAuth.isPartiallyMasked()){
+                	field.setSecure(true);
+                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+                	field.setDisplayMaskValue(displayMaskValue);
+                	
+                }
+                
+                if(fieldAuth.isMasked()){
+                	field.setSecure(true);
+                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+                	field.setDisplayMaskValue(displayMaskValue);
+                }
+                
                 // if its an editable field, allow decreasing availability to readonly or hidden
                 if (Field.isInputField(field.getFieldType()) || field.getFieldType().equalsIgnoreCase(Field.CHECKBOX)) {
 
@@ -812,22 +838,24 @@ public class FieldUtils {
                 if (field.isReadOnly() && fieldAuth.isHidden()) {
                     field.setFieldType(Field.HIDDEN);
                 }
+                
             }
             // special check for old maintainable - need to ensure that fields hidden on the
             // "new" side are also hidden on the old side
         }
         else if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE)) {
             // get just the actual fieldName, with the document.oldMaintainableObject, etc etc removed
-            String fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+            fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
             // if the field is restricted somehow
             if (auths.hasAuthFieldRestricted(fieldName)) {
-                FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
 
                 if (fieldAuth.isHidden()) {
                     field.setFieldType(Field.HIDDEN);
                 }
             }
         }
+      
     }
 
     /**
@@ -1020,26 +1048,24 @@ public class FieldUtils {
     }
     
     public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
-
         List<Field> fields = new ArrayList<Field>();
-        for( String attributeName : lookupFieldAttributeList )
-        {
+        for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
+            String attributeName = (String) iter.next();
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
             BusinessObject newBusinessObjectInstance;
-            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) 
-            {
+            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
             	newBusinessObjectInstance = (BusinessObject) moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
             }
             else {
             	newBusinessObjectInstance = (BusinessObject) businessObjectClass.newInstance();
             }
-            //quickFinder is synonymous with a field-based Lookup
+            // TODO: This makes no sense, why do we pass it in and then return the same thing
+            // back to us?
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
-            
-            field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
-           
+            LookupUtils.setFieldDirectInquiry(field);
+
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);
             fields.add(field);

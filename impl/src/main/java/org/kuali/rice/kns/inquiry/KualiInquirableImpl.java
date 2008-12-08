@@ -33,6 +33,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -303,19 +304,35 @@ public class KualiInquirableImpl implements Inquirable {
 
             // Encrypt value if it is a secure field
             //String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
-            boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(
-					GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getName(), keyName);
-            if (!viewAuthorized) {
-                try {
-                    keyValue = getEncryptionService().encrypt(keyValue);
-                }
-                catch (GeneralSecurityException e) {
-                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                    throw new RuntimeException(e);
-                }
-
+            //boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(
+			//		GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getName(), keyName);
+            //if (!viewAuthorized) {
+            AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
+            if(attributeSecurity != null && attributeSecurity.isMask()){
+            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getSimpleName(), keyName);
+            	if(!viewAuthorized){
+            		try {
+                        keyValue = getEncryptionService().encrypt(keyValue);
+                    }
+                    catch (GeneralSecurityException e) {
+                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                        throw new RuntimeException(e);
+                    }
+            	}
             }
-
+            if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getSimpleName(), keyName);
+                if(!viewAuthorized){
+                	try {
+                        keyValue = getEncryptionService().encrypt(keyValue);
+                    }
+                    catch (GeneralSecurityException e) {
+                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+			}
+            
             parameters.put(keyName, keyValue);
             fieldList.put(keyName, keyValue.toString());
         }

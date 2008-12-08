@@ -49,6 +49,28 @@ public interface AuthorizationService {
      */
     public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName);
     
+    /**
+     * 
+     * This method is used to check if user has permission to unmask masked attribute
+     * 
+     * @param user
+     * @param entryName
+     * @param attributeName
+     * @return
+     */
+    public boolean isAuthorizedToUnmaskAttribute(Person user, String entryName, String attributeName);
+    
+    /**
+     * 
+     * This method is used to check if user has permission to unmask partially masked attribute
+     * 
+     * @param user
+     * @param entryName
+     * @param attributeName
+     * @return
+     */
+    public boolean isAuthorizedToPartiallyUnmaskAttribute(Person user, String entryName, String attributeName);
+    
 //    public void completeInitialization( DataDictionary dataDictionary );
     
     public void setupAuthorizations(DocumentEntry documentEntry) ;

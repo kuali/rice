@@ -28,11 +28,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
@@ -60,6 +60,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static AuthorizationService authorizationService;
     private static KualiWorkflowInfo kualiWorkflowInfo;
     private static KualiConfigurationService kualiConfigurationService;
+    private static IdentityManagementService identityManagementService;
 
     /**
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
@@ -574,5 +575,16 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     protected boolean useCustomLockDescriptors() {
         return false;
     }
+    
+     /**
+	  * @return the identityManagementService
+	  */
+	 public static IdentityManagementService getIdentityManagementService() {
+			
+		if (identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
     
 }

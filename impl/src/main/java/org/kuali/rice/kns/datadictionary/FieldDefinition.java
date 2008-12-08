@@ -46,6 +46,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected String displayEditMode;
     protected Mask displayMask;
 
+
     public FieldDefinition() {
     }
 
@@ -141,7 +142,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         this.noInquiry = noInquiry;
     }
 
-	/**
+    /**
      * @param noInquiry If true, the displayed field will not have a direct
 	 *     inquiry facility 
      */
@@ -266,7 +267,6 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         return displayMask;
     }
 
-
     /**
      * The displayMask element specifies the type of masking to
                     be used to hide the value from un-authorized users.
@@ -277,6 +277,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
 
+    
     public boolean isReadOnlyAfterAdd() {
         return false;
     }

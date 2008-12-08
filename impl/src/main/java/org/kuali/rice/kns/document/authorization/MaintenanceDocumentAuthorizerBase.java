@@ -16,32 +16,128 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
 
+ 	private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
     /**
      * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#getFieldAuthorizations(org.kuali.rice.kns.document.MaintenanceDocument,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
     public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user) {
-        // by default, there are no restrictions, only if this method is
-        // overridden by a subclass that adds restrictions
-        return new MaintenanceDocumentAuthorizations();
+        
+    	MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
+    	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+    	
+    	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
+    	Map<String, FieldAttributeSecurity> restrictionFields = DocumentAttributeSecurityUtils.getRestrictionMaintainableFields(objectEntry);
+    	
+    	Set keys = restrictionFields.keySet();    
+    	Iterator keyIter = keys.iterator();
+        while (keyIter.hasNext()) { 
+           String fullFieldName = (String) keyIter.next(); 
+           FieldAttributeSecurity fieldAttributeSecurity = (FieldAttributeSecurity) restrictionFields.get(fullFieldName);
+           String fieldName = fieldAttributeSecurity.getAttributeName();
+           
+           //TODO:Should use ParameterService.getDetailType to get the componentName
+           String componentName = fieldAttributeSecurity.getBusinessObjectClass().getSimpleName();     
+           String nameSpaceCode = "KR-NS";
+           
+           AttributeSecurity maintainableFieldAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getMaintainableFieldAttributeSecurity();
+           AttributeSecurity  businessObjectAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getBusinessObjectAttributeSecurity();
+           
+           AttributeSet permissionDetails = new AttributeSet();
+    	   permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, fieldName);
+    	  
+    	   
+    	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isReadOnly()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
+    			   auths.addReadonlyAuthField(fullFieldName);
+    		   }
+    	   }
+    	   
+    	   if(maintainableFieldAttributeSecurity != null && maintainableFieldAttributeSecurity.isReadOnly()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
+    			   auths.addReadonlyAuthField(fullFieldName);
+    		   }
+    	   }
+    	   
+    	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isPartialMask()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
+    			   MaskFormatter partialMaskFormatter = businessObjectAttributeSecurity.getPartialMaskFormatter();
+    			   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
+    		   }
+    	   }
+    	   
+    	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isPartialMask()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
+				   MaskFormatter partialMaskFormatter = maintainableFieldAttributeSecurity.getPartialMaskFormatter();
+				   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
+			   }
+		   }
+    	   
+    	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isMask()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+    		       MaskFormatter maskFormatter = businessObjectAttributeSecurity.getMaskFormatter();
+    			   auths.addMaskedAuthField(fullFieldName, maskFormatter);
+    		   }
+    	   }
+    	   
+    	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isMask()){  
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+				   MaskFormatter maskFormatter = maintainableFieldAttributeSecurity.getMaskFormatter();
+				   auths.addMaskedAuthField(fullFieldName, maskFormatter);
+			   }
+		   }
+    	
+    	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isHide()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
+    			   auths.addHiddenAuthField(fullFieldName);	  
+    		   }
+    	   }   
+
+    	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isHide()){
+    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
+				   auths.addHiddenAuthField(fullFieldName);	  
+			   }
+		   }
+  
+        }    	
+    	return auths; 
     }
+
 
     /**
      * 
@@ -170,5 +266,19 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         String maintAction = maintDoc.getNewMaintainableObject().getMaintenanceAction();
         return (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
     }
+    
+    	
+	/**
+	 * @return the maintenanceDocumentDictionaryService
+	 */
+	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		
+		if (maintenanceDocumentDictionaryService == null ) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
+
+    
 }
 

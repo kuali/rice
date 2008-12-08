@@ -98,7 +98,7 @@
                 
 			<%-- isFieldSecure determines whether or not the encrypted value should be shown for 
 			non-collections and a similar function for collections --%>
-			<c:set var="isFieldSecure" value="${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" />
+			<c:set var="isFieldSecure" value="${field.secure}" />
 				
 			<%-- textStyle is used to store the style of the field value. i.e. whether or not it 
 			should display as red text. --%>

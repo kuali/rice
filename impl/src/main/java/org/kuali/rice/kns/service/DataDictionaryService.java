@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
@@ -133,7 +134,6 @@ public interface DataDictionaryService {
      * short help text for attribute
      */
     public String getAttributeSummary(Class businessObjectClass, String attributeName);
-
 
     /**
      * detailed help text for attribute
@@ -255,6 +255,11 @@ public interface DataDictionaryService {
      * the Mask object defined for masking the attribute's data value
      */
     public Mask getAttributeDisplayMask(String entryName, String attributeName);
+    
+    /**
+     * the AttributeSecurity object defined for the attribute's data value
+     */
+    public AttributeSecurity getAttributeSecurity(String entryName, String attributeName);
 
     /**
      * short help text for attribute

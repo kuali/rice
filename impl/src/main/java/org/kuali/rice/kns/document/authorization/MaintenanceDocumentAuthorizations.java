@@ -23,8 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.web.ui.Field;
 
 /**
@@ -42,11 +44,13 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
     private static final Logger LOG = Logger.getLogger(MaintenanceDocumentAuthorizations.class);
 
     private Map authFields;
+    private Map fieldFormatters;
     private List hiddenSections; // not implemented, does nothing yet
 
     public MaintenanceDocumentAuthorizations() {
         authFields = new HashMap();
         hiddenSections = new ArrayList();
+        fieldFormatters = new HashMap();
     }
 
     /**
@@ -115,6 +119,7 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
     public void addAuthField(String fieldName, String authorizationFlag) {
         authFields.put(fieldName, authorizationFlag);
     }
+   
 
     /**
      * This method adds the fieldName specified as Editable.
@@ -142,7 +147,30 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
     public void addHiddenAuthField(String fieldName) {
         addAuthField(fieldName, Field.HIDDEN);
     }
+    
 
+    /**
+     * This method adds the fieldName specified as masked.
+     * 
+     * @param fieldName
+     */
+    public void addMaskedAuthField(String fieldName, MaskFormatter maskFormatter) {
+        addAuthField(fieldName, Field.MASKED);
+        addFieldFormatter(fieldName, maskFormatter);
+        
+    }
+
+    /**
+     * This method adds the fieldName specified as partially masked.
+     * 
+     * @param fieldName
+     */
+    public void addPartiallyMaskedAuthField(String fieldName, MaskFormatter partialMaskFormatter) {
+        addAuthField(fieldName, Field.PARTIALLY_MASKED);
+        addFieldFormatter(fieldName, partialMaskFormatter);
+    }
+    
+ 
     /**
      * 
      * Returns a collection of all the sections that have non-default authorization restrictions.
@@ -164,12 +192,21 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
      * 
      */
     public FieldAuthorization getAuthFieldAuthorization(String fieldName) {
-        if (authFields.containsKey(fieldName)) {
-            return new FieldAuthorization(fieldName, (String) authFields.get(fieldName));
+    	//fieldName.replaceAll("(\\[[0-9]*\\])", "");
+    	if (authFields.containsKey(fieldName)) {
+    		FieldAuthorization fieldAuth = new FieldAuthorization(fieldName, (String) authFields.get(fieldName));
+    		if(fieldFormatters.containsKey(fieldName)){
+    			fieldAuth.setMaskFormatter((MaskFormatter) fieldFormatters.get(fieldName));
+    		}
+    		return fieldAuth;
         }
         else {
             return new FieldAuthorization(fieldName, Field.EDITABLE);
         }
     }
-
+    
+    private void addFieldFormatter(String fieldName, MaskFormatter maskFormatter) {
+    	fieldFormatters.put(fieldName, maskFormatter);
+    }
+    
 }

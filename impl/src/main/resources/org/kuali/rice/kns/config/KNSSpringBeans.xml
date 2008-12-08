@@ -253,7 +253,7 @@
         </bean>
 	  </property>
 	</bean>
-
+	
 	<bean id="workflowInfoService" class="org.kuali.rice.kns.workflow.service.impl.KualiWorkflowInfoImpl" />
 
 	<bean id="xmlObjectSerializerService" class="org.kuali.rice.kns.service.impl.XmlObjectSerializerServiceImpl"></bean>
@@ -854,30 +854,7 @@
 		</property>
 	</bean>
 
-	<bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
-
-	<bean id="documentStatusComponentAttributePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeServiceImpl" >
-    	<property name="kimAttributesTranslators">
-    		<list>
-				<bean class="org.kuali.rice.kns.service.impl.DocumentStatusComponentAttributePermissionTypeTranslator">
-					<property name="supportedAttributeNames">
-						<list>
-							<value>Document Number</value>
-							<value>Property Name</value>
-							<value>Component</value>
-						</list>
-					</property>
-					<property name="resultAttributeNames">
-						<list>
-							<value>Document Type Name</value>
-							<value>Route Status Code</value>
-							<value>Route Node Name</value>
-						</list>
-					</property>
-			    </bean>
-    		</list>
-    	</property>
-	</bean>
+    <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
 			
   <!-- START JPA CONFIGURATION -->
 
@@ -941,4 +918,5 @@
     	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
     	<property name="kualiModuleService" ref="kualiModuleService" />
     </bean>
+    
 </beans>

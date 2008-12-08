@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -54,6 +55,8 @@ public class Field implements java.io.Serializable {
     public static final String KUALIUSER = "kualiuser";
     public static final String READONLY = "readOnly";
     public static final String EDITABLE = "editable";
+    public static final String MASKED = "masked";
+    public static final String PARTIALLY_MASKED = "partiallyMasked";
     public static final String LOOKUP_HIDDEN = "lookuphidden";
     public static final String LOOKUP_READONLY = "lookupreadonly";
     public static final String WORKFLOW_WORKGROUP = "workflowworkgroup";
@@ -83,6 +86,7 @@ public class Field implements java.io.Serializable {
     private List fieldInactiveValidValues;
     private Formatter formatter;
     private int maxLength;
+    
     private HtmlData inquiryURL;
     private String propertyPrefix;
     private String quickFinderClassNameImpl;
@@ -100,7 +104,6 @@ public class Field implements java.io.Serializable {
     private String personNameAttributeName;
     private String defaultValue = KNSConstants.EMPTY_STRING;
     private boolean keyField;
-    private String displayEditMode;
     private Mask displayMask;
     private String displayMaskValue;
     private String encryptedValue;
@@ -126,7 +129,7 @@ public class Field implements java.io.Serializable {
 	private String imageSrc;
     private String target;
     private String hrefText;
-     
+    
     /**
      * Helper method to determine if this is an INPUT type field
      * 
@@ -531,7 +534,24 @@ public class Field implements java.io.Serializable {
 
         return propertyValue;
     }
+    
+    /**
+     * Gets the displayMaskValue attribute.
+     * 
+     * @return Returns the displayMaskValue.
+     */
+    public String getDisplayMaskValue() {
+        return displayMaskValue;
+    }
 
+    /**
+     * Sets the displayMaskValue attribute value.
+     * 
+     * @param displayMaskValue The displayMaskValue to set.
+     */
+    public void setDisplayMaskValue(String displayMaskValue) {
+        this.displayMaskValue = displayMaskValue;
+    }
 
     /**
      * Gets the propertyPrefix attribute.
@@ -1072,25 +1092,6 @@ public class Field implements java.io.Serializable {
         this.keyField = keyField;
     }
 
-
-    /**
-     * Gets the displayEditMode attribute.
-     * 
-     * @return Returns the displayEditMode.
-     */
-    public String getDisplayEditMode() {
-        return displayEditMode;
-    }
-
-    /**
-     * Sets the displayEditMode attribute value.
-     * 
-     * @param displayEditMode The displayEditMode to set.
-     */
-    public void setDisplayEditMode(String displayEditMode) {
-        this.displayEditMode = displayEditMode;
-    }
-
     /**
      * Gets the displayMask attribute.
      * 
@@ -1099,34 +1100,7 @@ public class Field implements java.io.Serializable {
     public Mask getDisplayMask() {
         return displayMask;
     }
-
-    /**
-     * Sets the displayMask attribute value.
-     * 
-     * @param displayMask The displayMask to set.
-     */
-    public void setDisplayMask(Mask displayMask) {
-        this.displayMask = displayMask;
-    }
-
-    /**
-     * Gets the displayMaskValue attribute.
-     * 
-     * @return Returns the displayMaskValue.
-     */
-    public String getDisplayMaskValue() {
-        return displayMaskValue;
-    }
-
-    /**
-     * Sets the displayMaskValue attribute value.
-     * 
-     * @param displayMaskValue The displayMaskValue to set.
-     */
-    public void setDisplayMaskValue(String displayMaskValue) {
-        this.displayMaskValue = displayMaskValue;
-    }
-
+    
     /**
      * Gets the encryptedValue attribute.
      * 
@@ -1162,7 +1136,7 @@ public class Field implements java.io.Serializable {
     public void setSecure(boolean secure) {
         this.secure = secure;
     }
-
+    
     /**
      * Returns the method name of a function present in the page which should be called
      * when the user tabs away from the field.
@@ -1381,7 +1355,7 @@ public class Field implements java.io.Serializable {
     public void setFieldDirectInquiryEnabled(boolean fieldDirectInquiryEnabled) {
         this.fieldDirectInquiryEnabled = fieldDirectInquiryEnabled;
     }
-    
+
 	/**
 	 * @return the fieldInactiveValidValues
 	 */
@@ -1395,5 +1369,5 @@ public class Field implements java.io.Serializable {
 	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
 		this.fieldInactiveValidValues = fieldInactiveValidValues;
 	}
-    
+
 }

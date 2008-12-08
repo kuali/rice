@@ -544,11 +544,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
         // attempting to deactivate them, this is in order to address the ignore previous issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
-        boolean activateFirst = false;
-        String activateFirstValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
-        if (!Utilities.isEmpty(activateFirstValue)) {
-            activateFirst = new Boolean(activateFirstValue).booleanValue();
-        }
+        boolean activateFirst = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(routeHeaderId, KEWConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
         if (requests == null || requests.isEmpty()) {

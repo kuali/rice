@@ -356,7 +356,7 @@ public class Rule2Form extends WorkflowRoutingForm {
         this.parentShowHide = parentShowHide;
     }
     public String getRouteLogPopup() {
-        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_ROUTE_LOG_POPUP).trim();
+        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_ROUTE_LOG_POPUP_IND).trim();
     }
 
     public String getForward() {

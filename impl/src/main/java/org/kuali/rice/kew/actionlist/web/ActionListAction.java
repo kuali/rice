@@ -634,13 +634,15 @@ public class ActionListAction extends WorkflowAction {
         if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
             request.setAttribute("helpDeskActionList", "true");
         }
-        String routeLogPopup = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (StringUtils.isEmpty(routeLogPopup)) {
-        	routeLogPopup = "false";
+        String routeLogPopup = "false";
+        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        if (routeLogPopupInd) {
+        	routeLogPopup = "true";
         }
-        String documentPopup = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (StringUtils.isEmpty(documentPopup)) {
-        	documentPopup = "false";
+        String documentPopup = "false";
+        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        if (documentPopupInd) {
+            documentPopup = "true";
         }
         actionListForm.setRouteLogPopup(routeLogPopup.trim());
         actionListForm.setDocumentPopup(documentPopup.trim());

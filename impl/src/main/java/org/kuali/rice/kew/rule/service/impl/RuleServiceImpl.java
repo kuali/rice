@@ -90,7 +90,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 public class RuleServiceImpl implements RuleService {
 
-    private static final String USING_RULE_CACHE = "CACHING_IND";
+    private static final String USING_RULE_CACHE_IND = "CACHING_IND";
     private static final String XML_PARSE_ERROR = "general.error.parsexml";
     private static final String RULE_GROUP_CACHE = "org.kuali.workflow.rules.RuleCache";
 
@@ -399,7 +399,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -927,7 +927,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);

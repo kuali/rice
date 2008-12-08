@@ -53,14 +53,7 @@ public class KEWConstants {
     public static final String STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM = "documentSearch.generator.class.name";
     public static final String STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM = "documentSearch.resultProcessor.class.name";
 
-    public static final String YES_RULE_CHANGE_AR_GENERATION_VALUE = "true";
-
     public static final String DELEGATE_CHANGE_AR_GENERATION_KEY = "DelegateRuleChange.IsGenerateActionRequests";
-    public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "true";
-
-    public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "true";
-
-    public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "true";
 
     public static final String WORKGROUP_ROUTE_LOG_POPUP_KEY = "Workgroup.IsRouteLogPopup";
     public static final String WORKGROUP_ROUTE_LOG_POPUP_VALUE = "true";
@@ -859,7 +852,6 @@ public class KEWConstants {
     public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";
     public static final String ACTION_LIST_PAGE_SIZE_THROTTLE = "PAGE_SIZE_THROTTLE";
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
-    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "true";
     public static final String APPLICATION_CONTEXT = "APPLICATION_CONTEXT";
     public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";
     public static final String RULE_DELEGATE_LIMIT = "DELEGATE_LIMIT";
@@ -867,7 +859,7 @@ public class KEWConstants {
     public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
     public static final String EMAIL_REMINDER_FROM_ADDRESS = "FROM_ADDRESS";
     public static final String MAX_NODES_BEFORE_RUNAWAY_PROCESS = "MAXIMUM_NODES_BEFORE_RUNAWAY";
-    public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME = "NOTIFY_EXCLUDED_USERS_IND";
+    public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND = "NOTIFY_EXCLUDED_USERS_IND";
     public static final String DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT = "FETCH_MORE_ITERATION_LIMIT";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_IND = "DOCUMENT_SEARCH_POPUP_IND";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND = "DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND";
@@ -882,12 +874,19 @@ public class KEWConstants {
     public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "RESTRICT_DOCUMENT_TYPES";
     public static final String RULE_CUSTOM_DOC_TYPES = "CUSTOM_DOCUMENT_TYPES";
     public static final String RULE_CREATE_NEW_INSTRUCTION = "RULE_CREATE_NEW_INSTRUCTION";
-    public static final String RULE_ROUTE_LOG_POPUP = "ROUTE_LOG_POPUP_IND";
+    public static final String RULE_ROUTE_LOG_POPUP_IND = "ROUTE_LOG_POPUP_IND";
     public static final String RULE_SEARCH_INSTRUCTION = "RULE_SEARCH_INSTRUCTION";
     public static final String RULE_GENERATE_ACTION_REQESTS_IND = "GENERATE_ACTION_REQUESTS_IND";
     public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION = "RULE_TEMPLATE_CREATE_NEW_INSTRUCTION";
     public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION = "RULE_TEMPLATE_SEARCH_INSTRUCTION";
-    public static final String SHOW_ATTACHMENTS = "SHOW_ATTACHMENTS_IND";
+    public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
     public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIl_NOTIFICATION_TEST_ADDRESS";
+
+    //System parameter value comparisons
+    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";
+    public static final String YES_RULE_CHANGE_AR_GENERATION_VALUE = "Y";
+    public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "Y";
+    public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "Y";
+    public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
 }

@@ -92,6 +92,17 @@ public class Utilities {
         return parameter.getParameterValue();
     }
 
+    public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name) {
+        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        if (parameter == null) {
+            return false;
+        }
+        if (parameter.getParameterValue().trim().equals("Y")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public static boolean isEmpty(String value) {
         return value == null || value.trim().equals("");
     }

@@ -73,8 +73,9 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			style.appendChild(dom.createTextNode(styleName));
 
 			Element showAttachments = EDLXmlUtils.getOrCreateChildElement(documentState, "showAttachments", true);
-			String showContants = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS);
-			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showContants).toString()));
+			boolean showConstants = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
+
+			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showConstants).toString()));
 
 			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 			WorkflowInfo info = new WorkflowInfo();

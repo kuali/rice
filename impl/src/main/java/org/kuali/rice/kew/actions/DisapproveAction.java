@@ -166,7 +166,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     //generate notifications to all people that have approved the document including the initiator
     private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws KEWUserNotFoundException {
-        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND)));
         Set<WorkflowUser> systemUserWorkflowIds = new HashSet<WorkflowUser>();
         if (systemUserWorkgroup != null) {
             systemUserWorkflowIds = new HashSet<WorkflowUser>(systemUserWorkgroup.getUsers());

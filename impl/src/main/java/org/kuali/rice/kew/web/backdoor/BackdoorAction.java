@@ -131,12 +131,10 @@ public class BackdoorAction extends WorkflowAction {
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
-    	String showBackdoorLoginValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+
     	// default to true if not defined
-    	Boolean showBackdoorLogin = Boolean.TRUE;
-    	if (!StringUtils.isEmpty(showBackdoorLoginValue)) {
-    		showBackdoorLogin = new Boolean(showBackdoorLoginValue);
-    	}
+    	Boolean showBackdoorLogin = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND));
+
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

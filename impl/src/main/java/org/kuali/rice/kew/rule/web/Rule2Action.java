@@ -761,7 +761,7 @@ public class Rule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule, boolean usePreviousId) {
-        if ("true".equalsIgnoreCase(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND))) {
+        if (Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
             Long id = (usePreviousId ? rule.getPreviousVersionId() : rule.getRuleBaseValuesId());
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

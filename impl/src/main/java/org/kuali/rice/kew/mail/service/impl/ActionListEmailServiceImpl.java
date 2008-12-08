@@ -522,8 +522,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	protected boolean sendActionListEmailNotification() {
         LOG.debug("actionlistsendconstant: " + Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
-		return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-				.equals(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+
+        return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
+		        .equals(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {

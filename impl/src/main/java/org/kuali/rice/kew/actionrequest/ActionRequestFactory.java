@@ -129,7 +129,7 @@ public class ActionRequestFactory {
 
     //unify these 2 methods if possible
     public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
-        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND)));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws KEWUserNotFoundException {

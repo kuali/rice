@@ -49,6 +49,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -599,12 +600,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     							if (session == null) {
     								throw new WorkflowRuntimeException("UserSession is null!  Attempted to render the searchable attribute outside of an established session.");
     							}
-    							GroupNameId groupId = new GroupNameId(workgroupName);
-    							try {
-    								visible = KEWServiceLocator.getWorkgroupService().isUserMemberOfGroup(groupId, session.getWorkflowUser());
-    							} catch (KEWUserNotFoundException e) {
-    								throw new RuntimeException("Error checking for workgroup membership permissions for workgroup '" + workgroupName + "'.  Error Message: " + e.getMessage(), e);
-    							}
+    							visible = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getWorkflowUser().getWorkflowId(), workgroupName);    								
     						}
                         }
 					}

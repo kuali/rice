@@ -25,6 +25,7 @@ public final class KIMServiceLocator {
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
 	public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
 	public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";
+	public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
     
 	// The temporary workflow shim (v2)
 	public static final String KIM_USER_SERVICE = "kimUserService";
@@ -55,6 +56,10 @@ public final class KIMServiceLocator {
     public static RoleService getRoleService() {
     	return (RoleService)getService(KIM_ROLE_SERVICE);
     }
+    
+    public static RoleService getRoleManagementService() {
+    	return (RoleService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
+    }    
 
     public static PermissionService getPermissionService() {
     	return (PermissionService)getService(KIM_PERMISSION_SERVICE);

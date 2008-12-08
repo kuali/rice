@@ -382,7 +382,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();		
+			roleService = KIMServiceLocator.getRoleManagementService();		
 		}
 
 		return roleService;

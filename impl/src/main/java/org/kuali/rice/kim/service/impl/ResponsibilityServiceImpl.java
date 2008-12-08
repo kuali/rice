@@ -267,7 +267,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();		
+			roleService = KIMServiceLocator.getRoleManagementService();		
 		}
 
 		return roleService;

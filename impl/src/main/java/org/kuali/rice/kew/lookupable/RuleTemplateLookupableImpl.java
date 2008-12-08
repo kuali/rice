@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,10 +30,11 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * A {@link WorkflowLookupable} implementation for {@link RuleTemplate}.
- * 
+ *
  * @see RuleTemplate
  * @see RuleTemplateService
  *
@@ -60,7 +61,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     private static final String BACK_LOCATION = "backLocation";
     private static final String DOC_FORM_KEY = "docFormKey";
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeLookupableImpl.class);
-  
+
     public RuleTemplateLookupableImpl() {
         rows = new ArrayList();
 
@@ -84,11 +85,11 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public void changeIdToName(Map fieldValues) {
-        
+
     }
     /**
      * getSearchResults - searches for a fiscal organization information based on the criteria passed in by the map.
-     * 
+     *
      * @return Returns a list of FiscalOrganization objects that match the result.
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) throws Exception {
@@ -131,7 +132,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
         }
         return displayList;
     }
-    
+
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
         return false;
     }
@@ -155,7 +156,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     }
 
     public String getLookupInstructions() {
-        return Utilities.getApplicationConstant(KEWConstants.RULE_TEMPLATE_SEARCH_INSTRUCTION_KEY);
+        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_TEMPLATE_DETAIL_TYPE, KEWConstants.RULE_TEMPLATE_SEARCH_INSTRUCTION);
     }
 
     public String getTitle() {
@@ -177,7 +178,7 @@ public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportabl
     public List getRows() {
     	return rows;
     }
-    
+
     public ExportDataSet export(Object exportCriteria) throws Exception {
         List searchResults = (List)exportCriteria;
         ExportDataSet dataSet = new ExportDataSet();

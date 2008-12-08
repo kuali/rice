@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,12 +55,14 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * A Struts Action for interacting with the Rules engine.  Provides creation,
  * editing, and report for rules.
- * 
+ *
  * @see RuleService
  * @see RuleBaseValues
  * @see WebRuleBaseValues
@@ -81,7 +83,7 @@ public class Rule2Action extends WorkflowAction {
         Rule2Form ruleForm = (Rule2Form) form;
 
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();;
-        
+
         String lookupType = ruleForm.getLookupType();
         ruleForm.setLookupType(null);
 
@@ -130,7 +132,7 @@ public class Rule2Action extends WorkflowAction {
                 RuleBaseValues docRule = (RuleBaseValues) iterator.next();
                 WebRuleBaseValues webRule = new WebRuleBaseValues(docRule);
                 rules.add(webRule);
-                initializeShowHide(ruleForm.getShowHide(), webRule);               
+                initializeShowHide(ruleForm.getShowHide(), webRule);
             }
             /**
              * added on 2006-04-04 to support function of showing link to document type report page
@@ -139,7 +141,7 @@ public class Rule2Action extends WorkflowAction {
            if(doc!=null){
            		ruleForm.setDocTypeId(doc.getDocumentTypeId());
            }
-           
+
         }
         ruleForm.setRules(rules);
 
@@ -152,7 +154,7 @@ public class Rule2Action extends WorkflowAction {
                 String key = "currrule" + ruleIndex + "resp" + respIndex;
                 if (ruleForm.getShowDelegationsMap().get(key) == null) {
                     int numDelegations = responsibility.getDelegationRules().size();
-                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit"))).toString());
+                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                 }
                 respIndex++;
             }
@@ -162,7 +164,7 @@ public class Rule2Action extends WorkflowAction {
         establishRequiredState(request, form);
         return mapping.findForward("report");
     }
-    
+
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         List rules = new ArrayList();
@@ -177,7 +179,7 @@ public class Rule2Action extends WorkflowAction {
                 RuleBaseValues docRule = (RuleBaseValues) iterator.next();
                 rules.add(docRule);
             }
-        }        
+        }
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRules().addAll(rules);
         return exportDataSet(request, dataSet);
@@ -198,7 +200,7 @@ public class Rule2Action extends WorkflowAction {
 
         RuleBaseValues defaultRule = getRuleService().findDefaultRuleByRuleTemplateId(ruleForm.getRuleCreationValues().getRuleTemplateId());
         WebRuleBaseValues rule = new WebRuleBaseValues();
-        
+
         if (defaultRule != null) {
             defaultRule.setActivationDate(null);
             defaultRule.setCurrentInd(null);
@@ -215,7 +217,7 @@ public class Rule2Action extends WorkflowAction {
         rule.setDocTypeName(ruleForm.getRuleCreationValues().getDocTypeName());
         rule.setDelegateRule(Boolean.FALSE);
         rule.loadFieldsWithDefaultValues();
-        
+
         WebRuleResponsibility responsibility = rule.createNewRuleResponsibility();
         RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
         if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
@@ -254,7 +256,7 @@ public class Rule2Action extends WorkflowAction {
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("Errors copying rule.", errors);
         }
-        
+
         // set up show/hide of delegation rules
         /*int ruleIndex = 0;
         for (Iterator ruleIt = rules.iterator(); ruleIt.hasNext();) {
@@ -264,14 +266,14 @@ public class Rule2Action extends WorkflowAction {
                 String key = "currrule" + ruleIndex + "resp" + respIndex;
                 if (ruleForm.getShowDelegationsMap().get(key) == null) {
                     int numDelegations = responsibility.getDelegationRules().size();
-                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit"))).toString());
+                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                 }
                 respIndex++;
             }
             ruleIndex++;
         }*/
-        
-        
+
+
         //responsibility.setDelegationRulesMaterialized(true);
         ruleForm.getMyRules().addRule(webRule);
         createWorkflowDocument(request, ruleForm, ruleForm.getMyRules().getRules());
@@ -279,26 +281,26 @@ public class Rule2Action extends WorkflowAction {
         establishRequiredState(request, ruleForm);
         return mapping.findForward("basic");
     }
-    
-    
-    
+
+
+
     public ActionForward copyRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         WebRuleBaseValues rule = ruleForm.getMyRules().getRule(ruleForm.getRuleIndex().intValue());
         WebRuleBaseValues ruleCopy = WebRuleUtils.copyRuleOntoExistingDocument(rule);
-                
+
         ruleForm.getMyRules().addRule(ruleCopy);
 //        ruleForm.getShowHide().append().append();
 //
 //        for (int i = 0; i < responsibilities.size(); i++) {
-//            ruleForm.getShowHide().getChild(ruleForm.getRuleIndex().intValue()+1).getChild(i).append().append();    
+//            ruleForm.getShowHide().getChild(ruleForm.getRuleIndex().intValue()+1).getChild(i).append().append();
 //        }
         ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
-        
+
         establishRequiredState(request, ruleForm);
         return mapping.findForward("basic");
     }
-    
+
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         String ruleTemplateIdValue = request.getParameter("ruleTemplate.ruleTemplateId");
@@ -396,12 +398,12 @@ public class Rule2Action extends WorkflowAction {
         Rule2Form ruleForm = (Rule2Form) form;
         WebRuleBaseValues rule = ruleForm.getMyRules().getRule(ruleForm.getRuleIndex().intValue());
         WebRuleResponsibility webResponsibility = (WebRuleResponsibility) rule.getResponsibility(ruleForm.getResponsibilityIndex().intValue());
-        
+
         RuleDelegation delegation = webResponsibility.addNewDelegation();
         WebRuleBaseValues delegationRule = ((WebRuleBaseValues) delegation.getDelegationRuleBaseValues());
         delegationRule.createNewRuleResponsibility();
         delegationRule.setDocTypeName(rule.getDocTypeName());
-        
+
         RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
         if (ruleTemplate.getDelegationTemplate() != null) {
             delegation.getDelegationRuleBaseValues().setRuleTemplateId(ruleTemplate.getDelegationTemplate().getRuleTemplateId());
@@ -681,7 +683,7 @@ public class Rule2Action extends WorkflowAction {
                 String key = "currrule" + ruleIndex + "resp" + respIndex;
                 if (ruleForm.getShowDelegationsMap().get(key) == null) {
                     int numDelegations = responsibility.getDelegationRules().size();
-                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit"))).toString());
+                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                 }
                 respIndex++;
             }
@@ -693,7 +695,7 @@ public class Rule2Action extends WorkflowAction {
                     String key = "prevrule" + ruleIndex + "resp" + prevRespIndex;
                     if (ruleForm.getShowDelegationsMap().get(key) == null) {
                         int numDelegations = responsibility.getDelegationRules().size();
-                        ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit"))).toString());
+                        ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                     }
                     prevRespIndex++;
                 }
@@ -759,7 +761,7 @@ public class Rule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule, boolean usePreviousId) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND))) {
             Long id = (usePreviousId ? rule.getPreviousVersionId() : rule.getRuleBaseValuesId());
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

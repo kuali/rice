@@ -41,6 +41,9 @@ import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -79,6 +82,14 @@ public class Utilities {
     		return defaultValue;
     	}
     	return Boolean.valueOf(value);
+    }
+
+    public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
+        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        if (parameter == null) {
+            return null;
+        }
+        return parameter.getParameterValue();
     }
 
     public static boolean isEmpty(String value) {

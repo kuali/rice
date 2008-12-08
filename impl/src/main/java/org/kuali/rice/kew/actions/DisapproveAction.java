@@ -38,6 +38,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -164,7 +166,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     //generate notifications to all people that have approved the document including the initiator
     private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws KEWUserNotFoundException {
-        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         Set<WorkflowUser> systemUserWorkflowIds = new HashSet<WorkflowUser>();
         if (systemUserWorkgroup != null) {
             systemUserWorkflowIds = new HashSet<WorkflowUser>(systemUserWorkgroup.getUsers());

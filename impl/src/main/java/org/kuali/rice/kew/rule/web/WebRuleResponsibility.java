@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,13 +44,15 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * A decorator around a {@link RuleResponsibility} object which provides some
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebRuleResponsibility extends RuleResponsibility {
@@ -103,7 +105,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void initialize() throws Exception {
-		if (getDelegationRules().size() <= Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit"))) {
+		if (getDelegationRules().size() <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
 			showDelegations = true;
 		}
 		setNumberOfDelegations(getDelegationRules().size());
@@ -157,7 +159,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
         //System.err.println("DELEGATIONRULES PROXY OBJECT instanceof List?: " + (o instanceof List));
 		setDelegationRules((List) o);
 
-		if (Integer.parseInt(Utilities.getApplicationConstant("Config.Application.DelegateLimit")) > getDelegationRules().size() || showDelegations) {
+		if (Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();
@@ -457,7 +459,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	 * Just a little dynamic proxy to keep us from establishing required state
 	 * on the delegation rules if they haven't been materialized from the
 	 * database yet (they are currenty proxied by OJB)
-	 * 
+	 *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
 	 */
 	private class DelegationRulesProxy implements InvocationHandler, java.io.Serializable {

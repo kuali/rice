@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,8 +37,8 @@ import org.kuali.rice.kew.web.session.UserSession;
 
 
 /**
- * The default Lookupable implementation for WorkflowUsers. 
- * 
+ * The default Lookupable implementation for WorkflowUsers.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserLookupableImpl implements WorkflowLookupable {
@@ -55,14 +55,14 @@ public class UserLookupableImpl implements WorkflowLookupable {
     private static final String WORKFLOW_ID_FIELD_LABEL = "Workflow User Id";
     private static final String EMPLID_FIELD_LABEL = "University Id";
     private static final String UUID_FIELD_LABEL = "UUID";
-    
+
     private static final String LAST_NAME_FIELD_HELP = "";
     private static final String FIRST_NAME_FIELD_HELP = "";
     private static final String NETWORK_ID_FIELD_HELP = "";
     private static final String WORKFLOW_ID_FIELD_HELP = "";
     private static final String EMPLID_FIELD_HELP = "";
     private static final String UUID_FIELD_HELP = "";
-    
+
     private static final String LAST_NAME_PROPERTY_NAME = "lastName";
     private static final String FIRST_NAME_PROPERTY_NAME = "firstName";
     private static final String NETWORK_ID_PROPERTY_NAME = "networkId";
@@ -89,19 +89,19 @@ public class UserLookupableImpl implements WorkflowLookupable {
         fields = new ArrayList();
         fields.add(new Field(NETWORK_ID_FIELD_LABEL, NETWORK_ID_FIELD_HELP, Field.TEXT, false, NETWORK_ID_PROPERTY_NAME, "", null, null));
         rows.add(new Row(fields));
-        
+
         fields = new ArrayList();
         fields.add(new Field(WORKFLOW_ID_FIELD_LABEL, WORKFLOW_ID_FIELD_HELP, Field.TEXT, false, WORKFLOW_ID_PROPERTY_NAME, "", null, null));
         rows.add(new Row(fields));
-        
+
         if (userIdsViewable()) {
         fields = new ArrayList();
         fields.add(new Field(EMPLID_FIELD_LABEL, EMPLID_FIELD_HELP, Field.TEXT, false, EMPLID_PROPERTY_NAME, "", null, null));
         rows.add(new Row(fields));
-        
+
         fields = new ArrayList();
         fields.add(new Field(UUID_FIELD_LABEL, UUID_FIELD_HELP, Field.TEXT, false, UUID_PROPERTY_NAME, "", null, null));
-        rows.add(new Row(fields)); 
+        rows.add(new Row(fields));
     }
     }
 
@@ -136,13 +136,13 @@ public class UserLookupableImpl implements WorkflowLookupable {
         noReturnParams.append("=");
         return noReturnParams.toString();
     }
-    
+
     public void changeIdToName(Map fieldValues) {
-        
+
     }
     /**
      * getSearchResults - searches for a fiscal organization information based on the criteria passed in by the map.
-     * 
+     *
      * @return Returns a list of FiscalOrganization objects that match the result.
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) throws Exception {
@@ -156,7 +156,7 @@ public class UserLookupableImpl implements WorkflowLookupable {
         String docFormKey = (String) fieldValues.get(DOC_FORM_KEY_NAME);
 
         String userReturn = (String) fieldConversions.get(NETWORK_ID_PROPERTY_NAME);
-        
+
         UserService userSrv = (UserService) KEWServiceLocator.getUserService();
         WorkflowUser workflowUserExample = userSrv.getBlankUser();
         workflowUserExample.setGivenName(firstName == null ? "" : firstName.trim());
@@ -165,13 +165,13 @@ public class UserLookupableImpl implements WorkflowLookupable {
         workflowUserExample.setWorkflowUserId(new WorkflowUserId(workflowId == null ? "" : workflowId.trim()));
         workflowUserExample.setEmplId(new EmplId(emplId == null ? "" : emplId.trim()));
         workflowUserExample.setUuId(new UuId(uuId == null ? "" : uuId.trim()));
-        
+
         Iterator users = userSrv.search(workflowUserExample, false).iterator();
         List displayList = new ArrayList();
         while (users.hasNext()) {
             WorkflowUser prototype = (WorkflowUser) users.next();
             WebWorkflowUser type = new WebWorkflowUser(prototype);
-            
+
             StringBuffer returnUrl = new StringBuffer("<a href=\"");
             returnUrl.append(backLocation).append("?methodToCall=refresh&docFormKey=").append(docFormKey).append("&");
             if (!Utilities.isEmpty(userReturn)) {
@@ -183,7 +183,7 @@ public class UserLookupableImpl implements WorkflowLookupable {
             if (type.getAuthenticationUserId() == null || type.getAuthenticationUserId().getAuthenticationId() == null) {
                 type.setAuthenticationUserId(new AuthenticationUserId("not found"));
             } else {
-                returnUrl.append(type.getAuthenticationUserId().getAuthenticationId());                
+                returnUrl.append(type.getAuthenticationUserId().getAuthenticationId());
             }
 
             returnUrl.append("\">return value</a>");
@@ -211,7 +211,7 @@ public class UserLookupableImpl implements WorkflowLookupable {
         }
         return displayList;
     }
-    
+
     public boolean checkForAdditionalFields(Map fieldValues, HttpServletRequest request) throws Exception {
         return false;
     }
@@ -249,24 +249,13 @@ public class UserLookupableImpl implements WorkflowLookupable {
      */
     public List getColumns() {
     	if (userIdsViewable()) {
-        return columns;
+          return columns;
     	} else {
     		return columnsRestrictIds;
     }
     }
 
     protected boolean userIdsViewable() {
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	String allowViewRoles = Utilities.getApplicationConstant("Authorization.UserIds.AllowViewRoles");
-    	if (!StringUtils.isBlank(allowViewRoles)) {
-    		String[] allowRoles = allowViewRoles.split(",");
-    		for (String allowRole : allowRoles) {
-    			if (userSession.hasRole(allowRole)) {
-    				return true;
-    			}
-    		}
-    		return false;
-    	}
     	return true;
     }
 

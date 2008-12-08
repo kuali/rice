@@ -39,6 +39,8 @@ import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -110,7 +112,7 @@ public class DocumentSearchForm extends ActionForm {
 	public void setDocTypeFullName(String docTypeFullName) {
 		getCriteria().setDocTypeFullName(docTypeFullName);
 	}
-	
+
 	public String getDocTypeFullName() {
 	    return getCriteria().getDocTypeFullName();
 	}
@@ -282,7 +284,7 @@ public class DocumentSearchForm extends ActionForm {
 //            setupPropertyField(searchableAttribute);
         }
     }
-    
+
 //    public void setupPropertyField(SearchAttributeCriteriaComponent searchableAttribute) {
 //        SearchAttributeFormContainer propertyField = getPropertyField(searchableAttribute.getFormKey());
 //        if (propertyField != null) {
@@ -309,11 +311,11 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public String getRouteLogPopup() {
-		return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
+		return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND).trim();
 	}
 
 	public String getDocumentPopup() {
-		return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
+		return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND).trim();
 	}
 
 	public void setInitiator(String initiator) {
@@ -546,7 +548,7 @@ public class DocumentSearchForm extends ActionForm {
 	public void setLookupType(String lookupType) {
 		this.lookupType = lookupType;
 	}
-	
+
 	public List<Row> getProcessedSearchableAttributeRows() {
 	    if (isAdvancedSearch()) {
 	        return this.criteriaProcessor.processSearchableAttributeRowsForAdvancedSearch(getSearchableAttributeRows());
@@ -653,7 +655,7 @@ public class DocumentSearchForm extends ActionForm {
 	public void setPropertyField(int index, SearchAttributeFormContainer attributeContainer) {
 		propertyFields.set(index, attributeContainer);
 	}
-	
+
     public boolean isAdvancedSearch() {
         return (StringUtils.equals(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING,getCriteria().getIsAdvancedSearch()));
     }
@@ -681,7 +683,7 @@ public class DocumentSearchForm extends ActionForm {
 	public void setSearchCriteriaEnabled(boolean searchCriteriaEnabled) {
 		this.searchCriteriaEnabled = searchCriteriaEnabled;
 	}
-	
+
 	public boolean isShowSearchCriteria() {
 		if (!isSearchCriteriaEnabled()) {
 			return false;

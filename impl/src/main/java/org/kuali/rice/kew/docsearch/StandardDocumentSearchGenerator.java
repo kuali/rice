@@ -155,7 +155,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
-    
+
     public DocumentType getValidDocumentType(String documentTypeFullName) {
     	if (!Utilities.isEmpty(documentTypeFullName)) {
             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
@@ -480,7 +480,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException, SQLException {
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, null);
     }
-    
+
     /**
      * @param resultSet
      * @param criteria
@@ -497,7 +497,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         int iteration = 0;
         boolean resultSetHasNext = resultSet.next();
         while ( resultSetHasNext &&
-                ( (searchCriteria.getThreshold() == null) || (resultMap.size() < searchCriteria.getThreshold().intValue()) ) && 
+                ( (searchCriteria.getThreshold() == null) || (resultMap.size() < searchCriteria.getThreshold().intValue()) ) &&
                 ( (searchCriteria.getFetchLimit() == null) || (iteration < searchCriteria.getFetchLimit().intValue()) ) ) {
         	iteration++;
             DocSearchDTO docCriteriaDTO = processRow(searchAttributeStatement, resultSet);
@@ -633,7 +633,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /**
      * This method performs searches against the search attribute value tables (see classes implementing
      * {@link SearchableAttributeValue}) to get data to fill in search attribute values on the given docCriteriaDTO parameter
-     * 
+     *
      * @param docCriteriaDTO - document search result object getting search attributes added to it
      * @param searchAttributeStatement - statement being used to call the database for queries
      * @throws SQLException
@@ -668,7 +668,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
         perfLog.log("Time to execute doc search search attribute queries.", true);
     }
-    
+
     /**
      * @deprecated As of version 0.9.3 this method is no longer used. Method
      *             {@link #populateRowSearchableAttributes(DocSearchDTO, Statement)} is being used instead.
@@ -810,7 +810,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	finalSql.append(" ) " + standardSqlSuffix);
     	return finalSql.toString();
     }
-    
+
     /**
      * @deprecated As of version 0.9.3 this method is no longer used. This method had been used to generate SQL to return searchable attributes using left
      *             outer joins. The new mechanism to get search attributes from the database is to call each search attribute
@@ -992,7 +992,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     // below logic should be to add the current node to the criteria if we haven't found the specified node
 					// and the logic qualifier is 'route nodes before specified'... or we have found the specified node and
 					// the logic qualifier is 'route nodes after specified'
-                    if ( (!foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) || 
+                    if ( (!foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) ||
                          (foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER.equalsIgnoreCase(docRouteLevelLogic.trim()))) ) {
                     	if (routeNodeInCriteria.length() > 0) {
                     		routeNodeInCriteria.append(", ");
@@ -1060,7 +1060,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
         }
     }
-    
+
     public int getDocumentSearchResultSetLimit() {
         return DEFAULT_SEARCH_RESULT_CAP;
     }

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-	<ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
-		<ApplicationConstant>
-			<ConstantName>RuleService.IsCaching</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-	</ApplicationConstants>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>RuleRoutingAttribute</name>

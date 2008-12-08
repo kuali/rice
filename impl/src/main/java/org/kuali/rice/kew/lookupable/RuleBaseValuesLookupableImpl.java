@@ -51,6 +51,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -560,7 +561,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	}
 
 	public String getLookupInstructions() {
-		return Utilities.getApplicationConstant(KEWConstants.RULE_SEARCH_INSTRUCTION_KEY);
+		return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_SEARCH_INSTRUCTION);
 	}
 
 	public String getNoReturnParams(Map fieldConversions) {

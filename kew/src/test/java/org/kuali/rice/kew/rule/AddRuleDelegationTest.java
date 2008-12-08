@@ -37,6 +37,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -56,10 +59,23 @@ public class AddRuleDelegationTest extends KEWTestCase {
     @Test
     public void testAddRuleDelegation() throws Exception {
         // set some application constants that aren't defined in test data, and will cause NPEs if not defined
-        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.RULE_DELEGATE_LIMIT_KEY, "1000"));
-        KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY, KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE));
         KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.DELEGATE_CHANGE_AR_GENERATION_KEY, KEWConstants.YES_DELEGATE_CHANGE_AR_GENERATION_VALUE));
 
+        //set system parameters that aren't defined in test data
+        Parameter parameter = new Parameter(KEWConstants.RULE_DELEGATE_LIMIT, "1000", "A");
+        parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+        parameter.setParameterTypeCode("CONFG");
+        parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.RULE_DETAIL_TYPE);
+        parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        KNSServiceLocator.getBusinessObjectService().save(parameter);
+
+        parameter = new Parameter(KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND, KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE, "A");
+        parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+        parameter.setParameterTypeCode("CONFG");
+        parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.RULE_DETAIL_TYPE);
+        parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+
+        KNSServiceLocator.getBusinessObjectService().save(parameter);
 
         final String DELEGATE_USER = "user2";
         final String DELEGATE_USER2 = "pmckown";

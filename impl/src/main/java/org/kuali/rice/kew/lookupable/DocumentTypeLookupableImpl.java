@@ -37,6 +37,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -347,7 +349,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
      * @return Returns the instructions.
      */
     public String getLookupInstructions() {
-        return Utilities.getApplicationConstant(KEWConstants.DOCUMENT_TYPE_SEARCH_INSTRUCTION_KEY);
+        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_TYPE_DETAIL_TYPE, KEWConstants.DOCUMENT_TYPE_SEARCH_INSTRUCTION);
     }
 
     /**

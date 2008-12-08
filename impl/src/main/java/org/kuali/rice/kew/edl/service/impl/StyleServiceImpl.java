@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,6 +46,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.StyleXmlParser;
 import org.kuali.rice.kew.xml.export.StyleXmlExporter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -87,29 +89,29 @@ public class StyleServiceImpl implements StyleService {
                 //throw new WorkflowRuntimeException("Style " + name + " not found.");
                 return null;
             }
-        
-            if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
+
+            if (new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND)).booleanValue()) {
                 LOG.info("using xsltc to compile stylesheet");
                 String key = "javax.xml.transform.TransformerFactory";
                 String value = "org.apache.xalan.xsltc.trax.TransformerFactoryImpl";
                 Properties props = System.getProperties();
                 props.put(key, value);
-                System.setProperties(props);    
+                System.setProperties(props);
             }
-        
+
             TransformerFactory factory = TransformerFactory.newInstance();
             URIResolver resolver = new WidgetURIResolver();
             factory.setURIResolver(resolver);
-        
-            if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_USE_XSLTC)).booleanValue()) {
+
+            if (new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND)).booleanValue()) {
                 factory.setAttribute("translet-name",name);
                 factory.setAttribute("generate-translet",Boolean.TRUE);
-                if (new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_EDL_DEBUG_TRANSFORM)).booleanValue()) {
-                    factory.setAttribute("debug", Boolean.TRUE);    
+                if (new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND)).booleanValue()) {
+                    factory.setAttribute("debug", Boolean.TRUE);
                 }
-            
+
             }
-            
+
             translet = factory.newTemplates(new StreamSource(new StringReader(edlStyleData.getXmlContent())));
             putTemplatesInCache(name, translet);
         }
@@ -171,7 +173,7 @@ public class StyleServiceImpl implements StyleService {
     public org.jdom.Element export(ExportDataSet dataSet) {
         return new StyleXmlExporter().export(dataSet);
     }
-    
+
     // cache helper methods
 
     /**
@@ -193,7 +195,7 @@ public class StyleServiceImpl implements StyleService {
 
     /**
      * Parses an EDocLiteStyle
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteStyle
@@ -230,7 +232,7 @@ public class StyleServiceImpl implements StyleService {
 
     /**
      * Parses an arbitrary XML stream
-     * 
+     *
      * @param stream
      *            stream containing XML doc content
      * @return parsed Document object

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
@@ -59,11 +59,12 @@ import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * Default implementation of the {@link ActionRequestService}.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestServiceImpl implements ActionRequestService {
@@ -102,7 +103,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
     }
 
-    
+
 
     public void activateRequests(Collection actionRequests) throws KEWUserNotFoundException {
         activateRequests(actionRequests, new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
@@ -193,10 +194,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             performanceLogger.log("Time to activate action request with id " + actionRequest.getActionRequestId());
         }
     }
-    
+
     /**
      * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
-     * 
+     *
      * @return the List of generated ActionItems
      */
     private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
@@ -440,7 +441,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
-        String cacheWaitValue = Utilities.getApplicationConstant(KEWConstants.RULE_CACHE_REQUEUE_WAIT_TIME_KEY);
+        String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
         Long cacheWait = new Long(KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
         if (!Utilities.isEmpty(cacheWaitValue)) {
             try {
@@ -480,7 +481,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             deleteActionRequestGraph(child);
         }
     }
-    
+
     /**
      * Deletes the action items for the action request
      * @param actionRequest the action request whose action items to delete
@@ -493,7 +494,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
     }
 
-    
+
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
         return getActionRequestDAO().findByRouteHeaderIdIgnoreCurrentInd(routeHeaderId);
     }
@@ -577,11 +578,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         return requests;
     }
-   
+
     public List findActivatedByGroup(KimGroup group) {
         return getActionRequestDAO().findActivatedByGroup(group);
     }
-    
+
 
     private WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getWorkgroupService();

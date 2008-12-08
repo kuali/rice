@@ -375,7 +375,7 @@ public class RuleServiceTest extends KEWTestCase {
     }
 
     @Test public void testReplaceRuleInvolvementWithDelegations() throws Exception {
-        loadXmlFile("RuleRemoveReplaceWithDelegations.xml");
+        loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceWithDelegations.xml");
 
         // load the parent rule
         RuleBaseValues parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegations1");
@@ -449,7 +449,7 @@ public class RuleServiceTest extends KEWTestCase {
      * Tests a fringe case where someone is their own delegate and does a replacement.
      */
     @Test public void testReplaceRuleInvolvementDelegateToSelf() throws Exception {
-        loadXmlFile("RuleRemoveReplaceWithDelegateToSelf.xml");
+        loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceWithDelegateToSelf.xml");
 
 	// after import, verify there is only 1 of each rule
 	List<RuleBaseValues> rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
@@ -585,7 +585,7 @@ public class RuleServiceTest extends KEWTestCase {
      * This tests removing involvement of a user from multiple delegation rules on a parent.  The setup includes a parent rule with 4 delegations on it.
      */
     @Test public void testRemoveRuleInvolvementMultipleDelegations() throws Exception {
-	loadXmlFile("RuleRemoveReplaceMultipleDelegations.xml");
+	loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceMultipleDelegations.xml");
 
 	// load the parent rule
 	RuleBaseValues parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithMultipleDelegations1");
@@ -641,7 +641,7 @@ public class RuleServiceTest extends KEWTestCase {
 
         new AssertThrows(DataIntegrityViolationException.class, "Did not throw constraint violation as expected.  If rule service behavior has changed, update this test.") {
             public void test() throws Exception {
-                KEWServiceLocator.getRuleService().save2(rbv);        
+                KEWServiceLocator.getRuleService().save2(rbv);
             }
         }.runTest();
 

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,6 +35,10 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -54,7 +58,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     	docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType_DefaultCustomProcessor");
     	assertEquals("The document search Generator class is incorrect.",CustomDocumentSearchGenerator.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
     }
-    
+
 	private DocumentType getValidDocumentType(String documentTypeFullName) {
 		if (Utilities.isEmpty(documentTypeFullName)) {
 			return null;
@@ -87,27 +91,31 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
-        // delete the app constant
-        KEWServiceLocator.getApplicationConstantsService().delete(KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY));
+        // delete the parameter
+        KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
-    
+
     private void adjustResultSetCapApplicationConstantValue(Integer newValue) {
-        ApplicationConstantsService acs = KEWServiceLocator.getApplicationConstantsService();
-        ApplicationConstant ac = acs.findByName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY);
-        if (ac == null) {
-        	ac = new ApplicationConstant();
+        Parameter ps = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        if (ps == null) {
+            ps = new Parameter( KEWConstants.DOC_SEARCH_RESULT_CAP, newValue.toString(), "A" );
         }
-        ac.setApplicationConstantName(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY);
-        ac.setApplicationConstantValue(newValue.toString());
-        acs.save(ac);
+        ps.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+        ps.setParameterName(KEWConstants.DOC_SEARCH_RESULT_CAP);
+        ps.setParameterValue(newValue.toString());
+        ps.setParameterTypeCode("CONFG");
+        ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        ps.setParameterDetailTypeCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
+        KNSServiceLocator.getBusinessObjectService().save(ps);
     }
-    
+
     /**
      * Tests function of adding extra document type names to search including using searchable attributes
      * that may or may not exist on all the document type names being searched on.
-     * 
+     *
      * @throws Exception
      */
     @Test public void testSearchOnExtraDocType() throws Exception {
@@ -131,7 +139,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         stringXMLDef2.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workDoc_Matching2.addSearchableDefinition(stringXMLDef2);
         workDoc_Matching2.routeDocument("");
-        
+
         // do search with attribute using doc type 1... make sure both docs are returned
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
@@ -157,7 +165,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName2);
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
-        
+
         String documentTypeName3 = "SearchDocType_DefaultCustomProcessor_3";
         WorkflowDocument workDoc_Matching3 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName3);
     	DocumentType docType3 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName3);
@@ -165,14 +173,14 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         stringXMLDef3.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workDoc_Matching3.addSearchableDefinition(stringXMLDef3);
         workDoc_Matching3.routeDocument("");
-        
+
         // do search with attribute using doc type 3... make sure 1 doc is returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType3));
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
-        
+
         // do search without attribute using doc type 3... make sure 1 doc is returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
@@ -186,7 +194,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         stringXMLDef1a.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue);
         workDoc_NonMatching2.addSearchableDefinition(stringXMLDef1a);
         workDoc_NonMatching2.routeDocument("");
-        
+
         // do search with attribute using doc type 1... make sure 1 doc is returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);

@@ -79,6 +79,8 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 @SuppressWarnings("deprecation")
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
@@ -199,7 +201,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         LOG.debug("returning responsibility Id " + rid);
         return rid;
     }
-    
+
     private WorkflowUser getWorkflowUserInternal(UserIdDTO userId) throws KEWUserNotFoundException {
         if (userId == null ){
             LOG.error("null userId passed in.");
@@ -212,7 +214,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
         return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(getWorkflowUserInternal(userId)));
     }
-    
+
     public ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException {
         //added by Derek
         Collection actionItems = KEWServiceLocator.getActionListService().getActionList(getWorkflowUserInternal(userId), null);
@@ -224,7 +226,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return actionItemVOs;
     }
-    
+
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(routeHeaderId);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
@@ -235,7 +237,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return actionItemVOs;
     }
-    
+
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
         List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
         ActionItemDTO[] actionItems = getActionItems(routeHeaderId);
@@ -368,7 +370,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	loadDocument(documentId);
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
     }
-    
+
     public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long documentId) throws WorkflowException {
 	LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
 	loadDocument(documentId);
@@ -442,7 +444,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return false;
     }
-    
+
     private boolean isRecipientRoutedRequest(ActionRequestValue actionRequest, List<WorkflowUser> users) throws WorkflowException {
         for (WorkflowUser user : users) {
             if (actionRequest.isRecipientRoutedRequest(user)) {
@@ -452,10 +454,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return false;
     }
 
-    
+
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     * 
+     *
      * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) {
@@ -543,7 +545,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         // attempting to deactivate them, this is in order to address the ignore previous issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
         boolean activateFirst = false;
-        String activateFirstValue = Utilities.getApplicationConstant(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
+        String activateFirstValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         if (!Utilities.isEmpty(activateFirstValue)) {
             activateFirst = new Boolean(activateFirstValue).booleanValue();
         }
@@ -777,7 +779,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
 			List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
 			List nodeNames = new ArrayList();
-			
+
 			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
 				RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
 				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
@@ -827,11 +829,11 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return returnableRules;
     }
-    
+
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         return performDocumentSearch(null, criteriaVO);
     }
-    
+
     public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
         WorkflowUser user = null;

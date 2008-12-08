@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,23 +65,26 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
 
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
-    
+
     private WorkflowUtility utility;
-    
+
     protected void loadTestData() throws Exception {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
-    
+
     protected void setUpTransaction() throws Exception {
         super.setUpTransaction();
         utility = KEWServiceLocator.getWorkflowUtilityService();
     }
-    
+
     @Test public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
@@ -95,7 +98,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("pmckown"), true));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("temay"), true));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("jhopf"), true));
-        
+
         // test that we can run isUserInRouteLog on a SAVED document
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.saveDocument("");
@@ -106,7 +109,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("pmckown"), false));
         assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("temay"), false));
         assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("jhopf"), false));
-        
+
         // now look all up in the future of this saved document
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough"), true));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), true));
@@ -194,9 +197,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
 
     }
-    
+
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaDTO buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}
-    
+
     private class ReportCriteriaGeneratorUsingXML implements ReportCriteriaGenerator {
         public ReportCriteriaDTO buildCriteria(WorkflowDocument workflowDoc) throws Exception {
             ReportCriteriaDTO criteria = new ReportCriteriaDTO(workflowDoc.getDocumentType());
@@ -221,11 +224,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_RouteHeaderId() throws Exception {
         runDocumentWillHaveApproveOrCompleteRequestAtNode(SeqSetup.DOCUMENT_TYPE_NAME,new ReportCriteriaGeneratorUsingRouteHeaderId());
     }
-    
+
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_XmlContent() throws Exception {
         runDocumentWillHaveApproveOrCompleteRequestAtNode(SeqSetup.DOCUMENT_TYPE_NAME,new ReportCriteriaGeneratorUsingXML());
     }
-    
+
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_RouteHeaderId() throws Exception {
         runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious("SimulationTestDocumenType_IgnorePrevious",new ReportCriteriaGeneratorUsingRouteHeaderId());
     }
@@ -233,7 +236,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_XmlContent() throws Exception {
         runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious("SimulationTestDocumenType_IgnorePrevious",new ReportCriteriaGeneratorUsingXML());
     }
-    
+
     private void runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious(String documentType, ReportCriteriaGenerator generator) throws Exception {
       /*
         name="WorkflowDocument"
@@ -252,7 +255,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Document should have at least one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
         reportCriteriaDTO.setTargetUsers(new UserIdDTO[]{new NetworkIdDTO("bmcgough")});
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-        
+
         reportCriteriaDTO = generator.buildCriteria(new WorkflowDocument(new NetworkIdDTO("ewestfal"), documentType));
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument4");
         reportCriteriaDTO.setRoutingUser(new NetworkIdDTO("bmcgough"));
@@ -270,7 +273,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         actionsToTake[1] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdDTO("jitrue"),"WorkflowDocument4");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-        
+
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), documentType);
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setRoutingUser(new NetworkIdDTO("rkirkend"));
@@ -308,7 +311,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Document should be enroute", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         assertEquals("Document route node is incorrect", "WorkflowDocument4", document.getNodeNames()[0]);
     }
-    
+
     private void runDocumentWillHaveApproveOrCompleteRequestAtNode(String documentType,ReportCriteriaGenerator generator) throws Exception {
       /*
         name="WorkflowDocument"
@@ -330,7 +333,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Document should have one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
         reportCriteriaDTO.setTargetUsers(new UserIdDTO[]{new NetworkIdDTO("bmcgough")});
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-        
+
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
         reportCriteriaDTO.setRoutingUser(new NetworkIdDTO("bmcgough"));
@@ -348,29 +351,29 @@ public class WorkflowUtilityTest extends KEWTestCase {
         reportCriteriaDTO.setActionsToTake(actionsToTake);
         reportCriteriaDTO.setRoutingUser(new NetworkIdDTO("pmckown"));
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-    	
+
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), documentType);
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
-        
+
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.approve("");
-        
+
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
-        
+
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
         assertTrue("Document should have one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-        
+
         document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         document.approve("");
         assertTrue(document.stateIsProcessed());
-        
+
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("Acknowledge1");
         assertFalse("Document should not have any unfulfilled approve/complete requests when in processed status",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
-        
+
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("Acknowledge1");
         assertTrue("Document should have one unfulfilled Ack request when in final status",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}, false));
@@ -383,22 +386,22 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.acknowledge("");
         assertTrue(document.stateIsProcessed());
     }
-    
+
     @Test public void testIsLastApprover() throws Exception {
         // test the is last approver in route level against our sequential document type
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.saveRoutingData();
-        
+
         // the initial "route level" should have no requests initially so it should return false
         assertFalse("Should not be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), new Integer(0)));
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
-        
+
         // app specific route a request to a workgroup at the initial node (TestWorkgroup)
 		GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
         document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", groupId, "", false);
         assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), new Integer(0)));
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
-        
+
         // app specific route a request to a member of the workgroup (jitrue)
         document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdDTO("jitrue"), "", false);
         // member of the workgroup with the user request should be last approver
@@ -406,14 +409,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("jitrue"), SeqSetup.ADHOC_NODE));
         // other members of the workgroup will not be last approvers because they don't satisfy the individuals request (ewestfal)
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
-        
+
         // route the document, should stay at the adhoc node until those requests have been completed
         document.routeDocument("");
         document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
         assertEquals("Document should be at adhoc node.", SeqSetup.ADHOC_NODE, document.getNodeNames()[0]);
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
-        
+
         // document should now be at the WorkflowDocument node with a request to bmcgough and rkirkend
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
@@ -423,29 +426,30 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         document.approve("");
-        
+
         // request to rirkend has been satisfied, now request to bmcgough is only request remaining at level so he should be last approver
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         document.approve("");
-        
+
     }
-    
+
     /**
-     * This method tests how the isLastApproverAtNode method deals with ignore previous requests, there is an app constant 
-     * with the value specified in KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST which dictates whether or not to simulate 
+     * This method tests how the isLastApproverAtNode method deals with ignore previous requests, there is an app constant
+     * with the value specified in KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST which dictates whether or not to simulate
      * activation of initialized requests before running the method.
-     * 
+     *
      * Tests the fix to issue http://fms.dfa.cornell.edu:8080/browse/KULWF-366
-     */  
+     */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the constant set
-        ApplicationConstant appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        assertNull("The IS_LAST_APPROVER_ACTIVATE_FIRST constant should not be set.", appConstant);
+        //ApplicationConstant appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
+        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        assertNull("The IS_LAST_APPROVER_ACTIVATE_FIRST constant should not be set.", parameter);
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
-        
+
         // at the first node (WorkflowDocument) we should have a request to rkirkend, bmcgough and to ewestfal with ignorePrevious=true,
         assertEquals("We should be at the WorkflowDocument node.", SeqSetup.WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
         assertFalse("ewestfal should have not have approve because it's initiated", document.isApprovalRequested());
@@ -455,7 +459,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("bmcgough should have approve", document.isApprovalRequested());
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 3 pending requests.", 3, actionRequests.size());
-        // the requests to bmcgough should be activated, the request to rkirkend should be initialized, 
+        // the requests to bmcgough should be activated, the request to rkirkend should be initialized,
         // and the request to ewestfal should be initialized and ignorePrevious=true
         boolean foundBmcgoughRequest = false;
         boolean foundRkirkendRequest = false;
@@ -478,39 +482,39 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request to bmcgough.", foundBmcgoughRequest);
         assertTrue("Did not find request to rkirkend.", foundRkirkendRequest);
         assertTrue("Did not find request to ewestfal.", foundEwestfalRequest);
-        
+
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
         assertFalse("Bmcgough should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as bmcgough
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.approve("");
-        
+
         // still, neither rkirkend nor ewestfal should be "final approver"
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
         assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as rkirkend
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
-        
+
         // should be one pending activated to ewestfal now
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 1 pending requests.", 1, actionRequests.size());
         ActionRequestValue actionRequest = (ActionRequestValue)actionRequests.get(0);
         assertTrue("Should be activated.", actionRequest.isActive());
-        
+
         // ewestfal should now be the final approver
         assertTrue("Ewestfal should be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as ewestfal to send to next node
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertTrue("ewestfal should have approve request", document.isApprovalRequested());
         document.approve("");
-        
+
         // should be at the workflow document 2 node
         assertEquals("Should be at the WorkflowDocument2 Node.", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames()[0]);
         // at this node there should be two requests, one to ewestfal with ignorePrevious=false and one to pmckown,
@@ -520,89 +524,88 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 2 action requests.", 2, actionRequests.size());
-        
+
         // Now set up the app constant that checks ignore previous properly and try a new document
-        appConstant = new ApplicationConstant();
-        appConstant.setApplicationConstantName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        appConstant.setApplicationConstantValue("true");
-        // TODO FIX this when we figure out what's up with the flusing problem in the tests
-        KEWServiceLocator.getApplicationConstantsService().save(appConstant);
-        
-        appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        assertNotNull("AppConstant should not be null.", appConstant);
-        assertEquals("AppConstant should be true.", "true", appConstant.getApplicationConstantValue());
-        // check Utilities class
-        String appConstantValue = Utilities.getApplicationConstant(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        assertEquals("AppConstant should be true.", "true", appConstantValue);
-        
+        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, "true", "A");
+        parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+        parameter.setParameterTypeCode("CONFG");
+        parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE);
+        parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        KNSServiceLocator.getBusinessObjectService().save(parameter);
+
+        parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        assertNotNull("Parameter should not be null.", parameter);
+        assertEquals("Parameter should be true.", "true", parameter.getParameterValue());
+
+
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
-        
+
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
         assertFalse("Bmcgough should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as bmcgough
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         document.approve("");
-        
+
         // now there is just a request to rkirkend and ewestfal, since ewestfal is ignore previous true, neither should be final approver
         assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as ewestfal
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.approve("");
-        
+
         // rkirkend should now be the final approver
         assertTrue("Rkirkend should now be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        
+
         // approve as rkirkend to send it to the next node
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
-        
+
         // now, there are requests to pmckown and ewestfal here, the request to ewestfal is ingorePrevious=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing
         assertTrue("Pmckown should be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
-        
+
         // if we approve as pmckown, the document should go into acknowledgement and become processed
         document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         document.approve("");
         assertTrue("Document should be processed.", document.stateIsProcessed());
 
     }
-            
+
     @Test public void testIsFinalApprover() throws Exception {
         // for this document, pmckown should be the final approver
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         assertFinalApprover(document);
     }
-    
-    @Test public void testIsFinalApproverChild() throws Exception { 
+
+    @Test public void testIsFinalApproverChild() throws Exception {
         // 12-13-2005: HR ran into a bug where this method was not correctly locating the final approver node when using a document type whic
         // inherits the route from a parent, so we will incorporate this into the unit test to prevent regression
         WorkflowDocument childDocument = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.CHILD_DOCUMENT_TYPE_NAME);
         assertFinalApprover(childDocument);
     }
-    
+
     /**
      * Factored out so as not to duplicate a bunch of code between testIsFinalApprover and testIsFinalApproverChild.
      */
     private void assertFinalApprover(WorkflowDocument document) throws Exception {
         document.routeDocument("");
-        
+
         document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
-        
+
         // bmcgough is not the final approver
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("bmcgough")));
         // approve as bmcgough
         document.approve("");
-        
+
         // should be to Ryan now, who is also not the final approver on the document
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
@@ -615,35 +618,35 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
         assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
-        
+
         // now adhoc an approve to temay, phil should no longer be the final approver
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE, 
+        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
                 "", new NetworkIdDTO("temay"), "", true);
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("temay")));
-        
+
         // now approve as temay and then adhoc an ack to jeremy
         document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
         assertTrue("SHould have approve request.", document.isApprovalRequested());
         document.approve("");
-        
+
         // phil should be final approver again
         assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
         document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
                 "", new NetworkIdDTO("jhopf"), "", true);
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("Should have acknowledge request.", document.isAcknowledgeRequested());
-        
+
         // now there should be an approve to phil and an ack to jeremy, so phil should be the final approver and jeremy should not
         assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("jhopf")));
-        
+
         // after approving as phil, the document should go processed
         document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
         document.approve("");
         assertTrue("Document should be processed.", document.stateIsProcessed());
     }
-    
+
     @Test public void testRoutingReportOnDocumentType() throws Exception {
     	WorkflowInfo info = new WorkflowInfo();
     	ReportCriteriaDTO criteria = new ReportCriteriaDTO("SeqDocType");
@@ -651,18 +654,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
     	DocumentDetailDTO documentDetail = info.routingReport(criteria);
     	assertNotNull(documentDetail);
     	assertEquals("Should have been 2 requests generated.", 2, documentDetail.getActionRequests().length);
-    	
+
     	// let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
     	criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
     	documentDetail = info.routingReport(criteria);
     	assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
-    	
+
     	boolean foundRkirkend = false;
     	boolean foundBmcgough = false;
     	boolean foundPmckown = false;
     	for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
 			ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-			String netId = actionRequest.getUserDTO().getNetworkId(); 
+			String netId = actionRequest.getUserDTO().getNetworkId();
 			if (netId.equals("rkirkend")) {
 				foundRkirkend = true;
 				assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
@@ -677,31 +680,31 @@ public class WorkflowUtilityTest extends KEWTestCase {
     	assertTrue("Did not find request for rkirkend", foundRkirkend);
     	assertTrue("Did not find request for bmcgough", foundBmcgough);
     	assertTrue("Did not find request for pmckown", foundPmckown);
-    	
+
     }
-    
+
     @Test public void testRoutingReportOnRouteHeaderId() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), "SeqDocType");
         WorkflowInfo info = new WorkflowInfo();
-        
+
         ReportCriteriaDTO criteria = new ReportCriteriaDTO(doc.getRouteHeaderId());
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
         DocumentDetailDTO documentDetail = info.routingReport(criteria);
         assertNotNull(documentDetail);
         assertEquals("Route header id returned should be the same as the one passed in", doc.getRouteHeaderId(), documentDetail.getRouteHeaderId());
         assertEquals("Wrong number of action requests generated", 2, documentDetail.getActionRequests().length);
-        
+
         // let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
         documentDetail = info.routingReport(criteria);
         assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
-        
+
         boolean foundRkirkend = false;
         boolean foundBmcgough = false;
         boolean foundPmckown = false;
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
             ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-            String netId = actionRequest.getUserDTO().getNetworkId(); 
+            String netId = actionRequest.getUserDTO().getNetworkId();
             if (netId.equals("rkirkend")) {
                 foundRkirkend = true;
                 assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
@@ -716,18 +719,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request for rkirkend", foundRkirkend);
         assertTrue("Did not find request for bmcgough", foundBmcgough);
         assertTrue("Did not find request for pmckown", foundPmckown);
-        
+
     }
-    
+
     @Test public void testRuleReportGeneralFunction() throws Exception {
         WorkflowInfo info = new WorkflowInfo();
-        
+
         RuleReportCriteriaDTO ruleReportCriteria = null;
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in null RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
-        
+
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsibleUser(new NetworkIdDTO("hobo_man"));
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid User Network ID should throw Exception");
@@ -740,7 +743,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         RuleExtensionDTO ruleExtensionVO = new RuleExtensionDTO("key","value");
         ruleReportCriteria.setRuleExtensionVOs(new RuleExtensionDTO[]{ruleExtensionVO});
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
-        
+
         RuleDTO[] rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
@@ -748,7 +751,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         rules = info.ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 3",3,rules.length);
-        
+
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setActionRequestCodes(new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ});
@@ -758,7 +761,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setResponsibleUser(new NetworkIdDTO("temay"));
         rules = info.ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 0",0,rules.length);
-        
+
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setActionRequestCodes(new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ});
@@ -834,7 +837,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
                 fail("Rule Template of returned rule is not of type " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_1 + " nor " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2);
             }
         }
-        
+
         rules = null;
         ruleVO = null;
         responsibilityVO = null;
@@ -874,10 +877,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
     }
-    
+
     /**
      * Tests specific rule scenario relating to standard org review routing
-     * 
+     *
      * @throws Exception
      */
     @Test public void testRuleReportOrgReviewTest() throws Exception {
@@ -890,7 +893,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         RuleDTO[] rules = info.ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
-        
+
         ruleReportCriteria = null;
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
@@ -901,7 +904,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         rules = info.ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
-        
+
         ruleReportCriteria = null;
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
@@ -914,7 +917,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         rules = info.ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
-        
+
         ruleReportCriteria = null;
         rules = null;
         ruleExtensionVO = null;
@@ -949,7 +952,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             } else if (RuleTestOrgReviewSetup.RULE_TEST_ORG_CODE_NAME.equals(extensionVO.getKey())) {
                 assertEquals("Rule Extension for key '" + RuleTestOrgReviewSetup.RULE_TEST_ORG_CODE_NAME + "' is incorrect","VPIT",extensionVO.getValue());
             } else {
-                fail("Rule Extension has attribute key that is neither '" + RuleTestOrgReviewSetup.RULE_TEST_CHART_CODE_NAME + 
+                fail("Rule Extension has attribute key that is neither '" + RuleTestOrgReviewSetup.RULE_TEST_CHART_CODE_NAME +
                         "' nor '" + RuleTestOrgReviewSetup.RULE_TEST_ORG_CODE_NAME + "'");
             }
         }
@@ -993,7 +996,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
     }
-    
+
     @Test public void testGetUserActionItemCount() throws Exception {
         WorkflowInfo info = new WorkflowInfo();
         UserIdDTO userIdVO = new NetworkIdDTO("ewestfal");
@@ -1051,7 +1054,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue(document.isApprovalRequested());
         assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
     }
-    
+
     @Test public void testGetActionItems() throws Exception {
         String initiatorNetworkId = "ewestfal";
         String user1NetworkId = "bmcgough";
@@ -1064,14 +1067,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
         }
-        
+
         userIdVO = new NetworkIdDTO(user2NetworkId);
         document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
@@ -1079,7 +1082,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        actionItems = info.getActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1098,7 +1101,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        actionItems = info.getActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1106,7 +1109,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
         }
     }
-    
+
     @Test public void testGetActionItems_ActionRequestCodes() throws Exception {
         String initiatorNetworkId = "ewestfal";
         String user1NetworkId = "bmcgough";
@@ -1119,16 +1122,16 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}); 
+        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
         }
-        
+
         userIdVO = new NetworkIdDTO(user2NetworkId);
         document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
@@ -1136,13 +1139,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1163,9 +1166,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}); 
+        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1173,7 +1176,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
         }
     }
-    
+
     /**
      * This method routes two test documents of the type specified.  One has the given title and another has a dummy title.
      */
@@ -1296,7 +1299,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     private void runTestPerformDocumentSearch_RouteNodeSearch(UserIdDTO userIdVO) throws Exception {
         String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
         setupPerformDocumentSearchTests(documentTypeName, SeqSetup.WORKFLOW_DOCUMENT_NODE, "Doc Title");
-        
+
         // test exception thrown when route node specified and no doc type specified
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocRouteNodeName(SeqSetup.ADHOC_NODE);
@@ -1304,7 +1307,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             utility.performDocumentSearch(userIdVO, criteria);
             fail("Exception should have been thrown when specifying a route node name but no document type name");
         } catch (Exception e) {}
-        
+
         // test exception thrown when route node specified does not exist on document type
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -1313,12 +1316,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
             utility.performDocumentSearch(userIdVO, criteria);
             fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
         } catch (Exception e) {}
-        
+
         runPerformDocumentSearch_RouteNodeSearch(userIdVO, SeqSetup.ADHOC_NODE, documentTypeName, 0, 0, 2);
         runPerformDocumentSearch_RouteNodeSearch(userIdVO, SeqSetup.WORKFLOW_DOCUMENT_NODE, documentTypeName, 0, 2, 0);
         runPerformDocumentSearch_RouteNodeSearch(userIdVO, SeqSetup.WORKFLOW_DOCUMENT_2_NODE, documentTypeName, 2, 0, 0);
     }
-    
+
     @Test public void testPerformDocumentSearch_RouteNodeSpecial() throws RemoteException, WorkflowException {
         String documentTypeName = "DocumentWithSpecialRouteNodes";
         setupPerformDocumentSearchTests(documentTypeName, "Level1", "Doc Title");
@@ -1327,7 +1330,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         runPerformDocumentSearch_RouteNodeSearch(null, "Level3", documentTypeName, 2, 0, 0);
 
     }
-    
+
     private void runPerformDocumentSearch_RouteNodeSearch(UserIdDTO userIdVO, String routeNodeName, String documentTypeName, int countBeforeNode, int countAtNode, int countAfterNode) throws RemoteException, WorkflowException {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -1388,7 +1391,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         result = utility.performDocumentSearch(userIdVO, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
-        
+
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeproperty", "doesntexist")}));
@@ -1463,7 +1466,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
     }
-    
+
     private void ruleExceptionTest(WorkflowInfo info, RuleReportCriteriaDTO ruleReportCriteria, String message) {
         try {
             info.ruleReport(ruleReportCriteria);
@@ -1472,7 +1475,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             e.printStackTrace();
         }
     }
-    
+
     private class RuleTestGeneralSetup {
         public static final String DOCUMENT_TYPE_NAME = "RuleTestDocType";
         public static final String RULE_TEST_TEMPLATE_1 = "WorkflowDocumentTemplate";
@@ -1480,7 +1483,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String RULE_TEST_TEMPLATE_3 = "WorkflowDocument3Template";
         public static final String RULE_TEST_WORKGROUP = "NonSIT";
     }
-    
+
     private class RuleTestOrgReviewSetup {
         public static final String DOCUMENT_TYPE_NAME = "OrgReviewTestDocType";
         public static final String RULE_TEST_TEMPLATE = "OrgReviewTemplate";
@@ -1489,7 +1492,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String RULE_TEST_CHART_CODE_NAME = "chartCode";
         public static final String RULE_TEST_ORG_CODE_NAME = "orgCode";
     }
-    
+
     private class SeqSetup {
         public static final String DOCUMENT_TYPE_NAME = "SeqDocType";
         public static final String LAST_APPROVER_DOCUMENT_TYPE_NAME = "SeqLastApproverDocType";

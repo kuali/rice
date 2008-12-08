@@ -11,7 +11,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 %>
 <c:if test="${ documentTypeStruct.shouldDisplay }" >
 <c:set var="documentType" value="${documentTypeStruct.documentType}" />
-	<c:if test="${documentType.currentInd == true && documentType.activeInd == true}">
+	<c:if test="${documentType.currentInd == true && documentType.active == true}">
 		<table border="0" width="100%">
 			<c:if test="${excludeDocId != documentType.documentTypeId}">
 				<tr>

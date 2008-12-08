@@ -37,6 +37,8 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.UrlResolver;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -242,7 +244,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	private List<Field> getFields(DocSearchCriteriaDTO criteria) {
 	    return getFields(criteria, null);
 	}
-	
+
     private DocumentType getDocumentType(String documentTypeName) {
 	DocumentType documentType = null;
 	if (StringUtils.isNotBlank(documentTypeName)) {
@@ -295,7 +297,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return docSearchResult;
 	}
-	
+
 	protected class DisplayValues {
 		public String htmlValue;
 		public String userDisplayValue;
@@ -406,7 +408,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		DisplayValues dv = new DisplayValues();
 		dv.htmlValue = getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch,documentTypeName) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
 		dv.userDisplayValue = value;
-		return dv; 
+		return dv;
 	}
 
 	private Map<String,Object> getSortValuesMap(DocSearchDTO docCriteriaDTO) {
@@ -512,13 +514,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	}
 
 	private boolean isDocumentHandlerPopup() {
-		String applicationConstant = Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
-		return (KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(applicationConstant));
+		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND).trim();
+		return (KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(parameterValue));
 	}
 
 	private boolean isRouteLogPopup() {
-		String applicationConstant = Utilities.getApplicationConstant(KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
-		return (KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(applicationConstant));
+		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND).trim();
+		return (KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(parameterValue));
 	}
 
 	private String getDocHandlerUrlPrefix(String routeHeaderId,boolean superUserSearch,String documentTypeName) {

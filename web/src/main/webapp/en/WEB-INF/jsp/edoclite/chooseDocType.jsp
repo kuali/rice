@@ -1,6 +1,9 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="org.kuali.rice.kew.*" %>
 <%@ page import="org.kuali.rice.kew.edl.*" %>
+<%@ page import="org.kuali.rice.kns.service.KNSServiceLocator" %>
+<%@ page import="org.kuali.rice.kns.util.KNSConstants" %>
+<%@ page import="org.kuali.rice.kew.util.KEWConstants" %>
 <%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
 <%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
 <%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
@@ -21,12 +24,12 @@
   	<table>
 			<%
 				pageContext.setAttribute("associations", SpringServiceLocator.getEDocLiteService().getEDocLiteAssociations());
-			                String targetFrame=org.kuali.rice.kew.util.Utilities.getApplicationConstant("Config.Backdoor.TargetFrameName");
+			                String targetFrame=KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME).getParameterValue();
 			                String action="Choosedoctype";
 			                String def="__default__";
 			                String style="__default__";
 			%>
-            
+
             <c:forEach items="${associations}" var="assoc">
                 <c:if test="${assoc.activeInd}">
                 <tr>
@@ -37,7 +40,7 @@
                 </c:if>
             </c:forEach>
  	 </table>
- 
-    
+
+
 </body>
 </html>

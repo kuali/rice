@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -34,7 +35,7 @@ public class NoteForm extends ActionForm {
 	private static final long serialVersionUID = 1L;
 	private Note note;
     private Note existingNote;
-    private String methodToCall = "";    
+    private String methodToCall = "";
     private String showEdit;
     private Boolean showAdd;
     private Long docId;
@@ -50,10 +51,10 @@ public class NoteForm extends ActionForm {
     private Long idInEdit;
     private Boolean showAttachments;
     private String attachmentTarget;
-    
-    
+
+
     private Object file;
-    
+
     public NoteForm() {
         note = new Note();
     }
@@ -65,7 +66,7 @@ public class NoteForm extends ActionForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
- 
+
     public Note getNote() {
         return note;
     }
@@ -89,9 +90,9 @@ public class NoteForm extends ActionForm {
     public void setShowEdit(String showEdit) {
         this.showEdit = showEdit;
     }
-  
+
     public String getInstructionForCreateNew() {
-        return Utilities.getApplicationConstant(KEWConstants.NOTE_CREATE_NEW_INSTRUCTION_KEY);
+        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
     }
 
     public Long getDocId() {
@@ -133,7 +134,7 @@ public class NoteForm extends ActionForm {
     public void setSortOrder(String sortOrder) {
         this.sortOrder = sortOrder;
     }
-    
+
     public Boolean getSortNotes() {
         return sortNotes;
     }
@@ -141,7 +142,7 @@ public class NoteForm extends ActionForm {
     public void setSortNotes(Boolean sortNotes) {
         this.sortNotes = sortNotes;
     }
-    
+
     public String getCurrentDate() {
         return currentDate;
     }
@@ -165,7 +166,7 @@ public class NoteForm extends ActionForm {
     public void setAuthorizedToAdd(Boolean authorizedToAdd) {
         this.authorizedToAdd = authorizedToAdd;
     }
-    
+
     public List getNoteList() {
         return noteList;
     }
@@ -173,7 +174,7 @@ public class NoteForm extends ActionForm {
     public void setNoteList(List noteList) {
         this.noteList = noteList;
     }
-    
+
     public String getAddText() {
         return addText;
     }

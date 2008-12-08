@@ -85,11 +85,12 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 public class RuleServiceImpl implements RuleService {
 
-    private static final String USING_RULE_CACHE_KEY = "RuleService.IsCaching";
+    private static final String USING_RULE_CACHE = "CACHING_IND";
     private static final String XML_PARSE_ERROR = "general.error.parsexml";
     private static final String RULE_GROUP_CACHE = "org.kuali.workflow.rules.RuleCache";
 
@@ -156,7 +157,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY);
+        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -256,7 +257,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getApplicationConstant(KEWConstants.RULE_CHANGE_AR_GENERATION_KEY);
+        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -398,7 +399,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = new Boolean(Utilities.getApplicationConstant(USING_RULE_CACHE_KEY));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE));
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -926,7 +927,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = new Boolean(Utilities.getApplicationConstant(USING_RULE_CACHE_KEY));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE));
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
@@ -1050,7 +1051,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     /**
-     * This configuration is currently stored in a application constant named "Rule.Config.CustomDocTypes",
+     * This configuration is currently stored in a system parameter named "CUSTOM_DOCUMENT_TYPES ",
      * long term we should come up with a better solution.  The format of this constant is a comma-separated
      * list of entries of the following form:
      *
@@ -1541,7 +1542,7 @@ public class RuleServiceImpl implements RuleService {
         private List configs = new ArrayList();
         public static RuleRoutingConfig parse() {
             RuleRoutingConfig config = new RuleRoutingConfig();
-            String constant = Utilities.getApplicationConstant(KEWConstants.RULE_CUSTOM_DOC_TYPES_KEY);
+            String constant = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
                 for (int index = 0; index < ruleConfigs.length; index++) {

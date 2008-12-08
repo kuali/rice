@@ -46,6 +46,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -128,7 +129,7 @@ public class ActionRequestFactory {
 
     //unify these 2 methods if possible
     public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
-        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws KEWUserNotFoundException {
@@ -271,7 +272,7 @@ public class ActionRequestFactory {
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }
-    
+
     public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) throws KEWUserNotFoundException {
     	if (responsibilities == null || responsibilities.isEmpty()) {
     		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
@@ -283,7 +284,7 @@ public class ActionRequestFactory {
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
     	// TODO finish allowing for configuration of some of these other values
     	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
-    	
+
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
 			if (responsibility.getPrincipalId() != null) {
 				roleRecipient.setTarget(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(responsibility.getPrincipalId())));
@@ -411,7 +412,7 @@ public class ActionRequestFactory {
     public ActionRequestService getActionRequestService() {
         return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
-    
+
     public WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }

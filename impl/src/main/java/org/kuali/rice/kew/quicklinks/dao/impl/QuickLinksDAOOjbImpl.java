@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,6 +39,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -124,7 +125,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
-                    String documentNames = Utilities.getApplicationConstant(KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
+                    String documentNames = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
                     if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }
@@ -195,7 +196,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {
                         watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), (String)KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
-                    }           
+                    }
                     return watchedDocuments;
                 } catch (Exception e) {
                     throw new WorkflowRuntimeException("Error getting initiated document types for user: " + workflowUser.getAuthenticationUserId().getAuthenticationId(), e);

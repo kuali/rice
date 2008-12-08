@@ -33,6 +33,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -50,7 +52,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getApplicationEmailAddress() {
         // first check the configured value
-        String fromAddress = Utilities.getApplicationConstant(KEWConstants.EMAIL_REMINDER_FROM_ADDRESS_KEY);
+        String fromAddress = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (Utilities.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;
@@ -90,10 +92,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected String getActionListUrl() {
-        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "ActionList.do";
+        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT) + "/" + "ActionList.do";
     }
 
     protected String getPreferencesUrl() {
-        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getApplicationConstant(KEWConstants.APPLICATION_CONTEXT_KEY) + "/" + "Preferences.do";
+        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT) + "/" + "Preferences.do";
     }
 }

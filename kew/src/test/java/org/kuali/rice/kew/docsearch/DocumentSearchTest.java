@@ -109,7 +109,7 @@ public class DocumentSearchTest extends KEWTestCase {
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
-        
+
         // verify the document is enroute for jhopf
         workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
@@ -126,7 +126,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
     }
-    
+
     /**
      * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
      * Tests that we can safely search on docs by initiator workflow id when the initiator no longer exists in the identity management system
@@ -141,7 +141,7 @@ public class DocumentSearchTest extends KEWTestCase {
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
-        
+
         // verify the document is enroute for jhopf
         workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
@@ -210,9 +210,9 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
-        
+
     }
-    
+
     private String getRouteNodeForSearch(String documentTypeName, String[] nodeNames) {
         assertEquals(1,	nodeNames.length);
 	String expectedNodeName = nodeNames[0];
@@ -291,9 +291,9 @@ public class DocumentSearchTest extends KEWTestCase {
         compareDate.set(Calendar.SECOND, 0);
         compareDate.set(Calendar.MILLISECOND, 0);
 
-        return (BigDecimal.valueOf(compareDate.getTimeInMillis()).subtract(BigDecimal.valueOf(today.getTimeInMillis()))).divide(BigDecimal.valueOf(24 * 60 * 60 * 1000.00), BigDecimal.ROUND_HALF_UP).doubleValue(); 
+        return (BigDecimal.valueOf(compareDate.getTimeInMillis()).subtract(BigDecimal.valueOf(today.getTimeInMillis()))).divide(BigDecimal.valueOf(24 * 60 * 60 * 1000.00), BigDecimal.ROUND_HALF_UP).doubleValue();
     }
-    
+
     @Test public void testUseWorkflowSuperUserDocHandlerPolicy() throws Exception {
         String customDocHandlerDocumentType = "SearchDocType";
         String standardDocHandlerDocumentType = "SearchDocType2";

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import org.kuali.rice.core.util.JSTLConstants;
  */
 public class KNSConstants extends JSTLConstants {
     private static final long serialVersionUID = 2882277719647128949L;
-    
+
 //    public static final String AD_HOC_ROUTE_ERRORS = null;
 
     // special user used in the post-processor
@@ -44,8 +44,23 @@ public class KNSConstants extends JSTLConstants {
         public static final String KUALI_MODULE_USER_DETAIL_TYPE = "KualiModuleUser";
         public static final String DOCUMENT_DETAIL_TYPE = "Document";
         public static final String DOCUMENT_TYPE_DETAIL_TYPE = "DocumentType";
+        public static final String RULE_DETAIL_TYPE = "Rule";
+        public static final String ACTION_LIST_DETAIL_TYPE = "ActionList";
+        public static final String BACKDOOR_DETAIL_TYPE = "Backdoor";
+        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocumentSearch";
+        public static final String EDOC_LITE_DETAIL_TYPE = "EDocLite";
+        public static final String FEATURE_DETAIL_TYPE = "Feature";
+        public static final String GLOBAL_REVIEWER_DETAIL_TYPE = "GlobalReviewer";
+        public static final String MAILER_DETAIL_TYPE = "Mailer";
+        public static final String NOTE_DETAIL_TYPE = "Note";
+        public static final String QUICK_LINK_DETAIL_TYPE = "QuickLink";
+        public static final String ROUTE_QUEUE_DETAIL_TYPE = "RouteQueue";
+        public static final String ROUTE_DETAIL_TYPE = "Route";
+        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleService";
+        public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
+        public static final String WORKGROUP_DETAIL_TYPE = "Workgroup";
     }
-    
+
     public static class DocumentFormHeaderFieldIds {
     	public static final String DOCUMENT_NUMBER = "documentNumber";
     	public static final String DOCUMENT_WORKFLOW_STATUS = "documentStatus";
@@ -61,7 +76,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
     public static final String DOCUMENT_HTTP_SESSION_KEY = "documentHttpSessionKey";
-    
+
 //    public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
 //    public static final String VERSION_KEY = "version";
@@ -283,13 +298,13 @@ public class KNSConstants extends JSTLConstants {
     public static final String METHOD_TO_CALL_PARM13_LEFT_DEL = "(:::;";
     public static final String METHOD_TO_CALL_PARM13_RIGHT_DEL = ";:::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-    
+
     // Pessimistic Locking Constants
     public static final String PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM = "PESSIMISTIC_LOCK_ADMIN_GROUP";
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
     public static final String SESSION_TIMEOUT_WARNING_MINUTES = "SESSION_TIMEOUT_WARNING_MINUTES";
-    
+
     public static final String ANCHOR = "anchor";
     public static final String ANCHOR_TOP_OF_FORM = "topOfForm";
     public static final String QUESTION_ANCHOR = "questionAnchor";
@@ -348,7 +363,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String EXITING_DOCUMENT = "exitingDocument";
     public static final String DOCUMENT_DOCUMENT_NUMBER = "document.documentNumber";
     public static final String DOC_NUM = "docNum";
-    
+
 //    public static final String VERSION_NUMBER = "versionNumber";
 
     public static final String SEARCH_LIST_KEY_PREFIX = "searchResults";
@@ -380,13 +395,13 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_NOTES_ERRORS = NEW_DOCUMENT_NOTE_PROPERTY_NAME + "*";
 
     // export formats
-    
+
     public static final String XML_FORMAT = "xml";
     public static final String EXCEL_FORMAT = "xls";
     public static final String CSV_FORMAT = "csv";
-    
+
     public static final String XML_MIME_TYPE = "application/xml";
-    
+
     public enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");
         private String noteTypeCode;

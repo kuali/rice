@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowRoutingForm;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -42,7 +44,7 @@ public class Rule2Form extends WorkflowRoutingForm {
     private ShowHideTree showHide = new ShowHideTree();
     private ShowHideTree parentShowHide = new ShowHideTree();
     private Map showDelegationsMap = new HashMap();
-    
+
     private Long currentRuleId;
     private Integer ruleIndex;
     private Integer responsibilityIndex;
@@ -57,7 +59,7 @@ public class Rule2Form extends WorkflowRoutingForm {
     private boolean choosingTemplate;
     private String methodToCall = "";
     private boolean editingDelegate = false;
-    
+
     private List rules;
     private MyRules2 myRules;
     private Map attributeLabels;
@@ -67,24 +69,24 @@ public class Rule2Form extends WorkflowRoutingForm {
     private int delegationLimit;
     private String lookupType;
     private String delegationSearchOnly;
-    
+
     private RuleCreationValues ruleCreationValues = new RuleCreationValues();
     private WebRuleBaseValues parentRule = new WebRuleBaseValues();
     private WebRuleResponsibility responsibility = new WebRuleResponsibility();
     private RuleDelegation ruleDelegation = new RuleDelegation();
-    
+
     private String forward = "basic";
-    
+
     /**
-     * added on 2006-04-04 to support: 
+     * added on 2006-04-04 to support:
      * 		1. on rule report page, showing link to document type report page
      */
     private Long docTypeId;
 
     public Rule2Form() {
-        delegationLimit = Integer.parseInt(Utilities.getApplicationConstant(KEWConstants.RULE_DELEGATE_LIMIT_KEY));
-        instructionForCreateNew = Utilities.getApplicationConstant(KEWConstants.RULE_CREATE_NEW_INSTRUCTION_KEY);
-        instructionForGlobalReviewerReplace = Utilities.getApplicationConstant(KEWConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION_KEY);
+        delegationLimit = Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT));
+        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CREATE_NEW_INSTRUCTION);
+        instructionForGlobalReviewerReplace = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.GLOBAL_REVIEWER_DETAIL_TYPE, KEWConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION);
         reset();
     }
 
@@ -156,7 +158,7 @@ public class Rule2Form extends WorkflowRoutingForm {
     public void setRules(List rules) {
         this.rules = rules;
     }
-    
+
     public MyRules2 getMyRules() {
         return myRules;
     }
@@ -232,15 +234,15 @@ public class Rule2Form extends WorkflowRoutingForm {
     public Map getApprovePolicyCodes() {
         return approvePolicyCodes;
     }
-    
+
     public void setApprovePolicyCodes(Map approvePolicyCodes) {
         this.approvePolicyCodes = approvePolicyCodes;
     }
-    
+
     public void setDocTypeFullName(String docTypeFullName) {
         this.ruleCreationValues.setDocTypeName(docTypeFullName);
     }
-    
+
     public WebRuleBaseValues getParentRule() {
         return parentRule;
     }
@@ -249,7 +251,7 @@ public class Rule2Form extends WorkflowRoutingForm {
     }
     public class RuleCreationValues implements java.io.Serializable {
         /**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -8211316354702964152L;
 		private Long ruleId;
@@ -263,11 +265,11 @@ public class Rule2Form extends WorkflowRoutingForm {
         public Long getRuleId() {
             return ruleId;
         }
-        
+
         public void setRuleId(Long ruleId) {
             this.ruleId = ruleId;
         }
-        
+
         public String getDocTypeName() {
             return docTypeName;
         }
@@ -297,7 +299,7 @@ public class Rule2Form extends WorkflowRoutingForm {
         public void setCreating(boolean creating) {
             this.creating = creating;
         }
-        
+
         public Long getRuleResponsibilityKey() {
             return ruleResponsibilityKey;
         }
@@ -333,14 +335,14 @@ public class Rule2Form extends WorkflowRoutingForm {
     public void setResponsibility(WebRuleResponsibility responsibility) {
         this.responsibility = responsibility;
     }
-    
+
     public RuleDelegation getRuleDelegation() {
         return ruleDelegation;
     }
     public void setRuleDelegation(RuleDelegation ruleDelegation) {
         this.ruleDelegation = ruleDelegation;
     }
-    
+
     public ShowHideTree getShowHide() {
         return showHide;
     }
@@ -354,23 +356,23 @@ public class Rule2Form extends WorkflowRoutingForm {
         this.parentShowHide = parentShowHide;
     }
     public String getRouteLogPopup() {
-        return Utilities.getApplicationConstant(KEWConstants.RULE_ROUTE_LOG_POPUP_KEY).trim();
+        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_ROUTE_LOG_POPUP).trim();
     }
-    
+
     public String getForward() {
         return forward;
     }
     public void setForward(String forward) {
         this.forward = forward;
     }
-    
+
     public String getExtraId() {
         return extraId;
     }
     public void setExtraId(String extraId) {
         this.extraId = extraId;
     }
-    
+
     public Map getShowDelegationsMap() {
         return showDelegationsMap;
     }
@@ -404,6 +406,6 @@ public class Rule2Form extends WorkflowRoutingForm {
 	public void setDocTypeId(Long docTypeId) {
 		this.docTypeId = docTypeId;
 	}
-    
-    
+
+
 }

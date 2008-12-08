@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,18 +50,20 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * A Struts Action for creating a routing delegate rules.
- * 
+ *
  * @see RuleService
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DelegateRule2Action extends WorkflowAction {
 
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form rule2Form = (Rule2Form) form;
         rule2Form.getRuleCreationValues().setCreating(true);
@@ -182,16 +184,16 @@ public class DelegateRule2Action extends WorkflowAction {
         ruleForm.getMyRules().addRule(webRule);
         ruleForm.getRuleCreationValues().setCreating(false);
         createWorkflowDocument(request, ruleForm, ruleForm.getMyRules().getRules());
-        
+
         ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getRuleResponsibilityId());
-        
+
         ruleForm.getRuleDelegation().setDelegationRuleBaseValues(webRule);
         ruleForm.setEditingDelegate(true);
         webRule.establishRequiredState();
         establishRequiredState(request, ruleForm);
-        return mapping.findForward("basic");                
+        return mapping.findForward("basic");
     }
-    
+
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         RuleBaseValues rule = getRuleService().findRuleBaseValuesById(ruleForm.getCurrentRuleId());
@@ -244,7 +246,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private ActionForward checkLocked(ActionMapping mapping, Rule2Form ruleForm, HttpServletRequest request, HttpServletResponse response) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND))) {
             Long routeHeaderId = getRuleService().isLockedForRouting(ruleForm.getRuleCreationValues().getRuleId());
             if (routeHeaderId != null) {
                 ActionErrors lockErrors = new ActionErrors();
@@ -255,7 +257,7 @@ public class DelegateRule2Action extends WorkflowAction {
         }
         return null;
     }
-    
+
     public ActionForward createDelegateRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         ActionErrors errors = validateCreateDelegateRule(ruleForm);
@@ -272,7 +274,7 @@ public class DelegateRule2Action extends WorkflowAction {
 
         ruleForm.getRuleCreationValues().setCreating(false);
         WebRuleBaseValues rule = new WebRuleBaseValues();
-        
+
         RuleBaseValues defaultRule = getRuleService().findDefaultRuleByRuleTemplateId(ruleForm.getParentRule().getRuleTemplate().getDelegationTemplateId());
         if (defaultRule != null) {
             List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(defaultRule.getRuleBaseValuesId());
@@ -285,13 +287,13 @@ public class DelegateRule2Action extends WorkflowAction {
             defaultRule.setTemplateRuleInd(Boolean.FALSE);
             defaultRule.setVersionNbr(null);
             rule.load(defaultRule);
-            
+
             if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
                 RuleDelegation defaultDelegation = (RuleDelegation) ruleDelegations.get(0);
                 ruleForm.getRuleDelegation().setDelegationType(defaultDelegation.getDelegationType());
             }
         }
-        
+
         rule.setDocTypeName(ruleForm.getParentRule().getDocTypeName());
         rule.setRuleTemplateId(ruleForm.getParentRule().getRuleTemplate().getDelegationTemplateId());
         rule.setRuleTemplateName(ruleForm.getParentRule().getRuleTemplate().getDelegateTemplateName());
@@ -435,12 +437,12 @@ public class DelegateRule2Action extends WorkflowAction {
             saveErrors(request, errors);
             return mapping.findForward("basic");
         }
-        
+
         // get the parent rule of the delegation-rule being submitted
         RuleBaseValues parentRule = getRuleService().findRuleBaseValuesById(ruleForm.getParentRule().getRuleBaseValuesId());
         // new delegation rule
         //        if (delegateRule.getPreviousVersionId() == null) {
-        
+
         Long previousVersionId = parentRule.getRuleBaseValuesId();
 
         RuleResponsibility delegateResponsibility = parentRule.getResponsibility(ruleForm.getRuleCreationValues().getRuleResponsibilityKey());
@@ -458,10 +460,10 @@ public class DelegateRule2Action extends WorkflowAction {
                 }
             }
         }
-        
+
         // add the new rule delegation to the responsibility
         delegateResponsibility.getDelegationRules().add(ruleDelegation);
-        
+
         // make a copy of the parent rule, which will be the new version
         // of the parent rule, that contains this new delegation
         parentRule = (RuleBaseValues) parentRule.copy(false);
@@ -538,7 +540,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule) {
-        if ("true".equalsIgnoreCase(Utilities.getApplicationConstant(KEWConstants.RULE_LOCKING_ON))) {
+        if ("true".equalsIgnoreCase(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND))) {
             Long id = rule.getRuleBaseValuesId();
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

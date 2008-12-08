@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 
-     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants"
-                        xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
-         <ApplicationConstant>
-            <ConstantName>Backdoor.ShowbackDoorLogin</ConstantName>
-            <ConstantValue>false</ConstantValue>
-         </ApplicationConstant>
-     </ApplicationConstants>
-
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
         <user>
             <workflowId>TestAdmin1</workflowId>
@@ -90,7 +82,7 @@
             <givenName>Test</givenName>
             <lastName>User 6</lastName>
         </user>
-        
+
         <!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
         <user>
             <workflowId>quickstart</workflowId>
@@ -270,7 +262,7 @@
                 <workflowId>quickstart</workflowId>
             </members>
         </workgroup>
-        
+
         <!-- WORKFLOW SPECIFIC WORKGROUPS (NEEDED FOR QUICKSTART INTEGRATION) -->
         <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>

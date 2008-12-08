@@ -4,76 +4,12 @@
 		xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
 		<ApplicationConstant>
-			<ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>RuleService.IsCaching</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
-			<ConstantValue>false</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>DocumentSearch.IsDocumentPopup</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>ActionList.IsRouteLogPopup</ConstantName>
-			<ConstantValue>false</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>ActionList.IsDocumentPopup</ConstantName>
-			<ConstantValue>false</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
 			<ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
 			<ConstantValue>3</ConstantValue>
 		</ApplicationConstant>
 		<ApplicationConstant>
-			<ConstantName>RouteQueue.timeIncrement</ConstantName>
-			<ConstantValue>1000</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>ActionList.sendEmailNotification</ConstantName>
-			<ConstantValue>false</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>RuleTemplate.CreateNew.Instruction</ConstantName>
-			<ConstantValue>Enter a rule template name and description. Please select all necessary rule attributes for this template.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Rule.CreateNew.Instruction</ConstantName>
-			<ConstantValue>Please select a rule template and document type.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
 			<ConstantName>Workgroup.Search.Instruction</ConstantName>
 			<ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>RuleTemplate.Search.Instruction</ConstantName>
-			<ConstantValue>Use fields below to search for rule templates.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Rule.Search.Instruction</ConstantName>
-			<ConstantValue>Use fields below to search for rules.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>GlobalReviewer.Replace.Instruction</ConstantName>
-			<ConstantValue>Enter the reviewer to replace.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>DocumentType.Search.Instruction</ConstantName>
-			<ConstantValue>Enter document type information below and click search.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Config.Backdoor.TargetFrameName</ConstantName>
-			<ConstantValue>iframe_51148</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>ApplicationContext</ConstantName>
-			<ConstantValue>en-dev</ConstantValue>
 		</ApplicationConstant>
 		<ApplicationConstant>
 			<ConstantName>User.Search.Instruction</ConstantName>
@@ -92,30 +28,6 @@
 			<ConstantValue>false</ConstantValue>
 		</ApplicationConstant>
 		<ApplicationConstant>
-			<ConstantName>Rule.IsRouteLogPopup</ConstantName>
-			<ConstantValue>false</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Config.Application.RuleLockingOn</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Config.Application.DelegateLimit</ConstantName>
-			<ConstantValue>20</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Config.Mailer.FromAddress</ConstantName>
-			<ConstantValue>quickstart@localhost</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Backdoor.ShowbackDoorLogin</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
-			<ConstantValue>WorkflowAdmin</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
 			<ConstantName>User.CreateNew.Instruction</ConstantName>
 			<ConstantValue>Create or modify user information.</ConstantValue>
 		</ApplicationConstant>
@@ -125,30 +37,6 @@
 				/RouteType.do /RouteManagerDriver.do /ApplicationConstants.do /RuleAttribute.do /RuleTemplate.do /WorkflowUser.do
 				/DocumentOperation.do /RouteQueue.do /Ingester.do /Plugin.do
 			</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Feature.CheckRouteLogAuthentication.CheckFuture</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>Note.CreateNew.Instruction</ConstantName>
-			<ConstantValue>Create or modify note information.</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>RouteQueue.requeueWaitTime</ConstantName>
-			<ConstantValue>5000</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>showAttachments</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>EDL.UseXSLTC</ConstantName>
-			<ConstantValue>true</ConstantValue>
-		</ApplicationConstant>
-		<ApplicationConstant>
-			<ConstantName>EDL.DebugTransform</ConstantName>
-			<ConstantValue>false</ConstantValue>
 		</ApplicationConstant>
 	</ApplicationConstants>
 	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">

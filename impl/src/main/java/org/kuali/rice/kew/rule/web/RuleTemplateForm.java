@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -52,7 +53,7 @@ public class RuleTemplateForm extends ActionForm {
     private WebRuleBaseValues rule = new WebRuleBaseValues();
     private RuleDelegation ruleDelegation;
     private Map actionRequestCodes;
-    
+
     private boolean createDefaultRule;
     private boolean createDefaultDelegateRule;
 
@@ -61,7 +62,7 @@ public class RuleTemplateForm extends ActionForm {
         this.ruleTemplate = new RuleTemplate();
         this.ruleTemplateAttribute = new RuleTemplateAttribute();
         methodToCall = "";
-        instructionForCreateNew = Utilities.getApplicationConstant(KEWConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION_KEY);
+        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_TEMPLATE_DETAIL_TYPE, KEWConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION);
     }
 
     public Integer getEditAttribute() {
@@ -147,28 +148,28 @@ public class RuleTemplateForm extends ActionForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
-    
+
     public String getInstructionForCreateNew() {
         return instructionForCreateNew;
     }
     public void setInstructionForCreateNew(String instructionForCreateNew) {
         this.instructionForCreateNew = instructionForCreateNew;
     }
-    
+
     public String getDelegationTemplateName() {
         return delegationTemplateName;
     }
     public void setDelegationTemplateName(String delegationTemplateName) {
         this.delegationTemplateName = delegationTemplateName;
     }
-    
+
     public String getLookupableImplServiceName() {
         return lookupableImplServiceName;
     }
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
     }
-    
+
     public String getConversionFields() {
         return conversionFields;
     }

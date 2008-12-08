@@ -41,28 +41,10 @@ public class KEWConstants {
     public static final String DELEGATION_WIZARD = "delegationWizard";
     public static final String PERFORM_REALTIME_DOCUMENT_UPGRADE = "Document.PerformRealtimeUpgrade";
     //checkRouteLogAuthentication
-    public static final String CHECK_ROUTE_LOG_AUTH_FUTURE = "Feature.CheckRouteLogAuthentication.CheckFuture";
-    public static final String IS_LAST_APPROVER_ACTIVATE_FIRST = "Feature.IsLastApprover.ActivateFirst";
-    public static final String EMAIL_REMINDER_FROM_ADDRESS_KEY = "Config.Mailer.FromAddress";
-    public static final String APP_CONST_EDL_USE_XSLTC = "EDL.UseXSLTC";
-    public static final String APP_CONST_EDL_DEBUG_TRANSFORM = "EDL.DebugTransform";
 
-    public static final String APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS = "Config.Maximum.Nodes.Before.Runaway";
-
-    public static final String SHOW_BACK_DOOR_LOGIN_KEY = "Backdoor.ShowbackDoorLogin";
-    public static final String HELP_DESK_ACTION_LIST_KEY = "HelpDeskActionList.helpDeskActionListName";
     public static final String WORKFLOW_ADMIN_WORKGROUP_NAME_KEY = "Workflow.AdminWorkgroup";
     public static final String WORKFLOW_ADMIN_URL_KEY = "Workflow.AdminUrls";
     public static final String WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY = "Workflow.DocSearchAdminWorkgroup";
-    public static final String DOC_SEARCH_RESULT_CAP_KEY = "DocumentSearch.ResultCap";
-    public static final String DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY = "DocumentSearch.FetchMoreIterationLimit";
-
-    public static final String RULE_CACHE_REQUEUE_WAIT_TIME_KEY = "RouteQueue.requeueWaitTime";
-    public static final String RULE_LOCKING_ON = "Config.Application.RuleLockingOn";
-    public static final String APP_CONST_SHOW_ATTACHMENTS = "showAttachments";
-    public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME = "Config.Workgroup.NotifyExcludedUsers";
-
-    public static final String ACTION_LIST_PAGE_SIZE_THROTTLE = "ActionList.pageSizeThrottle";
 
     public static final long DEFAULT_CACHE_REQUEUE_WAIT_TIME = 5000;
 
@@ -71,49 +53,23 @@ public class KEWConstants {
     public static final String STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM = "documentSearch.generator.class.name";
     public static final String STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM = "documentSearch.resultProcessor.class.name";
 
-    public static final String RULE_CHANGE_AR_GENERATION_KEY = "RuleChange.IsGenerateActionRequests";
     public static final String YES_RULE_CHANGE_AR_GENERATION_VALUE = "true";
 
     public static final String DELEGATE_CHANGE_AR_GENERATION_KEY = "DelegateRuleChange.IsGenerateActionRequests";
     public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "true";
 
-    public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY = "DocumentSearch.IsRouteLogPopup";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "true";
 
-    public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY = "DocumentSearch.IsDocumentPopup";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "true";
-
-    public static final String ACTION_LIST_ROUTE_LOG_POPUP_KEY = "ActionList.IsRouteLogPopup";
-    public static final String ACTION_LIST_ROUTE_LOG_POPUP_VALUE = "true";
-
-    public static final String ACTION_LIST_DOCUMENT_POPUP_KEY = "ActionList.IsDocumentPopup";
-    public static final String ACTION_LIST_DOCUMENT_POPUP_VALUE = "true";
 
     public static final String WORKGROUP_ROUTE_LOG_POPUP_KEY = "Workgroup.IsRouteLogPopup";
     public static final String WORKGROUP_ROUTE_LOG_POPUP_VALUE = "true";
 
-    public static final String RULE_ROUTE_LOG_POPUP_KEY = "Rule.IsRouteLogPopup";
-    public static final String RULE_ROUTE_LOG_POPUP_VALUE = "true";
-
-    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY = "ActionList.sendEmailNotification";
-    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "true";
-
-    public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION_KEY = "RuleTemplate.CreateNew.Instruction";
-    public static final String RULE_CREATE_NEW_INSTRUCTION_KEY = "Rule.CreateNew.Instruction";
     public static final String WORKGROUP_SEARCH_INSTRUCTION_KEY = "Workgroup.Search.Instruction";
-    public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION_KEY = "RuleTemplate.Search.Instruction";
-    public static final String RULE_SEARCH_INSTRUCTION_KEY = "Rule.Search.Instruction";
-    public static final String GLOBAL_REVIEWER_REPLACE_INSTRUCTION_KEY = "GlobalReviewer.Replace.Instruction";
-    public static final String DOCUMENT_TYPE_SEARCH_INSTRUCTION_KEY = "DocumentType.Search.Instruction";
-    public static final String APPLICATION_CONTEXT_KEY = "ApplicationContext";
-    public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "QuickLinks.restrictDocumentTypes";
     public static final String SUB_ACCOUNT_SEARCH_INSTRUCTION_KEY = "SubAccount.Search.Instruction";
     public static final String USER_SEARCH_INSTRUCTION_KEY = "User.Search.Instruction";
     public static final String WORKGROUP_CREATE_NEW_INSTRUCTION_KEY = "Workgroup.CreateNew.Instruction";
     public static final String USER_CREATE_NEW_INSTRUCTION_KEY = "User.CreateNew.Instruction";
-    public static final String NOTE_CREATE_NEW_INSTRUCTION_KEY = "Note.CreateNew.Instruction";
-    public static final String RULE_DELEGATE_LIMIT_KEY = "Config.Application.DelegateLimit";
-    public static final String RULE_CUSTOM_DOC_TYPES_KEY = "Rule.Config.CustomDocTypes";
 
     public static final String ACTION_LIST_ATTRIBUTE_CLASS_PROPERTY = "customActionListAttributeClassName";
     public static final String EMAIL_ATTRIBUTE_CLASS_PROPERTY = "customEmailAttributeClassName";
@@ -736,7 +692,6 @@ public class KEWConstants {
     public static final String DAILY = "daily";
     public static final String WEEKLY = "weekly";
     public static final Long EMAIL_QUEUE_ENTRY_ROUTE_HEADER_ID = new Long(-1);
-    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "ActionList.EmailNotification.TestAddress";
     public static final int MAX_ANNOTATION_LENGTH = 2000;
     public static final String XML_FILE_PARSE_ERROR = "general.error.parsexml";
 
@@ -877,19 +832,19 @@ public class KEWConstants {
 
 	public static final String DOCHANDLER_METHOD = "dochandlerMethod";
 
-	public static final String DEFAULT_KIM_NAMESPACE = "KR-WKFLW";
-	
+	public static final String DEFAULT_KIM_NAMESPACE = "KR-WRKFLW";
+
 	public static final String DEFAULT_RESPONSIBILITY_TEMPLATE_NAME = "Review";
 
 	// Permission Details
-	
+
 	public static final String DOCUMENT_TYPE_NAME_DETAIL = "name";
 	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
 	public static final String DOCUMENT_STATUS_DETAIL = "docRouteStatus";
-	
+
 	// Permissions
-	
+
 	public static final String BLANKET_APPROVE_PERMISSION = "Blanket Approve Document";
 	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
 	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
@@ -899,7 +854,40 @@ public class KEWConstants {
 	public static final String SAVE_PERMISSION = "Save Document";
 
 	// system parameters
-	
 	public static final String KIM_PRIORITY_ON_DOC_TYP_PERMS_IND = "KIM_PRIORITY_ON_DOC_TYP_PERMS_IND";
-
+    public static final String ACTION_LIST_DOCUMENT_POPUP_IND = "ACTION_LIST_DOCUMENT_POPUP_IND";
+    public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";
+    public static final String ACTION_LIST_PAGE_SIZE_THROTTLE = "PAGE_SIZE_THROTTLE";
+    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
+    public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "true";
+    public static final String APPLICATION_CONTEXT = "APPLICATION_CONTEXT";
+    public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";
+    public static final String RULE_DELEGATE_LIMIT = "DELEGATE_LIMIT";
+    public static final String RULE_LOCKING_ON_IND = "RULE_LOCKING_ON_IND";
+    public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
+    public static final String EMAIL_REMINDER_FROM_ADDRESS = "FROM_ADDRESS";
+    public static final String MAX_NODES_BEFORE_RUNAWAY_PROCESS = "MAXIMUM_NODES_BEFORE_RUNAWAY";
+    public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME = "NOTIFY_EXCLUDED_USERS_IND";
+    public static final String DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT = "FETCH_MORE_ITERATION_LIMIT";
+    public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_IND = "DOCUMENT_SEARCH_POPUP_IND";
+    public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND = "DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND";
+    public static final String DOC_SEARCH_RESULT_CAP = "RESULT_CAP";
+    public static final String DOCUMENT_TYPE_SEARCH_INSTRUCTION = "DOCUMENT_TYPE_SEARCH_INSTRUCTION";
+    public static final String EDL_DEBUG_TRANSFORM_IND = "DEBUG_TRANSFORM_IND";
+    public static final String EDL_USE_XSLTC_IND = "USE_XSLTC_IND";
+    public static final String IS_LAST_APPROVER_ACTIVATE_FIRST_IND = "IS_LAST_APPROVER_ACTIVATE_FIRST_IND";
+    public static final String GLOBAL_REVIEWER_REPLACE_INSTRUCTION = "REPLACE_INSTRUCTION";
+    public static final String HELP_DESK_ACTION_LIST = "HELP_DESK_NAME_GROUP";
+    public static final String NOTE_CREATE_NEW_INSTRUCTION = "NOTE_CREATE_NEW_INSTRUCTION";
+    public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "RESTRICT_DOCUMENT_TYPES";
+    public static final String RULE_CUSTOM_DOC_TYPES = "CUSTOM_DOCUMENT_TYPES";
+    public static final String RULE_CREATE_NEW_INSTRUCTION = "RULE_CREATE_NEW_INSTRUCTION";
+    public static final String RULE_ROUTE_LOG_POPUP = "ROUTE_LOG_POPUP_IND";
+    public static final String RULE_SEARCH_INSTRUCTION = "RULE_SEARCH_INSTRUCTION";
+    public static final String RULE_GENERATE_ACTION_REQESTS_IND = "GENERATE_ACTION_REQUESTS_IND";
+    public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION = "RULE_TEMPLATE_CREATE_NEW_INSTRUCTION";
+    public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION = "RULE_TEMPLATE_SEARCH_INSTRUCTION";
+    public static final String SHOW_ATTACHMENTS = "SHOW_ATTACHMENTS_IND";
+    public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
+    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIl_NOTIFICATION_TEST_ADDRESS";
 }

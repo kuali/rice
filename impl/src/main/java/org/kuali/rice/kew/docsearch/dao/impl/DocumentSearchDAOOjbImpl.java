@@ -36,6 +36,8 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -129,21 +131,21 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         LOG.info("end getlist");
         return docList;
     }
-    
+
     private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
         int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
-        String resultCapValue = Utilities.getApplicationConstant(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY);
+        String resultCapValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         if (!StringUtils.isBlank(resultCapValue)) {
             try {
                 Integer maxResultCap = Integer.parseInt(resultCapValue);
                 if (resultCap > maxResultCap) {
-                    LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than app constant " + KEWConstants.DOC_SEARCH_RESULT_CAP_KEY + " value of " + maxResultCap);
+                    LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than parameter " + KEWConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
                     resultCap = maxResultCap;
                 } else if (maxResultCap <= 0) {
-                    LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY + " was less than or equal to zero.  Please use a positive integer.");
+                    LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " was less than or equal to zero.  Please use a positive integer.");
                 }
             } catch (NumberFormatException e) {
-                LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP_KEY + " is not a valid number.  Value was " + resultCapValue);
+                LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue);
             }
         }
         return resultCap;
@@ -152,16 +154,16 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     // TODO delyea: use searchable attribute count here?
     private int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-        String fetchMoreLimitValue = Utilities.getApplicationConstant(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY);
+        String fetchMoreLimitValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {
             try {
                 fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);
                 if (fetchMoreLimit < 0) {
-                    LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " was less than zero.  Please use a value greater than or equal to zero.");
+                    LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " was less than zero.  Please use a value greater than or equal to zero.");
                     fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
                 }
             } catch (NumberFormatException e) {
-                LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " is not a valid number.  Value was " + fetchMoreLimitValue);
+                LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " is not a valid number.  Value was " + fetchMoreLimitValue);
             }
         }
         return fetchMoreLimit;

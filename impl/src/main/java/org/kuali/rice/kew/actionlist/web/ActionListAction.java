@@ -67,6 +67,9 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -83,14 +86,14 @@ public class ActionListAction extends WorkflowAction {
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
         ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-       
+
 
         // process display tag parameters
         Integer page = form.getPage();
@@ -110,13 +113,13 @@ public class ActionListAction extends WorkflowAction {
         }
         else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
         	sortCriterion = getUserSession(request).getSortCriteria();
-     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());        	
+     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());
         }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
         	page = form.getCurrentPage();
         }
-      
+
         // update the values of the "current" display tag parameters
         form.setCurrentPage(page);
         if (!StringUtils.isEmpty(sortCriterion)) {
@@ -198,7 +201,7 @@ public class ActionListAction extends WorkflowAction {
             }
             // reset the requery action list key
             request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
-            
+
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser);
@@ -241,7 +244,7 @@ public class ActionListAction extends WorkflowAction {
         LOG.debug("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
-    
+
     private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
     	if ("asc".equals(dir)) {
     		return SortOrderEnum.ASCENDING;
@@ -259,22 +262,22 @@ public class ActionListAction extends WorkflowAction {
     	}
     	return null;
     }
-    
+
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
-    
+
     /**
      * this method is setting 2 props on the {@link ActionListForm} that controls outbox behavior.
      *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
      *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
-     * 
+     *
      * @param alForm
      * @param request
      * @return boolean indication whether the outbox should be fetched
      */
     private boolean isOutboxMode(ActionListForm alForm, HttpServletRequest request, Preferences preferences) {
-	
+
 	boolean outBoxView = false;
-	
+
 	WorkflowUser user = UserSession.getAuthenticatedUser().getWorkflowUser();
 
 	if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
@@ -283,7 +286,7 @@ public class ActionListAction extends WorkflowAction {
 	    alForm.setShowOutbox(false);
 	    return false;
 	}
-	
+
 	alForm.setShowOutbox(true);
 	if (StringUtils.isNotEmpty(alForm.getViewOutbox())) {
 	    if (!new Boolean(alForm.getViewOutbox())) {
@@ -379,7 +382,7 @@ public class ActionListAction extends WorkflowAction {
      */
     protected int getPageSize(Preferences preferences) {
     	int pageSize = Integer.parseInt(preferences.getPageSize());
-    	String pageSizeThrottle = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
+    	String pageSizeThrottle = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
     	if (!StringUtils.isEmpty(pageSizeThrottle)) {
     		try {
     			int throttle = Integer.parseInt(pageSizeThrottle);
@@ -579,13 +582,13 @@ public class ActionListAction extends WorkflowAction {
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
     	return mapping.findForward("count");
     }
-    
+
     public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	ActionListForm alForm = (ActionListForm)form;
 	if (alForm.getOutboxItems() != null) {
-	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));	    
+	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));
 	}
-	
+
 	alForm.setViewOutbox("true");
 	return start(mapping, form, request, response);
     }
@@ -626,17 +629,16 @@ public class ActionListAction extends WorkflowAction {
 
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
-
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
-        String kewHelpDeskWgName = Utilities.getApplicationConstant(KEWConstants.HELP_DESK_ACTION_LIST_KEY);
+        String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
         if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
             request.setAttribute("helpDeskActionList", "true");
         }
-        String routeLogPopup = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY);
+        String routeLogPopup = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         if (StringUtils.isEmpty(routeLogPopup)) {
         	routeLogPopup = "false";
         }
-        String documentPopup = Utilities.getApplicationConstant(KEWConstants.ACTION_LIST_DOCUMENT_POPUP_KEY);
+        String documentPopup = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         if (StringUtils.isEmpty(documentPopup)) {
         	documentPopup = "false";
         }

@@ -36,6 +36,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -72,12 +73,12 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			style.appendChild(dom.createTextNode(styleName));
 
 			Element showAttachments = EDLXmlUtils.getOrCreateChildElement(documentState, "showAttachments", true);
-			String showContants = Utilities.getApplicationConstant(KEWConstants.APP_CONST_SHOW_ATTACHMENTS);
+			String showContants = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS);
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showContants).toString()));
 
 			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 			WorkflowInfo info = new WorkflowInfo();
-			
+
 			boolean documentEditable = false;
 			if (document != null) {
 				List validActions = determineValidActions(document);
@@ -176,7 +177,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 		return list;
 	}
 
-	
+
 
 	public static boolean isEditable(List actions) {
 		return listContainsItems(actions, UserAction.EDITABLE_ACTIONS);
@@ -204,7 +205,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
     }
 
 
-    
+
 
     public static boolean listContainsItems(List list, Object[] items) {
         for (int i = 0; i < items.length; i++) {

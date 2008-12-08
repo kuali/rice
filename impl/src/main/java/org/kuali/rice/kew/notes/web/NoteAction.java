@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,11 +47,12 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * Struts action for interfacing with the Notes system.
- * 
+ *
  * @see NoteService
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -59,7 +60,7 @@ import org.kuali.rice.kew.web.WorkflowAction;
 public class NoteAction extends WorkflowAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteAction.class);
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return mapping.findForward("allNotesReport");
     }
@@ -83,7 +84,7 @@ public class NoteAction extends WorkflowAction {
     	edit(mapping, form, request, response);
     	return mapping.findForward("allNotesReport");
     }
-    
+
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         NoteForm noteForm = (NoteForm) form;
         if ("yes".equalsIgnoreCase(noteForm.getShowEdit())) {
@@ -93,14 +94,14 @@ public class NoteAction extends WorkflowAction {
             Note noteToEdit = getNoteService().getNoteByNoteId(noteForm.getNoteIdNumber());
             noteForm.setNote(noteToEdit);
             noteForm.getNote().setNoteCreateLongDate(new Long(noteForm.getNote().getNoteCreateDate().getTime()));
-        }   
+        }
         retrieveNoteList(request, noteForm);
         return start(mapping, form, request, response);
     }
-    
+
 //    public ActionForward attachFile(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//    	
-//    	
+//
+//
 //    	return start(mapping, form, request, response);
 //    }
 
@@ -130,7 +131,7 @@ public class NoteAction extends WorkflowAction {
                 canEditNote = customNoteAttribute.isAuthorizedToEditNote(noteToSave);
             }
         }
-        
+
         if ((noteForm.getShowEdit().equals("yes") && canEditNote) ||
                 (!noteForm.getShowEdit().equals("yes") && canAddNotes)) {
         	FormFile uploadedFile = (FormFile)noteForm.getFile();
@@ -143,11 +144,11 @@ public class NoteAction extends WorkflowAction {
         		noteToSave.getAttachments().add(attachment);
         	}
             getNoteService().saveNote(noteToSave);
-        } 
+        }
         if (noteForm.getShowEdit().equals("yes")) {
             noteForm.setNote(new Note());
         } else {
-            noteForm.setAddText(null); 
+            noteForm.setAddText(null);
         }
         noteForm.setShowEdit("no");
         noteForm.setNoteIdNumber(null);
@@ -173,13 +174,13 @@ public class NoteAction extends WorkflowAction {
         retrieveNoteList(request, noteForm);
         return start(mapping, form, request, response);
     }
-        
+
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return start(mapping, form, request, response);
     }
-    
 
-    
+
+
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         NoteForm noteForm = (NoteForm) form;
         noteForm.setCurrentUserName(getUserSession(request).getWorkflowUser().getDisplayName());
@@ -187,24 +188,24 @@ public class NoteAction extends WorkflowAction {
         if (! "workflowReport".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "add".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "cancel".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "edit".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "delete".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "save".equalsIgnoreCase(noteForm.getMethodToCall())) {
             retrieveNoteList(request, noteForm);
         }
-        noteForm.setShowAttachments(new Boolean(Utilities.getApplicationConstant(KEWConstants.APP_CONST_SHOW_ATTACHMENTS)));
+        noteForm.setShowAttachments(new Boolean(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS)));
         return null;
     }
 
     private void retrieveNoteList(HttpServletRequest request, NoteForm noteForm) throws Exception {
         if (noteForm.getDocId() != null) {
 //            List allNotes = getNoteService().getNotesByRouteHeaderId(noteForm.getDocId());
-        	
+
             CustomNoteAttribute customNoteAttribute = null;
             DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteForm.getDocId());
-            
+
             List allNotes = routeHeader.getNotes();
             boolean canAddNotes = false;
             if (routeHeader != null) {
                 customNoteAttribute = routeHeader.getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
                     customNoteAttribute.setUserSession(getUserSession(request));
-                    canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();       
+                    canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();
                 }
             }
             Iterator notesIter = allNotes.iterator();
@@ -221,7 +222,7 @@ public class NoteAction extends WorkflowAction {
                     singleNote.setEditingNote(Boolean.TRUE);
                 }
             }
-            if (noteForm.getSortNotes() != null && noteForm.getSortNotes().booleanValue()) { 
+            if (noteForm.getSortNotes() != null && noteForm.getSortNotes().booleanValue()) {
                 if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
                     noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
                     noteForm.setSortNotes(new Boolean(false));
@@ -232,7 +233,7 @@ public class NoteAction extends WorkflowAction {
             } else {
                 noteForm.setSortOrder(noteForm.getSortOrder());
             }
-            noteForm.setNoteList(sortNotes(allNotes, noteForm.getSortOrder())); 
+            noteForm.setNoteList(sortNotes(allNotes, noteForm.getSortOrder()));
             noteForm.setNumberOfNotes(new Integer(allNotes.size()));
             noteForm.setAuthorizedToAdd(new Boolean(canAddNotes));
             noteForm.setShowAdd(Boolean.TRUE);
@@ -243,14 +244,14 @@ public class NoteAction extends WorkflowAction {
             }
         }
     }
-  
+
     private void getAuthorData(Note note) throws Exception {
         WorkflowUser workflowUser = null;
-        String id = ""; 
+        String id = "";
         if (note != null && note.getNoteAuthorWorkflowId() != null && ! "".equalsIgnoreCase(note.getNoteAuthorWorkflowId())) {
             workflowUser = getUserService().getWorkflowUser(new WorkflowUserId(note.getNoteAuthorWorkflowId()));
             id = note.getNoteAuthorWorkflowId();
-        } 
+        }
         if (workflowUser != null) {
             note.setNoteAuthorFullName(workflowUser.getDisplayName());
             note.setNoteAuthorEmailAddress(workflowUser.getEmailAddress());
@@ -267,9 +268,9 @@ public class NoteAction extends WorkflowAction {
         DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(currentDate);
     }
-    
+
     private List sortNotes(List allNotes, String sortOrder) {
-        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;  
+        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
 
         try {
           Collections.sort(allNotes,
@@ -292,7 +293,7 @@ public class NoteAction extends WorkflowAction {
       }
       return allNotes;
     }
-   
+
     private NoteService getNoteService() {
         return (NoteService) KEWServiceLocator.getService(KEWServiceLocator.NOTE_SERVICE);
     }
@@ -300,7 +301,7 @@ public class NoteAction extends WorkflowAction {
     private UserService getUserService() {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
-    
+
     private RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }

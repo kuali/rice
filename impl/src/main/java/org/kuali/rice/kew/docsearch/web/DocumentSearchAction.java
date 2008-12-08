@@ -451,9 +451,8 @@ public class DocumentSearchAction extends WorkflowAction {
             documentSearchForm.clearSearchableAttributeProperties();
         }
         if (request.getParameter("workgroupId") != null) {
-            Long groupId = new Long(request.getParameter("workgroupId"));
-            Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(groupId));
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(new WorkflowGroupId(groupId).getGroupId().toString());
+            String groupId = request.getParameter("workgroupId");
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             documentSearchForm.getCriteria().setWorkgroupViewerName(group.getGroupName());
         }
         return mapping.findForward("success");

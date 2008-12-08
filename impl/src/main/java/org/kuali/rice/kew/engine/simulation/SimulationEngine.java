@@ -48,8 +48,8 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -59,7 +59,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kim.bo.group.*;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -521,8 +521,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
 		} else if (delegator instanceof Workgroup) {
 			val.setDelegatorGroupId(((Workgroup) delegator).getWorkflowGroupId().getGroupId());
-		}else if (delegator instanceof KimGroup) {
-			val.setDelegatorGroupId(new Long(((KimGroupRecipient) delegator).getGroup().getGroupId()));
+		}else if (delegator instanceof KimGroupRecipient) {
+			KimGroup group = ((KimGroupRecipient) delegator).getGroup();
+			val.setDelegatorGroupId(new Long(group.getGroupId()));
 		}
 		
 		val.setRouteHeader(routeHeader);

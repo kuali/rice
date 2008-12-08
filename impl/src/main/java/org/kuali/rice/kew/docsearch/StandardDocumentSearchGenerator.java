@@ -53,6 +53,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -902,7 +903,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(viewer.trim()));
             String userWorkflowId = user.getWorkflowId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.PRNCPL_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }
@@ -910,9 +911,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     protected String getWorkgroupViewerSql(String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
-            Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName));
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupName);            
-        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_RQST_T.DOC_HDR_ID and EN_ACTN_RQST_T.GRP_ID = " + group.getGroupId();// workgroup.getWorkflowGroupId().getGroupId();
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);            
+        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();// workgroup.getWorkflowGroupId().getGroupId();
         }
         return sql;
     }
@@ -921,7 +921,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(approver.trim())).getWorkflowUserId().getWorkflowId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = EN_ACTN_TKN_T.DOC_HDR_ID and upper(EN_ACTN_TKN_T.ACTN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and EN_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and KREW_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }

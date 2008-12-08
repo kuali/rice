@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -58,6 +59,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.*;
 
 
 /**
@@ -519,7 +521,10 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
 		} else if (delegator instanceof Workgroup) {
 			val.setDelegatorGroupId(((Workgroup) delegator).getWorkflowGroupId().getGroupId());
+		}else if (delegator instanceof KimGroup) {
+			val.setDelegatorGroupId(new Long(((KimGroupRecipient) delegator).getGroup().getGroupId()));
 		}
+		
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(Boolean.TRUE);
 		return val;

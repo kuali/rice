@@ -74,6 +74,9 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
 	public static final String KIM_ATTRIB_DESCEND_HIERARCHY = "descendHierarchy";
 	public static final String KIM_ATTRIB_ACTION_REQUEST_CODE = "actionRequestCd";
+	public static final String KIM_ATTRIB_FROM_AMOUNT = "fromAmount";
+	public static final String KIM_ATTRIB_TO_AMOUNT = "toAmount";
+	public static final String KIM_ATTRIB_FIELD_NAME = "fieldName";
 	
 	public static final String KIM_ATTRIB_ACTION = "action";
 	public static final String KIM_ROLE_NAME_USER = "User";
@@ -84,9 +87,14 @@ public class KimConstants {
 	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_PRIMARY_DELEGATE = "Fiscal Officer Primary Delegate";
 	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_SECONDARY_DELEGATE = "Fiscal Officer Secondary Delegate";
 	public static final String KIM_ROLE_NAME_AWARD_SECONDARY_DIRECTOR = "Award Project Director";
+	public static final String KIM_ROLE_NAME_ACTIVE_FACULTY_OR_STAFF = "Active Faculty or Staff";
+	public static final String KIM_ROLE_NAME_ACTIVE_PROFESSIONAL_EMPLOYEE = "Active Professional Employee";
+    public static final String KIM_ROLE_NAME_ROUTING_FORM_ADHOC_ACKNOWLEDGER = "Routing Form Ad Hoc Acknowledger";
+    public static final String KIM_ROLE_NAME_PREAWARD_PROJECT_DIRECTOR = "Pre-Award Project Director";
+	
+	public static final String PERMISSION_TEMPLATE_CLAIM_ELECTRONIC_PAYMENT = "Claim Electronic Payment";
 	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
-
 	public static final String KIM_AD_HOC  ="AdHoc";
 	
 	@Deprecated

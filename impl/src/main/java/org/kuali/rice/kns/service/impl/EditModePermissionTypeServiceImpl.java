@@ -20,6 +20,6 @@ import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionRequestTypePermissionTypeService extends KimPermissionTypeServiceBase {
+public class EditModePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 }

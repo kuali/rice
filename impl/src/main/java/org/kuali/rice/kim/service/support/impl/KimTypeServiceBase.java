@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -97,19 +98,11 @@ public class KimTypeServiceBase implements KimTypeService {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;
 			}
-			if ( !matchInputWithWildcard(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
+			if ( !KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
 				return false;
 			}
 		}
 		return true;
-	}
-	
-	public static boolean matchInputWithWildcard(String inputStr, String matchStr){
-		inputStr.replaceAll("*", "([0-9a-zA-Z-_$]*)");
-		if(matchStr.matches(inputStr)){
-			return true;
-		}
-		return false;
 	}
 	
 	public AttributeSet translateInputAttributeSet(AttributeSet qualification){

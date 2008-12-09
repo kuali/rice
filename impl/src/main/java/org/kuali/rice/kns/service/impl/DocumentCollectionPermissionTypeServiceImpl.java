@@ -23,7 +23,7 @@ import org.kuali.rice.kim.util.KimConstants;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentCollectionPermissionTypeService extends DocumentTypePermissionTypeServiceImpl {
+public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)

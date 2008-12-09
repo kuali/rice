@@ -20,6 +20,6 @@ import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ButtonPermissionTypeService extends KimPermissionTypeServiceBase {
+public class ButtonPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 }

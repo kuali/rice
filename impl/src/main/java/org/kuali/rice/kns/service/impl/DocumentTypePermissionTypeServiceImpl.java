@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -32,6 +35,11 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	{
+		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
+	}
+
 	/***
 	 * 
 	 * This overridden method checks the document type hierarchy to match the permission details.
@@ -40,10 +48,10 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 */
 	@Override
 	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
-		if (!requestedDetails.containsKey(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL)
-				|| !permission.getDetails().containsKey(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL)){
-			throw new RuntimeException("document type name is blank or null");
-		}else if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
+		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails);
+		validateRequiredAttributesAgainstReceived(requiredAttributes, permission.getDetails());
+
+		if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
 			return true;
 		}
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(

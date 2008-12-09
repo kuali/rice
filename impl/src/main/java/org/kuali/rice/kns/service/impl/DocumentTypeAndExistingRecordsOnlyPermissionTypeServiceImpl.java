@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.role.KimPermission;
@@ -33,7 +31,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentTypeAndExistingRecordsOnlyPermissionTypeService extends DocumentTypePermissionTypeServiceImpl {
+public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)

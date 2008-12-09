@@ -63,7 +63,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue user1Request = (ActionRequestValue) requests.get(0);
-        assertEquals("User One", user1Request.getRecipient().getDisplayName());
+        assertEquals("One, User ", user1Request.getRecipient().getDisplayName());
 
         // open doc as user1 and route it
         document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
@@ -114,7 +114,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue user1Request = (ActionRequestValue) requests.get(0);
-        assertEquals("User One", user1Request.getRecipient().getDisplayName());
+        assertEquals("One, User ", user1Request.getRecipient().getDisplayName());
 
         // open doc as user1 and route it
         document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());

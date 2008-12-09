@@ -553,15 +553,12 @@ public class RoleServiceImpl implements RoleService {
     	// then, perform a principalHasRole on the embedded role
     	List<RoleMemberImpl> rrs = roleDao.getRoleMembersForRoleIds( roleIds, KimRole.ROLE_MEMBER_TYPE );
     	for ( RoleMemberImpl rr : rrs ) {
-    		if ( roleIdToMembershipMap.get( rr.getRoleId() ) == null ) {
-    			continue;
-    		}
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rr.getRoleId() );
     		if ( roleTypeService != null ) {
-    			if ( !roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( rr.getRoleId() ) ).isEmpty() ) {
+    			if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
     				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
     				roleIdTempList.add( rr.getMemberId() );
-					AttributeSet nestedRoleQualification = roleTypeServices.get( rr.getRoleId() ).convertQualificationForMemberRoles( qualification );
+					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles( qualification );
     				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, false ) ) {
     					return true;
     				}

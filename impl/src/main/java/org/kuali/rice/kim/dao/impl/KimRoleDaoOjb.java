@@ -50,8 +50,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		
 		Criteria c = new Criteria();
 		
-		c.addEqualTo("memberId", principalId);
 		c.addIn("roleId", roleIds);
+		c.addEqualTo("memberId", principalId);
 		c.addEqualTo( "memberTypeCode", KimRole.PRINCIPAL_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -142,10 +142,36 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds ) {	
+	public List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds, String memberTypeCode ) {	
 		Criteria c = new Criteria();
 		
 		c.addIn("roleId", roleIds);
+		if ( memberTypeCode != null ) {
+			c.addEqualTo( "memberTypeCode", memberTypeCode );
+		}
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return new ArrayList<RoleMemberImpl>( coll );
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds ) {	
+		Criteria c = new Criteria();
+		
+		c.addIn("roleId", roleIds);
+		Criteria orSet = new Criteria();
+		orSet.addEqualTo( "memberTypeCode", KimRole.ROLE_MEMBER_TYPE );
+		Criteria principalCheck = new Criteria();
+		principalCheck.addEqualTo("memberId", principalId);
+		principalCheck.addEqualTo( "memberTypeCode", KimRole.PRINCIPAL_MEMBER_TYPE );
+		orSet.addOrCriteria( principalCheck );
+		Criteria groupCheck = new Criteria();
+		groupCheck.addIn("memberId", groupIds);
+		groupCheck.addEqualTo( "memberTypeCode", KimRole.GROUP_MEMBER_TYPE );
+		c.addAndCriteria( orSet );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		return new ArrayList<RoleMemberImpl>( coll );

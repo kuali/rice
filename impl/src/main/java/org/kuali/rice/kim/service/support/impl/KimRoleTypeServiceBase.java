@@ -125,4 +125,12 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		return qualificationAttributes;
 	}
 
+	/**
+	 * This base implementation simply returns the passed in AttributeSet.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationForMemberRoles(org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public AttributeSet convertQualificationForMemberRoles(AttributeSet qualification) {
+		return qualification;
+	}
 }

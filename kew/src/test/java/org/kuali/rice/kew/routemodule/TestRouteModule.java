@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -39,6 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 
@@ -85,7 +87,8 @@ public class TestRouteModule implements RouteModule {
         if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
         	realRecipient = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
-        	realRecipient = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId()));
+//        	realRecipient = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId()));
+        	realRecipient = (KimGroupRecipient)KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
         } else {
         	throw new WorkflowException("Could not resolve recipient with type " + recipient.getType());
         }

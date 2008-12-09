@@ -1,0 +1,263 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="KimAttributes" parent="parentBean" />
+
+  <bean id="parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.KimAttributes"
+        p:objectLabel="Kim Attributes">
+    <property name="attributes">
+      <list>
+        <ref bean="methodToCall" />
+        <ref bean="beanName" />
+        <ref bean="actionClass" />
+        <ref bean="namespaceCode" />
+        <ref bean="componentName" />
+        <ref bean="propertyName" />
+        <ref bean="existingRecordsOnly" />
+        <ref bean="createdBySelfOnly" />
+        <ref bean="collectionItemTypeCode" />
+        <ref bean="editMode" />
+        <ref bean="parameterName" />
+        <ref bean="campusCode" />
+        <ref bean="documentTypeName" />
+        <ref bean="actionRequestCd" />
+        <ref bean="routeStatusCode" />
+        <ref bean="routeNodeName" />
+        <ref bean="entityTypeCode" />
+        <ref bean="roleName" />
+        <ref bean="permissionName" />
+        <ref bean="responsibilityName" />
+        <ref bean="groupName" />
+        <ref bean="required" />
+        <ref bean="actionDetailsAtRoleMemberLevel" />
+        <ref bean="documentNumber" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-campusCode" parent="KimAttributes-campusCode-parentBean" />
+  <bean id="KimAttributes-campusCode-parentBean" abstract="true" parent="Campus-campusCode" />
+  
+  <bean id="KimAttributes-namespaceCode" parent="KimAttributes-namespaceCode-parentBean" />
+  <bean id="KimAttributes-namespaceCode-parentBean" abstract="true" parent="ParameterNamespace-name" />
+
+  <bean id="KimAttributes-componentName" parent="KimAttributes-componentName-parentBean" />
+  <bean id="KimAttributes-componentName-parentBean" abstract="true" parent="ParameterDetailType-parameterDetailTypeCode" />
+
+  <bean id="KimAttributes-roleName" parent="KimAttributes-roleName-parentBean" />
+  <bean id="KimAttributes-roleName-parentBean" abstract="true" parent="KimRoleImpl-roleName" />
+
+  <bean id="KimAttributes-groupName" parent="KimAttributes-groupName-parentBean" />
+  <bean id="KimAttributes-groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName" />
+
+  <bean id="KimAttributes-documentNumber" parent="KimAttributes-documentNumber-parentBean" />
+  <bean id="KimAttributes-documentNumber-parentBean" abstract="true" parent="DocumentHeader-documentNumber" />
+
+  <bean id="KimAttributes-parameterName" parent="KimAttributes-parameterName-parentBean" />
+  <bean id="KimAttributes-parameterName-parentBean" abstract="true" parent="Parameter-parameterName" />
+
+  <bean id="KimAttributes-existingRecordsOnly" parent="KimAttributes-existingRecordsOnly-parentBean" />
+  <bean id="KimAttributes-existingRecordsOnly-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+    p:name="existingRecordsOnly"
+    p:label="Existing Records Only"
+    p:shortLabel="Existing Records Only" />
+
+  <bean id="KimAttributes-createdBySelfOnly" parent="KimAttributes-createdBySelfOnly-parentBean" />
+  <bean id="KimAttributes-createdBySelfOnly-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+    p:name="createdBySelfOnly"
+    p:label="Created By Self Only"
+    p:shortLabel="Created By Self Only" />
+
+  <bean id="KimAttributes-required" parent="KimAttributes-required-parentBean" />
+  <bean id="KimAttributes-required-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+    p:name="required"
+    p:label="Required"
+    p:shortLabel="Required" />
+  
+  <bean id="KimAttributes-actionDetailsAtRoleMemberLevel" parent="KimAttributes-actionDetailsAtRoleMemberLevel-parentBean" />
+  <bean id="KimAttributes-actionDetailsAtRoleMemberLevel-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+    p:name="actionDetailsAtRoleMemberLevel"
+    p:label="Action Details At Role Member Level"
+    p:shortLabel="Action Details At Role Member Level" />
+
+  <!-- Should be converted to use KEW once it's converted to use the KNS -->    
+  <bean id="KimAttributes-actionRequestCd" parent="KimAttributes-actionRequestCd-parentBean" />
+  <bean id="KimAttributes-actionRequestCd-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="actionRequestCd"
+        p:forceUppercase="true"
+        p:label="Action Request Code"
+        p:shortLabel="Action Request Code"
+        p:maxLength="40"
+        p:required="true" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-methodToCall" parent="KimAttributes-methodToCall-parentBean" />
+  <bean id="KimAttributes-methodToCall-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="methodToCall"
+        p:forceUppercase="false"
+        p:label="Method To Call"
+        p:shortLabel="Method To Call"
+        p:maxLength="2000"
+        p:required="true" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="80" />
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-beanName" parent="KimAttributes-beanName-parentBean" />
+  <bean id="KimAttributes-beanName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="beanName"
+        p:forceUppercase="false"
+        p:label="Bean Name"
+        p:shortLabel="Bean Name"
+        p:maxLength="80"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-actionClass" parent="KimAttributes-actionClass-parentBean" />
+  <bean id="KimAttributes-actionClass-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="actionClass"
+        p:forceUppercase="false"
+        p:label="Action Class"
+        p:shortLabel="Action Class"
+        p:maxLength="200"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="80" />
+    </property>
+  </bean>
+  	   
+  <bean id="KimAttributes-propertyName" parent="KimAttributes-propertyName-parentBean" />
+  <bean id="KimAttributes-propertyName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="propertyName"
+        p:forceUppercase="false"
+        p:label="Property Name"
+        p:shortLabel="Property Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+    
+  <bean id="KimAttributes-collectionItemTypeCode" parent="KimAttributes-collectionItemTypeCode-parentBean" />
+  <bean id="KimAttributes-collectionItemTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="collectionItemTypeCode"
+        p:forceUppercase="true"
+        p:label="Collection Item Type Code"
+        p:shortLabel="Collection Item Type Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+    
+  <bean id="KimAttributes-editMode" parent="KimAttributes-editMode-parentBean" />
+  <bean id="KimAttributes-editMode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="editMode"
+        p:forceUppercase="false"
+        p:label="Edit Mode"
+        p:shortLabel="Edit Mode"
+        p:maxLength="40"
+        p:required="true" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+    
+  <!-- Should be converted to use KEW once it's converted to use the KNS -->    
+  <bean id="KimAttributes-documentTypeName" parent="KimAttributes-documentTypeName-parentBean" />
+  <bean id="KimAttributes-documentTypeName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="documentTypeName"
+        p:forceUppercase="false"
+        p:label="Document Type Name"
+        p:shortLabel="Document Type Name"
+        p:maxLength="40"
+        p:required="true" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+  
+  <!-- Should be converted to use KEW once it's converted to use the KNS -->    
+  <bean id="KimAttributes-routeStatusCode" parent="KimAttributes-routeStatusCode-parentBean" />
+  <bean id="KimAttributes-routeStatusCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="routeStatusCode"
+        p:forceUppercase="true"
+        p:label="Route Status Code"
+        p:shortLabel="Route Status Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <!-- Should be converted to use KEW once it's converted to use the KNS -->    
+  <bean id="KimAttributes-routeNodeName" parent="KimAttributes-routeNodeName-parentBean" />
+  <bean id="KimAttributes-routeNodeName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="routeNodeName"
+        p:forceUppercase="false"
+        p:label="Route Node Name"
+        p:shortLabel="Route Node Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+    
+  <!-- Should be converted to use KimEntityEntityTypeImpl.xml once created -->
+  <bean id="KimAttributes-entityTypeCode" parent="KimAttributes-entityTypeCode-parentBean" />
+  <bean id="KimAttributes-entityTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="entityTypeCode"
+        p:forceUppercase="true"
+        p:label="Entity Type Code"
+        p:shortLabel="Entity Type Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+          
+  <!-- Should be converted to use KimPermissionImpl.xml once created -->
+  <bean id="KimAttributes-permissionName" parent="KimAttributes-permissionName-parentBean" />
+  <bean id="KimAttributes-permissionName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permissionName"
+        p:forceUppercase="false"
+        p:label="Permission Name"
+        p:shortLabel="Permission Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>    
+
+  <!-- Should be converted to use KimResponsibilityImpl.xml once created -->
+  <bean id="KimAttributes-responsibilityName" parent="KimAttributes-responsibilityName-parentBean" />
+  <bean id="KimAttributes-responsibilityName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="responsibilityName"
+        p:forceUppercase="false"
+        p:label="Responsibility Name"
+        p:shortLabel="Responsibility Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>  
+    
+</beans>

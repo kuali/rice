@@ -16,6 +16,7 @@
 package org.kuali.rice.core.util;
 
 import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
@@ -27,7 +28,15 @@ import org.kuali.rice.kew.test.KEWTestCase;
  *
  */
 public class RiceServiceInjectionTest extends KEWTestCase {
-        
+    /**
+     * Overridden to introduce our own client-side beans 
+     * @see org.kuali.rice.kew.test.KEWTestCase#getKEWBootstrapSpringFile()
+     */
+    @Override
+    protected String getKEWBootstrapSpringFile() {
+        return "classpath:/org/kuali/rice/core/util/RiceServiceOverrideTestSpringBeans.xml";
+    }
+
     @Test public void testServiceInjection() {
         RiceServiceInjectedObject o = RiceServiceInjectedObject.beans.get("riceServiceInjectedObject");
         assertNotNull(o.als);

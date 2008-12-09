@@ -44,6 +44,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 public abstract class KEWTestCase extends RiceTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWTestCase.class);
+	/**
+	 * This is the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load
+	 */
+	private static final String DEFAULT_KEW_BOOTSTRAP_SPRING_FILE = "classpath:org/kuali/rice/kew/config/TestKEWSpringBeans.xml";
 
 	private TransactionalLifecycle transactionalLifecycle;
 
@@ -121,7 +125,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 */
 	@Override
 	public void setUpInternal() throws Exception {
-	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "classpath:org/kuali/rice/kew/config/TestKEWSpringBeans.xml");
+	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, getKEWBootstrapSpringFile());
 	    super.setUpInternal();
 	    loadTestDataInternal();
 	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
@@ -132,6 +136,16 @@ public abstract class KEWTestCase extends RiceTestCase {
 		}
 	}
 
+	/**
+	 * Returns the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load.
+	 * KEW test cases can override this to provide an alternative bootstrap spring file.  Currently only
+	 * one file is supported, so one must override this file and then import the core file. 
+	 * @return the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load
+	 */
+	protected String getKEWBootstrapSpringFile() {
+	    return DEFAULT_KEW_BOOTSTRAP_SPRING_FILE;
+	}
+	
 	@After
     public void tearDown() throws Exception {
 	    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {

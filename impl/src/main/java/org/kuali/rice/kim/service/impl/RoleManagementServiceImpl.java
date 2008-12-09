@@ -318,6 +318,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	private String buildQualificationKey(AttributeSet qualifications) {
+		if ( qualifications == null ) {
+			return "null";
+		}
 		String key = "";
 		for (Map.Entry<String, String> qualification : qualifications.entrySet()) {
 			key += qualification.getKey() + ":" + qualification.getValue() + "-";

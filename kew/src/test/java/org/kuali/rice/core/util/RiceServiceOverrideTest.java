@@ -27,7 +27,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RiceServiceInjectionTest extends KEWTestCase {
+public class RiceServiceOverrideTest extends KEWTestCase {
     /**
      * Overridden to introduce our own client-side beans 
      * @see org.kuali.rice.kew.test.KEWTestCase#getKEWBootstrapSpringFile()
@@ -70,5 +70,13 @@ public class RiceServiceInjectionTest extends KEWTestCase {
         assertNotNull(d.getDocumentAuthorizationService());
         assertNotNull(d.getDocumentDao());
         assertNotNull(d.getWorkflowDocumentService());
+    }
+    
+    // we subclassed and overrode the KNS document service; see if the lazy initialization worked
+    @Test public void testDocumentDaoOverriding() {
+        ClientDocumentDaoOjb d = ClientDocumentDaoOjb.me;
+        assertNotNull(d);
+        assertNotNull(d.getBusinessObjectDao());
+        assertNotNull(d.getDbPlatform());
     }
 }

@@ -19,5 +19,8 @@
     <!-- Exercising overriding a Rice service without having to pull the definition of each and every
          injected bean -->    
     <bean id="documentService" class="org.kuali.rice.core.util.ClientDocumentServiceImpl"/>
+    <bean id="documentDao" class="org.kuali.rice.core.util.ClientDocumentDaoOjb">
+        <property name="jcdAlias" value="knsDataSource" />
+    </bean>
 
 </beans>

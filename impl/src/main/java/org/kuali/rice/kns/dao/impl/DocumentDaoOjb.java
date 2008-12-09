@@ -132,11 +132,23 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
         return document;
     }
 
-    public BusinessObjectDao getBusinessObjectDao() {
+    /**
+     * Returns the {@link BusinessObjectDao}, lazily initializing if necessary
+     * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
+     * @return the {@link BusinessObjectDao}
+     */
+    public synchronized BusinessObjectDao getBusinessObjectDao() {
+        if (this.businessObjectDao == null) {
+            this.businessObjectDao = KNSServiceLocator.getBusinessObjectDao();
+        }
         return businessObjectDao;
     }
 
-    public void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
+    /**
+     * Sets the {@link BusinessObjectDao}
+     * @param businessObjectDao ths {@link BusinessObjectDao}
+     */
+    public synchronized void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
 

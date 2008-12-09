@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -39,12 +40,15 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
 
  	private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
+ 	private static PersistenceStructureService persistenceStructureService;
     /**
      * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#getFieldAuthorizations(org.kuali.rice.kns.document.MaintenanceDocument,
      *      org.kuali.rice.kns.bo.user.KualiUser)
@@ -280,14 +284,30 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		return maintenanceDocumentDictionaryService;
 	}
 
+	protected void addPrimaryKeysToMap( BusinessObject bo, Map<String,String> attributes ) {
+	    if ( bo == null ) {
+	        return;
+	    }
+	    List<String> pkFields = getPersistenceStructureService().getPrimaryKeys(bo.getClass());
+	    for ( String field : pkFields ) {
+	        try {
+	            Object fieldValue = ObjectUtils.getPropertyValue(bo, field);
+	            attributes.put(field, (fieldValue==null)?"":fieldValue.toString() );
+	        } catch ( RuntimeException ex ) {
+	            // do nothing - just skip the attribute - ObjectUtils has already logged the error
+	        }
+	    }
+	}
+	
     @Override
     protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
         super.populatePermissionDetails(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
-        Class boClass = md.getNewMaintainableObject().getBoClass();
+        Class boClass = md.getNewMaintainableObject().getBoClass();        
         attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
         attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
+        addPrimaryKeysToMap(md.getNewMaintainableObject().getBusinessObject(), attributes);
     }
     
     @Override
@@ -298,6 +318,14 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
         attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
+    }
+
+
+    public static PersistenceStructureService getPersistenceStructureService() {
+        if ( persistenceStructureService == null ) {
+            persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+        }
+        return persistenceStructureService;
     }
     
 }

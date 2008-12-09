@@ -310,6 +310,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	// Helper methods
 	
 	private String buildIdsKey(List<String> roleIds) {
+		if ( roleIds == null || roleIds.isEmpty() ) {
+			return "null";
+		}
 		String key = "";
 		for (String id : roleIds) {
 			key += id + "-";
@@ -318,7 +321,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	private String buildQualificationKey(AttributeSet qualifications) {
-		if ( qualifications == null ) {
+		if ( qualifications == null || qualifications.isEmpty() ) {
 			return "null";
 		}
 		String key = "";

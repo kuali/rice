@@ -96,6 +96,9 @@ public interface IdentityManagementService {
     List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
 
+    List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+
     // ----------------------
     // Responsibility Methods
     // ----------------------
@@ -133,6 +136,5 @@ public interface IdentityManagementService {
 	void flushGroupCaches();
 	void flushPermissionCaches();
 	void flushResponsibilityCaches();
-
-    
+ 
 }

@@ -380,6 +380,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
     
+    public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().getRoleQualifiersByPermissionName(principalId, namespaceCode, permissionName, permissionDetails, qualification);
+    }
+
+    public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	return getPermissionService().getRoleQualifiersByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
+    }
+    
     // GROUP SERVICE
     
 	public boolean isMemberOfGroup(String principalId, String groupId) {

@@ -56,18 +56,4 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
         }
         return flags;
     }
-    
-    @Override
-    protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
-        super.populatePermissionDetails(document, attributes);
-        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(document.getClass()).getModuleConfiguration().getNamespaceCode() );
-        attributes.put(KimAttributes.COMPONENT_NAME, document.getClass().getName());
-    }
-    
-    @Override
-    protected void populateRoleQualification(Document document, Map<String, String> attributes) {
-        super.populateRoleQualification(document, attributes);
-        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(document.getClass()).getModuleConfiguration().getNamespaceCode() );
-        attributes.put(KimAttributes.COMPONENT_NAME, document.getClass().getName());
-    }
 }

@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -580,6 +581,25 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private ThreadLocal<Map<String,String>> permissionDetails = new ThreadLocal<Map<String,String>>();
     
     /**
+     * Returns the namespace for the given class by consulting the KualiModuleService.
+     * 
+     * This method should not need to be overridden but may be if special namespace handling is required.
+     */
+    protected String getNamespaceForClass( Class clazz ) {
+        return getKualiModuleService().getResponsibleModuleService(clazz).getModuleConfiguration().getNamespaceCode();
+    }
+
+    /**
+     * Return the component class to be used for the document.  This base implemnentation simply returns
+     * the class of the document object.
+     * 
+     * Subclasses may override this if necessary.
+     */
+    protected Class getComponentClass( Document document ) {
+        return document.getClass();
+    }
+    
+    /**
      * Override this method to populate the role qualifier attributes from the document
      * for the given document.  This will only be called once per request.
      * 
@@ -593,6 +613,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
         attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
         //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
+        attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
+        attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
     }
 
     /**
@@ -605,23 +627,31 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
         attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
         attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
+        attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
         //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
     }
-    
+
+    /**
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getRoleQualification(org.kuali.rice.kns.document.Document)
+     */
     public final Map<String, String> getRoleQualification(Document document) {
         if ( roleQualification.get() == null ) {
             Map<String,String> attributes = new HashMap<String, String>();
             populateRoleQualification( document, attributes );
-            roleQualification.set( attributes );
+            roleQualification.set( Collections.unmodifiableMap( attributes ) );
         }
         return roleQualification.get();
     }
-    
+
+    /**
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getPermissionDetailValues(org.kuali.rice.kns.document.Document)
+     */
     public final Map<String, String> getPermissionDetailValues(Document document) {
         if ( permissionDetails.get() == null ) {
             Map<String,String> attributes = new HashMap<String, String>();
             populatePermissionDetails( document, attributes );
-            permissionDetails.set( attributes );
+            permissionDetails.set( Collections.unmodifiableMap( attributes ) );
         }
         return permissionDetails.get();
     }

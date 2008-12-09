@@ -298,25 +298,40 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 	        }
 	    }
 	}
-	
+
+	/**
+	 * Return the class of the maintained business object.
+	 * 
+	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getComponentClass(org.kuali.rice.kns.document.Document)
+	 */
+	@Override
+	protected Class getComponentClass(Document document) {
+        MaintenanceDocument md = (MaintenanceDocument)document;
+        return md.getNewMaintainableObject().getBoClass();        
+	}
+
+	/**
+	 * Add the business object's primary keys and the maintenance action to the qualifier attributes.
+	 * 
+	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populatePermissionDetails(org.kuali.rice.kns.document.Document, java.util.Map)
+	 */
     @Override
     protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
         super.populatePermissionDetails(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
-        Class boClass = md.getNewMaintainableObject().getBoClass();        
-        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
-        attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
         addPrimaryKeysToMap(md.getNewMaintainableObject().getBusinessObject(), attributes);
     }
     
+    /**
+     * Add the maintenance action to the permission details.
+     * 
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populateRoleQualification(org.kuali.rice.kns.document.Document, java.util.Map)
+     */
     @Override
     protected void populateRoleQualification(Document document, Map<String, String> attributes) {
         super.populateRoleQualification(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
-        Class boClass = md.getNewMaintainableObject().getBoClass();
-        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
-        attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
     }
 

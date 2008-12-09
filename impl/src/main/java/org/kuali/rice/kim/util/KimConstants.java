@@ -79,6 +79,7 @@ public class KimConstants {
 	public static final String KIM_ATTRIB_FIELD_NAME = "fieldName";
 	
 	public static final String KIM_ATTRIB_ACTION = "action";
+	public static final String KIM_ATTRIB_PRE_ROUTE  ="PreRoute";
 	public static final String KIM_ROLE_NAME_USER = "User";
 	public static final String KIM_ROLE_NAME_BILLER = "Biller";
 	public static final String KIM_ROLE_NAME_PROCESSOR = "Processor";	
@@ -95,7 +96,8 @@ public class KimConstants {
 	public static final String PERMISSION_TEMPLATE_CLAIM_ELECTRONIC_PAYMENT = "Claim Electronic Payment";
 	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
-	public static final String KIM_AD_HOC  ="AdHoc";
+
+	
 	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";

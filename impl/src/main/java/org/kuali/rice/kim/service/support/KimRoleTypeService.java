@@ -117,4 +117,9 @@ public interface KimRoleTypeService extends KimTypeService {
      */
     AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
     
+    /**
+     * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
+     */
+    AttributeSet convertQualificationForMemberRoles( AttributeSet qualification );
+    
 }

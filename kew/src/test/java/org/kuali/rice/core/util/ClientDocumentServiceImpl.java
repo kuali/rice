@@ -17,15 +17,7 @@ package org.kuali.rice.core.util;
 
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentAuthorizationService;
-import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.DocumentTypeService;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.service.impl.DocumentServiceImpl;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,15 +40,15 @@ public class ClientDocumentServiceImpl extends DocumentServiceImpl implements In
     // some member fields are private at the moment; do the best we can
 
     public WorkflowDocumentService getWorkflowDocumentService() {
-        return workflowDocumentService;
+        return super.getWorkflowDocumentService();
     }
     public BusinessObjectService getBusinessObjectService() {
-        return businessObjectService;
+        return super.getBusinessObjectService();
     }
     public DocumentAuthorizationService getDocumentAuthorizationService() {
-        return documentAuthorizationService;
+        return super.getDocumentAuthorizationService();
     }
     public DocumentDao getDocumentDao() {
-        return documentDao;
+        return super.getDocumentDao();
     }
 }

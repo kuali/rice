@@ -26,6 +26,7 @@ import javax.persistence.EntityManagerFactory;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -422,5 +423,10 @@ public class KNSServiceLocator<T extends Object> {
     public static StateService getStateService() {
 	return (StateService) getService(STATE_SERVICE);
     }
-
+    
+    public static final String DOCUMENT_DAO = "documentDao";
+    
+    public static DocumentDao getDocumentDao() {
+        return (DocumentDao) getService(DOCUMENT_DAO);
+    }
 }

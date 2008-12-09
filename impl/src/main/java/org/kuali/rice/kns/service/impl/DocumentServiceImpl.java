@@ -55,6 +55,7 @@ import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentHeaderService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.NoteService;
@@ -78,39 +79,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
     
-    @RiceService(name="documentTypeService")
     private DocumentTypeService documentTypeService;
     
-    @RiceService(name="dateTimeService")
     private DateTimeService dateTimeService;
     
-    @RiceService(name="kualiRuleService")
-    private KualiRuleService kualiRuleService;
-    
-    private DictionaryValidationService dictionaryValidationService;
-    
-    @RiceService(name="maintenanceDocumentService")
-    private MaintenanceDocumentService maintenanceDocumentService;
-    
-    @RiceService(name="noteService")
     private NoteService noteService;
     
-    @RiceService(name="workflowDocumentService")
     protected WorkflowDocumentService workflowDocumentService;
     
-    @RiceService(name="businessObjectService") // not sure what happened to the KNS resource loader; i'd use that by name if it were available
     protected BusinessObjectService businessObjectService;
     
-    @RiceService(name="documentAuthorizationService")
     protected DocumentAuthorizationService documentAuthorizationService;
     
-    @RiceService(name="documentDao")
     protected DocumentDao documentDao;
     
-    @RiceService(name="dataDictionaryService")
     private DataDictionaryService dataDictionaryService;
     
-    @RiceService(name="documentHeaderService")
     private DocumentHeaderService documentHeaderService;
 
     /**
@@ -135,7 +119,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.prepareForSave();
         validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, generateKualiDocumentEvent(document, kualiDocumentEventClass));
         prepareWorkflowDocument(document);
-        workflowDocumentService.save(document.getDocumentHeader().getWorkflowDocument(), null);
+        getWorkflowDocumentService().save(document.getDocumentHeader().getWorkflowDocument(), null);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
 
         return document;
@@ -191,10 +175,10 @@ public class DocumentServiceImpl implements DocumentService {
         document.prepareForSave();
         validateAndPersistDocument(document, new RouteDocumentEvent(document));
         prepareWorkflowDocument(document);
-        workflowDocumentService.route(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        getWorkflowDocumentService().route(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        businessObjectService.delete(document.getAdHocRoutePersons());
-        businessObjectService.delete(document.getAdHocRouteWorkgroups());
+        getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         return document;
     }
 
@@ -210,7 +194,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.prepareForSave();
         validateAndPersistDocument(document, new ApproveDocumentEvent(document));
         prepareWorkflowDocument(document);
-        workflowDocumentService.approve(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        getWorkflowDocumentService().approve(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -220,9 +204,9 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#superUserApproveDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
-        documentDao.save(document);
+        getDocumentDao().save(document);
         prepareWorkflowDocument(document);
-        workflowDocumentService.superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -231,9 +215,9 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#superUserCancelDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
-        documentDao.save(document);
+        getDocumentDao().save(document);
         prepareWorkflowDocument(document);
-        workflowDocumentService.superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -242,9 +226,9 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#superUserCancelDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
-        documentDao.save(document);
+        getDocumentDao().save(document);
         prepareWorkflowDocument(document);
-        workflowDocumentService.superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        getWorkflowDocumentService().superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -264,10 +248,10 @@ public class DocumentServiceImpl implements DocumentService {
         //SAVE THE NOTE
         //Note: This save logic is replicated here and in KualiDocumentAction, when to save (based on doc state) should be moved
         //      into a doc service method
-        noteService.save(note);
+        getNoteService().save(note);
         
         prepareWorkflowDocument(document);
-        workflowDocumentService.disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -281,10 +265,10 @@ public class DocumentServiceImpl implements DocumentService {
             throw buildAuthorizationException("cancel", document);
         }
         prepareWorkflowDocument(document);
-        workflowDocumentService.cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        businessObjectService.delete(document.getAdHocRoutePersons());
-        businessObjectService.delete(document.getAdHocRouteWorkgroups());
+        getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         return document;
     }
 
@@ -298,7 +282,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw buildAuthorizationException("acknowledge", document);
         }
         prepareWorkflowDocument(document);
-        workflowDocumentService.acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        getWorkflowDocumentService().acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -315,7 +299,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.prepareForSave();
         validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
         prepareWorkflowDocument(document);
-        workflowDocumentService.blanketApprove(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        getWorkflowDocumentService().blanketApprove(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -330,7 +314,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
-        workflowDocumentService.clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
+        getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -347,7 +331,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentActionFlags getDocumentActionFlags(Document document) {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 
-        return documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, currentUser);
+        return getDocumentAuthorizationService().getDocumentAuthorizer(document).getDocumentActionFlags(document, currentUser);
     }
 
     private DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
@@ -369,9 +353,9 @@ public class DocumentServiceImpl implements DocumentService {
             recipient.setdocumentNumber(document.getDocumentNumber());
         HashMap criteria = new HashMap();
         criteria.put("documentNumber", document.getDocumentNumber());
-        businessObjectService.deleteMatching(AdHocRouteRecipient.class, criteria);
+        getBusinessObjectService().deleteMatching(AdHocRouteRecipient.class, criteria);
 
-        businessObjectService.save(adHocRoutingRecipients);
+        getBusinessObjectService().save(adHocRoutingRecipients);
         validateAndPersistDocument(document, event);
     }
 
@@ -391,17 +375,17 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // look for workflowDocumentHeader, since that supposedly won't break the transaction
-        if (!workflowDocumentService.workflowDocumentExists(documentHeaderId)) {
+        if (!getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
             exists = false;
         }
         else {
             // look for docHeaderId, since that fails without breaking the transaction
-            return documentHeaderService.getDocumentHeaderById(documentHeaderId) != null;
+            return getDocumentHeaderService().getDocumentHeaderById(documentHeaderId) != null;
         }
 
         return exists;
     }
-    
+
     /**
      * Creates a new document by class.
      * 
@@ -415,7 +399,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new IllegalArgumentException("invalid (non-Document) documentClass");
         }
 
-        String documentTypeName = dataDictionaryService.getDocumentTypeNameByClass(documentClass);
+        String documentTypeName = getDataDictionaryService().getDocumentTypeNameByClass(documentClass);
         if (StringUtils.isBlank(documentTypeName)) {
             throw new UnknownDocumentTypeException("unable to get documentTypeName for unknown documentClass '" + documentClass.getName() + "'");
         }
@@ -446,27 +430,27 @@ public class DocumentServiceImpl implements DocumentService {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         // document must be maint doc or finanancial doc
-        DocumentType documentType = documentTypeService.getPotentialDocumentTypeByName(documentTypeName);
+        DocumentType documentType = getDocumentTypeService().getPotentialDocumentTypeByName(documentTypeName);
         if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocumentTypeActiveIndicator()) ) {
             throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
         }
 
         // get the authorization
-        DocumentAuthorizer documentAuthorizer = documentAuthorizationService.getDocumentAuthorizer(documentTypeName);
+        DocumentAuthorizer documentAuthorizer = getDocumentAuthorizationService().getDocumentAuthorizer(documentTypeName);
 
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         documentAuthorizer.canInitiate(documentTypeName, currentUser);
 
         // initiate new workflow entry, get the workflow doc
-        KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
+        KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
         GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         // create a new document header object
         DocumentHeader documentHeader = null;
         try {
             // create a new document header object
-            Class documentHeaderClass = documentHeaderService.getDocumentHeaderBaseClass();
+            Class documentHeaderClass = getDocumentHeaderService().getDocumentHeaderBaseClass();
             documentHeader = (DocumentHeader) documentHeaderClass.newInstance();
             documentHeader.setWorkflowDocument(workflowDocument);
             documentHeader.setDocumentNumber(workflowDocument.getRouteHeaderId().toString());
@@ -534,13 +518,13 @@ public class DocumentServiceImpl implements DocumentService {
         KualiWorkflowDocument workflowDocument = null;
 
             LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
-            workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
+            workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
             GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
         // retrieve the Document
-        Document document = documentDao.findByDocumentHeaderId(documentClass, documentHeaderId);
+        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
         return postProcessDocument(documentHeaderId, workflowDocument, document);
     }
     
@@ -549,7 +533,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
 
-        Class clazz = dataDictionaryService.getDocumentClassByTypeName(documentTypeName);
+        Class clazz = getDataDictionaryService().getDocumentClassByTypeName(documentTypeName);
         if (clazz == null) {
             throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + documentTypeName + "'");
         }
@@ -601,14 +585,14 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // retrieve all documents that match the document header ids
-        List rawDocuments = documentDao.findByDocumentHeaderIds(clazz, documentHeaderIds);
+        List rawDocuments = getDocumentDao().findByDocumentHeaderIds(clazz, documentHeaderIds);
 
         // post-process them
         List documents = new ArrayList();
         for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
             Document document = (Document) i.next();
 
-            KualiWorkflowDocument workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
+            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
 
             document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
             documents.add(document);
@@ -637,7 +621,7 @@ public class DocumentServiceImpl implements DocumentService {
         // save the document
         try {
             LOG.info("storing document " + document.getDocumentNumber());
-            documentDao.save(document);
+            getDocumentDao().save(document);
         }
         catch (OptimisticLockingFailureException e) {
             LOG.error("exception encountered on store of document " + e.getMessage());
@@ -700,7 +684,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public void updateDocument(Document document) {
         checkForNulls(document);
-        documentDao.save(document);
+        getDocumentDao().save(document);
     }
     
     /**
@@ -710,7 +694,7 @@ public class DocumentServiceImpl implements DocumentService {
     public Note createNoteFromDocument(Document document, String text) throws Exception {
         Note note = new Note();
         
-        note.setNotePostedTimestamp(dateTimeService.getCurrentTimestamp());
+        note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
         note.setVersionNumber(new Long(1));
         note.setNoteText(text);
         if(document.isBoNotesSupport()) {
@@ -720,9 +704,9 @@ public class DocumentServiceImpl implements DocumentService {
         }
         
         PersistableBusinessObject bo = null;
-        String propertyName = noteService.extractNoteProperty(note);
+        String propertyName = getNoteService().extractNoteProperty(note);
         bo = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
-        return (bo==null)?null:noteService.createNote(note,bo);    
+        return (bo==null)?null:getNoteService().createNote(note,bo);    
     }
     
     
@@ -736,7 +720,7 @@ public class DocumentServiceImpl implements DocumentService {
     
     public PersistableBusinessObject getNoteParent(Document document, Note newNote) {
         //get the property name to set (this assumes this is a document type note)
-        String propertyName = noteService.extractNoteProperty(newNote);
+        String propertyName = getNoteService().extractNoteProperty(newNote);
         //get BO to set
         PersistableBusinessObject noteParent = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
         return noteParent;
@@ -747,17 +731,27 @@ public class DocumentServiceImpl implements DocumentService {
      * @return DocumentAuthorizer instance for the given documentType name
      */
     private DocumentAuthorizer getDocumentAuthorizer(String documentTypeName) {
-        return documentAuthorizationService.getDocumentAuthorizer(documentTypeName);
+        return getDocumentAuthorizationService().getDocumentAuthorizer(documentTypeName);
     }
-
 
     /**
      * spring injected document type service
      * 
      * @param documentTypeService
      */
-    public void setDocumentTypeService(DocumentTypeService documentTypeService) {
+    public synchronized void setDocumentTypeService(DocumentTypeService documentTypeService) {
         this.documentTypeService = documentTypeService;
+    }
+    
+    /**
+     * Gets the DocumentTypeService, lazily initializing if necessary
+     * @return the DocumentTypeService
+     */
+    private synchronized DocumentTypeService getDocumentTypeService() {
+        if (this.documentTypeService == null) {
+            this.documentTypeService = KNSServiceLocator.getDocumentTypeService(); 
+        }
+        return this.documentTypeService;
     }
 
     /**
@@ -765,39 +759,64 @@ public class DocumentServiceImpl implements DocumentService {
      * 
      * @param dateTimeService
      */
-    public void setDateTimeService(DateTimeService dateTimeService) {
+    public synchronized void setDateTimeService(DateTimeService dateTimeService) {
         this.dateTimeService = dateTimeService;
     }
 
     /**
+     * Gets the DocumentTypeService, lazily initializing if necessary
+     * @return the DocumentTypeService
+     */
+    private synchronized DateTimeService getDateTimeService() {
+        if (this.dateTimeService == null) {
+            this.dateTimeService = KNSServiceLocator.getDateTimeService();
+        }
+        return this.dateTimeService;
+    }
+
+    /**
      * @param kualiRuleService The kualiRuleService to set.
+     * @deprecated nothing uses this field
      */
     public void setKualiRuleService(KualiRuleService kualiRuleService) {
-        this.kualiRuleService = kualiRuleService;
+        // nothing uses this field...
     }
 
     /**
      * @param dictionaryValidationService The dictionaryValidationService to set.
+     * @deprecated nothing uses this field
      */
     public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
-        this.dictionaryValidationService = dictionaryValidationService;
+        // nothing uses this field...
     }
 
     /**
      * Sets the maintenanceDocumentService attribute value.
      * 
      * @param maintenanceDocumentService The maintenanceDocumentService to set.
+     * @deprecated nothing uses this field
      */
     public final void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
-        this.maintenanceDocumentService = maintenanceDocumentService;
+        // nothing uses this field...
     }
     
     /**
      * Sets the noteService attribute value.
      * @param noteService The noteService to set.
      */
-    public void setNoteService(NoteService noteService) {
+    public synchronized void setNoteService(NoteService noteService) {
         this.noteService = noteService;
+    }
+
+    /**
+     * Gets the DocumentTypeService, lazily initializing if necessary
+     * @return the DocumentTypeService
+     */
+    protected synchronized NoteService getNoteService() {
+        if (this.noteService == null) {
+            this.noteService = KNSServiceLocator.getNoteService();
+        }
+        return this.noteService;
     }
 
     /**
@@ -805,17 +824,39 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @param businessObjectService The businessObjectService to set.
      */
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+    public synchronized void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
     
+    /**
+     * Gets the {@link BusinessObjectService}, lazily initializing if necessary
+     * @return the {@link BusinessObjectService}
+     */
+    protected synchronized BusinessObjectService getBusinessObjectService() {
+        if (this.businessObjectService == null) {
+            this.businessObjectService = KNSServiceLocator.getBusinessObjectService();
+        }
+        return this.businessObjectService;
+    }
+
     /**
      * Sets the workflowDocumentService attribute value.
      *
      * @param workflowDocumentService The workflowDocumentService to set.
      */
-    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
+    public synchronized void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
         this.workflowDocumentService = workflowDocumentService;
+    }
+
+    /**
+     * Gets the {@link WorkflowDocumentService}, lazily initializing if necessary
+     * @return the {@link WorkflowDocumentService}
+     */
+    protected synchronized WorkflowDocumentService getWorkflowDocumentService() {
+        if (this.workflowDocumentService == null) {
+            this.workflowDocumentService = KNSServiceLocator.getWorkflowDocumentService();
+        }
+        return this.workflowDocumentService;
     }
 
     /**
@@ -823,8 +864,19 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @param documentAuthorizationService The documentAuthorizationService to set.
      */
-    public void setDocumentAuthorizationService(DocumentAuthorizationService documentAuthorizationService) {
+    public synchronized void setDocumentAuthorizationService(DocumentAuthorizationService documentAuthorizationService) {
         this.documentAuthorizationService = documentAuthorizationService;
+    }
+
+    /**
+     * Gets the {@link DocumentAuthorizationService}, lazily initializing if necessary
+     * @return the {@link DocumentAuthorizationService}
+     */
+    public synchronized DocumentAuthorizationService getDocumentAuthorizationService() {
+        if (this.documentAuthorizationService == null) {
+            this.documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
+        }
+        return documentAuthorizationService;
     }
 
     /**
@@ -832,24 +884,56 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @param documentDao The documentDao to set.
      */
-    public void setDocumentDao(DocumentDao documentDao) {
+    public synchronized void setDocumentDao(DocumentDao documentDao) {
         this.documentDao = documentDao;
     }
 
+    /**
+     * Gets the {@link DocumentDao}, lazily initializing if necessary
+     * @return the {@link DocumentDao}
+     */
+    protected synchronized DocumentDao getDocumentDao() {
+        if (this.documentDao == null) {
+            this.documentDao = KNSServiceLocator.getDocumentDao();
+        }
+        return documentDao;
+    }
+    
     /**
      * Sets the dataDictionaryService attribute value.
      * 
      * @param dataDictionaryService
      */
-    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+    public synchronized void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
+    }
+
+    /**
+     * Gets the {@link DataDictionaryService}, lazily initializing if necessary
+     * @return the {@link DataDictionaryService}
+     */
+    protected synchronized DataDictionaryService getDataDictionaryService() {
+        if (this.dataDictionaryService == null) {
+            this.dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+        }
+        return this.dataDictionaryService;
     }
 
     /**
      * @param documentHeaderService the documentHeaderService to set
      */
-    public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
+    public synchronized void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
         this.documentHeaderService = documentHeaderService;
     }
 
+    /**
+     * Gets the {@link DocumentHeaderService}, lazily initializing if necessary
+     * @return the {@link DocumentHeaderService}
+     */
+    protected synchronized DocumentHeaderService getDocumentHeaderService() {
+        if (this.documentHeaderService == null) {
+            this.documentHeaderService = KNSServiceLocator.getDocumentHeaderService();
+        }
+        return this.documentHeaderService;
+    }
 }

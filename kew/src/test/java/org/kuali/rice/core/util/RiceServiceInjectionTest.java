@@ -62,7 +62,7 @@ public class RiceServiceInjectionTest extends KEWTestCase {
         assertNotNull(o.ns);
     }
     
-    // we subclassed and overrode the KNS document service; see if the injection worked
+    // we subclassed and overrode the KNS document service; see if the lazy initialization worked
     @Test public void testDocumentServiceOverriding() {
         ClientDocumentServiceImpl d = ClientDocumentServiceImpl.me;
         assertNotNull(d);

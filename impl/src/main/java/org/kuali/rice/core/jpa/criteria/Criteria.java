@@ -44,6 +44,8 @@ public class Criteria {
 	private String alias;
 	
 	private int bindParamCount;
+	
+	private boolean distinct = false;
 
 	protected List tokens = new ArrayList();
 
@@ -61,55 +63,74 @@ public class Criteria {
 	}
 
 	public void between(String attribute, Object value1, Object value2) {
-		tokens.add(" (" + alias + "." + attribute + " BETWEEN :" + attribute + "-b1 AND :" + attribute + "-b2) ");
-		params.put(attribute, value1);
-		params.put(attribute, value2);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(" (" + alias + "." + attribute + " BETWEEN :" + fixedAttr + "-b1 AND :" + fixedAttr + "-b2) ");
+		params.put(fixedAttr+ "-b1", value1);
+		params.put(fixedAttr+ "-b2", value2);
 	}
 	
+	/**
+	 * This method ...
+	 * 
+	 * @param string
+	 * @return
+	 */
+	private String fixAttr(String string) {
+		return string.replace(".", "_");
+	}
+
 	public void eq(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " = :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " = :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void gt(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " > :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " > :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void gte(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " >= :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " >= :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void like(String attribute, Object value) {
+		String fixedAttr = fixAttr(attribute);
 		if (attribute.contains("__JPA_ALIAS__")) {
 			String bind = "BIND_PARAM_" + (++bindParamCount);
 			tokens.add(attribute + " LIKE :" + bind + " ");
 			params.put(bind, value);
 		} else {
-			tokens.add(alias + "." + attribute + " LIKE :" + attribute + " ");
-			params.put(attribute, value);
+			tokens.add(alias + "." + attribute + " LIKE :" + fixedAttr + " ");
+			params.put(fixedAttr, value);
 		}
 	}
 
 	public void notLike(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " NOT LIKE :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " NOT LIKE :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void lt(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " < :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " < :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void lte(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " <= :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " <= :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void ne(String attribute, Object value) {
-		tokens.add(alias + "." + attribute + " != :" + attribute + " ");
-		params.put(attribute, value);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(alias + "." + attribute + " != :" + fixedAttr + " ");
+		params.put(fixedAttr, value);
 	}
 
 	public void isNull(String attribute) {
@@ -158,6 +179,10 @@ public class Criteria {
 	public String toQuery(QueryByCriteriaType type) {
 		String queryType = type.toString();
 		if (type.equals(QueryByCriteriaType.SELECT)) {
+			if(distinct){
+				queryType += " " + "DISTINCT";
+			}
+			
 			queryType += " " + alias;
 		}
 		String queryString = queryType + " FROM " + entityName + " AS " + alias;
@@ -204,8 +229,8 @@ public class Criteria {
 					logic = " AND ";
 				} else if (i>0 && token instanceof OrCriteria) {
 					logic = " OR ";
-				} 
-				queryString += logic + " (" + ((Criteria) token).buildWhere() + ") ";
+				}
+			queryString += logic + " (" + ((Criteria) token).buildWhere() + ") ";
 			} else {
 				if(i>0){
 					queryString += " AND " + (String) token;
@@ -257,7 +282,7 @@ public class Criteria {
 			this.params = new HashMap(or.params);
 		}		
 	}
-
+	
 	public Integer getSearchLimit() {
 		return this.searchLimit;
 	}
@@ -271,6 +296,10 @@ public class Criteria {
 		tokens.add(alias + "." + attribute + " IS NOT NULL ");
 	}
 
+	public void distinct(boolean distinct){
+		this.distinct = distinct;
+	}
+	
 	/**
 	 * This method ...
 	 * 
@@ -280,8 +309,31 @@ public class Criteria {
 	 */
 	public void notBetween(String attribute, Object value1,
 			Object value2) {
-		tokens.add(" (" + alias + "." + attribute + " NOT BETWEEN :" + attribute + "-b1 AND :" + attribute + "-b2) ");
-		params.put(attribute, value1);
-		params.put(attribute, value2);
+		String fixedAttr = fixAttr(attribute);
+		tokens.add(" (" + alias + "." + attribute + " NOT BETWEEN :" + fixedAttr + "-b1 AND :" + fixedAttr + "-b2) ");
+		params.put(fixedAttr + "-b1", value1);
+		params.put(fixedAttr + "-b2", value2);
+	}
+
+	/**
+	 * This method ...
+	 * 
+	 * @param string
+	 * @param responsibilitySubQuery
+	 */
+	public void in(String match, Criteria subQuery, String attribute) {
+		if("a".equals(subQuery.alias)){
+			subQuery.alias="b";
+		}
+		String whereClause = "";
+		if(subQuery.tokens.isEmpty()){
+			whereClause = "WHERE ";
+		}else{
+			whereClause = "AND ";
+		}
+		whereClause += subQuery.alias+"."+attribute + " = " + alias+"."+match;
+		
+		tokens.add("EXISTS (" + subQuery.toQuery(QueryByCriteriaType.SELECT) + whereClause + " ) ");
+		
 	}
 }

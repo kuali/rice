@@ -26,14 +26,15 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
@@ -41,6 +42,7 @@ import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -61,6 +63,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static KualiWorkflowInfo kualiWorkflowInfo;
     private static KualiConfigurationService kualiConfigurationService;
     private static IdentityManagementService identityManagementService;
+    private static PersonService personService;
+    private static KualiModuleService kualiModuleService;
 
     /**
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
@@ -93,7 +97,9 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
-        LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
+        }
 
         DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
 
@@ -115,7 +121,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             // to the supervisor buttons. If they're the initiator, but for some reason they are also
             // approving the document, then they can have the supervisor button & functions.
             boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
-            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
+            flags.setCanSupervise(getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
 
             // default normal documents to be unable to copy
             flags.setCanCopy(false);
@@ -160,22 +166,16 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
                         if ( req.getGroupId()!= null ) {
                         	
-                        List<String> principalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(req.getGroupId());
-                        for ( String principalId : principalIds ) {
-                            if ( principalId.equals( user.getPrincipalId() ) ) {
-                            flags.setCanCancel( true );
-                                    flags.setCanApprove( true );
-                                    flags.setCanDisapprove( true );
-                                    reqFound = true; // used to break out of outer loop
-                                    break;
+                        
+                            if ( getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), req.getGroupId() ) ) {
+                                flags.setCanCancel( true );
+                                flags.setCanApprove( true );
+                                flags.setCanDisapprove( true );
+                                break; // break out of outer loop
                             }
-                        }
-                        if ( reqFound ) {
-                            break;
-                        }
                         } else {
-                        LOG.error( "Unable to retrieve user list for exceptiongroup.  ActionRequestVO.getGroupVO() returned null" );
-                        LOG.error( "request: " + req );
+                            LOG.error( "Unable to retrieve user list for exceptiongroup.  ActionRequestVO.getGroupVO() returned null" );
+                            LOG.error( "request: " + req );
                         }
                     }
                     }
@@ -343,7 +343,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      */
     protected Person getWorkflowPessimisticLockOwnerUser() {
         String networkId = KNSConstants.SYSTEM_USER;
-        return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
+        return getPersonService().getPersonByPrincipalName(networkId);
     }
     
     /**
@@ -576,6 +576,57 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return false;
     }
     
+    private ThreadLocal<Map<String,String>> roleQualification = new ThreadLocal<Map<String,String>>();
+    private ThreadLocal<Map<String,String>> permissionDetails = new ThreadLocal<Map<String,String>>();
+    
+    /**
+     * Override this method to populate the role qualifier attributes from the document
+     * for the given document.  This will only be called once per request.
+     * 
+     * Each subclass implementing this method should first call the <b>super</b> version of the method
+     * and then add their own, more specific values to the map in addition.
+     */
+    protected void populateRoleQualification( Document document, Map<String,String> attributes ) {
+        KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
+        attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
+        attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
+        attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
+        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
+    }
+
+    /**
+     * Override this method to populate the role qualifier attributes from the document
+     * for the given document.  This will only be called once per request.
+     */
+    protected void populatePermissionDetails( Document document, Map<String,String> attributes ) {
+        KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
+        attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
+        attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
+        attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
+        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
+    }
+    
+    public final Map<String, String> getRoleQualification(Document document) {
+        if ( roleQualification.get() == null ) {
+            Map<String,String> attributes = new HashMap<String, String>();
+            populateRoleQualification( document, attributes );
+            roleQualification.set( attributes );
+        }
+        return roleQualification.get();
+    }
+    
+    public final Map<String, String> getPermissionDetailValues(Document document) {
+        if ( permissionDetails.get() == null ) {
+            Map<String,String> attributes = new HashMap<String, String>();
+            populatePermissionDetails( document, attributes );
+            permissionDetails.set( attributes );
+        }
+        return permissionDetails.get();
+    }
+    
+    
      /**
 	  * @return the identityManagementService
 	  */
@@ -586,5 +637,19 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 		return identityManagementService;
 	}
+
+    public static PersonService getPersonService() {
+        if ( personService == null ) {
+            personService = KIMServiceLocator.getPersonService();
+        }
+        return personService;
+    }
+
+    public static KualiModuleService getKualiModuleService() {
+        if ( kualiModuleService == null ) {
+            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+        }
+        return kualiModuleService;
+    }
     
 }

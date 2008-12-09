@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -35,7 +38,9 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
      */
     @Override
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
-        LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
+        }
         TransactionalDocumentActionFlags flags = new TransactionalDocumentActionFlags(super.getDocumentActionFlags(document, user));
 
         TransactionalDocument transactionalDocument = (TransactionalDocument) document;
@@ -50,5 +55,19 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
             flags.setCanErrorCorrect(transactionalDocument.getAllowsErrorCorrection() && (workflowDocument.stateIsApproved() || workflowDocument.stateIsProcessed() || workflowDocument.stateIsFinal()));
         }
         return flags;
+    }
+    
+    @Override
+    protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
+        super.populatePermissionDetails(document, attributes);
+        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(document.getClass()).getModuleConfiguration().getNamespaceCode() );
+        attributes.put(KimAttributes.COMPONENT_NAME, document.getClass().getName());
+    }
+    
+    @Override
+    protected void populateRoleQualification(Document document, Map<String, String> attributes) {
+        super.populateRoleQualification(document, attributes);
+        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(document.getClass()).getModuleConfiguration().getNamespaceCode() );
+        attributes.put(KimAttributes.COMPONENT_NAME, document.getClass().getName());
     }
 }

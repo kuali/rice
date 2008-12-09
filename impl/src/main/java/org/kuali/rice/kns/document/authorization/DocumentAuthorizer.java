@@ -84,5 +84,23 @@ public interface DocumentAuthorizer {
      * @return
      */
     public boolean canViewAttachment(String attachmentTypeName, Document document, Person user);
+    
+    /**
+     * Returns the appropriate map of qualification attributes for the current document.
+     * 
+     * The results of this method will be cached in a ThreadLocal for the duration of the request.
+     * 
+     * To populate this map, override the <b>populateRoleQualification</b> method defined in DocumentAuthorizerBase.
+     */
+    Map<String,String> getRoleQualification( Document document );
+    
+    /**
+     * Returns the appropriate map of permission detail attributes for the current document.
+     * 
+     * The results of this method will be cached in a ThreadLocal for the duration of the request.
+     * 
+     * To populate this map, override the <b>populatePermissionDetails</b> method defined in DocumentAuthorizerBase.
+     */
+    Map<String,String> getPermissionDetailValues( Document document );
 }
 

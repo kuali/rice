@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -279,6 +280,25 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		return maintenanceDocumentDictionaryService;
 	}
 
+    @Override
+    protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
+        super.populatePermissionDetails(document, attributes);
+        MaintenanceDocument md = (MaintenanceDocument)document;
+        Class boClass = md.getNewMaintainableObject().getBoClass();
+        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
+        attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
+        attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
+    }
+    
+    @Override
+    protected void populateRoleQualification(Document document, Map<String, String> attributes) {
+        super.populateRoleQualification(document, attributes);
+        MaintenanceDocument md = (MaintenanceDocument)document;
+        Class boClass = md.getNewMaintainableObject().getBoClass();
+        attributes.put(KimAttributes.NAMESPACE_CODE, getKualiModuleService().getResponsibleModuleService(boClass).getModuleConfiguration().getNamespaceCode() );
+        attributes.put(KimAttributes.COMPONENT_NAME, boClass.getName());
+        attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
+    }
     
 }
 

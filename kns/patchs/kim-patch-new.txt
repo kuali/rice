@@ -4,7 +4,7 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(revision 5571)
 +++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizerBase.java	(working copy)
-@@ -1,284 +1,274 @@
+@@ -1,284 +1,292 @@
 -/*
 - * Copyright 2007 The Kuali Foundation.
 - * 
@@ -327,8 +327,10 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 +import org.kuali.rice.kns.document.Document;
 +import org.kuali.rice.kns.document.MaintenanceDocument;
++import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 +import org.kuali.rice.kns.service.KNSServiceLocator;
 +import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
++import org.kuali.rice.kns.util.GlobalVariables;
 +import org.kuali.rice.kns.util.KNSConstants;
 +import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 +
@@ -527,6 +529,22 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +    }
 +    
 +    /**
++     * DocumentTypeAuthorizationException can be extended to customize the initiate error message
++     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
++    */
++    public void canInitiate(String documentTypeName, Person user) {
++    	String nameSpaceCode = "KR-SYS";
++    	String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
++    	AttributeSet permissionDetails = new AttributeSet();
++    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++    	permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
++    		if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
++    			String userName = (String) GlobalVariables.getUserSession().getPrincipalName();
++    			throw new DocumentInitiationAuthorizationException(new String[] {userName,documentTypeName});
++    		}
++    }
++    
++    /**
 +     * This method returns whether this document is creating a new entry in the maintenible/underlying table
 +     * 
 +     * This method is useful to determine whether all the field-based edit modes should be enabled, which is 
@@ -606,373 +624,28 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceD
 +	public List getReadOnlyFields(Document document);
 +}
 +
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java
+Index: impl/src/main/java/org/kuali/rice/kim/util/KimConstants.java
 ===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java	(revision 0)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java	(revision 0)
-@@ -0,0 +1,92 @@
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.ArrayList;
-+import java.util.List;
-+
-+import org.apache.commons.logging.Log;
-+import org.apache.commons.logging.LogFactory;
-+import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-+import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-+import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-+import org.kuali.rice.kns.document.Document;
-+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-+
-+/**
-+ * Base class for all MaintenanceDocumentPresentationControllers.
-+ */
-+public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements MaintenanceDocumentPresentationController {
-+    private static Log LOG = LogFactory.getLog(MaintenanceDocumentPresentationControllerBase.class);
-+
-+    private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
-+    
-+	/**
-+	 * 
-+	 * @param document
-+	 * @return
-+	 */
-+	public List getReadOnlyFields(Document document){
-+		List<MaintainableFieldDefinition> readOnlyFields = new ArrayList();
-+		
-+		String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
-+
-+    	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
-+    	
-+    	List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry.getMaintainableSections();
-+		for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
-+			List<MaintainableItemDefinition> maintainableItems = maintainableSectionDefinition.getMaintainableItems();
-+			
-+			readOnlyFields.addAll(getReadOnlyFieldList(readOnlyFields,maintainableItems));
-+			
-+		}
-+		return readOnlyFields;
-+	}
+--- impl/src/main/java/org/kuali/rice/kim/util/KimConstants.java	(revision 5570)
++++ impl/src/main/java/org/kuali/rice/kim/util/KimConstants.java	(working copy)
+@@ -76,6 +76,7 @@
+ 	public static final String KIM_ATTRIB_ACTION_REQUEST_CODE = "actionRequestCd";
+ 	
+ 	public static final String KIM_ATTRIB_ACTION = "action";
++	public static final String KIM_ATTRIB_PRE_ROUTE  ="PreRoute";
+ 	public static final String KIM_ROLE_NAME_USER = "User";
+ 	public static final String KIM_ROLE_NAME_BILLER = "Biller";
+ 	public static final String KIM_ROLE_NAME_PROCESSOR = "Processor";	
+@@ -87,8 +88,8 @@
+ 	
+ 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
+ 
+-	public static final String KIM_AD_HOC  ="AdHoc";
+ 	
 +	
-+	private static List<MaintainableFieldDefinition> getReadOnlyFieldList(
-+			List<MaintainableFieldDefinition> returnList, List items) {
-+		
-+		for (Object item: items) {
-+			if (item instanceof MaintainableFieldDefinition) {
-+				MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
-+				
-+				if(maintainableFieldDefinition.isUnconditionallyReadOnly()){
-+					returnList.add(maintainableFieldDefinition);
-+				}
-+			} else if (item instanceof MaintainableCollectionDefinition) {
-+				MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) item;
-+				getReadOnlyFieldList(
-+						returnList,
-+						maintainableCollectionDefinition.getMaintainableCollections());
-+				getReadOnlyFieldList(
-+						returnList,
-+						maintainableCollectionDefinition.getMaintainableFields());
-+			}
-+		}
-+		return returnList;
-+	}
-+
-+	/**
-+	 * @return the maintenanceDocumentDictionaryService
-+	 */
-+	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-+		return maintenanceDocumentDictionaryService;
-+	}
-+	
-+	
-+}
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java
-===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(revision 5507)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(working copy)
-@@ -1,40 +1,44 @@
--/*
-- * Copyright 2007 The Kuali Foundation.
-- * 
-- * Licensed under the Educational Community License, Version 1.0 (the "License");
-- * you may not use this file except in compliance with the License.
-- * You may obtain a copy of the License at
-- * 
-- * http://www.opensource.org/licenses/ecl1.php
-- * 
-- * Unless required by applicable law or agreed to in writing, software
-- * distributed under the License is distributed on an "AS IS" BASIS,
-- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-- * See the License for the specific language governing permissions and
-- * limitations under the License.
-- */
--package org.kuali.rice.kns.document.authorization;
--
--import org.kuali.rice.kim.bo.Person;
--import org.kuali.rice.kns.document.MaintenanceDocument;
--
--/**
-- * Extension to DocumentAuthorizer for Maintenance Document specific methods
-- * 
-- * 
-- */
--public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
--
--    /**
--     * 
--     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
--     * 
--     * @param document
--     * @param user
--     * @return MaintenanceDocumentAuthorizations
--     * 
--     */
--    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
--
--}
--
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.Map;
-+
-+import org.kuali.rice.kim.bo.Person;
-+import org.kuali.rice.kns.document.Document;
-+import org.kuali.rice.kns.document.MaintenanceDocument;
-+
-+/**
-+ * Extension to DocumentAuthorizer for Maintenance Document specific methods
-+ * 
-+ * 
-+ */
-+public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
-+
-+    /**
-+     * 
-+     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
-+     * 
-+     * @param document
-+     * @param user
-+     * @return MaintenanceDocumentAuthorizations
-+     * 
-+     */
-+    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
-+    
-+   
-+}
-+
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java
-===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java	(revision 0)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java	(revision 0)
-@@ -0,0 +1,35 @@
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.Map;
-+
-+import org.kuali.rice.kns.document.Document;
-+
-+/**
-+ * The DocumentPresentationController class is used for non-user related lock down 
-+ * 
-+ * 
-+ */
-+public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
-+	 /**
-+     * @param document
-+     * @return Map with keys AuthorizationConstants.EditMode value (String) which indicates what operations the user is currently
-+     *         allowed to take on that document.
-+     */
-+    public Map getEditMode(Document document);
-+}
-+
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java
-===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java	(revision 0)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java	(revision 0)
-@@ -0,0 +1,96 @@
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.Map;
-+
-+import org.kuali.rice.kim.bo.Person;
-+import org.kuali.rice.kns.document.Document;
-+
-+/**
-+ * The DocumentPresentationController class is used for non-user related lock down 
-+ * 
-+ * 
-+ */
-+public interface DocumentPresentationController {
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be edited 
-+     */
-+    public boolean canEdit(Document document);
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be annotated
-+     */
-+    public boolean canAnnotate(Document document);
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be reloaded
-+     */
-+    public boolean canReload(Document document);
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be closed
-+     */
-+    public boolean canClose(Document document);
-+    
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be saved
-+     */
-+    public boolean canSave(Document document);
-+    
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be routed
-+     */
-+    public boolean canRoute(Document document);
-+    
-+  
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be canceled
-+     */
-+    public boolean canCancel(Document document);
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether the document can be copied
-+     */
-+    public boolean canCopy(Document document);
-+    
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether can perform route report
-+     */
-+    public boolean canPerformRouteReport(Document document);
-+    
-+    /**
-+     * @param document
-+     * @return boolean indicating whether can ad hoc route
-+     */
-+    public boolean canAdHocRoute(Document document);
-+    
-+    
-+}
-+
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java
-===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java	(revision 0)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java	(revision 0)
-@@ -0,0 +1,35 @@
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import java.util.HashMap;
-+import java.util.Map;
-+
-+import org.apache.commons.logging.Log;
-+import org.apache.commons.logging.LogFactory;
-+import org.kuali.rice.kns.document.Document;
-+
-+/**
-+ * Base class for all TransactionalDocumentPresentationControllers.
-+ */
-+public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
-+    private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
-+
-+    public Map getEditMode(Document document){
-+    	Map editModeMap = new HashMap();
-+    	return editModeMap;
-+    }
-+}
+ 	@Deprecated
+ 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
+ 	
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationControllerBase.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationControllerBase.java	(revision 0)
@@ -1119,77 +792,6 @@ Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPres
 +    }
 +    
 +        
-+}
-Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java
-===================================================================
---- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java	(revision 5490)
-+++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java	(working copy)
-@@ -1,23 +1,43 @@
--/*
-- * Copyright 2007 The Kuali Foundation.
-- * 
-- * Licensed under the Educational Community License, Version 1.0 (the "License");
-- * you may not use this file except in compliance with the License.
-- * You may obtain a copy of the License at
-- * 
-- * http://www.opensource.org/licenses/ecl1.php
-- * 
-- * Unless required by applicable law or agreed to in writing, software
-- * distributed under the License is distributed on an "AS IS" BASIS,
-- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-- * See the License for the specific language governing permissions and
-- * limitations under the License.
-- */
--package org.kuali.rice.kns.document.authorization;
--
--
--/**
-- * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
-- */
--public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
--}
-+/*
-+ * Copyright 2007 The Kuali Foundation.
-+ * 
-+ * Licensed under the Educational Community License, Version 1.0 (the "License");
-+ * you may not use this file except in compliance with the License.
-+ * You may obtain a copy of the License at
-+ * 
-+ * http://www.opensource.org/licenses/ecl1.php
-+ * 
-+ * Unless required by applicable law or agreed to in writing, software
-+ * distributed under the License is distributed on an "AS IS" BASIS,
-+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+ * See the License for the specific language governing permissions and
-+ * limitations under the License.
-+ */
-+package org.kuali.rice.kns.document.authorization;
-+
-+import org.kuali.rice.kim.bo.Person;
-+import org.kuali.rice.kns.document.Document;
-+
-+
-+/**
-+ * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
-+ */
-+public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
-+	
-+	/**
-+	 * 
-+	 * @param editMode
-+	 * @param user
-+     * @return boolean indicating whether the user has permission to use this edit mode
-+     */
-+
-+	public boolean canUseEditMode(String editMode, Person user); 
-+
-+	 /**
-+     * @param document
-+     * @param user
-+     * @return true if the given user is allowed to correct errors for the document
-+     */
-+    public boolean canErrorCorrect(Document document, Person user); 
-+    
 +}
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizerBase.java
 ===================================================================
@@ -2425,6 +2027,1044 @@ Index: impl/src/main/java/org/kuali/rice/kns/web/struts/form/KualiMaintenanceFor
 +		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
 +	}
 +}
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentPresentationControllerBase.java	(revision 0)
+@@ -0,0 +1,92 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
++import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
++import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
++import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
++import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
++import org.kuali.rice.kns.document.Document;
++import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
++
++/**
++ * Base class for all MaintenanceDocumentPresentationControllers.
++ */
++public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements MaintenanceDocumentPresentationController {
++    private static Log LOG = LogFactory.getLog(MaintenanceDocumentPresentationControllerBase.class);
++
++    private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
++    
++	/**
++	 * 
++	 * @param document
++	 * @return
++	 */
++	public List getReadOnlyFields(Document document){
++		List<MaintainableFieldDefinition> readOnlyFields = new ArrayList();
++		
++		String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
++
++    	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
++    	
++    	List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry.getMaintainableSections();
++		for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
++			List<MaintainableItemDefinition> maintainableItems = maintainableSectionDefinition.getMaintainableItems();
++			
++			readOnlyFields.addAll(getReadOnlyFieldList(readOnlyFields,maintainableItems));
++			
++		}
++		return readOnlyFields;
++	}
++	
++	private static List<MaintainableFieldDefinition> getReadOnlyFieldList(
++			List<MaintainableFieldDefinition> returnList, List items) {
++		
++		for (Object item: items) {
++			if (item instanceof MaintainableFieldDefinition) {
++				MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
++				
++				if(maintainableFieldDefinition.isUnconditionallyReadOnly()){
++					returnList.add(maintainableFieldDefinition);
++				}
++			} else if (item instanceof MaintainableCollectionDefinition) {
++				MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) item;
++				getReadOnlyFieldList(
++						returnList,
++						maintainableCollectionDefinition.getMaintainableCollections());
++				getReadOnlyFieldList(
++						returnList,
++						maintainableCollectionDefinition.getMaintainableFields());
++			}
++		}
++		return returnList;
++	}
++
++	/**
++	 * @return the maintenanceDocumentDictionaryService
++	 */
++	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
++		return maintenanceDocumentDictionaryService;
++	}
++	
++	
++}
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(revision 5507)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/MaintenanceDocumentAuthorizer.java	(working copy)
+@@ -1,40 +1,44 @@
+-/*
+- * Copyright 2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.kuali.rice.kns.document.authorization;
+-
+-import org.kuali.rice.kim.bo.Person;
+-import org.kuali.rice.kns.document.MaintenanceDocument;
+-
+-/**
+- * Extension to DocumentAuthorizer for Maintenance Document specific methods
+- * 
+- * 
+- */
+-public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
+-
+-    /**
+-     * 
+-     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
+-     * 
+-     * @param document
+-     * @param user
+-     * @return MaintenanceDocumentAuthorizations
+-     * 
+-     */
+-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
+-
+-}
+-
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.Map;
++
++import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kns.document.Document;
++import org.kuali.rice.kns.document.MaintenanceDocument;
++
++/**
++ * Extension to DocumentAuthorizer for Maintenance Document specific methods
++ * 
++ * 
++ */
++public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
++
++    /**
++     * 
++     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
++     * 
++     * @param document
++     * @param user
++     * @return MaintenanceDocumentAuthorizations
++     * 
++     */
++    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
++    
++   
++}
++
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationController.java	(revision 0)
+@@ -0,0 +1,35 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.Map;
++
++import org.kuali.rice.kns.document.Document;
++
++/**
++ * The DocumentPresentationController class is used for non-user related lock down 
++ * 
++ * 
++ */
++public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
++	 /**
++     * @param document
++     * @return Map with keys AuthorizationConstants.EditMode value (String) which indicates what operations the user is currently
++     *         allowed to take on that document.
++     */
++    public Map getEditMode(Document document);
++}
++
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentPresentationController.java	(revision 0)
+@@ -0,0 +1,96 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.Map;
++
++import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kns.document.Document;
++
++/**
++ * The DocumentPresentationController class is used for non-user related lock down 
++ * 
++ * 
++ */
++public interface DocumentPresentationController {
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be edited 
++     */
++    public boolean canEdit(Document document);
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be annotated
++     */
++    public boolean canAnnotate(Document document);
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be reloaded
++     */
++    public boolean canReload(Document document);
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be closed
++     */
++    public boolean canClose(Document document);
++    
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be saved
++     */
++    public boolean canSave(Document document);
++    
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be routed
++     */
++    public boolean canRoute(Document document);
++    
++  
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be canceled
++     */
++    public boolean canCancel(Document document);
++    
++    /**
++     * @param document
++     * @return boolean indicating whether the document can be copied
++     */
++    public boolean canCopy(Document document);
++    
++    
++    /**
++     * @param document
++     * @return boolean indicating whether can perform route report
++     */
++    public boolean canPerformRouteReport(Document document);
++    
++    /**
++     * @param document
++     * @return boolean indicating whether can ad hoc route
++     */
++    public boolean canAdHocRoute(Document document);
++    
++    
++}
++
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java	(revision 0)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentPresentationControllerBase.java	(revision 0)
+@@ -0,0 +1,35 @@
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import java.util.HashMap;
++import java.util.Map;
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++import org.kuali.rice.kns.document.Document;
++
++/**
++ * Base class for all TransactionalDocumentPresentationControllers.
++ */
++public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
++    private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
++
++    public Map getEditMode(Document document){
++    	Map editModeMap = new HashMap();
++    	return editModeMap;
++    }
++}
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java	(revision 5490)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/TransactionalDocumentAuthorizer.java	(working copy)
+@@ -1,23 +1,43 @@
+-/*
+- * Copyright 2007 The Kuali Foundation.
+- * 
+- * Licensed under the Educational Community License, Version 1.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- * 
+- * http://www.opensource.org/licenses/ecl1.php
+- * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.kuali.rice.kns.document.authorization;
+-
+-
+-/**
+- * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
+- */
+-public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
+-}
++/*
++ * Copyright 2007 The Kuali Foundation.
++ * 
++ * Licensed under the Educational Community License, Version 1.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.opensource.org/licenses/ecl1.php
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.kuali.rice.kns.document.authorization;
++
++import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kns.document.Document;
++
++
++/**
++ * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
++ */
++public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
++	
++	/**
++	 * 
++	 * @param editMode
++	 * @param user
++     * @return boolean indicating whether the user has permission to use this edit mode
++     */
++
++	public boolean canUseEditMode(String editMode, Person user); 
++
++	 /**
++     * @param document
++     * @param user
++     * @return true if the given user is allowed to correct errors for the document
++     */
++    public boolean canErrorCorrect(Document document, Person user); 
++    
++}
+Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java
+===================================================================
+--- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java	(revision 5571)
++++ impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizerBase.java	(working copy)
+@@ -1,3 +1,4 @@
++
+ /*
+  * Copyright 2007 The Kuali Foundation.
+  * 
+@@ -23,24 +24,22 @@
+ import java.util.Map;
+ import java.util.Set;
+ 
+-import org.apache.commons.lang.StringUtils;
+ import org.apache.commons.logging.Log;
+ import org.apache.commons.logging.LogFactory;
+ import org.kuali.rice.core.util.RiceConstants;
+-import org.kuali.rice.kew.dto.ActionRequestDTO;
+-import org.kuali.rice.kew.dto.ValidActionsDTO;
+-import org.kuali.rice.kew.exception.WorkflowException;
+ import org.kuali.rice.kew.util.KEWConstants;
+ import org.kuali.rice.kim.bo.Person;
++import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+ import org.kuali.rice.kim.service.IdentityManagementService;
+ import org.kuali.rice.kim.service.KIMServiceLocator;
++import org.kuali.rice.kim.util.KimConstants;
+ import org.kuali.rice.kns.authorization.AuthorizationConstants;
+ import org.kuali.rice.kns.document.Document;
+-import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
+ import org.kuali.rice.kns.exception.PessimisticLockingException;
+ import org.kuali.rice.kns.service.AuthorizationService;
+ import org.kuali.rice.kns.service.KNSServiceLocator;
+ import org.kuali.rice.kns.service.KualiConfigurationService;
++import org.kuali.rice.kns.util.GlobalVariables;
+ import org.kuali.rice.kns.util.KNSConstants;
+ import org.kuali.rice.kns.util.ObjectUtils;
+ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+@@ -50,6 +49,12 @@
+ /**
+  * DocumentAuthorizer containing common, reusable document-level authorization code.
+  */
++/**
++ * This is a description of what this class does - zjzhou don't forget to fill this in. 
++ * 
++ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
++ *
++ */
+ public class DocumentAuthorizerBase implements DocumentAuthorizer {
+     private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
+     
+@@ -61,7 +66,8 @@
+     private static KualiWorkflowInfo kualiWorkflowInfo;
+     private static KualiConfigurationService kualiConfigurationService;
+     private static IdentityManagementService identityManagementService;
+-
++    private static DocumentPresentationController documentPresentationController;
++   
+     /**
+      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
+      *      org.kuali.rice.kns.bo.user.KualiUser)
+@@ -85,6 +91,7 @@
+         return editModeMap;
+     }
+     
++    
+     /**
+      * Individual document families will need to reimplement this according to their own needs; this version should be good enough
+      * to be usable during initial development.
+@@ -97,98 +104,48 @@
+ 
+         DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
+ 
+-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+-        boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
++        flags.setCanClose(getDocumentPresentationController().canClose(document)); 
+ 
+-        flags.setCanClose(true); // can always close a document
+-
+-        // if a document is canceled, everything other than close should be set to false
+-        // if a document is NOT canceled, then we want to process the rest
+-        if (!workflowDocument.stateIsCanceled()) {
+-            flags.setCanReload(!workflowDocument.stateIsInitiated());
+-
+-            flags.setCanBlanketApprove(workflowDocument.isBlanketApproveCapable());
+-
+-            // The only exception to the supervisor user canSupervise is when the supervisor
+-            // user is also the initiator, and does NOT have an approval request. In other words if they
+-            // are the document initiator, and its still in Initiated or Saved phase, they cant have access
+-            // to the supervisor buttons. If they're the initiator, but for some reason they are also
+-            // approving the document, then they can have the supervisor button & functions.
+-            boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
+-            flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
+-
+-            // default normal documents to be unable to copy
+-            flags.setCanCopy(false);
+-            // default route report to false and set individually based on workflow doc status below
+-            flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
+-
+-            if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
+-                ValidActionsDTO validActions = workflowDocument.getRouteHeader().getValidActions();
+-                boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
+-                flags.setCanCancel(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_CANCELED_CD));
+-
+-                flags.setCanSave(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_SAVED_CD));
+-
+-                flags.setCanRoute(hasPreRouteEditAuthorization && validActions.contains(KEWConstants.ACTION_TAKEN_ROUTED_CD));
+-
+-                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
+-                flags.setCanFYI(workflowDocument.isFYIRequested());
+-
+-                flags.setCanAdHocRoute(flags.getCanSave() || flags.getCanRoute());
+-            }
+-            else if (workflowDocument.stateIsEnroute()) {
+-                flags.setCanApprove(workflowDocument.isApprovalRequested());
+-
+-                flags.setCanDisapprove(workflowDocument.isApprovalRequested());
+-
+-                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
+-                flags.setCanFYI(workflowDocument.isFYIRequested());
+-
+-                flags.setCanAdHocRoute(workflowDocument.isApprovalRequested() || workflowDocument.isAcknowledgeRequested());
+-            }
+-            else if (workflowDocument.stateIsApproved() || workflowDocument.stateIsFinal() || workflowDocument.stateIsDisapproved()) {
+-                flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
+-                flags.setCanFYI(workflowDocument.isFYIRequested());
+-
+-                flags.setCanAdHocRoute(false);
+-            }
+-            else if (workflowDocument.stateIsException()) {
+-            try {
+-                    ActionRequestDTO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
+-                    boolean reqFound = false;
+-                    for ( ActionRequestDTO req : requests ) {
+-                        if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
+-                        if ( req.getGroupId()!= null ) {
+-                        	
+-                        List<String> principalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(req.getGroupId());
+-                        for ( String principalId : principalIds ) {
+-                            if ( principalId.equals( user.getPrincipalId() ) ) {
+-                            flags.setCanCancel( true );
+-                                    flags.setCanApprove( true );
+-                                    flags.setCanDisapprove( true );
+-                                    reqFound = true; // used to break out of outer loop
+-                                    break;
+-                            }
+-                        }
+-                        if ( reqFound ) {
+-                            break;
+-                        }
+-                        } else {
+-                        LOG.error( "Unable to retrieve user list for exceptiongroup.  ActionRequestVO.getGroupVO() returned null" );
+-                        LOG.error( "request: " + req );
+-                        }
+-                    }
+-                    }
+-            } catch( WorkflowException ex ) {
+-                LOG.error("Unable to retrieve action requests for document: " + document.getDocumentNumber(),ex);
+-            }
+-
+-                flags.setCanAdHocRoute(false);
+-            }
++        flags.setCanReload(getDocumentPresentationController().canReload(document)); 
++        
++        flags.setCanBlanketApprove(canBlanketApprove(document, user));
++        
++        flags.setCanCopy(getDocumentPresentationController().canCopy(document)? canCopy(document, user):false);
++        
++        flags.setCanPerformRouteReport(getDocumentPresentationController().canPerformRouteReport(document));
++        
++        //boolean canSuperviseAsInitiator = !(hasInitiateAuthorization && !workflowDocument.isApprovalRequested());
++        //flags.setCanSupervise(org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE,	KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)) && canSuperviseAsInitiator);
++        
++        
++        if(getDocumentPresentationController().canCancel(document)){
++        	boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
++        	 flags.setCanCancel(hasPreRouteEditAuthorization &&canCancel(document, user));
+         }
++        
++        if(getDocumentPresentationController().canSave(document)){
++        	boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
++        	flags.setCanCancel(hasPreRouteEditAuthorization &&canSave(document, user));
++        }
++        
++        if(getDocumentPresentationController().canRoute(document)){
++        	boolean hasPreRouteEditAuthorization = hasPreRouteEditAuthorization(document, user);
++        	flags.setCanCancel(hasPreRouteEditAuthorization &&canRoute(document, user));
++        }
+ 
+-        setAnnotateFlag(flags);
+-
++        flags.setCanAcknowledge(canAcknowledge(document, user));
++        flags.setCanFYI(canClearFYI(document, user));
++        
++        
++        if(getDocumentPresentationController().canAdHocRoute(document)){
++        	flags.setCanAdHocRoute(flags.getCanSave() || flags.getCanRoute());
++        } 
++         
++        flags.setCanApprove(canApprove(document, user));
++        flags.setCanDisapprove(canDisapprove(document, user));
++        
++        flags.setCanAnnotate(getDocumentPresentationController().canAnnotate(document)? canAnnotate(document, user):false);
++        
+         return flags;
+     }
+     
+@@ -238,12 +195,7 @@
+      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
+      */
+     public void canInitiate(String documentTypeName, Person user) {
+-        if (!getAuthorizationService().isAuthorized(user, "initiate", documentTypeName)) {
+-            // build authorized workgroup list for error message
+-            Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
+-            String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
+-            throw new DocumentInitiationAuthorizationException(new String[] {workgroupList,documentTypeName});
+-        }
++    	
+     }
+ 
+     /**
+@@ -251,7 +203,7 @@
+      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canCopy(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
+      */
+     public boolean canCopy(String documentTypeName, Person user) {
+-        return getAuthorizationService().isAuthorized(user, "initiate", documentTypeName);
++        return false;
+     }
+ 
+     /**
+@@ -576,7 +528,351 @@
+         return false;
+     }
+     
+-     /**
++
++    /**
++     * 
++     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canOpen(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++     */
++    public boolean canOpen(Document document, Person user){
++    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	 
++	     AttributeSet qualifications = new AttributeSet();
++    	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++    	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_OPEN_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	    
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canEdit(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canEdit(Document document, Person user){
++		 boolean canEdit = false;
++	     String nameSpaceCode = "KR-NS";
++	    	
++	     KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++	     String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++	    	
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentType);
++	    	
++	     if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
++	    	 permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, KimConstants.KIM_ATTRIB_PRE_ROUTE);
++	    		
++	     }else{
++	        permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     }
++	    	
++	    AttributeSet qualifications = null;
++	    qualifications = new AttributeSet();
++        qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, document.getDocumentNumber());
++
++	 	if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_DOCUMENT, permissionDetails, qualifications)){
++	 		canEdit = true;
++	 	}
++	 	   
++	    return canEdit;
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canCopy(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canCopy(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);
++	     
++
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_COPY_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	    
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canCancel(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canCancel(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-WKFLW";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_CANCEL_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canRoute(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canRoute(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-WKFLW";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_ROUTE_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	
++	
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canSave(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canSave(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-WKFLW";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_SAVE_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canBlanketApprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canBlanketApprove(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-WKFLW";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canReceiveAdHoc(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-WKFLW";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, actionRequestCode);
++	     AttributeSet qualifications = new AttributeSet();
++    	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++    	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, permissionDetails, qualifications);
++	        	
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canApprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canApprove(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_APPROVE_REQ);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
++	        	
++	 }
++	 
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canClearFYI(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canClearFYI(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_FYI_REQ);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
++	        	
++	 }
++	
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAcknowledge(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canAcknowledge(Document document, Person user){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
++	        	
++	 }
++	
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canComplete(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canComplete(Document document, Person user ){
++		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++     	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
++	        	
++	 }
++	
++	 /**
++	 * 
++	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canDisapprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++	 */
++	public boolean canDisapprove(Document document, Person user){
++		 return canApprove(document, user);
++	 }
++	
++	
++    /**
++     * 
++     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAnnotate(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
++     */
++    public boolean canAnnotate(Document document, Person user){
++    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
++		 String documentTypeName = workflowDocument.getDocumentType();
++	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
++	     String documentNumber = document.getDocumentNumber();
++	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
++		 String nameSpaceCode = "KR-NS";
++		 
++	     AttributeSet permissionDetails = new AttributeSet();
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
++	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
++	    
++	     AttributeSet qualifications = new AttributeSet();
++    	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
++    	
++	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_ADD_NOTE, permissionDetails, qualifications);
++	        	
++    }
++    
++	 
++	 /**
+ 	  * @return the identityManagementService
+ 	  */
+ 	 public static IdentityManagementService getIdentityManagementService() {
+@@ -586,5 +882,14 @@
+ 		}
+ 		return identityManagementService;
+ 	}
+-    
+-}
++
++
++	/**
++	 * @return the documentPresentationController
++	 */
++	public static DocumentPresentationController getDocumentPresentationController() {
++		return documentPresentationController;
++	}
++	 
++      
++}
+\ No newline at end of file
 Index: impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java
 ===================================================================
 --- impl/src/main/java/org/kuali/rice/kns/document/authorization/DocumentAuthorizer.java	(revision 5507)

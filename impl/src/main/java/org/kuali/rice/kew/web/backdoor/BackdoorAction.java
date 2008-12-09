@@ -116,7 +116,7 @@ public class BackdoorAction extends WorkflowAction {
         setFormGroupPermission(backdoorForm, request);
         //set up preferences as backdoor person
         uSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(uSession.getWorkflowUser()));
-        uSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser()));
+        uSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser().getWorkflowUserId().getId()));
     	// TODO: Implement UserSession Hook
         return mapping.findForward("viewBackdoor");
 

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,23 +40,24 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
  * Represents an authenticated user within the Workflow system.
- * 
- * <p>The current authenticated UserSession is stored in a ThreadLocal and can be 
+ *
+ * <p>The current authenticated UserSession is stored in a ThreadLocal and can be
  * accessed using UserSession.getAuthenticatedUser().
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private static ThreadLocal currentUserSession = new ThreadLocal();
-    
+
     private UserId backdoorId;
     private WorkflowUser workflowUser;
     private WorkflowUser backdoorWorkflowUser;
@@ -70,8 +71,9 @@ public class UserSession implements Serializable {
     private String sortOrder;
     private String sortCriteria;
     private int currentPage;
+    private KimPrincipal	principal;
 
-    /**
+	/**
 	 * @return the sortOrder
 	 */
 	public String getSortOrder() {
@@ -117,15 +119,15 @@ public class UserSession implements Serializable {
         this.workflowUser = user;
         this.nextObjectKey = 0;
     }
-    
+
     public static UserSession getAuthenticatedUser() {
     	return (UserSession)currentUserSession.get();
     }
-    
+
     public static void setAuthenticatedUser(UserSession currentUserSession) {
     	UserSession.currentUserSession.set(currentUserSession);
     }
-    
+
     public String getValue(String value) {
     	return value;
     }
@@ -134,31 +136,31 @@ public class UserSession implements Serializable {
     public WorkflowUser getHelpDeskActionListUser() {
         return helpDeskActionListUser;
     }
-    
+
     public Person getHelpDeskActionListPerson() {
     	return convertToPerson(getHelpDeskActionListUser());
     }
-    
+
     public void setHelpDeskActionListUser(WorkflowUser helpDeskActionListUser) {
         this.helpDeskActionListUser = helpDeskActionListUser;
     }
-    
+
     public Preferences getPreferences() {
         return preferences;
     }
-    
+
     public void setPreferences(Preferences preferences) {
         this.preferences = preferences;
     }
-    
+
     public ActionListFilter getActionListFilter() {
         return actionListFilter;
     }
-    
+
     public void setActionListFilter(ActionListFilter actionListFilter) {
         this.actionListFilter = actionListFilter;
     }
-    
+
     public String getNetworkId() {
         if (backdoorId != null) {
             return backdoorWorkflowUser.getAuthenticationUserId().getAuthenticationId();
@@ -166,7 +168,7 @@ public class UserSession implements Serializable {
             return workflowUser.getAuthenticationUserId().getAuthenticationId();
         }
     }
-    
+
     @Deprecated
     public WorkflowUser getWorkflowUser() {
         if (backdoorId != null) {
@@ -175,27 +177,27 @@ public class UserSession implements Serializable {
             return workflowUser;
         }
     }
-    
+
     public Person getPerson() {
     	return convertToPerson(getWorkflowUser());
     }
-    
+
     private Person convertToPerson(WorkflowUser user) {
     	if (user == null) {
     		return null;
     	}
     	return KIMServiceLocator.getPersonService().getPerson(user.getAuthenticationUserId().getId());
     }
-    
+
     @Deprecated
     public WorkflowUser getLoggedInWorkflowUser() {
         return workflowUser;
     }
-    
+
     public Person getLoggedInPerson() {
     	return convertToPerson(getLoggedInWorkflowUser());
     }
-    
+
     public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
         if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment())) {
             if (id.matches("^\\d*$")) {
@@ -207,10 +209,10 @@ public class UserSession implements Serializable {
         }
         return this.backdoorWorkflowUser != null;
     }
-    
+
     public void clearBackdoor() {
         this.backdoorId = null;
-        setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser));
+        setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId()));
     }
 
     public String addObject(Object object) {
@@ -226,7 +228,7 @@ public class UserSession implements Serializable {
     public void removeObject(String objectKey) {
         getObjectMap().remove(objectKey);
     }
-    
+
     public boolean isBackdoorInUse() {
         return backdoorId != null;
     }
@@ -264,24 +266,24 @@ public class UserSession implements Serializable {
     public UserId getBackdoorId() {
         return backdoorId;
     }
-    
+
     public boolean isAdmin(){
     	 Workgroup workflowAdminGroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
-    	 return workflowAdminGroup.hasMember(getWorkflowUser()); 
+    	 return workflowAdminGroup.hasMember(getWorkflowUser());
     }
-    
+
     /**
      * Returns a List of Authentications on the UserSession.  This List identifies the various types of
-     * authentications that the user has performed (i.e. Kerberos, Safeword, etc.) 
+     * authentications that the user has performed (i.e. Kerberos, Safeword, etc.)
      */
     public List getAuthentications() {
     	return authentications;
     }
-    
+
     public void addAuthentication(Authentication authentication) {
     	getAuthentications().add(authentication);
     }
-    
+
     public void removeAuthentication(Authentication authentication) {
     	getAuthentications().remove(authentication);
     }
@@ -306,6 +308,20 @@ public class UserSession implements Serializable {
 
 	public boolean isMemberOfGroup(String groupName) {
 		return getGroups().contains(groupName);
+	}
+
+	/**
+	 * @return the principal
+	 */
+	public KimPrincipal getPrincipal() {
+		return this.principal;
+	}
+
+	/**
+	 * @param principal the principal to set
+	 */
+	public void setPrincipal(KimPrincipal principal) {
+		this.principal = principal;
 	}
 
 }

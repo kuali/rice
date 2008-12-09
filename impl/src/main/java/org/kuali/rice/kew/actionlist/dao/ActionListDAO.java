@@ -36,11 +36,11 @@ public interface ActionListDAO {
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter);
     public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
     public int getCount(String workflowId);
-    
+
     /**
-     * 
+     *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user
-     * 
+     *
      * @param workflowUser
      * @param filter
      * @return

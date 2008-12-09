@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,6 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
@@ -47,23 +46,23 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
-    public List findByUserQualified(WorkflowUser user, String likeString) {
+    public List<UserOptions> findByUserQualified(String principalId, String likeString) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+        criteria.addEqualTo("workflowId", principalId);
         criteria.addLike("optionId", likeString);
-        return new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(UserOptions.class, criteria)));
+        return new ArrayList<UserOptions>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(UserOptions.class, criteria)));
     }
 
-    public void deleteByUserQualified(WorkflowUser user, String likeString) {
+    public void deleteByUserQualified(String principalId, String likeString) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
+        criteria.addEqualTo("workflowId", principalId);
         criteria.addLike("optionId", likeString);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(UserOptions.class, criteria));
     }
 
-    public Collection findByWorkflowUser(WorkflowUser workflowUser) {
+    public Collection<UserOptions> findByWorkflowUser(String principalId) {
         UserOptions userOptions = new UserOptions();
-        userOptions.setWorkflowId(workflowUser.getWorkflowUserId().getWorkflowId());
+        userOptions.setWorkflowId(principalId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(userOptions));
     }
 
@@ -75,14 +74,14 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	this.getPersistenceBrokerTemplate().delete(userOptions);
     }
 
-    public UserOptions findByOptionId(String optionId, WorkflowUser workflowUser) {
+    public UserOptions findByOptionId(String optionId, String principalId) {
         UserOptions userOptions = new UserOptions();
         userOptions.setOptionId(optionId);
-        userOptions.setWorkflowId(workflowUser.getWorkflowUserId().getWorkflowId());
+        userOptions.setWorkflowId(principalId);
         return (UserOptions) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(userOptions));
     }
 
-    public Collection findByOptionValue(String optionId, String optionValue) {
+    public Collection<UserOptions> findByOptionValue(String optionId, String optionValue) {
         UserOptions userOptions = new UserOptions();
         userOptions.setOptionId(optionId);
         userOptions.setOptionVal(optionValue);

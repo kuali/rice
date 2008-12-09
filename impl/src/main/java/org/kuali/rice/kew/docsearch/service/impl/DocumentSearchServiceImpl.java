@@ -80,7 +80,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	public void clearNamedSearches(WorkflowUser user) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
 		for (int i = 0; i < clearListNames.length; i++) {
-			List records = userOptionsService.findByUserQualified(user, clearListNames[i]);
+			List records = userOptionsService.findByUserQualified(user.getWorkflowId(), clearListNames[i]);
 			for (Iterator iter = records.iterator(); iter.hasNext();) {
 				userOptionsService.deleteUserOptions((UserOptions) iter.next());
 			}
@@ -88,7 +88,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
 	public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws KEWUserNotFoundException {
-		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, user);
+		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, user.getWorkflowId());
 		if (savedSearch == null || savedSearch.getOptionId() == null) {
 			return null;
 		}
@@ -99,11 +99,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, false);
     }
-    
+
     public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
         return getList(user, criteria, true);
     }
-	
+
 	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
@@ -148,7 +148,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	    }
         return searchResult;
 	}
-	
+
     public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
 	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
@@ -156,7 +156,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
     	return (DocumentSearchGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
-    
+
     public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor() {
 	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
@@ -382,7 +382,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
 	public List getNamedSearches(WorkflowUser user) {
-		List namedSearches = userOptionsService.findByUserQualified(user, NAMED_SEARCH_ORDER_BASE + "%");
+		List namedSearches = userOptionsService.findByUserQualified(user.getWorkflowId(), NAMED_SEARCH_ORDER_BASE + "%");
 		List sortedNamedSearches = new ArrayList();
 		if (namedSearches != null && namedSearches.size() > 0) {
 			Collections.sort(namedSearches);
@@ -396,10 +396,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
 	public List getMostRecentSearches(WorkflowUser user) {
-		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user);
+		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user.getWorkflowId());
 		List sortedMostRecentSearches = new ArrayList();
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {
-			List mostRecentSearches = userOptionsService.findByUserQualified(user, LAST_SEARCH_BASE_NAME + "%");
+			List mostRecentSearches = userOptionsService.findByUserQualified(user.getWorkflowId(), LAST_SEARCH_BASE_NAME + "%");
 			String[] ordered = order.getOptionVal().split(",");
 			for (int i = 0; i < ordered.length; i++) {
 				UserOptions matchingOption = null;
@@ -468,13 +468,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             savedSearchString.append(criteria.getSuperUserSearch() == null || "".equals(criteria.getSuperUserSearch()) ? "" : ",,superUserSearch=" + criteria.getSuperUserSearch());
 
 			if (criteria.getNamedSearch() != null && !"".equals(criteria.getNamedSearch().trim())) {
-				userOptionsService.save(user, NAMED_SEARCH_ORDER_BASE + criteria.getNamedSearch(), savedSearchString.toString());
+				userOptionsService.save(user.getWorkflowId(), NAMED_SEARCH_ORDER_BASE + criteria.getNamedSearch(), savedSearchString.toString());
 			} else {
 				// first determine the current ordering
-				UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user);
+				UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user.getWorkflowId());
 				if (searchOrder == null) {
-					userOptionsService.save(user, LAST_SEARCH_BASE_NAME + "0", savedSearchString.toString());
-					userOptionsService.save(user, LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
+					userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_BASE_NAME + "0", savedSearchString.toString());
+					userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
 				} else {
 					String[] currentOrder = searchOrder.getOptionVal().split(",");
 					if (currentOrder.length == MAX_SEARCH_ITEMS) {
@@ -491,8 +491,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							}
 							newSearchOrder += newOrder[i];
 						}
-						userOptionsService.save(user, searchName, savedSearchString.toString());
-						userOptionsService.save(user, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
+						userOptionsService.save(user.getWorkflowId(), searchName, savedSearchString.toString());
+						userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					} else {
 						// here we need to do a push so identify the highest used number which is from the
 						// first one in the array, and then add one to it, and push the rest back one
@@ -517,8 +517,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							}
 							newSearchOrder += newOrder[i];
 						}
-						userOptionsService.save(user, searchName, savedSearchString.toString());
-						userOptionsService.save(user, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
+						userOptionsService.save(user.getWorkflowId(), searchName, savedSearchString.toString());
+						userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					}
 				}
 			}
@@ -671,7 +671,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //
 //		return searchableAttributes;
 //	}
-	
+
 	private DocumentType getValidDocumentType(String documentTypeFullName) {
 		if (Utilities.isEmpty(documentTypeFullName)) {
 			return null;

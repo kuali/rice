@@ -52,7 +52,6 @@ import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
@@ -263,7 +262,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
 		String emailBody = null;
-		actionItems = filterActionItemsToNotify(user, actionItems);
+		actionItems = filterActionItemsToNotify(user.getWorkflowUserId().getId(), actionItems);
 		// if there are no action items after being filtered, there's no
 		// reason to send the email
 		if (actionItems.isEmpty()) {
@@ -283,14 +282,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	 * not to recieve secondary or primary delegation emails then they
 	 * will not be included.
 	 */
-	protected Collection filterActionItemsToNotify(WorkflowUser user, Collection actionItems) {
+	protected Collection filterActionItemsToNotify(String principalId, Collection actionItems) {
 		List filteredItems = new ArrayList();
-		Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
+		Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principalId);
 		for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (!actionItem.getPrincipalId().equals(user.getWorkflowId())) {
+			if (!actionItem.getPrincipalId().equals(principalId)) {
 				LOG.warn("Encountered an ActionItem with an incorrect workflow ID.  Was " + actionItem.getPrincipalId() +
-						" but expected " + user.getWorkflowId());
+						" but expected " + principalId);
 				continue;
 			}
 			boolean includeItem = true;

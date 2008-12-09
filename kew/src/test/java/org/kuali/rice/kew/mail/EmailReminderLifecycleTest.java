@@ -40,8 +40,8 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 	private EmailReminderLifecycle emailReminderLifecycle;
 
 	/**
-	 * This method used to reset email sending to false for both daily and weekly reminders 
-	 * 
+	 * This method used to reset email sending to false for both daily and weekly reminders
+	 *
 	 * @see org.kuali.rice.test.RiceTestCase#tearDown()
 	 */
 	@Override
@@ -60,9 +60,9 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		// setup ewestfal to recieve daily emails
 		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal);
+		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal.getWorkflowUserId().getId());
 		prefs.setEmailNotification(KEWConstants.DAILY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal, prefs);
+		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
 		document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);
@@ -106,9 +106,9 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		// setup ewestfal to recieve weekly emails
 		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal);
+		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal.getWorkflowUserId().getId());
 		prefs.setEmailNotification(KEWConstants.WEEKLY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal, prefs);
+		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
 		document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);

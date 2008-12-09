@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Tests Outbox functionality
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OutboxTest extends KEWTestCase {
@@ -48,11 +48,11 @@ public class OutboxTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         loadXmlFile("OutboxTestConfig.xml");
     }
-    
+
     private void turnOnOutboxForUser(final WorkflowUser user) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(user, PreferencesServiceImpl.USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(user.getWorkflowUserId().getId(), PreferencesServiceImpl.USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });
@@ -227,12 +227,12 @@ public class OutboxTest extends KEWTestCase {
     @Test
     public void testOutBoxDefaultPreferenceOnConfigParam() throws Exception {
         WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
+        Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1.getWorkflowUserId().getId());
         assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
 
         ConfigContext.getCurrentContextConfig().overrideProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
         WorkflowUser natjohns = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("natjohns"));
-        prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohns);
+        prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohns.getWorkflowUserId().getId());
         assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());
     }
 

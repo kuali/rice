@@ -191,7 +191,7 @@ public class ActionListAction extends WorkflowAction {
                 // force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-            } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
+            } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
                     actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
                 } else {
@@ -560,7 +560,7 @@ public class ActionListAction extends WorkflowAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPerson().getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }

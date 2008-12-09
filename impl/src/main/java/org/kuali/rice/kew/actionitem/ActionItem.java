@@ -48,6 +48,8 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -405,6 +407,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	 */
 	public void setLastApprovedDate(Timestamp lastApprovedDate) {
 		this.lastApprovedDate = lastApprovedDate;
+	}
+
+	public KimPrincipal getPrincipal(){
+		return KIMServiceLocator.getIdentityService().getPrincipal(principalId);
 	}
 
 }

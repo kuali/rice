@@ -74,7 +74,7 @@ public class ActionListFilterAction extends WorkflowAction {
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
         UserSession session = getUserSession(request);
         session.setActionListFilter(filterForm.getLoadedFilter());
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
         return mapping.findForward("viewActionList");
     }
 
@@ -88,7 +88,7 @@ public class ActionListFilterAction extends WorkflowAction {
         filterForm.setDocTypeFullName("");
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
         return mapping.findForward("viewFilter");
     }
 
@@ -96,7 +96,7 @@ public class ActionListFilterAction extends WorkflowAction {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getWorkflowUser()));
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getPreferencesService();
-        Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser());
+        Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser().getWorkflowUserId().getId());
         request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
         request.setAttribute("delegators", getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession(request).getWorkflowUser())));

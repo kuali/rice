@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
@@ -62,7 +62,7 @@ import org.kuali.rice.kim.bo.group.dto.*;
 
 /**
  * Default implementation of the {@link ActionListService}.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListServiceImpl implements ActionListService {
@@ -97,14 +97,14 @@ public class ActionListServiceImpl implements ActionListService {
         return actionListDAO;
     }
 
-    public boolean refreshActionList(WorkflowUser user) {
-        return KEWServiceLocator.getUserOptionsService().refreshActionList(user);
+    public boolean refreshActionList(String principalId) {
+        return KEWServiceLocator.getUserOptionsService().refreshActionList(principalId);
     }
 
     public void deleteActionItem(ActionItem actionItem) {
         try {
-            KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-        } catch (KEWUserNotFoundException e) {
+            KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
+        } catch (Exception e) {
             LOG.error("error saving refreshUserOption", e);
         }
         getActionItemDAO().deleteActionItem(actionItem);
@@ -120,8 +120,8 @@ public class ActionListServiceImpl implements ActionListService {
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
             try {
-                KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-            } catch (KEWUserNotFoundException e) {
+                KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
+            } catch (Exception e) {
                 LOG.error("error saving refreshUserOption", e);
             }
         }
@@ -200,7 +200,7 @@ public class ActionListServiceImpl implements ActionListService {
             }
         }
     }
-    
+
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest) {
         ActionItem actionItem = new ActionItem();
 
@@ -222,7 +222,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setGroupId(actionRequest.getGroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
-        
+
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
             actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
@@ -231,7 +231,7 @@ public class ActionListServiceImpl implements ActionListService {
 
         return actionItem;
     }
-    
+
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
@@ -254,7 +254,7 @@ public class ActionListServiceImpl implements ActionListService {
     		    	}
     		    }
     	}
-    	
+
     }
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException {
@@ -304,7 +304,7 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
+        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
         getActionItemDAO().saveActionItem(actionItem);
     }
 
@@ -319,11 +319,11 @@ public class ActionListServiceImpl implements ActionListService {
     public WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
     }
-    
+
     public GroupService getGroupService(){
     	return KIMServiceLocator.getGroupService();
     }
-    
+
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {
         this.actionItemDAO = actionItemDAO;
     }
@@ -435,13 +435,13 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionListDAO().getCount(user.getWorkflowId());
     }
 
-    public void saveRefreshUserOption(WorkflowUser user) {
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(user);
+    public void saveRefreshUserOption(String principalId) {
+        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(principalId);
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(org.kuali.rice.kew.user.WorkflowUser,
      *      org.kuali.rice.kew.actionlist.ActionListFilter)
      */
@@ -452,7 +452,7 @@ public class ActionListServiceImpl implements ActionListService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser,
      *      java.util.List)
      */
@@ -461,16 +461,16 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-     * 
+     *
      * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
-     * 
+     *
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(ActionItem actionItem) {
         try {
-            if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
+            if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()
                     && ConfigContext.getCurrentContextConfig().getOutBoxOn()
-                    && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getUser().getWorkflowId()) == null
+                    && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
                     && !actionItem.getRouteHeader().getDocRouteStatus().equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
                 // only create an outbox item if this user has taken action on the document
                 ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(

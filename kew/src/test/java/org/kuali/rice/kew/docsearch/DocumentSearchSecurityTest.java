@@ -46,14 +46,14 @@ import org.kuali.rice.kew.workgroup.Workgroup;
 import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
- * This is a test class to test the document search security and row filtering 
- * 
+ * This is a test class to test the document search security and row filtering
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DocumentSearchSecurityTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentSearchSecurityTest.class);
-    
+
     private static final String WORKFLOW_ADMIN_USER_NETWORK_ID = "bmcgough";
     private static final String APPROVER_USER_NETWORK_ID = "user2";
     private static final String STANDARD_USER_NETWORK_ID = "user1";
@@ -61,7 +61,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     private static final String GENERIC_ROLE_STAFF = "STAFF";
     private static final String GENERIC_ROLE_STUDENT = "STUDENT";
     private static final String GENERIC_ROLE_ALUMNI = "ALUMNI";
-    
+
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchSecurityConfig.xml");
@@ -83,7 +83,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
                 LOG.debug("ending user lookup: " + workflowUser);
                 UserSession userSession = new UserSession(workflowUser);
                 //load the users preferences.  The preferences action will update them if necessary
-                userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser));
+                userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser.getWorkflowUserId().getId()));
                 userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
                 // set up the thread local reference to the current authenticated user
                 for (String dummyRoleName : dummyRoleNames) {
@@ -136,7 +136,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
-    
+
     @Test public void testFiltering_Initiator() throws Exception {
         String documentType = "SecurityDoc_InitiatorOnly";
         WorkflowUser initiator = loginUser(STANDARD_USER_NETWORK_ID);
@@ -162,7 +162,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
-    
+
     @Test public void testFiltering_RouteLogAuthenticated() throws Exception {
         String documentType = "SecurityDoc_RouteLogAuthOnly";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
@@ -202,7 +202,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
         document.approve("");
-        
+
         // test that the approver can see the document
         criteria = new DocSearchCriteriaDTO();
         criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
@@ -222,7 +222,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
-    
+
     @Test public void testFiltering_Workgroup() throws Exception {
         String documentType = "SecurityDoc_WorkgroupOnly";
         WorkflowUser initiator = loginUser(STANDARD_USER_NETWORK_ID);
@@ -263,7 +263,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
-    
+
     @Test public void testFiltering_SearchAttribute() throws Exception {
         String searchAttributeName = "UserEmployeeId";
         String searchAttributeFieldName = "employeeId";
@@ -304,7 +304,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(loginUser(WORKFLOW_ADMIN_USER_NETWORK_ID), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
-        
+
         WorkflowUser approverUser = loginUser(APPROVER_USER_NETWORK_ID);
         document = new WorkflowDocument(new NetworkIdDTO(approverUser.getAuthenticationUserId().getAuthenticationId()), document.getRouteHeaderId());
         document.clearSearchableContent();
@@ -334,7 +334,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
     }
-    
+
     private Map<String,List> constructRulesByUserNetworkId() {
         Map<String,List> rolesByUserNetworkId = new HashMap<String,List>();
         // user with no roles to test general user access
@@ -347,13 +347,13 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         rolesByUserNetworkId.put("xqi",Arrays.asList(new String[]{GENERIC_ROLE_ALUMNI, GENERIC_ROLE_STAFF, GENERIC_ROLE_STUDENT}));
         return rolesByUserNetworkId;
     }
-    
+
     @Test public void testFiltering_Roles() throws Exception {
         String documentType = "SecurityDoc_RoleOnly";
         /*  Document Roles:
          *     Allowed    - STAFF
          *     Disallowed - STUDENT
-         *     
+         *
          *  Users with no roles CANNOT see the document
          */
         List<String> allowedRoles = Arrays.asList(new String[]{GENERIC_ROLE_STAFF});
@@ -364,9 +364,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_Roles_DisallowOnly() throws Exception {
         String documentType = "SecurityDoc_RoleOnly_DisallowOnly";
         /*  Document Roles:
-         *     Allowed    - 
+         *     Allowed    -
          *     Disallowed - ALUMNI
-         *     
+         *
          *  Users with no roles CAN see the document
          */
         List<String> allowedRoles = Arrays.asList(new String[]{});
@@ -379,7 +379,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         /*  Document Roles:
          *     Allowed    - STUDENT, ALUMNI
          *     Disallowed - STUDENT, STAFF
-         *     
+         *
          *  Users with no roles CANNOT see the document
          */
         List<String> allowedRoles = Arrays.asList(new String[]{GENERIC_ROLE_ALUMNI,GENERIC_ROLE_STUDENT});
@@ -430,7 +430,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
             LOG.info("****************************");
         }
     }
-    
+
     protected boolean isRoleAuthenticated(List<String> userRoles, List<String> allowedRoles, List<String> disallowedRoles) {
         boolean allowed = false;
         boolean disallowed = false;
@@ -459,11 +459,11 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_SecurityAttribute_ByClass() throws Exception {
         testSecurityAttributeFiltering("SecurityDoc_SecurityAttributeOnly_Class");
     }
-    
+
     @Test public void testFiltering_SecurityAttribute_ByName() throws Exception {
         testSecurityAttributeFiltering("SecurityDoc_SecurityAttributeOnly_Name");
     }
-    
+
     private void testSecurityAttributeFiltering(String documentType) throws Exception {
         String ackNetworkId = "xqi";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
@@ -472,7 +472,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         document.saveDocument("");
         assertEquals("Document should have saved", KEWConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());
-        
+
         document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), document.getRouteHeaderId());
         document.routeDocument("");
         assertEquals("Document should have routed", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
@@ -519,5 +519,5 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
-    
+
 }

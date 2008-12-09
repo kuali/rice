@@ -46,12 +46,13 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 
 
 /**
  * A filter for processing user logins and creating a {@link UserSession}.
- * 
+ *
  * @see UserSession
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -127,7 +128,7 @@ public class UserLoginFilter implements Filter {
 
     /**
      * Checks if the user who made the request has a UserSession established
-     * 
+     *
      * @param request
      *            the HTTPServletRequest object passed in
      * @return true if the user session has been established, false otherwise
@@ -138,7 +139,7 @@ public class UserLoginFilter implements Filter {
 
     /**
      * create a UserSession object for the workflow user
-     * 
+     *
      * @param request
      *            the servlet request
      * @return UserSession object if authentication was successful, null otherwise
@@ -148,8 +149,15 @@ public class UserLoginFilter implements Filter {
 
         WorkflowUser workflowUser = null;
         try {
+        	String principalName 	= null;
+        	KimPrincipal principal	= null;
+
         	IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
-            UserId id = new AuthenticationUserId(idmService.getAuthenticatedPrincipalName(request));
+        	principalName	= idmService.getAuthenticatedPrincipalName(request);
+        	principal		= idmService.getPrincipalByPrincipalName(principalName);
+
+            UserId id = new AuthenticationUserId(principalName);
+
             if (id == null || StringUtils.isBlank(id.getId())) {
                 LOG.error("WebAuthenticationService did not derive a network id from incoming request");
                 return null;
@@ -161,16 +169,20 @@ public class UserLoginFilter implements Filter {
             if ( LOG.isDebugEnabled() ) {
             	LOG.debug("ending user lookup: " + workflowUser);
             }
+
+
+
             UserSession userSession = new UserSession(workflowUser);
             // load the users preferences. The preferences action will update them if necessary
-            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(workflowUser);
+            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getEntityId());
             if (preferences.isRequiresSave()) {
                 LOG.info("Detected that user preferences require saving.");
-                KEWServiceLocator.getPreferencesService().savePreferences(workflowUser, preferences);
-                preferences = KEWServiceLocator.getPreferencesService().getPreferences(workflowUser);
+                KEWServiceLocator.getPreferencesService().savePreferences(principal.getEntityId(), preferences);
+                preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
             }
             userSession.setPreferences(preferences);
             userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
+            userSession.setPrincipal(principal);
         	// TODO: Implement UserSession Hook
             return userSession;
         } catch (Exception e) {

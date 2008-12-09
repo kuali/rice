@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,15 +43,15 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * The default implementation of the NotificationService.
- *   
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultNotificationService implements NotificationService {
 
 	protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-	
+
 	private static final Comparator notificationPriorityComparator = ComparatorUtils.reversedComparator(new ActionItemComparator());
-	
+
 	/**
 	 * Queues up immediate email processors for ActionItem notification.  Prioritizes the list of
 	 * Action Items passed in and attempts to not send out multiple emails to the same user.
@@ -80,8 +80,8 @@ public class DefaultNotificationService implements NotificationService {
 
 	protected boolean shouldNotify(ActionItem actionItem) {
 		try {
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getPrincipalId()));
-			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
+
+			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
 			boolean sendEmail = false;
 			if (KEWConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
 				if (KEWConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
@@ -97,7 +97,7 @@ public class DefaultNotificationService implements NotificationService {
 				sendEmail = false;
 			}
 			return sendEmail;
-		} catch (KEWUserNotFoundException e) {
+		} catch (Exception e) {
 			throw new WorkflowRuntimeException("Error loading user with workflow id " + actionItem.getPrincipalId() + " for notification.", e);
 		}
 	}
@@ -109,7 +109,7 @@ public class DefaultNotificationService implements NotificationService {
 	protected boolean isItemOriginatingFromSave(ActionItem actionItem) {
 		return actionItem.getResponsibilityId() != null && actionItem.getResponsibilityId().equals(KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID);
 	}
-	
+
 	protected boolean shouldNotifyOnSave(ActionItem actionItem) {
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(document.getDocumentTypeId());
@@ -118,5 +118,5 @@ public class DefaultNotificationService implements NotificationService {
 
     public void removeNotification(List<ActionItem> actionItems) {
         // nothing
-    }	
+    }
 }

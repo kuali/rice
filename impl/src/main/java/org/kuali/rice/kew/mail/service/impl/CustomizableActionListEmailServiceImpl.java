@@ -47,7 +47,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     public void setEmailContentGenerator(EmailContentService contentService) {
         this.contentService = contentService;
     }
-    
+
     protected EmailContentService getEmailContentGenerator() {
         return contentService;
     }
@@ -67,7 +67,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
 
     @Override
     protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
-        actionItems = filterActionItemsToNotify(user, actionItems);
+        actionItems = filterActionItemsToNotify(user.getWorkflowUserId().getId(), actionItems);
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {

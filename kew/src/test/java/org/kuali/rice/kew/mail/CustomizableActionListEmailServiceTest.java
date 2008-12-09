@@ -33,14 +33,14 @@ import org.kuali.rice.test.data.UnitTestFile;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
- * 
+ * This is a description of what this class does - delyea don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class CustomizableActionListEmailServiceTest extends KEWTestCase {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-    
+
     private static final int STANDARD_SLEEP_TIME = 5000;
     private static final int EXPECTED_MILLISECONDS_TO_SEND_REMINDER = 100;
 
@@ -82,17 +82,17 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
     }
-    
+
     private void setupPreferences(List<AuthenticationUserId> users, String emailNotificationPreference) throws Exception {
         for (Iterator iterator = users.iterator(); iterator.hasNext();) {
             AuthenticationUserId authenticationUserId = (AuthenticationUserId) iterator.next();
             WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(authenticationUserId);
-            Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user);
+            Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user.getWorkflowUserId().getId());
             prefs.setEmailNotification(emailNotificationPreference);
-            KEWServiceLocator.getPreferencesService().savePreferences(user, prefs);
+            KEWServiceLocator.getPreferencesService().savePreferences(user.getWorkflowUserId().getId(), prefs);
         }
     }
-    
+
     private MockEmailNotificationService getMockEmailService() {
         return (MockEmailNotificationService)KEWServiceLocator.getActionListEmailService();
     }

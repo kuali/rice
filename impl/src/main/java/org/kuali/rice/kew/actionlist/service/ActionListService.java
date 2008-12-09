@@ -40,14 +40,14 @@ public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
-    
+
     public Collection getActionListForSingleDocument(Long routeHeaderId);
 
     public Collection<Recipient> findUserSecondaryDelegators(WorkflowUser workflowUser) throws KEWUserNotFoundException;
 
     public Collection<Recipient> findUserPrimaryDelegations(WorkflowUser workflowUser) throws KEWUserNotFoundException;
 
-    public boolean refreshActionList(WorkflowUser user);
+    public boolean refreshActionList(String principalId);
 
     public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException;
 
@@ -96,13 +96,13 @@ public interface ActionListService {
      */
     public int getCount(WorkflowUser user);
 
-    public void saveRefreshUserOption(WorkflowUser user);
-    
-    
+    public void saveRefreshUserOption(String principalId);
+
+
     /**
-     * 
+     *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user
-     * 
+     *
      * @param workflowUser
      * @param filter
      * @return

@@ -130,8 +130,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
     		ActionItem actionItem = (ActionItem) iter.next();
     		try {
-    			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-    		} catch (KEWUserNotFoundException e) {
+    			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
+    		} catch (Exception e) {
     			LOG.error("error saving refreshUserOption", e);
     		}
     	}

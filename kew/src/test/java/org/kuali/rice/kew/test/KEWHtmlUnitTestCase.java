@@ -30,7 +30,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 /**
  * This is a helper class for writing html unit tests for KEW
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -51,11 +51,11 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
         // If it is rendered than HtmlUnit will immediately redirect, causing an error to be thrown.
         this.quickstartUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("quickstart"));
-        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartUser);
+        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartUser.getWorkflowUserId().getId());
         preferences.setRefreshRate("0");
-        KEWServiceLocator.getPreferencesService().savePreferences(quickstartUser, preferences);
+        KEWServiceLocator.getPreferencesService().savePreferences(quickstartUser.getWorkflowUserId().getId(), preferences);
     }
-    
+
     protected HtmlPage performLogin(String loginUserNetworkId, String urlActionSuffix) throws Exception {
         URL url = new URL (URL_PREFIX + urlActionSuffix);
         HtmlPage loginPage = (HtmlPage)getWebClient().getPage(url);
@@ -71,7 +71,7 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         URL url = new URL (URL_PREFIX + urlActionSuffix);
         return (HtmlPage)getWebClient().getPage(url);
     }
-    
+
     public WebClient getWebClient() {
         return this.webClient;
     }
@@ -87,5 +87,5 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
     public void setQuickstartUser(WorkflowUser quickstartUser) {
         this.quickstartUser = quickstartUser;
     }
-    
+
 }

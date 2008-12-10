@@ -92,12 +92,11 @@ public class KimConstants {
 	public static final String KIM_ROLE_NAME_ACTIVE_PROFESSIONAL_EMPLOYEE = "Active Professional Employee";
     public static final String KIM_ROLE_NAME_ROUTING_FORM_ADHOC_ACKNOWLEDGER = "Routing Form Ad Hoc Acknowledger";
     public static final String KIM_ROLE_NAME_PREAWARD_PROJECT_DIRECTOR = "Pre-Award Project Director";
-	
+    public static final String KIM_ROLE_NAME_ACTION_REQUEST_RECIPIENT = "Action Request Recipient";
+
 	public static final String PERMISSION_TEMPLATE_CLAIM_ELECTRONIC_PAYMENT = "Claim Electronic Payment";
 	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
-
-	
 	
 	public static final String PRE_ROUTING_DOC_STATUS = "PreRoute";
 	public static final String FYI_ACTION_REQUEST = "FYI";

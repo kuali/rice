@@ -361,7 +361,13 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	protected final String COMMA_SEPARATOR = ", ";
-	protected void validateRequiredAttributesAgainstReceived(List<String> requiredAttributes, AttributeSet receivedAttributes){
+	protected final String QUALIFICATION_RECEIVED_ATTIBUTES_NAME = "qualification";
+	protected final String ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME = "role qualifiers";
+	protected final String REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME = "requested details";
+	protected final String PERMISSION_DETAILS_RECEIVED_ATTIBUTES_NAME = "permission details";
+
+	protected void validateRequiredAttributesAgainstReceived(
+			List<String> requiredAttributes, AttributeSet receivedAttributes, String receivedAttributesName){
 		List<String> missingAttributes = new ArrayList<String>();
 		for(String requiredAttribute: requiredAttributes){
 			if(!receivedAttributes.containsKey(requiredAttribute))
@@ -373,7 +379,7 @@ public class KimTypeServiceBase implements KimTypeService {
         		errorMessage += missingAttribute + COMMA_SEPARATOR;
         	}
         	errorMessage = errorMessage.substring(0, 
-        			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in the received attributes.";
+        			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in "+receivedAttributesName+" .";
             throw new RuntimeException(errorMessage);
         }
 	}

@@ -4,37 +4,37 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="KimAttributes" parent="parentBean" />
+  <bean id="KimAttributes" parent="KimAttributes-parentBean" />
 
-  <bean id="parentBean" abstract="true" parent="BusinessObjectEntry"
+  <bean id="KimAttributes-parentBean" abstract="true" parent="BusinessObjectEntry"
         p:businessObjectClass="org.kuali.rice.kim.bo.impl.KimAttributes"
         p:objectLabel="Kim Attributes">
     <property name="attributes">
       <list>
-        <ref bean="methodToCall" />
-        <ref bean="beanName" />
-        <ref bean="actionClass" />
-        <ref bean="namespaceCode" />
-        <ref bean="componentName" />
-        <ref bean="propertyName" />
-        <ref bean="existingRecordsOnly" />
-        <ref bean="createdBySelfOnly" />
-        <ref bean="collectionItemTypeCode" />
-        <ref bean="editMode" />
-        <ref bean="parameterName" />
-        <ref bean="campusCode" />
-        <ref bean="documentTypeName" />
-        <ref bean="actionRequestCd" />
-        <ref bean="routeStatusCode" />
-        <ref bean="routeNodeName" />
-        <ref bean="entityTypeCode" />
-        <ref bean="roleName" />
-        <ref bean="permissionName" />
-        <ref bean="responsibilityName" />
-        <ref bean="groupName" />
-        <ref bean="required" />
-        <ref bean="actionDetailsAtRoleMemberLevel" />
-        <ref bean="documentNumber" />
+        <ref bean="KimAttributes-methodToCall" />
+        <ref bean="KimAttributes-beanName" />
+        <ref bean="KimAttributes-actionClass" />
+        <ref bean="KimAttributes-namespaceCode" />
+        <ref bean="KimAttributes-componentName" />
+        <ref bean="KimAttributes-propertyName" />
+        <ref bean="KimAttributes-existingRecordsOnly" />
+        <ref bean="KimAttributes-createdBySelfOnly" />
+        <ref bean="KimAttributes-collectionItemTypeCode" />
+        <ref bean="KimAttributes-editMode" />
+        <ref bean="KimAttributes-parameterName" />
+        <ref bean="KimAttributes-campusCode" />
+        <ref bean="KimAttributes-documentTypeName" />
+        <ref bean="KimAttributes-actionRequestCd" />
+        <ref bean="KimAttributes-routeStatusCode" />
+        <ref bean="KimAttributes-routeNodeName" />
+        <ref bean="KimAttributes-entityTypeCode" />
+        <ref bean="KimAttributes-roleName" />
+        <ref bean="KimAttributes-permissionName" />
+        <ref bean="KimAttributes-responsibilityName" />
+        <ref bean="KimAttributes-groupName" />
+        <ref bean="KimAttributes-required" />
+        <ref bean="KimAttributes-actionDetailsAtRoleMemberLevel" />
+        <ref bean="KimAttributes-documentNumber" />
       </list>
     </property>
   </bean>

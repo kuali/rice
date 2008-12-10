@@ -93,10 +93,15 @@
 					
 					<td>
 					<div align=center>&nbsp;
-					<kra:section permission="modifyProposal">  
-						<html:image property="methodToCall.deletePhone.line${status.index}.anchor${currentTabIndex}"
-							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass="tinybutton"/>
-					</kra:section>  
+	        	     <c:choose>
+	        	       <c:when test="${phone.edit}">
+	        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
+	        	       </c:when>
+	        	       <c:otherwise>
+	        	          <html:image property='methodToCall.deletePhone.line${status.index}.anchor${currentTabIndex}'
+								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+	        	       </c:otherwise>
+	        	     </c:choose>  
 					</div>
 	                </td>
 	            </tr>

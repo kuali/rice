@@ -816,6 +816,7 @@
     <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <collection-descriptor name="empInfos" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="false" proxy="false">
       <inverse-foreignkey field-ref="entityAffiliationId" />
       <inverse-foreignkey field-ref="documentNumber" />
@@ -836,6 +837,7 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
     <field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="employmentRecordId" column="EMP_REC_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="employmentType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="employeeTypeCode" />
     </reference-descriptor>
@@ -854,6 +856,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentName" table="KRIM_PND_NM_MT">
@@ -869,6 +872,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="entityNameType" class-ref="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="nameTypeCode" />
     </reference-descriptor>
@@ -890,6 +894,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="addressTypeCode" />
     </reference-descriptor>
@@ -905,6 +910,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="emailTypeCode" />
     </reference-descriptor>
@@ -923,6 +929,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="phoneTypeCode" />
     </reference-descriptor>
@@ -936,6 +943,7 @@
      <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <reference-descriptor name="kimRoleType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="kimTypeId" />
     </reference-descriptor>
@@ -953,6 +961,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
 <!-- 
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="documentNumber" />
@@ -974,6 +983,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
 <!-- 
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="documentNumber" />
@@ -991,6 +1001,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
+    <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
   </class-descriptor>
 
 </descriptor-repository>

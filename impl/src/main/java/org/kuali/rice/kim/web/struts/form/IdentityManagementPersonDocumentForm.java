@@ -67,7 +67,13 @@ public class IdentityManagementPersonDocumentForm extends KualiDocumentFormBase 
         this.setCurrentTabIndex(0);
     }
 
-    public IdentityManagementPersonDocument getPersonDocument() {
+    @Override
+	public void populate(HttpServletRequest request) {
+		// TODO shyu - THIS METHOD NEEDS JAVADOCS
+		super.populate(request);
+	}
+
+	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();
     }
 

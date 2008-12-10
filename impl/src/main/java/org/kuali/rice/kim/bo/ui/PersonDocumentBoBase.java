@@ -37,6 +37,9 @@ public class PersonDocumentBoBase  extends PersistableBusinessObjectBase {
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
     protected boolean active;
+	@Type(type="yes_no")
+	@Column(name="EDIT_FLAG")
+    protected boolean edit;
 	protected IdentityManagementPersonDocument personDocument;
 
 	/**
@@ -73,6 +76,14 @@ public class PersonDocumentBoBase  extends PersistableBusinessObjectBase {
 
 	public void setPersonDocument(IdentityManagementPersonDocument personDocument) {
 		this.personDocument = personDocument;
+	}
+
+	public boolean isEdit() {
+		return this.edit;
+	}
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 
 }

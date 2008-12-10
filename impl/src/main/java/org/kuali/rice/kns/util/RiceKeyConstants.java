@@ -658,6 +658,9 @@ public class RiceKeyConstants {
     
     public static final Object WARNING_LINE_IMPORT_LENGTH_MISMATCH = "warning.core.bo.AccountImportLengthMismatch";
 
+    // kim person document 
+    public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
+    public static final String ERROR_MULTIPLE_PRIMARY_EMPLOYMENT = "error.multiple.primary.employment";
 
     public static final class AdvanceDeposit {
         public static final String ERROR_DOCUMENT_ADVANCE_DEPOSIT_TOTAL_INVALID = "error.document.advanceDeposit.depositTotalInvalid";

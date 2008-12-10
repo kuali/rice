@@ -4,7 +4,7 @@
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
 
-	<kul:tab tabTitle="Overview" defaultOpen="true" tabErrorKey="document.*">
+	<kul:tab tabTitle="Overview" defaultOpen="true" tabErrorKey="document.pr*,document.tax*,document.univ*,document.active,document.affiliations*">
 	<div class="tab-container" align="center">
     	<h3>
     		<span class="subhead-left">Overview</span>
@@ -29,7 +29,7 @@
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}"  /></div></th>
 				 		<td><html:password property="document.password" /></td>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.univId}"  /></div></th>
-				 		<td><kul:htmlControlAttribute property="document.univId" attributeEntry="${personAttributes.univId}"  /></td>          	
+				 		<td><kul:htmlControlAttribute property="document.univId" attributeEntry="${personAttributes.univId}" /></td>          	
 				 	</tr>
 				 	<tr>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>

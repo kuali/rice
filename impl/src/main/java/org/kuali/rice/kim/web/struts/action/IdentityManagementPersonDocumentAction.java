@@ -69,7 +69,7 @@ public class IdentityManagementPersonDocumentAction extends KualiDocumentActionB
 		if (StringUtils.isNotBlank(request.getParameter("command")) && request.getParameter("command").equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
 	        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(request.getParameter("principalId"));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
-	        personDoc.setPrincipalName(principal.getPrincipalId());
+	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
 			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(principal.getEntityId());
 			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);

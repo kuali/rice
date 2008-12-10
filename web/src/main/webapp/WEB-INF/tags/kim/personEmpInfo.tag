@@ -94,8 +94,15 @@
 					
 					<td>
 					<div align=center>&nbsp;
-						<html:image property="methodToCall.deleteEmpInfo.line${afflnIdx}:${status.index}.anchor${currentTabIndex}"
-							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass="tinybutton"/>
+	        	     <c:choose>
+	        	       <c:when test="${empInfo.edit}">
+	        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
+	        	       </c:when>
+	        	       <c:otherwise>
+	        	          <html:image property='methodToCall.deleteEmpInfo.line${afflnIdx}:${status.index}.anchor${currentTabIndex}'
+								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+	        	       </c:otherwise>
+	        	     </c:choose>  
 					</div>
 	                </td>
 	            </tr>

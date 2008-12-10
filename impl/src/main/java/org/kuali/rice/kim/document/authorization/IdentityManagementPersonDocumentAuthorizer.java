@@ -48,7 +48,10 @@ public class IdentityManagementPersonDocumentAuthorizer extends DocumentAuthoriz
 		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		AttributeSet permDetail = new AttributeSet();
 		permDetail.put("entityTypeCode", "Person");
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity", permDetail, null);
+		// TODO : get qualification what should be here?
+		AttributeSet qualification = new AttributeSet();
+		qualification.put("principalId", user.getPrincipalId());
+		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity", permDetail, qualification);
 		// TODO : WIP finish it.
 		return (!permissions.isEmpty());
     }
@@ -58,12 +61,43 @@ public class IdentityManagementPersonDocumentAuthorizer extends DocumentAuthoriz
         Map editModeMap = super.getEditMode(doc, user);
 		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) doc;
 		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+
+        if (editModeMap.get("modifyEntity") == null) {
+			AttributeSet permDetail = new AttributeSet();
+			permDetail.put("entityTypeCode", "Person");
+			// TODO : get qualification what should be here?
+			AttributeSet qualification = new AttributeSet();
+			qualification.put("principalId", user.getPrincipalId());
+			List<? extends KimPermission> modifyEntityPerm = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity", permDetail, qualification);
+	        if (!modifyEntityPerm.isEmpty()) {
+	        	editModeMap.put("modifyEntity", true);
+	        } else {
+	            throw new RuntimeException("Can Not Edit Person Document");
+	        }
+        }
+		
 		AttributeSet permDetail = new AttributeSet();
 		permDetail.put("propertyName", "line3");
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity Field(s)", permDetail, null);
+		// TODO : get qualification ?
+		AttributeSet qualification = new AttributeSet();
+		qualification.put("principalId", user.getPrincipalId());
+
+		// modify entity fields are not finalized yet.  if permattribute is null, then it will return all 'modify entity fields' perms assigned to user
+		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity Field(s)", permDetail, qualification);
         if (!permissions.isEmpty()) {
         	editModeMap.put("line3", true);
         }
+        // TODO : get assign role
+		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Assign Role", null, qualification);
+        if (!assignRolePerms.isEmpty()) {
+        	editModeMap.put("assignRole", true);
+        }
+        // TODO : get populate group
+		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Populate Group", null, qualification);
+        if (!populateGroupPerms.isEmpty()) {
+        	editModeMap.put("populateGroup", true);
+        }
+
 		return editModeMap;
 	}
 

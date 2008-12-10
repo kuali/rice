@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 
@@ -50,6 +49,8 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	protected String principalName;
 	protected String entityId;
 	protected String password;
+	
+	protected String entityEntityTypeId;
 	// ext id - now hard coded for "tax id" & "univ id"
 	protected String taxId = "";
 	protected String univId = "";
@@ -284,175 +285,15 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		if (statusChangeEvent.getNewRouteStatus().equals("R")) {
 			KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
 			
-//			// save to KIM tables
-//			// should call service for this
-//			// test here for now
-//			KimEntityImpl kimEntity = new KimEntityImpl();
-//			kimEntity.setActive(isActive());
-//			kimEntity.setEntityId(getEntityId());
-//
-//			// principal
-//			List<KimPrincipalImpl> principals = new ArrayList<KimPrincipalImpl>();
-//			KimPrincipalImpl principal = new KimPrincipalImpl();
-//			principal.setPrincipalId(principalId);
-//			principal.setPrincipalName(principalName);
-//			principal.setPassword(password);
-//			principals.add(principal);
-//			kimEntity.setPrincipals(principals);
-//
-//			// privacy references
-//			EntityPrivacyPreferencesImpl privacyPreferences = new EntityPrivacyPreferencesImpl();
-//			privacyPreferences.setEntityId(entityId);
-//			privacyPreferences.setSuppressAddress(privacy.isSuppressAddress());
-//			privacyPreferences.setSuppressEmail(privacy.isSuppressEmail());
-//			privacyPreferences.setSuppressName(privacy.isSuppressName());
-//			privacyPreferences.setSuppressPhone(privacy.isSuppressPhone());
-//			privacyPreferences
-//					.setSuppressPersonal(privacy.isSuppressPersonal());
-//			kimEntity.setPrivacyPreferences(privacyPreferences);
-//
-//			// affiliations
-//			List<EntityAffiliationImpl> entityAffiliations = new ArrayList<EntityAffiliationImpl>();
-//			for (PersonDocumentAffiliation affiliation : affiliations) {
-//				EntityAffiliationImpl entityAffiliation = new EntityAffiliationImpl();
-//				entityAffiliation.setAffiliationTypeCode(affiliation
-//						.getAffiliationTypeCode());
-//				entityAffiliation.setCampusCode(affiliation.getCampusCode());
-//				entityAffiliation.setActive(affiliation.isActive());
-//				entityAffiliation.setDefault(affiliation.isDflt());
-//				entityAffiliation.setEntityAffiliationId(affiliation
-//						.getEntityAffiliationId());
-//				// EntityAffiliationImpl does not define empinfos as collection
-//				entityAffiliations.add(entityAffiliation);
-//
-//				// employment informations
-//				List<EntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<EntityEmploymentInformationImpl>();
-//				for (PersonDocumentEmploymentInfo empInfo : affiliation
-//						.getEmpInfos()) {
-//					EntityEmploymentInformationImpl entityEmpInfo = new EntityEmploymentInformationImpl();
-//					entityEmpInfo.setEntityEmploymentId(empInfo
-//							.getEntityEmploymentId());
-//					entityEmpInfo.setEmployeeId(empInfo.getEmployeeId());
-//					entityEmpInfo.setEmploymentRecordId(empInfo
-//							.getEmploymentRecordId());
-//					entityEmpInfo.setBaseSalaryAmount(empInfo
-//							.getBaseSalaryAmount());
-//					entityEmpInfo.setEmployeeStatusCode(empInfo
-//							.getEmployeeStatusCode());
-//					entityEmpInfo.setEmployeeTypeCode(empInfo
-//							.getEmployeeTypeCode());
-//					entityEmpInfo.setActive(empInfo.isActive());
-//					entityEmpInfo.setEntityId(entityId);
-//					entityEmpInfo.setEntityAffiliationId(empInfo
-//							.getEntityAffiliationId());
-//					entityEmploymentInformations.add(entityEmpInfo);
-//				}
-//				kimEntity
-//						.setEmploymentInformation(entityEmploymentInformations);
-//
-//			}
-//			kimEntity.setAffiliations(entityAffiliations);
-//
-//			// names
-//			List<EntityNameImpl> entityNames = new ArrayList<EntityNameImpl>();
-//			for (PersonDocumentName name : names) {
-//				EntityNameImpl entityName = new EntityNameImpl();
-//				entityName.setNameTypeCode(name.getNameTypeCode());
-//				entityName.setFirstName(name.getFirstName());
-//				entityName.setLastName(name.getLastName());
-//				entityName.setMiddleName(name.getMiddleName());
-//				entityName.setActive(name.isActive());
-//				entityName.setDefault(name.isDflt());
-//				entityName.setEntityNameId(name.getEntityNameId());
-//				entityNames.add(entityName);
-//			}
-//			kimEntity.setNames(entityNames);
-//
-//			// entitytype
-//			List<EntityEntityTypeImpl> entityTypes = new ArrayList<EntityEntityTypeImpl>();
-//			EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
-//			entityType.setEntityId(entityId);
-//			entityType.setEntityTypeCode("PERSON");
-//			entityTypes.add(entityType);
-//			kimEntity.setEntityTypes(entityTypes);
-//
-//			// phones
-//			List<EntityPhone> entityPhones = new ArrayList<EntityPhone>();
-//			for (PersonDocumentPhone phone : phones) {
-//				EntityPhoneImpl entityPhone = new EntityPhoneImpl();
-//				entityPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
-//				entityPhone.setEntityId(entityId);
-//				entityPhone.setEntityTypeCode(entityType.getEntityTypeCode());
-//				entityPhone.setPhoneNumber(phone.getPhoneNumber());
-//				entityPhone.setExtension(phone.getExtension());
-//				entityPhone.setExtensionNumber(phone.getExtensionNumber());
-//				entityPhone.setActive(phone.isActive());
-//				entityPhone.setDefault(phone.isDflt());
-//				entityPhone.setEntityPhoneId(phone.getEntityPhoneId());
-//				entityPhones.add(entityPhone);
-//			}
-//			entityType.setPhoneNumbers(entityPhones);
-//
-//			// emails
-//			List<EntityEmail> entityEmails = new ArrayList<EntityEmail>();
-//			for (PersonDocumentEmail email : emails) {
-//				EntityEmailImpl entityEmail = new EntityEmailImpl();
-//				entityEmail.setEntityId(entityId);
-//				entityEmail.setEntityTypeCode(entityType.getEntityTypeCode());
-//				entityEmail.setEmailTypeCode(email.getEmailTypeCode());
-//				entityEmail.setEmailAddress(email.getEmailAddress());
-//				entityEmail.setActive(email.isActive());
-//				entityEmail.setDefault(email.isDflt());
-//				entityEmail.setEntityEmailId(email.getEntityEmailId());
-//				entityEmails.add(entityEmail);
-//			}
-//			entityType.setEmailAddresses(entityEmails);
-//
-//			// address
-//			List<EntityAddress> entityAddresses = new ArrayList<EntityAddress>();
-//			for (PersonDocumentAddress address : addrs) {
-//				EntityAddressImpl entityAddress = new EntityAddressImpl();
-//				entityAddress.setEntityId(entityId);
-//				entityAddress.setEntityTypeCode(entityType.getEntityTypeCode());
-//				entityAddress.setAddressTypeCode(address.getAddressTypeCode());
-//				entityAddress.setLine1(address.getLine1());
-//				entityAddress.setLine2(address.getLine2());
-//				entityAddress.setLine3(address.getLine3());
-//				entityAddress.setStateCode(address.getStateCode());
-//				entityAddress.setPostalCode(address.getPostalCode());
-//				entityAddress.setCountryCode(address.getCountryCode());
-//				entityAddress.setCityName(address.getCityName());
-//				entityAddress.setActive(address.isActive());
-//				entityAddress.setDefault(address.isDflt());
-//				entityAddress.setEntityAddressId(address.getEntityAddressId());
-//				entityAddresses.add(entityAddress);
-//			}
-//			entityType.setAddresses(entityAddresses);
-//
-//			// group memeber
-//			List <GroupPrincipalImpl>  groupPrincipals = new ArrayList<GroupPrincipalImpl>();
-//			for (PersonDocumentGroup group : groups) {
-//				GroupPrincipalImpl groupPrincipalImpl = new GroupPrincipalImpl();
-//				groupPrincipalImpl.setGroupId(group.getGroupId());
-//				// TODO : principalId is not ready here yet ?
-//				groupPrincipalImpl.setMemberPrincipalId(principalId);
-//				groupPrincipals.add(groupPrincipalImpl);
-//				
-//			}
-//			
-//			List <RolePrincipalImpl>  rolePrincipals = new ArrayList<RolePrincipalImpl>();
-//			for (PersonDocumentRole role : roles) {
-//				RolePrincipalImpl rolePrincipalImpl = new RolePrincipalImpl();
-//				rolePrincipalImpl.setRoleId(role.getRoleId());
-//				// TODO : principalId is not ready here yet ?
-//				rolePrincipalImpl.setPrincipalId(principalId);
-//				rolePrincipals.add(rolePrincipalImpl);
-//				
-//			}
-//			
-//			KNSServiceLocator.getBusinessObjectService().save(kimEntity);
-
 		}
+	}
+
+	public String getEntityEntityTypeId() {
+		return this.entityEntityTypeId;
+	}
+
+	public void setEntityEntityTypeId(String entityEntityTypeId) {
+		this.entityEntityTypeId = entityEntityTypeId;
 	}
 
 }

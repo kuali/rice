@@ -85,25 +85,7 @@ public interface DocumentAuthorizer {
      * @return
      */
     public boolean canViewAttachment(String attachmentTypeName, Document document, Person user);
-    
-    /**
-     * Returns the appropriate map of qualification attributes for the current document.
-     * 
-     * The results of this method will be cached in a ThreadLocal for the duration of the request.
-     * 
-     * To populate this map, override the <b>populateRoleQualification</b> method defined in DocumentAuthorizerBase.
-     */
-    AttributeSet getRoleQualification( Document document );
-    
-    /**
-     * Returns the appropriate map of permission detail attributes for the current document.
-     * 
-     * The results of this method will be cached in a ThreadLocal for the duration of the request.
-     * 
-     * To populate this map, override the <b>populatePermissionDetails</b> method defined in DocumentAuthorizerBase.
-     */
-    AttributeSet getPermissionDetailValues( Document document );
-    
+       
     /**
      *  Perform an authorization check on the given document.  This is a helper method which includes the needed permission details
      *  and role qualifiers automatically before calling the IdentityManagementService.
@@ -129,12 +111,12 @@ public interface DocumentAuthorizer {
      * 
      * nulls may be passed in for the attribute sets, in which case the original, document-level attributes will be sent unmodified.
      */
-    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers );
+    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers );
     
     /**
      * @see #isAuthorized(Document, String, String, String, AttributeSet, AttributeSet)
      */
-    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers );
+    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers );
     
 }
 

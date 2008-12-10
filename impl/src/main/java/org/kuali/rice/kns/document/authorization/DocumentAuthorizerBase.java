@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -603,7 +604,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return document.getClass();
     }
 
-    private void populateStandardAttributes( Document document, AttributeSet attributes ) {
+    private void populateStandardAttributes( Document document, Map<String,String> attributes ) {
         KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
         attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
@@ -630,7 +631,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Each subclass implementing this method should first call the <b>super</b> version of the method
      * and then add their own, more specific values to the map in addition.
      */
-    protected void populateRoleQualification( Document document, AttributeSet attributes ) {
+    protected void populateRoleQualification( Document document, Map<String,String> attributes ) {
         populateStandardAttributes(document, attributes);
     }
 
@@ -638,14 +639,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Override this method to populate the role qualifier attributes from the document
      * for the given document.  This will only be called once per request.
      */
-    protected void populatePermissionDetails( Document document, AttributeSet attributes ) {
+    protected void populatePermissionDetails( Document document, Map<String,String> attributes ) {
         populateStandardAttributes(document, attributes);
     }
 
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getRoleQualification(org.kuali.rice.kns.document.Document)
      */
-    public final AttributeSet getRoleQualification(Document document) {
+    private final AttributeSet getRoleQualification(Document document) {
         if ( roleQualification.get() == null ) {
             AttributeSet attributes = new AttributeSet();
             populateRoleQualification( document, attributes );
@@ -657,7 +658,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getPermissionDetailValues(org.kuali.rice.kns.document.Document)
      */
-    public final AttributeSet getPermissionDetailValues(Document document) {
+    private final AttributeSet getPermissionDetailValues(Document document) {
         if ( permissionDetails.get() == null ) {
             AttributeSet attributes = new AttributeSet();
             populatePermissionDetails( document, attributes );
@@ -674,7 +675,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, getPermissionDetailValues(document), getRoleQualification(document));
     }
     
-    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers ) {
+    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
         AttributeSet roleQualifiers = null; 
         AttributeSet permissionDetails = null; 
         if ( additionalRoleQualifiers != null ) {
@@ -692,7 +693,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, roleQualifiers );
     }
     
-    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers ) {
+    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
         AttributeSet roleQualifiers = null; 
         AttributeSet permissionDetails = null; 
         if ( additionalRoleQualifiers != null ) {

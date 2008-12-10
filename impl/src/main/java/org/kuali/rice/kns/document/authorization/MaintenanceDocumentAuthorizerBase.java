@@ -283,7 +283,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		return maintenanceDocumentDictionaryService;
 	}
 
-	protected void addPrimaryKeysToMap( BusinessObject bo, AttributeSet attributes ) {
+	protected void addPrimaryKeysToMap( BusinessObject bo, Map<String,String> attributes ) {
 	    if ( bo == null ) {
 	        return;
 	    }
@@ -315,7 +315,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populatePermissionDetails(org.kuali.rice.kns.document.Document, java.util.Map)
 	 */
     @Override
-    protected void populatePermissionDetails(Document document, AttributeSet attributes) {
+    protected void populatePermissionDetails(Document document, Map<String,String> attributes) {
         super.populatePermissionDetails(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
@@ -328,7 +328,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populateRoleQualification(org.kuali.rice.kns.document.Document, java.util.Map)
      */
     @Override
-    protected void populateRoleQualification(Document document, AttributeSet attributes) {
+    protected void populateRoleQualification(Document document, Map<String,String> attributes) {
         super.populateRoleQualification(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );

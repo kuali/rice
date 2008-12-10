@@ -16,6 +16,7 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -854,8 +855,6 @@
 		</property>
 	</bean>
 
-    <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl" />
-			
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->
@@ -918,5 +917,33 @@
     	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
     	<property name="kualiModuleService" ref="kualiModuleService" />
     </bean>
-    
+
+    <bean id="namespaceRoleTypeService" class="org.kuali.rice.kns.service.impl.NamespaceRoleTypeServiceImpl"/>
+
+    <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>
+
+    <bean id="documentCollectionPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentCollectionPermissionTypeServiceImpl"/>
+
+    <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
+
+    <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrComponentPermissionTypeServiceImpl"/>
+
+    <bean id="parameterPermissionTypeService" class="org.kuali.rice.kns.service.impl.ParameterPermissionTypeServiceImpl"/>
+
+    <bean id="batchFeedOrJobPermissionTypeService" class="org.kuali.rice.kns.service.impl.BatchFeedOrJobPermissionTypeServiceImpl"/>
+
+    <bean id="buttonPermissionTypeService" class="org.kuali.rice.kns.service.impl.ButtonPermissionTypeServiceImpl"/>
+
+    <bean id="actionRequestTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.ActionRequestTypePermissionTypeServiceImpl"/>
+
+    <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrActionPermissionTypeServiceImpl"/>
+
+    <bean id="editModePermissionTypeService" class="org.kuali.rice.kns.service.impl.EditModePermissionTypeServiceImpl"/>
+
+    <bean id="componentFieldPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
+
+    <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
+
+    <bean id="documentTypeAndNodeAndFieldsPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
+
 </beans>

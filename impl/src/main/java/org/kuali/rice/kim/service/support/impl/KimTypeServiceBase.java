@@ -364,7 +364,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected final String QUALIFICATION_RECEIVED_ATTIBUTES_NAME = "qualification";
 	protected final String ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME = "role qualifiers";
 	protected final String REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME = "requested details";
-	protected final String PERMISSION_DETAILS_RECEIVED_ATTIBUTES_NAME = "permission details";
+	protected final String STORED_DETAILS_RECEIVED_ATTIBUTES_NAME = "stored details";
 
 	protected void validateRequiredAttributesAgainstReceived(
 			List<String> requiredAttributes, AttributeSet receivedAttributes, String receivedAttributesName){

@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -25,14 +27,18 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	{
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_COMPONENT_CLASS);
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_PROPERTY_NAME);
+	}
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {		
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS)) || StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_COMPONENT_CLASS + " and " + KimConstants.KIM_ATTRIB_PROPERTY_NAME + " should not be blank or null.");
-		}		
+		validateRequiredAttributesAgainstReceived(requiredAttributes, inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(requiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		
 		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))
 			&& inputAttributeSet.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME).startsWith(storedAttributeSet.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME));

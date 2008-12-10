@@ -25,6 +25,10 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
+	{
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_TYPE_CODE);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
@@ -33,10 +37,6 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 		if (!super.performPermissionMatch(requestedDetails, permission)) {
 			return false;
 		}
-		
-		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME)) || StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_TYPE_CODE))) {
-        	throw new RuntimeException(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME + "and " + KimConstants.KIM_ATTRIB_TYPE_CODE + " should not be blank or null.");
-		}	
 		
 		boolean addTemplate = "Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
 		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY))) {

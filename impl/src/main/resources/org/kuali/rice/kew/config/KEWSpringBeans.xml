@@ -986,5 +986,11 @@
   <!-- END JPA CONFIGURATION -->
 
   <bean id="routeLogDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.RouteLogDerivedRoleTypeServiceImpl" />
-  
+
+  <bean id="actionRequestDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.ActionRequestDerivedRoleTypeServiceImpl" />
+
+  <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
+
+  <bean id="responsibilityResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ResponsibilityResponsibilityTypeServiceImpl" />
+
 </beans>

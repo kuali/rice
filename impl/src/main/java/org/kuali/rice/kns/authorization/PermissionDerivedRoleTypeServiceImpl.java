@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PermissionDerivedRoleTypeService extends KimRoleTypeServiceBase {
+public class PermissionDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 	private String roleNamesapce;
 	private String roleName;
 	private String permissionTemplateNamespace;

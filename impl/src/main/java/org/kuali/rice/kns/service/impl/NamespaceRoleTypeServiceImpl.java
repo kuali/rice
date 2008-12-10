@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.impl;
+package org.kuali.rice.kns.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -29,16 +31,21 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	{
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_NAMESPACE_CODE);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#performRoleQualifierQualificationMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	public boolean performMatch(AttributeSet qualification, AttributeSet roleQualifier) {
+		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(requiredAttributes, roleQualifier, ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME);
+
 		//Create a role type that checks the namespace code. In the namespaceCode attribute, wildcards are allowed ("*")
 		//In this case we DO want partial value matching (as in KFS-* should match all namespaces which begin with KFS.)
-		if(StringUtils.isEmpty(qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE)))
-        	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE+" should not be blank or null.");
-
 		//Assuming that a namespace can contain digits (0-9), alphabets (a-z and A-Z), -, _ and $.
 		return KimCommonUtils.matchInputWithWildcard(
 				qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), 

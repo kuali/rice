@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -29,27 +31,26 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class ResponsibilityResponsibilityTypeServiceImpl extends KimResponsibilityTypeServiceBase {
 
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	{
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME);
+		requiredAttributes.add(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME);
+		// NOTE: The following below is comment per comments on KFSMI-1996
+		//requiredAttributes.add(KimConstants.KIM_ATTRIB_REQUIRED);
+		//requiredAttributes.add(KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+		validateRequiredAttributesAgainstReceived(requiredAttributes, inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(requiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		
 		if (!super.performMatch(inputAttributeSet, storedAttributeSet)) {
 			return false;
 		} 
-		// NOTE: The following below is comment per comments on KFSMI-1996
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME))
-				|| StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME))
-				//|| StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_REQUIRED))
-				//|| StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL))
-			) {
-        	throw new RuntimeException(
-        			KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME 
-        			+ ", " + KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME 
-        			//+ ", " + KimConstants.KIM_ATTRIB_REQUIRED 
-        			//+ " and " + KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL + " should not be blank or null."
-        			);
-		}
 		
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
 		boolean match = KimCommonUtils.checkPermissionDetailMatch(currentDocType, storedAttributeSet);

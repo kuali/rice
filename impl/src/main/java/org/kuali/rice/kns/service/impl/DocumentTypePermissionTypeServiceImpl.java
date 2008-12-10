@@ -50,7 +50,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
 		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(
-				requiredAttributes, permission.getDetails(), PERMISSION_DETAILS_RECEIVED_ATTIBUTES_NAME);
+				requiredAttributes, permission.getDetails(), STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 
 		if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
 			return true;

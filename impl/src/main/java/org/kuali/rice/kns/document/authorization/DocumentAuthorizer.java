@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.document.Document;
 
 /**
@@ -92,7 +93,7 @@ public interface DocumentAuthorizer {
      * 
      * To populate this map, override the <b>populateRoleQualification</b> method defined in DocumentAuthorizerBase.
      */
-    Map<String,String> getRoleQualification( Document document );
+    AttributeSet getRoleQualification( Document document );
     
     /**
      * Returns the appropriate map of permission detail attributes for the current document.
@@ -101,6 +102,39 @@ public interface DocumentAuthorizer {
      * 
      * To populate this map, override the <b>populatePermissionDetails</b> method defined in DocumentAuthorizerBase.
      */
-    Map<String,String> getPermissionDetailValues( Document document );
+    AttributeSet getPermissionDetailValues( Document document );
+    
+    /**
+     *  Perform an authorization check on the given document.  This is a helper method which includes the needed permission details
+     *  and role qualifiers automatically before calling the IdentityManagementService.
+     *  
+     *  @see org.kuali.rice.kim.service.IdentityManagementService#isAuthorized(String, String, String, AttributeSet, AttributeSet)
+     */
+    boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId );
+    
+    /**
+     *  Perform an authorization check on the given document.  This is a helper method which includes the needed permission details
+     *  and role qualifiers automatically before calling the IdentityManagementService.
+     *  
+     *  @see org.kuali.rice.kim.service.IdentityManagementService#isAuthorizedByTemplateName(String, String, String, AttributeSet, AttributeSet)
+     */
+    boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId );
+
+    /**
+     * Same as {@link #isAuthorized(Document, String, String, String)} except that it takes additional permission details
+     * and/or role qualifiers which will be merged (overwriting) the base document qualifiers and details.
+     * 
+     * This can be used for checking row-level permissions where the information that needs to be passed may vary
+     * within a single document.
+     * 
+     * nulls may be passed in for the attribute sets, in which case the original, document-level attributes will be sent unmodified.
+     */
+    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers );
+    
+    /**
+     * @see #isAuthorized(Document, String, String, String, AttributeSet, AttributeSet)
+     */
+    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers );
+    
 }
 

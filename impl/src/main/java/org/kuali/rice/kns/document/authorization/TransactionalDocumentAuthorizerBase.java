@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;

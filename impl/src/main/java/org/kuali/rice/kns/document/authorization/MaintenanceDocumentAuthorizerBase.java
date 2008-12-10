@@ -24,7 +24,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -284,7 +283,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		return maintenanceDocumentDictionaryService;
 	}
 
-	protected void addPrimaryKeysToMap( BusinessObject bo, Map<String,String> attributes ) {
+	protected void addPrimaryKeysToMap( BusinessObject bo, AttributeSet attributes ) {
 	    if ( bo == null ) {
 	        return;
 	    }
@@ -316,7 +315,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populatePermissionDetails(org.kuali.rice.kns.document.Document, java.util.Map)
 	 */
     @Override
-    protected void populatePermissionDetails(Document document, Map<String, String> attributes) {
+    protected void populatePermissionDetails(Document document, AttributeSet attributes) {
         super.populatePermissionDetails(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
@@ -329,7 +328,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populateRoleQualification(org.kuali.rice.kns.document.Document, java.util.Map)
      */
     @Override
-    protected void populateRoleQualification(Document document, Map<String, String> attributes) {
+    protected void populateRoleQualification(Document document, AttributeSet attributes) {
         super.populateRoleQualification(document, attributes);
         MaintenanceDocument md = (MaintenanceDocument)document;
         attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );

@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,6 +32,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -44,6 +44,7 @@ import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -577,8 +578,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return false;
     }
     
-    private ThreadLocal<Map<String,String>> roleQualification = new ThreadLocal<Map<String,String>>();
-    private ThreadLocal<Map<String,String>> permissionDetails = new ThreadLocal<Map<String,String>>();
+    private ThreadLocal<AttributeSet> roleQualification = new ThreadLocal<AttributeSet>();
+    private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
     
     /**
      * Returns the namespace for the given class by consulting the KualiModuleService.
@@ -586,7 +587,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * This method should not need to be overridden but may be if special namespace handling is required.
      */
     protected String getNamespaceForClass( Class clazz ) {
-        return getKualiModuleService().getResponsibleModuleService(clazz).getModuleConfiguration().getNamespaceCode();
+        ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
+        if ( moduleService == null ) {
+            return "KUALI";
+        }
+        return moduleService.getModuleConfiguration().getNamespaceCode();
     }
 
     /**
@@ -606,7 +611,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Each subclass implementing this method should first call the <b>super</b> version of the method
      * and then add their own, more specific values to the map in addition.
      */
-    protected void populateRoleQualification( Document document, Map<String,String> attributes ) {
+    protected void populateRoleQualification( Document document, AttributeSet attributes ) {
         KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
         attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
@@ -621,7 +626,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Override this method to populate the role qualifier attributes from the document
      * for the given document.  This will only be called once per request.
      */
-    protected void populatePermissionDetails( Document document, Map<String,String> attributes ) {
+    protected void populatePermissionDetails( Document document, AttributeSet attributes ) {
         KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
         attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
@@ -635,11 +640,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getRoleQualification(org.kuali.rice.kns.document.Document)
      */
-    public final Map<String, String> getRoleQualification(Document document) {
+    public final AttributeSet getRoleQualification(Document document) {
         if ( roleQualification.get() == null ) {
-            Map<String,String> attributes = new HashMap<String, String>();
+            AttributeSet attributes = new AttributeSet();
             populateRoleQualification( document, attributes );
-            roleQualification.set( Collections.unmodifiableMap( attributes ) );
+            roleQualification.set( attributes );
         }
         return roleQualification.get();
     }
@@ -647,15 +652,59 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getPermissionDetailValues(org.kuali.rice.kns.document.Document)
      */
-    public final Map<String, String> getPermissionDetailValues(Document document) {
+    public final AttributeSet getPermissionDetailValues(Document document) {
         if ( permissionDetails.get() == null ) {
-            Map<String,String> attributes = new HashMap<String, String>();
+            AttributeSet attributes = new AttributeSet();
             populatePermissionDetails( document, attributes );
-            permissionDetails.set( Collections.unmodifiableMap( attributes ) );
+            permissionDetails.set( attributes );
         }
         return permissionDetails.get();
     }
     
+    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId ) {
+        return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName, getPermissionDetailValues(document), getRoleQualification(document));
+    }
+    
+    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId ) {
+        return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, getPermissionDetailValues(document), getRoleQualification(document));
+    }
+    
+    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers ) {
+        AttributeSet roleQualifiers = null; 
+        AttributeSet permissionDetails = null; 
+        if ( additionalRoleQualifiers != null ) {
+            roleQualifiers = new AttributeSet( getRoleQualification(document) );
+            roleQualifiers.putAll(additionalRoleQualifiers);
+        } else {
+            roleQualifiers = getRoleQualification(document);
+        }
+        if ( additionalPermissionDetails != null ) {
+            permissionDetails = new AttributeSet( getPermissionDetailValues(document) );
+            permissionDetails.putAll( additionalPermissionDetails );
+        } else {
+            permissionDetails = getPermissionDetailValues(document);
+        }
+        return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, roleQualifiers );
+    }
+    
+    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, AttributeSet additionalPermissionDetails, AttributeSet additionalRoleQualifiers ) {
+        AttributeSet roleQualifiers = null; 
+        AttributeSet permissionDetails = null; 
+        if ( additionalRoleQualifiers != null ) {
+            roleQualifiers = new AttributeSet( getRoleQualification(document) );
+            roleQualifiers.putAll(additionalRoleQualifiers);
+        } else {
+            roleQualifiers = getRoleQualification(document);
+        }
+        if ( additionalPermissionDetails != null ) {
+            permissionDetails = new AttributeSet( getPermissionDetailValues(document) );
+            permissionDetails.putAll( additionalPermissionDetails );
+        } else {
+            permissionDetails = getPermissionDetailValues(document);
+        }
+        return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, roleQualifiers );
+    }
+        
     
      /**
 	  * @return the identityManagementService

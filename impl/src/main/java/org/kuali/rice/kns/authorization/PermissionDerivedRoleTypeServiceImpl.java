@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
+import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PermissionDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase {
+public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	private String roleNamesapce;
 	private String roleName;
 	private String permissionTemplateNamespace;
@@ -133,13 +133,4 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase
 		return KIMServiceLocator.getPermissionService();
 	}
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#isApplicationRoleType()
-	 */
-	@Override
-	public boolean isApplicationRoleType() {
-		return true;
-	}
 }

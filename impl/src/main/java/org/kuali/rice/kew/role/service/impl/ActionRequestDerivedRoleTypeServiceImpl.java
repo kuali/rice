@@ -24,7 +24,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
+import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -32,7 +32,7 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ActionRequestDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase {
+public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{

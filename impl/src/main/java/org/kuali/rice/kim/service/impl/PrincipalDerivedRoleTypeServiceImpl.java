@@ -25,8 +25,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
+import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslator;
 
 /**
@@ -35,8 +34,7 @@ import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslat
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase implements
-		KimRoleTypeService {
+public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
 	protected IdentityManagementService identityManagementService;
 	private List<String> roleGroupIds = Collections.unmodifiableList( new ArrayList<String>(0) );
@@ -125,6 +123,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimRoleTypeServiceBase 
 			AttributeSet qualification) {
 		return roleGroupIds;
 	}
+    
 	public IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
 			identityManagementService = KIMServiceLocator.getIdentityManagementService();

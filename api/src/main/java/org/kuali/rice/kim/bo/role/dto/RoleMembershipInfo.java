@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleMembershipInfo {
+public class RoleMembershipInfo implements Serializable {
 	protected String roleId;
 	protected String roleMemberId;
 	protected String embeddedRoleId; // ID of the role from which the group or principal was derived

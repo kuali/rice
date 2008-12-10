@@ -99,6 +99,11 @@ public class KimConstants {
 
 	
 	
+	public static final String PRE_ROUTING_DOC_STATUS = "PreRoute";
+	public static final String FYI_ACTION_REQUEST = "FYI";
+	public static final String ACKNOWLEDGE_ACTION_REQUEST = "Acknowledge";
+	public static final String APPROVE_ACTION_REQUEST = "Approve";
+	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 	

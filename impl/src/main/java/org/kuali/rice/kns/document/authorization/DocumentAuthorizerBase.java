@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
@@ -167,8 +168,6 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                     for ( ActionRequestDTO req : requests ) {
                         if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
                         if ( req.getGroupId()!= null ) {
-                        	
-                        
                             if ( getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), req.getGroupId() ) ) {
                                 flags.setCanCancel( true );
                                 flags.setCanApprove( true );
@@ -603,7 +602,27 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     protected Class getComponentClass( Document document ) {
         return document.getClass();
     }
-    
+
+    private void populateStandardAttributes( Document document, AttributeSet attributes ) {
+        KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
+        attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
+        attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
+        if ( wd.stateIsInitiated() || wd.stateIsSaved() ) {
+            attributes.put(KimAttributes.ROUTE_STATUS_CODE, KimConstants.PRE_ROUTING_DOC_STATUS );
+        } else {
+            attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getStatusDisplayValue() );
+        }
+        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        if ( wd.isApprovalRequested() ) {
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.APPROVE_ACTION_REQUEST );  
+        } else if ( wd.isAcknowledgeRequested() ) {
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.ACKNOWLEDGE_ACTION_REQUEST );
+        } else if ( wd.isFYIRequested() ) {
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.FYI_ACTION_REQUEST );
+        }
+        attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
+        attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
+    }    
     /**
      * Override this method to populate the role qualifier attributes from the document
      * for the given document.  This will only be called once per request.
@@ -612,14 +631,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * and then add their own, more specific values to the map in addition.
      */
     protected void populateRoleQualification( Document document, AttributeSet attributes ) {
-        KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
-        attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
-        attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
-        attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
-        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
-        //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
-        attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
-        attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
+        populateStandardAttributes(document, attributes);
     }
 
     /**
@@ -627,14 +639,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * for the given document.  This will only be called once per request.
      */
     protected void populatePermissionDetails( Document document, AttributeSet attributes ) {
-        KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
-        attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
-        attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
-        attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus() );
-        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
-        attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
-        attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
-        //attributes.put(KimAttributes.ACTION_REQUEST_CD, wd.getRouteHeader().get );
+        populateStandardAttributes(document, attributes);
     }
 
     /**

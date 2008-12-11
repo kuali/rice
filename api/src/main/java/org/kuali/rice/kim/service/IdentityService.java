@@ -28,13 +28,6 @@ public interface IdentityService extends IdentityServiceBase {
 
 	/** Find entity objects based on the given criteria. */
 	public List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
-
-	/** Persist the given entity to the appropriate data store.
-	 * 
-	 * This method may throw an UnsupportedOperationException if the backing data store
-	 * is read-only.
-	 */
-    public void saveEntity(KimEntity entity);
     
     public Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
     

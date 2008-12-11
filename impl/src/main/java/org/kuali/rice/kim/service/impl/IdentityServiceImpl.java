@@ -16,7 +16,6 @@ import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -51,6 +50,7 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntitys(java.util.Map)
 	 */
+	@SuppressWarnings("unchecked")
 	public List<KimEntity> lookupEntitys(Map<String, String> searchCriteria) {
         return (List<KimEntity>) getBusinessObjectService().findMatching(KimEntityImpl.class, searchCriteria);
 	}
@@ -66,25 +66,11 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return entityIds;
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityService#saveEntity(org.kuali.rice.kim.bo.entity.KimEntity)
-	 */
-	public void saveEntity(KimEntity entity) {
-		if ( entity == null ) {
-			return;
-		}
-		if ( entity instanceof PersistableBusinessObject ) {
-			getBusinessObjectService().save((PersistableBusinessObject)entity);
-		} else {
-    		throw new IllegalArgumentException( "saveEntity: entity was not a PersistableBusinessObject.  It can not be persisted" +
-    				"through this implementation.  was: " + entity.getClass().getName() );			
-		}
-	}
 
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public KimPrincipal getPrincipalByPrincipalName(String principalName) {
 		 Map<String,Object> criteria = new HashMap<String,Object>();
          criteria.put("principalName", principalName);
@@ -191,6 +177,7 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * Generic helper method for performing a lookup through the business object service.
 	 */
+	@SuppressWarnings("unchecked")
 	protected KimEntity getEntityByKeyValue(String key, String value) {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put(key, value);

@@ -74,7 +74,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, java.lang.String, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, AttributeSet)
      */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
@@ -89,7 +89,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, AttributeSet, AttributeSet)
      */
     public List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	// get all the permission objects whose name match that requested
@@ -100,7 +100,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, AttributeSet, AttributeSet)
      */
     public List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	// get all the permission objects whose name match that requested
@@ -168,7 +168,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, AttributeSet, AttributeSet)
      */
     public List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
@@ -262,7 +262,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByTemplateName(java.lang.String)
+     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByTemplateName(String, String)
      */
     public List<KimPermissionInfo> getPermissionsByTemplateName(String namespaceCode, String permissionTemplateName) {
     	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
@@ -274,7 +274,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
 	/**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(java.lang.String)
+     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(String, String)
      */
     public List<KimPermissionInfo> getPermissionsByName(String namespaceCode, String permissionName) {
     	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );
@@ -341,23 +341,6 @@ public class PermissionServiceImpl implements PermissionService {
     		return permType.getKimTypeServiceName();
     	}
     	return null;
-    }
-
-
-
-    public void savePermission(KimPermissionInfo permission) {
-    	throw new UnsupportedOperationException();
-//    	if ( permission == null ) {
-//    		return;
-//    	}
-//    	KimPermissionImpl impl = new KimPermissionImpl();
-//    	impl.fromInfo( permission );
-//		getBusinessObjectService().save( impl );
-    }
-
-	
-    public void assignQualifiedPermissionToRole(String roleId, String permissionId, AttributeSet qualifier) {
-    	throw new UnsupportedOperationException();
     }
 
     // --------------------

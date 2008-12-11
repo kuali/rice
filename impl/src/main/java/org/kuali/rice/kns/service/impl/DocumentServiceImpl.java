@@ -169,9 +169,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document routeDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanRoute()) {
-            throw buildAuthorizationException("route", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanRoute()) {
+        //    throw buildAuthorizationException("route", document);
+        //}
         document.prepareForSave();
         validateAndPersistDocument(document, new RouteDocumentEvent(document));
         prepareWorkflowDocument(document);
@@ -188,9 +188,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document approveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanApprove()) {
-            throw buildAuthorizationException("approve", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanApprove()) {
+        //    throw buildAuthorizationException("approve", document);
+        //}
         document.prepareForSave();
         validateAndPersistDocument(document, new ApproveDocumentEvent(document));
         prepareWorkflowDocument(document);
@@ -238,9 +238,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document disapproveDocument(Document document, String annotation) throws Exception {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanDisapprove()) {
-            throw buildAuthorizationException("disapprove", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanDisapprove()) {
+        //    throw buildAuthorizationException("disapprove", document);
+        //}
 
         Note note = createNoteFromDocument(document,annotation);
         addNoteToDocument(document, note);
@@ -261,9 +261,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document cancelDocument(Document document, String annotation) throws WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanCancel()) {
-            throw buildAuthorizationException("cancel", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanCancel()) {
+        //    throw buildAuthorizationException("cancel", document);
+        //}
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
@@ -278,9 +278,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanAcknowledge()) {
-            throw buildAuthorizationException("acknowledge", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanAcknowledge()) {
+        //    throw buildAuthorizationException("acknowledge", document);
+        //}
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
@@ -293,9 +293,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanBlanketApprove()) {
-            throw buildAuthorizationException("blanket approve", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanBlanketApprove()) {
+        //    throw buildAuthorizationException("blanket approve", document);
+        //}
         document.prepareForSave();
         validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
         prepareWorkflowDocument(document);
@@ -309,9 +309,9 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanFYI()) {
-            throw buildAuthorizationException("clear FYI", document);
-        }
+        //if (!getDocumentActionFlags(document).getCanFYI()) {
+         //   throw buildAuthorizationException("clear FYI", document);
+        //}
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
@@ -328,12 +328,12 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    private DocumentActionFlags getDocumentActionFlags(Document document) {
+    /*private DocumentActionFlags getDocumentActionFlags(Document document) {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         return getDocumentAuthorizationService().getDocumentAuthorizer(document).getDocumentActionFlags(document, currentUser);
     }
-
+	*/
     private DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 

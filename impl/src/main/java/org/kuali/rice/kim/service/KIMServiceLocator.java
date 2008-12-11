@@ -57,8 +57,8 @@ public final class KIMServiceLocator {
     	return (RoleService)getService(KIM_ROLE_SERVICE);
     }
     
-    public static RoleService getRoleManagementService() {
-    	return (RoleService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
+    public static RoleManagementService getRoleManagementService() {
+    	return (RoleManagementService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
     }    
 
     public static PermissionService getPermissionService() {

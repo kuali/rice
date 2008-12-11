@@ -75,10 +75,10 @@ public class RouteNodeInstance implements Serializable {
 	@JoinColumn(name="PROC_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance process;
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
-    @JoinTable(name = "EN_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
-    @JoinTable(name = "EN_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
     //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
     @Transient

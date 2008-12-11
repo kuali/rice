@@ -176,7 +176,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 
     /* New Workflow 2.1 Field */
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
-    @JoinTable(name = "EN_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     static {

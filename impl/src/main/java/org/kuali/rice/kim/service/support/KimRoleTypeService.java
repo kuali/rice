@@ -87,6 +87,20 @@ public interface KimRoleTypeService extends KimTypeService {
     List<String> getGroupIdsFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
     
     /**
+     * This method can be used to check if the given principal has this application role.  It is designed to be used in case
+     * there is a more efficient way to check for whether a principal is in a role rather than retrieving all the
+     * members of the role and checking against that.
+     * 
+     * The groupIds parameter is intended to be the complete list of groups to which the principal belongs.  If either the
+     * principalId or the groupIds parameters are blank/empty, that parameter should be ignored.
+     * 
+     * @see #isApplicationRoleType()
+     * @see #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
+     * @see #getGroupIdsFromApplicationRole(String, String, AttributeSet)
+     */
+    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification );
+    
+    /**
      * This method would return all qualifications that the given qualification implies. (down)
      */
     List<AttributeSet> getAllImpliedQualifications( AttributeSet qualification );

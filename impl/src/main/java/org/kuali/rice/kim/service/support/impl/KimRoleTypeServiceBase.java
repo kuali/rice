@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -81,6 +82,35 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		} else {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is an application role type but has not overridden this method." );
 		}
+	}
+	
+	/**
+	 * This simple initial implementation just calls the {@link #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)} and 
+	 * {@link #getGroupIdsFromApplicationRole(String, String, AttributeSet)} methods and checks their results.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public boolean hasApplicationRole(String principalId, List<String> groupIds,
+			String namespaceCode, String roleName, AttributeSet qualification) {
+		if ( !isApplicationRoleType() ) {
+			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
+		}
+		// if principal ID given, check if it is in the list generated from the getPrincipalIdsFromApplicationRole method
+		if ( StringUtils.isNotBlank( principalId ) ) {
+			if ( getPrincipalIdsFromApplicationRole(namespaceCode, roleName, qualification).contains(principalId) ) {
+				return true;
+			}
+		}
+		// if any group IDs were given, check if any one of them is in the list returned from getGroupIdsFromApplicationRole
+		if ( groupIds != null && !groupIds.isEmpty() ) {
+			List<String> roleGroupIds = getGroupIdsFromApplicationRole(namespaceCode, roleName, qualification);
+			for ( String groupId : groupIds ) {
+				if ( roleGroupIds.contains(groupId) ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**

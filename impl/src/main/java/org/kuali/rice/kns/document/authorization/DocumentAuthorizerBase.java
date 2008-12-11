@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.ken.util.NotificationConstants.KEW_CONSTANTS;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -351,7 +352,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 */
 	public boolean canApprove(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.APPROVE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
 		}else{
 			return false;
@@ -365,7 +366,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 */
 	public boolean canClearFYI(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.FYI_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_FYI_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
 		}else{
 			return false;
@@ -378,7 +379,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 */
 	public boolean canAcknowledge(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.ACKNOWLEDGE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
 		}else{
 			return false;
@@ -391,7 +392,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 */
 	public boolean canComplete(Document document, Person user ){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.COMPLETE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
 		}else{
 			return false;

@@ -293,22 +293,34 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return hasRole;
 	}
 
-	// Methods that are not cached
 	
-	public void assignQualifiedRoleToGroup(String groupId, String roleId, AttributeSet qualifier) {
-		getRoleService().assignQualifiedRoleToGroup(groupId, roleId, qualifier);
-	}
-
-	public void assignQualifiedRoleToPrincipal(String principalId, String roleId, AttributeSet qualifier) {
-		getRoleService().assignQualifiedRoleToPrincipal(principalId, roleId, qualifier);		
-	}
-
-	public void saveRole(KimRoleInfo role) {
-		getRoleService().saveRole(role);
-	}
 
 	// Helper methods
 	
+	public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );
+		// TODO: expire the appropriate cache entries
+	}
+
+	public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleService().assignPrincipalToRole( principalId, namespaceCode, roleName, qualifications );
+		// TODO: expire the appropriate cache entries
+	}
+
+	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleService().removeGroupFromRole( groupId, namespaceCode, roleName, qualifications );
+		// TODO: expire the appropriate cache entries
+	}
+
+	public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleService().removePrincipalFromRole( principalId, namespaceCode, roleName, qualifications );
+		// TODO: expire the appropriate cache entries
+	}
+
 	private String buildIdsKey(List<String> roleIds) {
 		if ( roleIds == null || roleIds.isEmpty() ) {
 			return "null";

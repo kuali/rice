@@ -468,9 +468,7 @@ public class GroupServiceImpl implements GroupService {
 		return attributes;
 	}
 
-    /**
-     * @see org.kuali.rice.kim.service.GroupService#createGroup(org.kuali.rice.kim.bo.group.dto.GroupInfo)
-     */
+    /*
     public GroupInfo createGroup(GroupInfo groupInfo) {
         KimGroupImpl group = new KimGroupImpl();
 
@@ -491,9 +489,6 @@ public class GroupServiceImpl implements GroupService {
 		getBusinessObjectService().save( group );
 	}
     
-    /**
-     * @see org.kuali.rice.kim.service.GroupService#updateGroup(java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo)
-     */
     public GroupInfo updateGroup(String groupId, GroupInfo groupInfo) {
         // TODO sgibson - can this be used to change id?
         KimGroupImpl group = getGroupImpl(groupId);
@@ -507,6 +502,7 @@ public class GroupServiceImpl implements GroupService {
 
         return getGroupInfo(groupInfo.getGroupId());
     }
+    */
 
     /**
      * @see org.kuali.rice.kim.service.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)

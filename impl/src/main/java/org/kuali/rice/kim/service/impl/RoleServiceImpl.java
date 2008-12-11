@@ -804,30 +804,30 @@ public class RoleServiceImpl implements RoleService {
     // --------------------
     // Persistence Methods
     // --------------------
-	
-	public void saveRole(KimRoleInfo role) {
-		throw new UnsupportedOperationException();
-//		if ( role == null ) {
-//			return;
-//		}
-//		KimRoleImpl impl = new KimRoleImpl();
-//		impl.fromSimpleInfo();
-//		if ( role instanceof PersistableBusinessObject ) {
-//			getBusinessObjectService().save((PersistableBusinessObject)role);
-//		} else {
-//    		throw new IllegalArgumentException( "saveRole: role was not a PersistableBusinessObject.  It can not be persisted" +
-//    				"through this implementation.  was: " + role.getClass().getName() );
-//		}
-	}
 
-    public void assignQualifiedRoleToPrincipal(String principalId, String roleId, AttributeSet qualifications) {
+    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) {
+    	// look up the role
+    	// add row to member table
+    	// iterate over qualifiers, adding them to the member attrib table
     	throw new UnsupportedOperationException();
     }
 
-    public void assignQualifiedRoleToGroup(String groupId, String roleId, AttributeSet qualifications) {
+    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) {
     	throw new UnsupportedOperationException();
     }
-	
+
+    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) {
+    	// find the role
+    	// pull all the principal members
+    	// look for an exact qualifier match
+    	// if found, remove
+    	throw new UnsupportedOperationException();
+    }
+
+    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) {
+    	throw new UnsupportedOperationException();
+    }
+    
     // --------------------
     // Support Methods
     // --------------------

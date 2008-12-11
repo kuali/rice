@@ -452,14 +452,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getStatusDisplayValue() );
         }
         attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
-        if ( wd.isApprovalRequested() ) {
-            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.APPROVE_ACTION_REQUEST );  
+        if ( wd.isCompletionRequested() ){
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        } else if ( wd.isApprovalRequested() ) {
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ );  
         } else if ( wd.isAcknowledgeRequested() ) {
-            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.ACKNOWLEDGE_ACTION_REQUEST );
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ );
         } else if ( wd.isFYIRequested() ) {
-            attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.FYI_ACTION_REQUEST );
-        } else if (wd.isCompletionRequested()){
-        	attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.COMPLETE_ACTION_REQUEST);
+            attributes.put(KimAttributes.ACTION_REQUEST_CD, KEWConstants.ACTION_REQUEST_FYI_REQ );
         }
         attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
         attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );

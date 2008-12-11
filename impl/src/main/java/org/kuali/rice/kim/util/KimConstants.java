@@ -53,61 +53,93 @@ public class KimConstants {
 
 	public static final String PERMISSION_USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
+	
+	// JHK: Deprecated constants which need to be moved to KimAttributes or KFS
+	
+    @Deprecated
 	public static final String KIM_ATTRIB_EDIT_MODE = "editMode";
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
+	@Deprecated
 	public static final String KIM_ATTRIB_ACTION_CLASS ="actionClass";	
+    @Deprecated
 	public static final String KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE ="actionRequestCd";		
+    @Deprecated
 	public static final String KIM_ATTRIB_COMPONENT_CLASS ="componentClass";		
+    @Deprecated
 	public static final String KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ="actionDetailsAtRoleMemberLevel";	
+    @Deprecated
 	public static final String KIM_ATTRIB_REQUIRED ="required";	
+    @Deprecated
 	public static final String KIM_ATTRIB_BEAN_NAME ="beanName";	
+    @Deprecated
 	public static final String KIM_ATTRIB_CAMPUS_CODE = "campusCode";
+    @Deprecated
 	public static final String KIM_ATTRIB_TYPE_CODE ="typeCd";
+    @Deprecated
 	public static final String KIM_ATTRIB_CREATED_SELF_ONLY ="createdBySelfOnly";	
+    @Deprecated
 	public static final String KIM_ATTRIB_NAMESPACE_CODE = "Namespace Code";
+    @Deprecated
 	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "name";
+    @Deprecated
 	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "docRouteStatus";
+    @Deprecated
 	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "docRouteName";
+    @Deprecated
 	public static final String KIM_ATTRIB_DOCUMENT_NUMBER = "documentNumber";
+    @Deprecated
 	public static final String KIM_ATTRIB_PROPERTY_NAME = "propertyName";
+    @Deprecated
 	public static final String KIM_ATTRIB_COMPONENT_NAME = "parameterDetailTypeCode";
+    @Deprecated
 	public static final String KIM_ATTRIB_EXISTING_RECORDS_ONLY = "existingRecordsOnly";
+    @Deprecated
 	public static final String KIM_ATTRIB_PARAMETER_NAME = "parameterName";
+    @Deprecated
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
+    @Deprecated
 	public static final String KIM_ATTRIB_DESCEND_HIERARCHY = "descendHierarchy";
+    @Deprecated
 	public static final String KIM_ATTRIB_ACTION_REQUEST_CODE = "actionRequestCd";
+    @Deprecated
 	public static final String KIM_ATTRIB_FROM_AMOUNT = "fromAmount";
+    @Deprecated
 	public static final String KIM_ATTRIB_TO_AMOUNT = "toAmount";
+    @Deprecated
 	public static final String KIM_ATTRIB_FIELD_NAME = "fieldName";
 	
+    @Deprecated
 	public static final String KIM_ATTRIB_ACTION = "action";
-	public static final String KIM_ATTRIB_PRE_ROUTE  ="PreRoute";
 	public static final String KIM_ROLE_NAME_USER = "User";
-	public static final String KIM_ROLE_NAME_BILLER = "Biller";
-	public static final String KIM_ROLE_NAME_PROCESSOR = "Processor";	
+    @Deprecated
 	public static final String KIM_ROLE_NAME_ACCOUNT_SUPERVISOR = "Account Supervisor";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_FISCAL_OFFICER = "Fiscal Officer";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_PRIMARY_DELEGATE = "Fiscal Officer Primary Delegate";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_FISCAL_OFFICER_SECONDARY_DELEGATE = "Fiscal Officer Secondary Delegate";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_AWARD_SECONDARY_DIRECTOR = "Award Project Director";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_ACTIVE_FACULTY_OR_STAFF = "Active Faculty or Staff";
+    @Deprecated
 	public static final String KIM_ROLE_NAME_ACTIVE_PROFESSIONAL_EMPLOYEE = "Active Professional Employee";
+    @Deprecated
     public static final String KIM_ROLE_NAME_ROUTING_FORM_ADHOC_ACKNOWLEDGER = "Routing Form Ad Hoc Acknowledger";
+    @Deprecated
     public static final String KIM_ROLE_NAME_PREAWARD_PROJECT_DIRECTOR = "Pre-Award Project Director";
     public static final String KIM_ROLE_NAME_ACTION_REQUEST_RECIPIENT = "Action Request Recipient";
     public static final String KIM_ROLE_NAME_INITIATOR = "Initiator";
     public static final String KIM_ROLE_NAME_INITIATOR_OR_REVIEWER = "Initiator or Reviewer";
     public static final String KIM_ROLE_NAME_ROUTER = "Router";
     
-	public static final String PERMISSION_TEMPLATE_CLAIM_ELECTRONIC_PAYMENT = "Claim Electronic Payment";
+    @Deprecated
+    public static final String PERMISSION_TEMPLATE_CLAIM_ELECTRONIC_PAYMENT = "Claim Electronic Payment";
 	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	
 	public static final String PRE_ROUTING_DOC_STATUS = "PreRoute";
-	public static final String FYI_ACTION_REQUEST = "FYI";
-	public static final String ACKNOWLEDGE_ACTION_REQUEST = "Acknowledge";
-	public static final String APPROVE_ACTION_REQUEST = "Approve";
-	public static final String COMPLETE_ACTION_REQUEST = "Complete";
 	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";

@@ -45,7 +45,7 @@ public class DocumentPresentationControllerServiceImpl implements DocumentPresen
     public DocumentPresentationController getDocumentPresentationController(String documentType) {
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
         DocumentPresentationController documentPresentationController = null;
-        try{
+        
         if (StringUtils.isBlank(documentType)) {
             throw new IllegalArgumentException("invalid (blank) documentType");
         }
@@ -54,7 +54,7 @@ public class DocumentPresentationControllerServiceImpl implements DocumentPresen
         if (documentEntry == null) {
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
-
+        try{
         Class documentPresentationControllerClass = documentEntry.getDocumentPresentationControllerClass();
 
         documentPresentationController = (DocumentPresentationController) documentPresentationControllerClass.newInstance();
